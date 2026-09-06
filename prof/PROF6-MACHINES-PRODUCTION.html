@@ -1,0 +1,283 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Prof 6 — machines de production</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap">
+<link rel="stylesheet" href="../assets/kit.css?v=c3ba67c0">
+<link rel="stylesheet" href="../assets/site.css?v=c3ba67c0">
+
+<div class="page" data-site="fed-prof" data-page="prof/PROF6-MACHINES-PRODUCTION" data-public="prof">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="PROF5-METHODE-EPREUVE.html" rel="prev" title="Prof 5 — méthode d'épreuve" aria-label="Prof 5 — méthode d'épreuve">&lsaquo;</a><a class="fleche" href="PROF7-MACHINES-TRANSPORT.html" rel="next" title="Prof 7 — transport et échange" aria-label="Prof 7 — transport et échange">&rsaquo;</a></span><button type="button" class="lu" data-lu="prof/PROF6-MACHINES-PRODUCTION">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">Formation du professeur · BTS FED option C</p>
+    <h1>Les machines<span>qui produisent</span></h1>
+  </div>
+  <p class="accroche">Ce qu'on trouve réellement en local technique, ce qui distingue une famille d'une autre, et les quelques relations qui permettent de les comparer. Avec, pour chacune, les trois lignes que les étudiants doivent retenir.</p>
+  
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B1-1 Production de chaleur · niveau 3</span><span class="tag n3">B1-2 Production de froid · niveau 3</span><span class="tag">A5 Thermodynamique appliquée · niveau 2</span><span class="tag">A8 Combustion appliquée · niveau 1</span></div>
+</header>
+<nav class="somm"><div class="in"><a href="#les-chaudieres">Les chaudières</a><a href="#les-pompes-a-chaleur">Les pompes à chaleur</a><a href="#les-groupes-de-production-d-eau-glacee">Les groupes de production d’eau glacée</a><a href="#deux-machines-qu-on-croise-sans-les-comprendre">Deux machines qu’on croise sans les comprendre</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#ce-que-les-etudiants-demandent">Ce que les étudiants demandent</a></div></nav>
+<h2 id="les-chaudieres">Les chaudières</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Famille</th>
+<th>Retour minimal</th>
+<th>Ce qui la distingue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Standard</strong></td>
+<td>55 à 60 °C</td>
+<td>corps en fonte épaisse, pas de protection contre la condensation</td>
+</tr>
+<tr>
+<td><strong>Basse température</strong></td>
+<td>35 à 40 °C</td>
+<td>corps conçu pour un retour tiède, mais sans récupération de la latente</td>
+</tr>
+<tr>
+<td><strong>Condensation</strong></td>
+<td>aucune limite basse</td>
+<td>échangeur inox ou alu-silicium, siphon de condensats obligatoire</td>
+</tr>
+</tbody>
+</table></div>
+<div class="formule">
+<p><strong>Rendement de combustion : η = 1 − pertes par les fumées</strong></p>
+<ul>
+<li>pertes par les fumées ≈ <strong>(θ fumées − θ air) × A₂ / (21 − O₂ %)</strong></li>
+<li><strong>A₂ ≈ 0,66</strong><span>au gaz naturel, θ en °C, O₂ en pourcentage volumique sec</span></li>
+<li>l’excès d’air vaut <strong>λ = 21 / (21 − O₂ %)</strong></li>
+</ul>
+<blockquote>
+<p>Deux leviers, et deux seulement : <strong>abaisser la température des fumées</strong> et <strong>réduire l’excès d’air</strong>. Tout le reste — isolation du corps, pertes à l’arrêt — pèse beaucoup moins.</p>
+</blockquote>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que la formule de Siegert permet de faire devant les étudiants</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Prenons une chaudière réglée avec 5 % d’O₂ dans les fumées, à 180 °C, air à 20 °C. L’excès d’air vaut 21/(21−5) = <strong>1,31</strong>, soit 31 % d’air en trop. Les pertes fumées valent (180 − 20) × 0,66 / 16 = <strong>6,6 %</strong>, donc un rendement de combustion de <strong>93,4 %</strong>.</p>
+<p>Même chaudière, réglage soigné à 3 % d’O₂ et fumées à 120 °C : pertes de (120 − 20) × 0,66 / 18 = <strong>3,7 %</strong>, rendement <strong>96,3 %</strong>. Trois points gagnés sans changer d’appareil, uniquement par le réglage.</p>
+<p>C’est l’argument le plus concret pour justifier l’entretien annuel, et il est chiffrable devant un client. C’est aussi la raison pour laquelle un analyseur de combustion mesure l’O₂ et la température des fumées : ce sont exactement les deux entrées de la formule.</p>
+<p>Attention à une confusion fréquente : <strong>le rendement de combustion n’est pas le rendement d’exploitation</strong>. Le premier se mesure brûleur en marche ; le second intègre les pertes à l’arrêt, les cycles courts et le taux de charge. Sur une chaudière surdimensionnée, l’écart entre les deux dépasse dix points.</p></div></details>
+</div><div class="cle">
+<p><strong>Ce que les étudiants doivent retenir des chaudières</strong> 1. Le rendement s’exprime <strong>sur PCI</strong>, ce qui autorise à dépasser 100 %. 2. Une chaudière à condensation ne condense que si le <strong>retour est sous 55 °C</strong>. 3. La modulation — 1:5, parfois 1:10 — évite les cycles courts ; six démarrages par heure est la limite pratique.</p>
+</div>
+<h2 id="les-pompes-a-chaleur">Les pompes à chaleur</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Famille</th>
+<th>Source froide</th>
+<th>Ce qui la caractérise</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Air / eau</strong></td>
+<td>air extérieur</td>
+<td>la moins chère, mais COP variable et dégivrage</td>
+</tr>
+<tr>
+<td><strong>Eau / eau</strong></td>
+<td>nappe, boucle d’eau</td>
+<td>source stable, COP élevé, forages et autorisations</td>
+</tr>
+<tr>
+<td><strong>Sol / eau</strong></td>
+<td>capteurs ou sondes</td>
+<td>très stable, investissement lourd, surface ou forage</td>
+</tr>
+<tr>
+<td><strong>Air / air</strong></td>
+<td>air extérieur</td>
+<td>pas de réseau d’eau, usage tertiaire ou résidentiel léger</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="schema"><div class="dessin" data-schema="bivalence"></div><figcaption>La puissance disponible baisse quand le besoin monte : c’est toute la difficulté du dimensionnement.</figcaption></figure>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le point de bivalence, et le calcul qui va avec</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une pompe à chaleur air-eau perd de la puissance quand il fait froid, au moment même où le bâtiment en demande le plus. Les deux droites se croisent au <strong>point de bivalence</strong> : au-dessus, la machine couvre seule ; en dessous, il faut un appoint.</p>
+<p>Sur le graphe, la bivalence tombe vers <strong>0 °C</strong>. À la température de base, −7 °C, l’appoint doit fournir 6 kW sur les 15,6 nécessaires, soit <strong>38 % de la puissance</strong>.</p>
+<p>Et voici le calcul qui renverse l’impression : combien cela fait-il d’<strong>énergie</strong> ? En zone tempérée, les heures sous 0 °C représentent de l’ordre de <strong>5 % des degrés-jours</strong>. L’appoint, qui pèse 38 % de la puissance de pointe, ne consomme donc que quelques pour cent de l’énergie annuelle.</p>
+<p>C’est le raisonnement de dimensionnement à faire tenir aux étudiants : <strong>dimensionner une PAC sur la puissance de base la rend surdimensionnée onze mois sur douze</strong>, avec des cycles courts, un compresseur qui s’use et un COP dégradé. On la dimensionne au point de bivalence, et on assume l’appoint.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">COP, SCOP, et le dégivrage — la mathématique de l&#39;annonce commerciale</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le <strong>COP</strong> est un rapport instantané, à un couple de températures donné. Il ne dit rien de la saison. Le <strong>SCOP</strong> intègre une distribution annuelle de températures conventionnelle, avec trois zones climatiques européennes, l’appoint électrique et les pertes de veille.</p>
+<p>L’écart entre les deux est instructif : une machine annoncée à <strong>COP 5 à 7/35</strong> affiche couramment un <strong>SCOP de 3,5 à 4</strong> en climat tempéré. Le second est le seul qui prédise une facture.</p>
+<p>Le <strong>dégivrage</strong> en est une des causes. Sous environ 5 °C avec de l’humidité, l’évaporateur givre ; la machine inverse son cycle quelques minutes pour le fondre. Pendant ce temps elle <strong>prend</strong> de la chaleur au bâtiment. La pénalité saisonnière est de <strong>5 à 15 %</strong> selon le climat et la stratégie de dégivrage.</p>
+<p>Le calcul à faire poser aux étudiants, parce qu’il fait comprendre le dimensionnement des émetteurs : à COP 4, produire 10 kW coûte 2,5 kW d’électricité ; à COP 2,5 — la même machine par −7 °C sur des radiateurs à 55 °C — il en coûte 4. <strong>Soixante pour cent de facture en plus, pour la même chaleur.</strong></p></div></details>
+</div><div class="cle">
+<p><strong>Ce que les étudiants doivent retenir des pompes à chaleur</strong> 1. Le COP dépend <strong>des deux températures</strong> : source froide et départ d’eau. 2. La puissance disponible <strong>baisse</strong> quand le besoin monte — d’où le point de bivalence. 3. Une PAC exige des <strong>émetteurs basse température</strong> ; sur des radiateurs 75/65, elle perd la moitié de son intérêt.</p>
+</div>
+<h2 id="les-groupes-de-production-d-eau-glacee">Les groupes de production d’eau glacée</h2>
+<div class="formule">
+<p><strong>EER = Φ froid / P absorbée</strong> · <strong>COP = EER + 1</strong> sur la même machine</p>
+<ul>
+<li><strong>EER</strong><span>le rendement en mode froid, à l’évaporateur</span></li>
+<li><strong>COP</strong><span>le rendement en mode chaud, au condenseur</span></li>
+<li>la différence est le travail du compresseur, qui se retrouve dans la chaleur rejetée</li>
+</ul>
+<blockquote>
+<p>C’est pourquoi une machine réversible affiche toujours un COP supérieur d’une unité à son EER, aux mêmes températures. La question tombe régulièrement.</p>
+</blockquote>
+</div>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Compresseur</th>
+<th>Plage usuelle</th>
+<th>Ce qui le distingue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scroll</strong></td>
+<td>5 à 200 kW</td>
+<td>spiraless, silencieux, robuste, peu de pièces mobiles</td>
+</tr>
+<tr>
+<td><strong>À vis</strong></td>
+<td>150 à 1 500 kW</td>
+<td>modulation continue par tiroir, bon rendement à charge partielle</td>
+</tr>
+<tr>
+<td><strong>Centrifuge</strong></td>
+<td>au-delà de 500 kW</td>
+<td>très haut rendement, mais plage de fonctionnement étroite</td>
+</tr>
+<tr>
+<td><strong>Piston</strong></td>
+<td>en recul</td>
+<td>historique, encore présent en rénovation</td>
+</tr>
+</tbody>
+</table></div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Condenseur à air ou à eau : le calcul qui tranche</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le condenseur doit évacuer la chaleur <strong>Φ froid + P compresseur</strong>. Deux façons de le faire, et l’écart de performance est mesurable.</p>
+<p><strong>À air.</strong> Le fluide condense contre l’air extérieur, à une température de condensation de l’ordre de <strong>θ air + 12 à 15 K</strong>. Par 32 °C dehors, cela fait 45 °C de condensation. Simple, aucun traitement d’eau, aucun risque sanitaire.</p>
+<p><strong>À eau, avec tour de refroidissement.</strong> L’eau du circuit est refroidie par évaporation, donc elle tend vers la <strong>température humide</strong> de l’air, très inférieure à la sèche. Par 32 °C et 40 % d’humidité, l’humide est à <strong>21 °C</strong> : on condense vers 35 °C au lieu de 45.</p>
+<p>Dix kelvins de condensation en moins, c’est de l’ordre de <strong>20 à 30 % d’EER en plus</strong> — l’ordre de grandeur usuel étant de 2 à 3 % par kelvin. Sur un groupe de 500 kW qui tourne 2 000 heures, l’écart se chiffre en dizaines de milliers de kilowattheures.</p>
+<p>Ce que cela coûte en face : un circuit d’eau, une tour, un traitement d’eau, et surtout un <strong>risque légionelle</strong> avec ses obligations réglementaires — analyses, carnet, déclaration en préfecture au-delà d’un seuil. C’est un arbitrage technique et réglementaire, pas seulement énergétique, et c’est exactement le genre de justification que l’épreuve demande.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Taux de compression et rendement volumétrique — pour aller au fond</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le <strong>taux de compression</strong> est le rapport des pressions absolues, <strong>τ = P condensation / P évaporation</strong>. Il commande tout le comportement de la machine.</p>
+<p>Le rendement volumétrique d’un compresseur à pistons se modélise par <strong>ηv = 1 − C (τ^(1/n) − 1)</strong>, où <strong>C</strong> est l’espace mort rapporté à la cylindrée, de l’ordre de 3 à 5 %, et <strong>n</strong> l’exposant polytropique, voisin de 1,1 à 1,15.</p>
+<p>Le débit réellement aspiré vaut alors <strong>qv = ηv × cylindrée × fréquence</strong>, et le débit massique <strong>qm = qv / v₁</strong>, où v₁ est le volume massique à l’aspiration.</p>
+<p>Ce que la formule dit, et qui se vérifie sur toute machine : <strong>plus le taux de compression monte, moins le compresseur avale</strong>. À τ = 3, ηv vaut environ 0,96 ; à τ = 8, environ 0,89 ; à τ = 15, il s’effondre. C’est la raison physique du <strong>double étage</strong> et de l’<strong>injection intermédiaire</strong> sur les machines très basse température.</p>
+<p>Hors programme au sens strict — la technologie du froid est au niveau 0 à 1 pour l’option C. Mais un étudiant qui demande pourquoi le COP s’effondre par grand froid mérite cette réponse plutôt qu’un « c’est comme ça ».</p></div></details>
+</div><div class="cle">
+<p><strong>Ce que les étudiants doivent retenir des groupes froid</strong> 1. Quatre organes, toujours les mêmes : <strong>évaporateur, compresseur, condenseur, détendeur</strong>. 2. <strong>COP = EER + 1</strong> sur une machine réversible, aux mêmes températures. 3. Condenser plus froid améliore tout — d’où la tour de refroidissement, et le risque sanitaire qu’elle apporte.</p>
+</div>
+<h2 id="deux-machines-qu-on-croise-sans-les-comprendre">Deux machines qu’on croise sans les comprendre</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">L&#39;absorption : produire du froid avec de la chaleur</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une machine à absorption remplace le compresseur mécanique par un <strong>couple absorbeur-désorbeur</strong> entraîné par de la chaleur. Deux couples de fluides : eau et bromure de lithium — l’eau est le frigorigène, limité à des températures positives — ou ammoniac et eau, qui descend en négatif.</p>
+<p>Son <strong>COP thermique</strong> est faible : <strong>0,6 à 0,8</strong> en simple effet, <strong>1,1 à 1,4</strong> en double effet. Comparé à un groupe électrique à EER 4, cela paraît absurde.</p>
+<p>Ce qui la sauve, c’est la nature de l’énergie consommée. Elle ne consomme pas d’<strong>électricité</strong> mais de la <strong>chaleur</strong> — souvent une chaleur qui serait perdue : fumées de cogénération, chaleur fatale industrielle, ou réseau de chaleur urbain en été, quand la production tourne sans clients.</p>
+<p>D’où sa niche : <strong>là où la chaleur est gratuite ou déjà payée</strong>. Sur un réseau de chaleur, elle transforme un problème d’été en service vendu. Le calcul de comparaison ne se fait donc jamais en COP contre COP, mais en <strong>coût de l’énergie consommée</strong> — et c’est une bonne occasion de faire manipuler des euros par kilowattheure plutôt que des rendements.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">La cogénération : de l&#39;électricité, et la chaleur qui va avec</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un moteur ou une turbine entraîne un alternateur ; on récupère la chaleur des fumées, du circuit de refroidissement et de l’huile. Ordres de grandeur sur un module gaz de quelques centaines de kilowatts : <strong>rendement électrique 30 à 40 %</strong>, <strong>rendement thermique 45 à 55 %</strong>, <strong>rendement global 85 à 90 %</strong>.</p>
+<p>La règle de dimensionnement est contre-intuitive et vaut d’être enseignée : on <strong>dimensionne sur le besoin thermique de base</strong>, jamais sur la pointe, et jamais sur le besoin électrique. Une cogénération doit tourner <strong>4 000 à 6 000 heures par an</strong> pour être rentable ; surdimensionnée, elle s’arrête dès que le bâtiment n’a plus besoin de chaleur, et l’électricité produite ne compense pas l’investissement.</p>
+<p>L’indicateur à connaître est l’<strong>économie d’énergie primaire</strong> : on compare la consommation du module à celle qu’auraient une centrale électrique séparée et une chaudière séparée. C’est ce calcul qui conditionne les mécanismes de soutien, et c’est aussi un excellent exercice de bilan.</p></div></details>
+</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Grandeur</th>
+<th>Ordre de grandeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rendement de combustion, chaudière bien réglée</td>
+<td>93 à 96 %</td>
+</tr>
+<tr>
+<td>Excès d’air visé, brûleur gaz</td>
+<td>λ = 1,15 à 1,30, soit 3 à 5 % d’O₂</td>
+</tr>
+<tr>
+<td>Température de fumées, condensation</td>
+<td>40 à 60 °C · <strong>standard</strong> 150 à 200 °C</td>
+</tr>
+<tr>
+<td>Plage de modulation d’une chaudière murale</td>
+<td>1:5 à 1:10</td>
+</tr>
+<tr>
+<td>COP d’une PAC air-eau à 7/35</td>
+<td>4 à 5 · <strong>SCOP</strong> 3,5 à 4</td>
+</tr>
+<tr>
+<td>COP d’une PAC eau-eau</td>
+<td>5 à 6, stable toute l’année</td>
+</tr>
+<tr>
+<td>Pénalité de dégivrage</td>
+<td>5 à 15 % sur la saison</td>
+</tr>
+<tr>
+<td>Point de bivalence usuel</td>
+<td>−3 à 0 °C</td>
+</tr>
+<tr>
+<td>EER d’un groupe froid à condensation à air</td>
+<td>2,8 à 3,5 · <strong>à eau</strong> 4 à 5,5</td>
+</tr>
+<tr>
+<td>Écart de condensation, condenseur à air</td>
+<td>θ air + 12 à 15 K</td>
+</tr>
+<tr>
+<td>Gain d’EER par kelvin de condensation en moins</td>
+<td>2 à 3 %</td>
+</tr>
+<tr>
+<td>COP d’une absorption, simple · double effet</td>
+<td>0,7 · 1,2</td>
+</tr>
+<tr>
+<td>Cogénération, rendement électrique · global</td>
+<td>30-40 % · 85-90 %</td>
+</tr>
+<tr>
+<td>Heures de fonctionnement visées, cogénération</td>
+<td>4 000 à 6 000 h/an</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Le test de cohérence le plus rapide de cette page : <strong>un EER de 6 sur un groupe à condensation à air n’existe pas</strong>, et <strong>un COP de 5 sur une PAC air-eau produisant 55 °C non plus</strong>. Devant un nombre trop beau, la première question est toujours : à quelles températures ?</p>
+</div>
+<h2 id="ce-que-les-etudiants-demandent">Ce que les étudiants demandent</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi ne pas mettre une PAC partout, puisque le COP est de 4 ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Trois raisons, dans l’ordre où elles se rencontrent sur un vrai projet.</p>
+<p><strong>Les émetteurs.</strong> Une PAC n’est intéressante qu’en basse température. Sur des radiateurs 75/65 existants, il faut produire 75 °C, le COP tombe vers 2, et le coût d’exploitation rejoint celui du gaz. Remplacer les émetteurs coûte souvent plus cher que la PAC elle-même — c’est le vrai frein de la rénovation.</p>
+<p><strong>Le contenu carbone et le prix de l’électricité.</strong> Le raisonnement se fait en énergie primaire et en euros, pas en COP. Un COP de 2,5 face à une chaudière à condensation à 105 % ne gagne pas grand-chose sur la facture, même s’il gagne sur le carbone.</p>
+<p><strong>La puissance appelée.</strong> Une PAC avec appoint électrique appelle, par grand froid, une puissance électrique que l’abonnement doit couvrir. Sur un collectif, le renforcement du raccordement peut coûter davantage que l’installation.</p>
+<p>La bonne réponse pédagogique n’est donc pas « oui » ou « non » mais <strong>« à quelles conditions »</strong> — et ces conditions sont exactement ce qu’un dossier d’épreuve donne à analyser.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi le COP baisse quand il fait froid, la machine ne change pas ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La machine ne change pas, mais <strong>l’écart qu’elle doit franchir</strong>, si. Carnot le dit directement : COP maximal = T chaude / (T chaude − T froide), en kelvins.</p>
+<p>Par 7 °C dehors, pour produire 35 °C : 308 / 28 = 11. Par −7 °C : 308 / 42 = 7,3. La limite théorique a chuté d’un tiers, et le réel suit.</p>
+<p>S’ajoutent deux effets qui aggravent : le <strong>taux de compression</strong> monte, donc le compresseur avale moins de fluide à chaque tour ; et le <strong>dégivrage</strong> consomme du temps et de la chaleur.</p>
+<p>L’image qui fonctionne, et qui prolonge celle du Cours 4 : une pompe à eau qui doit remonter l’eau de plus en plus haut. Le débit tombe, la puissance augmente, et pourtant on n’a rien changé à la pompe. Ici, la hauteur, c’est l’écart de température.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Une chaudière à condensation sur un ancien réseau, ça marche ou pas ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Ça fonctionne — elle chauffe — mais <strong>elle ne condense pas</strong>, et c’est très différent. Sur un réseau 80/60, le retour est à 60 °C, au-dessus du point de rosée des fumées : la latente n’est jamais récupérée. On paie une chaudière à condensation pour obtenir le rendement d’une chaudière classique.</p>
+<p>Ce qu’il faut faire d’abord, et dans cet ordre : <strong>abaisser le régime</strong>. Isoler, équilibrer, poser des robinets thermostatiques, et surtout vérifier que les émetteurs suffisent au nouveau régime — c’est le calcul de la loi d’émission de la Cours 4, avec l’exposant 1,3.</p>
+<p>Souvent, la surface d’émission existante suffit, parce que les installations anciennes sont surdimensionnées de 20 à 40 %. C’est un excellent sujet d’étude : on part d’un régime existant, on calcule le facteur d’émission au nouveau régime, et on conclut sur la faisabilité. Toutes les données tiennent sur une page, et le raisonnement est exactement celui d’un bureau d’études.</p></div></details>
+</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="PROF5-METHODE-EPREUVE.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Prof 5 — méthode d'épreuve</span></a><a class="ap" href="PROF7-MACHINES-TRANSPORT.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Prof 7 — transport et échange</span></a></div></nav>
+<p class="pied">Page de formation. Elle contient des réponses, des démonstrations et des corrigés — c'est ce qui la distingue des pages élèves. Suite en Prof 7, transporter et échanger.</p>
+</div>
+<script src="../assets/kit.js?v=c3ba67c0"></script>
+<script src="../assets/site.js?v=c3ba67c0"></script>

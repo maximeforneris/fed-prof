@@ -5,8 +5,8 @@
 <title>Cours 2 — l'eau</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap">
-<link rel="stylesheet" href="../assets/kit.css?v=c3ba67c0">
-<link rel="stylesheet" href="../assets/site.css?v=c3ba67c0">
+<link rel="stylesheet" href="../assets/kit.css?v=816c96bb">
+<link rel="stylesheet" href="../assets/site.css?v=816c96bb">
 
 <div class="page" data-site="fed-prof" data-page="prof/COURS2-HYDRAULIQUE" data-public="prof">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS1-CHALEUR.html" rel="prev" title="Cours 1 — la chaleur" aria-label="Cours 1 — la chaleur">&lsaquo;</a><a class="fleche" href="COURS3-AIR-HUMIDE.html" rel="next" title="Cours 3 — l'air humide" aria-label="Cours 3 — l'air humide">&rsaquo;</a></span><button type="button" class="lu" data-lu="prof/COURS2-HYDRAULIQUE">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
@@ -38,10 +38,10 @@
 <div class="formule">
 <p><strong>Φ = qm × c × Δθ</strong>, soit dans la forme métier <strong>Q = Φ / (1,163 × Δθ)</strong></p>
 <ul>
-<li><strong>Q</strong><span>débit d’eau, en litres par heure</span></li>
-<li><strong>Φ</strong><span>puissance à transporter, en watts</span></li>
-<li><strong>Δθ</strong><span>écart entre départ et retour, en kelvins</span></li>
-<li><strong>1,163</strong><span>wattheure pour élever un litre d’eau d’un kelvin, démontré au Cours 1</span></li>
+<li><strong>Q</strong><span>: débit d’eau, en litres par heure</span></li>
+<li><strong>Φ</strong><span>: puissance à transporter, en watts</span></li>
+<li><strong>Δθ</strong><span>: écart entre départ et retour, en kelvins</span></li>
+<li><strong>1,163</strong><span>: wattheure pour élever un litre d’eau d’un kelvin, démontré au Cours 1</span></li>
 </ul>
 <blockquote>
 <p>Le régime <strong>70/55</strong> veut dire départ 70 °C, retour 55 °C, donc <strong>Δθ = 15 K</strong>. Ce nombre est un <strong>choix de conception</strong>, pas une donnée physique.</p>
@@ -57,29 +57,29 @@
 <p>Et si l’on voulait réduire le débit, en passant à 70/40, soit Δθ = 30 K :</p>
 <p>Q = 6 100 / (1,163 × 30) = <strong>175 L/h</strong>. Moitié moins.</p>
 <p>Alors pourquoi ne prend-on pas toujours un grand écart ? Trois raisons, et elles se contredisent, ce qui est le propre d’un arbitrage.</p>
-<p><strong>L’émetteur.</strong> Un radiateur émet selon son écart moyen avec l’air. En 70/55, la moyenne d’eau est à 62,5 °C ; en 70/40, à 55 °C. L’écart avec un local à 20 °C tombe de 42,5 à 35 K, soit — avec l’exposant 1,3 du Cours 4 — une émission qui chute de <strong>22 %</strong>. Il faut un radiateur plus grand : on paie en acier ce qu’on économise en cuivre.</p>
-<p><strong>Le confort.</strong> Sur un plancher chauffant, un grand écart crée des zones tièdes en fin de boucle, sensibles sous le pied. On y travaille à <strong>Δθ de 5 à 8 K</strong>, ce qui impose des débits élevés — et c’est pourquoi un plancher a autant de boucles séparées plutôt qu’une seule très longue.</p>
+<p><strong>L’émetteur.</strong> Un radiateur émet selon son écart moyen avec l’air. En 70/55, la moyenne d’eau est à 62,5 °C ; en 70/40, à 55 °C. L’écart avec un local à 20 °C tombe de 42,5 à 35 K, soit (avec l’exposant 1,3 du Cours 4) une émission qui chute de <strong>22 %</strong>. Il faut un radiateur plus grand : on paie en acier ce qu’on économise en cuivre.</p>
+<p><strong>Le confort.</strong> Sur un plancher chauffant, un grand écart crée des zones tièdes en fin de boucle, sensibles sous le pied. On y travaille à <strong>Δθ de 5 à 8 K</strong>, ce qui impose des débits élevés, et c’est pourquoi un plancher a autant de boucles séparées plutôt qu’une seule très longue.</p>
 <p><strong>La condensation, à l’envers.</strong> Une chaudière à condensation ne condense que si son <strong>retour</strong> est sous 55 °C. Un grand écart abaisse le retour et améliore le rendement : ici, le grand Δθ devient un avantage. C’est ce qui a poussé le neuf vers les régimes basse température.</p>
 <p>L’arbitrage n’a donc pas de réponse unique : il dépend de l’émetteur et du générateur. Excellente question d’oral, mauvaise question de QCM.</p></div></details>
 </div><h2 id="une-paille-un-tuyau-d-arrosage-la-perte-de-charge">Une paille, un tuyau d’arrosage : la perte de charge</h2>
 <p>Boire un milk-shake avec une paille fine demande un effort ; avec une paille large, aucun. Même liquide, même verre : seule la <strong>section</strong> a changé.</p>
 <p>Et si l’on pince l’embout d’un tuyau d’arrosage, le jet part plus loin mais le seau met plus longtemps à se remplir. <strong>La pression monte, le débit tombe.</strong> Ces deux observations contiennent la relation de Darcy et la notion de courbe de réseau.</p>
 <div class="formule">
-<p><strong>ΔP = λ × (L / D) × ρ v² / 2</strong> — la relation de Darcy-Weisbach</p>
+<p><strong>ΔP = λ × (L / D) × ρ v² / 2</strong>, la relation de Darcy-Weisbach</p>
 <ul>
-<li><strong>λ</strong><span>coefficient de frottement, sans dimension</span></li>
-<li><strong>L / D</strong><span>longueur rapportée au diamètre</span></li>
-<li><strong>ρ v² / 2</strong><span>pression dynamique du fluide, en pascals</span></li>
+<li><strong>λ</strong><span>: coefficient de frottement, sans dimension</span></li>
+<li><strong>L / D</strong><span>: longueur rapportée au diamètre</span></li>
+<li><strong>ρ v² / 2</strong><span>: pression dynamique du fluide, en pascals</span></li>
 </ul>
 <blockquote>
-<p>En régime turbulent — c’est toujours le cas en bâtiment — λ ne dépend presque plus du débit. Comme <strong>v est proportionnel à Q</strong>, il reste <strong>ΔP ∝ Q²</strong>.</p>
+<p>En régime turbulent (c’est toujours le cas en bâtiment) λ ne dépend presque plus du débit. Comme <strong>v est proportionnel à Q</strong>, il reste <strong>ΔP ∝ Q²</strong>.</p>
 </blockquote>
 </div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi le diamètre pèse si lourd — le calcul qui surprend</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>À débit donné, la vitesse varie comme <strong>1/D²</strong> puisque la section est en D². En reportant dans Darcy, où ΔP dépend de v²/D :</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi le diamètre pèse si lourd, le calcul qui surprend</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>À débit donné, la vitesse varie comme <strong>1/D²</strong> puisque la section est en D². En reportant dans Darcy, où ΔP dépend de v²/D :</p>
 <p><strong>ΔP ∝ Q² / D⁵</strong></p>
-<p>L’exposant 5 est brutal, et c’est le nombre le plus utile de la section. Passer d’un DN 20 à un DN 25 — 25 % de diamètre en plus — divise la perte de charge par <strong>(25/20)⁵ = 3,05</strong>.</p>
-<p>Autrement dit : <strong>un diamètre au-dessus, et la perte de charge est divisée par trois.</strong> C’est pourquoi un tuyau sous-dimensionné n’est pas un petit défaut mais une faute lourde, et pourquoi on ne « rattrape » jamais un mauvais diamètre par une pompe plus grosse — on paierait le cube.</p>
-<p>Le contre-argument, à donner dans la foulée pour éviter la surenchère : le cuivre, le calorifuge, les supports et la main-d’œuvre croissent tous avec le diamètre, et le volume d’eau en circulation aussi, ce qui ralentit la mise en température. La règle française de conception — viser <strong>100 à 150 Pa/m</strong> — est l’optimum économique constaté, et il se déplace vers le bas quand l’énergie renchérit.</p></div></details>
+<p>L’exposant 5 est brutal, et c’est le nombre le plus utile de la section. Passer d’un DN 20 à un DN 25, soit 25 % de diamètre en plus, divise la perte de charge par <strong>(25/20)⁵ = 3,05</strong>.</p>
+<p>Autrement dit : <strong>un diamètre au-dessus, et la perte de charge est divisée par trois.</strong> C’est pourquoi un tuyau sous-dimensionné n’est pas un petit défaut mais une faute lourde, et pourquoi on ne « rattrape » jamais un mauvais diamètre par une pompe plus grosse, on paierait le cube.</p>
+<p>Le contre-argument, à donner dans la foulée pour éviter la surenchère : le cuivre, le calorifuge, les supports et la main-d’œuvre croissent tous avec le diamètre, et le volume d’eau en circulation aussi, ce qui ralentit la mise en température. La règle française de conception, viser <strong>100 à 150 Pa/m</strong>, est l’optimum économique constaté, et il se déplace vers le bas quand l’énergie renchérit.</p></div></details>
 </div><div class="outil" data-outil="pertes">
 
 </div>
@@ -88,19 +88,19 @@
 <p>Ordres de grandeur en petit diamètre : un coude à 90° vaut environ <strong>1 m</strong> de tuyau, un té en dérivation <strong>2 à 3 m</strong>, une vanne d’arrêt ouverte <strong>0,5 m</strong>, un clapet <strong>5 à 10 m</strong>.</p>
 <p>Sur un circuit de radiateurs, les singularités pèsent couramment <strong>30 à 50 %</strong> du total. Les négliger fausse le choix de la pompe d’un facteur qui se voit immédiatement à la mise en service.</p></div></details>
 </div><div class="piege">
-<p>La perte de charge d’un circuit <strong>ne dépend pas de la hauteur du bâtiment</strong>. Le poids de la colonne montante est exactement compensé par celui de la descendante : un circuit fermé n’a rien à remonter. La hauteur intervient sur la <strong>pression statique</strong> — donc le vase, le remplissage, la soupape — jamais sur le circulateur.</p>
+<p>La perte de charge d’un circuit <strong>ne dépend pas de la hauteur du bâtiment</strong>. Le poids de la colonne montante est exactement compensé par celui de la descendante : un circuit fermé n’a rien à remonter. La hauteur intervient sur la <strong>pression statique</strong> (donc le vase, le remplissage, la soupape) jamais sur le circulateur.</p>
 </div>
 <h2 id="le-point-de-fonctionnement-et-pourquoi-la-pompe-ne-fait-pas-ce-qui-est-ecrit-dessus">Le point de fonctionnement, et pourquoi la pompe ne fait pas ce qui est écrit dessus</h2>
 <div class="outil" data-outil="point-fonctionnement">
 
 </div>
-<p>La <strong>courbe de réseau</strong> est la parabole ΔP = k·Q² que nous venons d’établir. La <strong>courbe du circulateur</strong> descend quand le débit monte : plus il pousse de fluide, moins il développe de pression. Elles se croisent en un point unique, et l’installation fonctionne là — nulle part ailleurs.</p>
+<p>La <strong>courbe de réseau</strong> est la parabole ΔP = k·Q² que nous venons d’établir. La <strong>courbe du circulateur</strong> descend quand le débit monte : plus il pousse de fluide, moins il développe de pression. Elles se croisent en un point unique, et l’installation fonctionne là, nulle part ailleurs.</p>
 <div class="cle">
 <p>Un circulateur ne <strong>donne</strong> pas un débit. Il propose une <strong>courbe</strong> de couples hauteur-débit ; c’est le réseau qui choisit lequel. Le fabricant ne connaît pas votre installation : il ne peut donc pas écrire un débit sur l’étiquette.</p>
 </div>
 <div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La démonstration en TP, en cinq minutes</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le montage : une pompe, un circuit, un débitmètre, une vanne d’équilibrage. On ferme progressivement la vanne et on relève le débit.</p>
 <p>Ce qu’on observe, et qui frappe : <strong>le débit tombe alors que la pompe n’a pas changé de régime.</strong> La vanne redresse la courbe de réseau, le point de croisement remonte le long de la courbe de pompe, la hauteur augmente et le débit diminue.</p>
-<p>Vanne complètement fermée, le débit est nul : la pompe fournit sa hauteur à débit nul et <strong>chauffe l’eau sans la déplacer</strong>. Sur une pompe de puissance, cela suffit à la détruire en quelques dizaines de minutes — d’où la soupape différentielle, qui garantit un débit minimal, et d’où l’interdiction de faire tourner un circulateur vannes fermées.</p>
+<p>Vanne complètement fermée, le débit est nul : la pompe fournit sa hauteur à débit nul et <strong>chauffe l’eau sans la déplacer</strong>. Sur une pompe de puissance, cela suffit à la détruire en quelques dizaines de minutes, d’où la soupape différentielle, qui garantit un débit minimal, et d’où l’interdiction de faire tourner un circulateur vannes fermées.</p>
 <p>Le prolongement à faire dire aux étudiants, parce qu’il est contre-intuitif : <strong>fermer une vanne fait monter la pression et baisser la consommation.</strong> La puissance hydraulique est le produit de la hauteur et du débit ; le débit chute plus vite que la hauteur ne monte.</p></div></details>
 <details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les lois de similitude, et l&#39;économie de la vitesse variable</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Quand on change la vitesse de rotation N d’une pompe centrifuge, à géométrie constante :</p>
 <div class="enveloppe-tbl"><table>
@@ -128,18 +128,18 @@
 <p>La troisième découle des deux premières, puisque la puissance hydraulique vaut <strong>P = ρ g Q H</strong> : si Q double et H quadruple, P est multipliée par huit. C’est le vélo, à l’identique.</p>
 <p><strong>Le calcul qui vend la vitesse variable :</strong> réduire la vitesse de <strong>20 %</strong> ramène la puissance à <strong>0,8³ = 51 %</strong>. Sur une installation à débit variable, où la pompe passe la moitié de la saison à charge réduite, l’économie annuelle atteint <strong>50 à 70 %</strong> par rapport à une vitesse fixe.</p>
 <p>C’est pour cette raison que les circulateurs à vitesse fixe ont été interdits à la vente en Europe : le règlement écoconception impose depuis 2013 un indice d’efficacité que seule l’électronique permet d’atteindre.</p>
-<p><strong>La nuance à connaître</strong>, parce qu’un bon étudiant la trouvera : ces lois sont exactes si le point de fonctionnement suit une parabole passant par l’origine — c’est le cas d’un réseau. Avec une régulation à <strong>pression différentielle constante</strong>, la caractéristique n’est plus cette parabole, et l’exposant réel tombe entre 2 et 2,5. Le gain reste considérable.</p></div></details>
+<p><strong>La nuance à connaître</strong>, parce qu’un bon étudiant la trouvera : ces lois sont exactes si le point de fonctionnement suit une parabole passant par l’origine, c’est le cas d’un réseau. Avec une régulation à <strong>pression différentielle constante</strong>, la caractéristique n’est plus cette parabole, et l’exposant réel tombe entre 2 et 2,5. Le gain reste considérable.</p></div></details>
 </div><h2 id="un-mitigeur-de-douche-la-vanne-trois-voies">Un mitigeur de douche : la vanne trois voies</h2>
-<p>Le mitigeur de la douche est une <strong>vanne trois voies en mélange</strong>. Deux entrées — chaude et froide —, une sortie, et une manette qui dose la proportion. Il ne crée pas d’eau : il <strong>compose une température</strong> à partir de deux eaux disponibles.</p>
+<p>Le mitigeur de la douche est une <strong>vanne trois voies en mélange</strong>. Deux entrées, chaude et froide, , une sortie, et une manette qui dose la proportion. Il ne crée pas d’eau : il <strong>compose une température</strong> à partir de deux eaux disponibles.</p>
 <p>Un robinet simple, lui, est une <strong>vanne deux voies</strong> : il ne dose rien, il <strong>étrangle</strong>. Il fait varier un débit, pas une température.</p>
 <div class="formule">
-<p><strong>Q = Kv × √(ΔP)</strong> — la loi d’une vanne de réglage</p>
+<p><strong>Q = Kv × √(ΔP)</strong>, la loi d’une vanne de réglage</p>
 <ul>
-<li><strong>Q</strong><span>débit, en m³/h · <strong>ΔP</strong> — perte dans la vanne, en bar</span></li>
-<li><strong>Kv</strong><span>coefficient de débit ; <strong>Kvs</strong> est sa valeur vanne grande ouverte</span></li>
+<li><strong>Q</strong><span>: débit, en m³/h · <strong>ΔP</strong>, perte dans la vanne, en bar</span></li>
+<li><strong>Kv</strong><span>: coefficient de débit ; <strong>Kvs</strong> est sa valeur vanne grande ouverte</span></li>
 </ul>
 <blockquote>
-<p>Un Kvs de 4 signifie : 4 m³/h passent quand la vanne perd 1 bar. Choisir une vanne, c’est choisir un Kvs — donc <strong>accepter une perte de charge</strong>.</p>
+<p>Un Kvs de 4 signifie : 4 m³/h passent quand la vanne perd 1 bar. Choisir une vanne, c’est choisir un Kvs, donc <strong>accepter une perte de charge</strong>.</p>
 </blockquote>
 </div>
 <div class="enveloppe-tbl"><table>
@@ -188,39 +188,39 @@
 <div class="formule">
 <p><strong>a = ΔP dans la vanne ouverte / ΔP total du circuit réglé</strong></p>
 <ul>
-<li><strong>a proche de 1</strong><span>la vanne commande vraiment</span></li>
-<li><strong>a &lt; 0,3</strong><span>la vanne devient un interrupteur</span></li>
+<li><strong>a proche de 1</strong><span>: la vanne commande vraiment</span></li>
+<li><strong>a &lt; 0,3</strong><span>: la vanne devient un interrupteur</span></li>
 <li><strong>valeur visée : 0,3 à 0,5</strong><span></span></li>
 </ul>
 </div>
 <p>Le mécanisme est le même en douche et en chauffage. Si le reste du circuit freine déjà beaucoup, fermer la vanne à moitié ne change presque rien au début, puis tout d’un coup : la caractéristique réelle se <strong>déforme</strong> et devient brutale près de la fermeture.</p>
 <p>En exploitation, le résultat porte un nom : la régulation <strong>pompe</strong>. Le régulateur ferme un peu, rien ne se passe, il ferme davantage, le débit s’effondre, il rouvre. Les techniciens cherchent souvent le défaut dans le régulateur alors qu’il est dans le choix de la vanne.</p>
-<p>D’où la règle de sélection, qui surprend toujours : <strong>on ne choisit pas une vanne au diamètre du tuyau.</strong> On la choisit à un Kvs qui lui donne l’autorité voulue — donc presque toujours <strong>plus petite</strong> que la conduite. Un réducteur avant et après une vanne motorisée n’est pas une erreur de montage, c’est le calcul.</p>
+<p>D’où la règle de sélection, qui surprend toujours : <strong>on ne choisit pas une vanne au diamètre du tuyau.</strong> On la choisit à un Kvs qui lui donne l’autorité voulue, donc presque toujours <strong>plus petite</strong> que la conduite. Un réducteur avant et après une vanne motorisée n’est pas une erreur de montage, c’est le calcul.</p>
 <p>C’est aussi la raison d’être des vannes à caractéristique <strong>égal-pourcentage</strong>, dont la loi d’ouverture est exponentielle : elle compense la déformation et redonne une réponse à peu près linéaire en débit.</p></div></details>
 </div><h2 id="la-douche-qui-refroidit-l-equilibrage">La douche qui refroidit : l’équilibrage</h2>
 <p>Quelqu’un ouvre un robinet à la cuisine, et la douche de l’étage devient brûlante ou glacée. L’eau est partie par le chemin le moins résistant, et il en manque ailleurs.</p>
 <figure class="schema"><div class="dessin" data-schema="retour-inverse"></div><figcaption>Retour direct contre retour inversé : deux façons de rendre les branches comparables.</figcaption></figure>
-<p>Dans un circuit à branches parallèles, <strong>la branche la plus proche prend tout</strong> et la plus lointaine ne chauffe pas — même avec des diamètres corrects. Le radiateur froid au bout du couloir n’est pas sous-dimensionné : il est mal irrigué.</p>
+<p>Dans un circuit à branches parallèles, <strong>la branche la plus proche prend tout</strong> et la plus lointaine ne chauffe pas, même avec des diamètres corrects. Le radiateur froid au bout du couloir n’est pas sous-dimensionné : il est mal irrigué.</p>
 <div class="cle">
 <p>Équilibrer, c’est <strong>ajouter volontairement de la perte de charge dans les branches favorisées</strong> jusqu’à ce que toutes soient également pénalisées. Cela paraît absurde, et c’est indispensable : sans équilibrage, on compense en montant la température de départ, ce qui coûte bien plus cher que l’équilibrage lui-même.</p>
 </div>
 <div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le chiffrage qui règle l&#39;objection « c&#39;est du gaspillage »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’énergie dissipée dans une vanne d’équilibrage est bel et bien perdue. Mais la comparaison ne se fait pas avec un circuit parfait : elle se fait avec le circuit <strong>non équilibré</strong>, dans lequel on est obligé de monter le départ pour que la branche défavorisée chauffe.</p>
-<p>Les deux termes n’ont pas le même ordre de grandeur. La perte supplémentaire de pompage due à l’équilibrage se compte en <strong>dizaines de watts</strong>. La surconsommation due à trois ou quatre kelvins de départ en trop se compte en <strong>kilowatts</strong>, sur toute la saison — sans parler de l’inconfort des pièces surchauffées du côté favorisé, qui finit en fenêtres ouvertes.</p>
+<p>Les deux termes n’ont pas le même ordre de grandeur. La perte supplémentaire de pompage due à l’équilibrage se compte en <strong>dizaines de watts</strong>. La surconsommation due à trois ou quatre kelvins de départ en trop se compte en <strong>kilowatts</strong>, sur toute la saison, sans parler de l’inconfort des pièces surchauffées du côté favorisé, qui finit en fenêtres ouvertes.</p>
 <p>C’est un raisonnement qu’on veut installer durablement : <strong>une perte locale peut être un gain global</strong>. On n’optimise pas un organe, on optimise un système. Le même raisonnement reviendra sur le filtre d’une CTA et sur le siphon d’une batterie froide.</p></div></details>
 <details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois méthodes d&#39;équilibrage, et ce que l&#39;épreuve en demande</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le retour inversé.</strong> On allonge le retour de la première branche pour que le parcours total soit identique partout. Aucun réglage, aucune dérive dans le temps, mais du tuyau en plus et un encombrement souvent impossible en rénovation.</p>
 <p><strong>Les vannes d’équilibrage statiques.</strong> Un té de réglage par branche, réglé une fois à la mise en service au débitmètre. Simple et robuste, mais <strong>le réglage n’est juste qu’au point de conception</strong> : dès que les vannes des émetteurs bougent, les débits se redistribuent.</p>
 <p><strong>Les vannes indépendantes de la pression.</strong> Elles maintiennent elles-mêmes leur ΔP, donc leur débit, quoi que fasse le reste du réseau. Solution moderne, plus chère à l’achat, et elle supprime la question de l’autorité.</p>
 <p>Ce que l’épreuve demande, dans les faits : <strong>reconnaître un organe d’équilibrage sur un schéma et dire à quoi il sert.</strong> Le calcul d’équilibrage n’apparaît pas. L’enjeu pédagogique est donc de ne pas laisser croire qu’un organe qui freine est un défaut de conception.</p></div></details>
 </div><h2 id="la-cocotte-minute-pression-temperature-et-cavitation">La cocotte-minute : pression, température et cavitation</h2>
-<p>Une cocotte-minute cuit plus vite parce qu’en montant la pression, elle <strong>monte la température d’ébullition</strong> : l’eau y bout à 120 °C au lieu de 100. En montagne, c’est l’inverse — à 2 000 m l’eau bout à 93 °C, et les pâtes ne cuisent pas.</p>
+<p>Une cocotte-minute cuit plus vite parce qu’en montant la pression, elle <strong>monte la température d’ébullition</strong> : l’eau y bout à 120 °C au lieu de 100. En montagne, c’est l’inverse, à 2 000 m l’eau bout à 93 °C, et les pâtes ne cuisent pas.</p>
 <p><strong>La température d’ébullition dépend de la pression.</strong> C’est la seule idée à retenir, et elle explique le seul cas où la hauteur d’un bâtiment intervient vraiment sur une pompe.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La cavitation, et les deux règles de montage qui en découlent</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>À l’aspiration d’une pompe, la pression est plus basse qu’ailleurs. Si elle descend sous la <strong>pression de vapeur saturante du fluide à sa température</strong>, l’eau se met à bouillir localement — exactement comme en montagne, mais par dépression au lieu d’altitude.</p>
-<p>Les bulles formées implosent dès qu’elles atteignent la roue. Le bruit est caractéristique — on croit entendre des graviers — et l’érosion détruit l’impulseur en quelques mois.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La cavitation, et les deux règles de montage qui en découlent</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>À l’aspiration d’une pompe, la pression est plus basse qu’ailleurs. Si elle descend sous la <strong>pression de vapeur saturante du fluide à sa température</strong>, l’eau se met à bouillir localement, exactement comme en montagne, mais par dépression au lieu d’altitude.</p>
+<p>Les bulles formées implosent dès qu’elles atteignent la roue. Le bruit est caractéristique (on croit entendre des graviers) et l’érosion détruit l’impulseur en quelques mois.</p>
 <p>La condition s’écrit <strong>NPSH disponible &gt; NPSH requis + 0,5 m</strong>. Le requis est une donnée du constructeur, croissante avec le débit ; le disponible se calcule sur l’installation.</p>
 <p>Ce qui rend le cas critique en bâtiment, c’est la <strong>température</strong>. La pression de vapeur saturante de l’eau vaut 0,02 bar absolu à 20 °C, mais <strong>0,47 bar à 80 °C</strong> : la marge disponible fond quand l’eau est chaude.</p>
 <p>D’où deux règles qu’on retrouve sur tous les schémas de l’épreuve, et qui paraissent arbitraires tant qu’on n’a pas fait ce raisonnement. Le <strong>vase d’expansion se raccorde à l’aspiration</strong> de la pompe, parce que c’est là qu’il faut garantir la pression. Et une pompe de circuit chaud se place <strong>au refoulement du générateur</strong>, jamais en un point où la pression statique est faible.</p></div></details>
 </div><h2 id="ce-qui-s-additionne-et-ce-qui-ne-s-additionne-pas">Ce qui s’additionne, et ce qui ne s’additionne pas</h2>
-<p>L’analogie électrique a porté tout le chapitre : Δp comme tension, Q comme courant, k comme résistance. Elle a une limite, et c’est en la cherchant qu’on comprend ce qu’on manipule. <strong>Deux tronçons en série additionnent leurs k ; deux branches en parallèle, non</strong> — et ce n’est pas parce que l’analogie est mauvaise, c’est parce que la loi est en carré au lieu d’être linéaire.</p>
+<p>L’analogie électrique a porté tout le chapitre : Δp comme tension, Q comme courant, k comme résistance. Elle a une limite, et c’est en la cherchant qu’on comprend ce qu’on manipule. <strong>Deux tronçons en série additionnent leurs k ; deux branches en parallèle, non</strong>, et ce n’est pas parce que l’analogie est mauvaise, c’est parce que la loi est en carré au lieu d’être linéaire.</p>
 <div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Deux branches en parallèle : c&#39;est la racine des k qui s&#39;additionne</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>En série, la démonstration est immédiate : le même débit traverse les deux tronçons, les pertes s’ajoutent.</p>
 <p>Δp = k₁Q² + k₂Q² = (k₁ + k₂) Q² → <strong>k série = k₁ + k₂</strong></p>
 <p>En parallèle, tout change. Les deux branches subissent <strong>le même Δp</strong> et se partagent le débit. De Δp = kᵢQᵢ² on tire Qᵢ = √(Δp / kᵢ), et le débit total est la somme :</p>
@@ -258,10 +258,10 @@
 </tbody>
 </table></div>
 <p>Deux colonnes identiques ouvertes au lieu d’une <strong>quadruplent</strong> la facilité du réseau. C’est pour cela qu’un circuit se déséquilibre si violemment quand des robinets thermostatiques ferment : chaque fermeture retire une branche, le k équivalent bondit, et tout le débit se reporte sur les branches restantes.</p>
-<p><strong>Un cas dissymétrique</strong>, plus proche du réel : k₁ = 40 et k₂ = 90 — la seconde branche est plus longue ou plus étroite.</p>
+<p><strong>Un cas dissymétrique</strong>, plus proche du réel : k₁ = 40 et k₂ = 90, la seconde branche est plus longue ou plus étroite.</p>
 <p>1/√k_eq = 1/6,32 + 1/9,49 = 0,1581 + 0,1054 = 0,2635 → <strong>k_eq = 14,4</strong></p>
-<p>Sous 1 mCE : Q₁ = 0,158, Q₂ = 0,105, total 0,264 m³/h. <strong>La branche facile prend 60 % du débit.</strong> Voilà l’équilibrage chiffré, avant même d’avoir posé une vanne — et voilà pourquoi la vanne d’équilibrage sert à <strong>remonter artificiellement le k</strong> de la branche favorisée jusqu’à égaliser les débits voulus.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où le carré tombe : le régime laminaire</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>« En régime turbulent — c’est toujours le cas en bâtiment » : la phrase est vraie au débit nominal, et fausse le reste du temps. Il faut savoir où passe la frontière, parce que le métier travaille des deux côtés.</p>
+<p>Sous 1 mCE : Q₁ = 0,158, Q₂ = 0,105, total 0,264 m³/h. <strong>La branche facile prend 60 % du débit.</strong> Voilà l’équilibrage chiffré, avant même d’avoir posé une vanne, et voilà pourquoi la vanne d’équilibrage sert à <strong>remonter artificiellement le k</strong> de la branche favorisée jusqu’à égaliser les débits voulus.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où le carré tombe : le régime laminaire</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>« En régime turbulent, c’est toujours le cas en bâtiment » : la phrase est vraie au débit nominal, et fausse le reste du temps. Il faut savoir où passe la frontière, parce que le métier travaille des deux côtés.</p>
 <p><strong>Le critère est le nombre de Reynolds</strong>, Re = v·D/ν, avec ν ≈ 0,47 × 10⁻⁶ m²/s pour l’eau chaude. En dessous de <strong>Re ≈ 2 000</strong>, l’écoulement est laminaire, et alors λ = 64/Re au lieu de la formule de Blasius. En reportant dans Darcy, la dépendance change complètement :</p>
 <div class="enveloppe-tbl"><table>
 <thead>
@@ -280,7 +280,7 @@
 <tr>
 <td>Laminaire</td>
 <td>64 / Re</td>
-<td><strong>Δp ∝ Q</strong> — proportionnelle</td>
+<td><strong>Δp ∝ Q</strong> : proportionnelle</td>
 </tr>
 </tbody>
 </table></div>
@@ -311,15 +311,15 @@
 </tr>
 </tbody>
 </table></div>
-<p><strong>Le cas qui arrive tous les jours</strong> : un radiateur de 1 kW en 70/55 demande 57 L/h à pleine charge, dans une branche en DN 12. À mi-saison, son robinet thermostatique le ramène à la moitié — <strong>28 L/h, donc laminaire</strong>.</p>
+<p><strong>Le cas qui arrive tous les jours</strong> : un radiateur de 1 kW en 70/55 demande 57 L/h à pleine charge, dans une branche en DN 12. À mi-saison, son robinet thermostatique le ramène à la moitié, <strong>28 L/h, donc laminaire</strong>.</p>
 <div class="piege">
-<p>En laminaire, la perte de charge devient <strong>proportionnelle</strong> au débit au lieu de suivre son carré. Un robinet qui ferme freine donc <strong>moins</strong> que la courbe en Q² ne le laisserait croire, et le débit résiduel est plus grand qu’attendu. C’est une des raisons pour lesquelles un réseau équilibré au débit nominal se déséquilibre à charge partielle — et pourquoi l’équilibrage se fait au débit de calcul, jamais à mi-saison.</p>
+<p>En laminaire, la perte de charge devient <strong>proportionnelle</strong> au débit au lieu de suivre son carré. Un robinet qui ferme freine donc <strong>moins</strong> que la courbe en Q² ne le laisserait croire, et le débit résiduel est plus grand qu’attendu. C’est une des raisons pour lesquelles un réseau équilibré au débit nominal se déséquilibre à charge partielle, et pourquoi l’équilibrage se fait au débit de calcul, jamais à mi-saison.</p>
 </div>
 <p><strong>Ce que l’épreuve en demande</strong> : rien de plus que de savoir que Blasius suppose le turbulent, et de reconnaître que Re s’écrit v·D/ν. Le calcul de λ en laminaire n’est pas exigible. Mais l’idée que <strong>la loi change de forme selon le régime</strong> vaut d’être installée : elle ressert en aéraulique et en régulation.</p></div></details>
 </div><h2 id="du-circuit-a-la-pompe-le-calcul-retourne">Du circuit à la pompe : le calcul retourné</h2>
 <p>Le cours a expliqué le point de fonctionnement en le lisant sur un graphique. Un bureau d’études fait l’inverse : il part du besoin et <strong>choisit</strong> la pompe. La démarche a cinq étapes, et chacune est une question possible à l’épreuve.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Dimensionner un circulateur, de la puissance au catalogue</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Reprenons la maison du Cours 1 — <strong>6,1 kW</strong>, régime 70/55, donc <strong>Q = 350 L/h</strong>.</p>
-<p><strong>Étape 1 — le diamètre</strong>, sur les deux critères du métier : vitesse sous 1 m/s, perte linéique dans la plage 100 à 150 Pa/m.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Dimensionner un circulateur, de la puissance au catalogue</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Reprenons la maison du Cours 1, <strong>6,1 kW</strong>, régime 70/55, donc <strong>Q = 350 L/h</strong>.</p>
+<p><strong>Étape 1, le diamètre</strong>, sur les deux critères du métier : vitesse sous 1 m/s, perte linéique dans la plage 100 à 150 Pa/m.</p>
 <div class="enveloppe-tbl"><table>
 <thead>
 <tr>
@@ -346,8 +346,8 @@
 </tr>
 </tbody>
 </table></div>
-<p>Le DN 16 tient la vitesse et <strong>rate la perte linéique</strong> : 201 Pa/m, au-delà de la plage. On retient le DN 20. C’est le même enseignement qu’en séance 8 côté étudiants — <strong>deux critères, jamais un seul</strong> — et il vaut d’être vécu ici sur des nombres qu’on a soi-même calculés.</p>
-<p><strong>Étape 2 — la hauteur manométrique</strong>, sur le tronçon le plus défavorisé : 42 m de tube et 18 m équivalents de singularités.</p>
+<p>Le DN 16 tient la vitesse et <strong>rate la perte linéique</strong> : 201 Pa/m, au-delà de la plage. On retient le DN 20. C’est le même enseignement qu’en séance 8 côté étudiants, <strong>deux critères, jamais un seul</strong>, et il vaut d’être vécu ici sur des nombres qu’on a soi-même calculés.</p>
+<p><strong>Étape 2, la hauteur manométrique</strong>, sur le tronçon le plus défavorisé : 42 m de tube et 18 m équivalents de singularités.</p>
 <div class="enveloppe-tbl"><table>
 <thead>
 <tr>
@@ -379,24 +379,24 @@
 </tbody>
 </table></div>
 <div class="cle">
-<p><strong>Le tube ne fait que 15 % du total.</strong> Les organes font le reste, et leurs pertes ne se calculent pas : elles se lisent dans les documentations. Un dimensionnement qui ne compte que la tuyauterie choisit une pompe trois fois trop petite — l’erreur est spectaculaire et fréquente.</p>
+<p><strong>Le tube ne fait que 15 % du total.</strong> Les organes font le reste, et leurs pertes ne se calculent pas : elles se lisent dans les documentations. Un dimensionnement qui ne compte que la tuyauterie choisit une pompe trois fois trop petite, l’erreur est spectaculaire et fréquente.</p>
 </div>
-<p><strong>Étape 3 — le point requis</strong> : 0,35 m³/h sous 2,77 mCE. On le porte sur les courbes du catalogue et l’on retient le circulateur dont une courbe passe <strong>juste au-dessus</strong>.</p>
-<p><strong>Étape 4 — le point réel.</strong> Le circuit a pour coefficient k = 2,77 / 0,35² = <strong>22,6</strong>. Avec une pompe dont la courbe s’écrit H = 4,5 − 6,0 Q² :</p>
+<p><strong>Étape 3, le point requis</strong> : 0,35 m³/h sous 2,77 mCE. On le porte sur les courbes du catalogue et l’on retient le circulateur dont une courbe passe <strong>juste au-dessus</strong>.</p>
+<p><strong>Étape 4, le point réel.</strong> Le circuit a pour coefficient k = 2,77 / 0,35² = <strong>22,6</strong>. Avec une pompe dont la courbe s’écrit H = 4,5 − 6,0 Q² :</p>
 <p>4,5 − 6,0 Q² = 22,6 Q² → Q = √(4,5 / 28,6) = <strong>0,397 m³/h</strong>, H = 3,56 mCE</p>
-<p><strong>Étape 5 — la vérification, qui est le vrai résultat.</strong> Le circuit reçoit 0,397 au lieu de 0,350, soit <strong>13 % de trop</strong>. La puissance étant imposée par les émetteurs, c’est l’écart de température qui absorbe la différence :</p>
+<p><strong>Étape 5, la vérification, qui est le vrai résultat.</strong> Le circuit reçoit 0,397 au lieu de 0,350, soit <strong>13 % de trop</strong>. La puissance étant imposée par les émetteurs, c’est l’écart de température qui absorbe la différence :</p>
 <p>Δθ = 6 100 / (1 163 × 0,397) = <strong>13,2 K</strong> au lieu de 15</p>
 <p>Le régime 70/55 devient un 70/57. Sur une chaudière classique, sans conséquence ; sur une chaudière à condensation, le retour remonte et le rendement baisse. C’est là que se rejoignent le Cours 2 et le Cours 4, et c’est l’argument qui justifie la vitesse variable bien mieux qu’un discours sur l’électronique.</p></div></details>
 </div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1 — application directe : débit, vitesse, perte de charge</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un tronçon alimente 12 kW en régime 80/60. Il fait 25 m de long et comporte 6 coudes à 90°, 2 tés en dérivation et 2 vannes d’arrêt. Il est réalisé en DN 20 (diamètre intérieur 20 mm). Perte linéique lue sur abaque : 137 Pa/m. Calculer le débit, la vitesse, et la perte de charge du tronçon.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : débit, vitesse, perte de charge</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un tronçon alimente 12 kW en régime 80/60. Il fait 25 m de long et comporte 6 coudes à 90°, 2 tés en dérivation et 2 vannes d’arrêt. Il est réalisé en DN 20 (diamètre intérieur 20 mm). Perte linéique lue sur abaque : 137 Pa/m. Calculer le débit, la vitesse, et la perte de charge du tronçon.</p>
 <p><strong>Résolution.</strong></p>
 <p><em>Le débit.</em> Δθ = 80 − 60 = 20 K. Q = 12 000 / (1,163 × 20) = <strong>516 L/h</strong> = 0,516 m³/h</p>
-<p><em>La vitesse.</em> S = π × 0,020² / 4 = 3,14 × 10⁻⁴ m². v = (0,516 / 3 600) / 3,14·10⁻⁴ = <strong>0,46 m/s</strong> — sous 1 m/s, critère tenu.</p>
+<p><em>La vitesse.</em> S = π × 0,020² / 4 = 3,14 × 10⁻⁴ m². v = (0,516 / 3 600) / 3,14·10⁻⁴ = <strong>0,46 m/s</strong>, sous 1 m/s, critère tenu.</p>
 <p><em>Les longueurs équivalentes</em>, aux ordres de grandeur du cours : 6 coudes × 1 m + 2 tés × 2,5 m + 2 vannes × 0,5 m = 6 + 5 + 1 = <strong>12 m</strong></p>
 <p><em>La perte de charge.</em> Δp = 137 × (25 + 12) = <strong>5 070 Pa = 0,52 mCE</strong></p>
-<p><strong>Deux vérifications de plausibilité</strong>, à faire systématiquement. Les singularités pèsent 12 m sur 37, soit <strong>32 %</strong> — dans la fourchette de 30 à 50 % annoncée par le cours ; un résultat où elles compteraient pour 5 % signalerait un oubli. Et la perte linéique de 137 Pa/m tombe dans la plage de conception de 100 à 150 : <strong>le DN 20 est bien le bon diamètre</strong>, ce que l’énoncé ne disait pas.</p>
+<p><strong>Deux vérifications de plausibilité</strong>, à faire systématiquement. Les singularités pèsent 12 m sur 37, soit <strong>32 %</strong>, dans la fourchette de 30 à 50 % annoncée par le cours ; un résultat où elles compteraient pour 5 % signalerait un oubli. Et la perte linéique de 137 Pa/m tombe dans la plage de conception de 100 à 150 : <strong>le DN 20 est bien le bon diamètre</strong>, ce que l’énoncé ne disait pas.</p>
 <p><strong>L’erreur classique</strong> : multiplier chaque singularité par j séparément puis additionner. Le résultat est le même, mais on multiplie les occasions de se tromper. <strong>On additionne d’abord toutes les longueurs, on multiplie une fois.</strong></p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2 — le calcul retourné : quel diamètre ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une colonne montante doit transporter 45 kW en régime 70/50 vers quatre étages. Le CCTP impose une vitesse maximale de 1,2 m/s et une perte linéique maximale de 150 Pa/m. Quel diamètre retenir parmi DN 25, 32, 40 et 50 ?</p>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : quel diamètre ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une colonne montante doit transporter 45 kW en régime 70/50 vers quatre étages. Le CCTP impose une vitesse maximale de 1,2 m/s et une perte linéique maximale de 150 Pa/m. Quel diamètre retenir parmi DN 25, 32, 40 et 50 ?</p>
 <p><strong>Résolution.</strong></p>
 <p><em>Le débit.</em> Δθ = 20 K. Q = 45 000 / (1,163 × 20) = <strong>1 935 L/h</strong> = 1,935 m³/h</p>
 <p><em>On teste les diamètres.</em> La vitesse se calcule par v = (Q/3 600)/S ; la perte linéique, par l’abaque ou l’outil du cours.</p>
@@ -441,19 +441,19 @@
 </tr>
 </tbody>
 </table>
-<p><strong>On retient le DN 32</strong> — mais en sachant qu’il est à la limite. Le calcul suppose un tube lisse ; la rugosité réelle d’un acier vieilli relève λ, et le 149 Pa/m deviendrait 160 ou 170. Sur une colonne montante qui vivra quarante ans, un bureau d’études prudent regarde le DN 40. <strong>Un résultat qui tombe à 1 % de la limite n’est pas un résultat confortable</strong>, et le dire fait partie de la réponse.</p>
+<p><strong>On retient le DN 32.</strong> Mais en sachant qu’il est à la limite. Le calcul suppose un tube lisse ; la rugosité réelle d’un acier vieilli relève λ, et le 149 Pa/m deviendrait 160 ou 170. Sur une colonne montante qui vivra quarante ans, un bureau d’études prudent regarde le DN 40. <strong>Un résultat qui tombe à 1 % de la limite n’est pas un résultat confortable</strong>, et le dire fait partie de la réponse.</p>
 <div class="cle">
-<p>Le DN 25 illustre exactement ce que le cours annonçait : <strong>il tient la vitesse et rate la perte linéique.</strong> Valider un diamètre sur le seul critère de vitesse est l’erreur la plus fréquente, et elle coûte pendant vingt ans en consommation de pompe — jamais en panne, ce qui la rend invisible.</p>
+<p>Le DN 25 illustre exactement ce que le cours annonçait : <strong>il tient la vitesse et rate la perte linéique.</strong> Valider un diamètre sur le seul critère de vitesse est l’erreur la plus fréquente, et elle coûte pendant vingt ans en consommation de pompe, jamais en panne, ce qui la rend invisible.</p>
 </div>
-<p><strong>Le contrôle par l’exposant 5.</strong> Passer du DN 25 au DN 32 multiplie le diamètre par 1,28, donc devrait diviser la perte par 1,28⁵ = 3,44. On lit 481 → 149, soit un rapport de <strong>3,23</strong> : cohérent, l’écart de 6 % venant de λ qui remonte un peu quand Re baisse. Ce contrôle prend dix secondes et valide toute la ligne — s’il donnait 1,5 ou 10, c’est une erreur de section ou d’unité.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3 — cas complet : deux branches et un déséquilibre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un circuit alimente deux colonnes en parallèle. La colonne A, courte, a pour coefficient k_A = 40 ; la colonne B, longue, k_B = 90 (en mCE par (m³/h)²). Le circulateur fournit 1 mCE aux bornes du piquage commun. Chaque colonne doit recevoir 0,13 m³/h. Que se passe-t-il, et que faire ?</p>
+<p><strong>Le contrôle par l’exposant 5.</strong> Passer du DN 25 au DN 32 multiplie le diamètre par 1,28, donc devrait diviser la perte par 1,28⁵ = 3,44. On lit 481 → 149, soit un rapport de <strong>3,23</strong> : cohérent, l’écart de 6 % venant de λ qui remonte un peu quand Re baisse. Ce contrôle prend dix secondes et valide toute la ligne, s’il donnait 1,5 ou 10, c’est une erreur de section ou d’unité.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : deux branches et un déséquilibre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un circuit alimente deux colonnes en parallèle. La colonne A, courte, a pour coefficient k_A = 40 ; la colonne B, longue, k_B = 90 (en mCE par (m³/h)²). Le circulateur fournit 1 mCE aux bornes du piquage commun. Chaque colonne doit recevoir 0,13 m³/h. Que se passe-t-il, et que faire ?</p>
 <p><strong>Ce qu’il faut voir avant de calculer</strong> : les deux branches sont <strong>en parallèle</strong>, donc les k ne s’additionnent pas. C’est le point de méthode, et il vaut la moitié des points.</p>
 <p><em>Les débits naturels, sous 1 mCE.</em> Q_A = √(1 / 40) = <strong>0,158 m³/h</strong> Q_B = √(1 / 90) = <strong>0,105 m³/h</strong> Total = 0,264 m³/h</p>
-<p><em>Le diagnostic.</em> La colonne A reçoit 0,158 pour 0,13 demandés — <strong>22 % de trop</strong>. La colonne B reçoit 0,105 pour 0,13 — <strong>19 % de moins</strong>. Le total est correct à 1,5 % près : <strong>le circulateur n’est pas en cause, la répartition l’est.</strong> C’est le diagnostic à formuler avant toute proposition.</p>
+<p><em>Le diagnostic.</em> La colonne A reçoit 0,158 pour 0,13 demandés, <strong>22 % de trop</strong>. La colonne B reçoit 0,105 pour 0,13, <strong>19 % de moins</strong>. Le total est correct à 1,5 % près : <strong>le circulateur n’est pas en cause, la répartition l’est.</strong> C’est le diagnostic à formuler avant toute proposition.</p>
 <p><em>La correction.</em> On ne touche pas à la colonne défavorisée : elle a déjà tout ce qu’elle peut avoir. On <strong>freine la colonne A</strong> jusqu’à 0,13 m³/h, en montant son coefficient :</p>
 <p>k_A voulu = Δp / Q² = 1 / 0,13² = <strong>59,2</strong></p>
-<p>La vanne d’équilibrage de A doit donc apporter <strong>59,2 − 40 = 19,2</strong> de résistance supplémentaire — ce que son réglage et sa courbe constructeur permettent de poser.</p>
-<p><em>La conséquence à ne pas oublier.</em> En freinant A, on augmente le k équivalent du piquage : à circulateur inchangé, le débit total baisse un peu et le Δp disponible monte, ce qui redonne du débit à B. <strong>L’équilibrage est itératif</strong> — c’est précisément ce que fait la méthode proportionnelle, en deux ou trois passes.</p>
+<p>La vanne d’équilibrage de A doit donc apporter <strong>59,2 − 40 = 19,2</strong> de résistance supplémentaire, ce que son réglage et sa courbe constructeur permettent de poser.</p>
+<p><em>La conséquence à ne pas oublier.</em> En freinant A, on augmente le k équivalent du piquage : à circulateur inchangé, le débit total baisse un peu et le Δp disponible monte, ce qui redonne du débit à B. <strong>L’équilibrage est itératif</strong>, c’est précisément ce que fait la méthode proportionnelle, en deux ou trois passes.</p>
 <p><strong>Ce que l’étudiant doit rédiger</strong> : non pas trois nombres, mais « les deux branches sont en parallèle, donc soumises au même Δp ; la moins résistante capte 60 % du débit ; on la freine par sa vanne d’équilibrage jusqu’au débit de calcul, sans jamais toucher à la plus défavorisée. » Le raisonnement vaut plus que l’arithmétique.</p></div></details>
 </div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
 <div class="enveloppe-tbl"><table>
@@ -474,7 +474,7 @@
 </tr>
 <tr>
 <td>Vitesse maximale en petit diamètre habité</td>
-<td>1 m/s — au-delà, ça siffle</td>
+<td>1 m/s : au-delà, ça siffle</td>
 </tr>
 <tr>
 <td>Perte linéique de conception</td>
@@ -531,21 +531,21 @@
 </tbody>
 </table></div>
 <div class="cle">
-<p>Le test de cohérence le plus rapide : <strong>1 m³/h transporte environ 17 kW en Δθ de 15 K</strong>. Un étudiant qui annonce 1 m³/h pour 200 kW, ou 40 m³/h pour 20 kW, s’est trompé d’un facteur dix — et cela se voit sans refaire le calcul.</p>
+<p>Le test de cohérence le plus rapide : <strong>1 m³/h transporte environ 17 kW en Δθ de 15 K</strong>. Un étudiant qui annonce 1 m³/h pour 200 kW, ou 40 m³/h pour 20 kW, s’est trompé d’un facteur dix, et cela se voit sans refaire le calcul.</p>
 </div>
 <h2 id="les-analogies-qui-marchent-et-celles-qui-trompent">Les analogies qui marchent, et celles qui trompent</h2>
 <div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les quatre qui marchent</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le vélo.</strong> Résistance en v², puissance en v³. C’est l’analogie la plus rentable de toute l’hydraulique, parce qu’elle est vécue et non racontée. Tout le monde a senti la différence entre 20 et 30 km/h.</p>
 <p><strong>Le tuyau d’arrosage qu’on pince.</strong> Pression qui monte, débit qui tombe : la courbe de réseau se redresse, le point remonte sur la courbe de pompe. C’est le point de fonctionnement en un geste.</p>
 <p><strong>Le mitigeur de douche.</strong> Vanne trois voies en mélange, deux entrées une sortie, débit total constant. Et la douche de camping donne l’autorité de vanne dans la foulée.</p>
-<p><strong>La cocotte-minute et la montagne.</strong> La température d’ébullition suit la pression. Elle prépare la cavitation, et elle resservira au Cours 4 sur le cycle frigorifique — où c’est exactement le même diagramme qu’on parcourt dans l’autre sens.</p></div></details>
+<p><strong>La cocotte-minute et la montagne.</strong> La température d’ébullition suit la pression. Elle prépare la cavitation, et elle resservira au Cours 4 sur le cycle frigorifique, où c’est exactement le même diagramme qu’on parcourt dans l’autre sens.</p></div></details>
 </div><div class="piege">
 <p><strong>Les trois à éviter.</strong></p>
 <p><strong>« La pompe pousse l’eau jusqu’en haut de l’immeuble. »</strong> Faux dans un circuit fermé : la colonne descendante rend ce que la montante a coûté. La pompe ne combat que les <strong>frottements</strong>. Cette formulation empêche durablement de comprendre pourquoi la hauteur n’entre pas dans le calcul du circulateur.</p>
 <p><strong>« Plus la pompe est puissante, plus il y a de débit. »</strong> Vrai seulement à réseau constant. Sur un réseau trop résistant, une pompe deux fois plus puissante donne très peu de débit en plus et beaucoup de bruit. Le bon geste est d’ouvrir le réseau, pas de forcer.</p>
-<p><strong>« Une vanne d’équilibrage, c’est de l’énergie perdue. »</strong> Localement oui, globalement non — voir le chiffrage plus haut. Laisser passer cette phrase produit des techniciens qui déséquilibrent une installation en croyant l’améliorer, et c’est un vrai problème de terrain.</p>
+<p><strong>« Une vanne d’équilibrage, c’est de l’énergie perdue. »</strong> Localement oui, globalement non, voir le chiffrage plus haut. Laisser passer cette phrase produit des techniciens qui déséquilibrent une installation en croyant l’améliorer, et c’est un vrai problème de terrain.</p>
 </div>
 <nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="COURS1-CHALEUR.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Cours 1 — la chaleur</span></a><a class="ap" href="COURS3-AIR-HUMIDE.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Cours 3 — l'air humide</span></a></div></nav>
-<p class="pied">Page de formation. Elle contient des réponses, des démonstrations et des corrigés — c'est ce qui la distingue des pages étudiantes.</p>
+<p class="pied">Page de formation. Elle contient des réponses, des démonstrations et des corrigés, c'est ce qui la distingue des pages étudiantes.</p>
 </div>
-<script src="../assets/kit.js?v=c3ba67c0"></script>
-<script src="../assets/site.js?v=c3ba67c0"></script>
+<script src="../assets/kit.js?v=816c96bb"></script>
+<script src="../assets/site.js?v=816c96bb"></script>

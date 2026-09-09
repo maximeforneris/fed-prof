@@ -1,0 +1,290 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   LE CALQUE — charte v3 du site du professeur.
+   Le plan de référence, lu la nuit sur la table lumineuse : trait blanc
+   sur graphite (le bleu de Prusse du premier essai était « trop bleu »), cadre de feuille à double trait, cartouche en cellules réglées,
+   nomenclature en lignes numérotées. La nuit n'est pas un réglage, c'est
+   le papier. La seule autre couleur est le crayon rouge de vérification —
+   celui qu'on passe sur un plan quand une cote a été contrôlée.
+   Écrit le 9 septembre 2026. Retenu le 9 septembre 2026 (« celui-là me va »), après le carnet de
+   chaufferie et le tirage bleu de Prusse.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@font-face{font-family:'Share Tech Mono';font-style:normal;font-weight:400;font-display:swap;src:url(polices/share-tech-mono-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Titillium Web';font-style:normal;font-weight:400;font-display:swap;src:url(polices/titillium-web-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Titillium Web';font-style:normal;font-weight:400;font-display:swap;src:url(polices/titillium-web-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Titillium Web';font-style:italic;font-weight:400;font-display:swap;src:url(polices/titillium-web-400i-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Titillium Web';font-style:italic;font-weight:400;font-display:swap;src:url(polices/titillium-web-400i-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Titillium Web';font-style:normal;font-weight:600;font-display:swap;src:url(polices/titillium-web-600-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Titillium Web';font-style:normal;font-weight:600;font-display:swap;src:url(polices/titillium-web-600-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Titillium Web';font-style:normal;font-weight:700;font-display:swap;src:url(polices/titillium-web-700-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Titillium Web';font-style:normal;font-weight:700;font-display:swap;src:url(polices/titillium-web-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+  --fond:#15181c;            /* le calque, la nuit : graphite, une pointe de bleu */
+  --carte:#1c2025;
+  --carte2:#23282e;
+  --encre:#eceef1;           /* le trait blanc */
+  --encre2:#a3abb5;
+  --trait:rgba(236,238,241,.42);
+  --trait2:rgba(236,238,241,.18);
+  --crayon:#ff6a5b;          /* le crayon rouge de contrôle */
+  --froid:#8fc1ff;--tiede:#ffd27a;--chaud:#ff6a5b;--vert:#8fe0b0;--violet:#c9b3ff;
+  --ombre:none;
+  --r:0px;
+}
+/* Pas de variante claire : le calque se lit la nuit, sous la lampe. */
+
+body{font-family:"Titillium Web",sans-serif}
+h1,h2,h3,h4,.gro{font-family:"Titillium Web","Helvetica Neue",Arial,sans-serif}
+.mono,code{font-family:"Share Tech Mono",ui-monospace,monospace}
+header.tete .num{font-family:"Titillium Web",sans-serif}
+.sur{font-family:"Share Tech Mono",monospace}
+/* ce que la page contient — la meme information que sur les cartes de la frise */ .contenu{font-family:"Share Tech Mono",monospace}
+.k-savoirs{font-family:"Share Tech Mono",monospace}
+.tag{font-family:"Share Tech Mono",monospace}
+.chapeau-p{font-family:"Share Tech Mono",monospace}
+.prerequis b{font-family:"Titillium Web","Helvetica Neue",Arial,sans-serif}
+.prerequis .ou{font-family:"Share Tech Mono",monospace}
+nav.somm a{font-family:"Titillium Web",sans-serif}
+.formule>p:first-child{font-family:"Share Tech Mono",monospace}
+.formule li strong:first-child{font-family:"Share Tech Mono",monospace}
+.piege::before{font-family:"Titillium Web",sans-serif}
+.etapes li::before{font-family:"Share Tech Mono",monospace}
+.mission>p:first-child strong{font-family:"Titillium Web",sans-serif}
+figcaption{font-family:"Titillium Web",sans-serif}
+.s-nom{font-family:"Titillium Web",sans-serif}
+.s-pet{font-family:"Share Tech Mono",monospace}
+.s-lab{font-family:"Share Tech Mono",monospace}
+.s-tit{font-family:"Titillium Web",sans-serif}
+.replis>.chapeau{font-family:"Titillium Web",sans-serif}
+.titre-appro{font-family:"Titillium Web",sans-serif}
+.etiq{font-family:"Share Tech Mono",monospace}
+th{font-family:"Titillium Web",sans-serif}
+.quiz>.chapeau{font-family:"Titillium Web",sans-serif}
+.qq button{font-family:"Share Tech Mono",monospace}
+.score{font-family:"Share Tech Mono",monospace}
+.outil .k{font-family:"Share Tech Mono",monospace}
+.chaine{font-family:"Share Tech Mono",monospace}
+.champ .v{font-family:"Share Tech Mono",monospace}
+input[type=number],select{font-family:"Share Tech Mono",monospace}
+.bt{font-family:"Titillium Web",sans-serif}
+.lignec .rr{font-family:"Share Tech Mono",monospace}
+.entete-c{font-family:"Titillium Web",sans-serif}
+.res .gros{font-family:"Share Tech Mono",monospace}
+.res .gros b{font-family:"Titillium Web",sans-serif}
+.barre .p{font-family:"Share Tech Mono",monospace}
+.case-sym span{font-family:"Titillium Web",sans-serif}
+.s-sym{font-family:"Share Tech Mono",monospace}
+.s-rep{font-family:"Share Tech Mono",monospace}
+.exo>.k{font-family:"Share Tech Mono",monospace}
+.exo input[type=text]{font-family:"Share Tech Mono",monospace}
+.exo textarea{font-family:"Titillium Web",sans-serif}
+.exo .unite{font-family:"Share Tech Mono",monospace}
+.exo .btn{font-family:"Titillium Web",sans-serif}
+.exo .indice::before{font-family:"Titillium Web",sans-serif}
+.serie>.k{font-family:"Share Tech Mono",monospace}
+.serie input[type=text]{font-family:"Share Tech Mono",monospace}
+.serie .unite{font-family:"Share Tech Mono",monospace}
+.serie .btn{font-family:"Titillium Web",sans-serif}
+.serie .indice::before{font-family:"Titillium Web",sans-serif}
+.bilan-epreuve .compte{font-family:"Titillium Web",sans-serif}
+/* ═══════════════════════════════════════════════════════════════════════    SITE — l'enveloppe de navigation autour des pages du kit.    Elle vient APRES kit.css et n'en redefinit aucune variable : les couleurs,    les polices et le mode sombre sont ceux du kit. Ne pas la dupliquer dans    un sous-projet. Voir GUIDE-SITE.md.    ═══════════════════════════════════════════════════════════════════════ */  /* ─────────────────────────────────────────────── barre de site    Elle defile avec la page : le sommaire de seance, lui, est colle en haut    (kit.css). Deux barres collantes se marchent dessus.     Elle s'appelait « barre » tout court, et kit.css nomme deja ainsi les    barres de ses graphiques : site.css etant chargee ensuite, elle ecrasait    leur grille a trois colonnes. Un nom de classe partage entre deux feuilles    ne pardonne pas — d'ou le suffixe. */ .barre-site{font-family:"Titillium Web",sans-serif}
+/* .pas-pas : remplace par .fleches, plus bas */ .barre-site .lu{font-family:inherit}
+.chercher input{font-family:"Titillium Web",sans-serif}
+.resultats a{font-family:"Titillium Web",sans-serif}
+.resultats .ou{font-family:"Share Tech Mono",monospace}
+.raccourcis a{font-family:"Titillium Web",sans-serif}
+.espace>.compte{font-family:"Share Tech Mono",monospace}
+.frise .n{font-family:"Share Tech Mono",monospace}
+.frise .t{font-family:"Titillium Web",sans-serif}
+.frise .meta{font-family:"Share Tech Mono",monospace}
+.recap{font-family:"Titillium Web",sans-serif}
+.outils-grille .t{font-family:"Titillium Web",sans-serif}
+.outils-grille .ou{font-family:"Share Tech Mono",monospace}
+/* ─────────────────────────────────────────────── banque d'exercices    Un repertoire, pas une copie : chaque ligne renvoie a la seance qui porte    l'exercice. */ .filtres{font-family:"Titillium Web",sans-serif}
+.filtres select{font-family:inherit}
+.exo-ligne a{font-family:"Titillium Web",sans-serif}
+.exo-ligne .ou{font-family:"Share Tech Mono",monospace}
+.exo-ligne .etat{font-family:"Share Tech Mono",monospace}
+.partie .n{font-family:"Share Tech Mono",monospace}
+.partie .t{font-family:"Titillium Web",sans-serif}
+.partie .meta{font-family:"Share Tech Mono",monospace}
+.partie .sv{font-family:"Share Tech Mono",monospace}
+.partie .rep{font-family:"Share Tech Mono",monospace}
+.chiffres b{font-family:"Titillium Web",sans-serif}
+.chiffres span{font-family:"Share Tech Mono",monospace}
+.porte .n{font-family:"Share Tech Mono",monospace}
+.porte .t{font-family:"Titillium Web",sans-serif}
+/* ─────────────────────────────────────────────── reprendre la lecture */ .reprendre{font-family:"Titillium Web",sans-serif}
+.sequence .rang{font-family:"Share Tech Mono",monospace}
+/* l'avancement de lecture, posé par site.js */ .sequence .jauge{font-family:"Share Tech Mono",monospace}
+.chapeau-f{font-family:"Share Tech Mono",monospace}
+.grille-f .k{font-family:"Share Tech Mono",monospace}
+.grille-f .t{font-family:"Titillium Web",sans-serif}
+/* ─────────────────────────────────────────────── le fil de séquence */ .barre-site .fil{font-family:"Share Tech Mono",monospace}
+.chapeau-s{font-family:"Share Tech Mono",monospace}
+.pas-a-pas .k{font-family:"Share Tech Mono",monospace}
+.pas-a-pas .t{font-family:"Titillium Web",sans-serif}
+.vers-recap{font-family:"Titillium Web",sans-serif}
+.theme-outils .rang{font-family:"Share Tech Mono",monospace}
+/* ─────────────────────────────────────────────── exercices, par savoir */ .avancee{font-family:"Share Tech Mono",monospace}
+.seg{font-family:"Titillium Web",sans-serif}
+.titre-savoir .code{font-family:"Share Tech Mono",monospace}
+.exo-ligne .genre{font-family:"Share Tech Mono",monospace}
+.exo-ligne a{font-family:"Titillium Web",sans-serif}
+.suggestions .ou{font-family:"Share Tech Mono",monospace}
+.recap.tenu{font-family:"Titillium Web",sans-serif}
+
+.page,table,.res,.champ .v,.compteur{font-variant-numeric:tabular-nums}
+
+/* ─── la feuille : exposition un peu inégale, comme un vrai tirage ─── */
+body{
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 22%, #22272d 0%, rgba(34,39,45,0) 72%),
+    var(--fond);
+  background-attachment:fixed;color:var(--encre);
+}
+
+/* ─── le cadre de feuille à double trait ─── */
+.page{
+  position:relative;margin:26px auto 60px;
+  padding:30px 40px 70px;
+  border:1px solid var(--trait);
+  box-shadow:inset 0 0 0 7px var(--fond),inset 0 0 0 8px var(--trait);
+}
+/* les repères de pliage, un tiret au milieu de chaque bord */
+.page::before,.page::after{
+  content:"";position:absolute;left:50%;width:1px;height:14px;background:var(--encre);
+  margin-left:-.5px;
+}
+.page::before{top:-1px}
+.page::after{bottom:-1px}
+
+/* ─── le cartouche ─── */
+header.tete{
+  position:relative;border:1px solid var(--encre);padding:0;margin-top:10px;
+  display:grid;grid-template-columns:1fr;
+}
+header.tete .sur{
+  order:0;font-family:"Share Tech Mono",monospace;font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--encre);opacity:1;
+  padding:8px 14px;border-bottom:1px solid var(--encre);margin:0;
+}
+header.tete h1{
+  font-family:"Titillium Web",sans-serif;font-weight:700;letter-spacing:.01em;
+  padding:18px 16px 6px;margin:0;color:var(--encre);
+}
+header.tete h1 span{color:var(--encre2);font-weight:400}
+header.tete .accroche{
+  font-family:"Titillium Web",sans-serif;color:var(--encre2);
+  padding:0 16px 18px;margin:0;border-bottom:0;
+}
+/* le schéma d'en-tête vit dans sa propre cellule, cadrée au trait */
+header.tete.a-img{grid-template-columns:1fr minmax(240px,34%)}
+header.tete.a-img .sur,header.tete.a-img h1,header.tete.a-img .accroche{grid-column:1}
+header.tete .tete-img{
+  grid-column:2;grid-row:1/4;align-self:stretch;
+  border-left:1px solid var(--encre);background:var(--carte);padding:14px;
+}
+/* le schéma d'accueil est dessiné avec les jetons du kit : il suit la charte sans filtre */
+@media (max-width:760px){
+  header.tete.a-img{grid-template-columns:1fr}
+  header.tete.a-img .tete-img{grid-column:1;grid-row:auto;border-left:0;border-top:1px solid var(--encre)}
+}
+
+/* ─── la recherche : une cote à renseigner ─── */
+.chercher input{
+  min-height:48px;background:transparent;color:var(--encre);
+  border:1px solid var(--trait);border-radius:0;padding:0 12px;
+  font-family:"Share Tech Mono",monospace;font-size:16px;
+}
+.chercher input::placeholder{color:var(--encre2);opacity:1}
+.chercher input:focus{outline:none;border-color:var(--crayon)}
+
+/* ─── la porte des outils ─── */
+nav.portes .porte{
+  background:transparent;border:1px solid var(--encre);border-radius:0;box-shadow:none;
+}
+nav.portes .porte::before{display:none}
+nav.portes .porte:hover{background:var(--carte)}
+nav.portes .porte .n{font-family:"Share Tech Mono",monospace;color:var(--encre2)}
+nav.portes .porte .t,nav.portes .porte .d{color:var(--encre)}
+nav.portes .porte .d{color:var(--encre2)}
+nav.portes .porte .ico{stroke:var(--encre)}
+
+/* ─── la nomenclature : chaque page est une ligne numérotée ─── */
+.espace>h2{
+  font-family:"Titillium Web",sans-serif;font-weight:700;letter-spacing:.02em;
+  text-transform:uppercase;font-size:17px;color:var(--encre);
+  border-bottom:1px solid var(--encre);padding-bottom:8px;
+}
+.grille-f{grid-template-columns:1fr;gap:0;border-top:1px solid var(--encre)}
+.grille-f a{
+  display:grid;grid-template-columns:72px 1fr;gap:2px 16px;align-items:start;
+  background:transparent;border:0;border-bottom:1px solid var(--trait2);
+  border-radius:0;box-shadow:none;padding:13px 10px 13px 0;color:var(--encre);
+}
+.grille-f a:hover{background:var(--carte)}
+.grille-f a .k{
+  grid-row:1/3;font-family:"Share Tech Mono",monospace;font-size:13px;
+  letter-spacing:.08em;color:var(--encre);opacity:1;text-transform:uppercase;
+  border-right:1px solid var(--trait);padding-right:10px;align-self:stretch;
+}
+.grille-f a .t{font-family:"Titillium Web",sans-serif;font-weight:700;font-size:18px;color:var(--encre)}
+.grille-f a .d{font-family:"Titillium Web",sans-serif;font-size:15px;color:var(--encre2)}
+
+/* ─── le crayon rouge : contrôlé ─── */
+.barre-site{border-bottom:1px solid var(--trait)}
+.barre-site .accueil{
+  font-family:"Share Tech Mono",monospace;font-size:12.5px;letter-spacing:.06em;
+  color:var(--encre);border-bottom:1px solid var(--encre);
+}
+.barre-site .fleche{color:var(--encre);border-color:var(--trait)}
+.barre-site .lu{
+  font-family:"Share Tech Mono",monospace;font-size:12.5px;
+  border:1px solid var(--encre);border-radius:0;background:transparent;
+  color:var(--encre);min-height:36px;padding:6px 14px 6px 12px;
+}
+.barre-site .lu:hover{border-color:var(--crayon);color:var(--crayon)}
+.barre-site .lu[aria-pressed="true"]{
+  border-color:var(--crayon);color:var(--crayon);padding-left:34px;position:relative;
+}
+.barre-site .lu[aria-pressed="true"]::before{
+  content:"";position:absolute;left:10px;top:50%;width:16px;height:16px;margin-top:-8px;
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M2 9 L6 13 L14 3' fill='none' stroke='%23ff6a5b' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center/contain;
+}
+.jauge-lecture{background:transparent}
+.jauge-lecture i{background:var(--crayon)}
+
+/* ─── les pages de cours ─── */
+.page[data-page] header.tete{display:block}
+.page[data-page] header.tete .titraille{padding:0}
+.page[data-page] header.tete .sur{display:block}
+.page[data-page] header.tete .contenu,.page[data-page] header.tete .savoirs{padding:0 16px 14px;margin:0}
+.page[data-page] h2{
+  font-family:"Titillium Web",sans-serif;font-weight:700;letter-spacing:.02em;
+  color:var(--encre);border-bottom:1px solid var(--trait);padding-bottom:4px;
+}
+nav.somm{background:var(--fond);border-top:1px solid var(--encre);border-bottom:1px solid var(--encre)}
+nav.somm a{font-family:"Share Tech Mono",monospace;font-size:12.5px;color:var(--encre2)}
+nav.somm a.actif,nav.somm a:hover{color:var(--crayon)}
+.tag{border-color:var(--trait);color:var(--encre2)}
+table{font-family:"Share Tech Mono",monospace;font-size:13.5px;color:var(--encre)}
+th{font-family:"Titillium Web",sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:12px;
+   color:var(--encre);border-bottom:1px solid var(--encre)}
+td{border-bottom:1px solid var(--trait2)}
+.encadre,.piege,.formule,.cle,.appro,.mission,.exo{
+  background:var(--carte);border-color:var(--trait);color:var(--encre);
+}
+.pied-site,.pied{
+  font-family:"Share Tech Mono",monospace;font-size:12px;color:var(--encre2);
+  border-top:1px solid var(--trait);padding-top:8px;
+}
+
+/* ─── surfaces du navigateur ─── */
+::selection{background:var(--crayon);color:#fff}
+input,textarea{caret-color:var(--crayon)}
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:2px solid var(--crayon);outline-offset:2px}
+a{color:var(--encre);text-underline-offset:3px;text-decoration-thickness:1px}
+html{scrollbar-color:#3a424b var(--fond);scrollbar-width:thin}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}

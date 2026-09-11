@@ -1,0 +1,138 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Prof 3 — les protocoles</title>
+<link rel="stylesheet" href="../assets/kit.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/site.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/calque.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/vivant.css?v=13b3bbbd">
+
+<div class="page" data-site="fed-prof" data-page="domotique/PROF3-PROTOCOLES" data-public="prof">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="PROF2-MEDIAS.html" rel="prev" title="Prof 2 — les médias" aria-label="Prof 2 — les médias">&lsaquo;</a><a class="fleche" href="PROF4-SURETE.html" rel="next" title="Prof 4 — sûreté et sécurité" aria-label="Prof 4 — sûreté et sécurité">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/PROF3-PROTOCOLES">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">Formation du professeur · BTS FED option C</p>
+    <h1>Les protocoles<span>et l'interopérabilité</span></h1>
+  </div>
+  <p class="accroche">Pourquoi deux appareils du même protocole peuvent ne pas se comprendre, et pourquoi le registre 40001 n'existe pas. Comment un bus arbitre sans collision. Et la vraie raison pour laquelle KNX interopère alors que Modbus ne le fait pas, elle ne tient pas au protocole.</p>
+  
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B8-1 Standards de communication · niveau 3</span><span class="tag n3">D1-2 Standards de communication métier · niveau 3</span><span class="tag">D2-1 aspect logiciel · niveau 2</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="PROF2-MEDIAS.html">Les médias et leurs longueurs</a></b><span class="ou">Prof 2 — les médias</span><span class="car">un protocole roule sur un média ; on ne comprend pas KNX TP sans sa paire torsadée ni le CPL sans sa ligne.</span></li><li><b><a href="PROF1-COURANT-FAIBLE.html">Les deux chaînes</a></b><span class="ou">Prof 1 — le courant faible</span><span class="car">un protocole est le langage de la chaîne d'information, que la page 1 a séparée de la chaîne d'énergie.</span></li><li><b>Adresse, trame et acquittement, au niveau du bac</b><span class="car">la page compare des protocoles par ce qu'ils mettent dans une trame ; le vocabulaire est supposé acquis.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#ce-qui-rend-deux-systemes-incompatibles">Ce qui rend deux systèmes incompatibles</a><a href="#knx-decentralise-et-ce-que-ca-change-en-cours">KNX : décentralisé, et ce que ça change en cours</a><a href="#modbus-le-plus-simple-et-le-plus-piegeux">Modbus : le plus simple, et le plus piégeux</a><a href="#bacnet-des-objets-qui-portent-un-nom">BACnet : des objets qui portent un nom</a><a href="#m-bus-et-dali-deux-bus-de-specialite">M-Bus et DALI : deux bus de spécialité</a><a href="#les-passerelles-ce-qu-elles-ne-font-pas">Les passerelles : ce qu’elles ne font pas</a><a href="#ce-qu-il-faut-savoir-refuser">Ce qu’il faut savoir refuser</a></div></nav>
+<h2 id="ce-qui-rend-deux-systemes-incompatibles">Ce qui rend deux systèmes incompatibles</h2>
+<p>Un client demande : <em>« ces deux marques sont en Modbus, elles vont se parler ? »</em> La réponse honnête est <strong>non, pas forcément</strong>, et savoir pourquoi vaut mieux que savoir citer cinq protocoles.</p>
+<p>Deux appareils communiquent quand <strong>trois couches concordent</strong> : le support physique, la façon de prendre la parole, et le sens des données échangées. Deux appareils Modbus partagent les deux premières et presque jamais la troisième.</p>
+<figure class="schema"><div class="dessin" data-schema="couches-protocole"></div><figcaption>Trois couches, quatre protocoles. La ligne du bas est celle qu’on regarde en premier sur un chantier ; la ligne du haut est celle qui décide si ça marche.</figcaption></figure>
+<div class="cle">
+<p><strong>L’interopérabilité ne vient pas du protocole, elle vient du typage des données.</strong> Un bus qui transporte « 1 » ne dit pas si c’est un allumage, une alarme ou un degré. Tant que le type n’est pas normalisé, il faut un tableau de correspondance écrit à la main.</p>
+</div>
+<h2 id="knx-decentralise-et-ce-que-ca-change-en-cours">KNX : décentralisé, et ce que ça change en cours</h2>
+<p>Il n’y a <strong>pas de centrale obligatoire</strong>. Chaque participant décide seul à partir du télégramme qu’il reçoit. La centrale n’apparaît que pour la supervision, l’IP et les passerelles.</p>
+<p>C’est ce qui explique deux choses que les étudiants trouvent étranges : qu’un poussoir et un actionneur puissent fonctionner sans rien d’autre sur le bus, et qu’une installation continue de marcher quand le poste de supervision est éteint.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Adresse</th>
+<th>Forme</th>
+<th>Ce qu’elle désigne</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Physique</strong></td>
+<td><code>zone.ligne.participant</code> : <code>1.1.5</code></td>
+<td><strong>où</strong> l’appareil est branché. Unique, sert à le programmer</td>
+</tr>
+<tr>
+<td><strong>De groupe</strong></td>
+<td><code>principal/médian/sous-groupe</code> : <code>0/1/3</code></td>
+<td><strong>une fonction</strong>. Plusieurs appareils la partagent</td>
+</tr>
+</tbody>
+</table></div>
+<p>Un poussoir n’envoie pas un ordre à un actionneur : il <strong>écrit sur une adresse de groupe</strong>, et tous ceux qui l’écoutent réagissent. C’est cette indirection qui rend un ajout gratuit, un second poussoir écoute la même adresse, sans qu’on touche à l’actionneur.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Comment un bus arbitre sans collision, l&#39;astuce du bit dominant</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Sur un bus partagé, deux appareils peuvent parler en même temps. L’Ethernet détecte la collision et fait recommencer les deux. KNX fait mieux : il l’évite.</p>
+<p>Les deux états du bus ne sont pas symétriques. L’un est <strong>dominant</strong>, un appareil qui l’impose tire sur le bus et l’emporte, l’autre est <strong>récessif</strong>. Chaque émetteur relit le bus pendant qu’il émet : s’il a envoyé un état récessif et qu’il lit un état dominant, c’est qu’un autre parle et qu’il est prioritaire. Il se tait immédiatement.</p>
+<p>Le résultat : <strong>le message le plus prioritaire passe sans être retardé d’une seule microseconde</strong>, et le perdant n’a rien perdu puisqu’il n’avait encore rien dit d’utile. Une alarme passe donc toujours devant un ordre de confort.</p>
+<p>C’est le même principe que le bus CAN d’une automobile, et le rapprochement parle aux étudiants qui viennent de la maintenance.</p></div></details>
+</div><h2 id="modbus-le-plus-simple-et-le-plus-piegeux">Modbus : le plus simple, et le plus piégeux</h2>
+<p>Un maître, des esclaves numérotés de 1 à 247, et des zones de données repérées par un numéro. Le protocole se lit en une page, ce qui explique sa présence partout, compteurs, variateurs, automates, onduleurs.</p>
+<p>Sa simplicité est aussi sa faiblesse : <strong>un registre n’a pas de type</strong>. Il contient seize bits, et rien dans le protocole ne dit si c’est un entier, un dixième de degré ou la moitié d’un nombre flottant.</p>
+<div class="piege">
+<p><strong>Le registre 40001 n’existe pas.</strong> La numérotation historique en 4xxxx est une convention de documentation ; sur le fil, le premier registre de maintien porte l’adresse <strong>0</strong>. Un décalage de un (parfois de 40 001) est la première cause de mise en service ratée, et la documentation du fabricant ne dit pas toujours dans quelle convention elle est écrite.</p>
+<p>La parade se donne comme une méthode : <strong>on lit une valeur connue</strong>, une température ambiante, un index de compteur, et on cherche à quelle adresse elle apparaît. On ne discute pas la convention, on la constate.</p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les deux autres pièges Modbus, qui tombent à chaque mise en service</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>L’ordre des mots dans un flottant.</strong> Une grandeur en virgule flottante occupe deux registres. Rien ne normalise lequel vient en premier : selon le fabricant on lit la bonne valeur, une valeur absurde, ou zéro. Il existe quatre combinaisons, on les essaie, et un bon outil de mise en service les propose toutes les quatre.</p>
+<p><strong>La terminaison de la ligne RS-485.</strong> Un segment doit être fermé par une résistance de 120 Ω <strong>à chaque extrémité</strong>, et à deux endroits seulement. Trop de terminaisons chargent le bus, trop peu laissent des réflexions. Le symptôme est identique dans les deux cas : ça marche à basse vitesse et pas à haute vitesse, ou ça marche avec cinq appareils et pas avec douze.</p>
+<p>Ces deux pièges sont d’excellents supports de séance de diagnostic : ils sont reproductibles, invisibles à l’œil, et ils se trouvent par une méthode.</p></div></details>
+</div><h2 id="bacnet-des-objets-qui-portent-un-nom">BACnet : des objets qui portent un nom</h2>
+<p>Là où Modbus expose des numéros, BACnet expose des <strong>objets typés</strong>, entrée analogique, sortie binaire, programme horaire, historique, chacun avec des propriétés normalisées, dont la valeur courante.</p>
+<p>C’est ce qui en fait le protocole de la supervision : un poste peut découvrir un automate qu’il ne connaît pas et lui demander la liste de ses objets. Rien de tel n’est possible en Modbus.</p>
+<p>Le prix à payer est le poids : BACnet demande une pile logicielle complète, et se trouve donc dans les automates et les superviseurs, pas dans un capteur à quinze euros.</p>
+<h2 id="m-bus-et-dali-deux-bus-de-specialite">M-Bus et DALI : deux bus de spécialité</h2>
+<p><strong>M-Bus</strong> est fait pour les compteurs, et pour eux seuls. Deux fils non polarisés, alimentés par le maître, jusqu’à 250 compteurs. Il transporte des <strong>index</strong>, des nombres qui ne redescendent jamais, avec leur unité et leur horodatage. C’est ce qui le rend supérieur à une entrée à impulsions, qui perd les impulsions manquées et ignore l’index de départ.</p>
+<p><strong>DALI</strong> est fait pour l’éclairage. Deux fils sans polarité, 64 adresses, 16 groupes, 16 scènes, et une commande de niveau qui suit une <strong>courbe logarithmique</strong>, parce que l’œil perçoit la lumière ainsi, et qu’une variation linéaire paraîtrait sauter en bas d’échelle.</p>
+<div class="piege">
+<p><strong>Le câble DALI peut partager la gaine du 230 V, le câble KNX non.</strong> Ce n’est pas une différence de protocole mais une différence de <strong>classification d’isolement</strong> : le circuit DALI est prévu pour être isolé à la tension du réseau, le TP1 ordinaire ne l’est pas.</p>
+<p>C’est la question qui piège en évaluation, parce qu’elle a l’air d’être une question de protocole et qu’elle n’en est pas une. Elle relève de la NF C 15-100, qui n’admet la cohabitation dans un même conduit que si tous les conducteurs sont isolés pour la tension la plus élevée.</p>
+</div>
+<h2 id="les-passerelles-ce-qu-elles-ne-font-pas">Les passerelles : ce qu’elles ne font pas</h2>
+<p>Une passerelle traduit une adresse en une autre adresse. Elle ne devine pas le sens des données : <strong>elle a besoin d’un tableau de correspondance, point par point, écrit par quelqu’un.</strong></p>
+<p>C’est là qu’est le coût réel d’un projet multi-protocoles, et il ne se voit ni sur le devis matériel ni sur la fiche technique. Cent points à traduire, c’est cent lignes à écrire, à tester et à maintenir quand l’installation évolue.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Pourquoi KNX interopère et Modbus non, la vraie réponse</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Ce n’est pas une question de qualité de protocole. C’est une question de <strong>types de données normalisés</strong>.</p>
+<p>KNX définit des <strong>DPT</strong> (types de points de données) qui fixent le format <em>et le sens</em> : un DPT 1.001 est une commutation, un DPT 9.001 est une température en degrés Celsius sur deux octets. Deux appareils certifiés qui échangent un DPT 9.001 échangent une température, et il n’y a rien à convenir entre eux.</p>
+<p>La certification n’est donc pas un tampon commercial : c’est ce qui garantit que l’appareil respecte ces types. Un poussoir d’une marque et un actionneur d’une autre fonctionnent ensemble parce qu’ils parlent le même <em>sens</em>, pas seulement le même <em>protocole</em>.</p>
+<p>Modbus n’a pas cette couche. Il transporte parfaitement seize bits d’un point à un autre, et laisse entièrement à l’intégrateur le soin de dire ce qu’ils veulent dire. <strong>C’est une différence d’ambition, pas de technique</strong>, et c’est la bonne façon de la présenter en classe, parce qu’elle explique aussi pourquoi Modbus est partout : il est gratuit à implémenter.</p></div></details>
+</div><h2 id="ce-qu-il-faut-savoir-refuser">Ce qu’il faut savoir refuser</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Affirmation entendue</th>
+<th>Ce qui cloche</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« C’est du Modbus des deux côtés, ça va marcher »</td>
+<td>les registres n’ont pas de type : il faut un tableau de correspondance</td>
+</tr>
+<tr>
+<td>« La passerelle rend les systèmes compatibles »</td>
+<td>elle traduit ce qu’on lui a écrit, elle n’invente aucun sens</td>
+</tr>
+<tr>
+<td>« L’adresse de groupe désigne l’actionneur »</td>
+<td>elle désigne une fonction ; plusieurs appareils la partagent</td>
+</tr>
+<tr>
+<td>« Il faut une centrale KNX »</td>
+<td>non : le système est décentralisé, la centrale sert à superviser</td>
+</tr>
+<tr>
+<td>« BACnet est plus moderne, donc mieux »</td>
+<td>plus riche et plus lourd : il n’a pas sa place dans un capteur</td>
+</tr>
+<tr>
+<td>« On peut mettre le bus DALI et le bus KNX dans la même gaine que le 230 V »</td>
+<td>vrai pour DALI, faux pour KNX : question d’isolement, pas de protocole</td>
+</tr>
+</tbody>
+</table></div>
+<nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="PROF2-MEDIAS.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Prof 2 — les médias</span></a><a class="ap" href="PROF4-SURETE.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Prof 4 — sûreté et sécurité</span></a></div></nav>
+<p class="pied">Page de formation. Elle contient des démonstrations et des réponses, c'est ce qui la distingue des pages étudiantes. Voir aussi les pages Prof 2 et 4.</p>
+</div>
+<script src="../assets/kit.js?v=13b3bbbd"></script>
+<script src="../assets/site.js?v=13b3bbbd"></script>
+<script src="../assets/vivant.js?v=13b3bbbd"></script>

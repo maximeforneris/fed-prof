@@ -1,0 +1,360 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Manuel · chapitre 9</title>
+<link rel="stylesheet" href="../assets/kit.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/site.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/calque.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/vivant.css?v=13b3bbbd">
+
+<div class="page" data-site="fed-prof" data-page="manuel/M9-MANUEL">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M8-MANUEL.html" rel="prev" title="Manuel · chapitre 8" aria-label="Manuel · chapitre 8">&lsaquo;</a><a class="fleche" href="M10-MANUEL.html" rel="next" title="Manuel · chapitre 10" aria-label="Manuel · chapitre 10">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M9-MANUEL">Marquer comme lu</button></div>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">BTS FED option C · 2e année</p>
+    <h1>Chapitre 9<span>le diagramme de l'air humide</span></h1>
+  </div>
+  <p class="accroche">Pourquoi le miroir de la salle de bains s'embue et pas la fenêtre du salon, ce que contient vraiment un point du diagramme, et comment retrouver ses six grandeurs à la calculatrice quand l'abaque manque.</p>
+  <p class="contenu">1 outil · 13 questions · 4 exercices · 5 replis · 1 figure</p>
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag">A4-1 Caractéristiques de l'air humide · niveau 2</span><span class="tag">A4-2 Évolutions de l'air · niveau 3</span><span class="tag">A2-3 Bilan thermique · niveau 2</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M8-MANUEL.html">Le débit d'air neuf</a></b><span class="ou">Manuel · chapitre 8</span><span class="car">le diagramme sert à chiffrer ce que coûte l'air qu'on introduit, et le chapitre 8 a fixé combien on en introduit.</span></li><li><b>La pression partielle d'un gaz dans un mélange</b><span class="car">la vapeur d'eau a sa propre pression dans l'air, et toutes les formules du chapitre partent de là.</span></li><li><b>Lire un point dans un repère et suivre une courbe</b><span class="car">le diagramme est un repère à lignes obliques, et le geste s'apprend avant les formules.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#9-1-pourquoi-le-miroir-s-embue">9.1 Pourquoi le miroir s’embue</a><a href="#9-2-les-six-grandeurs-d-un-point">9.2 Les six grandeurs d’un point</a><a href="#9-3-la-pression-de-vapeur-saturante">9.3 La pression de vapeur saturante</a><a href="#9-4-l-humidite-absolue">9.4 L’humidité absolue</a><a href="#9-5-l-enthalpie">9.5 L’enthalpie</a><a href="#9-6-le-calcul-retourne-trouver-la-rosee">9.6 Le calcul retourné : trouver la rosée</a><a href="#9-7-du-volume-au-debit-massique">9.7 Du volume au débit massique</a><a href="#9-8-ce-que-l-altitude-change">9.8 Ce que l’altitude change</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+<div class="etapes">
+<ol type="1">
+<li><strong>Nommer</strong> les six grandeurs d’un point, et dire lesquelles sont indépendantes.</li>
+<li><strong>Placer</strong> un point à partir de deux données quelconques.</li>
+<li><strong>Calculer</strong> r et h sans diagramme, à la calculatrice.</li>
+<li><strong>Trouver</strong> une température de rosée, et l’utiliser pour prédire une condensation.</li>
+<li><strong>Passer</strong> d’un débit en m³/h à un débit massique en kg d’air sec par seconde.</li>
+</ol>
+</div>
+<p>Ce chapitre ne fait aucune installation fonctionner : il donne le <strong>langage</strong> des trois suivants. C’est le seul du manuel où l’on apprend d’abord à lire.</p>
+<h2 id="9-1-pourquoi-le-miroir-s-embue">9.1 Pourquoi le miroir s’embue</h2>
+<p>Dans une salle de bains, le miroir se couvre de buée et la fenêtre, souvent, pas. Les deux sont dans le même air. La différence est <strong>leur température de surface</strong> : l’une est passée sous un seuil, l’autre non.</p>
+<div class="cle">
+<p>Ce seuil s’appelle la <strong>température de rosée</strong>. C’est la température à laquelle l’air, refroidi sans rien lui ajouter, commence à lâcher son eau. Tout le diagramme sert à la trouver, et à savoir ce qu’il en coûte.</p>
+</div>
+<p>L’air ne « contient » pas l’eau comme une éponge : la vapeur d’eau est un gaz qui occupe le même volume que l’air, et la seule limite est <strong>la pression de vapeur saturante</strong>, qui ne dépend que de la température.</p>
+<h2 id="9-2-les-six-grandeurs-d-un-point">9.2 Les six grandeurs d’un point</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Grandeur</th>
+<th>Symbole</th>
+<th>Unité</th>
+<th>Ce qu’elle dit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Température sèche</td>
+<td>θ</td>
+<td>°C</td>
+<td>ce que lit un thermomètre ordinaire</td>
+</tr>
+<tr>
+<td>Humidité relative</td>
+<td>φ</td>
+<td>%</td>
+<td>le remplissage, par rapport au maximum possible</td>
+</tr>
+<tr>
+<td>Humidité absolue</td>
+<td>r ou x</td>
+<td><strong>g d’eau par kg d’air sec</strong></td>
+<td>la quantité d’eau réellement présente</td>
+</tr>
+<tr>
+<td>Enthalpie</td>
+<td>h</td>
+<td><strong>kJ par kg d’air sec</strong></td>
+<td>l’énergie contenue, sensible plus latente</td>
+</tr>
+<tr>
+<td>Température de rosée</td>
+<td>θr</td>
+<td>°C</td>
+<td>où la condensation commence</td>
+</tr>
+<tr>
+<td>Volume spécifique</td>
+<td>v</td>
+<td>m³ par kg d’air sec</td>
+<td>pour passer des m³/h aux kg/s</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p><strong>Deux grandeurs suffisent à fixer le point</strong>, les quatre autres s’en déduisent. C’est le fait le plus utile du chapitre : dès qu’un énoncé donne deux informations sur un même air, tout le reste est disponible.</p>
+</div>
+<div class="piege">
+<p>Toutes les grandeurs massiques sont rapportées au <strong>kilogramme d’air sec</strong>, jamais au kilogramme d’air humide. C’est ce qui rend les bilans simples : l’air sec traverse la centrale sans changer de masse, tandis que l’eau, elle, s’ajoute ou se retire.</p>
+</div>
+<figure class="schema"><div class="dessin" data-schema="air-humide"></div><figcaption>Le diagramme et ses axes : ce que lit chaque famille de courbes, et où se placent les points d’un traitement d’air ordinaire.</figcaption></figure>
+<h2 id="9-3-la-pression-de-vapeur-saturante">9.3 La pression de vapeur saturante</h2>
+<div class="formule">
+<p><strong>Formule de Magnus : p vs = 610,78 × exp( 17,27 × θ / (θ + 237,3) )</strong></p>
+<p>p vs en pascals, θ en °C. Valable de −20 à +60 °C, à mieux que 0,3 %.</p>
+</div>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th style="text-align: right;">θ</th>
+<th style="text-align: right;">p vs</th>
+<th style="text-align: right;">r à saturation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0 °C</td>
+<td style="text-align: right;">611 Pa</td>
+<td style="text-align: right;">3,8 g/kg</td>
+</tr>
+<tr>
+<td style="text-align: right;">10 °C</td>
+<td style="text-align: right;">1 228 Pa</td>
+<td style="text-align: right;">7,6 g/kg</td>
+</tr>
+<tr>
+<td style="text-align: right;">20 °C</td>
+<td style="text-align: right;">2 338 Pa</td>
+<td style="text-align: right;"><strong>14,7 g/kg</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">30 °C</td>
+<td style="text-align: right;">4 245 Pa</td>
+<td style="text-align: right;">27,2 g/kg</td>
+</tr>
+<tr>
+<td style="text-align: right;">40 °C</td>
+<td style="text-align: right;">7 384 Pa</td>
+<td style="text-align: right;">49,0 g/kg</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Regardez la colonne de droite : <strong>la capacité de l’air à porter de l’eau double environ tous les 11 kelvins</strong>. C’est ce qui explique la condensation sur une paroi froide, le séchage rapide en été, et pourquoi une batterie froide déshumidifie sans qu’on le lui demande.</p>
+</div>
+<div class="formule">
+<p><strong>L’humidité relative : φ = p v / p vs × 100</strong></p>
+<p>Elle ne dit rien de la quantité d’eau tant qu’on ne connaît pas la température.</p>
+</div>
+<h2 id="9-4-l-humidite-absolue">9.4 L’humidité absolue</h2>
+<div class="formule">
+<p><strong>r = 622 × p v / ( P − p v )</strong> (r en g/kg d’air sec, P = 101 325 Pa)</p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : d&#39;où vient le 0,622</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’air humide est un mélange de deux gaz parfaits qui occupent le même volume à la même température : l’air sec, à la pression partielle P − pv, et la vapeur d’eau, à la pression partielle pv.</p>
+<p><strong>Loi des gaz parfaits, écrite deux fois.</strong></p>
+<p>m eau = pv × V / (r eau × T) et m air sec = (P − pv) × V / (r air × T)</p>
+<p>où r eau = 461,5 J/(kg·K) et r air = 287,1 J/(kg·K) sont les constantes massiques des deux gaz.</p>
+<p><strong>Le rapport.</strong> V et T sont communs et disparaissent :</p>
+<p>r = m eau / m air sec = (r air / r eau) × pv / (P − pv)</p>
+<p><strong>Le coefficient.</strong> 287,1 / 461,5 = <strong>0,622</strong>, qui n’est rien d’autre que le rapport des masses molaires : 18,02 / 28,96 = 0,622. Une molécule d’eau pèse 0,622 fois une « molécule moyenne » d’air.</p>
+<p><strong>Les trois hypothèses.</strong></p>
+<ol type="1">
+<li><strong>Gaz parfaits.</strong> Excellente aux pressions et températures du bâtiment ; l’écart réel est inférieur à 0,2 %.</li>
+<li><strong>P = 101 325 Pa.</strong> C’est là que la formule est le plus sensible : voir le 9.7 sur l’altitude.</li>
+<li><strong>Air sec de composition standard.</strong> Le CO₂ et l’argon sont inclus dans la masse molaire moyenne de 28,96.</li>
+</ol>
+<p><strong>Ce que la formule permet de faire tout de suite.</strong> Elle s’inverse sans difficulté :</p>
+<p>pv = P × r / (622 + r)</p>
+<p>et cette forme retournée sert à trouver un point de rosée à partir d’une humidité absolue lue sur un diagramme.</p></div></details>
+</div><h2 id="9-5-l-enthalpie">9.5 L’enthalpie</h2>
+<div class="formule">
+<p><strong>h = 1,006 × θ + (r / 1 000) × ( 2 501 + 1,83 × θ )</strong></p>
+<p>h en kJ par kg d’air sec, θ en °C, r en g/kg.</p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : les trois termes, et le zéro de référence</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’enthalpie d’un mélange est la somme des enthalpies de ses constituants, comptées par kilogramme d’air sec.</p>
+<p><strong>Le terme de l’air sec.</strong> Sa chaleur massique vaut 1,006 kJ/(kg·K). En prenant <strong>0 °C comme origine</strong>, son enthalpie vaut 1,006 × θ.</p>
+<p><strong>Le terme de l’eau, en deux parties.</strong> Pour amener 1 kg d’eau de l’état liquide à 0 °C jusqu’à l’état vapeur à θ, il faut :</p>
+<ul>
+<li>la <strong>vaporiser à 0 °C</strong> : c’est la chaleur latente, <strong>2 501 kJ/kg</strong> ;</li>
+<li>puis <strong>chauffer la vapeur</strong> de 0 à θ : 1,83 × θ, la chaleur massique de la vapeur d’eau valant 1,83 kJ/(kg·K).</li>
+</ul>
+<p><strong>On multiplie par la masse d’eau</strong>, r/1 000 kilogrammes, et on additionne.</p>
+<p><strong>Le choix du zéro est arbitraire, et il n’a aucune conséquence</strong> : tous les calculs d’installation portent sur des <strong>différences</strong> d’enthalpie. Un autre manuel prenant une autre origine trouverait les mêmes puissances.</p>
+<p><strong>Ce que la structure révèle.</strong> Le premier terme est la <strong>chaleur sensible</strong>, celle qui fait bouger le thermomètre. Le second est la <strong>chaleur latente</strong>, celle qui est stockée dans la vapeur et qu’aucun thermomètre ne voit. Pour un air ordinaire à 20 °C et 50 %, ils valent 20,1 et 18,4 kJ/kg : <strong>presque moitié-moitié</strong>, ce qui surprend toujours et explique le coût du traitement d’air.</p></div></details>
+</div><h3 id="exemple-résolu-1.-tout-retrouver-à-partir-de-deux-données">Exemple résolu 1. Tout retrouver à partir de deux données</h3>
+<p>Un air à <strong>20 °C</strong> et <strong>50 %</strong> d’humidité relative.</p>
+<p><strong>1. La pression de vapeur saturante.</strong> p vs = 610,78 × exp(17,27 × 20 / 257,3) = 610,78 × 3,829 = <strong>2 338 Pa</strong>.</p>
+<p><strong>2. La pression de vapeur.</strong> p v = 0,50 × 2 338 = <strong>1 169 Pa</strong>.</p>
+<p><strong>3. L’humidité absolue.</strong> r = 622 × 1 169 / (101 325 − 1 169) = 622 × 1 169 / 100 156 = <strong>7,26 g/kg</strong>.</p>
+<p><strong>4. L’enthalpie.</strong> h = 1,006 × 20 + 0,00726 × (2 501 + 36,6) = 20,12 + 18,42 = <strong>38,5 kJ/kg</strong>.</p>
+<p><strong>5. Le volume spécifique.</strong> v = 287 × 293 / 101 325 × (1 + 1,608 × 0,00726) = 0,830 × 1,0117 = <strong>0,840 m³/kg</strong>.</p>
+<div class="cle">
+<p>Ce point-là, <strong>20 °C et 50 %</strong>, est celui d’un local de confort. Retenez ses trois valeurs par cœur : <strong>r = 7,3 g/kg, h = 38,5 kJ/kg, v = 0,84 m³/kg</strong>. Elles servent de référence pour juger tout autre point en une seconde.</p>
+</div>
+<h2 id="9-6-le-calcul-retourne-trouver-la-rosee">9.6 Le calcul retourné : trouver la rosée</h2>
+<p>C’est le calcul dans l’autre sens : on connaît l’eau contenue, on cherche à quelle température elle se déposera.</p>
+<div class="formule">
+<p><strong>On inverse Magnus :</strong></p>
+<p><strong>θr = 237,3 × ln( p v / 610,78 ) / ( 17,27 − ln( p v / 610,78 ) )</strong></p>
+</div>
+<h3 id="exemple-résolu-2.-le-miroir-de-la-salle-de-bains">Exemple résolu 2. Le miroir de la salle de bains</h3>
+<p>Après une douche, l’air de la pièce est à <strong>22 °C</strong> et <strong>70 %</strong>.</p>
+<p><strong>1. p vs à 22 °C.</strong> 610,78 × exp(17,27 × 22 / 259,3) = <strong>2 645 Pa</strong>.</p>
+<p><strong>2. p v.</strong> 0,70 × 2 645 = <strong>1 851 Pa</strong>.</p>
+<p><strong>3. Le logarithme.</strong> ln(1 851 / 610,78) = ln(3,031) = <strong>1,109</strong>.</p>
+<p><strong>4. La rosée.</strong> θr = 237,3 × 1,109 / (17,27 − 1,109) = 263,2 / 16,16 = <strong>16,3 °C</strong>.</p>
+<p><strong>La lecture.</strong> Toute surface <strong>sous 16,3 °C</strong> se couvre de buée. Le miroir, collé au mur froid, y est ; la fenêtre, en double vitrage à 17 ou 18 °C, n’y est pas. Le même air, deux comportements, et le seul paramètre est la température de surface.</p>
+<div class="cle">
+<p>C’est <strong>exactement le calcul du risque de condensation sur un pont thermique</strong> du chapitre 1. Le diagramme de l’air humide et le calcul de paroi se rejoignent ici, et c’est une question fréquente en épreuve : on donne un air ambiant et une température de surface, et on demande s’il y a condensation.</p>
+</div>
+<div class="outil" data-outil="evolution">
+
+</div>
+<h2 id="9-7-du-volume-au-debit-massique">9.7 Du volume au débit massique</h2>
+<p>Tous les bilans du chapitre 10 se font en <strong>kilogrammes d’air sec par seconde</strong>. Or les débits d’un dossier sont en <strong>mètres cubes par heure</strong>. Le passage se fait par le volume spécifique.</p>
+<div class="formule">
+<p><strong>qm = Qv / ( 3 600 × v )</strong> (qm en kg d’air sec par seconde, Qv en m³/h)</p>
+</div>
+<div class="piege">
+<p>Le volume spécifique <strong>change avec la température</strong> : 0,78 m³/kg à 0 °C, 0,84 à 20 °C, 0,91 à 40 °C. Le mètre cube n’est donc <strong>pas</strong> une quantité de matière, et un débit volumique mesuré au soufflage ne représente pas la même masse qu’un débit identique mesuré à la reprise. Les constructeurs donnent leurs débits à <strong>20 °C</strong>, sauf mention contraire.</p>
+</div>
+<h3 id="exemple-résolu-3.-la-conversion-qui-précède-tous-les-bilans">Exemple résolu 3. La conversion qui précède tous les bilans</h3>
+<p>Une centrale souffle <strong>6 500 m³/h</strong> d’air à 20 °C.</p>
+<p>qm = 6 500 / (3 600 × 0,840) = 6 500 / 3 024 = <strong>2,15 kg d’air sec par seconde</strong>.</p>
+<p><strong>Vérification d’ordre de grandeur.</strong> Le raccourci de terrain est <strong>qm ≈ Qv / 3 000</strong> : 6 500 / 3 000 = 2,17. L’écart est de 1 %, et cette division mentale sert à refuser un résultat aberrant.</p>
+<h2 id="9-8-ce-que-l-altitude-change">9.8 Ce que l’altitude change</h2>
+<div class="cle">
+<p>À 1 000 mètres, la pression atmosphérique tombe à <strong>90 000 Pa</strong> environ. La formule r = 622 pv/(P − pv) donne alors <strong>12 % d’eau en plus</strong> pour la même température et la même humidité relative. Les diagrammes courants sont tracés à 101 325 Pa : les utiliser en montagne fausse les bilans latents.</p>
+</div>
+<p>C’est aussi le piège des <strong>exemples de logiciels</strong> : certains outils de calcul travaillent à une pression de référence différente, et leurs résultats ne se comparent pas directement à une lecture d’abaque.</p>
+<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Grandeur</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pression atmosphérique de référence</td>
+<td><strong>101 325 Pa</strong></td>
+</tr>
+<tr>
+<td>Le coefficient de l’humidité absolue</td>
+<td><strong>0,622</strong></td>
+</tr>
+<tr>
+<td>Chaleur massique de l’air sec</td>
+<td>1,006 kJ/(kg·K)</td>
+</tr>
+<tr>
+<td>Chaleur latente de vaporisation à 0 °C</td>
+<td><strong>2 501 kJ/kg</strong></td>
+</tr>
+<tr>
+<td>Chaleur massique de la vapeur d’eau</td>
+<td>1,83 kJ/(kg·K)</td>
+</tr>
+<tr>
+<td>p vs à 0 · 20 · 30 °C</td>
+<td>611 · 2 338 · 4 245 Pa</td>
+</tr>
+<tr>
+<td>r à saturation, 20 °C</td>
+<td>14,7 g/kg</td>
+</tr>
+<tr>
+<td><strong>Le point de confort 20 °C / 50 %</strong></td>
+<td><strong>r = 7,3 · h = 38,5 · v = 0,84</strong></td>
+</tr>
+<tr>
+<td>Rosée de cet air de confort</td>
+<td>9,3 °C</td>
+</tr>
+<tr>
+<td>Volume spécifique à 0 · 20 · 40 °C</td>
+<td>0,78 · 0,84 · 0,91 m³/kg</td>
+</tr>
+<tr>
+<td>Raccourci de conversion</td>
+<td>qm ≈ Qv / 3 000</td>
+</tr>
+<tr>
+<td>Doublement de la capacité en eau</td>
+<td>tous les <strong>11 K</strong> environ</td>
+</tr>
+<tr>
+<td>Air extérieur d’hiver, −5 °C et 90 %</td>
+<td>r ≈ 2,3 g/kg</td>
+</tr>
+<tr>
+<td>Air extérieur d’été, 32 °C et 40 %</td>
+<td>r ≈ 12 g/kg</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Le contrôle immédiat : <strong>une humidité absolue de local se situe entre 5 et 12 g/kg</strong>. En dessous de 3, on est en air extérieur d’hiver ; au-dessus de 20, en piscine ou en sortie d’humidificateur. Un résultat hors de cette fourchette demande une vérification avant d’aller plus loin.</p>
+</div>
+<h2 id="s-entrainer">S’entraîner</h2>
+<section class="exo" id="M9-MANUEL-e1" data-exo="M9-MANUEL-e1" data-type="calcul" data-savoir="A4-1" data-a="IXgueGB4OTs2OS82eHZ4LHhga2p0b3Z4LjU2eGBudGp2eC94YHg9dTE9ej4GL2hqa2M7Myh6KT85eCc="><p class="k">Exercice · A4-1</p><h4>L’humidité absolue</h4><div class="enonce">
+
+<p>Un air est à <strong>26 °C</strong>, et sa pression de vapeur vaut <strong>1 680 Pa</strong>. Quelle est son humidité absolue ?</p>
+</div><div class="indice" hidden>r = 622 × pv / (P − pv), avec P = 101 325 Pa. La température n’intervient pas dans cette formule : elle a déjà servi à obtenir la pression de vapeur.</div></section>
+<section class="exo" id="M9-MANUEL-e2" data-exo="M9-MANUEL-e2" data-type="calcul" data-savoir="A4-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgbmJ0aXZ4LjU2eGBudGp2eC94YHgxEHUxPXo+Bi9oamtjOzMoeik/OXgn"><p class="k">Exercice · A4-1</p><h4>L’enthalpie</h4><div class="enonce">
+
+<p>Un air à <strong>24 °C</strong> porte <strong>9,5 g/kg</strong> d’eau. Quelle est son enthalpie ?</p>
+</div><div class="indice" hidden>h = 1,006 θ + (r/1000) × (2501 + 1,83 θ). Attention à convertir r en kilogrammes avant de multiplier.</div></section>
+<section class="exo" id="M9-MANUEL-e3" data-exo="M9-MANUEL-e3" data-type="calcul" data-savoir="A4-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgaHRjbnZ4LjU2eGBpdGp2eC94YHgxPXUpeCc="><p class="k">Exercice · A4-1</p><h4>Le débit massique</h4><div class="enonce">
+
+<p>Une centrale traite <strong>9 000 m³/h</strong> d’air dont le volume spécifique vaut <strong>0,85 m³/kg</strong>. Quel est le débit massique d’air sec ?</p>
+</div><div class="indice" hidden>Divisez le débit horaire par 3 600 pour l’avoir par seconde, puis par le volume spécifique pour passer des mètres cubes aux kilogrammes.</div></section>
+<section class="exo" id="M9-MANUEL-e4" data-exo="M9-MANUEL-e4" data-type="justification" data-savoir="A4-1" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · A4-1</p><h4>Deux locaux, une seule condensation</h4><div class="enonce">
+
+<p>Dans un même bâtiment à <strong>21 °C et 55 %</strong>, une paroi de bureau reste à 18 °C et un linteau de fenêtre descend à 11 °C. Expliquez ce qui se passe sur chacun.</p>
+</div><div class="indice" hidden>Un air à 21 °C et 55 % a une pression de vapeur d’environ 1 370 Pa. Inversez la formule de Magnus pour trouver à quelle température cette vapeur devient saturante, puis comparez.</div><ul class="verifier" hidden><li>J’ai calculé ou estimé la température de rosée de l’air ambiant.</li><li>J’ai comparé cette rosée aux deux températures de surface.</li><li>J’ai conclu correctement pour chacune des deux surfaces.</li><li>J’ai nommé la cause du point froid : un pont thermique, et j’ai dit ce qui le corrige.</li></ul></section>
+<h2 id="vous-verifier">Vous vérifier</h2>
+<div class="quiz">
+<ul>
+<li>Un point d’air humide est fixé par : <strong>deux grandeurs</strong> | quatre grandeurs</li>
+<li>Toutes les grandeurs sont rapportées au : <strong>kilogramme d’air sec</strong> | kilogramme d’air humide</li>
+<li>L’humidité relative dit la quantité d’eau : <strong>seulement si on connaît θ</strong> | toujours</li>
+<li>La pression de vapeur saturante ne dépend que de : <strong>la température</strong> | l’humidité</li>
+<li>La capacité de l’air à porter de l’eau double tous les : <strong>11 K</strong> | 40 K</li>
+<li>Le coefficient 0,622 est : <strong>le rapport des masses molaires</strong> | une constante empirique</li>
+<li>L’enthalpie d’un air à 20 °C et 50 % vaut environ : <strong>38,5 kJ/kg</strong> | 20 kJ/kg</li>
+<li>Dans cette enthalpie, la part latente vaut : <strong>presque la moitié</strong> | un dixième</li>
+<li>La température de rosée d’un air à 20 °C et 50 % vaut : <strong>9,3 °C</strong> | 20 °C</li>
+<li>Une surface sous la rosée : <strong>se couvre de condensation</strong> | reste sèche</li>
+<li>Le volume spécifique d’un air à 20 °C vaut : <strong>0,84 m³/kg</strong> | 1,2 m³/kg</li>
+<li>Pour passer de m³/h à kg/s, on divise environ par : <strong>3 000</strong> | 3 600</li>
+<li>En altitude, à même θ et φ, l’humidité absolue est : <strong>plus grande</strong> | plus petite</li>
+</ul>
+</div>
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La température humide, et pourquoi elle mesure quelque chose de réel</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un thermomètre dont le bulbe est entouré d’une mèche mouillée indique moins qu’un thermomètre sec. L’écart entre les deux s’appelle l’<strong>écart psychrométrique</strong>, et il n’est pas un défaut de mesure : c’est une grandeur.</p>
+<p><strong>Le mécanisme.</strong> L’eau de la mèche s’évapore dans l’air qui passe. Cette évaporation prend sa chaleur latente <strong>au bulbe</strong>, qui se refroidit, jusqu’à ce qu’un équilibre s’établisse entre la chaleur apportée par l’air et la chaleur prise par l’évaporation. La température atteinte est la <strong>température humide</strong>.</p>
+<p><strong>Ce qu’elle vaut.</strong> Plus l’air est sec, plus l’évaporation est vive, et plus l’écart est grand. À saturation, plus rien ne s’évapore : les deux thermomètres indiquent la même chose, et <strong>θ humide = θ sèche = θ rosée</strong> sur la courbe de saturation. C’est le seul endroit du diagramme où les trois se confondent.</p>
+<p><strong>Pourquoi elle survit dans le métier.</strong> Le psychromètre est un instrument sans électronique, sans étalonnage dérivant, précis à 2 % près : on lit deux températures et on entre dans le diagramme. Un hygromètre capacitif dérive de 3 à 5 % par an ; un psychromètre, non.</p>
+<p><strong>Où elle réapparaît.</strong> La température humide est <strong>la limite basse d’un refroidissement adiabatique</strong> : une tour de refroidissement, un rafraîchisseur évaporatif, un brumisateur ne peuvent pas descendre en dessous. C’est pourquoi ces techniques marchent en climat sec et pas en climat humide, et c’est la justification attendue en épreuve.</p></div></details>
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Le diagramme dont on se sert vraiment</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Deux tracés coexistent, et il faut savoir lequel on a sous les yeux.</p>
+<p>Le <strong>diagramme de Carrier</strong>, le plus courant en France, porte la température sèche en abscisse et l’humidité absolue en ordonnée, avec les enthalpies en obliques. Le <strong>diagramme de Mollier</strong>, employé en Europe du Nord, a les mêmes informations mais les axes tournés : l’humidité absolue en abscisse, l’enthalpie en oblique descendante. Un tracé fait sur l’un ne se lit pas sur l’autre, et un sujet d’examen précise toujours lequel il fournit.</p>
+<p><strong>Ce qu’un bureau d’études fait aujourd’hui.</strong> Le diagramme papier a pratiquement disparu du calcul : on emploie des tableurs psychrométriques ou des modules de logiciel qui appliquent exactement les formules de ce chapitre. Le diagramme reste pour <strong>communiquer</strong> : montrer un tracé à un client, vérifier qu’un point est plausible, expliquer un dysfonctionnement.</p>
+<p><strong>Ce qui n’a pas changé, et qui est la raison de l’apprendre.</strong> L’épreuve U41 demande de <strong>placer des points et de tracer des évolutions</strong> sur un document réponse, parce que c’est la façon la plus rapide de vérifier qu’un candidat a compris ce qui se passe dans une centrale. Un calcul juste sans tracé cohérent révèle une application de formule sans compréhension ; le tracé, lui, ne se bluffe pas.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« L’air chaud contient plus d’eau. »</strong> L’air ne contient rien : il ne joue aucun rôle actif. La vapeur d’eau existe indépendamment, et <strong>c’est la température qui fixe la pression maximale</strong> qu’elle peut atteindre avant de se condenser. La formulation courante est commode mais elle empêche de comprendre pourquoi une pression atmosphérique différente change le résultat.</p>
+<p><strong>« Il faut humidifier pour le confort. »</strong> Rarement. Un local à 20 °C et 35 % d’humidité est parfaitement acceptable, et l’humidification coûte cher en énergie et en entretien. Elle se justifie sur des <strong>procédés</strong>, imprimerie, musée, salle blanche, bloc opératoire, pas sur un bureau.</p>
+<p><strong>« 50 % d’humidité, c’est la moitié d’eau. »</strong> C’est la moitié de la <strong>pression de vapeur saturante à cette température</strong>. À 20 °C cela fait 7,3 g/kg ; à 30 °C, 50 % font 13,6 g/kg, presque le double. Un pourcentage sans sa température ne désigne aucune quantité.</p></div></details>
+</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M8-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 8</span></a><a class="ap" href="M10-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 10</span></a></div></nav>
+<p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p>
+</div>
+<script src="../assets/kit.js?v=13b3bbbd"></script>
+<script src="../assets/site.js?v=13b3bbbd"></script>
+<script src="../assets/vivant.js?v=13b3bbbd"></script>

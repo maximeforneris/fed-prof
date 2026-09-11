@@ -1,0 +1,245 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Prof 4 — sûreté et sécurité</title>
+<link rel="stylesheet" href="../assets/kit.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/site.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/calque.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/vivant.css?v=13b3bbbd">
+
+<div class="page" data-site="fed-prof" data-page="domotique/PROF4-SURETE" data-public="prof">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="PROF3-PROTOCOLES.html" rel="prev" title="Prof 3 — les protocoles" aria-label="Prof 3 — les protocoles">&lsaquo;</a><a class="fleche" href="PROF5-E5-ET-LE-CCF.html" rel="next" title="Prof 5 — E5 et le CCF" aria-label="Prof 5 — E5 et le CCF">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/PROF4-SURETE">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">Formation du professeur · BTS FED option C</p>
+    <h1>La sûreté<span>et la sécurité</span></h1>
+  </div>
+  <p class="accroche">Deux mots que le français confond et que le métier sépare. Pourquoi le référentiel écrit dix fois les mêmes cinq rubriques, et ce que ça veut dire pour la progression. Les catégories de SSI, les deux éclairages de sécurité, et la ligne où la technique s'arrête et où le droit commence.</p>
+  
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B8-2 Domaines d'application · niveau 3</span><span class="tag n3">B10 Alimentations secourues · niveau 3</span><span class="tag n3">B8-1 Architecture des systèmes centralisés · niveau 3</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="PROF3-PROTOCOLES.html">Ce que les systèmes se disent</a></b><span class="ou">Prof 3 — les protocoles</span><span class="car">un SSI et un contrôle d'accès dialoguent avec la GTB ou non ; il faut savoir ce qu'un protocole permet pour juger une architecture.</span></li><li><b><a href="PROF1-COURANT-FAIBLE.html">L'alimentation d'une boucle</a></b><span class="ou">Prof 1 — le courant faible</span><span class="car">les alimentations secourues se calculent en ampères-heures sur des boucles de détection, et la page 1 a dit ce qu'une boucle consomme.</span></li><li><b>L'analyse de risques</b><span class="car">probabilité, gravité, criticité ; la page les applique au bâtiment sans les redéfinir.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#deux-mots-que-le-francais-confond">Deux mots que le français confond</a><a href="#l-analyse-de-risques-avant-le-catalogue">L’analyse de risques, avant le catalogue</a><a href="#pourquoi-le-referentiel-ecrit-dix-fois-les-memes-cinq-rubriques">Pourquoi le référentiel écrit dix fois les mêmes cinq rubriques</a><a href="#le-ssi-cinq-categories-et-une-seule-question-a-se-poser">Le SSI : cinq catégories, et une seule question à se poser</a><a href="#l-eclairage-de-securite-deux-fonctions-pas-une">L’éclairage de sécurité : deux fonctions, pas une</a><a href="#les-alimentations-secourues-le-calcul-qu-on-demande">Les alimentations secourues : le calcul qu’on demande</a><a href="#ou-la-technique-s-arrete">Où la technique s’arrête</a><a href="#ce-qu-il-faut-savoir-refuser">Ce qu’il faut savoir refuser</a></div></nav>
+<h2 id="deux-mots-que-le-francais-confond">Deux mots que le français confond</h2>
+<p>L’anglais dit <em>security</em> et <em>safety</em>. Le français dit sécurité pour les deux, et c’est une source d’imprécision qu’il faut lever dès la première séance.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Contre quoi</th>
+<th>Domaines</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sûreté</strong></td>
+<td>un acte <strong>volontaire</strong> : quelqu’un qui veut entrer, voler, nuire</td>
+<td>contrôle d’accès, intrusion, vidéosurveillance</td>
+</tr>
+<tr>
+<td><strong>Sécurité</strong></td>
+<td>un <strong>accident</strong> : un feu, une panne, une chute</td>
+<td>SSI, éclairage de sécurité, alarmes techniques, assistance aux personnes</td>
+</tr>
+</tbody>
+</table></div>
+<p>La distinction n’est pas académique : elle change la logique de conception. Face à un acte volontaire, on conçoit contre <strong>un adversaire qui s’adapte</strong>, il contournera ce qu’il voit. Face à un accident, on conçoit contre une <strong>probabilité.</strong> Et la redondance suffit.</p>
+<div class="cle">
+<p>En sûreté, <strong>la dissuasion compte autant que la détection</strong>. Un lecteur de badge visible fait plus qu’un détecteur caché. En sécurité, l’inverse est vrai : ce qui compte, c’est que le dispositif fonctionne le jour où il sert, et le test périodique vaut plus que l’apparence.</p>
+</div>
+<h2 id="l-analyse-de-risques-avant-le-catalogue">L’analyse de risques, avant le catalogue</h2>
+<figure class="schema"><div class="dessin" data-schema="zonage-surete"></div><figcaption>Le périmétrique surveille l’enveloppe et arrête avant l’entrée ; le volumétrique surveille l’intérieur et constate après. Le zonage découpe pour qu’on puisse armer une partie seulement.</figcaption></figure>
+<p>Le référentiel place l’analyse des risques <strong>avant</strong> la protection périmétrique et volumétrique, et celles-ci avant le zonage et l’implantation. L’ordre est l’énoncé de la méthode : on décide ce qu’on protège, puis comment, puis où l’on pose les appareils.</p>
+<p><strong>Périmétrique</strong> : contacts d’ouverture, barrières, détecteurs de bris de glace. On détecte à la frontière, donc <strong>avant</strong> que l’intrus soit dedans. Le défaut : une ouverture oubliée annule toute la ligne.</p>
+<p><strong>Volumétrique</strong> : détecteurs de mouvement, infrarouge passif, hyperfréquence, double technologie. On détecte dans le volume, donc <strong>après</strong> l’entrée. Le défaut : les animaux, les courants d’air chaud, le soleil sur une vitre.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi la double technologie coûte plus cher, et quand elle se justifie</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un infrarouge passif détecte un écart de température en mouvement. Il se déclenche donc sur un radiateur qui se met en route derrière un rideau qui bouge.</p>
+<p>Une hyperfréquence détecte un déplacement par effet Doppler. Elle traverse les cloisons légères, et détecte quelqu’un qui passe <strong>dans le couloir voisin</strong>.</p>
+<p>Un détecteur double technologie exige les deux simultanément. Il ne réduit pas les non-détections, il réduit les <strong>fausses alarmes</strong>, et c’est ce qui compte : une installation qui crie pour rien finit désarmée, ce qui est le pire des résultats.</p>
+<p>L’argument à donner aux étudiants : <strong>le taux de fausses alarmes est un critère de conception, pas un défaut de produit.</strong> C’est ce qui explique qu’on paie trois fois plus cher un détecteur pour la même portée.</p></div></details>
+</div><h2 id="pourquoi-le-referentiel-ecrit-dix-fois-les-memes-cinq-rubriques">Pourquoi le référentiel écrit dix fois les mêmes cinq rubriques</h2>
+<p>Les dix domaines d’application de B8-2, accès, interphonie, intrusion, vidéo, incendie, balisage, alarmes techniques, assistance aux personnes, automatismes, multimédia, portent <strong>exactement le même libellé</strong> : principe de fonctionnement, grandeurs caractéristiques, types de signaux, choix, paramétrage.</p>
+<p>C’est une consigne, et non une facilité de rédaction. <strong>Ce qui est exigible, c’est la méthode, pas le catalogue.</strong> Un étudiant qui sait dérouler ces cinq rubriques sur un domaine qu’il n’a jamais vu a la compétence visée ; celui qui connaît trois marques de centrales ne l’a pas.</p>
+<div class="cle">
+<p>Conséquence directe pour la progression : <strong>une séance sur la méthode, analyse de risques, zonage, implantation, avant les séances par domaine.</strong> Sans elle, chaque domaine devient un catalogue, et il y en a dix.</p>
+</div>
+<h2 id="le-ssi-cinq-categories-et-une-seule-question-a-se-poser">Le SSI : cinq catégories, et une seule question à se poser</h2>
+<p>Un système de sécurité incendie associe une <strong>détection</strong> et une <strong>mise en sécurité</strong>, désenfumage, compartimentage, arrêts techniques. Cinq catégories, de A à E, par ordre décroissant de complétude.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Catégorie</th>
+<th>Ce qui la caractérise</th>
+<th>Équipement d’alarme</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>détection automatique généralisée et centralisateur de mise en sécurité</td>
+<td>type 1</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td>mise en sécurité sans détection automatique généralisée</td>
+<td>type 2a</td>
+</tr>
+<tr>
+<td><strong>C</strong></td>
+<td>commande manuelle et fonctions plus réduites</td>
+<td>type 2b</td>
+</tr>
+<tr>
+<td><strong>D</strong></td>
+<td>encore réduite</td>
+<td>type 3</td>
+</tr>
+<tr>
+<td><strong>E</strong></td>
+<td>la plus simple, sans mise en sécurité</td>
+<td>type 4</td>
+</tr>
+</tbody>
+</table></div>
+<p>La question qui décide n’est <strong>jamais</strong> technique : c’est le <strong>classement de l’établissement</strong> (type d’ERP et catégorie d’effectif) qui impose la catégorie de SSI. Le technicien ne choisit pas, il constate et met en œuvre.</p>
+<div class="piege">
+<p>Le type 4 est autonome et se pose sans étude : c’est un boîtier, un déclencheur manuel, une sirène. Sa simplicité le fait proposer partout, y compris là où le classement de l’établissement en interdit l’usage. <strong>La première question sur une affaire d’incendie n’est pas « quel matériel » mais « quel classement ».</strong></p>
+<p>Les correspondances données ici sont des repères de conception : elles se vérifient dans le règlement de sécurité applicable à l’établissement avant toute utilisation réelle.</p>
+</div>
+<h2 id="l-eclairage-de-securite-deux-fonctions-pas-une">L’éclairage de sécurité : deux fonctions, pas une</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>À quoi ça sert</th>
+<th>Repère de dimensionnement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Évacuation</strong></td>
+<td>jalonner le chemin vers la sortie</td>
+<td>flux assigné d’au moins 45 lumens par bloc</td>
+</tr>
+<tr>
+<td><strong>Ambiance</strong></td>
+<td>éviter la panique dans un local qui se vide</td>
+<td>de l’ordre de 5 lumens par m² de local</td>
+</tr>
+</tbody>
+</table></div>
+<p>L’autonomie exigée est d’<strong>une heure</strong>. Les blocs d’évacuation jalonnent les circulations, à chaque sortie et à chaque changement de direction, sans laisser d’intervalle excessif, l’usage retient une quinzaine de mètres. L’éclairage d’ambiance devient nécessaire dans les locaux à fort effectif, et le seuil dépend du niveau : il est plus bas en sous-sol.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les deux dispositifs qu&#39;on oublie sur un devis, et qui sont exigés</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>La télécommande de mise au repos.</strong> Quand l’établissement est fermé et hors tension, les blocs se déchargeraient inutilement et seraient à plat le lendemain. La télécommande les éteint depuis un point unique, et il en faut une.</p>
+<p><strong>Le test périodique.</strong> Un bloc de secours ne se voit pas fonctionner : il ne sert que le jour où il sert. Les blocs à <strong>test automatique intégré</strong> effectuent eux-mêmes un essai de fonctionnement et un essai d’autonomie, et signalent leur défaut par un voyant.</p>
+<p>Le second point est un excellent sujet de discussion en classe. Il pose la question générale de <strong>la maintenance d’un dispositif dormant</strong>, la même que pour une alarme intrusion ou un groupe électrogène, et c’est un raisonnement de technicien, pas une règle à retenir.</p></div></details>
+</div><h2 id="les-alimentations-secourues-le-calcul-qu-on-demande">Les alimentations secourues : le calcul qu’on demande</h2>
+<p>Un dispositif de sûreté ou de sécurité doit fonctionner quand le réseau tombe, c’est même souvent à ce moment-là qu’il sert. L’alimentation de sécurité fournit donc une autonomie, et son dimensionnement est une <strong>addition de courants multipliée par une durée</strong>.</p>
+<div class="formule">
+<p><strong>C = I × t × k</strong></p>
+<ul>
+<li><strong>C</strong><span>: capacité de la batterie, en ampères-heures</span></li>
+<li><strong>I</strong><span>: somme des courants de veille des équipements, en ampères</span></li>
+<li><strong>t</strong><span>: autonomie exigée, en heures</span></li>
+<li><strong>k</strong><span>: coefficient de sécurité, de l’ordre de 1,25 pour le vieillissement</span></li>
+</ul>
+<blockquote>
+<p>On dimensionne sur le courant de <strong>veille</strong>, pas sur le courant d’alarme : l’alarme dure quelques minutes, la veille dure toute la coupure.</p>
+</blockquote>
+</div>
+<h2 id="ou-la-technique-s-arrete">Où la technique s’arrête</h2>
+<p>La vidéosurveillance et le contrôle d’accès produisent des <strong>données personnelles</strong>. C’est le seul domaine de l’option où une installation techniquement irréprochable peut être illégale.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Ce qui relève de la technique</th>
+<th>Ce qui n’en relève pas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>champs, angles, résolution, débit, stockage</td>
+<td>la <strong>finalité</strong> déclarée du dispositif</td>
+</tr>
+<tr>
+<td>durée d’enregistrement que la baie permet</td>
+<td>la <strong>durée de conservation</strong> autorisée</td>
+</tr>
+<tr>
+<td>droits et plages horaires paramétrables</td>
+<td>l’<strong>information</strong> des personnes filmées ou badgées</td>
+</tr>
+<tr>
+<td>réseau dédié ou mutualisé</td>
+<td>les <strong>autorisations</strong> exigées selon le lieu filmé</td>
+</tr>
+</tbody>
+</table></div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un technicien doit savoir dire à un client, et ne pas dire</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Ce qu’il doit dire</strong> : que filmer un lieu ouvert au public et filmer un local professionnel ne relèvent pas du même régime ; qu’une durée de conservation doit être justifiée et courte ; que les personnes doivent être informées ; que l’installation doit être inscrite dans le registre des traitements de l’entreprise cliente.</p>
+<p><strong>Ce qu’il ne doit pas faire</strong> : rédiger la déclaration à la place du client, ni affirmer qu’une configuration est conforme. Ce n’est pas de la prudence excessive , c’est la limite de la mission, et un devis qui la franchit engage l’entreprise sur un terrain qui n’est pas le sien.</p>
+<p><strong>Ce qu’il faut regarder avant de câbler</strong> : les caméras qui voient au-delà de la propriété. Une caméra orientée sur la voie publique change de régime juridique par le seul fait de son orientation, et cela se règle avec un masquage, un geste technique, sur une décision qui ne l’est pas.</p>
+<p>Les règles évoquées ici sont des repères : les textes évoluent, et une affaire réelle se traite avec le texte en vigueur sous les yeux.</p></div></details>
+</div><h2 id="ce-qu-il-faut-savoir-refuser">Ce qu’il faut savoir refuser</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Affirmation entendue</th>
+<th>Ce qui cloche</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« On met du volumétrique partout, c’est plus sûr »</td>
+<td>on détecte après l’entrée, et les fausses alarmes font désarmer</td>
+</tr>
+<tr>
+<td>« Un type 4 suffit, c’est moins cher »</td>
+<td>c’est le classement de l’établissement qui impose la catégorie</td>
+</tr>
+<tr>
+<td>« L’autonomie, on prend une grosse batterie »</td>
+<td>elle se calcule sur le courant de veille, avec un coefficient de vieillissement</td>
+</tr>
+<tr>
+<td>« Les blocs de secours, on les teste à la mise en service »</td>
+<td>un dispositif dormant se teste périodiquement, d’où le test intégré</td>
+</tr>
+<tr>
+<td>« On garde les images un an, au cas où »</td>
+<td>la durée doit être courte et justifiée</td>
+</tr>
+<tr>
+<td>« C’est le même métier que l’intrusion »</td>
+<td>non : sûreté contre un adversaire, sécurité contre un accident</td>
+</tr>
+</tbody>
+</table></div>
+<nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="PROF3-PROTOCOLES.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Prof 3 — les protocoles</span></a><a class="ap" href="PROF5-E5-ET-LE-CCF.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Prof 5 — E5 et le CCF</span></a></div></nav>
+<p class="pied">Page de formation. Les valeurs réglementaires y sont données comme repères de conception ; elles se vérifient dans le texte en vigueur avant tout usage sur une affaire réelle.</p>
+</div>
+<script src="../assets/kit.js?v=13b3bbbd"></script>
+<script src="../assets/site.js?v=13b3bbbd"></script>
+<script src="../assets/vivant.js?v=13b3bbbd"></script>

@@ -1,0 +1,400 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Manuel · chapitre 4</title>
+<link rel="stylesheet" href="../assets/kit.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/site.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/calque.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/vivant.css?v=13b3bbbd">
+
+<div class="page" data-site="fed-prof" data-page="manuel/M4-MANUEL">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M3-MANUEL.html" rel="prev" title="Manuel · chapitre 3" aria-label="Manuel · chapitre 3">&lsaquo;</a><a class="fleche" href="M5-MANUEL.html" rel="next" title="Manuel · chapitre 5" aria-label="Manuel · chapitre 5">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M4-MANUEL">Marquer comme lu</button></div>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">BTS FED option C · 2e année</p>
+    <h1>Chapitre 4<span>l'eau chaude sanitaire</span></h1>
+  </div>
+  <p class="accroche">Le seul besoin du bâtiment qui se compte en pointes de dix minutes. Comment un ballon transforme une puissance en volume, pourquoi la boucle coûte plus que les douches, et pourquoi 55 °C n'est pas une préférence mais une obligation.</p>
+  <p class="contenu">1 outil · 13 questions · 4 exercices · 5 replis · 1 figure</p>
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B3-2 Production et distribution d'ECS · niveau 3</span><span class="tag">A2-3 Bilan thermique · niveau 2</span><span class="tag">B4-1 Réseaux · niveau 2</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M1-MANUEL.html">Chauffer une masse d'eau</a></b><span class="ou">Manuel · chapitre 1</span><span class="car">E = m × c × Δθ est la formule du chapitre 1, appliquée à l'eau du ballon.</span></li><li><b><a href="M2-MANUEL.html">La boucle est un réseau</a></b><span class="ou">Manuel · chapitre 2</span><span class="car">longueur, débit, perte en ligne ; la section 4.6 réutilise le chapitre 2.</span></li><li><b>Pointes et moyennes</b><span class="car">le besoin d'ECS se compte en pointes, et distinguer une puissance de pointe d'une énergie moyenne est le prérequis de tout le chapitre.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#4-1-le-seul-besoin-qui-se-compte-en-pointes">4.1 Le seul besoin qui se compte en pointes</a><a href="#4-2-compter-le-besoin">4.2 Compter le besoin</a><a href="#4-3-instantane-ou-accumule-le-meme-besoin-deux-machines">4.3 Instantané ou accumulé : le même besoin, deux machines</a><a href="#4-4-dimensionner-un-ballon">4.4 Dimensionner un ballon</a><a href="#4-5-l-echangeur-d-ou-sort-la-surface">4.5 L’échangeur : d’où sort la surface</a><a href="#4-6-la-boucle-et-ce-qu-elle-coute">4.6 La boucle, et ce qu’elle coûte</a><a href="#4-7-les-temperatures-ce-n-est-pas-un-reglage-c-est-la-loi">4.7 Les températures : ce n’est pas un réglage, c’est la loi</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+<div class="etapes">
+<ol type="1">
+<li><strong>Convertir</strong> un besoin en litres à 40 °C en litres à 60 °C, et l’inverse.</li>
+<li><strong>Comparer</strong> une production instantanée et une production accumulée, chiffres à l’appui.</li>
+<li><strong>Dimensionner</strong> un ballon et la puissance qui le réchauffe.</li>
+<li><strong>Calculer</strong> la perte d’une boucle et le débit qui l’entretient.</li>
+<li><strong>Justifier</strong> les températures réglementaires, et le mitigeage qui les accompagne.</li>
+</ol>
+</div>
+<p><strong>B3-2 est au niveau 3</strong> : c’est l’un des deux savoirs de la partie hydraulique où le référentiel n’allège rien pour l’option C. Ce chapitre se traite au maximum d’exigence.</p>
+<h2 id="4-1-le-seul-besoin-qui-se-compte-en-pointes">4.1 Le seul besoin qui se compte en pointes</h2>
+<p>Le chauffage d’un bâtiment demande la même puissance pendant huit heures d’affilée. L’eau chaude, non : un internat de quarante élèves ne consomme rien de la journée, puis <strong>tout entre 7 h et 7 h 30</strong>.</p>
+<div class="cle">
+<p>Un besoin de chauffage se dimensionne sur une <strong>puissance</strong>. Un besoin d’eau chaude se dimensionne sur une <strong>pointe</strong> : un volume, dans une durée. C’est la seule différence, et elle change toute la méthode.</p>
+</div>
+<p>Deux façons d’y répondre, et le chapitre entier tient dans leur comparaison :</p>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th></th>
+<th>Instantané</th>
+<th>Accumulé</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ce qu’on installe</td>
+<td><strong>une grosse puissance</strong></td>
+<td>un gros volume</td>
+</tr>
+<tr>
+<td>Ce qu’on stocke</td>
+<td>rien</td>
+<td>de l’eau à 55-60 °C</td>
+</tr>
+<tr>
+<td>Puissance pour 40 élèves</td>
+<td>≈ 110 kW</td>
+<td>≈ 12 kW</td>
+</tr>
+<tr>
+<td>Encombrement</td>
+<td>un échangeur à plaques</td>
+<td>1 000 L, un local</td>
+</tr>
+<tr>
+<td>Risque sanitaire</td>
+<td>faible, pas de stagnation</td>
+<td><strong>légionelle</strong></td>
+</tr>
+<tr>
+<td>Pertes permanentes</td>
+<td>celles de la boucle</td>
+<td>boucle <strong>plus</strong> ballon</td>
+</tr>
+</tbody>
+</table></div>
+<div class="outil" data-outil="ecs">
+
+</div>
+<h2 id="4-2-compter-le-besoin">4.2 Compter le besoin</h2>
+<p>Une douche se prend à <strong>40 °C</strong>, mais on ne stocke pas de l’eau à 40 °C : on stocke à 60 et on mélange avec de l’eau froide au robinet. Il faut donc savoir passer d’une température à l’autre.</p>
+<div class="formule">
+<p><strong>V₆₀ = V utilisé × (θ utilisée − θ froide) / (60 − θ froide)</strong></p>
+<ul>
+<li><strong>V₆₀</strong><span>: volume équivalent, à 60 °C</span></li>
+<li><strong>θ froide</strong><span>: eau du réseau, <strong>10 °C</strong> en moyenne annuelle en France</span></li>
+</ul>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : le mélange, et pourquoi il est linéaire</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un mitigeur mélange un débit d’eau chaude qc à θc et un débit d’eau froide qf à θf, pour donner q = qc + qf à θ.</p>
+<p><strong>Conservation de la masse :</strong> q = qc + qf.</p>
+<p><strong>Conservation de l’énergie</strong>, en prenant l’eau froide comme référence de température :</p>
+<p>q × (θ − θf) = qc × (θc − θf)</p>
+<p>d’où <strong>qc / q = (θ − θf) / (θc − θf)</strong>.</p>
+<p>Le rapport ne dépend que <strong>des écarts de température</strong>, jamais des volumes absolus : c’est ce qui rend la conversion linéaire et utilisable dans les deux sens.</p>
+<p><strong>Les deux hypothèses.</strong> D’abord une <strong>chaleur massique constante</strong> : elle varie de moins de 0,5 % entre 10 et 60 °C, l’approximation est excellente. Ensuite un <strong>mélange adiabatique</strong> : ce qui est perdu dans le mitigeur est négligé, ce qui est vrai pour un robinet et faux pour un mélangeur en pied de colonne, où l’on compte séparément la perte de la boucle.</p>
+<p><strong>Ce que la démonstration donne en prime.</strong> La même équation, écrite sur deux débits d’eau chaude au lieu d’un chaud et d’un froid, est celle du <strong>mélange de deux airs</strong> que vous retrouverez au chapitre 10. Le barycentre est le même objet mathématique.</p></div></details>
+</div><h3 id="exemple-résolu-1.-une-douche-puis-une-journée">Exemple résolu 1. Une douche, puis une journée</h3>
+<p>Une douche de <strong>8 minutes</strong> à <strong>10 L/min</strong>, à <strong>40 °C</strong>, eau froide à 10 °C.</p>
+<p><strong>Volume utilisé.</strong> 8 × 10 = <strong>80 litres à 40 °C</strong>.</p>
+<p><strong>Volume équivalent à 60 °C.</strong> V₆₀ = 80 × (40 − 10) / (60 − 10) = 80 × 0,60 = <strong>48 litres à 60 °C</strong>.</p>
+<p><strong>Énergie.</strong> E = 48 × 1,163 × (60 − 10) = <strong>2 791 Wh ≈ 2,8 kWh</strong>.</p>
+<p>On retrouve bien l’énergie calculée directement sur l’eau utilisée : 80 × 1,163 × 30 = 2 791 Wh. <strong>Les deux chemins donnent le même nombre</strong>, et c’est la vérification à faire systématiquement.</p>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Usage</th>
+<th style="text-align: right;">Volume à 40 °C</th>
+<th style="text-align: right;">Équivalent 60 °C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Douche de 8 min</td>
+<td style="text-align: right;">80 L</td>
+<td style="text-align: right;">48 L</td>
+</tr>
+<tr>
+<td>Bain</td>
+<td style="text-align: right;">180 L</td>
+<td style="text-align: right;">108 L</td>
+</tr>
+<tr>
+<td>Vaisselle à la main</td>
+<td style="text-align: right;">25 L</td>
+<td style="text-align: right;">15 L</td>
+</tr>
+<tr>
+<td>Logement, par personne et par jour</td>
+<td style="text-align: right;">55 L</td>
+<td style="text-align: right;"><strong>33 L</strong></td>
+</tr>
+<tr>
+<td>Internat, par élève et par jour</td>
+<td style="text-align: right;">40 L</td>
+<td style="text-align: right;">24 L</td>
+</tr>
+<tr>
+<td>Chambre d’hôtel, par jour</td>
+<td style="text-align: right;">90 L</td>
+<td style="text-align: right;">54 L</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="4-3-instantane-ou-accumule-le-meme-besoin-deux-machines">4.3 Instantané ou accumulé : le même besoin, deux machines</h2>
+<div class="formule">
+<p><strong>Instantané : Φ = Qv × 1,163 × Δθ</strong> (Qv en L/h). La puissance suit le débit de pointe.</p>
+<p><strong>Accumulé : E = V × 1,163 × Δθ</strong> (V en L). L’énergie est stockée d’avance.</p>
+</div>
+<h3 id="exemple-résolu-2.-quarante-élèves-deux-solutions">Exemple résolu 2. Quarante élèves, deux solutions</h3>
+<p>Quarante élèves se douchent en <strong>30 minutes</strong>, 40 L chacun à 40 °C, eau froide à 10 °C.</p>
+<p><strong>Le besoin.</strong> 40 × 40 = 1 600 L à 40 °C, soit <strong>960 L équivalents 60 °C</strong>. Énergie : 960 × 1,163 × 50 = <strong>55,8 kWh</strong>.</p>
+<p><strong>En instantané.</strong> Il faut fournir ces 55,8 kWh en une demi-heure : Φ = 55,8 / 0,5 = <strong>112 kW</strong>. En prenant une pointe réelle sur 15 minutes plutôt que sur 30, on monterait à <strong>223 kW</strong>.</p>
+<p><strong>En accumulation.</strong> On stocke 960 L, et on les reconstitue en 8 heures de nuit : Φ = 55,8 / 8 = <strong>7,0 kW</strong>. En pratique on prend 4 heures de relance et une marge, soit <strong>12 à 15 kW</strong>.</p>
+<div class="cle">
+<p><strong>Le stockage ne change pas l’énergie : il change la puissance.</strong> 55,8 kWh dans les deux cas ; 112 kW d’un côté, 7 kW de l’autre. Un facteur <strong>16</strong>. C’est exactement pour cela qu’on installe des ballons.</p>
+</div>
+<div class="piege">
+<p>La puissance en instantané se calcule sur le <strong>débit de pointe simultané</strong>, jamais sur la consommation journalière divisée par 24. Une erreur d’un facteur 20 est possible ici, et elle passe inaperçue parce que le résultat reste un nombre plausible.</p>
+</div>
+<h2 id="4-4-dimensionner-un-ballon">4.4 Dimensionner un ballon</h2>
+<p>Un ballon n’est pas un seau : l’eau y est <strong>stratifiée</strong>, chaude en haut, froide en bas. On ne peut pas en soutirer la totalité à température utile.</p>
+<div class="formule">
+<p><strong>V ballon = V₆₀ de la pointe / coefficient d’utilisation</strong></p>
+<p>Coefficient d’utilisation : <strong>0,75 à 0,85</strong> pour un ballon vertical à stratification correcte, <strong>0,60</strong> pour un ballon horizontal ou fortement brassé.</p>
+</div>
+<div class="cle">
+<p>Un ballon <strong>vertical</strong> stratifie ; un ballon <strong>horizontal</strong> mélange. À volume égal, le premier délivre 25 % d’eau utile en plus. C’est la raison, souvent la seule, du choix de la position en local technique.</p>
+</div>
+<h3 id="exemple-résolu-3.-dimensionner-linstallation-de-linternat">Exemple résolu 3. Dimensionner l’installation de l’internat</h3>
+<p>Le calcul retourné : on connaît le besoin, on cherche <strong>le ballon et la puissance</strong>.</p>
+<p><strong>1. La pointe.</strong> 960 L équivalents 60 °C, calculés au 4.3.</p>
+<p><strong>2. Le volume.</strong> 960 / 0,80 = <strong>1 200 litres</strong>. On retiendra deux ballons de 600 L en série, plus faciles à passer en porte et meilleurs en stratification que le modèle unique.</p>
+<p><strong>3. Le temps de reconstitution.</strong> Le second service est à 19 h ; on dispose de <strong>10 heures</strong>.</p>
+<p><strong>4. La puissance de réchauffage.</strong> Φ = 960 × 1,163 × 50 / 10 000 = <strong>5,6 kW</strong>.</p>
+<p><strong>5. La marge.</strong> On double, pour absorber un service décalé et un jour de forte occupation : <strong>11 kW</strong>. C’est aussi la puissance qui permet une relance complète en 5 heures.</p>
+<p><strong>6. La vérification.</strong> 11 kW pour 40 élèves, soit <strong>275 W par élève</strong>. L’ordre de grandeur usuel en internat est de 200 à 400 W par élève : le résultat tient.</p>
+<div class="piege">
+<p>Ne dimensionnez jamais un ballon sur le besoin <strong>journalier</strong>. C’est la <strong>pointe</strong> qui commande, et elle vaut souvent 40 à 60 % du jour. Prendre le jour entier conduit à un ballon deux fois trop gros, qui perd deux fois plus et stagne deux fois plus longtemps.</p>
+</div>
+<h2 id="4-5-l-echangeur-d-ou-sort-la-surface">4.5 L’échangeur : d’où sort la surface</h2>
+<p>Entre le circuit primaire et l’eau sanitaire, il y a un <strong>échangeur à plaques</strong>. Sa surface se calcule avec un écart de température qui n’est ni celui de l’entrée ni celui de la sortie.</p>
+<figure class="schema"><div class="dessin" data-schema="contre-courant"></div><figcaption>Le même échangeur, à co-courant et à contre-courant : le second travaille avec un écart moyen plus grand, pour une surface identique.</figcaption></figure>
+<div class="formule">
+<p><strong>Φ = k × S × ΔTLM</strong></p>
+<p><strong>ΔTLM = (Δθ₁ − Δθ₂) / ln(Δθ₁ / Δθ₂)</strong></p>
+<ul>
+<li><strong>k</strong><span>: coefficient d’échange global, en W/(m²·K) : <strong>3 000 à 6 000</strong> pour un échangeur à plaques eau-eau</span></li>
+<li><strong>Δθ₁, Δθ₂</strong><span>: écarts entre les deux fluides <strong>aux deux extrémités</strong></span></li>
+</ul>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : pourquoi un logarithme, et pas une moyenne</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le long de l’échangeur, l’écart entre les deux fluides <strong>change en permanence</strong>. La puissance échangée sur une tranche de surface dS vaut donc :</p>
+<p>dΦ = k × (Δθ local) × dS</p>
+<p>Comme Δθ diminue de tranche en tranche, l’échange faiblit à mesure qu’on avance.</p>
+<p><strong>La mise en équation.</strong> Sur une tranche, le fluide chaud perd dθc = −dΦ/(qm,c·c) et le froid gagne dθf = +dΦ/(qm,f·c). L’écart Δθ = θc − θf varie donc de :</p>
+<p>d(Δθ) = −dΦ × [ 1/(qm,c·c) + 1/(qm,f·c) ] = −k × Δθ × dS × K</p>
+<p>où K est une constante du problème. On reconnaît une équation différentielle dont la solution est une <strong>exponentielle décroissante</strong> de la surface : Δθ décroît géométriquement, pas linéairement.</p>
+<p><strong>L’intégration</strong> de cette exponentielle sur toute la surface donne exactement, sans approximation :</p>
+<p>ΔTLM = (Δθ₁ − Δθ₂) / ln(Δθ₁ / Δθ₂)</p>
+<p><strong>Les hypothèses, et elles comptent.</strong> Débits constants, k constant sur toute la surface, pas de changement d’état, pas de pertes vers l’extérieur. Le logarithme n’est donc pas un artifice de calcul : c’est la conséquence exacte d’une décroissance exponentielle.</p>
+<p><strong>Le cas particulier utile.</strong> Quand Δθ₁ et Δθ₂ sont proches, le logarithme tend vers la moyenne arithmétique. Tant que le rapport Δθ₁/Δθ₂ reste sous <strong>1,7</strong>, l’écart entre les deux moyennes est inférieur à 2 % : on peut alors faire la moyenne de tête, et c’est une bonne façon de vérifier un résultat.</p>
+<p><strong>Là où la méthode change.</strong> Dès qu’un des deux fluides <strong>change d’état</strong> , condenseur, évaporateur, batterie froide avec condensation, sa température ne varie plus, et la formule reste valable mais un des deux Δθ devient constant. En revanche, sur une <strong>batterie froide qui déshumidifie</strong>, la puissance latente s’ajoute à la sensible et un calcul en ΔTLM sur les seules températures sous- estime la surface : on passe alors par les enthalpies, voir le chapitre 11.</p></div></details>
+</div><h3 id="exemple-résolu-4.-la-surface-de-léchangeur">Exemple résolu 4. La surface de l’échangeur</h3>
+<p>Primaire <strong>70 → 45 °C</strong>, sanitaire <strong>10 → 55 °C</strong>, à contre-courant, puissance <strong>60 kW</strong>, k = 4 000 W/(m²·K).</p>
+<p><strong>Les écarts aux extrémités.</strong> Δθ₁ = 70 − 55 = <strong>15 K</strong> · Δθ₂ = 45 − 10 = <strong>35 K</strong>.</p>
+<p><strong>Le ΔTLM.</strong> (35 − 15) / ln(35/15) = 20 / 0,847 = <strong>23,6 K</strong>.</p>
+<p><em>Vérification de tête : la moyenne arithmétique donnerait 25 K, soit 6 % de plus. Le rapport 35/15 = 2,3 dépasse 1,7, l’écart est donc attendu.</em></p>
+<p><strong>La surface.</strong> S = 60 000 / (4 000 × 23,6) = <strong>0,64 m²</strong>.</p>
+<p><strong>En co-courant</strong>, les écarts seraient 70 − 10 = 60 et 45 − 55 = <strong>−10</strong> : impossible. Le co-courant <strong>ne peut pas</strong> produire une eau plus chaude que la sortie du primaire. C’est la raison pour laquelle un échangeur ECS est toujours monté à contre-courant.</p>
+<h2 id="4-6-la-boucle-et-ce-qu-elle-coute">4.6 La boucle, et ce qu’elle coûte</h2>
+<p>Sans boucle, l’eau refroidit dans les tuyaux entre deux puisages : il faut laisser couler une minute avant d’avoir chaud. Une <strong>boucle de recyclage</strong> entretient la circulation en permanence.</p>
+<div class="formule">
+<p><strong>Φ boucle = perte linéique × longueur</strong>, puis <strong>Q boucle = Φ boucle / (1,163 × Δθ boucle)</strong> avec <strong>Δθ boucle = 5 K</strong></p>
+</div>
+<div class="cle">
+<p>Une boucle calorifugée perd <strong>5 à 10 W par mètre</strong>, <strong>24 heures sur 24</strong>. Sur 200 m, cela fait 1,5 kW en permanence, soit <strong>13 000 kWh par an</strong> : souvent <strong>plus que l’eau chaude réellement consommée</strong>. C’est la première anomalie à chercher sur une facture d’internat ou d’hôtel.</p>
+</div>
+<div class="piege">
+<p>Le débit de bouclage ne se calcule pas sur le besoin d’eau chaude. Il se calcule <strong>uniquement sur les pertes de la boucle</strong>, avec un Δθ de 5 K. Un débit de bouclage trop grand refroidit le haut du ballon et détruit la stratification du 4.4.</p>
+</div>
+<h2 id="4-7-les-temperatures-ce-n-est-pas-un-reglage-c-est-la-loi">4.7 Les températures : ce n’est pas un réglage, c’est la loi</h2>
+<p>Une bactérie, <em>Legionella pneumophila</em>, se développe dans l’eau tiède stagnante et se contracte par <strong>inhalation d’aérosols</strong>, c’est-à-dire sous la douche. D’où un encadrement réglementaire strict, l’arrêté du 30 novembre 2005.</p>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Température</th>
+<th>Ce qui se passe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Moins de 20 °C</td>
+<td>Dormance</td>
+</tr>
+<tr>
+<td><strong>25 à 45 °C</strong></td>
+<td><strong>Prolifération</strong>, maximale vers 37 °C</td>
+</tr>
+<tr>
+<td>50 °C</td>
+<td>Mort en quelques heures</td>
+</tr>
+<tr>
+<td>60 °C</td>
+<td>Mort en 2 minutes</td>
+</tr>
+<tr>
+<td>70 °C</td>
+<td>Mort en quelques secondes</td>
+</tr>
+</tbody>
+</table></div>
+<div class="formule">
+<p><strong>Les trois obligations, à connaître :</strong></p>
+<ol type="1">
+<li><strong>Stockage à 55 °C</strong><span>au moins, ou remontée quotidienne à 60 °C pendant 1 heure, 65 °C pendant 10 min, ou 70 °C pendant 2 min.</span></li>
+<li><strong>50 °C au moins en tout point</strong><span>du réseau de distribution et <strong>au retour de boucle</strong>, hors les trois derniers litres avant le point de puisage.</span></li>
+<li><strong>50 °C au plus</strong><span>au point de puisage dans les pièces destinées à la toilette ; 60 °C au plus ailleurs.</span></li>
+</ol>
+</div>
+<div class="cle">
+<p>Les obligations 1 et 3 se contredisent : <strong>on stocke chaud et on distribue tiède</strong>. La contradiction se résout par un <strong>mitigeur thermostatique</strong>, posé en sortie de production ou au plus près du puisage. Toute question d’épreuve sur l’ECS repose sur ce couple, et il faut savoir l’expliquer en trois lignes.</p>
+</div>
+<p>Pourquoi cette limite basse au puisage : à <strong>60 °C, une brûlure du troisième degré s’installe en 5 secondes</strong> ; à 55 °C il faut 30 secondes ; à 50 °C, cinq minutes. Les enfants et les personnes âgées réagissent plus lentement.</p>
+<div class="piege">
+<p>Un mitigeur thermostatique <strong>général</strong> posé en sortie de ballon met toute la boucle sous 50 °C : c’est un non-respect de l’obligation 2, et un incubateur. Le mitigeage se fait <strong>après</strong> la boucle, en pied de colonne ou au point de puisage, jamais avant.</p>
+</div>
+<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Grandeur</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Température d’eau froide, moyenne France</td>
+<td><strong>10 °C</strong></td>
+</tr>
+<tr>
+<td>Température de stockage</td>
+<td>55 à 60 °C</td>
+</tr>
+<tr>
+<td>Besoin, logement, par personne et par jour</td>
+<td>30 à 40 L à 60 °C</td>
+</tr>
+<tr>
+<td>Besoin, internat, par élève et par jour</td>
+<td>20 à 25 L à 60 °C</td>
+</tr>
+<tr>
+<td>Douche · bain</td>
+<td>40-80 L à 40 °C · 180 L</td>
+</tr>
+<tr>
+<td>Débit d’une douche</td>
+<td>8 à 12 L/min</td>
+</tr>
+<tr>
+<td>Énergie d’une douche</td>
+<td>≈ 2,5 à 3 kWh</td>
+</tr>
+<tr>
+<td>Coefficient d’utilisation d’un ballon vertical</td>
+<td>0,75 à 0,85</td>
+</tr>
+<tr>
+<td>Puissance d’un ballon électrique 200 L</td>
+<td>2,4 kW, relance 6 à 7 h</td>
+</tr>
+<tr>
+<td>Puissance en internat, par élève</td>
+<td>200 à 400 W</td>
+</tr>
+<tr>
+<td>k d’un échangeur à plaques eau-eau</td>
+<td>3 000 à 6 000 W/(m²·K)</td>
+</tr>
+<tr>
+<td>Pincement usuel d’un échangeur à plaques</td>
+<td>3 à 5 K</td>
+</tr>
+<tr>
+<td>Perte d’une boucle calorifugée</td>
+<td>5 à 10 W/m</td>
+</tr>
+<tr>
+<td>Δθ de la boucle de recyclage</td>
+<td><strong>5 K</strong></td>
+</tr>
+<tr>
+<td>Retour de boucle, minimum réglementaire</td>
+<td>50 °C</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Le contrôle de vraisemblance : <strong>l’énergie d’une douche vaut à peu près 3 kWh</strong>, quelle que soit la façon dont on la calcule. Un résultat à 0,3 ou à 30 kWh signale une erreur de conversion, pas une erreur de méthode.</p>
+</div>
+<h2 id="s-entrainer">S’entraîner</h2>
+<section class="exo" id="M4-MANUEL-e1" data-exo="M4-MANUEL-e1" data-type="calcul" data-savoir="B3-2" data-a="IXgueGB4OTs2OS82eHZ4LHhga21odGp2eC41NnhgbnRqdngveGB4Fngn"><p class="k">Exercice · B3-2</p><h4>Le volume équivalent</h4><div class="enonce">
+
+<p>Un besoin de <strong>250 litres à 45 °C</strong>, eau froide à <strong>12 °C</strong>. Quel est le volume équivalent à <strong>60 °C</strong> ?</p>
+</div><div class="indice" hidden>Le rapport ne dépend que des écarts : (45 − 12) divisé par (60 − 12). Multipliez le volume utilisé par ce rapport.</div></section>
+<section class="exo" id="M4-MANUEL-e2" data-exo="M4-MANUEL-e2" data-type="calcul" data-savoir="B3-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgbm1ramp0anZ4LjU2eGBudGp2eC94YHgNeCc="><p class="k">Exercice · B3-2</p><h4>La puissance en instantané</h4><div class="enonce">
+
+<p>Une production instantanée doit fournir <strong>900 L/h</strong> d’eau à <strong>55 °C</strong>, l’eau froide arrivant à <strong>10 °C</strong>. Quelle puissance faut-il installer ?</p>
+</div><div class="indice" hidden>Φ = Q × 1,163 × Δθ, avec Q en litres par heure. Le Δθ est ici l’échauffement de l’eau sanitaire, de l’eau froide à la température de production.</div></section>
+<section class="exo" id="M4-MANUEL-e3" data-exo="M4-MANUEL-e3" data-type="calcul" data-savoir="B3-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgY2Jra3RqdnguNTZ4YG50anZ4L3hgeDENMngn"><p class="k">Exercice · B3-2</p><h4>La perte d’une boucle</h4><div class="enonce">
+
+<p>Une boucle de <strong>160 m</strong> perd <strong>7 W par mètre</strong>. Quelle énergie cette perte représente-t-elle sur une année de fonctionnement continu ?</p>
+</div><div class="indice" hidden>Calculez d’abord la puissance perdue en watts, puis multipliez par le nombre d’heures d’une année, 8 760, et convertissez en kilowattheures.</div></section>
+<section class="exo" id="M4-MANUEL-e4" data-exo="M4-MANUEL-e4" data-type="justification" data-savoir="B3-2" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B3-2</p><h4>Le réglage qu’on vous demande de baisser</h4><div class="enonce">
+
+<p>Un gestionnaire vous demande d’abaisser le ballon d’ECS de 60 à 45 °C « pour économiser ». Rédigez votre réponse en quatre lignes.</p>
+</div><div class="indice" hidden>Deux exigences se contredisent en apparence, stocker chaud et distribuer tiède. Une seule pièce résout la contradiction, et elle se place après la boucle, pas avant.</div><ul class="verifier" hidden><li>J’ai refusé, et j’ai nommé le risque sanitaire : la légionelle prolifère entre 25 et 45 °C.</li><li>J’ai cité une obligation chiffrée : 55 °C au stockage, 50 °C au retour de boucle.</li><li>J’ai expliqué que la brûlure se traite autrement, par un mitigeur thermostatique au puisage.</li><li>J’ai proposé une vraie économie : calorifuger la boucle, réduire le volume stocké, ou horloger le bouclage.</li></ul></section>
+<h2 id="vous-verifier">Vous vérifier</h2>
+<div class="quiz">
+<ul>
+<li>Un besoin d’ECS se dimensionne sur : <strong>une pointe</strong> | une puissance moyenne</li>
+<li>L’eau froide du réseau est prise, en moyenne, à : <strong>10 °C</strong> | 4 °C</li>
+<li>Le volume équivalent 60 °C d’une douche de 80 L à 40 °C vaut : <strong>48 L</strong> | 80 L</li>
+<li>Passer de l’instantané à l’accumulation change : <strong>la puissance</strong> | l’énergie</li>
+<li>Le coefficient d’utilisation d’un ballon vertical vaut environ : <strong>0,8</strong> | 1,0</li>
+<li>Un ballon horizontal, à volume égal, délivre : <strong>moins d’eau utile</strong> | autant</li>
+<li>Le débit de bouclage se calcule sur : <strong>les pertes de la boucle</strong> | le besoin d’ECS</li>
+<li>Le Δθ de la boucle de recyclage vaut : <strong>5 K</strong> | 20 K</li>
+<li>La légionelle prolifère entre : <strong>25 et 45 °C</strong> | 50 et 60 °C</li>
+<li>Le stockage doit être maintenu au moins à : <strong>55 °C</strong> | 45 °C</li>
+<li>Au point de puisage d’une salle de bain, on ne dépasse pas : <strong>50 °C</strong> | 60 °C</li>
+<li>Un échangeur ECS se monte : <strong>à contre-courant</strong> | à co-courant</li>
+<li>Le ΔTLM est toujours : <strong>inférieur à la moyenne des deux écarts</strong> | supérieur</li>
+</ul>
+</div>
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le ballon à échangeur, le ballon à serpentin, le préparateur semi-instantané</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Trois montages se rencontrent, et l’épreuve demande régulièrement de les distinguer sur un schéma.</p>
+<p><strong>Le ballon à serpentin</strong> contient l’échangeur, un tube en spirale plongé dans l’eau sanitaire. Simple, sans pompe supplémentaire, mais la surface d’échange est faible : <strong>1 à 1,5 m² pour 500 L</strong>, ce qui limite la puissance de relance à 20 ou 30 kW. Il se reconnaît au fait que <strong>le primaire entre et sort du ballon lui-même</strong>.</p>
+<p><strong>Le ballon à échangeur extérieur</strong> sépare les deux fonctions : un échangeur à plaques, une pompe de charge, et un ballon qui ne fait que stocker. La puissance n’est plus limitée par la géométrie du serpentin, et l’échangeur se démonte pour détartrage. Il se reconnaît à <strong>la pompe entre le ballon et l’échangeur</strong>.</p>
+<p><strong>Le préparateur semi-instantané</strong> est un échangeur puissant associé à un petit volume tampon, 100 à 300 L. Il tient la pointe sans stocker un mètre cube, ce qui réduit à la fois le risque sanitaire et les pertes. C’est la solution qui gagne du terrain en tertiaire, et sa régulation est la plus délicate des trois : un temps de réponse trop lent donne de l’eau froide au premier utilisateur.</p>
+<p><strong>Le critère de choix, en une phrase :</strong> on stocke quand la puissance disponible est petite devant la pointe, on échange quand elle est grande. Une sous-station de réseau urbain, qui dispose de mégawatts, n’a besoin de presque aucun stockage.</p></div></details>
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Le dimensionnement réel : la méthode des besoins cumulés</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La méthode de ce chapitre, pointe, coefficient d’utilisation, temps de reconstitution, suffit pour l’épreuve et donne le bon ordre de grandeur.</p>
+<p>Un bureau d’études travaille sur une <strong>courbe cumulée</strong>. On trace, heure par heure, le besoin cumulé de la journée, puis la production cumulée d’un générateur de puissance donnée. Le <strong>volume de stockage nécessaire est le plus grand écart vertical</strong> entre les deux courbes. C’est un raisonnement graphique, et il donne un couple volume-puissance, pas une valeur unique : on peut prendre beaucoup de volume et peu de puissance, ou l’inverse. Le prix tranche.</p>
+<p>Deux normes encadrent ce calcul en France. La <strong>NF EN 12831-3</strong> donne la méthode des profils de puisage. Les <strong>guides AICVF</strong> donnent les besoins par usage et par type d’établissement, avec des coefficients de simultanéité qui font toute la différence sur un immeuble : quarante logements ne prennent pas quarante douches en même temps, et le coefficient descend vers 0,2.</p>
+<p><strong>Ce que ces méthodes ne couvrent pas</strong>, et qui décide pourtant : le comportement. Un internat où l’on impose des douches de 5 minutes consomme moitié moins qu’un internat où on ne les impose pas, à effectif identique. Aucun coefficient ne rattrape cela.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« Un gros ballon économise de l’énergie. »</strong> Il économise de la <strong>puissance</strong>, et il coûte de l’énergie : plus de surface, donc plus de pertes permanentes, et un volume plus longtemps stagnant. Ce qui économise de l’énergie, c’est le calorifuge, le réglage du bouclage et la réduction des débits de puisage.</p>
+<p><strong>« On chauffe à 60 °C pour le confort. »</strong> On chauffe à 60 °C pour la <strong>sécurité sanitaire</strong>. Le confort est à 40 °C, et c’est un mitigeur qui l’y ramène. Inverser les deux dans une justification écrite fait perdre le point.</p>
+<p><strong>« La boucle réchauffe l’eau. »</strong> La boucle ne réchauffe rien : elle <strong>empêche de refroidir</strong>, en maintenant l’eau en mouvement entre la production et les points de puisage. C’est la production qui compense, en permanence, ce que la boucle perd.</p></div></details>
+</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M3-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 3</span></a><a class="ap" href="M5-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 5</span></a></div></nav>
+<p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p>
+</div>
+<script src="../assets/kit.js?v=13b3bbbd"></script>
+<script src="../assets/site.js?v=13b3bbbd"></script>
+<script src="../assets/vivant.js?v=13b3bbbd"></script>

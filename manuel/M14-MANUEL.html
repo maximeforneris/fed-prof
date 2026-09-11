@@ -1,0 +1,580 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Manuel · chapitre 14</title>
+<link rel="stylesheet" href="../assets/kit.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/site.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/calque.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/vivant.css?v=13b3bbbd">
+
+<div class="page" data-site="fed-prof" data-page="manuel/M14-MANUEL">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M13-MANUEL.html" rel="prev" title="Manuel · chapitre 13" aria-label="Manuel · chapitre 13">&lsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M14-MANUEL">Marquer comme lu</button></div>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">BTS FED option C · 2e année</p>
+    <h1>Chapitre 14<span>la gestion technique du bâtiment</span></h1>
+  </div>
+  <p class="accroche">Quatre types de points, trois niveaux d'architecture, et un tableau à remplir sans se tromper. Le thème le plus lourd de l'épreuve, et celui où l'option C est chez elle.</p>
+  <p class="contenu">1 outil · 13 questions · 4 exercices · 4 replis · 1 figure</p>
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B8 Architecture d'une GTB · niveau 3</span><span class="tag n3">B9 Comptage et remontée de points · niveau 3</span><span class="tag">B11 Régulation · niveau 3</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M12-MANUEL.html">Une boucle de régulation</a></b><span class="ou">Manuel · chapitre 12</span><span class="car">la GTB est faite de boucles, et un automate en porte plusieurs.</span></li><li><b><a href="M13-MANUEL.html">La loi d'eau et le réduit</a></b><span class="ou">Manuel · chapitre 13</span><span class="car">ce qu'une GTB apporte se chiffre sur le réduit et l'optimisation du chapitre 13.</span></li><li><b>Les signaux 0-10 V et 4-20 mA</b><span class="car">un point analogique est un signal ; savoir ce qu'est une tension et un courant continus suffit, mais il le faut.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#14-1-un-tableau-de-bord-pour-un-batiment">14.1 Un tableau de bord pour un bâtiment</a><a href="#14-2-les-quatre-types-de-points">14.2 Les quatre types de points</a><a href="#14-3-les-signaux-physiques">14.3 Les signaux physiques</a><a href="#14-4-le-tableau-de-points">14.4 Le tableau de points</a><a href="#14-5-les-trois-niveaux-d-architecture">14.5 Les trois niveaux d’architecture</a><a href="#14-6-le-calcul-retourne-dimensionner-les-modules">14.6 Le calcul retourné : dimensionner les modules</a><a href="#14-7-ce-qu-une-gtb-apporte-chiffre">14.7 Ce qu’une GTB apporte, chiffré</a><a href="#14-8-le-synoptique">14.8 Le synoptique</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+<div class="etapes">
+<ol type="1">
+<li><strong>Classer</strong> n’importe quel organe en DI, AI, DO ou AO, sans hésiter.</li>
+<li><strong>Remplir</strong> un tableau de points complet à partir d’un schéma de principe.</li>
+<li><strong>Situer</strong> capteurs, automates, bus et supervision dans les trois niveaux.</li>
+<li><strong>Dimensionner</strong> les modules d’entrées-sorties, réserve comprise.</li>
+<li><strong>Nommer</strong> ce qu’une GTB apporte, et le chiffrer.</li>
+</ol>
+</div>
+<p><strong>22 % du temps de l’épreuve</strong>, à chaque session, et c’est le cœur de métier de l’option C. Vous y êtes meilleurs que les options A et B : ce chapitre est celui où l’écart se transforme en points.</p>
+<h2 id="14-1-un-tableau-de-bord-pour-un-batiment">14.1 Un tableau de bord pour un bâtiment</h2>
+<p>Le tableau de bord d’une voiture n’améliore pas le moteur. Il <strong>montre</strong> ce qui se passe, <strong>alerte</strong> quand quelque chose sort de sa plage, et <strong>enregistre</strong> de quoi comprendre après coup. Une GTB fait exactement cela, pour une chaufferie, une CTA et deux cents locaux.</p>
+<div class="cle">
+<p>Une GTB ne régule pas à la place des régulateurs : les boucles du chapitre 12 vivent dans les automates locaux et continuent de tourner même si la supervision est éteinte. Ce que la GTB ajoute, c’est <strong>la vue d’ensemble, les horaires, les alarmes et l’historique.</strong></p>
+</div>
+<h2 id="14-2-les-quatre-types-de-points">14.2 Les quatre types de points</h2>
+<p>C’est la classification la plus rentable du manuel : elle se demande à chaque session, et elle ne coûte que de la rigueur.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Type</th>
+<th>Nom complet</th>
+<th>Sens</th>
+<th>Nature</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DI</strong></td>
+<td>Digital Input</td>
+<td><strong>entrée</strong></td>
+<td>tout ou rien</td>
+<td>état de marche, défaut, contact de position</td>
+</tr>
+<tr>
+<td><strong>AI</strong></td>
+<td>Analog Input</td>
+<td><strong>entrée</strong></td>
+<td>continue</td>
+<td>température, pression, hygrométrie, CO₂</td>
+</tr>
+<tr>
+<td><strong>DO</strong></td>
+<td>Digital Output</td>
+<td><strong>sortie</strong></td>
+<td>tout ou rien</td>
+<td>ordre de marche, alarme, commande de relais</td>
+</tr>
+<tr>
+<td><strong>AO</strong></td>
+<td>Analog Output</td>
+<td><strong>sortie</strong></td>
+<td>continue</td>
+<td>ouverture de vanne, vitesse de ventilateur</td>
+</tr>
+</tbody>
+</table></div>
+<div class="formule">
+<p><strong>La question à se poser, dans cet ordre :</strong></p>
+<ol type="1">
+<li><strong>L’automate reçoit-il ou envoie-t-il ?</strong><span>Reçoit = entrée. Envoie = sortie.</span></li>
+<li><strong>L’information a-t-elle deux états ou une infinité ?</strong><span>Deux = digital. Une infinité = analogique.</span></li>
+</ol>
+</div>
+<div class="piege">
+<p>Deux confusions coûtent des points à chaque session. La première : <strong>un ordre de marche de pompe est un DO, le retour d’état de cette même pompe est un DI.</strong></p>
+<p>Ce sont <strong>deux points distincts</strong>, et l’un ne remplace pas l’autre : leur comparaison est justement ce qui détecte la panne. La seconde confusion : <strong>une vanne en tout ou rien est un DO, la même vanne modulante est un AO.</strong></p>
+</div>
+<h2 id="14-3-les-signaux-physiques">14.3 Les signaux physiques</h2>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Nature</th>
+<th>Où on le rencontre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Contact sec</strong></td>
+<td>DI</td>
+<td>tous les états et défauts</td>
+</tr>
+<tr>
+<td><strong>Pt1000, Pt100</strong></td>
+<td>AI</td>
+<td>températures, précis et normalisé</td>
+</tr>
+<tr>
+<td>CTN, NTC 10 kΩ</td>
+<td>AI</td>
+<td>températures, économique</td>
+</tr>
+<tr>
+<td><strong>0 à 10 V</strong></td>
+<td>AI ou AO</td>
+<td>commande de vanne, de variateur</td>
+</tr>
+<tr>
+<td><strong>4 à 20 mA</strong></td>
+<td>AI</td>
+<td>mesures à longue distance</td>
+</tr>
+<tr>
+<td>Relais, 230 V ou 24 V</td>
+<td>DO</td>
+<td>commande de puissance</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Le <strong>4 à 20 mA</strong> a une propriété que le 0 à 10 V n’a pas : <strong>le zéro n’existe pas</strong>. Un courant nul signale un fil coupé, pas une mesure nulle. C’est ce qui en fait le standard des mesures déportées, et c’est la justification attendue en épreuve.</p>
+</div>
+<h2 id="14-4-le-tableau-de-points">14.4 Le tableau de points</h2>
+<p>C’est <strong>le</strong> document de l’épreuve : on donne un schéma de principe, et on demande de compléter le tableau.</p>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Repère</th>
+<th>Désignation</th>
+<th style="text-align: center;">DI</th>
+<th style="text-align: center;">AI</th>
+<th style="text-align: center;">DO</th>
+<th style="text-align: center;">AO</th>
+<th>Observation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B1</td>
+<td>Sonde de température extérieure</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td>Pt1000</td>
+</tr>
+<tr>
+<td>B2</td>
+<td>Sonde de départ chauffage</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td>Pt1000</td>
+</tr>
+<tr>
+<td>M1</td>
+<td>Ordre de marche circulateur</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"></td>
+<td></td>
+</tr>
+<tr>
+<td>M1</td>
+<td>Retour d’état circulateur</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td>contact auxiliaire</td>
+</tr>
+<tr>
+<td>Y1</td>
+<td>Vanne trois voies modulante</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td>0 à 10 V</td>
+</tr>
+<tr>
+<td>S1</td>
+<td>Pressostat de manque d’eau</td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td>sécurité</td>
+</tr>
+<tr>
+<td>Q1</td>
+<td>Compteur d’énergie</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>X</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td>ou impulsions</td>
+</tr>
+</tbody>
+</table></div>
+<div class="etapes">
+<p><strong>La méthode, en quatre passages sur le schéma :</strong></p>
+<ol type="1">
+<li><strong>Toutes les sondes</strong> : ce sont des AI, une par mesure.</li>
+<li><strong>Tous les organes commandés</strong> : un DO si tout ou rien, un AO si modulant.</li>
+<li><strong>Tous les retours d’état et sécurités</strong> : autant de DI.</li>
+<li><strong>Les comptages</strong> : AI si le compteur sort une valeur, DI si le compteur sort des impulsions.</li>
+</ol>
+</div>
+<div class="outil" data-outil="points">
+
+</div>
+<h2 id="14-5-les-trois-niveaux-d-architecture">14.5 Les trois niveaux d’architecture</h2>
+<figure class="schema"><div class="dessin" data-schema="topologies-bus"></div><figcaption>Les topologies de câblage : ce que change une ligne, une étoile ou un anneau quand un segment est coupé.</figcaption></figure>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Niveau</th>
+<th>Ce qu’on y trouve</th>
+<th>Ce qui y circule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Terrain</strong></td>
+<td>sondes, vannes, variateurs, compteurs</td>
+<td>signaux physiques, bus de terrain</td>
+</tr>
+<tr>
+<td><strong>Automatisme</strong></td>
+<td>automates, régulateurs, modules d’E/S</td>
+<td>les boucles, les horaires, les alarmes</td>
+</tr>
+<tr>
+<td><strong>Gestion</strong></td>
+<td>supervision, poste, serveur web</td>
+<td>synoptiques, courbes, rapports</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>L’intelligence est au <strong>niveau automatisme</strong>, jamais au niveau gestion. Un bâtiment dont la supervision tombe continue de chauffer normalement : c’est le critère qui distingue une GTB bien conçue d’une installation où le poste de supervision est devenu le régulateur.</p>
+</div>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr>
+<th>Bus</th>
+<th>Support</th>
+<th style="text-align: right;">Débit</th>
+<th style="text-align: right;">Nœuds par segment</th>
+<th>Domaine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>KNX</strong></td>
+<td>paire torsadée</td>
+<td style="text-align: right;">9,6 kbit/s</td>
+<td style="text-align: right;">64</td>
+<td>éclairage, stores, logement</td>
+</tr>
+<tr>
+<td><strong>Modbus RTU</strong></td>
+<td>RS485</td>
+<td style="text-align: right;">9,6 à 115 kbit/s</td>
+<td style="text-align: right;">32</td>
+<td>compteurs, variateurs</td>
+</tr>
+<tr>
+<td><strong>BACnet MS/TP</strong></td>
+<td>RS485</td>
+<td style="text-align: right;">76,8 kbit/s</td>
+<td style="text-align: right;">32</td>
+<td>CVC tertiaire</td>
+</tr>
+<tr>
+<td><strong>BACnet/IP</strong></td>
+<td>Ethernet</td>
+<td style="text-align: right;">100 Mbit/s</td>
+<td style="text-align: right;">—</td>
+<td>fédération de sites</td>
+</tr>
+<tr>
+<td>LonWorks</td>
+<td>paire torsadée</td>
+<td style="text-align: right;">78 kbit/s</td>
+<td style="text-align: right;">64</td>
+<td>parc installé</td>
+</tr>
+</tbody>
+</table></div>
+<div class="piege">
+<p>Un bus de terrain n’est pas un réseau informatique : il est <strong>lent</strong>, et c’est volontaire. 9,6 kbit/s suffisent largement pour une température toutes les minutes, et cette lenteur donne une immunité au bruit qu’aucun réseau rapide n’atteint sur 1 000 mètres de câble en chemin de câbles.</p>
+</div>
+<h2 id="14-6-le-calcul-retourne-dimensionner-les-modules">14.6 Le calcul retourné : dimensionner les modules</h2>
+<h3 id="exemple-résolu-1.-lautomate-dune-cta-double-flux">Exemple résolu 1. L’automate d’une CTA double flux</h3>
+<p><strong>Le relevé des points</strong>, fait sur le schéma de principe :</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 40%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr>
+<th>Type</th>
+<th style="text-align: right;">Points</th>
+<th>Détail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AI</strong></td>
+<td style="text-align: right;">6</td>
+<td>air neuf, soufflage, reprise, après récupérateur, hygrométrie, eau</td>
+</tr>
+<tr>
+<td><strong>DI</strong></td>
+<td style="text-align: right;">8</td>
+<td>2 défauts ventilateurs, 2 pressostats filtres, antigel, position registre, contrôleur de débit, marche locale</td>
+</tr>
+<tr>
+<td><strong>DO</strong></td>
+<td style="text-align: right;">5</td>
+<td>2 marches ventilateurs, registre air neuf, humidificateur, alarme générale</td>
+</tr>
+<tr>
+<td><strong>AO</strong></td>
+<td style="text-align: right;">5</td>
+<td>vanne chaude, vanne froide, 2 vitesses ventilateurs, bipasse récupérateur</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>1. La réserve.</strong> On majore de <strong>20 %</strong>, pour les évolutions et les oublis : AI 7,2 · DI 9,6 · DO 6,0 · AO 6,0.</p>
+<p><strong>2. Les modules disponibles</strong>, en 8 voies TOR et 4 voies analogiques :</p>
+<ul>
+<li>AI : 7,2 → <strong>2 modules de 4</strong> = 8 voies</li>
+<li>DI : 9,6 → <strong>2 modules de 8</strong> = 16 voies</li>
+<li>DO : 6,0 → <strong>1 module de 8</strong> = 8 voies</li>
+<li>AO : 6,0 → <strong>2 modules de 4</strong> = 8 voies</li>
+</ul>
+<p><strong>3. Le contrôle.</strong> 7 modules au total, 40 voies pour 24 points utiles. C’est le prix de la granularité des modules, et c’est normal : on n’achète pas des voies à l’unité.</p>
+<div class="cle">
+<p>La <strong>réserve de 20 %</strong> n’est pas une précaution timide : sur une durée de vie de quinze ans, un bâtiment gagne toujours des points — un comptage, un capteur de CO₂, une zone découpée en deux. Un automate saturé impose de tout remplacer pour une seule voie manquante.</p>
+</div>
+<h2 id="14-7-ce-qu-une-gtb-apporte-chiffre">14.7 Ce qu’une GTB apporte, chiffré</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Fonction</th>
+<th>Ce qu’elle fait</th>
+<th>Ce qu’elle rapporte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Programmes horaires</strong></td>
+<td>arrête ce qui n’est pas occupé</td>
+<td><strong>5 à 15 %</strong></td>
+</tr>
+<tr>
+<td><strong>Dérogation</strong></td>
+<td>prolonge à la demande, sans casser le programme</td>
+<td>évite les forçages permanents</td>
+</tr>
+<tr>
+<td><strong>Alarmes</strong></td>
+<td>signale un défaut avant l’appel des occupants</td>
+<td>disponibilité</td>
+</tr>
+<tr>
+<td><strong>Courbes de tendance</strong></td>
+<td>montre le comportement réel</td>
+<td>permet le réglage du chapitre 12</td>
+</tr>
+<tr>
+<td><strong>Comptage</strong></td>
+<td>répartit par usage</td>
+<td><strong>fait exister</strong> les économies</td>
+</tr>
+<tr>
+<td><strong>Délestage</strong></td>
+<td>efface des charges à la pointe</td>
+<td>facture d’électricité</td>
+</tr>
+<tr>
+<td><strong>Free-cooling</strong></td>
+<td>ouvre l’air neuf en mi-saison</td>
+<td>voir le chapitre 8</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>La fonction la plus rentable de la liste n’est pas la plus technique : ce sont les <strong>programmes horaires</strong>. Une CTA de collège qui tourne 168 heures par semaine au lieu de 50 consomme <strong>trois fois trop</strong>, et le réglage prend dix minutes.</p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le décret BACS, et pourquoi la GTB est devenue obligatoire</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Jusqu’en 2020, une GTB était un choix de maître d’ouvrage. Elle est aujourd’hui une obligation réglementaire pour une grande partie du parc tertiaire.</p>
+<p><strong>Le texte.</strong> Le décret dit <strong>BACS</strong>, du 20 juillet 2020, modifié en 2023, impose un système d’automatisation et de contrôle des bâtiments dans tout bâtiment tertiaire dont les équipements de CVC dépassent <strong>70 kW</strong>. Les échéances sont le <strong>1er janvier 2025</strong> pour les installations au-dessus de 290 kW et le <strong>1er janvier 2027</strong> pour celles au-dessus de 70 kW.</p>
+<p><strong>Ce qu’il impose exactement</strong>, et c’est plus précis qu’on ne croit : un suivi et un enregistrement continus des consommations, la comparaison à des valeurs de référence, la détection des pertes d’efficacité, la possibilité d’agir sur les équipements depuis un point central, et l’interopérabilité des systèmes.</p>
+<p><strong>Son cousin, le décret Tertiaire</strong>, du 23 juillet 2019, fixe l’objectif de consommation : <strong>−40 % en 2030, −50 % en 2040, −60 % en 2050</strong> par rapport à une année de référence, pour tout bâtiment tertiaire de plus de 1 000 m². Les deux se répondent : le décret Tertiaire fixe la cible, le décret BACS impose l’outil qui permet de la mesurer.</p>
+<p><strong>Ce que cela change pour vous.</strong> Un technicien capable de lire un tableau de points, de régler une loi d’eau et d’exploiter des courbes de tendance est exactement le profil que ces deux décrets rendent nécessaire, dans des milliers de bâtiments, avec une échéance datée. C’est le débouché le plus prévisible de votre diplôme.</p></div></details>
+</div><h2 id="14-8-le-synoptique">14.8 Le synoptique</h2>
+<p>Un synoptique est le <strong>schéma de principe rendu vivant</strong> : chaque organe y porte sa valeur en temps réel et change de couleur selon son état.</p>
+<div class="etapes">
+<p><strong>Ce qui fait un bon synoptique</strong>, et c’est une question de conception :</p>
+<ol type="1">
+<li><strong>Un écran par système</strong>, jamais tout le bâtiment sur une page.</li>
+<li><strong>La même disposition que le schéma de principe</strong> du dossier technique.</li>
+<li><strong>Les valeurs mesurées en clair</strong>, à côté de l’organe qui les produit.</li>
+<li><strong>Un code couleur constant</strong> : vert en marche, gris à l’arrêt, rouge en défaut, et rien d’autre.</li>
+<li><strong>Les consignes accessibles</strong>, mais protégées par un niveau d’accès.</li>
+</ol>
+</div>
+<div class="piege">
+<p>Un synoptique surchargé n’est pas lu. La règle est la même que pour une page de manuel : <strong>ce qui est important doit se voir sans chercher</strong>. Trente valeurs sur un écran, c’est zéro valeur vue.</p>
+</div>
+<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Grandeur</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Les quatre types de points</td>
+<td><strong>DI · AI · DO · AO</strong></td>
+</tr>
+<tr>
+<td>Une pompe commandée et surveillée</td>
+<td><strong>2 points</strong> : un DO et un DI</td>
+</tr>
+<tr>
+<td>Signal de commande de vanne modulante</td>
+<td>0 à 10 V</td>
+</tr>
+<tr>
+<td>Signal de mesure déportée</td>
+<td><strong>4 à 20 mA</strong></td>
+</tr>
+<tr>
+<td>Sonde de température normalisée</td>
+<td>Pt1000</td>
+</tr>
+<tr>
+<td>Réserve de voies à prévoir</td>
+<td><strong>20 %</strong></td>
+</tr>
+<tr>
+<td>Débit d’un bus KNX</td>
+<td>9,6 kbit/s</td>
+</tr>
+<tr>
+<td>Débit d’un BACnet MS/TP</td>
+<td>76,8 kbit/s</td>
+</tr>
+<tr>
+<td>Nœuds par segment RS485</td>
+<td>32</td>
+</tr>
+<tr>
+<td>Longueur maximale d’un segment RS485</td>
+<td>1 200 m</td>
+</tr>
+<tr>
+<td>Gain des programmes horaires</td>
+<td><strong>5 à 15 %</strong></td>
+</tr>
+<tr>
+<td>Seuil du décret BACS</td>
+<td><strong>70 kW</strong> de CVC</td>
+</tr>
+<tr>
+<td>Objectif du décret Tertiaire en 2030</td>
+<td>−40 %</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Le contrôle sur un tableau de points : <strong>le nombre de DI est presque toujours supérieur au nombre de DO</strong>, parce que chaque organe commandé rapporte au moins un état, et que les sécurités n’ont pas de sortie associée. Un tableau où les DO dominent a probablement oublié les retours d’état.</p>
+</div>
+<h2 id="s-entrainer">S’entraîner</h2>
+<section class="exo" id="M14-MANUEL-e1" data-exo="M14-MANUEL-e1" data-type="calcul" data-savoir="B8" data-a="IXgueGB4OTs2OS82eHZ4LHhgbHRqdnguNTZ4YGp0anZ4L3hgeCo1MzQuKXgn"><p class="k">Exercice · B8</p><h4>Compter les voies</h4><div class="enonce">
+
+<p>Une sous-station comporte <strong>9 sondes de température</strong>, <strong>4 pompes commandées et surveillées</strong>, <strong>3 vannes modulantes</strong> et <strong>2 pressostats de sécurité</strong>. Combien de points d’entrée tout ou rien, les DI, faut-il prévoir ?</p>
+</div><div class="indice" hidden>Chaque pompe surveillée rapporte un retour d’état, et chaque pressostat est une entrée tout ou rien. Les sondes et les vannes ne comptent pas ici.</div></section>
+<section class="exo" id="M14-MANUEL-e2" data-exo="M14-MANUEL-e2" data-type="calcul" data-savoir="B8" data-a="IXgueGB4OTs2OS82eHZ4LHhgbHRqdnguNTZ4YGp0anZ4L3hgeDc1Pi82Pyl4Jw=="><p class="k">Exercice · B8</p><h4>La réserve</h4><div class="enonce">
+
+<p>Un projet totalise <strong>34 entrées analogiques</strong>. Avec une réserve de <strong>20 %</strong>, combien de modules de <strong>8 voies</strong> faut-il commander ?</p>
+</div><div class="indice" hidden>Appliquez d’abord la réserve au nombre de voies, puis divisez par la capacité d’un module et arrondissez toujours au module supérieur.</div></section>
+<section class="exo" id="M14-MANUEL-e3" data-exo="M14-MANUEL-e3" data-type="calcul" data-savoir="B9" data-a="IXgueGB4OTs2OS82eHZ4LHhgaWljamp0anZ4LjU2eGBpdGp2eC94YHgxDTJ4Jw=="><p class="k">Exercice · B9</p><h4>Ce que rapporte un horaire</h4><div class="enonce">
+
+<p>Une CTA de <strong>7,5 kW</strong> de ventilateurs tourne <strong>168 heures par semaine</strong>. Un programme horaire la ramène à <strong>55 heures</strong>. Quelle énergie électrique cela économise-t-il sur une année de 40 semaines ?</p>
+</div><div class="indice" hidden>Calculez d’abord les heures économisées par semaine, multipliez par la puissance, puis par le nombre de semaines.</div></section>
+<section class="exo" id="M14-MANUEL-e4" data-exo="M14-MANUEL-e4" data-type="justification" data-savoir="B8" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B8</p><h4>Une pompe qui ne tourne pas</h4><div class="enonce">
+
+<p>La supervision affiche la pompe P2 « en marche », mais le circuit est froid et les occupants se plaignent. Expliquez ce que révèle cet affichage et ce que vous vérifiez.</p>
+</div><div class="indice" hidden>Une supervision ne montre que les points qu’on lui a câblés. Demandez-vous si ce qui est affiché est ce que l’automate a demandé, ou ce que la pompe a réellement fait.</div><ul class="verifier" hidden><li>J’ai distingué l’ordre de marche, un DO, du retour d’état, un DI.</li><li>J’ai dit que l’affichage peut ne montrer que l’ordre, sans preuve que la pompe tourne.</li><li>J’ai proposé de vérifier le retour d’état, et son existence même dans le tableau de points.</li><li>J’ai cité une cause physique possible : pompe bloquée, disjoncteur, air dans le circuit, vanne fermée.</li></ul></section>
+<h2 id="vous-verifier">Vous vérifier</h2>
+<div class="quiz">
+<ul>
+<li>Une sonde de température est : <strong>une AI</strong> | une DI</li>
+<li>Un ordre de marche de pompe est : <strong>un DO</strong> | un DI</li>
+<li>Le retour d’état de cette pompe est : <strong>un DI</strong> | le même point</li>
+<li>Une vanne modulante se commande par : <strong>un AO</strong> | un DO</li>
+<li>Un pressostat de sécurité est : <strong>un DI</strong> | un AI</li>
+<li>Le 4 à 20 mA se préfère parce que : <strong>le zéro signale une coupure</strong> | il est plus rapide</li>
+<li>L’intelligence d’une GTB est au niveau : <strong>automatisme</strong> | gestion</li>
+<li>Si la supervision tombe, le bâtiment : <strong>continue de chauffer</strong> | s’arrête</li>
+<li>Un bus KNX transmet à : <strong>9,6 kbit/s</strong> | 100 Mbit/s</li>
+<li>Un segment RS485 accepte : <strong>32 nœuds</strong> | 250 nœuds</li>
+<li>La réserve de voies à prévoir est de : <strong>20 %</strong> | 5 %</li>
+<li>La fonction la plus rentable d’une GTB est : <strong>les programmes horaires</strong> | les courbes de tendance</li>
+<li>Le décret BACS s’applique au-dessus de : <strong>70 kW</strong> | 700 kW</li>
+</ul>
+</div>
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi une GTB déçoit si souvent, et les quatre causes</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un parc entier de GTB installées ne produit pas les économies annoncées. Les causes sont connues, elles sont toujours les mêmes, et aucune n’est technique au sens du matériel.</p>
+<p><strong>Le paramétrage d’origine n’a jamais été repris.</strong> L’installateur livre avec des horaires de chantier et des consignes par défaut. Personne ne les révise à la réception, et ils restent quinze ans. C’est la première cause, et la moins chère à corriger.</p>
+<p><strong>Personne ne regarde.</strong> Une GTB produit des alarmes et des courbes ; encore faut-il quelqu’un dont c’est la mission d’ouvrir la page le lundi matin. Sans exploitant identifié, la supervision devient un écran allumé dans un local technique.</p>
+<p><strong>Les forçages permanents.</strong> Une dérogation posée « juste pour aujourd’hui » et jamais retirée. Sur une installation de dix ans, on trouve couramment vingt à trente points forcés, dont plus personne ne connaît la raison. <strong>Le premier geste d’un audit est de lister les forçages.</strong></p>
+<p><strong>L’absence de comptage par usage.</strong> Sans sous-comptage, aucune économie ne se prouve, donc aucune action ne se justifie devant un gestionnaire. C’est exactement ce que le décret BACS vient corriger, et c’est pourquoi il insiste autant sur l’enregistrement.</p>
+<p><strong>Ce qu’il faut en retenir pour l’épreuve.</strong> Quand un sujet demande « proposer une amélioration de l’exploitation », la bonne réponse est rarement un matériel supplémentaire. C’est un horaire, un seuil, un comptage ou une procédure.</p></div></details>
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qui figure dans un CCTP de GTB</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un lot GTB se spécifie autrement qu’un lot chauffage : on n’y achète pas des objets mais des <strong>fonctions</strong> et une <strong>capacité à évoluer</strong>.</p>
+<p><strong>La liste des points</strong>, d’abord, annexée au CCTP, ligne à ligne, avec pour chacune son type, son support et son adresse. C’est le document contractuel central : ce qui n’y figure pas ne sera pas câblé.</p>
+<p><strong>Les protocoles imposés</strong>, ensuite, et c’est le point sensible. Un CCTP qui impose <strong>BACnet natif</strong> garantit que le maître d’ouvrage pourra changer d’intégrateur ; un CCTP qui laisse le choix se retrouve avec un protocole propriétaire et un fournisseur unique pour vingt ans. Le surcoût initial de l’interopérabilité est de 3 à 8 % ; le coût de son absence est sans limite.</p>
+<p><strong>Les analyses fonctionnelles</strong>, qui décrivent en français ce que chaque équipement doit faire, séquence par séquence, avec les seuils et les temporisations. Elles sont rédigées par le bureau d’études, pas par l’intégrateur, et ce sont elles qu’on vérifie à la réception.</p>
+<p><strong>La propriété des licences et des sources</strong>, enfin : qui possède le programme de l’automate, et qui peut le modifier. Un site dont l’exploitant n’a ni les identifiants ni l’outil de programmation est captif, quelle que soit la qualité du matériel installé. Cette clause tient en trois lignes et elle vaut plus que tout le reste du lot.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La GTB fait des économies. »</strong> Elle <strong>rend les économies possibles</strong> en donnant la mesure et la commande. Ce sont les décisions d’exploitation qui économisent : un horaire modifié, une consigne abaissée, un forçage retiré. Une GTB sans exploitant coûte de l’argent et n’en rapporte aucun.</p>
+<p><strong>« Le point est remonté en supervision, donc il est régulé. »</strong> Remonter et réguler sont deux choses distinctes. Un point peut être affiché sans qu’aucune boucle ne s’en serve, et une boucle peut fonctionner sans que rien ne remonte. Le tableau de points dit ce qui est câblé ; l’analyse fonctionnelle dit ce qui est utilisé.</p>
+<p><strong>« Il faut tout mettre en BACnet/IP, c’est plus moderne. »</strong> L’IP est plus rapide et plus fragile : il dépend du réseau informatique du site, de ses coupures, de ses mises à jour et de sa politique de sécurité. Le bus de terrain lent reste la bonne réponse au <strong>niveau terrain</strong>, et l’IP au niveau <strong>gestion</strong>. Mélanger les deux niveaux est la cause la plus fréquente des GTB qui tombent quand le service informatique change un commutateur.</p></div></details>
+</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M13-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 13</span></a></div></nav>
+<p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p>
+</div>
+<script src="../assets/kit.js?v=13b3bbbd"></script>
+<script src="../assets/site.js?v=13b3bbbd"></script>
+<script src="../assets/vivant.js?v=13b3bbbd"></script>

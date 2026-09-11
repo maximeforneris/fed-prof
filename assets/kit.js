@@ -95,9 +95,13 @@ var socleExo=document.querySelector("[data-site]");
 var CLE_EXO="fed."+(socleExo?socleExo.getAttribute("data-site"):"autonome")+".exo";
 function exoLu(){try{return JSON.parse(localStorage.getItem(CLE_EXO)||"{}")||{};}
                  catch(e){return {};}}
-function exoNote(id,etat){var t=exoLu();t[id]=etat;
+/* L'evenement annonce aussi CE QUI A ETE TAPE et le genre du bloc. Le kit
+   n'en fait rien ; comptes.js, charge sur un site a comptes, l'ecoute pour
+   le recopier dans la base. Sans lui, ces deux champs ne vont nulle part. */
+function exoNote(id,etat,valeur,genre){var t=exoLu();t[id]=etat;
   try{localStorage.setItem(CLE_EXO,JSON.stringify(t));}catch(e){}
-  document.dispatchEvent(new CustomEvent("exo",{detail:{id:id,etat:etat}}));}
+  document.dispatchEvent(new CustomEvent("exo",{detail:{id:id,etat:etat,
+    valeur:valeur===undefined?null:valeur,genre:genre||"exercice"}}));}
 function aplat(s){
   return (s.normalize?s.normalize("NFD").replace(/[\u0300-\u036f]/g,""):s)
          .toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
@@ -200,7 +204,7 @@ function nombre(s){
     verdict.textContent=ok?"C’est juste."
       :(typ==="calcul"?"Ce n’est pas la valeur attendue. Reprenez la méthode."
                       :"Ce n’est pas la réponse attendue.");
-    exoNote(id,ok?"juste":"faux");
+    exoNote(id,ok?"juste":"faux",champ.value,"exercice");
     if(!ok&&indice)indice.hidden=false;
   }
   function compte(){
@@ -209,7 +213,7 @@ function nombre(s){
     verdict.className="verdict "+(n===b.length&&b.length?"juste":"");
     verdict.textContent=n+" point"+(n>1?"s":"")+" sur "+b.length+
       (n===b.length&&b.length?" — votre réponse est complète.":" à vérifier dans votre réponse.");
-    exoNote(id,n===b.length&&b.length?"juste":"vu");
+    exoNote(id,n===b.length&&b.length?"juste":"vu",champ.value,"justification");
   }
   valider.addEventListener("click",juge);
   champ.addEventListener("keydown",function(e){
@@ -302,7 +306,9 @@ function nombre(s){
       ?"La série entière est juste."
       :bons+" sur "+cases.length+(reste.length?" — "+reste.join(", "):"")+".";
     if(tout)se.classList.add("fait");else se.classList.remove("fait");
-    exoNote(id,tout?"juste":"vu");
+    exoNote(id,tout?"juste":(faux?"faux":"vu"),
+      bons+"/"+cases.length+" : "+cases.map(function(c){return c.e.value.trim()||"·";}).join(" | "),
+      "serie");
     if(faux&&indice)indice.hidden=false;
   }
   valider.addEventListener("click",juger);
@@ -6801,13 +6807,26 @@ OUTILS["eclairement"] = {
 };
 
 /* ═══════════════════════════════════════════ QUINZE MINUTES DE LECTURE
-   Page d'essai. L'epreuve commence par quinze a vingt minutes de lecture,
-   et 40 % de ses points sont de l'extraction. Ce jeu entraine le geste sans
-   le contenu : un dossier fictif, dix questions, et pour chacune deux choix,
-   OU chercher, et QUELLE FORME de reponse le verbe demande. Le chronometre
-   tourne. Le retour dit juste ou faux et rappelle la methode ; il ne donne
-   jamais la reponse de fond, il n'y en a pas. */
-var DOSSIER_LECTURE = {
+   Fiche FICHE-LECTURE-DOSSIER. L'epreuve commence par quinze a vingt
+   minutes de lecture, et 40 % de ses points sont de l'extraction. Le jeu
+   entraine le geste sans le contenu : trois dossiers fictifs, un groupe
+   scolaire, une piscine, un immeuble de bureaux, douze consignes chacun, et
+   pour chaque consigne deux choix, OU chercher, et QUELLE FORME de reponse
+   le verbe demande. Le chronometre tourne. Le retour dit juste ou faux et
+   rappelle la methode ; il ne donne jamais de reponse de fond, il n'y en a
+   pas. Un menu choisit le dossier, « au hasard » en premier : le hasard
+   empeche de refaire toujours le meme, le menu permet d'en imposer un en
+   classe. */
+var FORMES_LECTURE = [
+  "un mot, ou une valeur avec son unité",
+  "trois lignes : la donnée, la règle, la conclusion",
+  "l'ordre des étapes, numérotées",
+  "la formule, les valeurs, le résultat souligné avec son unité",
+  "sur le document réponse, au crayon"
+];
+/* chaque consigne : [texte, document, forme, ce que rappelle le retour] */
+var DOSSIERS_LECTURE = [
+ {nom:"Groupe scolaire",
   titre:"Groupe scolaire des Terrasses, extension et rénovation énergétique",
   docs:[
     ["DT 1","Présentation du projet, plan de masse, sources d'énergie"],
@@ -6821,14 +6840,6 @@ var DOSSIER_LECTURE = {
     ["DR 1","Schéma hydraulique à surligner"],
     ["DR 2","Graphe de régulation de la batterie chaude à compléter"]
   ],
-  formes:[
-    "un mot, ou une valeur avec son unité",
-    "trois lignes : la donnée, la règle, la conclusion",
-    "l'ordre des étapes, numérotées",
-    "la formule, les valeurs, le résultat souligné avec son unité",
-    "sur le document réponse, au crayon"
-  ],
-  /* question, document, forme, ce que rappelle le retour */
   questions:[
     ["Indiquer la puissance nominale de la chaudière et son rendement sur PCI.",2,0,
      "« Indiquer » et une fiche technique : on relève, on n'explique pas."],
@@ -6854,21 +6865,118 @@ var DOSSIER_LECTURE = {
      "« Décrire » demande un ordre ; le programme horaire est dans le tableau de points de la GTB."],
     ["Citer les deux sources d'énergie du groupe scolaire.",0,0,
      "« Citer » : deux mots, pris dans la présentation du projet."]
-  ]
-};
+  ]},
+ {nom:"Piscine",
+  titre:"Centre aquatique des Oliviers, construction neuve",
+  docs:[
+    ["DT 1","Présentation du centre : bassins, fréquentation, températures, énergies"],
+    ["DT 2","Schéma de principe de la chaufferie et de la PAC sur air extrait"],
+    ["DT 3","Schéma de la CTA de déshumidification du hall, points de fonctionnement"],
+    ["DT 4","Diagramme de l'air humide"],
+    ["DT 5","Schéma de l'ECS avec récupérateur sur eaux grises"],
+    ["DT 6","Extrait de catalogue : vannes trois voies et servomoteurs"],
+    ["DT 7","Programme de régulation des deux batteries chaudes"],
+    ["DT 8","Consommations mensuelles d'eau et d'énergie, fréquentation"],
+    ["DR 1","Schéma de l'ECS à surligner"],
+    ["DR 2","Graphe de régulation des deux vannes à compléter"]
+  ],
+  questions:[
+    ["Indiquer la température de l'eau des bassins et celle de l'air du hall.",0,0,
+     "« Indiquer » : deux valeurs relevées dans la présentation, avec leur unité."],
+    ["Expliquer pourquoi l'air du hall est maintenu deux degrés au-dessus de l'eau des bassins.",0,1,
+     "Les deux températures sont dans la présentation ; la règle est l'évaporation des bassins, et « expliquer » veut trois lignes."],
+    ["Citer les deux générateurs de la chaufferie.",1,0,
+     "« Citer » : deux noms, lus sur le schéma de principe."],
+    ["Justifier le choix d'une PAC sur air extrait plutôt qu'un rejet direct de l'air du hall.",1,1,
+     "La PAC figure sur le schéma de la chaufferie ; « justifier » demande la donnée, la règle et la conclusion."],
+    ["Déterminer la puissance de la batterie froide à partir des enthalpies d'entrée et de sortie.",2,3,
+     "Les points de fonctionnement sont sur le schéma de la CTA ; « déterminer » est un calcul, qm × Δh, avec l'unité."],
+    ["Placer le point de l'air du hall sur le diagramme et lire son humidité absolue.",3,4,
+     "Un point se place sur le diagramme fourni, qui est un document réponse de fait."],
+    ["Expliquer l'intérêt du récupérateur sur eaux grises.",4,1,
+     "Le récupérateur est sur le schéma de l'ECS ; trois lignes, la donnée, la règle, la conclusion."],
+    ["Surligner le parcours de l'eau froide sanitaire, du compteur au ballon, à travers le récupérateur.",8,4,
+     "« Surligner » se fait sur le DR, jamais sur la copie."],
+    ["Relever le signal de commande et le temps de course du servomoteur retenu.",5,0,
+     "Un extrait de catalogue se lit ; « relever » donne des valeurs, pas des phrases."],
+    ["Décrire, dans l'ordre, l'enclenchement des deux batteries chaudes quand la température de soufflage baisse.",6,2,
+     "« Décrire » demande un ordre ; il est dans le programme de régulation."],
+    ["Compléter le graphe de régulation des deux vannes en séquence.",9,4,
+     "Un graphe se complète sur le DR, au crayon d'abord."],
+    ["Calculer la consommation d'eau par baigneur au mois de juillet.",7,3,
+     "La consommation et la fréquentation sont dans le même tableau ; une division, avec son unité."]
+  ]},
+ {nom:"Immeuble de bureaux",
+  titre:"Immeuble Le Belvédère, rénovation lourde de bureaux",
+  docs:[
+    ["DT 1","Présentation du projet : surfaces, effectif, calendrier des travaux"],
+    ["DT 2","Coupe de la façade avant et après isolation par l'extérieur"],
+    ["DT 3","Fiches techniques des isolants : conductivité, épaisseur, prix"],
+    ["DT 4","Schéma de principe de la sous-station de chauffage urbain"],
+    ["DT 5","Contrat de réseau de chaleur : abonnement et prix du kWh"],
+    ["DT 6","Implantation des modules photovoltaïques en toiture"],
+    ["DT 7","Synoptique de raccordement du photovoltaïque au TGBT"],
+    ["DT 8","Index des compteurs de production, d'injection et de soutirage"],
+    ["DR 1","Tableau de calcul du coefficient U de la façade"],
+    ["DR 2","Synoptique du raccordement à surligner"]
+  ],
+  questions:[
+    ["Indiquer la surface de plancher et l'effectif du bâtiment.",0,0,
+     "« Indiquer » : deux valeurs de la présentation, avec leur unité."],
+    ["Calculer la résistance thermique du nouvel isolant, à partir de son épaisseur et de sa conductivité.",2,3,
+     "L'épaisseur et la conductivité sont sur la fiche de l'isolant ; R = e / λ, avec l'unité."],
+    ["Compléter le tableau de calcul du coefficient U de la façade isolée.",8,4,
+     "Un tableau à compléter est un document réponse."],
+    ["Expliquer pourquoi l'isolation par l'extérieur supprime le pont thermique du plancher.",1,1,
+     "La coupe avant et après montre le plancher ; trois lignes, la donnée, la règle, la conclusion."],
+    ["Nommer les éléments repérés 1 à 4 sur la sous-station.",3,0,
+     "« Nommer » : un mot par repère, lu sur le schéma de principe."],
+    ["Décrire le parcours de l'eau du réseau primaire, de l'arrivée au retour.",3,2,
+     "« Décrire » demande un ordre ; on suit le schéma dans le sens de l'eau."],
+    ["Calculer la part fixe annuelle de la facture de chaleur.",4,3,
+     "L'abonnement est dans le contrat ; une multiplication par la puissance souscrite, avec l'unité."],
+    ["Relever la puissance crête installée et le nombre d'onduleurs.",5,0,
+     "« Relever » : deux valeurs, lues sur l'implantation en toiture."],
+    ["Justifier l'orientation est-ouest retenue pour les modules.",5,1,
+     "L'orientation est sur l'implantation ; la règle est la forme de la courbe de production sur la journée."],
+    ["Expliquer pourquoi l'onduleur s'arrête lors d'une coupure du réseau.",6,1,
+     "Le synoptique montre la protection de découplage ; trois lignes, la donnée, la règle, la conclusion."],
+    ["Surligner le parcours de l'énergie produite quand la production dépasse la consommation.",9,4,
+     "« Surligner » se fait sur le DR, jamais sur la copie."],
+    ["Calculer le taux d'autoconsommation du mois de mai à partir des index.",7,3,
+     "Trois index, deux différences, un quotient : c'est un calcul, et il s'écrit."]
+  ]}
+];
 
 OUTILS["lecture-dossier"] = {
   titre:"Quinze minutes de lecture : où chercher, et sous quelle forme répondre",
-  intro:"Un dossier fictif, douze questions. Pour chacune, dites dans quel "+
+  intro:"Un dossier fictif, douze consignes. Pour chacune, dites dans quel "+
         "document se trouve la réponse, et quelle forme le verbe de consigne "+
         "attend. Le chronomètre tourne : l'épreuve donne quinze minutes.",
   monte:function(d){
-    var D=DOSSIER_LECTURE, debut=null, fini=false, tick=null;
-    var tete=E("div",{"class":"res"});
-    tete.innerHTML="<p><b>"+D.titre+"</b> · les documents du dossier :</p>"+
-      "<ul style='columns:2;margin:6px 0 0;padding-left:18px'>"+D.docs.map(function(x){
-        return "<li><b>"+x[0]+"</b> · "+x[1]+"</li>";}).join("")+"</ul>";
-    d.appendChild(tete);
+    var D=null, debut=null, fini=false, tick=null;
+    var ch=E("div",{"class":"champ"});
+    ch.appendChild(E("label",{},"Le dossier"));
+    var vD=E("span",{"class":"v"},""); ch.appendChild(vD);
+    var selD0=E("select",{},'<option value="-1">Au hasard</option>'+DOSSIERS_LECTURE.map(function(x,i){
+      return '<option value="'+i+'">'+x.nom+"</option>";}).join(""));
+    ch.appendChild(selD0); d.appendChild(ch);
+    var tete=E("div",{"class":"res"}); d.appendChild(tete);
+    function afficheTete(){
+      var i=+selD0.value;
+      if (i<0 && !D){
+        vD.textContent="tiré au sort au départ";
+        tete.innerHTML="<p>Le dossier sera <b>tiré au sort</b> quand vous appuierez sur Commencer : "+
+          DOSSIERS_LECTURE.map(function(x){return x.nom.toLowerCase();}).join(", ")+".</p>";
+        return;
+      }
+      var X=D||DOSSIERS_LECTURE[i];
+      vD.textContent=X.nom.toLowerCase();
+      tete.innerHTML="<p><b>"+X.titre+"</b> · les documents du dossier :</p>"+
+        "<ul style='columns:2;margin:6px 0 0;padding-left:18px'>"+X.docs.map(function(x){
+          return "<li><b>"+x[0]+"</b> · "+x[1]+"</li>";}).join("")+"</ul>";
+    }
+    selD0.addEventListener("change",function(){ if (!debut||fini){ D=null; afficheTete(); } });
     var cmd=E("div",{style:"display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;align-items:center"});
     var bGo=E("button",{"class":"bt p",type:"button"},"Commencer");
     var bVer=E("button",{"class":"bt",type:"button",disabled:"disabled"},"Vérifier");
@@ -6876,9 +6984,9 @@ OUTILS["lecture-dossier"] = {
     cmd.appendChild(bGo); cmd.appendChild(bVer); cmd.appendChild(chrono); d.appendChild(cmd);
     var liste=E("div",{style:"display:none"}); d.appendChild(liste);
     var res=E("div",{"class":"res",style:"margin-top:12px;display:none"}); d.appendChild(res);
-    var ordre=[], selD=[], selF=[], lignes=[];
+    var ordre=[], selDoc=[], selF=[], lignes=[];
     function construit(){
-      liste.innerHTML=""; selD=[]; selF=[]; lignes=[];
+      liste.innerHTML=""; selDoc=[]; selF=[]; lignes=[];
       ordre=D.questions.map(function(q,i){return i;});
       for (var i=ordre.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=ordre[i];ordre[i]=ordre[j];ordre[j]=t;}
       ordre.forEach(function(qi,k){
@@ -6888,11 +6996,11 @@ OUTILS["lecture-dossier"] = {
         var g=E("div",{style:"display:flex;gap:10px;flex-wrap:wrap"});
         var s1=E("select",{},"<option value=''>Où chercher ?</option>"+D.docs.map(function(x,i){
           return "<option value='"+i+"'>"+x[0]+" · "+x[1]+"</option>";}).join(""));
-        var s2=E("select",{},"<option value=''>Quelle forme de réponse ?</option>"+D.formes.map(function(x,i){
+        var s2=E("select",{},"<option value=''>Quelle forme de réponse ?</option>"+FORMES_LECTURE.map(function(x,i){
           return "<option value='"+i+"'>"+x+"</option>";}).join(""));
         g.appendChild(s1); g.appendChild(s2); bloc.appendChild(g);
         var retour=E("p",{style:"margin:8px 0 0;display:none"}); bloc.appendChild(retour);
-        liste.appendChild(bloc); selD.push(s1); selF.push(s2); lignes.push(retour);
+        liste.appendChild(bloc); selDoc.push(s1); selF.push(s2); lignes.push(retour);
       });
     }
     function affiche(){
@@ -6902,37 +7010,43 @@ OUTILS["lecture-dossier"] = {
       chrono.style.color=m>=15?V("chaud"):V("encre");
     }
     bGo.addEventListener("click",function(){
+      var i=+selD0.value;
+      D=DOSSIERS_LECTURE[i<0?Math.floor(Math.random()*DOSSIERS_LECTURE.length):i];
+      afficheTete();
       construit(); liste.style.display="block"; res.style.display="none";
       fini=false; debut=Date.now(); bVer.disabled=false; bGo.textContent="Recommencer";
       if (tick) clearInterval(tick); tick=setInterval(affiche,500); affiche();
     });
     bVer.addEventListener("click",function(){
-      if (fini) return;
+      if (fini||!D) return;
       fini=true; clearInterval(tick); affiche();
       var nd=0, nf=0, vides=0;
       ordre.forEach(function(qi,k){
-        var q=D.questions[qi], vd=selD[k].value, vf=selF[k].value;
+        var q=D.questions[qi], vd=selDoc[k].value, vf=selF[k].value;
         if (vd===""&&vf==="") vides++;
-        var okd=(+vd===q[1]), okf=(+vf===q[2]);
+        var okd=(vd!==""&&+vd===q[1]), okf=(vf!==""&&+vf===q[2]);
         if (okd) nd++; if (okf) nf++;
-        selD[k].disabled=true; selF[k].disabled=true;
+        selDoc[k].disabled=true; selF[k].disabled=true;
         var r=lignes[k]; r.style.display="block";
         r.innerHTML=(okd?"<span style='color:"+V("vert")+"'><b>Document :</b> juste.</span> ":"<span style='color:"+V("chaud")+"'><b>Document :</b> non, c'était le "+D.docs[q[1]][0]+".</span> ")+
-                    (okf?"<span style='color:"+V("vert")+"'><b>Forme :</b> juste.</span> ":"<span style='color:"+V("chaud")+"'><b>Forme :</b> non, "+D.formes[q[2]]+".</span> ")+
+                    (okf?"<span style='color:"+V("vert")+"'><b>Forme :</b> juste.</span> ":"<span style='color:"+V("chaud")+"'><b>Forme :</b> non, "+FORMES_LECTURE[q[2]]+".</span> ")+
                     "<span style='color:var(--encre2)'>"+q[3]+"</span>";
       });
       var s=Math.floor((Date.now()-debut)/1000), m=Math.floor(s/60);
       res.style.display="block";
       res.innerHTML="<div class='gros'>"+
+        "<span><b>Dossier</b><span>"+D.nom+"</span></span>"+
         "<span><b>Documents trouvés</b><span>"+nd+" / "+ordre.length+"</span></span>"+
         "<span><b>Formes justes</b><span>"+nf+" / "+ordre.length+"</span></span>"+
         "<span><b>Temps</b><span>"+m+" min "+(s%60)+" s</span></span>"+
         "<span><b>Sans réponse</b><span>"+vides+"</span></span></div>"+
         "<p>"+(m>=15?"<b>Plus de quinze minutes :</b> à l'épreuve, ce temps est pris sur la première partie. ":"<b>Dans les quinze minutes.</b> ")+
         (nd<ordre.length-2?"Plusieurs documents ratés : relisez le sommaire des DT avant les questions, c'est la règle 1 de la lecture. ":"")+
-        (nf<ordre.length-2?"Plusieurs formes ratées : le verbe de la consigne dit ce que le correcteur attend, relisez le tableau des verbes de la séance 25.":"")+"</p>";
+        (nf<ordre.length-2?"Plusieurs formes ratées : le verbe de la consigne dit ce que le correcteur attend, relisez le tableau des verbes de la séance 25. ":"")+
+        "Changez de dossier pour vérifier que le geste tient sur un autre bâtiment.</p>";
       res.scrollIntoView({behavior:"smooth",block:"nearest"});
     });
+    afficheTete();
   }
 };
 
@@ -7280,6 +7394,123 @@ OUTILS["saison-pac"] = {
     });
     bRaz.addEventListener("click",reset);
     reset();
+  }
+};
+
+/* ═══════════════════════════════════════════ CE QUE CONTIENT UN KILO D'AIR
+   Fiche enthalpie. Deux airs, A et B, chacun par sa temperature et son
+   humidite relative. Pour chacun, h en trois morceaux : l'air sec (1,006 θ),
+   la vaporisation de son eau (2 501 r), et la vapeur rechauffee (1,83 θ r).
+   Puis la difference, ce qu'elle vaut en puissance pour un debit, et ce que
+   le thermometre seul en aurait dit : c'est tout l'argument de la fiche. */
+OUTILS["enthalpie-air"] = {
+  titre:"Ce que contient un kilogramme d'air",
+  intro:"Deux airs, et pour chacun son enthalpie en morceaux : ce que porte "+
+        "l'air sec, ce que porte son eau. Puis la différence, ce qu'elle vaut "+
+        "pour un débit, et ce que le thermomètre seul en aurait dit.",
+  monte:function(d){
+    var DEF={t1:30, p1:60, t2:14, p2:95, qm:1.5};
+    var P={}; for (var k0 in DEF) P[k0]=DEF[k0];
+    var SCEN=[
+      ["Libre", null],
+      ["1 · Deux airs à 20 °C, l'un sec, l'autre humide", {t1:20,p1:30,t2:20,p2:80,qm:1}],
+      ["2 · L'air neuf d'hiver, chauffé à 19 °C", {t1:-7,p1:90,t2:19,p2:15,qm:1}],
+      ["3 · La batterie froide d'été", {}],
+      ["4 · L'humidificateur à vapeur", {t1:19,p1:15,t2:19,p2:40,qm:1}],
+      ["5 · La salle de bains et le séjour", {t1:24,p1:90,t2:19,p2:40,qm:1}]
+    ];
+    var maj=[], reg={}, enScen=false;
+    var g=E("div",{"class":"g2"}), c1=E("div"), c2=E("div");
+    var chS=E("div",{"class":"champ"});
+    chS.appendChild(E("label",{},"Deux airs à comparer"));
+    var vS=E("span",{"class":"v"},""); chS.appendChild(vS);
+    var selS=E("select",{},SCEN.map(function(s,i){
+      return '<option value="'+i+'"'+(i===3?" selected":"")+'>'+s[0]+"</option>";}).join(""));
+    chS.appendChild(selS); c1.appendChild(chS);
+    function touche(){ if(!enScen){selS.value="0";} calc(); }
+    curseur(c1,maj,P,"Air A · température","t1",-15,40,0.5,1," °C",touche,reg);
+    curseur(c1,maj,P,"Air A · humidité relative","p1",5,100,1,0," %",touche,reg);
+    curseur(c2,maj,P,"Air B · température","t2",-15,40,0.5,1," °C",touche,reg);
+    curseur(c2,maj,P,"Air B · humidité relative","p2",5,100,1,0," %",touche,reg);
+    curseur(c2,maj,P,"Débit d'air sec","qm",0.1,5,0.1,1," kg/s",touche,reg);
+    g.appendChild(c1); g.appendChild(c2); d.appendChild(g);
+    selS.addEventListener("change",function(){
+      var s=SCEN[+this.value]; if(!s[1]) return;
+      enScen=true;
+      for (var k in DEF) P[k]=DEF[k];
+      for (var k2 in s[1]) P[k2]=s[1][k2];
+      for (var k3 in reg) reg[k3].value=P[k3];
+      enScen=false; calc();
+    });
+
+    var W=680,H=236, XZ=230, XM=640;
+    var svg=S("svg",{viewBox:"0 0 "+W+" "+H,role:"img",
+      "aria-label":"L'enthalpie des deux airs, en trois morceaux : l'air sec, la vaporisation de l'eau, la vapeur réchauffée"});
+    d.appendChild(svg);
+    var res=E("div",{"class":"res",style:"margin-top:12px"}); d.appendChild(res);
+
+    function morceaux(t,p){
+      var r=rAir(t,p/100);
+      return {r:r, sec:1.006*t, lat:r/1000*2501, vap:r/1000*1.83*t, h:hAirR(t,r)};
+    }
+    function txt(x,y,t,cls,anc,coul){
+      svg.appendChild(S("text",{x:x,y:y,"text-anchor":anc||"start","class":cls||"s-pet",fill:V(coul||"encre2")},t));
+    }
+    function calc(){
+      maj.forEach(function(x){x();});
+      vS.textContent=selS.value==="0"?"réglages à la main":"chargé";
+      var A=morceaux(P.t1,P.p1), B=morceaux(P.t2,P.p2);
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+      /* l'echelle : de la plus petite valeur negative a la plus grande enthalpie */
+      var lo=Math.min(0,A.sec,B.sec), hi=Math.max(20,A.h,B.h,A.sec+A.lat,B.sec+B.lat)*1.08;
+      function px(v){ return XZ+(XM-XZ)*(v-lo)/(hi-lo); }
+      txt(24,20,"CE QUE CONTIENT 1 kg D'AIR SEC, ET SON EAU","s-tit","start","encre");
+      /* le zero de reference */
+      svg.appendChild(S("line",{x1:px(0),y1:34,x2:px(0),y2:176,stroke:V("encre"),"stroke-width":"1.5","stroke-dasharray":"3 3"}));
+      txt(px(0),192,"0 : air sec et eau liquide à 0 °C","s-pet","middle");
+      function barre(y,m,nom,det){
+        txt(XZ-12,y+15,nom,"s-nom","end","encre");
+        txt(XZ-12,y+32,det,"s-pet","end");
+        /* l'air sec, a partir de zero, vers la gauche s'il fait moins de 0 °C */
+        var x0=px(Math.min(0,m.sec)), x1=px(Math.max(0,m.sec));
+        svg.appendChild(S("rect",{x:x0,y:y,width:Math.max(1,x1-x0),height:24,fill:V("chaud"),opacity:"0.8"}));
+        /* l'eau : la vaporisation, puis la vapeur rechauffee, empilees apres l'air sec */
+        var base=m.sec, xa=px(base), xb=px(base+m.lat), xc=px(base+m.lat+m.vap);
+        svg.appendChild(S("rect",{x:Math.min(xa,xb),y:y,width:Math.max(1,Math.abs(xb-xa)),height:24,fill:V("froid"),opacity:"0.8"}));
+        if (Math.abs(xc-xb)>0.5)
+          svg.appendChild(S("rect",{x:Math.min(xb,xc),y:y,width:Math.abs(xc-xb),height:24,fill:V("violet"),opacity:"0.8"}));
+        var xh=px(m.h);
+        svg.appendChild(S("line",{x1:xh,y1:y-4,x2:xh,y2:y+28,stroke:V("encre"),"stroke-width":"2.5"}));
+        txt(Math.min(xh+6,XM-4),y+17,"h = "+fr(m.h,1),"s-lab",xh+80>W?"end":"start","encre");
+      }
+      barre(44,A,"Air A",fr(P.t1,1)+" °C · "+fr(P.p1,0)+" % · r = "+fr(A.r,1)+" g/kg");
+      barre(112,B,"Air B",fr(P.t2,1)+" °C · "+fr(P.p2,0)+" % · r = "+fr(B.r,1)+" g/kg");
+      /* la legende */
+      [["chaud","air sec : 1,006 θ"],["froid","vaporiser l'eau : 2 501 r"],["violet","vapeur réchauffée : 1,83 θ r"]].forEach(function(l,i){
+        var x=24+i*206;
+        svg.appendChild(S("rect",{x:x,y:210,width:18,height:12,fill:V(l[0]),opacity:"0.8"}));
+        txt(x+24,220,l[1],"s-pet","start");
+      });
+      var dh=B.h-A.h, dsens=1.006*(P.t2-P.t1), dlat=dh-dsens;
+      var phi=P.qm*dh, phiT=P.qm*1.006*(P.t2-P.t1), deau=P.qm*(B.r-A.r)/1000*3600;
+      var parts=Math.abs(dh)>0.3?100*Math.abs(dlat)/Math.abs(dh):0;
+      res.innerHTML="<div class='gros'>"+
+        "<span><b>h de A</b><span>"+fr(A.h,1)+" kJ/kg</span></span>"+
+        "<span><b>h de B</b><span>"+fr(B.h,1)+" kJ/kg</span></span>"+
+        "<span><b>Δh = hB − hA</b><span>"+(dh>=0?"+ ":"− ")+fr(Math.abs(dh),1)+" kJ/kg</span></span>"+
+        "<span><b>Dont l'eau</b><span>"+fr(parts,0)+" %</span></span>"+
+        "</div><div class='gros' style='margin-top:8px'>"+
+        "<span><b>Puissance, qm × Δh</b><span>"+fr(Math.abs(phi),1)+" kW "+(phi>=0?"à fournir":"à retirer")+"</span></span>"+
+        "<span><b>Ce que dirait le thermomètre, qm × 1,006 × Δθ</b><span>"+fr(Math.abs(phiT),1)+" kW</span></span>"+
+        "<span><b>Eau</b><span>"+(Math.abs(deau)<0.5?"aucune":fr(Math.abs(deau),1)+" kg/h "+(deau>0?"ajoutés":"retirés"))+"</span></span>"+
+        "</div><p>"+(Math.abs(P.t2-P.t1)<0.3&&Math.abs(dh)>1
+          ? "<b>Même température, et pourtant "+fr(Math.abs(dh),1)+" kJ/kg d'écart :</b> le thermomètre ne voit rien, l'enthalpie voit l'eau. Passer de l'un à l'autre coûte "+fr(Math.abs(phi),1)+" kW."
+          : parts>35
+          ? "<b>"+fr(parts,0)+" % de l'écart est de l'eau</b> qui s'est vaporisée ou condensée. Le calcul par la température seule donnerait "+fr(Math.abs(phiT),1)+" kW au lieu de "+fr(Math.abs(phi),1)+" : c'est la raison de lire h, et pas θ."
+          : "Ici l'eau ne bouge presque pas : la différence d'enthalpie et le calcul par la température disent la même chose, à quelques pour cent près. Ce n'est vrai que tant que r ne change pas.")+
+        (A.h<0||B.h<0?" Une enthalpie <b>négative</b> n'est pas une erreur : l'air est sous le zéro de référence, 0 °C, et seules les différences comptent.":"")+"</p>";
+    }
+    calc();
   }
 };
 

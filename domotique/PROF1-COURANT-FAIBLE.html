@@ -1,0 +1,215 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Prof 1 — le courant faible</title>
+<link rel="stylesheet" href="../assets/kit.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/site.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/calque.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/vivant.css?v=13b3bbbd">
+
+<div class="page" data-site="fed-prof" data-page="domotique/PROF1-COURANT-FAIBLE" data-public="prof">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="PROF2-MEDIAS.html" rel="next" title="Prof 2 — les médias" aria-label="Prof 2 — les médias">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/PROF1-COURANT-FAIBLE">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">Formation du professeur · BTS FED option C</p>
+    <h1>Le courant faible<span>et les deux chaînes</span></h1>
+  </div>
+  <p class="accroche">Pourquoi le mot « pré-actionneur » existe et pourquoi les catalogues ne l'emploient pas. D'où viennent 29 V, 10 mA, 64 participants et 350 mètres, le dernier se retrouve à la main en trois lignes. Et les vingt nombres qui permettent de refuser une valeur avant d'avoir refait le calcul.</p>
+  
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B8-1 Architecture des systèmes centralisés · niveau 3</span><span class="tag n3">D1-1 Médias de communication · niveau 3</span><span class="tag">C1-1 Distribution BT · niveau 2</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b>La loi d'Ohm et la puissance électrique</b><span class="car">courant faible veut dire puissance faible, pas tension faible ; U, I et P se manient sans hésiter.</span></li><li><b>Signal et énergie, au niveau du bac</b><span class="car">un fil peut porter l'un, l'autre ou les deux ; la page construit tout sur cette frontière.</span></li><li><b>Le référentiel, savoirs B8 et D1</b><span class="car">la page cite les niveaux exigés ; les avoir sous la main évite d'enseigner le réseau d'un ingénieur à des techniciens.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#ce-qu-un-etudiant-demande-c-est-ou-passe-le-courant">Ce qu’un étudiant demande, c’est où passe le courant</a><a href="#la-frontiere-et-le-seul-mot-qui-compte">La frontière, et le seul mot qui compte</a><a href="#courant-faible-ne-veut-pas-dire-sans-danger">« Courant faible » ne veut pas dire « sans danger »</a><a href="#ce-qui-circule-vraiment-dans-les-deux-fils-d-un-bus">Ce qui circule vraiment dans les deux fils d’un bus</a><a href="#les-vingt-nombres">Les vingt nombres</a><a href="#les-questions-qui-destabilisent">Les questions qui déstabilisent</a></div></nav>
+<h2 id="ce-qu-un-etudiant-demande-c-est-ou-passe-le-courant">Ce qu’un étudiant demande, c’est où passe le courant</h2>
+<p>Presque jamais « quelle est la formule ». Pourquoi un module s’appelle actionneur chez le fabricant et pré-actionneur en cours, pourquoi le bus fait 29 V et pas 24, pourquoi une ligne s’arrête à 350 mètres alors que le câble en fait mille.</p>
+<p>Les réponses tiennent en deux idées : <strong>une frontière</strong>, celle où l’information devient de la puissance, et <strong>une chute de tension</strong>. Le reste en découle, y compris les trois longueurs que tout le monde apprend par cœur sans savoir d’où elles sortent.</p>
+<div class="cle">
+<p>Ce qui rapporte le plus en classe : <strong>savoir refuser un nombre en une seconde</strong>. Un bus à 24 V, un participant à 100 mA, une ligne de 2 kilomètres, la table d’ordres de grandeur en fin de page est l’outil le plus rentable de ce document.</p>
+</div>
+<h2 id="la-frontiere-et-le-seul-mot-qui-compte">La frontière, et le seul mot qui compte</h2>
+<figure class="schema"><div class="dessin" data-schema="deux-chaines"></div><figcaption>La chaîne d’information porte des ordres et des états ; la chaîne d’énergie porte de la puissance. Elles se rejoignent en un point, et un seul.</figcaption></figure>
+<p>Un système domotique porte deux chaînes qui ne se touchent qu’à un endroit. Le <strong>pré-actionneur</strong> est ce point : il reçoit un ordre en petite puissance et établit ou coupe la puissance qui fait agir l’actionneur. Relais, contacteur, télérupteur, variateur, gradateur, tous font cela et rien d’autre.</p>
+<p>L’<strong>actionneur</strong>, lui, transforme l’énergie en effet dans le bâtiment : lumière, mouvement, ouverture. Le critère qui ne rate jamais : <em>le pré-actionneur est traversé par la puissance sans produire aucun effet ; l’actionneur produit l’effet.</em></p>
+<div class="piege">
+<p>Les fabricants vendent des « actionneurs KNX ». Ce sont des <strong>pré-actionneurs</strong>. Le mot est employé au sens commercial (l’appareil qui agit sur le circuit) et non au sens de la chaîne fonctionnelle. Les deux vocabulaires coexisteront toute l’année sur le même plan de travail, et c’est le référentiel qui est interrogé à l’examen.</p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi ce mot existe, et d&#39;où il vient</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Il vient de l’automatique, où l’on sépare <strong>partie commande</strong> et <strong>partie opérative</strong>. La partie commande décide, la partie opérative agit ; entre les deux il faut un organe capable de recevoir un signal de quelques milliampères et de commuter plusieurs ampères. C’est cette fonction d’amplification et de séparation qui porte un nom propre.</p>
+<p>La conséquence pratique est plus intéressante que la définition : <strong>le pré-actionneur est le seul endroit où une panne peut être des deux côtés à la fois.</strong> Un actionneur muet peut venir d’un ordre qui n’arrive pas, d’un module défaillant, ou d’une puissance absente. C’est pour cela que le diagnostic commence toujours là, on regarde d’abord si l’ordre est arrivé, et le voyant du module répond en une seconde.</p></div></details>
+</div><h2 id="courant-faible-ne-veut-pas-dire-sans-danger">« Courant faible » ne veut pas dire « sans danger »</h2>
+<p>Le vocabulaire de métier oppose courant fort et courant faible. Le vocabulaire normatif, lui, ne connaît pas ces mots : il connaît des <strong>domaines de tension</strong> et des <strong>modes de protection</strong>.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Séparation de sécurité</th>
+<th>Relié à la terre</th>
+<th>Ce que ça vaut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TBTS</strong></td>
+<td>oui</td>
+<td>non</td>
+<td>la protection la plus complète</td>
+</tr>
+<tr>
+<td><strong>TBTP</strong></td>
+<td>oui</td>
+<td>oui</td>
+<td>quand une masse doit être mise à la terre</td>
+</tr>
+<tr>
+<td><strong>TBTF</strong></td>
+<td>non</td>
+<td>sans objet</td>
+<td>aucune protection contre les contacts indirects</td>
+</tr>
+</tbody>
+</table></div>
+<p>Un bus KNX est en <strong>TBTS</strong>. Les fils de commande d’un télérupteur ordinaire sont en <strong>230 V</strong> : sa bobine l’est. Les deux sont du « courant faible » au sens du métier, un seul est sans danger au toucher.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">D&#39;où viennent 50 V et 120 V</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Ce sont les limites de la très basse tension en <strong>milieu sec</strong> : 50 V en alternatif, 120 V en continu. Elles ne sont pas arbitraires, elles encadrent le courant qui traverserait un corps humain à travers une impédance de peau sèche, sous le seuil de fibrillation.</p>
+<p>En <strong>milieu mouillé</strong>, les limites tombent à 25 V et 60 V, et c’est ce qui change tout dans une salle de bains ou une piscine. Le rapport de deux entre alternatif et continu tient à la fréquence : à 50 Hz, le courant alternatif est nettement plus dangereux à intensité égale.</p>
+<p>Ce qu’il faut faire dire aux étudiants : <strong>la tension ne tue pas, le courant tue</strong> , et la tension n’est réglementée que parce qu’elle détermine le courant à impédance donnée.</p></div></details>
+</div><h2 id="ce-qui-circule-vraiment-dans-les-deux-fils-d-un-bus">Ce qui circule vraiment dans les deux fils d’un bus</h2>
+<p>Sur un bus KNX TP1, la paire porte <strong>l’alimentation et l’information en même temps</strong>. L’alimentation est un 29 V continu ; l’information est une modulation superposée, de quelques volts, que chaque participant fabrique en tirant brièvement sur le bus.</p>
+<div class="formule">
+<p><strong>29 V continu · 10 mA par participant · 64 participants</strong></p>
+<ul>
+<li><strong>29 V</strong><span>: tension nominale du bus, fournie par une alimentation de 30 V à self</span></li>
+<li><strong>10 mA</strong><span>: consommation normalisée d’un participant sur le bus</span></li>
+<li><strong>64</strong><span>: nombre maximal de participants sur une ligne</span></li>
+<li><strong>640 mA</strong><span>: le calibre d’alimentation le plus fort, soit exactement 64 × 10 mA</span></li>
+</ul>
+<blockquote>
+<p>Les deux limites d’une ligne tombent ensemble, et ce n’est pas un hasard : elles sont le même nombre écrit deux fois.</p>
+</blockquote>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">D&#39;où sortent les 350 mètres, la démonstration tient en trois lignes</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le câble TP1 a des conducteurs de <strong>0,8 mm de diamètre</strong>, soit une section de <strong>0,50 mm²</strong>. Avec une résistivité du cuivre de 0,0172 Ω·mm²/m, un conducteur fait <strong>0,034 Ω par mètre</strong>, et la boucle aller-retour <strong>0,069 Ω par mètre</strong>.</p>
+<p>Sur 350 m, la boucle vaut donc <strong>24 Ω</strong>. Si les 640 mA traversaient toute la longueur, la chute serait de <strong>15,4 V</strong>, le bus tomberait à 13,6 V et plus rien ne fonctionnerait. Mais les participants sont <strong>répartis</strong> le long de la ligne : le courant décroît de 640 mA à zéro, et la chute réelle vaut la moitié, soit <strong>7,7 V</strong>.</p>
+<p>Il reste <strong>21,3 V</strong> au participant le plus éloigné. Un appareil KNX fonctionne jusqu’à <strong>21 V</strong>. Le compte tombe juste, à trois dixièmes de volt près.</p>
+<p>C’est une reconstruction, pas la dérivation officielle, mais elle donne le bon ordre de grandeur, elle explique pourquoi la règle porte sur la distance à <em>l’alimentation</em> et non sur la longueur totale, et elle se refait au tableau en deux minutes. C’est le meilleur usage qu’on puisse faire de cette limite en cours.</p></div></details>
+</div><div class="piege">
+<p>La règle des 350 m se mesure <strong>de l’alimentation au participant</strong>, pas depuis le tableau. Déplacer l’alimentation sur la ligne change le résultat sans changer un mètre de câble, et c’est souvent la correction la moins chère d’une ligne non conforme.</p>
+</div>
+<h2 id="les-vingt-nombres">Les vingt nombres</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Grandeur</th>
+<th>Ordre de grandeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tension d’un bus KNX TP1</td>
+<td><strong>29 V</strong> continu, TBTS</td>
+</tr>
+<tr>
+<td>Tension minimale de fonctionnement d’un participant</td>
+<td>21 V</td>
+</tr>
+<tr>
+<td>Consommation d’un participant sur le bus</td>
+<td><strong>10 mA</strong></td>
+</tr>
+<tr>
+<td>Calibres d’alimentation courants</td>
+<td>160 · 320 · <strong>640 mA</strong></td>
+</tr>
+<tr>
+<td>Participants par ligne</td>
+<td><strong>64</strong> : jusqu’à 256 avec répéteurs</td>
+</tr>
+<tr>
+<td>Section d’un conducteur TP1</td>
+<td>0,50 mm² : 0,8 mm de diamètre</td>
+</tr>
+<tr>
+<td>Résistance d’une boucle TP1</td>
+<td>0,069 Ω/m</td>
+</tr>
+<tr>
+<td>Débit d’un bus KNX TP1</td>
+<td><strong>9 600 bit/s</strong></td>
+</tr>
+<tr>
+<td>Durée d’un télégramme court</td>
+<td>une vingtaine de millisecondes</td>
+</tr>
+<tr>
+<td>Longueurs d’une ligne</td>
+<td><strong>350 · 700 · 1 000 m</strong></td>
+</tr>
+<tr>
+<td>Limite TBT en milieu sec</td>
+<td>50 V alternatif · 120 V continu</td>
+</tr>
+<tr>
+<td>Limite TBT en milieu mouillé</td>
+<td>25 V alternatif · 60 V continu</td>
+</tr>
+<tr>
+<td>Ethernet cuivre, entre deux actifs</td>
+<td><strong>100 m</strong> : 90 m de lien, 2 × 5 m de cordons</td>
+</tr>
+<tr>
+<td>PoE, puissance côté source</td>
+<td>15,4 · 30 · jusqu’à 90 W</td>
+</tr>
+<tr>
+<td>Portée radio 868 MHz en intérieur</td>
+<td>20 à 30 m, murs compris</td>
+</tr>
+<tr>
+<td>CPL KNX PL110</td>
+<td>porteuse 110 kHz, 1 200 bit/s</td>
+</tr>
+<tr>
+<td>Bus DALI</td>
+<td>64 adresses, ±16 V, 250 mA, 300 m</td>
+</tr>
+<tr>
+<td>Modbus RTU sur RS-485</td>
+<td>32 nœuds par segment, 1 200 m à 9 600 bauds</td>
+</tr>
+<tr>
+<td>Éclairement d’un bureau</td>
+<td>300 à 500 lx</td>
+</tr>
+<tr>
+<td>Courant d’une gâche électrique</td>
+<td>0,3 à 0,5 A sous 12 V</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi 29 V, et pas 24 comme partout ailleurs ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que le bus doit <strong>alimenter et transmettre</strong> sur les mêmes deux fils, et que la transmission consomme de la marge de tension.</p>
+<p>L’alimentation délivre 30 V ; la self qui la suit maintient la tension pendant les brèves chutes provoquées par l’émission d’un bit. Le bus s’établit à 29 V au repos, descend de quelques volts à chaque bit dominant, et doit rester au-dessus de 21 V chez le participant le plus éloigné. Entre 29 et 21, il reste 8 V : c’est exactement le budget de chute de tension calculé plus haut.</p>
+<p>À 24 V, ce budget tomberait à 3 V et une ligne ne dépasserait pas 140 mètres. Le choix de 29 V n’est donc pas une lubie de norme : c’est ce qui rend une ligne de 350 mètres possible.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Si le bus alimente les appareils, pourquoi un actionneur a-t-il besoin du 230 V ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce qu’il est des deux côtés de la frontière. Le bus alimente son <strong>électronique de communication</strong>, quelques milliampères, de quoi écouter, décoder et décider. Il n’alimente pas les <strong>contacts de puissance</strong>, qui commutent des ampères sous 230 V.</p>
+<p>C’est vérifiable à l’œil : un module de sortie a deux bornes de bus et des bornes de puissance séparées, avec une distance d’isolement visible entre les deux. Cette distance <em>est</em> la séparation de sécurité qui fait du bus un circuit TBTS.</p>
+<p>Un poussoir bus, lui, n’a que deux fils. C’est ce qui montre le mieux la différence : il n’agit sur rien, il ne fait qu’informer.</p></div></details>
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">« Est-ce qu&#39;on ne pourrait pas tout faire en Wi-Fi ? »</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La question est plus sérieuse qu’elle n’en a l’air, et la réponse tient en trois points, du plus faible au plus solide.</p>
+<p><strong>Le débit n’est pas le sujet.</strong> Un télégramme d’éclairage fait quelques octets ; 9 600 bit/s suffisent. Répondre « le Wi-Fi est plus rapide » ne veut rien dire ici.</p>
+<p><strong>L’alimentation est le vrai sujet.</strong> Un participant bus est alimenté par ses deux fils. En Wi-Fi, chaque interrupteur demande une pile ou une alimentation locale, et une installation de cent points devient un parc de cent piles à remplacer. C’est l’argument qui fait basculer les clients.</p>
+<p><strong>La durée de vie décide.</strong> Un bâtiment tertiaire se pilote pendant vingt ans. Un protocole radio grand public change de version tous les trois ans, et l’infrastructure Wi-Fi appartient à l’informatique du client, qui la reconfigure sans prévenir. Le bus filaire ne dépend de personne.</p>
+<p>La bonne réponse n’est donc pas « le Wi-Fi est mauvais » : c’est <strong>« le sans-fil se choisit quand aucun câble ne peut passer »</strong>, ce qui est exactement la règle de choix d’un média, et le sujet de la page Prof 2.</p></div></details>
+</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="ap" href="PROF2-MEDIAS.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Prof 2 — les médias</span></a></div></nav>
+<p class="pied">Page de formation. Elle contient des démonstrations, des réponses et des corrigés, c'est ce qui la distingue des pages étudiantes. Voir aussi les pages Prof 2 à 5.</p>
+</div>
+<script src="../assets/kit.js?v=13b3bbbd"></script>
+<script src="../assets/site.js?v=13b3bbbd"></script>
+<script src="../assets/vivant.js?v=13b3bbbd"></script>

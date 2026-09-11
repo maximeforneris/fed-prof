@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Répartition ou mélange</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../assets/cours.css">
+</head>
+<body>
+<main class="page">
+
+<p class="surtitre">Leçon 2 · <a href="../reference/chaudieres-dans-les-sujets-u41.html">Les chaudières des sujets U41</a></p>
+<h1>Répartition ou mélange</h1>
+<p class="these">Une vanne trois voies ne dit pas ce qu'elle fait : c'est son montage
+qui le dit. Pour le lire, une seule question : dans le circuit servi, qu'est-ce qui
+reste constant, le débit ou la température ?</p>
+
+<h2>Deux montages, une question</h2>
+
+<span class="marge">Définitions : <a href="https://www.abcclim.net/vanne-23-voies.html">abcclim,
+montage et fonctionnement des vannes 2 et 3 voies</a>. Effet sur le retour :
+<a href="https://cegibat.grdf.fr/reponse-expert/installation-chauffage-chaudiere-condensation-vanne-trois-voies">Cegibat
+(GRDF), réponse d'expert n° 100</a>, mise à jour en mars 2025.</span>
+
+<p><strong>En mélange</strong>, la vanne a deux entrées et une sortie : l'eau chaude
+du générateur et l'eau de retour recyclée entrent, le mélange part vers les
+émetteurs. La pompe du circuit est après la vanne. Dans l'émetteur, <strong>le
+débit reste constant et la température varie</strong>. C'est le montage des
+radiateurs et des planchers chauffants.</p>
+
+<p><strong>En répartition</strong>, appelée aussi décharge, la vanne a une entrée et
+deux sorties : elle partage l'eau chaude entre l'émetteur et un by-pass qui
+rejoint le retour. La pompe est avant la vanne. Dans l'émetteur, <strong>la
+température reste constante et le débit varie</strong>. C'est le montage courant
+des batteries de CTA.</p>
+
+<figure>
+<div class="defile">
+<svg viewBox="0 0 640 262" role="img" aria-labelledby="f1t">
+<title id="f1t">Deux montages côte à côte. À gauche, en mélange : la vanne reçoit l'eau du générateur et le retour recyclé, la pompe est après elle, le retour vers le générateur reste froid. À droite, en répartition : la pompe est avant la vanne, qui envoie une part de l'eau chaude dans un by-pass vers le retour, qui revient réchauffé au générateur.</title>
+<g font-family="'Source Sans 3', 'Segoe UI', sans-serif">
+<!-- ============ panneau 1 : melange ============ -->
+<g>
+<text x="150" y="22" font-size="16" font-weight="600" text-anchor="middle" style="fill:var(--encre)">En mélange</text>
+<rect x="10" y="48" width="60" height="140" rx="3" style="fill:var(--carte);stroke:var(--encre)" stroke-width="1.5"/>
+<rect x="230" y="48" width="60" height="140" rx="3" style="fill:var(--carte);stroke:var(--encre)" stroke-width="1.5"/>
+<g fill="none" stroke-width="4" stroke-linecap="round">
+<path d="M70 80 H128" style="stroke:var(--accent)"/>
+<path d="M152 80 H230" style="stroke:var(--accent)" opacity="0.6"/>
+<path d="M230 165 H70" style="stroke:var(--froid)"/>
+<path d="M140 165 V92" style="stroke:var(--froid)"/>
+</g>
+<path d="M128 72 L128 88 L140 80 Z M152 72 L152 88 L140 80 Z M132 92 L148 92 L140 80 Z" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5" stroke-linejoin="round"/>
+<line x1="140" y1="64" x2="140" y2="80" style="stroke:var(--encre)" stroke-width="1.5"/>
+<circle cx="140" cy="58" r="7" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5"/>
+<circle cx="190" cy="80" r="11" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5"/>
+<path d="M185 74 L185 86 L197 80 Z" style="fill:var(--encre)"/>
+<circle cx="140" cy="165" r="4" style="fill:var(--froid)"/>
+<path d="M135 128 L140 118 L145 128 Z" style="fill:var(--froid)"/>
+<text x="40" y="206" font-size="12" text-anchor="middle" style="fill:var(--doux)">générateur</text>
+<text x="260" y="206" font-size="12" text-anchor="middle" style="fill:var(--doux)">émetteur</text>
+<text x="105" y="184" font-size="12" font-weight="600" text-anchor="middle" style="fill:var(--froid)">retour froid</text>
+<text x="150" y="232" font-size="13" text-anchor="middle" style="fill:var(--encre)">émetteur : débit constant,</text>
+<text x="150" y="249" font-size="13" text-anchor="middle" style="fill:var(--encre)">température variable</text>
+</g>
+<line x1="320" y1="40" x2="320" y2="250" style="stroke:var(--filet)" stroke-width="1"/>
+<!-- ============ panneau 2 : repartition ============ -->
+<g transform="translate(330 0)">
+<text x="150" y="22" font-size="16" font-weight="600" text-anchor="middle" style="fill:var(--encre)">En répartition</text>
+<rect x="10" y="48" width="60" height="140" rx="3" style="fill:var(--carte);stroke:var(--encre)" stroke-width="1.5"/>
+<rect x="230" y="48" width="60" height="140" rx="3" style="fill:var(--carte);stroke:var(--encre)" stroke-width="1.5"/>
+<g fill="none" stroke-width="4" stroke-linecap="round">
+<path d="M70 80 H148 M172 80 H230" style="stroke:var(--accent)"/>
+<path d="M160 92 V165" style="stroke:var(--accent)"/>
+<path d="M230 165 H160" style="stroke:var(--froid)"/>
+<path d="M160 165 H70" style="stroke:var(--accent)" opacity="0.6"/>
+</g>
+<path d="M148 72 L148 88 L160 80 Z M172 72 L172 88 L160 80 Z M152 92 L168 92 L160 80 Z" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5" stroke-linejoin="round"/>
+<line x1="160" y1="64" x2="160" y2="80" style="stroke:var(--encre)" stroke-width="1.5"/>
+<circle cx="160" cy="58" r="7" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5"/>
+<circle cx="105" cy="80" r="11" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5"/>
+<path d="M100 74 L100 86 L112 80 Z" style="fill:var(--encre)"/>
+<circle cx="160" cy="165" r="4" style="fill:var(--accent)"/>
+<path d="M155 118 L160 128 L165 118 Z" style="fill:var(--accent)"/>
+<text x="40" y="206" font-size="12" text-anchor="middle" style="fill:var(--doux)">générateur</text>
+<text x="260" y="206" font-size="12" text-anchor="middle" style="fill:var(--doux)">émetteur</text>
+<text x="115" y="184" font-size="12" font-weight="600" text-anchor="middle" style="fill:var(--accent)">retour réchauffé</text>
+<text x="150" y="232" font-size="13" text-anchor="middle" style="fill:var(--encre)">émetteur : débit variable,</text>
+<text x="150" y="249" font-size="13" text-anchor="middle" style="fill:var(--encre)">température constante</text>
+</g>
+</g>
+</svg>
+</div>
+<figcaption>Les deux montages, la demande en baisse. Le symbole de la vanne est le
+même : seuls changent le sens de l'eau dans la troisième voie et la place de la
+pompe.</figcaption>
+</figure>
+
+<h2>Le montage choisit le retour</h2>
+
+<p>Quand la demande baisse, les deux montages ne renvoient pas la même eau au
+générateur. En mélange, la vanne reprend de l'eau de retour pour la remettre dans
+le circuit : le générateur reçoit <strong>un retour froid</strong>. En
+répartition, l'eau chaude en trop part dans le by-pass : le générateur reçoit
+<strong>un retour réchauffé</strong>. Cegibat en tire la conclusion pour la
+condensation : le montage en mélange lui est plus favorable.</p>
+
+<span class="marge"><a href="https://energieplus-lesite.be/techniques/chauffage10/chauffage-a-eau-chaude/circuits-hydrauliques-primaires/">Energie+,
+circuits hydrauliques primaires</a> : une pompe de recyclage peut remplir le même
+office, « pour les chaudières ne pouvant pas descendre en température ».</span>
+
+<p>Relisez la leçon 1 avec ça en tête. La chaudière à condensation veut un retour
+froid : mélange sur les circuits. La chaudière bois de 2021 veut un retour chaud :
+sa vanne n° 15 est montée <strong>en répartition</strong>, précisément pour
+renvoyer de l'eau chaude au retour.</p>
+
+<div class="retenir">
+<span class="etiquette">La phrase à donner</span>
+<p>Une vanne se lit à son montage. <strong>Le montage qu'on évite sur une chaudière
+à condensation, la répartition, est celui qu'on choisit pour protéger une
+chaudière bois.</strong></p>
+</div>
+
+<h2>La vanne n° 15, lue sur le DR1</h2>
+
+<span class="marge">Disposition relevée sur le DR1 du
+<a href="../_liens/u41-2021-sujet.pdf">sujet 2021</a>, page 15, et sur
+sa version corrigée, page 12 du
+<a href="../_liens/u41-2021-correction.pdf">corrigé</a>.</span>
+
+<p>Sur le DR1, la chaudière est en bas et les tuyauteries montent. Le départ, à
+droite, traverse la vanne n° 15. Sa troisième voie part à gauche, puis rejoint le
+retour <strong>au-dessus des pompes n° 5</strong>. Le corrigé écrit que la vanne
+est « montée en répartition mais assure un mélange sur les retours » : la vanne
+partage, et c'est le <strong>té</strong> du by-pass qui mélange.</p>
+
+<p>Le corrigé de la question 1.1.4 place la <strong>sonde sur le retour, entre les
+pompes et la chaudière</strong>, donc après le mélange. Elle mesure ce que la
+chaudière reçoit vraiment. Le régulateur a deux entrées, la consigne de 70 °C et
+cette température, et commande le servomoteur de la vanne.</p>
+
+<h2>Trois by-pass, trois rôles</h2>
+
+<p>Les sujets posent trois by-pass qui se ressemblent sur un schéma. Un étudiant
+qui les confond perd les trois questions.</p>
+
+<div class="defile">
+<table>
+<thead><tr><th>Où</th><th>L'organe</th><th>Ce qu'il tient</th></tr></thead>
+<tbody>
+<tr><td>2021, n° 15</td><td>Vanne trois voies en répartition sur le départ</td><td>La <strong>température de retour</strong> de la chaudière, au-dessus de 70 °C</td></tr>
+<tr><td>2023, n° 4</td><td>By-pass fixe sur un plancher chauffant</td><td>Une <strong>température de départ maximale</strong>, par un mélange non régulé</td></tr>
+<tr><td>2023, n° 1 ; 2018, n° 4</td><td>Soupape ou vanne de pression différentielle</td><td>Un <strong>débit minimal</strong> dans la pompe quand les robinets se ferment</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Lire la boucle</h2>
+
+<p>Le schéma ci-dessous reprend la disposition du DR1, sans les noms. Nommez chaque
+lettre.</p>
+
+<figure>
+<div class="defile">
+<svg viewBox="0 0 520 340" role="img" aria-labelledby="f2t">
+<title id="f2t">Boucle de la chaudière bois, sans légende. Le départ monte à droite et porte l'organe A. Un by-pass part de A vers la gauche et rejoint le retour au point B. Le retour descend au milieu et porte l'organe C, puis l'organe D, avant d'entrer dans la chaudière.</title>
+<g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+<path d="M210 26 V120" style="stroke:var(--froid)"/>
+<path d="M210 120 V288" style="stroke:var(--accent)" opacity="0.6"/>
+<path d="M370 288 V212 M370 188 V26" style="stroke:var(--accent)"/>
+<path d="M358 200 H290 V120 H210" style="stroke:var(--accent)"/>
+</g>
+<rect x="120" y="288" width="330" height="44" rx="4" style="fill:var(--carte);stroke:var(--encre)" stroke-width="1.5"/>
+<!-- A : vanne trois voies, troisieme voie a gauche -->
+<path d="M362 188 L378 188 L370 200 Z M362 212 L378 212 L370 200 Z M358 192 L358 208 L370 200 Z" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5" stroke-linejoin="round"/>
+<line x1="370" y1="200" x2="386" y2="200" style="stroke:var(--encre)" stroke-width="1.5"/>
+<rect x="386" y="193" width="16" height="14" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5"/>
+<!-- B : te -->
+<circle cx="210" cy="120" r="5" style="fill:var(--accent)"/>
+<!-- C : pompe, sens vers le bas -->
+<circle cx="210" cy="190" r="14" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5"/>
+<path d="M203 184 L217 184 L210 198 Z" style="fill:var(--encre)"/>
+<!-- D : sonde -->
+<line x1="210" y1="250" x2="228" y2="250" style="stroke:var(--encre)" stroke-width="1.5"/>
+<circle cx="236" cy="250" r="8" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5"/>
+<!-- sens de circulation -->
+<path d="M205 62 L210 72 L215 62 Z" style="fill:var(--froid)"/>
+<path d="M365 104 L370 94 L375 104 Z" style="fill:var(--accent)"/>
+<path d="M285 164 L290 154 L295 164 Z" style="fill:var(--accent)"/>
+<g font-family="'Source Sans 3', 'Segoe UI', sans-serif" font-size="12.5" style="fill:var(--doux)" text-anchor="middle">
+<text x="210" y="16">retour de la bouteille</text>
+<text x="370" y="16">vers la bouteille</text>
+<text x="285" y="316" font-size="14" font-weight="600" style="fill:var(--encre)">chaudière bois</text>
+</g>
+<g font-family="'Source Sans 3', 'Segoe UI', sans-serif" font-size="13" font-weight="600" text-anchor="middle" style="fill:var(--fond)">
+<circle cx="428" cy="200" r="11" style="fill:var(--encre)"/><text x="428" y="205">A</text>
+<circle cx="182" cy="120" r="11" style="fill:var(--encre)"/><text x="182" y="125">B</text>
+<circle cx="170" cy="190" r="11" style="fill:var(--encre)"/><text x="170" y="195">C</text>
+<circle cx="266" cy="250" r="11" style="fill:var(--encre)"/><text x="266" y="255">D</text>
+</g>
+</svg>
+</div>
+<figcaption>Disposition du DR1 de 2021, simplifiée : vannes d'isolement, clapet et
+filtre retirés.</figcaption>
+</figure>
+
+<div class="legende" data-choix="clapet anti-retour|pompe double n° 5|sonde de départ|sonde de retour|té de mélange|vanne n° 15">
+<ol>
+<li><span class="lettre">A</span><select data-bonne="vanne n° 15" aria-label="Organe A"></select>
+<p class="retour" hidden>Trois voies, un servomoteur, sur le départ : c'est l'organe qui partage l'eau de la chaudière.</p></li>
+<li><span class="lettre">B</span><select data-bonne="té de mélange" aria-label="Organe B"></select>
+<p class="retour" hidden>C'est là que l'eau chaude du by-pass retrouve le retour : le mélange se fait ici, pas dans la vanne.</p></li>
+<li><span class="lettre">C</span><select data-bonne="pompe double n° 5" aria-label="Organe C"></select>
+<p class="retour" hidden>Le cercle au triangle est le symbole d'un circulateur ; le triangle donne le sens, vers la chaudière.</p></li>
+<li><span class="lettre">D</span><select data-bonne="sonde de retour" aria-label="Organe D"></select>
+<p class="retour" hidden>Elle est sur la tuyauterie qui entre dans la chaudière, après le mélange : c'est la température que la vanne doit tenir.</p></li>
+</ol>
+<button class="verifier" type="button">Vérifier</button>
+<p class="total"></p>
+</div>
+
+<h2>Rappel</h2>
+
+<p class="bilan" data-pour="qcm"></p>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">Dans un montage en mélange, côté émetteur…</p>
+<ol>
+<li><button type="button">Le débit reste constant ; seule la température change.</button>
+<p class="retour" hidden>La pompe du circuit est après la vanne : elle voit toujours le même débit, la vanne dose le chaud et le froid.</p></li>
+<li><button type="button">La température reste constante ; seul le débit change.</button>
+<p class="retour" hidden>C'est la répartition : l'eau arrive toujours à la température du départ, la vanne en envoie plus ou moins.</p></li>
+<li><button type="button">Le débit et la température varient tous deux ensemble.</button>
+<p class="retour" hidden>Chaque montage fixe l'un des deux : c'est ce qui permet de les reconnaître.</p></li>
+</ol>
+</div>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">Chaudière à condensation : quel montage des circuits favorise la
+condensation, et pourquoi ?</p>
+<ol>
+<li><button type="button">En mélange : le retour garde l'eau refroidie des émetteurs.</button>
+<p class="retour" hidden>La vanne recycle du retour dans le circuit ; rien de chaud ne revient à la chaudière sans être passé par un émetteur.</p></li>
+<li><button type="button">En répartition : l'eau chaude en surplus regagne le retour.</button>
+<p class="retour" hidden>C'est justement ce qui réchauffe le retour et arrête la condensation. Utile en 2021, nuisible ici.</p></li>
+<li><button type="button">Peu importe : le brûleur modulant règle lui-même le retour.</button>
+<p class="retour" hidden>Le brûleur règle le départ. Le retour, c'est l'hydraulique qui le fait.</p></li>
+</ol>
+</div>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">« Montée en répartition mais assure un mélange sur les retours » :
+où se fait ce mélange ?</p>
+<ol>
+<li><button type="button">Au té où le by-pass retrouve le retour, avant les pompes.</button>
+<p class="retour" hidden>La vanne partage ; le té mélange. Et la sonde est placée après, pour mesurer le résultat.</p></li>
+<li><button type="button">Dans le corps de la vanne, entre ses deux voies d'entrée.</button>
+<p class="retour" hidden>C'est vrai d'une vanne montée en mélange. Ici, elle a une seule entrée, le départ de la chaudière.</p></li>
+<li><button type="button">Dans la bouteille, où se croisent le départ et le retour.</button>
+<p class="retour" hidden>La bouteille est plus loin, côté réseau. Le mélange de protection se fait dans la boucle de la chaudière.</p></li>
+</ol>
+</div>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">2023, élément n° 4 : un by-pass fixe sur un plancher chauffant. Il
+sert…</p>
+<ol>
+<li><button type="button">À limiter la température de l'eau qui va au plancher.</button>
+<p class="retour" hidden>Le corrigé : un mélange qui assure une température de sécurité maximale sur le départ des planchers.</p></li>
+<li><button type="button">À garantir un débit minimal à la pompe des planchers.</button>
+<p class="retour" hidden>C'est le rôle de l'élément n° 1, la soupape différentielle. Le by-pass fixe, lui, agit sur la température.</p></li>
+<li><button type="button">À remonter le retour de chaudière au-dessus de 70 °C.</button>
+<p class="retour" hidden>C'est la vanne n° 15 de 2021. Le sujet 2023 n'a pas de chaudière bois.</p></li>
+</ol>
+</div>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">Où le corrigé 2021 place-t-il la sonde qui commande la vanne
+n° 15 ?</p>
+<ol>
+<li><button type="button">Au retour, entre la pompe et l'entrée de la chaudière.</button>
+<p class="retour" hidden>Après le mélange : elle mesure ce que la chaudière reçoit, c'est-à-dire ce que la vanne doit tenir.</p></li>
+<li><button type="button">Au départ, entre la chaudière et l'entrée de la vanne.</button>
+<p class="retour" hidden>Le départ ne dit rien de la condensation. C'est le retour que la consigne de 70 °C concerne.</p></li>
+<li><button type="button">Sur le by-pass, de la vanne jusqu'au noeud de mélange.</button>
+<p class="retour" hidden>Le by-pass transporte de l'eau de départ ; sa température ne dit pas ce que devient le retour.</p></li>
+</ol>
+</div>
+
+<h2>À vous d'expliquer</h2>
+
+<div class="rappel">
+<label class="consigne" for="r2">Question 1.1.4 : décrivez en deux lignes la
+régulation à dessiner sur le DR1, comme si vous rédigiez la légende.</label>
+<textarea id="r2"></textarea>
+<button class="comparer" type="button">Comparer</button>
+<div class="modele" hidden>
+<span class="etiquette">Une réponse complète</span>
+<p>Une sonde de température, sur le retour entre les pompes et la chaudière, mesure
+la température d'entrée. Un régulateur à deux entrées, la consigne de 70 °C et
+cette mesure, commande le servomoteur de la vanne n° 15.</p>
+<p>Cochez ce que votre réponse contient. Barème du corrigé : un élément vaut
+1 point, deux éléments 2 points, deux éléments et la légende 3 points.</p>
+<ul class="bareme">
+<li><label><input type="checkbox" data-points="1"> Un élément parmi : le capteur sur le retour, le régulateur, la consigne de 70 °C</label></li>
+<li><label><input type="checkbox" data-points="1"> Un deuxième de ces trois éléments</label></li>
+<li><label><input type="checkbox" data-points="1"> La légende des symboles</label></li>
+</ul>
+<p class="total"></p>
+</div>
+</div>
+
+<h2>La source à lire</h2>
+
+<p><a href="https://cegibat.grdf.fr/reponse-expert/installation-chauffage-chaudiere-condensation-vanne-trois-voies">Cegibat,
+réponse d'expert n° 100</a> : une page, qui compare les deux montages sur une
+chaudière à condensation et dit ce que devient le retour quand la vanne se ferme.
+Lisez-la en remplaçant « condensation » par « chaudière bois » : chaque argument
+s'inverse, et vous retrouvez la vanne n° 15.</p>
+
+<p class="demande">Un schéma d'un autre sujet où vous hésitez sur le montage ? Une
+réponse d'étudiant à trancher ? <strong>Posez-la dans la conversation.</strong> La
+prochaine fois, on commencera par nommer A, B, C et D sans relire.</p>
+
+<nav class="suite">
+<span class="etiquette">Pour la suite</span>
+<ul>
+<li><a href="0001-le-retour-decide.html">Leçon 1 — Le retour décide</a></li>
+<li><a href="../reference/chaudieres-dans-les-sujets-u41.html">Référence : les chaudières des sujets U41</a></li>
+<li>Leçon 3, à venir : cascade et bouteille de découplage (2021, 2023 A.3)</li>
+</ul>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

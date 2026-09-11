@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les chaudières des sujets U41</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../assets/cours.css">
+<style>
+  .page { max-width: 46rem; }
+  @media (min-width: 64rem) { .page { margin-left: auto; } }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+  td.sans { color: var(--doux); }
+</style>
+</head>
+<body>
+<main class="page">
+
+<p class="surtitre">Référence · à garder sous la main</p>
+<h1>Les chaudières des sujets U41</h1>
+<p class="these">Neuf sessions, de 2018 à 2026 : une chaudière apparaît dans quatre
+sujets, et un seul, 2021, lui consacre une partie. Ce qu'on demande porte sur
+l'hydraulique autour d'elle, jamais sur son intérieur.</p>
+
+<h2>Session par session</h2>
+
+<div class="defile">
+<table>
+<thead>
+<tr><th>Session</th><th>Bâtiment</th><th>Les chaudières</th><th>Ce que le sujet demande</th><th>Leçon</th></tr>
+</thead>
+<tbody>
+<tr><td>2021</td><td>Magasin</td>
+<td>Deux chaudières bois à plaquettes de 500 kW, en cascade, sur une bouteille de
+découplage ; réseau enterré vers une sous-station ; circuits en 80/60, échangeur
+de la PAC en 80/38. En service quand il fait 5 °C ou moins.</td>
+<td>1.1.2 : démarrage d'au moins 8 h, donc marche continue jusqu'à la fin du stock.
+1.1.3 : rôle de la V3V n° 15, retour ≥ 70 °C. 1.1.4 : schéma de régulation (DR1).
+Tableau marche / arrêt chaudières et PAC selon la température extérieure (DR3).
+Pompes doubles et verrouillage (DT3). Appoint de l'ECS par le réseau des
+chaudières, 0,024 €/kWh.</td>
+<td><a href="../lessons/0001-le-retour-decide.html">1</a>, <a href="../lessons/0002-repartition-ou-melange.html">2</a>, puis 3, 4, 5</td></tr>
+<tr><td>2022</td><td>Site industriel, hangars</td>
+<td>« Chaudières gaz classiques » remplacées par des « modèles à haut rendement »,
+batterie chaude en 90/70.</td>
+<td>Question 17 (DR8) : relier chaque production aux batteries de la CTA, avant et
+après rénovation.</td>
+<td>6</td></tr>
+<tr><td>2023</td><td>Piscine</td>
+<td>Cascade de deux chaudières de 254 kW, avec une sous-station de réseau de chaleur
+l'hiver, seules du 15 mai au 15 octobre. Batterie complémentaire de la CTA en 80/60.</td>
+<td>A.2 : puissances de production contre besoins. A.3 : désignation et fonction,
+dont la bouteille de découplage et un by-pass fixe de plancher chauffant. A.4 :
+température de départ.</td>
+<td><a href="../lessons/0002-repartition-ou-melange.html">2</a>, 3</td></tr>
+<tr><td>2025</td><td>Centre aquatique</td>
+<td>PAC eau-eau sur nappe, appoint par chaudière gaz, réseau 70/50.</td>
+<td>Identifier les réseaux et leurs rôles ; le corrigé écrit « PAC en relève de
+chaudière ». Énergies des deux productions.</td>
+<td>4</td></tr>
+<tr><td>2018</td><td>Piscine municipale</td>
+<td class="sans">Pas de chaudière : une sous-station.</td>
+<td>Question 1.2 : bouteille de découplage, même organe qu'en chaufferie ;
+vanne de pression différentielle.</td>
+<td>2, 3</td></tr>
+<tr><td>2024, 2026</td><td>Musée ; bureaux</td>
+<td class="sans">Pas de chaudière : sous-station de réseau de chaleur.</td>
+<td class="sans">Hors de ce parcours.</td><td></td></tr>
+<tr><td>2019, 2020</td><td>Hôtel de ville ; bureaux</td>
+<td class="sans">Pas de chaudière.</td><td></td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p class="marge" style="float:none;width:auto;margin:0.8rem 0 0">Relevé fait sur
+le texte des sujets et des corrigés du dépôt (<code>02-annales/u41/</code>) ; une
+chaudière qui ne serait que dessinée dans un document technique n'y apparaît pas.</p>
+
+<h2>Les phrases à donner</h2>
+
+<div class="retenir">
+<span class="etiquette">Leçon 1 · le retour</span>
+<p><strong>Le retour décide.</strong> Sous la rosée des fumées, ça condense. Si
+l'échangeur est fait pour, on cherche ce retour froid ; sinon, on le fuit en
+recyclant de l'eau de départ dans le retour.</p>
+<p><em>Condensation sur 90/70 :</em> au régime de calcul, elle ne condense pas ;
+la plupart de l'hiver, si.</p>
+</div>
+
+<div class="retenir">
+<span class="etiquette">Leçon 2 · le montage</span>
+<p>Une vanne se lit à son montage. <strong>Le montage qu'on évite sur une chaudière
+à condensation, la répartition, est celui qu'on choisit pour protéger une
+chaudière bois.</strong></p>
+<p><em>Mélange :</em> débit constant dans l'émetteur, température variable, retour
+froid. <em>Répartition :</em> température constante, débit variable, retour
+réchauffé.</p>
+<p><em>Vanne n° 15 (DR1 2021) :</em> la vanne partage, le té du by-pass mélange, la
+sonde est sur le retour entre les pompes et la chaudière ; régulateur à deux
+entrées, consigne 70 °C et température de retour.</p>
+</div>
+
+<h2>Trois by-pass, trois rôles</h2>
+
+<div class="defile">
+<table>
+<thead><tr><th>Où</th><th>L'organe</th><th>Ce qu'il tient</th></tr></thead>
+<tbody>
+<tr><td>2021, n° 15</td><td>Vanne trois voies en répartition sur le départ</td><td>La température de retour de la chaudière, au-dessus de 70 °C</td></tr>
+<tr><td>2023, n° 4</td><td>By-pass fixe sur un plancher chauffant</td><td>Une température de départ maximale, par un mélange non régulé</td></tr>
+<tr><td>2023, n° 1 ; 2018, n° 4</td><td>Soupape ou vanne de pression différentielle</td><td>Un débit minimal dans la pompe quand les robinets se ferment</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Les chiffres à avoir en tête</h2>
+
+<div class="defile">
+<table>
+<thead><tr><th>Grandeur</th><th>Valeur</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>Rosée des fumées, gaz naturel</td><td>55 à 58 °C</td><td>Manuel § 5.5 ; Energie+ ≈ 55 ; Viessmann ≈ 57</td></tr>
+<tr><td>Rosée des fumées, fioul</td><td>45 à 47 °C</td><td>Manuel § 5.5 ; Energie+ ≈ 47,5</td></tr>
+<tr><td>PCS du gaz naturel</td><td>PCI + 10,8 %</td><td>Energie+</td></tr>
+<tr><td>Gain maximal de la condensation</td><td>11 % du PCI (gaz), 6 % (fioul)</td><td>Energie+</td></tr>
+<tr><td>Part d'énergie produite en condensant</td><td>100 % en 70/50 ; 75 % en 90/70</td><td>Energie+, régulation climatique</td></tr>
+<tr><td>Condensats d'une chaudière gaz</td><td>pH 4 à 4,5, à l'égout par siphon</td><td>Energie+</td></tr>
+<tr><td>Retour minimal d'une chaudière bois</td><td>50 à 60 °C ; 70 °C en 2021</td><td>Energie+ ; sujet 2021</td></tr>
+<tr><td>Modulation d'une chaudière à plaquettes</td><td>jusqu'à 30 à 50 % de sa puissance</td><td>Energie+</td></tr>
+<tr><td>Démarrage de la chaudière bois de 2021</td><td>8 h au moins avant 100 %</td><td>Corrigé 2021, 1.1.2</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Sources</h2>
+<ul>
+<li><a href="https://energieplus-lesite.be/techniques/chauffage10/chauffage-a-eau-chaude/chaudieres-a-condensation/">Energie+ — Chaudières à condensation</a></li>
+<li><a href="https://energieplus-lesite.be/techniques/chauffage10/chauffage-a-eau-chaude/chaudieres-bois-energie/">Energie+ — Chaudières bois-énergie</a></li>
+<li><a href="https://www.viessmann.fr/fr/blog-expert/choisir-chauffage/point-de-rosee-chaudiere-condensation.html">Viessmann — Point de rosée d'une chaudière à condensation</a></li>
+<li><a href="https://cegibat.grdf.fr/reponse-expert/installation-chauffage-chaudiere-condensation-vanne-trois-voies">Cegibat (GRDF) — Vanne trois voies en mélange ou en décharge sur chaudière à condensation</a></li>
+<li><a href="https://www.abcclim.net/vanne-23-voies.html">abcclim — Montage et fonctionnement des vannes 2 et 3 voies</a></li>
+<li><a href="https://energieplus-lesite.be/techniques/chauffage10/chauffage-a-eau-chaude/circuits-hydrauliques-primaires/">Energie+ — Circuits hydrauliques primaires</a></li>
+<li><a href="../../manuel/M5-MANUEL.html">Manuel, chapitre 5 — les générateurs</a></li>
+<li>Sujets et corrigés U41 2018 à 2026, <code>BTS FED C/02-annales/u41/</code></li>
+</ul>
+
+<nav class="suite">
+<span class="etiquette">Les leçons</span>
+<ul>
+<li><a href="../lessons/0001-le-retour-decide.html">1. Le retour décide</a></li>
+<li><a href="../lessons/0002-repartition-ou-melange.html">2. Répartition ou mélange</a></li>
+<li>3. Cascade et bouteille de découplage — à venir</li>
+</ul>
+</nav>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,492 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Manuel · chapitre 11</title>
+<link rel="stylesheet" href="../assets/kit.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/site.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/calque.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/vivant.css?v=13b3bbbd">
+
+<div class="page" data-site="fed-prof" data-page="manuel/M11-MANUEL">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M10-MANUEL.html" rel="prev" title="Manuel · chapitre 10" aria-label="Manuel · chapitre 10">&lsaquo;</a><a class="fleche" href="M12-MANUEL.html" rel="next" title="Manuel · chapitre 12" aria-label="Manuel · chapitre 12">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M11-MANUEL">Marquer comme lu</button></div>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">BTS FED option C · 2e année</p>
+    <h1>Chapitre 11<span>la centrale de traitement d'air</span></h1>
+  </div>
+  <p class="accroche">Une CTA n'est pas une machine mais une file de caissons, chacun faisant un segment du tracé. Le chapitre qui assemble les dix précédents en une seule installation, hiver puis été.</p>
+  <p class="contenu">1 outil · 13 questions · 4 exercices · 4 replis · 1 figure</p>
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B2-2 Centrale de traitement d'air · niveau 3</span><span class="tag n3">A4-2 Évolutions de l'air · niveau 3</span><span class="tag">B2-1 Ventilation · niveau 3</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M10-MANUEL.html">Les évolutions de l'air</a></b><span class="ou">Manuel · chapitre 10</span><span class="car">chaque caisson fait une évolution, et le chapitre 11 les enchaîne.</span></li><li><b><a href="M8-MANUEL.html">Les débits imposés</a></b><span class="ou">Manuel · chapitre 8</span><span class="car">le taux d'air neuf se déduit du débit par personne du chapitre 8.</span></li><li><b><a href="M3-MANUEL.html">Le point de fonctionnement</a></b><span class="ou">Manuel · chapitre 3</span><span class="car">un ventilateur sur un réseau de gaines se lit comme une pompe sur un réseau d'eau.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#11-1-une-file-de-caissons">11.1 Une file de caissons</a><a href="#11-2-le-taux-d-air-neuf">11.2 Le taux d’air neuf</a><a href="#11-3-filtrer">11.3 Filtrer</a><a href="#11-4-recuperer">11.4 Récupérer</a><a href="#11-5-les-batteries">11.5 Les batteries</a><a href="#11-6-le-ventilateur">11.6 Le ventilateur</a><a href="#11-7-le-calcul-retourne-dimensionner-la-centrale">11.7 Le calcul retourné : dimensionner la centrale</a><a href="#11-8-le-siphon-et-pourquoi-il-rate">11.8 Le siphon, et pourquoi il rate</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+<div class="etapes">
+<ol type="1">
+<li><strong>Nommer</strong> les caissons dans l’ordre, et justifier cet ordre.</li>
+<li><strong>Calculer</strong> l’efficacité d’un récupérateur et la puissance qu’il économise.</li>
+<li><strong>Dimensionner</strong> les deux batteries, en hiver comme en été.</li>
+<li><strong>Estimer</strong> la puissance du ventilateur et la juger par son SFP.</li>
+<li><strong>Tracer</strong> la marche complète de la centrale sur le diagramme.</li>
+</ol>
+</div>
+<p><strong>Deux savoirs de niveau 3 dans le même chapitre.</strong> C’est le point culminant du manuel : tout ce qui précède y sert, et c’est le thème que les étudiants déclarent le plus redouté alors qu’il est le plus mécanique.</p>
+<h2 id="11-1-une-file-de-caissons">11.1 Une file de caissons</h2>
+<p>Une CTA se lit de gauche à droite comme une phrase. Chaque caisson fait <strong>un segment</strong> sur le diagramme, et l’ordre n’est pas négociable.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: right;">Rang</th>
+<th>Caisson</th>
+<th>Ce qu’il fait</th>
+<th>Segment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>Registre d’air neuf</td>
+<td>dose l’air extérieur</td>
+<td>aucun</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td><strong>Filtre</strong></td>
+<td>protège tout ce qui suit</td>
+<td>aucun</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td><strong>Récupérateur</strong></td>
+<td>préchauffe ou pré-rafraîchit gratuitement</td>
+<td>horizontal</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td><strong>Caisson de mélange</strong></td>
+<td>ajoute l’air recyclé</td>
+<td>barycentre</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td><strong>Batterie chaude</strong></td>
+<td>monte la température</td>
+<td>horizontal</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td><strong>Batterie froide</strong></td>
+<td>refroidit, et déshumidifie</td>
+<td>descendant</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td><strong>Humidificateur</strong></td>
+<td>ajoute de l’eau</td>
+<td>vertical ou oblique</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td><strong>Ventilateur</strong></td>
+<td>met en mouvement</td>
+<td>+ 0,5 à 1,5 K</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td>Silencieux, réseau</td>
+<td>distribue</td>
+<td>aucun</td>
+</tr>
+</tbody>
+</table>
+<div class="cle">
+<p>Trois raisons d’ordre, et elles se demandent en épreuve. <strong>Le filtre est en tête</strong> parce qu’un échangeur encrassé ne s’échange plus. <strong>Le récupérateur est avant le mélange</strong> parce qu’il travaille sur l’air neuf seul, le plus froid, donc là où l’écart est le plus grand. <strong>L’humidificateur est après les batteries</strong> parce qu’il faut savoir à quelle température on humidifie.</p>
+</div>
+<div class="piege">
+<p>Le ventilateur <strong>réchauffe l’air</strong> de 0,5 à 1,5 K : toute sa puissance électrique finit en chaleur dans l’air qu’il brasse. Sur un tracé de sujet, ce petit segment est souvent le seul écart entre le calcul et le relevé, et il compte pour le point de soufflage.</p>
+</div>
+<h2 id="11-2-le-taux-d-air-neuf">11.2 Le taux d’air neuf</h2>
+<div class="formule">
+<p><strong>Taux d’air neuf = qm air neuf / qm soufflé</strong></p>
+<p>Il se calcule sur les <strong>débits massiques d’air sec</strong>, jamais sur des débits volumiques mesurés à des températures différentes.</p>
+</div>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Situation</th>
+<th style="text-align: right;">Taux d’air neuf</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bureau, occupation normale</td>
+<td style="text-align: right;">20 à 40 %</td>
+</tr>
+<tr>
+<td>Salle de spectacle, restaurant</td>
+<td style="text-align: right;">50 à 100 %</td>
+</tr>
+<tr>
+<td>Bloc opératoire, laboratoire</td>
+<td style="text-align: right;"><strong>100 %</strong>, aucun recyclage</td>
+</tr>
+<tr>
+<td>Free-cooling en mi-saison</td>
+<td style="text-align: right;">100 %, temporairement</td>
+</tr>
+<tr>
+<td>Piscine</td>
+<td style="text-align: right;">30 à 100 %, selon l’humidité</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Le recyclage économise <strong>le traitement de l’air</strong>, jamais le débit soufflé. Un local a besoin d’un débit total pour son confort thermique et d’un débit d’air neuf pour son hygiène : le recyclage comble la différence entre les deux, et elle est souvent large.</p>
+</div>
+<h2 id="11-3-filtrer">11.3 Filtrer</h2>
+<p>Depuis la norme <strong>ISO 16890</strong>, les filtres se classent par la part des particules qu’ils retiennent dans trois familles de tailles.</p>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Classe</th>
+<th>Ancienne</th>
+<th>Retient</th>
+<th>Où</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Coarse 60 %</td>
+<td>G4</td>
+<td>les gros</td>
+<td>préfiltre, protection</td>
+</tr>
+<tr>
+<td><strong>ePM10 50 %</strong></td>
+<td>M5</td>
+<td>poussières</td>
+<td>reprise</td>
+</tr>
+<tr>
+<td><strong>ePM1 50 %</strong></td>
+<td><strong>F7</strong></td>
+<td>fines, pollens</td>
+<td><strong>soufflage tertiaire</strong></td>
+</tr>
+<tr>
+<td>ePM1 80 %</td>
+<td>F9</td>
+<td>très fines</td>
+<td>hôpital, laboratoire</td>
+</tr>
+<tr>
+<td>HEPA H13</td>
+<td>—</td>
+<td>99,95 %</td>
+<td>bloc opératoire</td>
+</tr>
+</tbody>
+</table></div>
+<div class="formule">
+<p><strong>Perte de charge d’un filtre</strong></p>
+<ul>
+<li>propre : 50 à 90 Pa</li>
+<li><strong>encrassé, seuil de remplacement : 200 à 250 Pa</strong><span></span></li>
+</ul>
+</div>
+<div class="piege">
+<p>Un filtre encrassé ne laisse pas passer moins d’air neuf : il <strong>fait travailler le ventilateur plus fort</strong> pour le même débit, ou fait chuter le débit si le ventilateur ne module pas. Sa surveillance se fait par un <strong>pressostat différentiel</strong>, qui est l’un des points d’entrée les plus courants d’une GTB, voir le chapitre 14.</p>
+</div>
+<h2 id="11-4-recuperer">11.4 Récupérer</h2>
+<figure class="schema"><div class="dessin" data-schema="contre-courant"></div><figcaption>Le principe de tous les récupérateurs : à surface égale, le contre-courant travaille avec un écart moyen plus grand.</figcaption></figure>
+<div class="formule">
+<p><strong>Efficacité en chaleur sensible :</strong></p>
+<p><strong>ε = ( θ neuf sortie − θ neuf entrée ) / ( θ repris − θ neuf entrée )</strong></p>
+<p>C’est <strong>ce qu’on a gagné</strong>, divisé par ce qu’on aurait pu gagner au maximum.</p>
+</div>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr>
+<th>Type</th>
+<th style="text-align: right;">Efficacité</th>
+<th>Transfert d’humidité</th>
+<th>Risque de mélange</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plaques à courants croisés</td>
+<td style="text-align: right;">50 à 70 %</td>
+<td>non</td>
+<td><strong>aucun</strong></td>
+</tr>
+<tr>
+<td>Plaques à contre-courant</td>
+<td style="text-align: right;">70 à 85 %</td>
+<td>non</td>
+<td>aucun</td>
+</tr>
+<tr>
+<td><strong>Roue</strong></td>
+<td style="text-align: right;">70 à 85 %</td>
+<td><strong>oui</strong>, si roue hygroscopique</td>
+<td>quelques %</td>
+</tr>
+<tr>
+<td>Batteries à eau glycolée</td>
+<td style="text-align: right;">40 à 55 %</td>
+<td>non</td>
+<td><strong>aucun</strong>, flux éloignés</td>
+</tr>
+<tr>
+<td>Caloduc</td>
+<td style="text-align: right;">45 à 60 %</td>
+<td>non</td>
+<td>aucun</td>
+</tr>
+</tbody>
+</table>
+<div class="cle">
+<p>Le choix se fait sur <strong>le risque de recyclage</strong>, pas sur l’efficacité. En hôpital, en laboratoire, en cuisine, les deux flux ne doivent jamais se rencontrer : on prend des plaques, ou des batteries à eau glycolée si les deux gaines sont éloignées, quitte à perdre vingt points d’efficacité.</p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le givre du récupérateur, et les trois parades</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>En hiver, l’air rejeté traverse le récupérateur et s’y refroidit. Il arrive un moment où il passe <strong>sous sa propre température de rosée</strong>, puis sous 0 °C : la condensation gèle sur les plaques, obstrue le passage, et l’échangeur s’arrête d’échanger.</p>
+<p><strong>Quand cela arrive.</strong> Un air repris à 20 °C et 50 % a une rosée de 9,3 °C. En sortant du récupérateur à 5 °C, il est déjà saturé et condense. Le givre apparaît quand l’air extérieur descend sous <strong>−5 à −8 °C</strong> environ, selon l’efficacité et l’humidité intérieure.</p>
+<p><strong>Trois parades, par ordre de coût.</strong></p>
+<ol type="1">
+<li><strong>Le bipasse d’air neuf.</strong> Une partie de l’air neuf contourne le récupérateur : moins d’échange, donc moins de refroidissement du côté rejet. Gratuit, et c’est le plus répandu.</li>
+<li><strong>La modulation de vitesse</strong>, sur une roue : on la ralentit, l’efficacité tombe, le givre disparaît. Instantané, et réversible.</li>
+<li><strong>La batterie de préchauffage électrique</strong> sur l’air neuf, avant l’échangeur. Efficace, et c’est la solution la plus consommatrice : on dépense de l’électricité pour sauver une récupération.</li>
+</ol>
+<p><strong>Le même organe sert en été.</strong> Le <strong>bipasse de récupérateur</strong> est aussi ce qui permet le free-cooling du chapitre 8 : en mi-saison, on ne veut surtout pas préchauffer l’air neuf sur l’air repris. Un registre de bipasse motorisé est donc obligatoire sur toute CTA double flux, et son absence est un défaut de conception fréquent sur les installations anciennes.</p></div></details>
+</div><h2 id="11-5-les-batteries">11.5 Les batteries</h2>
+<div class="formule">
+<p><strong>Côté air : Φ = qm air × ( h sortie − h entrée )</strong></p>
+<p><strong>Côté eau : Φ = Q eau × 1,163 × Δθ eau</strong></p>
+<p><strong>Côté surface : Φ = k × S × ΔTLM</strong></p>
+</div>
+<div class="cle">
+<p>Les trois écritures donnent <strong>le même nombre</strong>, et c’est ce triple accès qui rend les questions d’épreuve possibles : on donne deux des trois, on demande la troisième. Le côté eau relie ce chapitre au chapitre 2, le côté surface au chapitre 4.</p>
+</div>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Batterie</th>
+<th>Régime d’eau usuel</th>
+<th style="text-align: right;">Rangs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chaude, chaudière</td>
+<td>80/60 ou 70/50</td>
+<td style="text-align: right;">1 à 2</td>
+</tr>
+<tr>
+<td>Chaude, pompe à chaleur</td>
+<td>45/35</td>
+<td style="text-align: right;">3 à 4</td>
+</tr>
+<tr>
+<td><strong>Froide, eau glacée</strong></td>
+<td><strong>7/12</strong></td>
+<td style="text-align: right;">4 à 8</td>
+</tr>
+<tr>
+<td>Préchauffage électrique</td>
+<td>—</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table></div>
+<div class="piege">
+<p>Sur une batterie froide, <strong>le côté eau se calcule sur la puissance totale</strong>, latente comprise, alors que la formule 1,02 × Δθ ne donne que le sensible. Le débit d’eau glacée calculé sur le seul sensible est 30 à 40 % trop faible.</p>
+</div>
+<h2 id="11-6-le-ventilateur">11.6 Le ventilateur</h2>
+<div class="formule">
+<p><strong>P = Qv × Δp / ( 3 600 × η )</strong> (P en W, Qv en m³/h, Δp en Pa)</p>
+<p>η, rendement global du groupe moto-ventilateur : <strong>0,55 à 0,70</strong>.</p>
+<p><strong>Puissance spécifique : SFP = P / Qv</strong>, en W par m³/h. Bon niveau : <strong>0,3 à 0,5</strong>.</p>
+</div>
+<p>Les <strong>lois de similitude</strong> du chapitre 3 s’appliquent mot pour mot : le débit suit la vitesse, la pression son carré, <strong>la puissance son cube</strong>. Un ventilateur ramené à 80 % de sa vitesse ne consomme plus que la moitié.</p>
+<h3 id="exemple-résolu-1.-le-ventilateur-dune-cta-de-collège">Exemple résolu 1. Le ventilateur d’une CTA de collège</h3>
+<p>Débit <strong>15 000 m³/h</strong>, pression totale <strong>900 Pa</strong>, rendement <strong>0,65</strong>.</p>
+<p><strong>La puissance.</strong> P = 15 000 × 900 / (3 600 × 0,65) = 13 500 000 / 2 340 = <strong>5 770 W</strong>.</p>
+<p><strong>Le SFP.</strong> 5 770 / 15 000 = <strong>0,38 W/(m³/h)</strong>. Correct.</p>
+<p><strong>Sur l’année.</strong> 5,77 kW × 3 000 heures = <strong>17 300 kWh</strong>, pour le seul soufflage ; autant pour la reprise. C’est le poste que le free-cooling fait grimper, et celui qu’une régulation de débit fait chuter.</p>
+<div class="cle">
+<p>Retenez la comparaison : réduire de 100 Pa la perte de charge d’un réseau, c’est <strong>11 % de puissance de ventilateur en moins</strong>, en permanence. Le surdimensionnement des gaines, coûteux à l’installation, se rembourse ici.</p>
+</div>
+<h2 id="11-7-le-calcul-retourne-dimensionner-la-centrale">11.7 Le calcul retourné : dimensionner la centrale</h2>
+<h3 id="exemple-résolu-2.-la-cta-du-collège-marche-hiver">Exemple résolu 2. La CTA du collège, marche hiver</h3>
+<p><strong>Les données.</strong> Air neuf <strong>−5 °C et 90 %</strong>. Air repris <strong>19 °C et 40 %</strong>. Débit soufflé <strong>15 000 m³/h</strong>, tout air neuf. Récupérateur à plaques, <strong>ε = 70 %</strong>. Soufflage voulu à <strong>21 °C</strong>.</p>
+<p><strong>1. Le débit massique.</strong> qm = 15 000 / (3 600 × 0,84) = <strong>4,96 kg/s</strong>.</p>
+<p><strong>2. L’air neuf.</strong> p vs(−5) = 421 Pa, p v = 379 Pa, r = <strong>2,3 g/kg</strong>. h = 1,006 × (−5) + 0,0023 × (2 501 − 9,2) = −5,03 + 5,73 = <strong>0,7 kJ/kg</strong>.</p>
+<p><strong>3. L’air repris.</strong> p vs(19) = 2 197 Pa, p v = 879 Pa, r = <strong>5,4 g/kg</strong>. h = 19,11 + 13,79 = <strong>32,9 kJ/kg</strong>.</p>
+<p><strong>4. Après le récupérateur.</strong> θ = −5 + 0,70 × (19 + 5) = <strong>11,8 °C</strong>, r inchangé à 2,3 g/kg. h = 1,006 × 11,8 + 0,0023 × (2 501 + 21,6) = 11,87 + 5,80 = <strong>17,7 kJ/kg</strong>.</p>
+<p><strong>5. La puissance récupérée.</strong> Φ = 4,96 × (17,7 − 0,7) = <strong>84,3 kW</strong>, gratuits.</p>
+<p><strong>6. La batterie chaude.</strong> De 11,8 à 21 °C : Φ = 4,96 × 1,02 × 9,2 = <strong>46,5 kW</strong>.</p>
+<p><strong>7. Le contrôle.</strong> Sans récupérateur, il aurait fallu 4,96 × 1,02 × 26 = <strong>131,5 kW</strong>. Le récupérateur a effacé <strong>64 %</strong> de la puissance de batterie, et le rapport 84,3 / 131,5 vaut bien 0,64, à l’arrondi près : le bilan boucle.</p>
+<div class="cle">
+<p>Ce contrôle-là est le plus rentable du chapitre : <strong>la puissance récupérée plus la puissance de batterie doit égaler la puissance sans récupération.</strong> S’il ne boucle pas, une des efficacités ou une des enthalpies est fausse.</p>
+</div>
+<h3 id="exemple-résolu-3.-la-même-centrale-marche-été">Exemple résolu 3. La même centrale, marche été</h3>
+<p><strong>Les données.</strong> Air neuf <strong>32 °C et 40 %</strong>, soit r = <strong>11,9 g/kg</strong> et h = <strong>62,7 kJ/kg</strong>. Local à 25 °C, soufflage voulu à <strong>16 °C et 90 %</strong>, soit r = <strong>10,2 g/kg</strong> et h = <strong>41,9 kJ/kg</strong>.</p>
+<p><strong>1. La puissance frigorifique totale.</strong> Φ = 4,96 × (62,7 − 41,9) = <strong>103 kW</strong>.</p>
+<p><strong>2. La part sensible.</strong> 4,96 × 1,02 × (32 − 16) = <strong>81 kW</strong>.</p>
+<p><strong>3. La part latente.</strong> 103 − 81 = <strong>22 kW</strong>, soit <strong>21 % du total</strong>.</p>
+<p><strong>4. L’eau condensée.</strong> 4,96 × (11,9 − 10,2) = 8,4 g/s = <strong>30 kg/h</strong>, à évacuer par un siphon.</p>
+<p><strong>5. Le débit d’eau glacée</strong>, en régime 7/12 : Q = 103 000 / (1,163 × 5) = <strong>17 700 L/h</strong>, soit 17,7 m³/h.</p>
+<div class="piege">
+<p>Comparez les deux marches : <strong>103 kW en été contre 46,5 kW en hiver</strong>. La batterie froide est plus du double de la batterie chaude, alors que l’écart de température paraît plus faible. Deux causes : le latent, et surtout le fait que le récupérateur, moins efficace en été, aide beaucoup moins.</p>
+</div>
+<div class="outil" data-outil="evolution">
+
+</div>
+<h2 id="11-8-le-siphon-et-pourquoi-il-rate">11.8 Le siphon, et pourquoi il rate</h2>
+<p>Une batterie froide produit des dizaines de litres par heure. Cette eau tombe dans un bac et s’évacue par un <strong>siphon</strong>, dont la hauteur doit vaincre la pression du caisson.</p>
+<div class="formule">
+<p><strong>Hauteur de siphon ≥ dépression du caisson, en mm CE</strong></p>
+<p>Caisson en <strong>dépression</strong>, côté aspiration : hauteur = Δp + 25 mm. Caisson en <strong>surpression</strong>, côté refoulement : siphon inversé, ou clapet.</p>
+</div>
+<div class="cle">
+<p>Un siphon trop court sur un caisson en dépression <strong>aspire l’air</strong> au lieu d’évacuer l’eau : le bac déborde dans la centrale, et l’eau part dans les gaines. C’est la panne la plus fréquente des CTA, et elle se diagnostique en mesurant la pression du caisson, pas en changeant la pompe.</p>
+</div>
+<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Grandeur</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ordre des caissons</td>
+<td>filtre, récupérateur, mélange, batteries, humidificateur, ventilateur</td>
+</tr>
+<tr>
+<td>Échauffement dû au ventilateur</td>
+<td><strong>0,5 à 1,5 K</strong></td>
+</tr>
+<tr>
+<td>Taux d’air neuf en bureau</td>
+<td>20 à 40 %</td>
+</tr>
+<tr>
+<td>Filtre de soufflage tertiaire</td>
+<td><strong>ePM1 50 %</strong>, ex-F7</td>
+</tr>
+<tr>
+<td>Perte d’un filtre, propre à colmaté</td>
+<td>50 à 250 Pa</td>
+</tr>
+<tr>
+<td>Efficacité, plaques · roue</td>
+<td>50-85 % · 70-85 %</td>
+</tr>
+<tr>
+<td>Apparition du givre au récupérateur</td>
+<td>air neuf sous <strong>−5 à −8 °C</strong></td>
+</tr>
+<tr>
+<td>Régime d’eau glacée</td>
+<td><strong>7/12</strong></td>
+</tr>
+<tr>
+<td>Rangs d’une batterie froide</td>
+<td>4 à 8</td>
+</tr>
+<tr>
+<td>Rendement d’un groupe moto-ventilateur</td>
+<td>0,55 à 0,70</td>
+</tr>
+<tr>
+<td><strong>SFP d’une bonne CTA</strong></td>
+<td><strong>0,3 à 0,5 W/(m³/h)</strong></td>
+</tr>
+<tr>
+<td>Pression totale d’une CTA de tertiaire</td>
+<td>800 à 1 500 Pa</td>
+</tr>
+<tr>
+<td>Eau condensée, ordre de grandeur</td>
+<td>2 kg/h par 1 000 m³/h en été</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Le contrôle de vraisemblance sur une CTA : <strong>la puissance froide vaut à peu près le double de la puissance chaude</strong>, à débit égal, dès qu’il y a récupération. Un résultat inverse signale une erreur sur le latent ou sur l’efficacité.</p>
+</div>
+<h2 id="s-entrainer">S’entraîner</h2>
+<section class="exo" id="M11-MANUEL-e1" data-exo="M11-MANUEL-e1" data-type="calcul" data-savoir="B2-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgbGJ0bnZ4LjU2eGBpdGp2eC94YHh/eCc="><p class="k">Exercice · B2-2</p><h4>L’efficacité d’un récupérateur</h4><div class="enonce">
+
+<p>L’air neuf entre à <strong>2 °C</strong> et sort du récupérateur à <strong>15 °C</strong>. L’air repris entre à <strong>21 °C</strong>. Quelle est l’efficacité de l’échangeur ?</p>
+</div><div class="indice" hidden>L’efficacité est ce qu’on a gagné sur l’air neuf, divisé par l’écart maximal possible entre les deux airs à l’entrée.</div></section>
+<section class="exo" id="M11-MANUEL-e2" data-exo="M11-MANUEL-e2" data-type="calcul" data-savoir="B2-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgbWN0YnZ4LjU2eGBpdGp2eC94YHgxDXgn"><p class="k">Exercice · B2-2</p><h4>La puissance d’une batterie froide</h4><div class="enonce">
+
+<p>Une batterie traite <strong>4,2 kg/s</strong> d’air, dont l’enthalpie passe de <strong>58 kJ/kg</strong> à <strong>39 kJ/kg</strong>. Quelle est sa puissance frigorifique totale ?</p>
+</div><div class="indice" hidden>Φ = qm × Δh. Comme les enthalpies sont en kilojoules par kilogramme et le débit en kilogrammes par seconde, le résultat est directement en kilowatts.</div></section>
+<section class="exo" id="M11-MANUEL-e3" data-exo="M11-MANUEL-e3" data-type="calcul" data-savoir="B2-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgbm5pb3RqdnguNTZ4YG50anZ4L3hgeA14Jw=="><p class="k">Exercice · B2-2</p><h4>La puissance du ventilateur</h4><div class="enonce">
+
+<p>Un ventilateur assure <strong>9 000 m³/h</strong> sous <strong>1 100 Pa</strong>, avec un rendement global de <strong>0,62</strong>. Quelle puissance absorbe-t-il ?</p>
+</div><div class="indice" hidden>P = Qv × Δp / (3600 × η). Le 3 600 convertit les mètres cubes par heure en mètres cubes par seconde.</div></section>
+<section class="exo" id="M11-MANUEL-e4" data-exo="M11-MANUEL-e4" data-type="justification" data-savoir="B2-2" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B2-2</p><h4>Une CTA qui ne tient plus la consigne</h4><div class="enonce">
+
+<p>En janvier, une CTA ne souffle plus qu’à 16 °C au lieu de 21, la batterie chaude est en pleine ouverture, et le débit relevé est conforme. Proposez trois causes et dites comment vous les départagez.</p>
+</div><div class="indice" hidden>Une batterie en pleine ouverture qui n’atteint pas la consigne manque de puissance. La puissance a deux entrées, l’air et l’eau : mesurez la température avant la batterie pour savoir laquelle des deux est en cause.</div><ul class="verifier" hidden><li>J’ai cité une cause côté récupérateur : givre, bipasse ouvert, ou débits déséquilibrés.</li><li>J’ai cité une cause côté eau : température de départ, débit, vanne, ou air dans la batterie.</li><li>J’ai cité une cause côté air : filtre colmaté, ou taux d’air neuf trop élevé.</li><li>J’ai indiqué une mesure par cause, et par laquelle je commence.</li></ul></section>
+<h2 id="vous-verifier">Vous vérifier</h2>
+<div class="quiz">
+<ul>
+<li>Le filtre se place : <strong>en tête de la centrale</strong> | après les batteries</li>
+<li>Le récupérateur travaille : <strong>avant le mélange</strong> | après le mélange</li>
+<li>Le ventilateur réchauffe l’air de : <strong>0,5 à 1,5 K</strong> | 5 à 10 K</li>
+<li>Le taux d’air neuf se calcule sur : <strong>les débits massiques</strong> | les volumes soufflés</li>
+<li>Un filtre F7 se nomme aujourd’hui : <strong>ePM1 50 %</strong> | Coarse 60 %</li>
+<li>On remplace un filtre quand sa perte atteint : <strong>200 à 250 Pa</strong> | 50 Pa</li>
+<li>Une roue transfère aussi : <strong>l’humidité</strong> | la pression</li>
+<li>En hôpital, on choisit des plaques parce que : <strong>les deux flux ne se mélangent pas</strong> | elles coûtent moins</li>
+<li>Le givre apparaît quand l’air neuf descend sous : <strong>−5 à −8 °C</strong> | 0 °C</li>
+<li>Le bipasse du récupérateur sert aussi : <strong>au free-cooling</strong> | à la filtration</li>
+<li>Le régime d’eau glacée usuel est : <strong>7/12</strong> | 45/35</li>
+<li>La puissance d’un ventilateur varie comme : <strong>le cube de la vitesse</strong> | la vitesse</li>
+<li>Un bon SFP vaut : <strong>0,3 à 0,5 W/(m³/h)</strong> | 2 W/(m³/h)</li>
+</ul>
+</div>
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi une CTA tout air neuf coûte si cher, et quand on la prend quand même</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le recyclage est presque gratuit : l’air repris est déjà à la bonne température. Le supprimer multiplie la charge de traitement, et le calcul le montre immédiatement.</p>
+<p><strong>Le chiffrage.</strong> Reprenez le collège : 15 000 m³/h, hiver à −5 °C. En tout air neuf sans récupération, il faut 131 kW. Avec 70 % de recyclage, l’air entrant dans les batteries serait à 12 °C au lieu de −5, et la puissance tomberait à <strong>35 kW</strong>. Le tout air neuf coûte <strong>quatre fois plus</strong>.</p>
+<p><strong>Pourquoi on le prend quand même</strong>, et ce sont les trois cas d’épreuve. <strong>Le risque sanitaire</strong> : bloc opératoire, laboratoire P3, chambre d’isolement, où recycler serait diffuser. <strong>La pollution du local</strong> : cuisine, atelier de peinture, local à batteries, où l’air repris n’est pas réutilisable. <strong>La réglementation</strong> : certains ERP interdisent le recyclage entre zones de compartimentage incendie différentes.</p>
+<p><strong>Le compromis réel.</strong> Une CTA tout air neuf avec un récupérateur à haute efficacité, 80 à 85 %, atteint presque le coût d’une centrale à recyclage tout en gardant la sécurité sanitaire. C’est ce qui explique la généralisation des échangeurs à plaques à contre-courant dans le tertiaire depuis quinze ans, et c’est la réponse attendue quand un sujet demande de « justifier le choix du récupérateur ».</p></div></details>
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qui figure sur une fiche de sélection de CTA</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un constructeur ne vend pas une CTA sur ses seules puissances. Sa fiche de sélection porte une douzaine de lignes, et il faut savoir les lire.</p>
+<p><strong>Les vitesses de passage</strong> d’abord : la vitesse frontale sur les batteries, tenue entre <strong>2 et 3 m/s</strong>. Au-delà, les gouttes d’eau condensée sont <strong>entraînées</strong> dans les gaines, ce qu’on appelle l’entraînement de vésicules ; on ajoute alors un séparateur de gouttelettes, qui coûte 40 Pa de plus.</p>
+<p><strong>Les pertes de charge internes</strong>, caisson par caisson, dont la somme fait la pression que le ventilateur doit vaincre. Le total interne d’une CTA complète est de <strong>400 à 700 Pa</strong>, avant même le premier mètre de gaine.</p>
+<p><strong>Le débit de fuite du caisson</strong> et sa <strong>classe d’étanchéité</strong>, de L1 à L3 : une CTA qui fuit 5 % traite un air qu’elle ne souffle pas, et la fuite se fait en général vers le local technique.</p>
+<p><strong>Les performances Eurovent certifiées</strong>, qui garantissent que les puissances annoncées ont été mesurées et non calculées. C’est la seule ligne de la fiche que personne ne peut contester.</p>
+<p><strong>Et une donnée que les fiches ne portent pas</strong> : l’accessibilité. Une CTA dont on ne peut pas sortir la batterie froide sans démonter la gaine ne sera jamais nettoyée. C’est un critère de conception, il s’écrit au CCTP, et il décide de la durée de vie réelle de l’installation.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La CTA climatise le bâtiment. »</strong> Elle <strong>traite l’air</strong> : elle le filtre, le tempère, l’humidifie ou le déshumidifie, et le distribue. Le refroidissement du local peut être fait par elle, ou par des ventilo-convecteurs, ou par un plafond rayonnant. Confondre la fonction et la machine empêche de justifier un choix de système.</p>
+<p><strong>« Le récupérateur récupère la chaleur perdue. »</strong> Il récupère la chaleur de l’air <strong>rejeté</strong>, qui n’est perdue que parce qu’on la rejette. Nuance de mot, mais elle change le raisonnement : la question de projet n’est pas « comment récupérer » mais « faut-il rejeter autant d’air », et la réponse est le taux d’air neuf.</p>
+<p><strong>« Il faut souffler beaucoup pour bien renouveler. »</strong> Le renouvellement se mesure en <strong>air neuf</strong>, pas en air soufflé. Une centrale qui souffle 20 000 m³/h dont 2 000 d’air neuf renouvelle exactement autant qu’une centrale qui souffle 2 000 m³/h en tout air neuf, et elle consomme dix fois plus de ventilateur.</p></div></details>
+</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M10-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 10</span></a><a class="ap" href="M12-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 12</span></a></div></nav>
+<p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p>
+</div>
+<script src="../assets/kit.js?v=13b3bbbd"></script>
+<script src="../assets/site.js?v=13b3bbbd"></script>
+<script src="../assets/vivant.js?v=13b3bbbd"></script>

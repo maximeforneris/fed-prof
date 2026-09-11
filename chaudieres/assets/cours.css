@@ -1,0 +1,336 @@
+/* Feuille commune des leçons et des références — chaudières des sujets U41.
+   Une colonne de lecture, des notes en marge sur écran large, une seule couleur
+   d'accent (la flamme) et une couleur sémantique (le retour froid). */
+
+:root {
+  --fond: #fafaf8;
+  --encre: #1d2124;
+  --doux: #5a6167;
+  --filet: #d8dbdc;
+  --carte: #f1f2f0;
+  --accent: #9b3a22;
+  --froid: #2f6275;
+  --juste: #2e6b3f;
+  --faux: #9b3a22;
+  --serif: "Source Serif 4", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mesure: 36rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fond: #15181a;
+    --encre: #e4e7e8;
+    --doux: #9ca4aa;
+    --filet: #30373b;
+    --carte: #1d2124;
+    --accent: #e2805f;
+    --froid: #7fb4c7;
+    --juste: #7cc08e;
+    --faux: #e2805f;
+  }
+}
+:root[data-theme="dark"] {
+  --fond: #15181a;
+  --encre: #e4e7e8;
+  --doux: #9ca4aa;
+  --filet: #30373b;
+  --carte: #1d2124;
+  --accent: #e2805f;
+  --froid: #7fb4c7;
+  --juste: #7cc08e;
+  --faux: #e2805f;
+}
+
+* { box-sizing: border-box; }
+html { font-size: 112.5%; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--encre);
+  font-family: var(--serif);
+  line-height: 1.55;
+  font-variant-numeric: lining-nums;
+}
+
+.page {
+  max-width: var(--mesure);
+  margin: 0 auto;
+  padding: 3rem 1.25rem 5rem;
+}
+@media (min-width: 64rem) {
+  .page { margin-left: max(2rem, calc(50% - 27rem)); }
+}
+
+/* ───── en-tête */
+.surtitre {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--doux);
+  margin: 0 0 0.6rem;
+}
+.surtitre a { color: inherit; }
+h1 {
+  font-size: 2.1rem;
+  line-height: 1.15;
+  font-weight: 600;
+  margin: 0 0 1rem;
+  text-wrap: balance;
+}
+.these {
+  font-size: 1.18rem;
+  line-height: 1.45;
+  margin: 0 0 2.5rem;
+  color: var(--encre);
+}
+h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 3rem 0 0.8rem;
+  text-wrap: balance;
+}
+h3 {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--doux);
+  margin: 2rem 0 0.5rem;
+}
+p { margin: 0 0 1rem; }
+a { color: var(--accent); text-underline-offset: 0.15em; }
+a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+strong { font-weight: 650; }
+.chaud { color: var(--accent); }
+.froid { color: var(--froid); }
+
+/* ───── notes en marge : dans la colonne sur petit écran, à droite sur grand */
+.marge {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--doux);
+  border-left: 2px solid var(--filet);
+  padding-left: 0.8rem;
+  margin: 0 0 1.2rem;
+}
+@media (min-width: 64rem) {
+  .marge {
+    float: right;
+    clear: right;
+    width: 15rem;
+    margin: 0.2rem -17.5rem 1rem 0;
+  }
+}
+
+/* ───── figures */
+figure { margin: 2rem 0; }
+figure svg { display: block; width: 100%; height: auto; }
+figcaption {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--doux);
+  margin-top: 0.5rem;
+}
+.defile { overflow-x: auto; }
+
+/* ───── encadrés */
+.retenir {
+  border-top: 2px solid var(--encre);
+  border-bottom: 1px solid var(--filet);
+  padding: 0.9rem 0 0.6rem;
+  margin: 2rem 0;
+}
+.retenir p:last-child { margin-bottom: 0; }
+.etiquette {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--doux);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+blockquote {
+  margin: 1.5rem 0;
+  padding: 0 0 0 1rem;
+  border-left: 2px solid var(--accent);
+  font-style: italic;
+}
+
+/* ───── tableaux */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.45rem 0.6rem 0.45rem 0;
+  border-bottom: 1px solid var(--filet);
+}
+th {
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--doux);
+  border-bottom: 1.5px solid var(--encre);
+}
+
+/* ───── questions à choix (assets/quiz.js) */
+.qcm {
+  margin: 1.8rem 0;
+  padding: 1rem 1.1rem 0.6rem;
+  background: var(--carte);
+  border-radius: 3px;
+}
+.qcm .enonce { font-weight: 600; margin-bottom: 0.8rem; }
+.qcm ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.qcm button {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--encre);
+  background: var(--fond);
+  border: 1px solid var(--filet);
+  border-radius: 3px;
+  padding: 0.55rem 0.75rem;
+  cursor: pointer;
+}
+.qcm button:hover { border-color: var(--doux); }
+.qcm li.juste button { border-color: var(--juste); box-shadow: inset 3px 0 0 var(--juste); }
+.qcm li.faux button { border-color: var(--faux); box-shadow: inset 3px 0 0 var(--faux); }
+.qcm .retour {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  margin: 0.35rem 0 0.2rem 0.8rem;
+  color: var(--doux);
+}
+.qcm li.juste .retour::before { content: "Juste. "; color: var(--juste); font-weight: 600; }
+.qcm li.faux .retour::before { content: "Non. "; color: var(--faux); font-weight: 600; }
+.bilan {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--doux);
+}
+
+/* ───── rappel libre, auto-évalué (assets/quiz.js) */
+.rappel {
+  margin: 1.8rem 0;
+  padding: 1rem 1.1rem;
+  background: var(--carte);
+  border-radius: 3px;
+}
+.rappel label.consigne { display: block; font-weight: 600; margin-bottom: 0.6rem; }
+.rappel textarea {
+  width: 100%;
+  min-height: 6.5rem;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--encre);
+  background: var(--fond);
+  border: 1px solid var(--filet);
+  border-radius: 3px;
+  padding: 0.6rem 0.7rem;
+  resize: vertical;
+}
+.rappel button.comparer {
+  margin-top: 0.6rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--fond);
+  background: var(--encre);
+  border: 0;
+  border-radius: 3px;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+}
+.rappel .modele { margin-top: 1rem; border-top: 1px solid var(--filet); padding-top: 0.8rem; }
+.rappel .bareme { list-style: none; padding: 0; margin: 0.6rem 0 0; font-family: var(--sans); font-size: 0.85rem; }
+.rappel .bareme li { margin: 0.3rem 0; }
+.rappel .total { font-family: var(--sans); font-size: 0.85rem; font-weight: 600; }
+
+/* ───── schéma à légender (assets/quiz.js) */
+.legende {
+  margin: 1.8rem 0;
+  padding: 1rem 1.1rem;
+  background: var(--carte);
+  border-radius: 3px;
+}
+.legende ol { list-style: none; margin: 0 0 0.8rem; padding: 0; display: grid; gap: 0.5rem; }
+.legende li { padding-left: 0.6rem; border-left: 3px solid transparent; }
+.legende li.juste { border-left-color: var(--juste); }
+.legende li.faux { border-left-color: var(--faux); }
+.legende .lettre {
+  display: inline-block;
+  width: 1.6rem;
+  font-family: var(--sans);
+  font-weight: 600;
+}
+.legende select {
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--encre);
+  background: var(--fond);
+  border: 1px solid var(--filet);
+  border-radius: 3px;
+  padding: 0.3rem 0.5rem;
+  max-width: calc(100% - 2rem);
+}
+.legende .retour {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--doux);
+  margin: 0.3rem 0 0 1.6rem;
+}
+.legende button.verifier {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--fond);
+  background: var(--encre);
+  border: 0;
+  border-radius: 3px;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+}
+.legende .total { font-family: var(--sans); font-size: 0.85rem; font-weight: 600; margin: 0.6rem 0 0; }
+
+/* ───── pied */
+.suite {
+  margin-top: 3.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--filet);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--doux);
+}
+.suite ul { padding-left: 1.1rem; }
+.suite li { margin: 0.25rem 0; }
+.demande {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  background: var(--carte);
+  padding: 0.8rem 1rem;
+  border-radius: 3px;
+  margin: 2.5rem 0 0;
+}
+
+@media print {
+  .qcm button { border: 1px solid #999; }
+  .rappel textarea, .rappel button { display: none; }
+  .rappel .modele[hidden] { display: block !important; }
+  .marge { float: none; width: auto; margin: 0 0 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

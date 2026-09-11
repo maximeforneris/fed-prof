@@ -1,0 +1,192 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Prof 2 — les médias</title>
+<link rel="stylesheet" href="../assets/kit.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/site.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/calque.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/vivant.css?v=13b3bbbd">
+
+<div class="page" data-site="fed-prof" data-page="domotique/PROF2-MEDIAS" data-public="prof">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="PROF1-COURANT-FAIBLE.html" rel="prev" title="Prof 1 — le courant faible" aria-label="Prof 1 — le courant faible">&lsaquo;</a><a class="fleche" href="PROF3-PROTOCOLES.html" rel="next" title="Prof 3 — les protocoles" aria-label="Prof 3 — les protocoles">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/PROF2-MEDIAS">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">Formation du professeur · BTS FED option C</p>
+    <h1>Les médias<span>et les longueurs</span></h1>
+  </div>
+  <p class="accroche">Pourquoi une paire est torsadée, d'où sortent les cent mètres de l'Ethernet, ce qui limite vraiment une portée radio, pourquoi le CPL s'arrête au transformateur, et la raison de choisir la fibre que personne ne cite, celle qui n'a rien à voir avec le débit.</p>
+  
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">D1-1 Médias de communication · niveau 3</span><span class="tag n3">D2-1 Réseaux informatiques, aspect matériel · niveau 3</span><span class="tag n3">D2-2 VDI · niveau 3</span><span class="tag">D2-1 CEM · niveau 2</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="PROF1-COURANT-FAIBLE.html">Ce qui circule dans un bus</a></b><span class="ou">Prof 1 — le courant faible</span><span class="car">les longueurs se déduisent de ce que le signal subit en ligne, et il faut avoir vu ce signal dans la page 1.</span></li><li><b>Résistance et capacité d'un câble</b><span class="car">les 100 m, 350 m et 30 m sont des conséquences de la résistance et de la capacité d'une paire ; sans ces deux mots, ce sont des chiffres à apprendre.</span></li><li><b>Les décibels</b><span class="car">l'atténuation d'une liaison se compte en décibels par mètre, et un bilan de liaison est une addition de décibels.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#trois-questions-dans-cet-ordre">Trois questions, dans cet ordre</a><a href="#pourquoi-une-paire-est-torsadee">Pourquoi une paire est torsadée</a><a href="#les-longueurs-et-d-ou-elles-viennent">Les longueurs, et d’où elles viennent</a><a href="#la-radio-ce-qui-limite-vraiment-la-portee">La radio : ce qui limite vraiment la portée</a><a href="#le-cpl-et-pourquoi-il-s-arrete-au-transformateur">Le CPL, et pourquoi il s’arrête au transformateur</a><a href="#la-fibre-la-troisieme-raison-est-celle-qu-on-oublie">La fibre : la troisième raison est celle qu’on oublie</a><a href="#ce-qu-il-faut-savoir-refuser">Ce qu’il faut savoir refuser</a></div></nav>
+<h2 id="trois-questions-dans-cet-ordre">Trois questions, dans cet ordre</h2>
+<p>Le choix d’un média ne se fait pas sur le débit. Il se fait sur trois questions, et la première élimine le plus de candidats : <strong>peut-on passer un câble ?</strong> Ensuite seulement : <strong>quelle distance</strong>, puis <strong>quel débit</strong>.</p>
+<p>Un installateur qui commence par le débit propose de la fibre pour piloter un éclairage, et de la radio pour relier deux bâtiments. Les deux erreurs se voient sur des devis réels.</p>
+<div class="cle">
+<p>Les limites de longueur ne sont pas des recommandations de fabricant : ce sont des <strong>budgets</strong> (de tension, d’atténuation ou de temps) et chacune se reconstruit. Un professeur qui sait d’où elles viennent n’a plus à les faire apprendre par cœur.</p>
+</div>
+<h2 id="pourquoi-une-paire-est-torsadee">Pourquoi une paire est torsadée</h2>
+<p>Deux fils parallèles forment une boucle. Un champ magnétique extérieur qui la traverse y induit une tension, c’est exactement le principe du transformateur, et c’est une perturbation.</p>
+<p>Torsader les deux conducteurs retourne la boucle à chaque demi-tour : la tension induite sur un pas s’oppose à celle du pas suivant, et la somme s’annule. Ce qui reste est un signal <strong>commun aux deux fils</strong>, que le récepteur différentiel rejette puisqu’il ne lit que l’écart entre eux.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi les quatre paires d&#39;un câble réseau n&#39;ont pas le même pas de torsade</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que le problème change de nature dès qu’il y a plusieurs paires côte à côte. Le torsadage règle la perturbation venue de l’extérieur ; il ne règle pas la <strong>diaphonie.</strong> Le couplage d’une paire vers sa voisine.</p>
+<p>Deux paires torsadées au même pas restent en vis-à-vis constant sur toute la longueur : leurs couplages s’additionnent au lieu de se compenser. En donnant à chaque paire un pas différent, on garantit que leur position relative tourne, et les couplages se moyennent à zéro.</p>
+<p>C’est visible à l’œil sur un câble dénudé, et c’est un excellent moment de cours : on dénude vingt centimètres de F/UTP et on fait compter les torsades par décimètre. La question qui suit vient toute seule, <em>« et si je détorsade trois centimètres pour brancher ? »</em>. Réponse : c’est précisément ce que la norme limite, et c’est la première cause d’un lien qui ne passe pas la certification.</p></div></details>
+</div><h2 id="les-longueurs-et-d-ou-elles-viennent">Les longueurs, et d’où elles viennent</h2>
+<figure class="schema"><div class="dessin" data-schema="topologies-bus"></div><figcaption>Toute topologie est acceptée sur une ligne de bus, sauf l’anneau. Et trois longueurs se vérifient, toujours les mêmes.</figcaption></figure>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Média</th>
+<th>Limite</th>
+<th>Ce qui la fixe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ethernet cuivre</strong></td>
+<td><strong>100 m</strong></td>
+<td>l’atténuation du signal et la diaphonie sur la bande de la classe : 90 m de lien fixe et deux cordons de 5 m</td>
+</tr>
+<tr>
+<td><strong>Bus KNX TP1</strong></td>
+<td><strong>350 · 700 · 1 000 m</strong></td>
+<td>la chute de tension jusqu’au participant, le temps de propagation entre deux participants, la capacité totale de la ligne</td>
+</tr>
+<tr>
+<td><strong>Modbus RTU sur RS-485</strong></td>
+<td><strong>1 200 m à 9 600 bauds</strong></td>
+<td>le produit longueur × débit : plus on va vite, moins on va loin</td>
+</tr>
+<tr>
+<td><strong>DALI</strong></td>
+<td><strong>300 m</strong></td>
+<td>une chute de tension maximale de 2 V sur la boucle</td>
+</tr>
+<tr>
+<td><strong>Radio 868 MHz</strong></td>
+<td><strong>20 à 30 m</strong> en intérieur</td>
+<td>l’atténuation des parois, pas la puissance d’émission</td>
+</tr>
+<tr>
+<td><strong>Fibre optique</strong></td>
+<td>de la centaine de mètres au kilomètre</td>
+<td>le budget optique : atténuation, connecteurs, épissures</td>
+</tr>
+</tbody>
+</table></div>
+<div class="piege">
+<p>« 1 200 m à 9 600 bauds » ne veut pas dire « 1 200 m ». En RS-485 la limite est un <strong>produit</strong> : à 115 200 bauds on tombe à une centaine de mètres. C’est l’erreur classique sur un devis, et elle ne se voit qu’à la mise en service.</p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi l&#39;anneau est interdit sur une ligne KNX, alors qu&#39;il sauve un réseau industriel</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Sur un anneau, une coupure du câble ne prive personne : le signal arrive par l’autre côté. C’est une redondance gratuite, et c’est pour cela qu’elle est courante sur les réseaux industriels.</p>
+<p>Elle suppose un protocole capable de <strong>bloquer logiquement un brin</strong> en fonctionnement normal et de le rouvrir sur défaut. Sans lui, chaque message revient par les deux côtés, se superpose à lui-même et provoque collisions et réflexions.</p>
+<p>Une ligne KNX TP1 n’a pas ce protocole : tout le monde entend tout le monde, il n’y a pas de commutation. L’anneau y produirait donc exactement l’inverse de ce qu’on en attend, une ligne qui tombe au lieu d’une ligne qui résiste.</p>
+<p>C’est un bon exemple à donner : <strong>une bonne idée dans un contexte peut être une faute dans un autre</strong>, et ce qui tranche, c’est la couche liaison.</p></div></details>
+</div><h2 id="la-radio-ce-qui-limite-vraiment-la-portee">La radio : ce qui limite vraiment la portée</h2>
+<p>Ce n’est presque jamais la puissance d’émission, elle est plafonnée par la réglementation, et tous les appareils sont au plafond. C’est <strong>ce qu’il y a entre</strong> l’émetteur et le récepteur.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Ce qui est traversé</th>
+<th>Ordre de grandeur de l’affaiblissement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Une cloison en plaque de plâtre</td>
+<td>2 à 4 dB</td>
+</tr>
+<tr>
+<td>Un mur en brique ou en parpaing</td>
+<td>6 à 10 dB</td>
+</tr>
+<tr>
+<td>Un mur en béton armé</td>
+<td>15 à 25 dB</td>
+</tr>
+<tr>
+<td>Un plancher béton</td>
+<td>15 à 30 dB</td>
+</tr>
+<tr>
+<td>Une paroi vitrée à isolation renforcée</td>
+<td>15 à 25 dB : le métal du traitement</td>
+</tr>
+</tbody>
+</table></div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi 868 MHz et pas 2,4 GHz pour la domotique du bâtiment</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Deux raisons, et la première est physique. À puissance et antennes égales, l’affaiblissement en espace libre croît avec la fréquence : passer de 868 MHz à 2,4 GHz multiplie la fréquence par 2,8 et coûte environ <strong>9 dB</strong>, soit un facteur huit sur la puissance reçue. La traversée des parois aggrave encore l’écart.</p>
+<p>La seconde est un problème de voisinage. La bande 2,4 GHz est partagée par le Wi-Fi, le Bluetooth, les fours à micro-ondes et une partie des caméras : dans un tertiaire, elle est saturée. Le 868 MHz est une bande beaucoup plus calme.</p>
+<p>Le prix à payer est la bande passante : le 868 MHz offre un débit faible, ce qui interdit la vidéo mais n’a aucune importance pour un ordre d’éclairage de quelques octets. <strong>Le choix de fréquence est un arbitrage portée contre débit</strong>, et la domotique n’a pas besoin de débit.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Un interrupteur sans pile, comment est-ce possible ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Par récupération d’énergie. Le geste d’appui déforme un élément piézoélectrique ou déplace un aimant devant une bobine ; l’énergie récupérée est de l’ordre de quelques dizaines de microjoules.</p>
+<p>C’est peu, mais un télégramme radio de quelques octets à 868 MHz coûte moins que cela. L’émetteur envoie même le message <strong>trois fois</strong>, à des instants espacés, pour compenser l’absence d’accusé de réception : sans pile, on ne peut pas se permettre d’attendre une réponse.</p>
+<p>L’objection à anticiper (<em>« et si personne n’entend ? »</em>) est juste, et c’est la limite honnête de la technique. Un tel interrupteur ne convient pas à une fonction de sécurité. Il convient parfaitement à une cloison vitrée où l’on ne perce pas.</p></div></details>
+</div><h2 id="le-cpl-et-pourquoi-il-s-arrete-au-transformateur">Le CPL, et pourquoi il s’arrête au transformateur</h2>
+<p>Le courant porteur superpose un signal haute fréquence, 110 kHz pour KNX PL110, au 50 Hz du réseau. Il utilise donc le câble d’énergie déjà posé, ce qui en fait la seule solution filaire d’une rénovation où l’on ne peut rien percer.</p>
+<p>Trois limites, et elles sont sévères. Le signal ne franchit pas un <strong>transformateur</strong>, qui se comporte en court-circuit pour la porteuse. Il passe mal d’une <strong>phase</strong> à l’autre sans coupleur. Et il est absorbé par toutes les charges capacitives du réseau, alimentations à découpage, drivers de LED, onduleurs, qui sont précisément ce qu’un bâtiment moderne contient en quantité.</p>
+<div class="piege">
+<p>Le CPL n’a pas de frontière naturelle : le signal sort chez le voisin par le même réseau. Sur un immeuble collectif, cela signifie deux installations qui s’entendent, et un <strong>filtre de bande</strong> en tête de chaque logement n’est pas une option de confort, c’est ce qui rend l’installation utilisable.</p>
+</div>
+<h2 id="la-fibre-la-troisieme-raison-est-celle-qu-on-oublie">La fibre : la troisième raison est celle qu’on oublie</h2>
+<p>On cite le débit, on cite la distance. La raison qui décide vraiment, sur un projet de bâtiment, est la troisième : <strong>l’isolation galvanique</strong>.</p>
+<p>Deux bâtiments distincts ont deux prises de terre distinctes, et donc deux potentiels qui ne sont jamais rigoureusement égaux. Relier leurs réseaux par du cuivre, c’est créer un chemin entre ces deux potentiels : des courants circulent en permanence dans le blindage, et un coup de foudre lointain suffit à détruire les équipements des deux côtés.</p>
+<p>La fibre ne transporte aucun courant. Elle rend la liaison <strong>électriquement inexistante</strong>, ce qu’aucun blindage ne fait.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un bureau d&#39;études écrit dans le CCTP</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Trois exigences reviennent, et elles se lisent dans cet ordre.</p>
+<p><strong>Le type de fibre.</strong> Multimode OM3 ou OM4 pour l’intérieur d’un bâtiment, quelques centaines de mètres, émetteurs bon marché. Monomode OS2 dès qu’on sort du bâtiment ou qu’on dépasse la centaine de mètres : plus cher à raccorder, sans limite pratique de distance à notre échelle.</p>
+<p><strong>Le budget optique.</strong> L’atténuation de la fibre, plus une perte par connecteur et par épissure, doit rester sous ce que le transceiver accepte. C’est le calcul qu’on demande, et il tient en une addition de décibels.</p>
+<p><strong>La recette.</strong> Un réflectomètre produit une courbe qui montre chaque connecteur et chaque épissure. C’est le procès-verbal qui engage l’installateur, et c’est exactement le même geste professionnel que la certification d’un lien cuivre, voir la page Prof 5, qui en fait le support de la situation de CCF.</p></div></details>
+</div><h2 id="ce-qu-il-faut-savoir-refuser">Ce qu’il faut savoir refuser</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Affirmation entendue</th>
+<th>Ce qui cloche</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« On peut aller à 200 m en Ethernet avec du bon câble »</td>
+<td>non : la limite est une classe de liaison, pas une qualité de cuivre</td>
+</tr>
+<tr>
+<td>« Le Modbus fait 1 200 m »</td>
+<td>seulement à bas débit : c’est un produit longueur × débit</td>
+</tr>
+<tr>
+<td>« Le CPL passe partout, c’est déjà câblé »</td>
+<td>pas d’une phase à l’autre, pas au-delà du transformateur</td>
+</tr>
+<tr>
+<td>« La fibre, c’est pour le très haut débit »</td>
+<td>c’est surtout pour la distance et l’isolation galvanique</td>
+</tr>
+<tr>
+<td>« Le sans-fil évite les câbles »</td>
+<td>il évite le câble de communication, pas l’alimentation</td>
+</tr>
+<tr>
+<td>« Une ligne KNX fait 1 000 m »</td>
+<td>1 000 m de câble, mais 350 m depuis l’alimentation</td>
+</tr>
+</tbody>
+</table></div>
+<nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="PROF1-COURANT-FAIBLE.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Prof 1 — le courant faible</span></a><a class="ap" href="PROF3-PROTOCOLES.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Prof 3 — les protocoles</span></a></div></nav>
+<p class="pied">Page de formation. Elle contient des démonstrations et des réponses, c'est ce qui la distingue des pages étudiantes. Voir aussi les pages Prof 1 et 3.</p>
+</div>
+<script src="../assets/kit.js?v=13b3bbbd"></script>
+<script src="../assets/site.js?v=13b3bbbd"></script>
+<script src="../assets/vivant.js?v=13b3bbbd"></script>

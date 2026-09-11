@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le retour décide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../assets/cours.css">
+</head>
+<body>
+<main class="page">
+
+<p class="surtitre">Leçon 1 · <a href="../reference/chaudieres-dans-les-sujets-u41.html">Les chaudières des sujets U41</a></p>
+<h1>Le retour décide</h1>
+<p class="these">Une chaudière des sujets se juge à la température de l'eau qui lui
+revient. Sous 55 °C environ, ses fumées condensent. La chaudière à condensation
+le cherche ; la chaudière bois de 2021 le fuit.</p>
+
+<h2>Une question, deux réponses justes</h2>
+
+<p>Sujet 2021, question 1.1.3, trois points : la vanne trois voies n° 15 renvoie
+de l'eau chaude du départ dans le retour de la chaudière bois, et c'est la
+réponse attendue. Au chapitre 5 du manuel, le même geste « tue la condensation ».
+Un étudiant qui a lu les deux vous demandera lequel est vrai.</p>
+
+<p><strong>Les deux.</strong> Cette leçon donne la phrase qui les réconcilie, et
+la réponse en trois lignes que le barème de 2021 attend.</p>
+
+<h2>Ce qui se passe dans les fumées</h2>
+
+<span class="marge">Rosée des fumées de gaz naturel : environ 55 °C pour
+<a href="https://energieplus-lesite.be/techniques/chauffage10/chauffage-a-eau-chaude/chaudieres-a-condensation/">Energie+</a>,
+environ 57 °C pour
+<a href="https://www.viessmann.fr/fr/blog-expert/choisir-chauffage/point-de-rosee-chaudiere-condensation.html">Viessmann</a>,
+55 à 58 °C dans le <a href="../../manuel/M5-MANUEL.html">manuel, § 5.5</a>.
+Fioul : 45 à 47 °C.</span>
+
+<p>Brûler du gaz ou du bois fabrique de la vapeur d'eau. Les fumées se
+refroidissent contre les parois de l'échangeur, et ces parois sont à peu près à
+la température de <strong>l'eau de retour</strong>. Si elles descendent sous le
+point de rosée des fumées, la vapeur se condense sur les parois et rend sa
+chaleur latente.</p>
+
+<p>Tout se joue donc au retour, jamais au départ. Et le seuil est le même pour
+les deux chaudières : ce qui les sépare, c'est le côté où l'on veut être.</p>
+
+<figure>
+<div class="defile">
+<svg viewBox="0 0 640 186" role="img" aria-labelledby="f1t">
+<title id="f1t">Échelle des températures de retour, de 20 à 90 °C : sous la rosée des fumées de gaz, vers 55 à 58 °C, la condensation est cherchée ; au-dessus de 70 °C, sur la chaudière bois de 2021, elle est fuie.</title>
+<rect x="40" y="40" width="280" height="80" style="fill:var(--froid)" opacity="0.13"/>
+<rect x="320" y="40" width="24" height="80" style="fill:var(--doux)" opacity="0.32"/>
+<rect x="440" y="40" width="160" height="80" style="fill:var(--accent)" opacity="0.13"/>
+<g font-family="'Source Sans 3', 'Segoe UI', sans-serif" text-anchor="middle">
+<text x="180" y="64" font-size="15" font-weight="600" style="fill:var(--froid)">condensation cherchée</text>
+<text x="180" y="83" font-size="13.5" style="fill:var(--encre)">chaudière à condensation</text>
+<text x="520" y="64" font-size="15" font-weight="600" style="fill:var(--accent)">condensation fuie</text>
+<text x="520" y="83" font-size="13.5" style="fill:var(--encre)">chaudière bois, 2021</text>
+<text x="520" y="99" font-size="13.5" style="fill:var(--encre)">retour ≥ 70 °C</text>
+<g font-size="12" style="fill:var(--encre)">
+<text x="280" y="106">70/50</text>
+<text x="360" y="106">80/60</text>
+<text x="440" y="106">90/70</text>
+</g>
+<path d="M275 110 L285 110 L280 118 Z M355 110 L365 110 L360 118 Z M435 110 L445 110 L440 118 Z" style="fill:var(--encre)"/>
+<line x1="40" y1="120" x2="600" y2="120" style="stroke:var(--encre)" stroke-width="1.5"/>
+<g style="stroke:var(--encre)" stroke-width="1">
+<line x1="40" y1="120" x2="40" y2="126"/><line x1="120" y1="120" x2="120" y2="126"/>
+<line x1="200" y1="120" x2="200" y2="126"/><line x1="280" y1="120" x2="280" y2="126"/>
+<line x1="360" y1="120" x2="360" y2="126"/><line x1="440" y1="120" x2="440" y2="126"/>
+<line x1="520" y1="120" x2="520" y2="126"/><line x1="600" y1="120" x2="600" y2="126"/>
+</g>
+<g font-size="13" style="fill:var(--doux)">
+<text x="40" y="142">20</text><text x="120" y="142">30</text><text x="200" y="142">40</text>
+<text x="280" y="142">50</text><text x="360" y="142">60</text><text x="440" y="142">70</text>
+<text x="520" y="142">80</text><text x="600" y="142">90 °C</text>
+</g>
+<line x1="332" y1="128" x2="332" y2="160" style="stroke:var(--doux)" stroke-width="1"/>
+<text x="332" y="176" font-size="13" style="fill:var(--doux)">rosée des fumées de gaz : 55 à 58 °C</text>
+</g>
+</svg>
+</div>
+<figcaption>Température de l'eau de retour. Les triangles marquent le retour de
+trois régimes des sujets : 70/50 (appoint gaz, 2025), 80/60 (batterie des
+chaudières, 2023), 90/70 (chaudières « haut rendement », 2022).</figcaption>
+</figure>
+
+<h2>Deux chaudières, deux côtés du seuil</h2>
+
+<span class="marge">Matériaux, pH et évacuation : <a href="https://energieplus-lesite.be/techniques/chauffage10/chauffage-a-eau-chaude/chaudieres-a-condensation/">Energie+,
+chaudières à condensation</a>. Retour minimal du bois :
+<a href="https://energieplus-lesite.be/techniques/chauffage10/chauffage-a-eau-chaude/chaudieres-bois-energie/">Energie+,
+chaudières bois-énergie</a>.</span>
+
+<p><strong class="froid">La chaudière à condensation</strong> a un échangeur fait
+pour être mouillé : acier inoxydable ou fonte d'aluminium. Ses condensats,
+légèrement acides (pH 4 à 4,5), partent à l'égout par un siphon. Elle veut le
+retour <strong>le plus froid possible</strong> : en 70/50, elle condense toute
+la saison.</p>
+
+<p><strong class="chaud">La chaudière bois</strong>, comme la chaudière gaz
+« classique », n'a pas été conçue pour cela : l'eau condensée sur ses parois
+les corrode. Energie+ cite un retour minimal de 50 à 60 °C ; le sujet 2021
+est plus strict, le retour « ne doit pas passer en dessous de 70°C ».</p>
+
+<div class="retenir">
+<span class="etiquette">La phrase à donner</span>
+<p><strong>Le retour décide.</strong> Sous la rosée des fumées, ça condense. Si
+l'échangeur est fait pour, on cherche ce retour froid ; sinon, on le fuit en
+recyclant de l'eau de départ dans le retour.</p>
+</div>
+
+<h2>La vanne n° 15 travaille tout l'hiver</h2>
+
+<span class="marge">Régimes : tableau de l'introduction du sujet 2021. Montage
+et rôle de la vanne : extrait du CCTP n° 1, même sujet, et
+<a href="../_liens/u41-2021-correction.pdf">corrigé</a>, question 1.1.3.</span>
+
+<p>Le détail que le sujet cache dans un tableau : les circuits de la chaudière
+sont en <strong>80/60</strong>, et celui de l'échangeur de la PAC en
+<strong>80/38</strong>. Le réseau revient donc à 60 °C, parfois à 38 °C, quand la
+chaudière en exige 70. La vanne n° 15 ne sert pas qu'au démarrage : sans elle, la
+chaudière condenserait chaque jour de l'hiver.</p>
+
+<p>Elle est montée <strong>en répartition sur le départ</strong> : une partie de
+l'eau chaude file vers la bouteille, l'autre redescend directement dans le
+retour. Ce mélange relève la température d'entrée de la chaudière, mesurée par
+une sonde de retour.</p>
+
+<figure>
+<div class="defile">
+<svg viewBox="0 0 640 280" role="img" aria-labelledby="f2t">
+<title id="f2t">Schéma simplifié : la chaudière bois envoie son départ vers une vanne trois voies montée en répartition ; une voie va à la bouteille de découplage, l'autre redescend vers le retour, qui revient du réseau vers 60 °C ; après le mélange, une sonde mesure le retour de la chaudière, au moins 70 °C.</title>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+<!-- depart chaudiere -> vanne -> bouteille -> reseau -->
+<path d="M150 90 H328 M352 90 H520 M560 90 H604" style="stroke:var(--accent)" stroke-width="4"/>
+<!-- recyclage -->
+<path d="M340 102 V200" style="stroke:var(--accent)" stroke-width="4"/>
+<!-- retour melange vers chaudiere -->
+<path d="M340 200 H150" style="stroke:var(--accent)" stroke-width="4" opacity="0.6"/>
+<!-- retour reseau -->
+<path d="M604 200 H560 M520 200 H340" style="stroke:var(--froid)" stroke-width="4"/>
+<!-- liaison de regulation -->
+<path d="M190 191 V40 H250 M280 40 H340 V58" style="stroke:var(--doux)" stroke-width="1.3" stroke-dasharray="4 4"/>
+</g>
+<!-- chaudiere, bouteille -->
+<rect x="40" y="60" width="110" height="150" rx="4" style="fill:var(--carte);stroke:var(--encre)" stroke-width="1.5"/>
+<rect x="520" y="60" width="40" height="170" rx="8" style="fill:var(--carte);stroke:var(--encre)" stroke-width="1.5"/>
+<!-- vanne trois voies -->
+<path d="M328 82 L328 98 L340 90 Z M352 82 L352 98 L340 90 Z M332 102 L348 102 L340 90 Z" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5" stroke-linejoin="round"/>
+<line x1="340" y1="74" x2="340" y2="90" style="stroke:var(--encre)" stroke-width="1.5"/>
+<circle cx="340" cy="66" r="8" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5"/>
+<!-- regulateur -->
+<rect x="250" y="30" width="30" height="20" rx="2" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.3"/>
+<!-- pompe -->
+<circle cx="250" cy="200" r="13" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5"/>
+<path d="M256 193 L256 207 L242 200 Z" style="fill:var(--encre)"/>
+<!-- sonde de retour -->
+<circle cx="190" cy="200" r="9" style="fill:var(--fond);stroke:var(--encre)" stroke-width="1.5"/>
+<circle cx="340" cy="200" r="4.5" style="fill:var(--accent)"/>
+<!-- sens de circulation -->
+<path d="M234 85 L244 90 L234 95 Z M434 85 L444 90 L434 95 Z" style="fill:var(--accent)"/>
+<path d="M335 146 L340 156 L345 146 Z" style="fill:var(--accent)"/>
+<path d="M444 195 L434 200 L444 205 Z" style="fill:var(--froid)"/>
+<g font-family="'Source Sans 3', 'Segoe UI', sans-serif" text-anchor="middle" style="fill:var(--encre)">
+<text x="95" y="128" font-size="13.5" font-weight="600">chaudière</text>
+<text x="95" y="146" font-size="13.5">bois</text>
+<text x="95" y="164" font-size="12" style="fill:var(--doux)">500 kW</text>
+<text x="340" y="70" font-size="9" font-weight="600">M</text>
+<text x="265" y="44" font-size="11" font-weight="600">R</text>
+<text x="265" y="22" font-size="11" style="fill:var(--doux)">régulateur</text>
+<text x="190" y="204" font-size="10" font-weight="600">T</text>
+<text x="190" y="232" font-size="11.5" style="fill:var(--doux)">sonde</text>
+<text x="250" y="232" font-size="11.5" style="fill:var(--doux)">pompe</text>
+<text x="240" y="78" font-size="12" style="fill:var(--accent)">départ ≈ 80 °C</text>
+<text x="290" y="190" font-size="12" font-weight="600" style="fill:var(--accent)">≥ 70 °C</text>
+<text x="430" y="224" font-size="12" style="fill:var(--froid)">retour réseau ≈ 60 °C</text>
+<text x="582" y="80" font-size="11" style="fill:var(--doux)">réseau</text>
+<text x="540" y="252" font-size="11.5" style="fill:var(--doux)">bouteille de</text>
+<text x="540" y="267" font-size="11.5" style="fill:var(--doux)">découplage</text>
+</g>
+<text x="358" y="70" font-family="'Source Sans 3', 'Segoe UI', sans-serif" font-size="12.5" font-weight="600" style="fill:var(--encre)">V3V n° 15</text>
+</svg>
+</div>
+<figcaption>Schéma simplifié. L'ordre des organes est celui du DR1 corrigé :
+by-pass rejoignant le retour avant les pompes, sonde entre les pompes et la
+chaudière. Le régulateur est dans la chaudière ; le sujet autorise à le dessiner
+dehors (question 1.1.4).</figcaption>
+</figure>
+
+<h2>Où le manuel va trop vite</h2>
+
+<span class="marge"><a href="https://energieplus-lesite.be/techniques/chauffage10/chauffage-a-eau-chaude/chaudieres-a-condensation/">Energie+</a>,
+section sur l'amélioration d'une ancienne installation : 75 % en 90/70, 100 %
+en 70/50, en énergie, besoins supposés proportionnels à l'écart de
+température.</span>
+
+<p>Le chapitre 5 dit qu'une chaudière à condensation posée en 80/60 fonctionne
+« comme une chaudière standard chère ». C'est vrai au régime nominal, faux sur
+la saison. Avec une régulation climatique, le retour baisse dès qu'il fait moins
+froid que la température de base : Energie+ compte qu'en 90/70, la chaudière
+condense encore <strong>75 % de l'énergie</strong> de l'hiver.</p>
+
+<p>La bonne phrase pour un étudiant : <em>au régime de calcul, elle ne condense
+pas ; la plupart de l'hiver, si.</em></p>
+
+<h2>Rappel</h2>
+
+<p class="bilan" data-pour="qcm"></p>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">Une chaudière gaz à condensation alimente un réseau 70/50. À
+pleine charge, ses fumées…</p>
+<ol>
+<li><button type="button">Elles condensent : le retour à 50 °C passe sous la rosée.</button>
+<p class="retour" hidden>Ce sont les parois, à la température du retour, qui refroidissent les fumées : 50 °C est sous les 55 °C de la rosée.</p></li>
+<li><button type="button">Pas de condensation : le départ, à 70 °C, est trop chaud.</button>
+<p class="retour" hidden>Le départ ne refroidit pas les fumées ; le retour, si. C'est lui qu'on compare à la rosée.</p></li>
+<li><button type="button">Elles condensent : le départ à 70 °C reste sous la rosée.</button>
+<p class="retour" hidden>Deux erreurs : c'est le retour qui compte, et 70 °C est au-dessus de la rosée, pas au-dessous.</p></li>
+</ol>
+</div>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">Sujet 2021 : le réseau revient à 60 °C, et la chaudière bois
+exige 70 °C au retour. Pourquoi ?</p>
+<ol>
+<li><button type="button">Sous 70 °C, ses fumées condenseraient sur ses parois.</button>
+<p class="retour" hidden>C'est la raison du sujet : éviter la condensation dans la chaudière, et assurer une bonne combustion des plaquettes.</p></li>
+<li><button type="button">Sous 70 °C, le réseau enfoui perdrait trop d'énergie.</button>
+<p class="retour" hidden>Les pertes du réseau enterré baissent quand l'eau refroidit. La contrainte vient de la chaudière.</p></li>
+<li><button type="button">Sous 70 °C, les émetteurs ne chaufferaient pas assez.</button>
+<p class="retour" hidden>Les émetteurs voient le départ, pas le retour chaudière. Le 70 °C protège la chaudière elle-même.</p></li>
+</ol>
+</div>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">Renvoyer du départ dans le retour : bonne réponse en 2021, défaut
+sur une chaudière à condensation. Ce qui les sépare, c'est…</p>
+<ol>
+<li><button type="button">L'échangeur : il est conçu, ou non, pour les condensats.</button>
+<p class="retour" hidden>Inox ou fonte d'aluminium avec évacuation : on cherche la condensation. Sinon, elle corrode, et on la fuit.</p></li>
+<li><button type="button">Le combustible : le bois brûle à plus haute température.</button>
+<p class="retour" hidden>La température de flamme ne décide pas : ce qui compte est la paroi, donc le retour, et ce qu'elle supporte.</p></li>
+<li><button type="button">La puissance : au-delà de 500 kW, le recyclage s'impose.</button>
+<p class="retour" hidden>Aucun seuil de puissance là-dedans : une petite chaudière bois se protège de la même façon.</p></li>
+</ol>
+</div>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">Une chaudière à condensation sur un réseau 90/70, avec une
+régulation climatique. Sur la saison de chauffe…</p>
+<ol>
+<li><button type="button">Elle condense souvent : la loi d'eau baisse son retour.</button>
+<p class="retour" hidden>Energie+ : 75 % de l'énergie de l'hiver est produite en condensant, parce que le retour passe sous 55 °C dès qu'il fait moins froid.</p></li>
+<li><button type="button">Jamais de condensation : son retour nominal vaut 70 °C.</button>
+<p class="retour" hidden>Vrai au régime de calcul seulement, c'est-à-dire les jours les plus froids. Le reste de l'hiver, le retour est plus bas.</p></li>
+<li><button type="button">Elle ne condense que par grand froid, quand elle force.</button>
+<p class="retour" hidden>C'est l'inverse : par grand froid, le retour est le plus chaud de la saison.</p></li>
+</ol>
+</div>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">Quelle température la vanne n° 15 du sujet 2021 régule-t-elle ?</p>
+<ol>
+<li><button type="button">Celle du retour, à l'entrée de chaque générateur.</button>
+<p class="retour" hidden>Le CCTP le dit : « la température de retour chaudière est régulée par une vanne trois voies ». La sonde est sur le retour, après le mélange.</p></li>
+<li><button type="button">Celle du départ, vers la bouteille de découplage.</button>
+<p class="retour" hidden>Le départ, la chaudière le tient elle-même. La vanne sert au retour : c'est ce qu'on dessinera en 1.1.4.</p></li>
+<li><button type="button">Celle du départ, suivant la loi d'eau extérieure.</button>
+<p class="retour" hidden>Une loi d'eau agit sur le départ des circuits qui chauffent le bâtiment. La vanne n° 15 ne regarde que le retour chaudière.</p></li>
+</ol>
+</div>
+
+<h2>À vous d'expliquer</h2>
+
+<div class="rappel">
+<label class="consigne" for="r1">Un étudiant : « Monsieur, à quoi sert la vanne
+n° 15 ? » Répondez en trois lignes, comme sur la copie, sans relire la page.</label>
+<textarea id="r1"></textarea>
+<button class="comparer" type="button">Comparer</button>
+<div class="modele" hidden>
+<span class="etiquette">Une réponse à trois points</span>
+<p>Montée en répartition sur le départ, la vanne renvoie une partie de l'eau
+chaude directement dans le retour de la chaudière. Ce mélange porte le retour à
+70 °C au moins, alors que le réseau revient vers 60 °C. Sans lui, les fumées
+condenseraient dans la chaudière et la corroderaient.</p>
+<p>Cochez ce que votre réponse contient, d'après le barème du corrigé 2021 :</p>
+<ul class="bareme">
+<li><label><input type="checkbox" data-points="1"> Montage en répartition, qui fait un mélange sur le retour — 1 point</label></li>
+<li><label><input type="checkbox" data-points="2"> Réchauffer le retour, ou éviter la condensation dans la chaudière — 2 points</label></li>
+</ul>
+<p class="total"></p>
+</div>
+</div>
+
+<h2>La source à lire</h2>
+
+<p><a href="https://energieplus-lesite.be/techniques/chauffage10/chauffage-a-eau-chaude/chaudieres-a-condensation/">Energie+,
+« Chaudières à condensation »</a>, site de l'UCLouvain pour la Région wallonne.
+Lisez le principe, puis la section sur les circuits hydrauliques : ses deux
+règles, ne jamais mélanger le retour froid avec le départ, et envoyer au
+condenseur les retours les plus froids, sont l'envers exact de la vanne
+n° 15. Relisez ensuite la <a href="../_liens/u41-2021-correction.pdf">question
+1.1.3 du corrigé 2021</a> avec cette leçon en tête.</p>
+
+<p class="demande">Une réponse d'étudiant à trancher, un doute sur un chiffre, une
+question qui n'est pas ici ? <strong>Posez-la dans la conversation</strong> :
+c'est à ça que je sers. Dans trois jours, refaites le rappel et l'explication
+sans relire le reste : on commencera la leçon 2 par là.</p>
+
+<nav class="suite">
+<span class="etiquette">Pour la suite</span>
+<ul>
+<li><a href="../reference/chaudieres-dans-les-sujets-u41.html">Référence : les chaudières des sujets U41, session par session</a></li>
+<li><a href="../../manuel/M5-MANUEL.html">Manuel, chapitre 5 — les générateurs</a>, ce que vos étudiants ont lu</li>
+<li><a href="https://maximeforneris.github.io/bts-fed-c/cours/FICHE-CHAUFFERIE-EN-MOUVEMENT.html">La chaufferie en mouvement</a>, où le bipasse à 50 % fait perdre la condensation</li>
+<li><a href="0002-repartition-ou-melange.html">Leçon 2 — Répartition ou mélange</a> : lire une vanne trois voies sur un schéma</li>
+</ul>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

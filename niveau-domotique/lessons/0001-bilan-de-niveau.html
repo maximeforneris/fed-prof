@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le bilan de départ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../assets/cours.css">
+<link rel="stylesheet" href="../assets/bilan.css">
+</head>
+<body>
+<main class="page">
+
+<p class="surtitre">Leçon 1 · <a href="../reference/carte-des-dix-sept-savoirs.html">Les dix-sept savoirs de domotique</a></p>
+<h1>Le bilan de départ</h1>
+<p class="these">Vingt-quatre questions, six familles, deux étages par famille. Le
+premier étage est celui de l'examinateur ; le second, celui de l'étudiant qui pose
+la question gênante. Ce n'est pas une note : c'est la carte qui décidera des leçons
+suivantes.</p>
+
+<p><strong>Trois règles, et elles font la valeur du résultat.</strong> Le premier
+clic compte et ne se reprend pas. « Je ne sais pas » vaut mieux qu'un choix au
+hasard : un blanc assumé renseigne, une réponse devinée brouille. Et le bilan se
+passe <strong>avant</strong> d'ouvrir le
+<a href="../../domotique/COURS1-ENERGIE-ELECTRIQUE.html">cours sur
+l'énergie électrique</a> : lu juste avant, il gonflerait la famille 5.</p>
+
+<span class="marge">Rien n'est enregistré. Recharger la page repart de zéro ; le
+relevé final se copie pour être collé dans la conversation.</span>
+
+<h2>1 · La chaîne et ses constituants</h2>
+
+<div class="diag" data-famille="La chaîne et ses constituants" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">Dans la chaîne fonctionnelle, un module vendu comme « actionneur KNX 4 sorties » est :</p>
+<ol><li><button type="button">un pré-actionneur</button></li><li><button type="button">un actionneur</button></li><li><button type="button">un capteur</button></li></ol>
+<p class="retour" hidden>Il reçoit un ordre et commute une puissance sans produire d'effet dans le bâtiment : c'est un pré-actionneur. L'actionneur, c'est le luminaire. Le mot du catalogue n'est pas celui du référentiel.</p>
+</div>
+
+<div class="diag" data-famille="La chaîne et ses constituants" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">Le savoir B8-1 du référentiel énumère combien de constituants d'un système centralisé ?</p>
+<ol><li><button type="button">six</button></li><li><button type="button">quatre</button></li><li><button type="button">cinq</button></li></ol>
+<p class="retour" hidden>Capteurs, pré-actionneurs, actionneurs, centrale, réseaux, supervision. Les deux derniers sont ceux qu'on oublie — d'où les repères « aucune des cinq » du TP de la semaine 3.</p>
+</div>
+
+<div class="diag" data-famille="La chaîne et ses constituants" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">Un étudiant demande pourquoi un poussoir et un actionneur KNX fonctionnent sans aucune centrale. La réponse juste :</p>
+<ol><li><button type="button">chaque participant décide seul</button></li><li><button type="button">le coupleur centralise tout</button></li><li><button type="button">l'alimentation porte la logique</button></li></ol>
+<p class="retour" hidden>KNX est décentralisé : chaque participant réagit aux télégrammes de son adresse de groupe. La centrale n'apparaît que pour la supervision, l'IP et les passerelles.</p>
+</div>
+
+<div class="diag" data-famille="La chaîne et ses constituants" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">Un étudiant range l'alimentation bus parmi les pré-actionneurs. Que lui répondre ?</p>
+<ol><li><button type="button">elle alimente le réseau d'information</button></li><li><button type="button">elle commute la puissance utile</button></li><li><button type="button">elle transforme l'énergie en effet</button></li></ol>
+<p class="retour" hidden>Elle ne commute rien et ne produit aucun effet : elle fournit l'énergie de la chaîne d'information. Elle relève des réseaux, pas de la chaîne d'énergie.</p>
+</div>
+
+<h2>2 · Les médias et les réseaux</h2>
+
+<div class="diag" data-famille="Les médias et les réseaux" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">Longueur maximale d'un lien Ethernet cuivre entre deux équipements actifs :</p>
+<ol><li><button type="button">100 mètres</button></li><li><button type="button">350 mètres</button></li><li><button type="button">700 mètres</button></li></ol>
+<p class="retour" hidden>90 m de lien fixe et deux cordons de 5 m. Les 350 et 700 m sont des longueurs de ligne KNX, et c'est la confusion qu'on entend en classe.</p>
+</div>
+
+<div class="diag" data-famille="Les médias et les réseaux" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">Relier deux bâtiments distants de 400 m, le long d'un poste de transformation :</p>
+<ol><li><button type="button">la fibre optique</button></li><li><button type="button">le bus filaire</button></li><li><button type="button">le courant porteur</button></li></ol>
+<p class="retour" hidden>Au-delà des 100 m du cuivre, dans un milieu perturbé : la fibre. Le courant porteur ne franchit pas un transformateur.</p>
+</div>
+
+<div class="diag" data-famille="Les médias et les réseaux" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">D'où vient la limite des 350 m entre l'alimentation KNX et le participant le plus éloigné ?</p>
+<ol><li><button type="button">de la chute de tension</button></li><li><button type="button">de la vitesse du signal</button></li><li><button type="button">de la capacité du câble</button></li></ol>
+<p class="retour" hidden>Boucle de 26 Ω sur 350 m, 640 mA répartis sur la ligne : 8,4 V de chute, il reste 21,6 V pour un minimum de 21 V. C'est la <a href="0002-les-350-metres-se-calculent.html">leçon 2</a>.</p>
+</div>
+
+<div class="diag" data-famille="Les médias et les réseaux" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">Au-delà du débit et de la distance, la raison qui fait choisir la fibre entre deux bâtiments :</p>
+<ol><li><button type="button">son isolation galvanique</button></li><li><button type="button">sa légèreté mécanique</button></li><li><button type="button">son coût réduit</button></li></ol>
+<p class="retour" hidden>Deux bâtiments, deux prises de terre, deux potentiels : le cuivre les relie et fait circuler des courants dans les blindages. La fibre rend la liaison électriquement inexistante.</p>
+</div>
+
+<h2>3 · Les protocoles</h2>
+
+<div class="diag" data-famille="Les protocoles" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">En KNX, une adresse de groupe désigne :</p>
+<ol><li><button type="button">une fonction</button></li><li><button type="button">un appareil</button></li><li><button type="button">une ligne</button></li></ol>
+<p class="retour" hidden>L'adresse physique désigne l'appareil ; l'adresse de groupe, une fonction que plusieurs appareils partagent. C'est ce qui rend un second poussoir gratuit.</p>
+</div>
+
+<div class="diag" data-famille="Les protocoles" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">Sur une ligne série RS-485, Modbus RTU fonctionne avec :</p>
+<ol><li><button type="button">un seul maître</button></li><li><button type="button">plusieurs maîtres égaux</button></li><li><button type="button">aucun maître désigné</button></li></ol>
+<p class="retour" hidden>Un maître interroge, les esclaves — numérotés de 1 à 247 — répondent. Personne ne parle sans avoir été interrogé.</p>
+</div>
+
+<div class="diag" data-famille="Les protocoles" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">Deux appareils Modbus communiquent, mais les valeurs lues sont absurdes. La cause la plus probable :</p>
+<ol><li><button type="button">aucun type sur les registres</button></li><li><button type="button">des vitesses de ligne différentes</button></li><li><button type="button">un conflit d'adresse de groupe</button></li></ol>
+<p class="retour" hidden>Un registre contient seize bits sans sens défini : décalage d'adresse, ordre des mots d'un flottant, échelle. Des vitesses différentes n'échangeraient rien du tout ; l'adresse de groupe, c'est du KNX.</p>
+</div>
+
+<div class="diag" data-famille="Les protocoles" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">Le câble DALI peut partager la gaine du 230 V, le câble KNX TP1 ordinaire non. Pourquoi ?</p>
+<ol><li><button type="button">une question d'isolement du câble</button></li><li><button type="button">DALI tolère mieux les perturbations</button></li><li><button type="button">KNX transporte des données sensibles</button></li></ol>
+<p class="retour" hidden>Le circuit DALI est prévu pour être isolé à la tension du réseau, pas le TP1 ordinaire. C'est une affaire de classification d'isolement, pas de protocole.</p>
+</div>
+
+<h2>4 · La sûreté et la sécurité</h2>
+
+<div class="diag" data-famille="La sûreté et la sécurité" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">Ce qui impose la catégorie de SSI d'un établissement :</p>
+<ol><li><button type="button">son classement réglementaire</button></li><li><button type="button">son budget d'équipement</button></li><li><button type="button">sa hauteur totale</button></li></ol>
+<p class="retour" hidden>Type d'ERP et catégorie d'effectif imposent la catégorie, de A à E. Le technicien constate et met en œuvre ; il ne choisit pas.</p>
+</div>
+
+<div class="diag" data-famille="La sûreté et la sécurité" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">Un détecteur volumétrique détecte un intrus :</p>
+<ol><li><button type="button">après son entrée</button></li><li><button type="button">avant son entrée</button></li><li><button type="button">à la clôture</button></li></ol>
+<p class="retour" hidden>Il surveille le volume, donc il constate après l'entrée. Le périmétrique — contacts, barrières — arrête avant.</p>
+</div>
+
+<div class="diag" data-famille="La sûreté et la sécurité" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">Dans le calcul d'autonomie d'une alimentation secourue, le terme qui pèse le plus est le courant :</p>
+<ol><li><button type="button">de veille</button></li><li><button type="button">d'alarme maximal</button></li><li><button type="button">de démarrage</button></li></ol>
+<p class="retour" hidden>L'alarme dure quelques minutes, la veille toute la coupure : la capacité se dimensionne sur le courant de veille, multiplié par l'autonomie et un coefficient de vieillissement d'environ 1,25.</p>
+</div>
+
+<div class="diag" data-famille="La sûreté et la sécurité" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">On paie un détecteur double technologie trois fois plus cher. Ce qu'on achète :</p>
+<ol><li><button type="button">moins de fausses alarmes</button></li><li><button type="button">une portée bien supérieure</button></li><li><button type="button">la détection derrière cloisons</button></li></ol>
+<p class="retour" hidden>Il exige l'infrarouge et l'hyperfréquence ensemble : il ne détecte pas davantage, il se trompe moins. Une installation qui crie pour rien finit désarmée.</p>
+</div>
+
+<h2>5 · L'énergie électrique du bâtiment</h2>
+
+<div class="diag" data-famille="L'énergie électrique" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">Au-delà de 36 kVA, un dépassement de la puissance souscrite :</p>
+<ol><li><button type="button">se paie à l'heure</button></li><li><button type="button">déclenche le disjoncteur général</button></li><li><button type="button">se paie au kVA</button></li></ol>
+<p class="retour" hidden>12,79 € par heure de dépassement au 1er août 2026. L'ampleur ne compte pas : dépasser d'un kVA ou de trente coûte la même chose.</p>
+</div>
+
+<div class="diag" data-famille="L'énergie électrique" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">La consommation d'une période se calcule à partir de deux :</p>
+<ol><li><button type="button">relevés d'index</button></li><li><button type="button">puissances maximales</button></li><li><button type="button">factures successives</button></li></ol>
+<p class="retour" hidden>Un index ne redescend jamais : la consommation est une différence d'index, et les deux relevés doivent être faits au même instant.</p>
+</div>
+
+<div class="diag" data-famille="L'énergie électrique" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">Au tarif Bleu 2026, l'option heures creuses devient rentable à partir d'une part d'heures creuses d'environ :</p>
+<ol><li><button type="button">un quart</button></li><li><button type="button">la moitié</button></li><li><button type="button">un dixième</button></li></ol>
+<p class="retour" hidden>x = (p<sub>HP</sub> − p<sub>base</sub>) / (p<sub>HP</sub> − p<sub>HC</sub>) : 25,7 % à 6 kVA, 28,4 % à 9 kVA. Sans chauffe-eau asservi, on reste en dessous et l'option coûte plus cher que la base.</p>
+</div>
+
+<div class="diag" data-famille="L'énergie électrique" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">Trois phases chargées à 60, 35 et 30 A, charges résistives. Le courant de neutre vaut environ :</p>
+<ol><li><button type="button">28 ampères</button></li><li><button type="button">125 ampères</button></li><li><button type="button">zéro ampère</button></li></ol>
+<p class="retour" hidden>I<sub>N</sub>² = I<sub>1</sub>² + I<sub>2</sub>² + I<sub>3</sub>² − I<sub>1</sub>I<sub>2</sub> − I<sub>2</sub>I<sub>3</sub> − I<sub>3</sub>I<sub>1</sub> = 775, soit 27,8 A. 125 A serait la somme arithmétique, qui n'a pas de sens pour des courants décalés de 120°.</p>
+</div>
+
+<h2>6 · L'éclairage et la régulation</h2>
+
+<div class="diag" data-famille="L'éclairage et la régulation" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">Éclairement à maintenir sur un poste de travail de bureau :</p>
+<ol><li><button type="button">500 lux</button></li><li><button type="button">50 lux</button></li><li><button type="button">5000 lux</button></li></ol>
+<p class="retour" hidden>500 lx pour écrire, lire et travailler sur écran, selon la norme NF EN 12464-1. 50 lx éclaire à peine une circulation ; 5 000 lx, c'est l'extérieur par temps couvert.</p>
+</div>
+
+<div class="diag" data-famille="L'éclairage et la régulation" data-etage="bts" data-bonne="0">
+<p class="etage">Étage BTS</p>
+<p class="enonce">Une régulation proportionnelle seule laisse, en régime établi :</p>
+<ol><li><button type="button">une erreur statique</button></li><li><button type="button">une oscillation permanente</button></li><li><button type="button">une consigne dépassée</button></li></ol>
+<p class="retour" hidden>Le proportionnel a besoin d'un écart pour agir : il en garde un. Seule l'action intégrale l'annule.</p>
+</div>
+
+<div class="diag" data-famille="L'éclairage et la régulation" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">Pourquoi la variation DALI suit-elle une courbe logarithmique ?</p>
+<ol><li><button type="button">l'œil perçoit ainsi la lumière</button></li><li><button type="button">le bus transmet ainsi moins</button></li><li><button type="button">les drivers chauffent ainsi moins</button></li></ol>
+<p class="retour" hidden>La sensation de luminosité suit à peu près le logarithme du flux : une variation linéaire semblerait sauter d'un coup en bas d'échelle.</p>
+</div>
+
+<div class="diag" data-famille="L'éclairage et la régulation" data-etage="prof" data-bonne="0">
+<p class="etage">Étage professeur</p>
+<p class="enonce">Dans une régulation proportionnelle, on double le gain. L'erreur statique :</p>
+<ol><li><button type="button">diminue sans disparaître</button></li><li><button type="button">disparaît complètement alors</button></li><li><button type="button">double elle aussi</button></li></ol>
+<p class="retour" hidden>Elle vaut à peu près l'écart initial divisé par (1 + K) : elle baisse avec le gain sans jamais s'annuler — et un gain trop fort fait osciller.</p>
+</div>
+
+<h2>Le relevé</h2>
+
+<div id="releve"></div>
+
+<p class="demande">Le relevé terminé, <strong>copiez-le et collez-le dans la
+conversation</strong>. J'en tirerai les fiches d'apprentissage et l'ordre des
+leçons : on commencera par la famille où l'écart entre l'étage BTS et l'étage
+professeur est le plus grand. Une question qui vous paraît mal posée, une réponse
+que vous contestez ? Dites-le aussi : c'est à ça que je sers.</p>
+
+<p><strong>La source à lire, maintenant ou après :</strong> le
+<a href="../_liens/referentiel-bts-fed-mars2014_OFFICIEL.pdf">référentiel
+officiel du BTS FED</a>, pages 71 à 74 — sections B8, C et D, colonne DBC. Vingt
+minutes, et c'est le seul texte qui dise ce qui est exigible et à quel niveau.</p>
+
+<nav class="suite">
+<span class="etiquette">Pour la suite</span>
+<ul>
+<li><a href="../reference/carte-des-dix-sept-savoirs.html">Référence : les dix-sept savoirs, leur niveau, et où ils s'enseignent</a></li>
+<li><a href="../../domotique/PROF1-COURANT-FAIBLE.html">Prof 1 — le courant faible</a> et les quatre autres fiches, familles 1 à 4</li>
+<li><a href="0002-les-350-metres-se-calculent.html">Leçon 2 — les 350 mètres se calculent</a></li>
+<li><a href="../../domotique/COURS1-ENERGIE-ELECTRIQUE.html">Cours 1 — l'énergie électrique</a>, famille 5 : <em>après</em> le bilan</li>
+</ul>
+</nav>
+
+</main>
+<script src="../assets/bilan.js"></script>
+</body>
+</html>

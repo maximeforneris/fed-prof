@@ -1,0 +1,298 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Exercice type · CTA</title>
+<link rel="stylesheet" href="../assets/kit.css?v=2863feac">
+<link rel="stylesheet" href="../assets/site.css?v=2863feac">
+<link rel="stylesheet" href="../assets/calque.css?v=2863feac">
+<link rel="stylesheet" href="../assets/vivant.css?v=2863feac">
+
+<div class="page" data-site="fed-prof" data-page="exercices/EXO-CTA-AMPHI-PROF" data-public="prof">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="EXO-CHAUFFERIE-COLLEGE-PROF.html" rel="prev" title="Exercice type · chaufferie" aria-label="Exercice type · chaufferie">&lsaquo;</a><a class="fleche" href="EXO-PAC-MEDIATHEQUE-PROF.html" rel="next" title="Exercice type · PAC" aria-label="Exercice type · PAC">&rsaquo;</a></span><button type="button" class="lu" data-lu="exercices/EXO-CTA-AMPHI-PROF">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">Formation du professeur · BTS FED option C</p>
+    <h1>Exercice type U41<span>la CTA d'un amphithéâtre</span></h1>
+  </div>
+  <p class="accroche">Le corrigé barémé d'un exercice au format de l'épreuve : une centrale double flux à roue, l'air neuf réglé par le CO₂, le tracé d'hiver, la batterie avec et sans roue, le graphe de la V2V et la liste des points.</p>
+  
+  
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="../manuel/M11-MANUEL.html">La centrale de traitement d'air</a></b><span class="ou">Manuel · chapitre 11</span><span class="car">la roue et les batteries portent les parties 1 et 3.</span></li><li><b><a href="../manuel/M10-MANUEL.html">Les évolutions de l'air</a></b><span class="ou">Manuel · chapitre 10</span><span class="car">le tracé d'hiver et la puissance de la batterie en découlent.</span></li><li><b><a href="../manuel/M12-MANUEL.html">Les boucles de régulation</a></b><span class="ou">Manuel · chapitre 12</span><span class="car">la chaîne de la question 10 et le graphe de la V2V en viennent.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#utiliser-cette-fiche">Utiliser cette fiche</a><a href="#corrige-partie-1-lire-le-dossier">Corrigé, partie 1 : lire le dossier</a><a href="#corrige-partie-2-le-debit-suit-l-occupation">Corrigé, partie 2 : le débit suit l’occupation</a><a href="#corrige-partie-3-l-hiver-dans-la-centrale">Corrigé, partie 3 : l’hiver dans la centrale</a><a href="#corrige-partie-4-reguler-proteger-superviser">Corrigé, partie 4 : réguler, protéger, superviser</a><a href="#grille-de-diagnostic-a-remplir-en-circulant">Grille de diagnostic, à remplir en circulant</a></div></nav>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th><strong>Savoirs</strong></th>
+<th><strong>Niveau DBC</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>B2-1 Ventilation, double flux</strong></td>
+<td><strong>3, maîtrise d’outils</strong></td>
+</tr>
+<tr>
+<td><strong>A4-2 Évolutions de l’air, bilans</strong></td>
+<td><strong>3, maîtrise d’outils</strong></td>
+</tr>
+<tr>
+<td><strong>B11 Régulation</strong></td>
+<td><strong>3, maîtrise d’outils</strong></td>
+</tr>
+<tr>
+<td>B8 Systèmes centralisés, GTB</td>
+<td>3, maîtrise d’outils</td>
+</tr>
+<tr>
+<td>A4-1 Diagramme de l’air humide</td>
+<td>2 : expression</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>UN CAS CONSTRUIT, PAS UN APPAREIL DU COMMERCE</strong></p>
+<p>L’amphithéâtre, la centrale et ses réglages sont inventés, sur le modèle des questions de CTA des sessions 2018, 2019, 2025 et 2026. Les valeurs sont calculées à la pression atmosphérique normale par <code>figs-exo-cta.py</code>, qui trace aussi les figures : les lectures sur le DR3 tombent sur celles du corrigé. Ne pas les présenter comme des données constructeur.</p>
+</blockquote>
+<h2 id="utiliser-cette-fiche">Utiliser cette fiche</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Moment</th>
+<th>Ce qu’on en fait</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Après les séances 17 et 18</td>
+<td>En entraînement, 1 h 15, les documents indiqués dans chaque question comme en début d’année</td>
+</tr>
+<tr>
+<td>Après les séances 20 et 21</td>
+<td>La partie 4 seule, 25 minutes, pour relier la régulation à la liste des points</td>
+</tr>
+<tr>
+<td>Avant les sujets complets des séances 24 et 26</td>
+<td>En autonomie chronométrée, puis correction croisée avec la grille de la séance 25</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Minutage conseillé : 1 h 15.</strong> Parties 1 et 2 en 30 minutes, partie 3 en 20 minutes, partie 4 en 25 minutes. Les parties sont indépendantes : un étudiant bloqué sur le diagramme passe à la régulation.</p>
+<p><strong>Ce qu’on ne sacrifie jamais : les questions 9 et 12.</strong> La 9 fait passer du calcul au raisonnement de bureau d’études : une batterie petite parce que la roue fait l’essentiel, et un mode dégradé qui la protège. La 12 prend en défaut ceux qui ferment la vanne pour « protéger » la batterie, alors qu’il faut l’ouvrir en grand.</p>
+<p><strong>Barème indicatif, format des corrigés U41 depuis 2022</strong> : chaque question est cotée de 0 à 3 selon le nombre d’éléments attendus présents. Éval 0 aucun, Éval 1 un élément, Éval 2 deux, Éval 3 tous.</p>
+<h2 id="corrige-partie-1-lire-le-dossier">Corrigé, partie 1 : lire le dossier</h2>
+<p><strong>1.</strong></p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Repère</th>
+<th>Désignation</th>
+<th>Fonction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Registre d’air neuf motorisé</td>
+<td>Isoler la centrale de l’extérieur : fermé à l’arrêt, il empêche l’air froid de traverser la batterie par tirage naturel ; il se ferme aussi en mise en sécurité antigel</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Roue de récupération</td>
+<td>Préchauffer l’air neuf avec la chaleur de l’air repris, sans mélanger les deux flux</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Thermostat antigel</td>
+<td>Détecter un air trop froid en aval de la batterie et déclencher la mise en sécurité, avant que l’eau gèle dans les tubes</td>
+</tr>
+<tr>
+<td>PD2</td>
+<td>Pressostat différentiel du filtre de reprise</td>
+<td>Mesurer la perte de charge du filtre et signaler son encrassement</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>Éléments attendus</em> : la roue et le transfert de chaleur sans mélange · l’antigel et la protection de la batterie · le pressostat et l’encrassement du filtre. Le registre n’est pas exigé pour Éval 3. <strong>Confondre le thermostat antigel avec une sonde de régulation</strong> coûte un élément : il ne règle rien, il met en sécurité.</p>
+<p><strong>2.</strong> Le schéma surligné :</p>
+<figure><img src="img/EXO-CTA-AMPHI-PROF/fig-cta-schema-corrige.png" alt="" /></figure>
+<p>L’air neuf entre en bas à gauche, traverse le registre, le filtre et la roue ; au-delà de la roue, c’est de l’<strong>air soufflé</strong>. L’air repris quitte la salle en haut à droite ; au-delà de la roue, c’est de l’<strong>air rejeté</strong>.</p>
+<p><em>Éléments attendus</em> : les quatre flux distingués · la frontière des flux placée <strong>à la roue</strong> · les flèches. Un étudiant qui colore toute la veine du bas d’une seule couleur n’a pas vu que la roue change la nature de l’air : Éval 2 au plus.</p>
+<p><strong>3.</strong> L’air repris a la composition de l’air de la salle : son CO2 dit combien de personnes respirent dans l’amphithéâtre. L’air soufflé, lui, est de l’air neuf à environ 400 ppm, quelle que soit l’occupation : une sonde placée là mesurerait toujours la même chose.</p>
+<p><em>Éléments attendus</em> : l’air repris représente l’air de la salle · l’air soufflé n’a pas vu les occupants.</p>
+<h2 id="corrige-partie-2-le-debit-suit-l-occupation">Corrigé, partie 2 : le débit suit l’occupation</h2>
+<p><strong>4.</strong> Débit maximal : 180 × 18 = <strong>3 240 m³/h</strong>. La centrale fait 3 400 m³/h : <strong>elle convient en débit</strong>. Au débit maximal, les réseaux demandent 210 Pa au soufflage et 180 Pa à la reprise, pour 250 Pa disponibles : <strong>elle convient en pression</strong>.</p>
+<p><em>Éléments attendus</em> : 3 240 m³/h · la comparaison des débits · la comparaison des pressions. <strong>Oublier la pression</strong> est l’erreur la plus fréquente : un ventilateur qui a le débit mais pas la pression ne le délivre pas.</p>
+<p><strong>5.</strong> La loi tracée :</p>
+<figure><img src="img/EXO-CTA-AMPHI-PROF/fig-cta-co2-corrige.png" alt="" /></figure>
+<p>À 800 ppm : 1 000 + (3 240 − 1 000) × (800 − 600) / (1 000 − 600) = <strong>2 120 m³/h</strong>.</p>
+<p><em>Éléments attendus</em> : le palier bas à 1 000 m³/h jusqu’à 600 ppm · le palier haut à 3 240 m³/h dès 1 000 ppm · la lecture à 800 ppm, entre 2 050 et 2 200 m³/h. Le palier haut placé à 3 400 m³/h, le débit de la centrale, coûte un élément.</p>
+<p><strong>6.</strong> Débit réglementaire : 90 × 18 = <strong>1 620 m³/h</strong>, la moitié du débit maximal. Puissance d’un ventilateur : 1,5 × (1 620 / 3 240)³ = 1,5 / 8 ≈ <strong>0,19 kW</strong>, contre 1,5 kW à plein débit.</p>
+<p>Diviser le débit par deux divise la puissance des ventilateurs par huit. Un amphithéâtre rarement plein passe l’essentiel de son temps à débit réduit : c’est là que la variation de vitesse rapporte, et c’est ce que la sonde de CO2 permet.</p>
+<p><em>Éléments attendus</em> : 1 620 m³/h · 0,19 kW · la conclusion qui relie l’occupation à la consommation. Un étudiant qui applique la proportionnalité simple et trouve 0,75 kW n’a pas lu la loi du cube : Éval 1.</p>
+<h2 id="corrige-partie-3-l-hiver-dans-la-centrale">Corrigé, partie 3 : l’hiver dans la centrale</h2>
+<p><strong>7.</strong> θN = −5 + 0,75 × (20 − (−5)) = <strong>13,75 °C</strong>, arrondi à 13,8 °C.</p>
+<figure><img src="img/EXO-CTA-AMPHI-PROF/fig-cta-diagramme-corrige.png" alt="" /></figure>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Point</th>
+<th>θ, en °C</th>
+<th>r, en g/kg</th>
+<th>h, en kJ/kg</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E, air extérieur</td>
+<td>−5</td>
+<td>2,3</td>
+<td>0,8</td>
+</tr>
+<tr>
+<td>N, sortie de roue</td>
+<td>13,8</td>
+<td>2,3</td>
+<td>19,7</td>
+</tr>
+<tr>
+<td>S, soufflage</td>
+<td>19</td>
+<td>2,3</td>
+<td>25,0</td>
+</tr>
+</tbody>
+</table></div>
+<p>La roue et la batterie chauffent l’air sans lui ajouter ni lui retirer d’eau : l’évolution est une <strong>horizontale</strong>, à r constante.</p>
+<p><em>Éléments attendus</em> : θN calculée · les trois points sur une même horizontale · les enthalpies lues à 1 kJ/kg près. Un point N placé plus haut, « parce que la roue récupère aussi de l’humidité », contredit le DT2, qui la dit non hygroscopique : Éval 2 au plus.</p>
+<p><strong>8.</strong> Débit massique : qm = 3 240 × 1,2 / 3 600 = <strong>1,08 kg/s</strong>.</p>
+<ul>
+<li>Avec la roue : P = 1,08 × (25,0 − 19,7) ≈ <strong>5,7 kW</strong>.</li>
+<li>Sans la roue : P = 1,08 × (25,0 − 0,8) ≈ <strong>26 kW</strong>.</li>
+<li>Vérification par la formule simplifiée : 0,34 × 3 240 × (19 − 13,75) = 5 780 W, et 0,34 × 3 240 × 24 = 26 400 W.</li>
+</ul>
+<p>La roue fournit gratuitement près de <strong>80 %</strong> de la chaleur que demande l’air neuf : sans elle, la batterie devrait être quatre à cinq fois plus puissante.</p>
+<p><em>Éléments attendus</em> : qm en kg/s · les deux puissances · la conclusion chiffrée. Accepter de 5,2 à 6,3 kW, selon la lecture des enthalpies. <strong>Le débit volumique pris pour un débit massique</strong>, 3 240 × 5,3, donne 17 000 « kW » : Éval 0 si l’étudiant ne le relève pas.</p>
+<p><strong>9.</strong> Sans la roue, à 1 000 m³/h : qm = 1 000 × 1,2 / 3 600 = 0,33 kg/s, et P = 0,33 × (25,0 − 0,8) ≈ <strong>8,1 kW</strong>, sous les 9 kW installés : <strong>la batterie suffit</strong> en mode dégradé.</p>
+<p>Le choix se justifie ainsi. Une batterie de 27 kW coûterait plus cher, avec une vanne et un débit d’eau trois fois plus gros, pour fonctionner tout l’hiver à 20 % de sa puissance, là où une vanne se règle mal. Le défaut de la roue est rare et se signale à la GTB : on accepte alors un débit réduit, le temps de la réparation, plutôt que de surdimensionner pour une panne.</p>
+<p><em>Éléments attendus</em> : 8,1 kW et la comparaison à 9 kW · le coût, ou le fonctionnement à faible charge, d’une grosse batterie · le mode dégradé accepté parce qu’il est temporaire et signalé.</p>
+<h2 id="corrige-partie-4-reguler-proteger-superviser">Corrigé, partie 4 : réguler, protéger, superviser</h2>
+<p><strong>10. et 11.</strong> La chaîne et le graphe :</p>
+<figure><img src="img/EXO-CTA-AMPHI-PROF/fig-cta-regulation-corrige.png" alt="" /></figure>
+<p>La sonde TS <strong>mesure</strong> la température de soufflage ; le régulateur la compare à la <strong>consigne</strong> de 19 °C et élabore une <strong>commande</strong> de 0 à 10 V ; le servomoteur de la V2V règle le débit d’eau chaude dans la batterie. Quand TS mesure 16 °C : U = 10 × (19 − 16) / (19 − 15) = <strong>7,5 V</strong>.</p>
+<p><em>Éléments attendus, question 10</em> : capteur, régulateur, actionneur placés · les liaisons dans le bon sens · consigne, mesure et commande nommées. <em>Éléments attendus, question 11</em> : les deux paliers · la droite entre 15 et 19 °C · 7,5 V. <strong>Un graphe croissant</strong>, la vanne qui s’ouvre quand l’air se réchauffe, est l’erreur de sens typique d’une batterie chaude : Éval 1.</p>
+<p><strong>12.</strong> Une situation : la chaufferie s’arrête, ou le circulateur de la batterie tombe en panne, par temps de gel ; ou la roue se bloque pendant que la V2V reste fermée par un défaut du servomoteur. L’air à −5 °C traverse alors une batterie dont l’eau ne circule plus : elle peut geler, et un tube qui gèle éclate.</p>
+<p>La mise en sécurité, dans l’ordre : <strong>arrêt des ventilateurs</strong> ; <strong>fermeture des registres</strong> d’air neuf et de rejet, pour arrêter l’air froid ; <strong>ouverture de la V2V en grand</strong>, pour faire passer le plus d’eau chaude possible dans la batterie ; demande de chaleur à la chaufferie ; <strong>alarme</strong> à la GTB, et réarmement manuel une fois la cause trouvée.</p>
+<p><em>Éléments attendus</em> : une situation vraisemblable · l’arrêt de l’air froid, ventilateurs et registres · la V2V ouverte en grand · l’alarme. <strong>La V2V fermée</strong> « pour ne pas refroidir l’eau » est l’erreur à chercher : c’est l’inverse de ce qu’il faut, Éval 1 au plus.</p>
+<p><strong>13.</strong></p>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Point</th>
+<th>Nature du signal</th>
+<th>Classe GTB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Température de soufflage TS</td>
+<td>AI</td>
+<td>TM</td>
+</tr>
+<tr>
+<td>CO2 de la reprise</td>
+<td>AI</td>
+<td>TM</td>
+</tr>
+<tr>
+<td>Pressostat du filtre d’air neuf PD1</td>
+<td>DI</td>
+<td>TA</td>
+</tr>
+<tr>
+<td>Thermostat antigel</td>
+<td>DI</td>
+<td>TA</td>
+</tr>
+<tr>
+<td>Défaut de rotation de la roue</td>
+<td>DI</td>
+<td>TA</td>
+</tr>
+<tr>
+<td>Marche et arrêt de la centrale</td>
+<td>DO</td>
+<td>TC</td>
+</tr>
+<tr>
+<td>Consigne de soufflage, 19 °C</td>
+<td>sans objet</td>
+<td>TR</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>Éléments attendus</em> : les natures des six points physiques · leurs classes · la consigne en TR.</p>
+<h2 id="grille-de-diagnostic-a-remplir-en-circulant">Grille de diagnostic, à remplir en circulant</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Ce qu’on observe</th>
+<th>Questions</th>
+<th>Ce qu’on reprend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>La roue coupe les flux : non vu</td>
+<td>2, 7</td>
+<td>Le schéma de la séance 17, un flux par couleur</td>
+</tr>
+<tr>
+<td>Le débit massique confondu avec le volumique</td>
+<td>8, 9</td>
+<td>La masse volumique : 1,2 kg/m³, et l’unité de h</td>
+</tr>
+<tr>
+<td>La pression disponible, ou la loi du cube, oubliée</td>
+<td>4, 6</td>
+<td>Le point de fonctionnement de la séance 9 ; un débit divisé par deux, une puissance divisée par huit</td>
+</tr>
+<tr>
+<td>Le graphe de la V2V dans le mauvais sens</td>
+<td>11</td>
+<td>Une batterie chaude s’ouvre quand l’air refroidit</td>
+</tr>
+<tr>
+<td>La V2V fermée en sécurité antigel</td>
+<td>12</td>
+<td>Ce qui gèle, c’est l’eau immobile</td>
+</tr>
+<tr>
+<td>Le pressostat lu en entrée analogique</td>
+<td>13</td>
+<td>Un contact à seuil n’est pas une mesure : la liste des points de la séance 21</td>
+</tr>
+</tbody>
+</table></div>
+<nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="EXO-CHAUFFERIE-COLLEGE-PROF.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Exercice type · chaufferie</span></a><a class="ap" href="EXO-PAC-MEDIATHEQUE-PROF.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Exercice type · PAC</span></a></div></nav>
+<p class="pied">L'énoncé élève est le document Word EXO-CTA-AMPHI, dans BTS FED C/23-exercices-types.</p>
+</div>
+<script src="../assets/kit.js?v=2863feac"></script>
+<script src="../assets/site.js?v=2863feac"></script>
+<script src="../assets/vivant.js?v=2863feac"></script>

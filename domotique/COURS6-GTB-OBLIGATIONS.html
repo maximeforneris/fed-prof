@@ -1,0 +1,625 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Domotique, cours 6 — la GTB et la loi</title>
+<link rel="stylesheet" href="../assets/kit.css?v=2863feac">
+<link rel="stylesheet" href="../assets/site.css?v=2863feac">
+<link rel="stylesheet" href="../assets/calque.css?v=2863feac">
+<link rel="stylesheet" href="../assets/vivant.css?v=2863feac">
+
+<div class="page" data-site="fed-prof" data-page="domotique/COURS6-GTB-OBLIGATIONS" data-public="prof">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS5-ECLAIRAGE.html" rel="prev" title="Domotique, cours 5 — l'éclairage" aria-label="Domotique, cours 5 — l'éclairage">&lsaquo;</a><a class="fleche" href="COURS7-ACCES-INTRUSION-VIDEO.html" rel="next" title="Domotique, cours 7 — accès, intrusion, vidéo" aria-label="Domotique, cours 7 — accès, intrusion, vidéo">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/COURS6-GTB-OBLIGATIONS">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">Formation du professeur · BTS FED option C</p>
+    <h1>Cours détaillé<span>la GTB et ce que la loi impose, par des cas réels</span></h1>
+  </div>
+  <p class="accroche">Le dispositif Éco Énergie Tertiaire et son objectif de 40 % en 2030, le décret BACS et son report de décembre 2025, les quatre classes de la norme ISO 52120-1, une agence bancaire et une cité scolaire lauréates du concours CUBE, la première inspection obligatoire des GTB. Six cas documentés, et la théorie que chacun oblige à tenir, de l'architecture à la preuve d'une économie.</p>
+  
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B8-1 Architecture des systèmes centralisés, supervision et hypervision · niveau 3</span><span class="tag n3">B8-2 Alarmes techniques, automatismes du bâtiment · niveau 3</span><span class="tag n3">B9 Comptage des énergies, suivi des consommations · niveau 3</span><span class="tag n3">A2-4 DJU et besoin d'énergie · niveau 3</span><span class="tag">S5.1 Réglementation thermique, obligations · niveau 2</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="COURS1-ENERGIE-ELECTRIQUE.html">Le talon et le sous-comptage par départ</a></b><span class="ou">Domotique, cours 1 — l'énergie électrique</span><span class="car">le décret BACS exige un suivi horaire par zone, c'est-à-dire la courbe de charge par départ que le cours 1 installe.</span></li><li><b><a href="PROF3-PROTOCOLES.html">L'interopérabilité par le typage des données</a></b><span class="ou">Prof 3 — les protocoles</span><span class="car">la loi exige des systèmes interopérables, et le mot ne se vérifie qu'avec ce que la fiche 3 établit.</span></li><li><b>Les degrés-jours unifiés, base 18 °C</b><span class="car">toute économie de chauffage se compare après correction climatique, et la page en suppose la définition acquise.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#six-cas-et-ce-qu-ils-ont-en-commun">Six cas, et ce qu’ils ont en commun</a><a href="#une-baisse-de-40-en-2030-le-dispositif-eco-energie-tertiaire-2019">Une baisse de 40 % en 2030, le dispositif Éco Énergie Tertiaire, 2019</a><a href="#une-gtb-obligatoire-au-dela-de-290-kw-le-decret-bacs-2020">Une GTB obligatoire au-delà de 290 kW, le décret BACS, 2020</a><a href="#quatre-classes-pour-noter-une-gtb-la-norme-iso-52120-1-2021">Quatre classes pour noter une GTB, la norme ISO 52120-1, 2021</a><a href="#une-agence-a-78-d-electricite-en-moins-le-concours-cube-2023-et-2025">Une agence à 78 % d’électricité en moins, le concours CUBE, 2023 et 2025</a><a href="#la-premiere-inspection-obligatoire-des-gtb-arrete-du-7-avril-2023-2025">La première inspection obligatoire des GTB, arrêté du 7 avril 2023, 2025</a><a href="#trois-ans-de-plus-pour-les-batiments-moyens-le-decret-du-26-decembre-2025">Trois ans de plus pour les bâtiments moyens, le décret du 26 décembre 2025</a><a href="#la-ou-la-methode-change">Là où la méthode change</a><a href="#le-calcul-retourne">Le calcul retourné</a><a href="#trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#les-questions-qui-destabilisent">Les questions qui déstabilisent</a></div></nav>
+<h2 id="six-cas-et-ce-qu-ils-ont-en-commun">Six cas, et ce qu’ils ont en commun</h2>
+<p>Jusqu’en 2019, une gestion technique du bâtiment relevait du seul choix du maître d’ouvrage. Deux décrets en ont fait depuis une affaire de droit. Le premier fixe aux bâtiments tertiaires un résultat, une baisse de 40 % de leur consommation d’énergie finale en 2030 ; le second impose aux plus puissants d’entre eux l’instrument qui permet de constater cette baisse. Les six cas de cette page suivent cet enchaînement, de l’objectif jusqu’au contrôle.</p>
+<p>Le fil commun tient en une idée qu’il convient de poser dès la première séance. <strong>Le décret tertiaire impose un résultat au bâtiment ; le décret BACS impose au système de mesurer, de comparer et d’alerter.</strong> La baisse elle-même vient de décisions d’exploitation, un horaire, une consigne, une dérive repérée puis corrigée, que la GTB rend possibles et durables.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Cas</th>
+<th>Année</th>
+<th>Ce qu’il impose ou ce qu’il montre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dispositif Éco Énergie Tertiaire</td>
+<td>2019</td>
+<td>un <strong>résultat</strong> : 40 % de moins en 2030, déclaré chaque année et corrigé du climat</td>
+</tr>
+<tr>
+<td>Décret BACS</td>
+<td>2020 et 2023</td>
+<td>un <strong>instrument</strong> : suivi horaire par zone, référence, interopérabilité, arrêt manuel</td>
+</tr>
+<tr>
+<td>Norme ISO 52120-1</td>
+<td>2021</td>
+<td>une <strong>échelle</strong> : quatre classes, et le gain conventionnel de l’une à l’autre</td>
+</tr>
+<tr>
+<td>Concours CUBE</td>
+<td>2023 et 2025</td>
+<td>une <strong>preuve</strong> : jusqu’à 78 % d’électricité en moins, sans travaux</td>
+</tr>
+<tr>
+<td>Première inspection obligatoire</td>
+<td>2025</td>
+<td>un <strong>contrôle</strong> : ce que l’inspecteur vérifie, tous les cinq ans au plus</td>
+</tr>
+<tr>
+<td>Décret du 26 décembre 2025</td>
+<td>2025</td>
+<td>un <strong>calendrier</strong> : 2030 pour les bâtiments existants de 70 à 290 kW</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Une GTB qui ne mesure pas par zone, ne conserve rien et ne compare à rien ne satisfait ni l’un ni l’autre des deux décrets, quelle que soit la qualité de sa régulation. Le critère d’une GTB conforme est ce qu’elle permet de démontrer.</p>
+</div>
+<h2 id="une-baisse-de-40-en-2030-le-dispositif-eco-energie-tertiaire-2019">Une baisse de 40 % en 2030, le dispositif Éco Énergie Tertiaire, 2019</h2>
+<p><em>L’article L. 174-1 du code de la construction et de l’habitation impose de réduire la consommation d’énergie finale des bâtiments tertiaires existants d’au moins 40 % en 2030, 50 % en 2040 et 60 % en 2050. Le décret n° 2019-771 du 23 juillet 2019, entré en vigueur le 1er octobre 2019, en fixe les modalités, aujourd’hui codifiées aux articles R. 174-22 à R. 174-32. Sont concernés les bâtiments, parties de bâtiments ou ensembles situés sur un même site qui accueillent des activités tertiaires sur au moins 1 000 m² de surface de plancher. Les consommations se déclarent chaque année sur la plateforme OPERAT de l’ADEME.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Délimiter l’entité assujettie : un bâtiment, une partie de bâtiment ou un ensemble sur un même site, dès 1 000 m² de surface tertiaire cumulée.</li>
+<li>Choisir l’année de référence, comprise entre 2010 et 2022, et la déclarer au plus tard le 30 septembre 2027 ; à défaut, la première année pleine déclarée en tient lieu (arrêté du 10 avril 2020, article 3, version du 15 mars 2024).</li>
+<li>Déclarer chaque année, au plus tard le 30 septembre, les consommations de l’année précédente, énergie par énergie ; la première échéance était le 30 septembre 2022.</li>
+<li>Recevoir l’attestation numérique annuelle, que la plateforme calcule elle-même après correction du climat et du volume d’activité (article R. 174-29).</li>
+<li>Être évalué au 31 décembre 2031 pour l’objectif de 2030, en mutualisant au besoin les résultats sur l’ensemble d’un patrimoine (article R. 174-31).</li>
+</ol>
+</div>
+<p>L’objectif peut aussi être atteint en valeur absolue : une consommation fixée par arrêté pour chaque catégorie d’activité, à partir de celle des bâtiments neufs comparables. Des modulations sont admises pour contraintes techniques, architecturales ou patrimoniales, pour un changement d’activité ou pour des coûts manifestement disproportionnés. En cas de défaut, le décret de 2019 prévoyait une mise en demeure, puis une amende administrative plafonnée à 1 500 € pour une personne physique et à 7 500 € pour une personne morale.</p>
+<p>La consommation de référence et celles des années suivantes sont <strong>ajustées en fonction des variations climatiques</strong> (article R. 174-23). La plateforme réalise cet ajustement elle-même, à partir de la station de Météo-France la plus représentative du site et des degrés-jours unifiés moyens de la période 2001-2020. Le principe se démontre en deux lignes, et il convient de l’avoir démontré une fois pour ne plus se tromper de sens.</p>
+<div class="formule">
+<p><strong>E corrigée = E autres + E chauffage × DJU moyen / DJU de l’année</strong></p>
+<ul>
+<li><strong>E chauffage</strong><span>consommation de chauffage de l’année, mesurée par un sous-compteur ou estimée, en kWh</span></li>
+<li><strong>E autres</strong><span>ce qui ne dépend pas de la rigueur de l’hiver : éclairage, bureautique, eau chaude, en kWh</span></li>
+<li><strong>DJU</strong><span>degrés-jours unifiés de chauffage, base 18 °C, cumulés sur l’année</span></li>
+</ul>
+<blockquote>
+<p>Une année douce compte moins de degrés-jours : la correction <strong>relève</strong> sa consommation. L’arrêté du 10 avril 2020 traite le refroidissement de la même façon, avec des degrés-jours de froid, et estime la part de chauffage par un coefficient lorsqu’elle n’est pas sous-comptée.</p>
+</blockquote>
+</div>
+<figure class="schema"><div class="dessin" data-schema="dju-villes"></div><figcaption>Les degrés-jours de huit villes, en valeurs arrondies. À bâtiment identique, la consommation de chauffage suit ces nombres : une consommation brute ne se compare donc ni d’une année à l’autre, ni d’une ville à l’autre.</figcaption></figure>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La correction démontrée, et l&#39;erreur qu&#39;elle évite</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>En première approximation, le besoin de chauffage d’un bâtiment est proportionnel aux degrés-jours : E chauffage = k × DJU, où le coefficient k dépend de l’enveloppe, de la ventilation et du rendement de l’installation, mais pas du climat. Le même bâtiment aurait donc consommé, dans un hiver moyen, k × DJU moyen, soit E chauffage × DJU moyen / DJU de l’année. La formule n’est rien d’autre que cette règle de trois.</p>
+<p><strong>Exemple chiffré.</strong> Un bâtiment consomme 300 MWh de chauffage dans une année à 1 900 DJU, pour une moyenne de 2 300. Ramené à l’hiver moyen, il en aurait consommé 300 × 2 300 / 1 900 = <strong>363,2 MWh</strong>. Comparer les 300 MWh bruts à une référence prise dans une année moyenne ferait apparaître une baisse de 1 − 1 900 / 2 300 = <strong>17,4 %</strong>, sans qu’aucun réglage ait changé.</p>
+<p><strong>Un hiver doux produit une économie apparente, que seule la correction retire.</strong> L’inverse est vrai : un hiver rigoureux masque une économie réelle. La proportionnalité suppose des apports internes constants ; la section « Là où la méthode change » en montre la limite.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que la plateforme corrige, et ce qu&#39;elle ne corrige pas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Elle corrige deux choses</strong> : le climat, par les degrés-jours, et le volume d’activité, par des indicateurs d’intensité d’usage propres à chaque catégorie (article R. 174-29). Un établissement qui allonge ses horaires n’est donc pas pénalisé de ce seul fait.</p>
+<p><strong>Elle ne corrige pas le reste.</strong> Un changement de surface doit être déclaré par l’assujetti lui-même. Surtout, la plateforme ne distingue pas une baisse obtenue par un réglage d’une baisse obtenue par une panne : une chaufferie arrêtée trois semaines en février fait une excellente année sur OPERAT. <strong>Seul le suivi horaire de la GTB permet de faire la différence</strong> : la déclaration constate un résultat, la GTB en donne l’explication.</p></div></details>
+</div><p><strong>En classe.</strong> Le cas se prête à la séance DOMA22, qui ouvre le comptage, puis à la séance DOMA25, consacrée à la supervision. La question à poser aux étudiants est la suivante : un bâtiment a consommé 12 % de moins que l’année précédente, l’hiver ayant été plus doux ; peut-on annoncer au gestionnaire une économie de 12 % ? La réponse attendue passe par la part de chauffage et le rapport des degrés-jours, et elle se conclut sur ce que la GTB aurait dû mesurer pour trancher.</p>
+<h2 id="une-gtb-obligatoire-au-dela-de-290-kw-le-decret-bacs-2020">Une GTB obligatoire au-delà de 290 kW, le décret BACS, 2020</h2>
+<p><em>Le décret n° 2020-887 du 20 juillet 2020, publié au Journal officiel le lendemain, transpose les articles 8, 14 et 15 de la directive 2010/31/UE sur la performance énergétique des bâtiments. Il crée aux articles R. 175-1 et suivants du code de la construction l’obligation d’équiper d’un système d’automatisation et de contrôle, dit BACS, les bâtiments tertiaires dont le chauffage ou la climatisation dépasse 290 kW de puissance nominale utile. Le décret n° 2023-259 du 7 avril 2023 abaisse le seuil à 70 kW, ajoute une inspection périodique et charge le propriétaire de faire former son exploitant. Le ministère a publié en juin 2025 une foire aux questions qui précise le calcul des puissances.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>21 juillet 2020 : publication du décret n° 2020-887.</li>
+<li>21 juillet 2021 : obligation pour les bâtiments neufs de plus de 290 kW dont le permis est déposé à compter de cette date.</li>
+<li>8 avril 2023 : publication du décret n° 2023-259, qui introduit le seuil de 70 kW.</li>
+<li>8 avril 2024 : obligation pour les bâtiments neufs de plus de 70 kW.</li>
+<li>1er janvier 2025 : échéance des bâtiments existants de plus de 290 kW, et date limite de la première inspection.</li>
+<li>1er janvier 2030 : échéance des bâtiments existants de 70 à 290 kW, ou avant si leur système est renouvelé ; elle était fixée à 2027 jusqu’au décret du 26 décembre 2025, objet du dernier cas.</li>
+</ol>
+</div>
+<p>L’article R. 175-3 exige quatre fonctions, et chacune se loge à un niveau précis de l’architecture. Le suivi horaire par zone fonctionnelle suppose des compteurs sur le terrain, zone par zone et usage par usage ; la conservation et l’analyse relèvent de la supervision ; l’arrêt manuel et la gestion autonome, de l’automatisme ; l’interopérabilité traverse tous les niveaux. Le dernier alinéa de l’article précise que les données produites et archivées <strong>appartiennent au propriétaire du système</strong>, et non à l’entreprise qui l’exploite.</p>
+<figure>
+<img src="img/COURS6-GTB-OBLIGATIONS/c6-niveaux-bacs.png" alt="Les quatre fonctions de l’article R. 175-3, placées dans l’architecture. L’hypervision coiffe plusieurs supervisions, et c’est le décret tertiaire qui lui donne sa raison d’être." />
+<figcaption aria-hidden="true">Les quatre fonctions de l’article R. 175-3, placées dans l’architecture. L’hypervision coiffe plusieurs supervisions, et c’est le décret tertiaire qui lui donne sa raison d’être.</figcaption>
+</figure>
+<p>Côté électricité, le suivi par zone passe le plus souvent par les centrales de mesure du TGBT, départ par départ. C’est le TGBT communicant du cours 1, et c’est ce qui en fait une pièce du dispositif : un tableau dont les départs mélangent plusieurs zones ne permet pas le suivi que le texte demande.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Supervision et hypervision : ce que le décret tertiaire ajoute au-dessus</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le chapitre 14 du manuel de fluides décrit trois niveaux, terrain, automatisme et gestion. Le référentiel en distingue un de plus : il range parmi les constituants d’un système centralisé la « supervision - hyper vision » (B8-1, page 71).</p>
+<p><strong>Une supervision sert un site et ses exploitants</strong> : synoptiques, alarmes, historiques, action sur les consignes. <strong>Une hypervision fédère plusieurs supervisions</strong>, plusieurs sites d’un même propriétaire ou plusieurs métiers d’un même site. Elle compare, consolide et hiérarchise ; elle ne commande pas les fonctions de sécurité, qui restent autonomes.</p>
+<p><strong>Le décret tertiaire lui donne un marché.</strong> L’article R. 174-31 permet de mutualiser les résultats sur un patrimoine : un gestionnaire de quarante bâtiments peut compenser un site difficile par un site où la baisse est facile, à condition de savoir lequel est lequel, avec des consommations corrigées et rapportées au mètre carré. C’est la fonction d’une hypervision, et le référentiel range d’ailleurs les « villes intelligentes » parmi les débouchés du métier (page 8).</p></div></details>
+</div><div class="formule">
+<p><strong>P chaud = somme des puissances nominales utiles des générateurs de chaleur du bâtiment</strong></p>
+<ul>
+<li><strong>compte</strong><span>chaudières, pompes à chaleur, convecteurs et aérothermes électriques, splits en mode chaud, station d’échange d’un réseau de chaleur</span></li>
+<li><strong>ne compte pas</strong><span>un générateur de secours, à condition que la régulation interdise la marche simultanée ; les ventilateurs et les pompes de distribution</span></li>
+<li><strong>P froid</strong><span>se calcule de la même façon, séparément</span></li>
+</ul>
+<blockquote>
+<p>Le seuil s’apprécie bâtiment par bâtiment, d’un côté pour le chaud, de l’autre pour le froid ; les deux ne s’additionnent jamais (foire aux questions BACS n° 08, 09, 11 et 12 du ministère, juin 2025).</p>
+</blockquote>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le calcul d&#39;assujettissement, règle par règle</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>La règle de base.</strong> Toutes les puissances de production de chaleur d’un même bâtiment s’additionnent, centralisées ou non, raccordées au même réseau ou non : trois chaudières de 25 kW font <strong>75 kW</strong>, et le bâtiment est assujetti, selon l’exemple que donne le ministère lui-même. Pour un bâtiment raccordé à un réseau de chaleur, on retient la puissance de la station d’échange (article R. 175-2, I).</p>
+<p><strong>La ligne qui déplace l’échéance de cinq ans.</strong> Deux chaudières de 150 kW et huit splits réversibles de 7,1 kW en chaud totalisent 2 × 150 + 8 × 7,1 = <strong>356,8 kW</strong> : l’échéance était le 1er janvier 2025. Si la régulation interdit la marche simultanée des chaudières, la seconde est un secours et ne compte pas : 150 + 56,8 = <strong>206,8 kW</strong>, soit une échéance au plus tard le 1er janvier 2030. Si elle peut appeler les deux par grand froid, aucune n’est un secours. <strong>La même chaufferie change d’échéance selon une ligne de l’analyse fonctionnelle.</strong></p></div></details>
+</div><div class="piege">
+<p>Trois erreurs font franchir un seuil à tort : additionner le chaud et le froid, compter les ventilateurs et les pompes, compter une chaudière de secours que la régulation ne peut pas appeler en même temps que l’autre. Une quatrième fait l’inverse et coûte plus cher : déclarer « secours » une chaudière montée en cascade. Elle ne dispense de rien, et l’analyse fonctionnelle la contredit.</p>
+</div>
+<p><strong>En classe.</strong> Le cas fournit l’exercice le plus directement utile de la séance DOMA25 : établir l’assujettissement du lycée lui-même, à partir de la liste des générateurs relevée en chaufferie ou obtenue auprès de la collectivité propriétaire. En séance DOMB26, la même grille sert à l’envers : repérer sur le synoptique de l’atelier lesquelles des quatre fonctions de l’article R. 175-3 existent, et lesquelles manquent. La question à poser est simple : où, dans cette installation, se lit l’énergie horaire d’une zone ?</p>
+<h2 id="quatre-classes-pour-noter-une-gtb-la-norme-iso-52120-1-2021">Quatre classes pour noter une GTB, la norme ISO 52120-1, 2021</h2>
+<p><em>La norme ISO 52120-1, publiée en 2021 et reprise sous la référence EN ISO 52120-1, remplace la norme EN 15232-1 de 2017. Elle évalue la contribution de l’automatisation, de la régulation et de la gestion technique à la performance énergétique d’un bâtiment, classe les fonctions de A, haute performance, à D, non performante, la classe C servant de référence, et propose une méthode par facteurs pour une première estimation. La norme est payante : les facteurs ci-dessous sont relevés sur une source secondaire et recoupés par une seconde. La foire aux questions du ministère s’y réfère pour préciser ce qu’exige le décret BACS.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Dresser la liste des fonctions par système technique : chauffage, eau chaude, refroidissement, ventilation, éclairage, protections solaires, gestion technique.</li>
+<li>Attribuer à chaque fonction la classe que la norme lui associe, de D à A.</li>
+<li>Retenir pour le bâtiment la classe la plus faible installée, règle rappelée par la foire aux questions BACS n° 14.</li>
+<li>Estimer le gain d’un changement de classe par le rapport des deux facteurs, séparément pour l’énergie thermique et pour l’énergie électrique.</li>
+</ol>
+</div>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Type de bâtiment</th>
+<th>Énergie</th>
+<th>D</th>
+<th>C</th>
+<th>B</th>
+<th>A</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bureaux</td>
+<td>thermique</td>
+<td>1,51</td>
+<td>1</td>
+<td>0,80</td>
+<td>0,70</td>
+</tr>
+<tr>
+<td>Bureaux</td>
+<td>électrique</td>
+<td>1,10</td>
+<td>1</td>
+<td>0,93</td>
+<td>0,87</td>
+</tr>
+<tr>
+<td>Enseignement</td>
+<td>thermique</td>
+<td>1,20</td>
+<td>1</td>
+<td>0,88</td>
+<td>0,80</td>
+</tr>
+<tr>
+<td>Enseignement</td>
+<td>électrique</td>
+<td>1,07</td>
+<td>1</td>
+<td>0,93</td>
+<td>0,86</td>
+</tr>
+<tr>
+<td>Hôpitaux</td>
+<td>thermique</td>
+<td>1,31</td>
+<td>1</td>
+<td>0,91</td>
+<td>0,86</td>
+</tr>
+<tr>
+<td>Hôpitaux</td>
+<td>électrique</td>
+<td>1,05</td>
+<td>1</td>
+<td>0,95</td>
+<td>0,90</td>
+</tr>
+</tbody>
+</table></div>
+<div class="formule">
+<p><strong>E après = E avant × f (classe visée) / f (classe actuelle)</strong></p>
+<ul>
+<li><strong>f</strong><span>facteur de la méthode par facteurs, propre au type de bâtiment et à l’énergie</span></li>
+<li><strong>E</strong><span>consommation thermique ou électrique, chacune avec son propre facteur</span></li>
+</ul>
+<blockquote>
+<p>Bureaux, de C à B : 20 % de moins en thermique, 7 % en électrique. De C à A : 30 % et 13 %. De D à A : 1 − 0,70 / 1,51 = 53,6 % en thermique.</p>
+</blockquote>
+</div>
+<p>Le décret BACS n’exige pas une GTB de classe A. Selon la foire aux questions BACS n° 18, un système de classe C convient pour les fonctions de régulation, à condition de satisfaire toutes les exigences du décret ; la gestion des points de consigne doit cependant atteindre la classe B, et la gestion des temps de fonctionnement ainsi que le compte rendu, la classe A. <strong>Le texte réclame donc la classe A précisément là où elle coûte le moins : les horaires et le compte rendu.</strong></p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce qui distingue une classe de la suivante</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les définitions générales, telles que les résument les sources secondaires, se lisent comme une gradation de l’information dont dispose l’automate.</p>
+<ul>
+<li><strong>D</strong> : régulation limitée à des fonctions de base, en tout ou rien ou à la main ; c’est le cas des bâtiments non rénovés.</li>
+<li><strong>C</strong> : régulation et gestion standard, prises comme référence de la norme.</li>
+<li><strong>B</strong> : régulation et gestion avancées, qui ajustent la production et la distribution à la demande, sans tenir compte de la présence réelle.</li>
+<li><strong>A</strong> : haute performance ; la régulation connaît en temps réel l’occupation des locaux, et la gestion suit les dérives.</li>
+</ul>
+<p>La lecture utile pour un technicien en domotique est la suivante : <strong>chaque classe suppose une information de plus sur le terrain</strong>, un horaire en C, une demande de zone en B, une présence en A. Monter d’une classe revient souvent à ajouter des capteurs et des points, avant de modifier des programmes. C’est ce qui relie ce cas au savoir B8-1 : la classe se décide au niveau du terrain.</p></div></details>
+</div><div class="piege">
+<p>Un facteur se divise, il ne se soustrait pas. Passer de D à A dans des bureaux fait passer le facteur thermique de 1,51 à 0,70 : la consommation est multipliée par 0,70 / 1,51 = 0,46, soit <strong>53,6 % de moins</strong>, et non « 81 % de moins » par différence des facteurs. Et le gain thermique ne s’applique jamais à l’électricité, qui a sa propre ligne.</p>
+</div>
+<p><strong>En classe.</strong> En séance DOMA25, le tableau des facteurs sert à estimer le gain d’un changement de classe. En séance DOMB26, la question porte sur la supervision de l’atelier : quelle information de terrain lui manquerait pour monter d’une classe ?</p>
+<h2 id="une-agence-a-78-d-electricite-en-moins-le-concours-cube-2023-et-2025">Une agence à 78 % d’électricité en moins, le concours CUBE, 2023 et 2025</h2>
+<p><em>Le concours CUBE, organisé par l’Institut français pour la performance du bâtiment (IFPEB) dans le cadre du Championnat de France des économies d’énergie, oppose des bâtiments dont les équipes réduisent la consommation par l’usage et le réglage. Au palmarès 2023 de CUBE Tertiaire, l’agence BNP Paribas de L’Isle-Adam arrive en tête avec 78,4 % d’électricité en moins, devant un site de La Poste Immobilier à Saint-Dié (63,7 %) ; l’Université Gustave Eiffel remporte la catégorie enseignement avec 26,7 %. En 2025, la déclinaison scolaire CUBE.S, menée avec le Cerema, distingue la cité scolaire Camille Sée, à Paris, avec 23,2 %. L’organisateur annonce une économie moyenne de 16,1 % par an et par bâtiment.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>La référence est établie sur les deux années de consommation qui précèdent le concours (règlement de CUBE.S).</li>
+<li>Les consommations sont saisies chaque mois, en énergie finale, d’après les factures d’électricité, de gaz ou de réseau de chaleur.</li>
+<li>La part de chauffage est extraite et corrigée des degrés-jours ; toutes les consommations sont ensuite corrigées des variations d’intensité d’usage.</li>
+<li>Le cumul sur douze mois, du 1er septembre au 31 août, est comparé à la référence.</li>
+<li>Les travaux lourds de performance énergétique sont exclus pendant le concours et l’année qui le précède ; les vainqueurs sont audités sur l’ensemble des données déclarées.</li>
+</ol>
+</div>
+<p>Le palmarès publie un pourcentage, et non les actions qui l’ont produit. L’organisateur décrit, pour l’ensemble des équipes, des mesures de faible coût : un réglage plus fin des chaudières et de l’éclairage pour ne plus chauffer ni éclairer des zones vides, une gestion de l’eau revue en température, en débit et en horaires, des bureaux regroupés, des portes à fermeture automatique. <strong>Ce sont des décisions d’exploitation, et elles constituent la matière même d’une GTB</strong> : horaires, consignes, zones.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un résultat de 78 % permet de dire, et ce qu&#39;il ne permet pas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le raisonnement suivant ne dit rien des actions réelles de l’agence, que le palmarès ne détaille pas. Il dit ce qu’un chiffre rend plausible, et c’est la compétence attendue d’un technicien devant un résultat annoncé.</p>
+<p><strong>Une hypothèse, pour raisonner</strong> : une agence ouverte 45 heures par semaine. Les heures de fermeture représentent 1 − 45 / 168 = <strong>73,2 %</strong> du temps. Si tout fonctionnait jour et nuit à la même puissance et que l’on arrête tout hors ouverture, la consommation tombe à 26,8 % de sa valeur d’origine. <strong>Les seuls horaires plafonnent donc l’économie à 73,2 %.</strong></p>
+<p>Pour atteindre 78,4 %, il ne doit rester que 21,6 % de la consommation d’origine, ce qui suppose qu’aux heures d’ouverture la puissance appelée ait aussi baissé : 0,216 × 168 / 45 = 0,806, soit <strong>19,4 % de moins</strong>. Un tel résultat signale donc une référence où presque tout fonctionnait en permanence, et des consignes revues en plus des horaires.</p>
+<p>La règle générale est à retenir : <strong>une économie supérieure à la part des heures inoccupées ne peut pas venir des seuls horaires.</strong> Le cours 1 fait le même calcul sur des bureaux, avec 108 heures d’inoccupation par semaine.</p></div></details>
+</div><div class="piege">
+<p>Un pourcentage de concours n’est pas le gain d’une GTB. Il mesure l’usage et le réglage, travaux exclus, pendant une année où une équipe est mobilisée. La question de l’exploitant vient ensuite : que reste-t-il de l’économie deux ans plus tard, lorsque l’équipe s’est dispersée ? Une gestion des horaires et des consignes de classe B ou A inscrit dans l’automate ce qu’une équipe avait obtenu par l’attention.</p>
+</div>
+<p><strong>En classe.</strong> Le cas s’emploie en séance DOMA22 et en séance DOMB25, où les étudiants relèvent des index : l’exercice consiste à confronter une économie annoncée à la part des heures inoccupées du bâtiment étudié. La saison 2023-2024 de CUBE.S a réuni 215 collèges et lycées pour une économie moyenne de 12,6 % ; le site du concours indiquait, au 13 septembre 2026, des inscriptions ouvertes jusqu’en octobre 2026 pour la saison suivante. Un lycée qui accueille une section de domotique dispose ainsi d’un support réel, mesuré et audité.</p>
+<h2 id="la-premiere-inspection-obligatoire-des-gtb-arrete-du-7-avril-2023-2025">La première inspection obligatoire des GTB, arrêté du 7 avril 2023, 2025</h2>
+<p><em>Le décret n° 2023-259 a créé l’article R. 175-5-1 : à l’initiative de leur propriétaire, les systèmes d’automatisation et de contrôle sont inspectés périodiquement, et la première inspection devait avoir lieu au plus tard le 1er janvier 2025. L’arrêté du 7 avril 2023 en fixe le contenu : une visite sur site, installation en fonctionnement, des vérifications documentaires, l’évaluation du respect des exigences et du paramétrage, puis des recommandations. Le rapport est remis dans un délai d’un mois et conservé dix ans par le propriétaire. L’intervalle entre deux inspections ne peut dépasser cinq ans ; il est ramené à deux ans après l’installation ou le remplacement du système, ou d’un système technique qui lui est relié.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Vérifications documentaires : identification du bâtiment et de ses zones, plans, liste des systèmes techniques de plus de 70 kW, carnets d’entretien, rapport de l’inspection précédente (annexe 2).</li>
+<li>Visite, installation en marche, sur les parties accessibles du système et des équipements qui lui sont reliés.</li>
+<li>Pour chaque usage relié : mesures au pas horaire, détection des pertes d’efficacité, ajustements réellement effectués, conservation des données sur cinq ans, arrêt manuel, interopérabilité (annexe 3).</li>
+<li>Rapport, avec des recommandations de bon usage, d’amélioration ou de remplacement, formulées à titre indicatif (annexe 5).</li>
+</ol>
+</div>
+<p>Deux articles voisins complètent le dispositif. L’article R. 175-4 impose des vérifications périodiques et des consignes écrites fixant la périodicité de l’entretien ; l’article R. 175-5 charge le propriétaire de veiller à ce que l’exploitant soit formé au fonctionnement du système, notamment à son paramétrage. <strong>La loi reconnaît ainsi qu’une GTB non paramétrée, ou paramétrée par personne, ne remplit pas sa fonction.</strong></p>
+<p>L’inspection vérifie en particulier le 2° de l’article R. 175-3 : détecter les pertes d’efficacité et en informer l’exploitant. Cette exigence crée une seconde famille d’alarmes, qu’il convient de distinguer de la première dès la conception.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Alarme technique</th>
+<th>Alarme de dérive énergétique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ce qu’elle surveille</td>
+<td>un état ou un seuil : défaut, marche, température hors plage</td>
+<td>un écart à une référence : consommation, durée de marche</td>
+</tr>
+<tr>
+<td>Signal d’origine</td>
+<td>contact sec, seuil sur une mesure analogique</td>
+<td>calcul sur des index et des historiques</td>
+</tr>
+<tr>
+<td>Délai de détection</td>
+<td>immédiat, à la temporisation près</td>
+<td>une heure, un jour, une semaine</td>
+</tr>
+<tr>
+<td>Coût de l’attente</td>
+<td>un dégât, un inconfort, une plainte</td>
+<td>des kilowattheures chaque jour, sans plainte</td>
+</tr>
+<tr>
+<td>Destinataire</td>
+<td>l’astreinte, selon la priorité</td>
+<td>l’exploitant, dans son tableau de bord</td>
+</tr>
+</tbody>
+</table></div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Paramétrer une alarme : seuil, hystérésis, temporisation, chien de garde</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les priorités et l’astreinte sont traitées dans la séance 21 de fluides ; ce qui suit porte sur le paramétrage, qui relève du savoir B8-2 « alarmes techniques », au niveau 3 dans les trois options.</p>
+<p><strong>Seuil et hystérésis.</strong> Une alarme de température haute réglée à 28 °C sans hystérésis bat à chaque passage de la mesure autour du seuil ; avec 1 K d’hystérésis, elle apparaît à 28 °C et ne disparaît qu’à 27 °C.</p>
+<p><strong>Temporisation.</strong> La condition doit persister, par exemple cinq minutes, avant l’émission de l’alarme. Elle est courte ou nulle pour une sécurité, longue pour un écart de confort.</p>
+<p><strong>Chien de garde</strong>, presque toujours oublié. Un compteur qui ne communique plus ne produit aucune valeur, et une supervision mal réglée affiche la dernière valeur reçue, figée. Le suivi exigé étant <strong>continu</strong>, il faut une alarme sur l’absence de données, par exemple après trois valeurs horaires manquantes, traitée avant la clôture du mois.</p>
+<p><strong>Alarme de dérive.</strong> Exemple de règle : signaler toute nuit où la consommation d’une zone, entre 22 h et 6 h, dépasse de 10 % la médiane des quatre semaines précédentes. Elle ne réveille personne ; elle figure au tableau de bord du lundi, et c’est ce que le 2° demande.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le pas horaire se calcule, il ne s&#39;échantillonne pas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’énergie d’une heure est la <strong>différence de deux index</strong> relevés à une heure d’intervalle. Échantillonner une puissance une fois par heure ne donne pas la même chose. Une chaudière de 30 kW qui fonctionne vingt minutes par heure consomme 10 kWh chaque heure ; un échantillon horaire de la puissance lit 0 ou 30 kW selon l’instant, et l’historique qui en résulte triple la consommation ou l’ignore, selon le moment de la lecture.</p>
+<p><strong>Le volume de données, lui, ne pose aucun problème.</strong> Un compteur produit 8 760 valeurs horaires par an. Trente compteurs en produisent 262 800, soit environ 4,2 Mo par an à 16 octets par valeur, et une conservation mensuelle sur cinq ans se réduit à 60 valeurs par compteur. <strong>Le coût du décret est dans les compteurs, pas dans le stockage</strong> : c’est le nombre de zones fonctionnelles, et donc de points de comptage, qu’il faut chiffrer au devis.</p></div></details>
+</div><p><strong>En classe.</strong> La séance DOMB26, consacrée au réglage des alarmes, gagne à être construite sur les deux familles du tableau : les étudiants paramètrent une alarme technique avec seuil, hystérésis et temporisation, puis une alarme de dérive sur un index. La séance DOMA26 trouve ici sa justification réglementaire : le dossier d’installation que les étudiants constituent, notice, carnet de câbles et plan de récolement, est celui que l’inspecteur demandera. La notice rejoint en outre la compétence C6, évaluée en situation 2 de l’épreuve E5.</p>
+<h2 id="trois-ans-de-plus-pour-les-batiments-moyens-le-decret-du-26-decembre-2025">Trois ans de plus pour les bâtiments moyens, le décret du 26 décembre 2025</h2>
+<p><em>Le décret n° 2025-1343 du 26 décembre 2025, publié au Journal officiel du 27 décembre, remplace l’année 2027 par l’année 2030 au 4° du II de l’article R. 175-2 : les bâtiments tertiaires existants de 70 à 290 kW ont désormais jusqu’au 1er janvier 2030. Le même texte reporte à 2030 d’autres obligations des bâtiments existants, la régulation de la température et le calorifugeage des réseaux. Selon Localtis, le service d’information de la Banque des Territoires, le gouvernement a invoqué un calendrier jugé déconnecté des réalités des collectivités, et l’alignement sur la directive (UE) 2024/1275 du 24 avril 2024, dont l’article 13 fixe au 31 décembre 2029 l’échéance européenne des bâtiments non résidentiels de plus de 70 kW.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Bâtiments existants de 70 à 290 kW : au renouvellement du système, et au plus tard le 1er janvier 2030 au lieu de 2027.</li>
+<li>Bâtiments existants de plus de 290 kW : rien ne change ; l’échéance du 1er janvier 2025 est passée.</li>
+<li>Bâtiments neufs : rien ne change ; l’obligation court depuis 2021 au-delà de 290 kW et depuis 2024 au-delà de 70 kW.</li>
+<li>Dispositif Éco Énergie Tertiaire : rien ne change ; l’objectif de 2030 sera évalué au 31 décembre 2031.</li>
+</ol>
+</div>
+<p>L’obligation se déclenche sur une puissance ; l’exemption se calcule sur une consommation. Le II de l’article R. 175-2 dispense le propriétaire qui produit une étude établissant que l’installation n’est pas réalisable avec un temps de retour inférieur à dix ans, et l’arrêté du 7 avril 2023 en fixe le calcul. La rédaction en vigueur écrit cette exemption pour les trois premiers cas du II ; le 4°, celui des bâtiments existants de 70 à 290 kW, ne la reprend pas. C’est la lecture littérale du texte consulté, à confirmer avant de conseiller un propriétaire.</p>
+<div class="formule">
+<p><strong>TRI = S / Σ (G × C × p)</strong>, arrondi à l’année supérieure</p>
+<ul>
+<li><strong>S</strong><span>surcoût : matériel, pose, paramétrage et analyse fonctionnelle, moins les aides obtenues, en €</span></li>
+<li><strong>G</strong><span>gain conventionnel : <strong>15 %</strong>, ou la valeur établie par un audit énergétique</span></li>
+<li><strong>C</strong><span>consommation de chaque énergie, moyenne des deux dernières années, en kWh</span></li>
+<li><strong>p</strong><span>prix moyen facturé de chaque énergie l’année du calcul, en €/kWh</span></li>
+</ul>
+<blockquote>
+<p>L’absence de rentabilité est avérée si le TRI est <strong>strictement supérieur à 10 ans</strong>.</p>
+</blockquote>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Deux bâtiments de même puissance, deux conclusions opposées</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Un immeuble de bureaux de 300 kW</strong> consomme 400 000 kWh de gaz à 0,09 €/kWh et 120 000 kWh d’électricité à 0,20 €/kWh, soit 36 000 + 24 000 = 60 000 € par an. Le gain conventionnel vaut 15 % × 60 000 = <strong>9 000 € par an</strong>. Pour un devis de 60 000 € et 6 000 € d’aides, S = 54 000 € et TRI = 54 000 / 9 000 = <strong>6 ans</strong>. L’obligation s’applique.</p>
+<p><strong>Un gymnase de 320 kW</strong>, chauffé par aérothermes, consomme 150 000 kWh de gaz et 40 000 kWh d’électricité aux mêmes prix, soit 13 500 + 8 000 = 21 500 € par an. Le gain conventionnel vaut <strong>3 225 € par an</strong>. Pour un devis de 48 000 € sans aide, TRI = 48 000 / 3 225 = 14,9, arrondi à <strong>15 ans</strong>. L’étude établit l’absence de rentabilité.</p>
+<p><strong>La puissance décrit ce que le bâtiment peut appeler, la consommation ce qu’il appelle réellement.</strong> Les chiffres de cet exemple sont illustratifs ; le calcul est celui de l’arrêté.</p></div></details>
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Le texte européen, et pourquoi 2030</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La directive 2010/31/UE, dans la version que transpose le décret de 2020, fixait le seuil de 290 kW. Sa refonte, la directive (UE) 2024/1275 du 24 avril 2024, retient dans son article 13 deux échéances pour les bâtiments non résidentiels : le 31 décembre 2024 au-delà de 290 kW, le 31 décembre 2029 au-delà de 70 kW, avec les fonctions de l’article R. 175-3.</p>
+<p>Le décret de 2023 avait donc devancé l’Europe de trois ans, et celui de 2025 revient sur l’échéance européenne sans rien retrancher aux exigences. <strong>Un report de calendrier ne modifie ni le seuil, ni les fonctions, ni l’objectif de consommation</strong>, et le bâtiment qui attend 2030 se prive de plus de trois années de mesures, précisément celles qui précèdent l’évaluation de l’objectif tertiaire.</p></div></details>
+</div><p><strong>En classe.</strong> La question se pose en séance DOMA25 sous la forme d’une objection de client : « le décret est reporté, rien ne presse ». La réponse attendue distingue les bâtiments concernés par le report de ceux qui ne le sont pas, rappelle que l’objectif de 2030 n’a pas bougé, et chiffre ce qu’une année de mesures en moins coûte pour démontrer une baisse.</p>
+<h2 id="la-ou-la-methode-change">Là où la méthode change</h2>
+<p>Toute la démarche de cette page repose sur une hypothèse : la consommation se sépare en une part qui suit le climat et une part qui n’en dépend pas, et seule la première se corrige. Tant que le chauffage domine, l’erreur commise en corrigeant l’ensemble reste modeste. Elle devient grande dès que la part indépendante du climat l’emporte : bâtiment très isolé, salle informatique, cuisine collective, eau chaude abondante. La correction appliquée au total invente alors une variation qui n’existe pas.</p>
+<div class="formule">
+<p><strong>E = a + b × DJU</strong></p>
+<ul>
+<li><strong>a</strong><span>consommation indépendante du climat, en kWh par an</span></li>
+<li><strong>b</strong><span>sensibilité du bâtiment au climat, en kWh par degré-jour</span></li>
+</ul>
+<blockquote>
+<p>C’est la <strong>signature énergétique</strong> du bâtiment. Seul le terme b × DJU se ramène à l’année moyenne ; le terme a ne se corrige pas.</p>
+</blockquote>
+</div>
+<p>Un bâtiment dont a = 120 MWh et b = 50 kWh par degré-jour consomme 235 MWh dans une année moyenne à 2 300 DJU. Dans une année douce à 1 900 DJU, sans qu’aucun réglage ait changé, il consomme 215 MWh. Les trois traitements possibles conduisent à trois conclusions différentes.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Traitement de l’année douce</th>
+<th>Consommation ramenée à l’année moyenne</th>
+<th>Conclusion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>aucune correction</td>
+<td>215,0 MWh</td>
+<td>une baisse apparente de 8,5 %</td>
+</tr>
+<tr>
+<td>rapport des DJU appliqué au total</td>
+<td>215 × 2 300 / 1 900 = 260,3 MWh</td>
+<td>une hausse apparente de 10,8 %</td>
+</tr>
+<tr>
+<td>rapport appliqué au seul terme climatique</td>
+<td>120 + 0,05 × 2 300 = 235,0 MWh</td>
+<td>aucune variation, ce qui est exact</td>
+</tr>
+</tbody>
+</table></div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Construire la signature sur douze relevés mensuels</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>La construction.</strong> On porte chaque mois un point : en abscisse les degrés-jours du mois, en ordonnée la consommation du mois. Les mois d’été, sans degrés-jours, donnent directement la consommation indépendante du climat ; la droite de régression des mois de chauffe donne la pente b, et son ordonnée à l’origine multipliée par douze donne a. Douze index mensuels et les degrés-jours de la station voisine suffisent : c’est un exercice de tableur, et c’est la meilleure façon de faire comprendre aux étudiants ce que la plateforme OPERAT calcule pour eux.</p>
+<p><strong>Ce que la signature révèle en plus.</strong> Une ordonnée à l’origine élevée désigne un talon, au sens du cours 1 ; une pente qui augmente à enveloppe inchangée, une dérive de régulation.</p>
+<p><strong>Le second cas où la méthode change : l’usage.</strong> L’année de référence peut être choisie entre 2010 et 2022. Une année de forte occupation donne une référence haute et un objectif plus accessible ; une année d’occupation réduite, une référence basse et un objectif plus difficile. Lorsque l’usage change durablement, la comparaison relative perd son sens : le dispositif prévoit alors la modulation par l’intensité d’usage, ou l’objectif en valeur absolue.</p></div></details>
+</div><h2 id="le-calcul-retourne">Le calcul retourné</h2>
+<p>La séance vérifie qu’une installation respecte un texte ; le bureau d’études part de l’objectif et cherche ce qu’il faut installer. <strong>Ce qui est fixé</strong> : la baisse de 40 % par rapport à l’année de référence, et les facteurs de la norme pour le type de bâtiment. <strong>Ce qui est libre</strong> : la classe de départ, la classe visée, et la part de l’énergie thermique dans la consommation, qui dépend du bâtiment. La question devient : quel saut de classe tient l’objectif à lui seul ?</p>
+<div class="formule">
+<p><strong>r = x × g th + (1 − x) × g él</strong></p>
+<ul>
+<li><strong>r</strong><span>baisse de la consommation totale obtenue par le changement de classe</span></li>
+<li><strong>x</strong><span>part de l’énergie thermique dans la consommation de référence</span></li>
+<li><strong>g th, g él</strong><span>gains du saut de classe, 1 − f visée / f actuelle, pour chaque énergie</span></li>
+</ul>
+<blockquote>
+<p>L’objectif est tenu par la seule GTB si r ≥ 40 %, soit <strong>x ≥ (0,40 − g él) / (g th − g él)</strong>.</p>
+</blockquote>
+</div>
+<figure>
+<img src="img/COURS6-GTB-OBLIGATIONS/c6-classes-objectif.png" alt="La baisse obtenue par un saut de classe, selon la part de l’énergie thermique, dans un immeuble de bureaux type. Seuls les sauts partant de la classe D franchissent l’objectif, et seulement pour un bâtiment majoritairement thermique." />
+<figcaption aria-hidden="true">La baisse obtenue par un saut de classe, selon la part de l’énergie thermique, dans un immeuble de bureaux type. Seuls les sauts partant de la classe D franchissent l’objectif, et seulement pour un bâtiment majoritairement thermique.</figcaption>
+</figure>
+<p>Dans des bureaux, le passage de D à A tient l’objectif dès que l’énergie thermique dépasse <strong>58,3 %</strong> de la consommation ; le passage de D à B, à partir de <strong>77,8 %</strong>. Depuis la classe C, aucun saut ne suffit : le gain plafonne à 30 % pour un bâtiment entièrement thermique. <strong>Dans l’enseignement et à l’hôpital, aucun saut ne suffit, même depuis D</strong> : 33,3 % et 34,4 % au mieux.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La démonstration, l&#39;hypothèse qui la porte, et ce qu&#39;il faut ajouter</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>La démonstration.</strong> La consommation de référence se partage en x pour le thermique et 1 − x pour l’électrique. Chaque part est multipliée par son rapport de facteurs ; la baisse totale est la moyenne des deux gains, pondérée par x. Elle varie linéairement de g él, pour un bâtiment tout électrique, à g th, pour un bâtiment tout thermique, d’où les droites de la figure. La condition r ≥ 0,40 se résout en x, et n’a de solution que si g th dépasse 40 %.</p>
+<p><strong>L’hypothèse.</strong> Le calcul applique les facteurs à toute l’énergie thermique et à toute l’énergie électrique. Une partie de l’électricité, bureautique, informatique, procédés, échappe pourtant à la GTB : le gain réel est plus faible que le gain calculé. <strong>La conclusion est donc favorable à la GTB, et la réalité est plus sévère.</strong></p>
+<p><strong>Ce qu’il faut ajouter.</strong> Les gains se combinent par produit, et non par somme : 1 − (1 − r GTB) × (1 − r autre). Dans des bureaux à 60 % thermiques, le passage de D à B donne 34,4 % ; un gain d’usage de 10 %, de l’ordre de ce que mesure le concours CUBE, porte le total à 1 − 0,656 × 0,90 = <strong>41,0 %</strong>. Le gain d’usage minimal est de 8,6 %. Depuis la classe C, le passage à A ne donne que 23,2 %, et il faut trouver 21,9 % ailleurs, par l’usage ou par des travaux.</p>
+<p><strong>La GTB est nécessaire pour mesurer et pour maintenir ; elle n’est suffisante que dans un seul cas, celui d’un immeuble de bureaux mal géré, en classe D et majoritairement thermique.</strong></p></div></details>
+</div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : un bâtiment de lycée est-il assujetti, et depuis quand ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un bâtiment d’enseignement existant comporte deux chaudières gaz de 250 kW, dont la régulation interdit la marche simultanée : la seconde ne démarre que sur défaut de la première. Les ateliers sont chauffés par quatre aérothermes électriques de 9 kW. Le froid est assuré par un groupe de 60 kW et par quatorze climatiseurs individuels de 3,5 kW. La centrale de traitement d’air comporte deux ventilateurs de 5,5 kW. Le bâtiment est-il soumis au décret BACS, et à quelle échéance ?</p>
+<p><strong>Résolution.</strong> Côté chaud, la seconde chaudière est un secours et ne compte pas : 250 + 4 × 9 = <strong>286 kW</strong>. Côté froid : 60 + 14 × 3,5 = <strong>109 kW</strong>. Les ventilateurs ne comptent pas. Les deux côtés dépassent 70 kW sans dépasser 290 kW : le bâtiment relève du 4° du II de l’article R. 175-2, avec une échéance au renouvellement du système et <strong>au plus tard le 1er janvier 2030</strong>.</p>
+<p><strong>Vérification de plausibilité.</strong> Chacune des trois erreurs classiques fait franchir le seuil de 290 kW et avance l’échéance au 1er janvier 2025 : compter la chaudière de secours donne 536 kW, additionner le chaud et le froid donne 395 kW, compter les ventilateurs donne 297 kW. Un résultat au-delà de 290 kW doit donc faire relire chacune de ces trois règles.</p>
+<p><strong>Ce que l’étudiant doit rédiger.</strong> La règle appliquée, chaque exclusion justifiée, et une conclusion qui nomme l’échéance.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le temps de retour réglementaire : le gymnase peut-il être exempté ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un gymnase communal existant de 320 kW a consommé 162 000 puis 138 000 kWh de gaz, et 41 000 puis 39 000 kWh d’électricité, au cours des deux dernières années. Les prix moyens facturés cette année sont de 0,095 €/kWh pour le gaz et de 0,21 €/kWh pour l’électricité. Le devis de GTB s’élève à 52 000 €, avec 4 000 € d’aides. La commune peut-elle établir l’absence de rentabilité ?</p>
+<p><strong>Résolution.</strong> Le bâtiment dépasse 290 kW et relève du 2° du II, qui prévoit l’exemption. Moyennes : 150 000 kWh de gaz et 40 000 kWh d’électricité. Coût annuel : 150 000 × 0,095 + 40 000 × 0,21 = 14 250 + 8 400 = 22 650 €. Gain conventionnel : 15 % × 22 650 = <strong>3 397,50 € par an</strong>. Surcoût : 52 000 − 4 000 = 48 000 €. TRI = 48 000 / 3 397,50 = 14,1, arrondi à <strong>15 ans</strong>, strictement supérieur à 10 : l’absence de rentabilité est établie.</p>
+<p><strong>Deux prolongements.</strong> L’obligation reviendrait pour un surcoût d’au plus 10 × 3 397,50 = <strong>33 975 €</strong>, soit un devis de 37 975 € avec les mêmes aides. Et si un audit établissait un gain de 25 %, le TRI tomberait à 8,5, arrondi à 9 ans : l’exemption tomberait aussi.</p>
+<p><strong>Vérification de plausibilité.</strong> 150 000 kWh pour 320 kW représentent 469 heures de fonctionnement à pleine puissance par an, contre plusieurs milliers pour un immeuble de bureaux : c’est le profil d’un bâtiment utilisé par intermittence, celui pour lequel l’exemption a été écrite.</p>
+<p><strong>Ce que l’étudiant doit rédiger.</strong> La référence de l’arrêté du 7 avril 2023, les deux moyennes, l’arrondi à l’année supérieure et l’inégalité stricte.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : prouver une économie, puis décider d&#39;une classe</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un immeuble de bureaux assujetti au décret tertiaire a choisi 2019 comme année de référence : 620 MWh, dont 380 MWh de chauffage sous-comptés, pour 2 150 DJU. En 2025, il a consommé 540 MWh, dont 290 MWh de chauffage, pour 1 950 DJU. Les degrés-jours moyens de la station valent 2 300. Sa GTB est de classe C. Le gestionnaire annonce une baisse de 12,9 % : que vaut-elle, et la GTB suffit-elle pour 2030 ?</p>
+<p><strong>Résolution, en quatre temps.</strong></p>
+<ol type="1">
+<li><strong>Corriger le climat, sur le seul chauffage.</strong> Référence : 240 MWh hors chauffage, plus 380 × 2 300 / 2 150, soit 646,5 MWh. Année 2025 : 250 + 290 × 2 300 / 1 950 = 592,1 MWh. <strong>La baisse réelle est de 8,4 %</strong>, et non de 12,9 % : l’hiver 2025 a été plus doux que celui de 2019.</li>
+<li><strong>Situer l’objectif.</strong> 60 % de 646,5 MWh, soit <strong>387,9 MWh</strong> corrigés en 2030 : il reste 204,1 MWh à gagner, 34,5 % de la consommation actuelle.</li>
+<li><strong>Estimer la GTB.</strong> Le passage de C à A multiplie le chauffage corrigé par 0,70 et l’électricité par 0,87 : 342,1 × 0,70 + 250 × 0,87 = <strong>456,9 MWh</strong>, soit 29,3 % sous la référence. Le passage de C à B ne donne que 21,7 %.</li>
+<li><strong>Conclure.</strong> Même en classe A, il manque 69,0 MWh, soit 15,1 % de la consommation obtenue après la GTB.</li>
+</ol>
+<p><strong>Vérification de plausibilité.</strong> Le chauffage représente 62,9 % de la référence corrigée, ce qui est cohérent avec un immeuble de bureaux chauffé au gaz, et une baisse de 8,4 % sans travaux se situe sous l’économie moyenne annoncée par le concours CUBE. Les 15 % qui manquent après la GTB sont du même ordre ; mais une GTB de classe A capte déjà une partie des gains d’usage, horaires et consignes, et l’enveloppe devient probablement nécessaire.</p>
+<p><strong>Ce que l’étudiant doit rédiger.</strong> La correction climatique appliquée à la seule part de chauffage, l’objectif exprimé en MWh corrigés, et une conclusion qui distingue ce que la GTB apporte de ce qu’elle ne peut pas apporter. C’est la structure d’une note de conseil, et c’est ce qu’un client attend.</p></div></details>
+</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Grandeur</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BACS, bâtiments existants au-delà de 290 kW</td>
+<td>équipés au 1er janvier 2025</td>
+</tr>
+<tr>
+<td>BACS, bâtiments existants de 70 à 290 kW</td>
+<td>au renouvellement, au plus tard le 1er janvier 2030</td>
+</tr>
+<tr>
+<td>Pas de temps du suivi exigé</td>
+<td><strong>horaire</strong>, par zone fonctionnelle</td>
+</tr>
+<tr>
+<td>Conservation des données</td>
+<td>au pas mensuel, <strong>cinq ans</strong></td>
+</tr>
+<tr>
+<td>Valeurs horaires par compteur et par an</td>
+<td>8 760</td>
+</tr>
+<tr>
+<td>Chaud et froid dans le calcul d’assujettissement</td>
+<td><strong>jamais additionnés</strong></td>
+</tr>
+<tr>
+<td>Trois chaudières de 25 kW dans un même bâtiment</td>
+<td>75 kW, donc assujetti</td>
+</tr>
+<tr>
+<td>Exemption BACS</td>
+<td>TRI strictement supérieur à <strong>10 ans</strong>, gain conventionnel de 15 %</td>
+</tr>
+<tr>
+<td>Inspection</td>
+<td>tous les cinq ans au plus ; deux ans après une installation ou un remplacement</td>
+</tr>
+<tr>
+<td>Rapport d’inspection</td>
+<td>remis sous un mois, conservé dix ans</td>
+</tr>
+<tr>
+<td>Décret tertiaire, seuil de surface</td>
+<td>1 000 m² de surface de plancher tertiaire</td>
+</tr>
+<tr>
+<td>Objectifs de baisse</td>
+<td><strong>40 %</strong> en 2030, 50 % en 2040, 60 % en 2050</td>
+</tr>
+<tr>
+<td>Année de référence</td>
+<td>entre 2010 et 2022</td>
+</tr>
+<tr>
+<td>Déclaration sur OPERAT</td>
+<td>chaque année avant le 30 septembre, pour l’année précédente</td>
+</tr>
+<tr>
+<td>Évaluation de l’objectif de 2030</td>
+<td>au 31 décembre 2031</td>
+</tr>
+<tr>
+<td>Amendes prévues par le décret de 2019</td>
+<td>1 500 € pour une personne physique, 7 500 € pour une personne morale</td>
+</tr>
+<tr>
+<td>Degrés-jours de l’ajustement</td>
+<td>moyenne 2001-2020 de la station Météo-France la plus représentative</td>
+</tr>
+<tr>
+<td>Facteurs thermiques, bureaux</td>
+<td>A 0,70 · B 0,80 · C 1 · D 1,51</td>
+</tr>
+<tr>
+<td>Facteurs électriques, bureaux</td>
+<td>A 0,87 · B 0,93 · C 1 · D 1,10</td>
+</tr>
+<tr>
+<td>Gain de C à A, bureaux</td>
+<td>30 % thermique, 13 % électrique</td>
+</tr>
+<tr>
+<td>Meilleur saut de classe, enseignement</td>
+<td>33 % en thermique, de D à A : <strong>jamais 40 %</strong></td>
+</tr>
+<tr>
+<td>CUBE Tertiaire, économie moyenne</td>
+<td>16,1 % par an et par bâtiment</td>
+</tr>
+<tr>
+<td>CUBE.S 2023-2024</td>
+<td>12,6 % en moyenne sur 215 établissements</td>
+</tr>
+<tr>
+<td>Heures de fermeture, pour 45 heures d’ouverture par semaine</td>
+<td>73,2 % du temps</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Deux réflexes suffisent à trier la plupart des affirmations : <strong>une économie non corrigée du climat ne prouve rien</strong>, et <strong>une GTB seule ne tient jamais l’objectif de 2030 dans un bâtiment d’enseignement</strong>. Une valeur annoncée qui contredit l’un des deux mérite qu’on refasse le calcul.</p>
+</div>
+<h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Le décret BACS est reporté à 2030 : ne peut-on pas attendre ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le report ne concerne que les bâtiments existants de 70 à 290 kW. Un bâtiment existant de plus de 290 kW devait être équipé au 1er janvier 2025 : s’il ne l’est pas, il n’est pas en avance, il est en retard. Les bâtiments neufs et l’objectif du décret tertiaire ne sont pas touchés.</p>
+<p>La réponse chiffrée qui porte est celle des mesures. L’objectif de 2030 s’évalue sur la consommation de l’année 2030, au 31 décembre 2031. Un bâtiment équipé en décembre 2029 abordera cette année sans aucune saison de chauffe mesurée par zone ; un bâtiment équipé à l’automne 2026 en aura trois complètes, soit le temps de repérer une dérive, de la corriger et de vérifier la correction.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Combien une GTB fait-elle réellement économiser ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La réponse honnête comporte deux nombres. Le premier est conventionnel : dans des bureaux à 60 % thermiques partant de la classe C, la méthode par facteurs donne 14,8 % pour un passage en classe B et 23,2 % pour un passage en classe A. Le second est une condition : ces gains supposent qu’un exploitant règle et surveille. Le concours CUBE montre qu’une équipe attentive obtient 16,1 % en moyenne sans travaux ; une GTB que personne ne consulte n’obtient rien.</p>
+<p>La formulation à faire retenir : <strong>la GTB ne fait pas l’économie, elle la rend mesurable et durable.</strong></p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Si la supervision tombe en panne, le bâtiment est-il hors la loi ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le 4° de l’article R. 175-3 exige un arrêt manuel et une gestion autonome de chaque système : le chauffage doit continuer de fonctionner sans la supervision, et c’est le premier point à vérifier. En revanche, le 1° exige un suivi en continu, et une panne prolongée crée des trous que l’inspection relèvera.</p>
+<p>Le chiffrage dépend de la nature des compteurs. Une semaine de panne représente 168 valeurs horaires perdues par compteur. Un compteur relié par bus transmet son index, et le cours 1 l’a montré : à la reprise, l’index permet de recalculer l’énergie de la semaine entière. La courbe horaire est perdue, la valeur mensuelle conservée cinq ans ne l’est pas. Un comptage par impulsions, lui, perd tout ce qui a été émis pendant une coupure de l’automate qui compte.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Notre lycée est-il concerné par ces deux décrets ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Presque certainement, et par les deux. Un lycée héberge une activité tertiaire non marchande : il relève du décret tertiaire dès 1 000 m² de surface de plancher, et du décret BACS dès que son chauffage ou son froid dépasse 70 kW, calculé bâtiment par bâtiment. Le bâtiment de l’exercice 1, à 286 kW, a jusqu’au 1er janvier 2030.</p>
+<p>Les assujettis ne sont pas les mêmes. Le décret BACS vise le ou les propriétaires des systèmes de chauffage et de climatisation (article R. 175-2) ; le décret tertiaire vise les propriétaires et, le cas échéant, les preneurs à bail (article R. 174-22). Pour un lycée public, l’interlocuteur est la collectivité qui en a la charge, la région.</p></div></details>
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Les sources de cette page</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Textes réglementaires</strong></p>
+<ul>
+<li>Légifrance, décret n° 2020-887 du 20 juillet 2020 relatif au système d’automatisation et de contrôle des bâtiments non résidentiels et à la régulation automatique de la chaleur, JO du 21 juillet 2020, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000042128488/" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000042128488/</a> : notice, transposition de la directive 2010/31/UE, seuil de 290 kW, échéances.</li>
+<li>Légifrance, décret n° 2023-259 du 7 avril 2023 relatif aux systèmes d’automatisation et de contrôle des bâtiments tertiaires, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000047422489" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000047422489</a> : seuil de 70 kW, inspection périodique, exploitation.</li>
+<li>Légifrance, décret n° 2025-1343 du 26 décembre 2025, JO du 27 décembre 2025, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053175245" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053175245</a> : remplacement de 2027 par 2030 au 4° du II de l’article R. 175-2, autres reports.</li>
+<li>Légifrance, code de la construction et de l’habitation, articles R. 175-2 (version en vigueur depuis le 28 décembre 2025) et R. 175-3 (depuis le 9 avril 2023), <a href="https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006074096/LEGISCTA000047425580/" class="uri">https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006074096/LEGISCTA000047425580/</a> : seuils, échéances, exemption, les quatre fonctions, propriété des données.</li>
+<li>Légifrance, code de la construction et de l’habitation, chapitre V, articles R. 175-1 à R. 175-6, <a href="https://www.legifrance.gouv.fr/codes/id/LEGISCTA000046373777/" class="uri">https://www.legifrance.gouv.fr/codes/id/LEGISCTA000046373777/</a> : définitions, entretien et consignes écrites, formation de l’exploitant.</li>
+<li>Légifrance, article R. 175-5-1 du code de la construction et de l’habitation, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047426655" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047426655</a> : inspection, délai du rapport, conservation dix ans, première inspection.</li>
+<li>Légifrance, arrêté du 7 avril 2023 relatif aux systèmes d’automatisation et de contrôle des bâtiments tertiaires, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000047422562" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000047422562</a> : formule du temps de retour, gain de 15 %, fréquence des inspections (article 5), annexes 2, 3 et 5.</li>
+<li>Légifrance, décret n° 2019-771 du 23 juillet 2019 relatif aux obligations d’actions de réduction de la consommation d’énergie finale dans des bâtiments à usage tertiaire, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000038812251" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000038812251</a> : champ, objectifs, entrée en vigueur, sanctions.</li>
+<li>Légifrance, article L. 174-1 du code de la construction et de l’habitation, version en vigueur depuis le 25 août 2021, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041569865/" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041569865/</a> : objectifs de 40, 50 et 60 %, valeur absolue, modulations.</li>
+<li>Légifrance, article R. 174-23 du code de la construction et de l’habitation, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043819505" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043819505</a> : ajustement climatique de la consommation de référence.</li>
+<li>Légifrance, article R. 174-29 du code de la construction et de l’habitation, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043819521" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043819521</a> : modulation par l’intensité d’usage, consommations corrigées, attestation annuelle.</li>
+<li>Légifrance, code de la construction et de l’habitation, chapitre IV, articles R. 174-1 à R. 174-32, <a href="https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006074096/LEGISCTA000043819441/" class="uri">https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006074096/LEGISCTA000043819441/</a> : plateforme, évaluation au 31 décembre 2031, mutualisation, publication.</li>
+<li>Légifrance, arrêté du 10 avril 2020 relatif aux obligations d’actions de réduction des consommations d’énergie finale dans des bâtiments à usage tertiaire, version consolidée, <a href="https://www.legifrance.gouv.fr/loda/id/JORFTEXT000041842389/" class="uri">https://www.legifrance.gouv.fr/loda/id/JORFTEXT000041842389/</a> : ajustement climatique, degrés-jours 2001-2020, station Météo-France, échéance du 30 septembre, première déclaration en 2022.</li>
+<li>Légifrance, article 3 de l’arrêté du 10 avril 2020, version en vigueur depuis le 15 mars 2024, <a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000049282071" class="uri">https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000049282071</a> : année de référence entre 2010 et 2022, échéance du 30 septembre 2027.</li>
+<li>EUR-Lex, directive (UE) 2024/1275 du 24 avril 2024 sur la performance énergétique des bâtiments, <a href="https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=OJ:L_202401275" class="uri">https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=OJ:L_202401275</a> : article 13, échéances du 31 décembre 2024 et du 31 décembre 2029.</li>
+</ul>
+<p><strong>Publications des pouvoirs publics</strong></p>
+<ul>
+<li>Ministère chargé de la construction, portail des réglementations énergétiques des bâtiments, « Présentation et guide du décret BACS », <a href="https://rt-re-batiment.developpement-durable.gouv.fr/presentation-et-guide-du-decret-bacs-a712.html" class="uri">https://rt-re-batiment.developpement-durable.gouv.fr/presentation-et-guide-du-decret-bacs-a712.html</a> : dates d’application aux bâtiments neufs.</li>
+<li>Même portail, foire aux questions BACS, index, <a href="https://rt-re-batiment.developpement-durable.gouv.fr/faq-decret-bacs-r463.html" class="uri">https://rt-re-batiment.developpement-durable.gouv.fr/faq-decret-bacs-r463.html</a> : organisation des réponses officielles.</li>
+<li>Même portail, FAQ BACS n° 08, 13 juin 2025, mise à jour le 4 septembre 2026, <a href="https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-08-calcul-de-la-puissance-nominale-utile-a938.html" class="uri">https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-08-calcul-de-la-puissance-nominale-utile-a938.html</a> : addition des générateurs, secours, appareils décentralisés.</li>
+<li>Même portail, FAQ BACS n° 09, 13 juin 2025, <a href="https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-09-puissance-electrique-des-pompes-de-a939.html" class="uri">https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-09-puissance-electrique-des-pompes-de-a939.html</a> : ventilateurs et pompes exclus.</li>
+<li>Même portail, FAQ BACS n° 11, 13 juin 2025, <a href="https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-11-pour-definir-l-assujettissement-d-un-a941.html" class="uri">https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-11-pour-definir-l-assujettissement-d-un-a941.html</a> : chaud et froid jamais additionnés.</li>
+<li>Même portail, FAQ BACS n° 12, 13 juin 2025, <a href="https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-12-cas-d-un-batiment-equipe-de-plusieurs-a942.html" class="uri">https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-12-cas-d-un-batiment-equipe-de-plusieurs-a942.html</a> : trois chaudières de 25 kW, 75 kW.</li>
+<li>Même portail, FAQ BACS n° 14, 13 juin 2025, <a href="https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-14-quelles-sont-les-fonctionnalites-a944.html" class="uri">https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-14-quelles-sont-les-fonctionnalites-a944.html</a> : classe du bâtiment égale à la plus faible installée.</li>
+<li>Même portail, FAQ BACS n° 18, 13 juin 2025, <a href="https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-18-la-classe-c-sur-l-ensemble-des-a946.html" class="uri">https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-18-la-classe-c-sur-l-ensemble-des-a946.html</a> : classe C, B pour les consignes, A pour les temps de fonctionnement et le compte rendu.</li>
+<li>Même portail, FAQ BACS n° 20, 13 juin 2025, <a href="https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-20-comment-le-tri-se-calcule-t-il-a953.html" class="uri">https://rt-re-batiment.developpement-durable.gouv.fr/faq-bacs-20-comment-le-tri-se-calcule-t-il-a953.html</a> : calcul du temps de retour, aides déduites, coûts inclus.</li>
+<li>ADEME, plateforme OPERAT, <a href="https://operat.ademe.fr/" class="uri">https://operat.ademe.fr/</a> : opérateur de la plateforme de déclaration.</li>
+<li>Banque des Territoires, Localtis, Philie Marcangelo-Leos, « Bâtiments tertiaires : le calendrier de mise en œuvre des systèmes d’automatisation et de contrôle décalé à 2030 », 6 janvier 2026, <a href="https://www.banquedesterritoires.fr/batiments-tertiaires-le-calendrier-de-mise-en-oeuvre-des-systemes-dautomatisation-et-de-controle" class="uri">https://www.banquedesterritoires.fr/batiments-tertiaires-le-calendrier-de-mise-en-oeuvre-des-systemes-dautomatisation-et-de-controle</a> : contenu et motifs du report.</li>
+</ul>
+<p><strong>Concours CUBE</strong></p>
+<ul>
+<li>IFPEB, page d’accueil, <a href="https://www.ifpeb.fr/" class="uri">https://www.ifpeb.fr/</a> : organisateur des concours CUBE.</li>
+<li>CUBE Tertiaire, page d’accueil, <a href="https://cube-championnat.org/" class="uri">https://cube-championnat.org/</a> : économie moyenne de 16,1 % par an et par bâtiment.</li>
+<li>CUBE Tertiaire, résultats 2023, <a href="https://cube-championnat.org/resultats-2023/" class="uri">https://cube-championnat.org/resultats-2023/</a> : palmarès, agence BNP Paribas de L’Isle-Adam, La Poste Immobilier Saint-Dié, Université Gustave Eiffel.</li>
+<li>Championnat de France des économies d’énergie, « D’ici à septembre 2027, faites diminuer la consommation énergétique de vos biens de plus de 15 % », 9 septembre 2026, <a href="https://championnatdefrancedeseconomiesdenergie.org/economies-energie-tertiaire-challenge-cube-tertiaire/" class="uri">https://championnatdefrancedeseconomiesdenergie.org/economies-energie-tertiaire-challenge-cube-tertiaire/</a> : actions menées par les équipes.</li>
+<li>CUBE.S, page d’accueil, <a href="https://www.cube-s.org/" class="uri">https://www.cube-s.org/</a> : organisateurs, calendrier de la saison 2026-2027.</li>
+<li>CUBE.S, règlement, <a href="https://www.cube-s.org/le-concours/reglement/" class="uri">https://www.cube-s.org/le-concours/reglement/</a> : référence, correction climatique et d’usage, durée, exclusion des travaux, audit.</li>
+<li>CUBE.S, résultats 2025, <a href="https://www.cube-s.org/resultats-2025/" class="uri">https://www.cube-s.org/resultats-2025/</a> : cité scolaire Camille Sée, 23,2 %.</li>
+<li>CUBE.S, résultats 2023-2024, <a href="https://www.cube-s.org/resultats-2023-2024/" class="uri">https://www.cube-s.org/resultats-2023-2024/</a> : 215 établissements, 12,6 % en moyenne.</li>
+</ul>
+<p><strong>Norme ISO 52120-1, sources secondaires (la norme est payante)</strong></p>
+<ul>
+<li>Altecon, bureau d’ingénierie, « Highlights: Overview about the EN 15232 », non daté, <a href="https://www.altecon.it/highlights/en-15232" class="uri">https://www.altecon.it/highlights/en-15232</a> : table des facteurs par type de bâtiment et par énergie. Source commerciale.</li>
+<li>Calcul CEE, « Qu’est-ce qu’une GTB de classe A ou classe B selon la norme NF EN ISO 52120-1-2022 ? », 17 décembre 2024, <a href="https://www.calculcee.fr/article/gtb-classe-a-classe-b-norme-nf-en-iso-52120-1-2022/" class="uri">https://www.calculcee.fr/article/gtb-classe-a-classe-b-norme-nf-en-iso-52120-1-2022/</a> : gains de 30 et 13 %, de 20 et 7 %, recoupant la table. Source commerciale.</li>
+<li>Calcul CEE, « Les 4 classes de performance énergétique des bâtiments… NF EN 15232 », 28 novembre 2023, <a href="https://www.calculcee.fr/article/4-classes-performance-energetique/" class="uri">https://www.calculcee.fr/article/4-classes-performance-energetique/</a> : définitions des quatre classes. Source commerciale.</li>
+<li>Buildwise, « Norme pour la performance énergétique de l’automatisation dans les bâtiments », 24 juin 2025, <a href="https://www.buildwise.be/fr/nouvelles/performance-energetique-automatisation-batiments/" class="uri">https://www.buildwise.be/fr/nouvelles/performance-energetique-automatisation-batiments/</a> : remplacement de l’EN 15232-1 par l’EN ISO 52120-1.</li>
+<li>Regin, fabricant, « Introducing ISO 52120-1:2021 », non daté, <a href="https://www.regincontrols.com/en/se/support/articles/introducing-iso-52120-12021--the-new-standard-for-energy-efficient-building-automation/" class="uri">https://www.regincontrols.com/en/se/support/articles/introducing-iso-52120-12021--the-new-standard-for-energy-efficient-building-automation/</a> : norme de 2021, remplaçant l’EN 15232-1:2017. Source commerciale.</li>
+</ul>
+<p><strong>Dans le dépôt</strong></p>
+<ul>
+<li>Référentiel du BTS FED, mars 2014, pages 8, 55, 63 et 71 à 74 : savoirs B8-1, B8-2, B9, A2-4, S5.1 et leurs niveaux, « villes intelligentes » parmi les débouchés.</li>
+<li>Manuel de fluides, chapitres 1 et 14, et séances 20 et 21 de fluides : degrés-jours, architecture, tableau de points, priorités d’alarme, déjà traités et non repris ici.</li>
+</ul>
+<p>Sources consultées le 13 septembre 2026.</p></div></details>
+</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="COURS5-ECLAIRAGE.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Domotique, cours 5 — l'éclairage</span></a><a class="ap" href="COURS7-ACCES-INTRUSION-VIDEO.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Domotique, cours 7 — accès, intrusion, vidéo</span></a></div></nav>
+<p class="pied">Page de formation, réservée au professeur. Elle s'appuie sur des cas réels documentés ; les sources sont données en fin de page.</p>
+</div>
+<script src="../assets/kit.js?v=2863feac"></script>
+<script src="../assets/site.js?v=2863feac"></script>
+<script src="../assets/vivant.js?v=2863feac"></script>

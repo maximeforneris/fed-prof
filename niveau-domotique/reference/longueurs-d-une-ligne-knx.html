@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les longueurs d'une ligne KNX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../assets/cours.css">
+</head>
+<body>
+<main class="page">
+
+<p class="surtitre">Référence · <a href="../lessons/0002-les-350-metres-se-calculent.html">Leçon 2 — les 350 mètres se calculent</a></p>
+<h1>Les longueurs d'une ligne KNX</h1>
+<p class="these">Trois longueurs, trois causes, et le calcul qui en démontre une.
+Toutes les données viennent du cours de base de la KNX Association, installation
+TP1.</p>
+
+<h2>Les données</h2>
+<table>
+<thead><tr><th>Donnée</th><th>Valeur</th><th>Page</th></tr></thead>
+<tbody>
+<tr><td>Tension du système, TBTS</td><td>30 V continu</td><td>4, 10</td></tr>
+<tr><td>Minimum pour un participant</td><td>21 V</td><td>10</td></tr>
+<tr><td>Puissance d'un participant</td><td>jusqu'à 200 mW</td><td>10</td></tr>
+<tr><td>Câble TP1, pour 1 000 m</td><td>75 Ω de boucle, 100 nF</td><td>5</td></tr>
+<tr><td>Alimentation de 640 mA</td><td>64 participants, répartis</td><td>10</td></tr>
+</tbody>
+</table>
+
+<h2>Chaque longueur relie deux points, et c'est ce qui dit sa cause</h2>
+<table>
+<thead><tr><th>Limite</th><th>Entre</th><th>Cause</th></tr></thead>
+<tbody>
+<tr><td><strong>350 m</strong></td><td>l'alimentation et un participant</td><td>la chute de tension dans la boucle</td></tr>
+<tr><td><strong>700 m</strong></td><td>deux participants</td><td>le temps de parcours des télégrammes</td></tr>
+<tr><td><strong>1 000 m</strong></td><td>toute la ligne</td><td>la résistance et la capacité totales du câble</td></tr>
+</tbody>
+</table>
+<span class="marge">Le document attribue l'ensemble des limites à la résistance, à
+la capacité et à l'inductance du câble, qui produisent chutes de tension et temps de
+parcours, p. 25. L'attribution limite par limite se lit sur les deux points que
+chacune relie.</span>
+
+<h2>Le calcul</h2>
+<div class="retenir">
+<p><strong>ΔU = ½ · r · I · L</strong>, participants répartis · <strong>ΔU = r · I · L</strong>, tous au bout</p>
+<p>r = 0,075 Ω/m de boucle · I = 0,64 A · 30 − 21 = 9 V de marge</p>
+</div>
+<table>
+<thead><tr><th>Cas</th><th>Résultat</th></tr></thead>
+<tbody>
+<tr><td>350 m, participants répartis</td><td>chute 8,4 V · il reste <strong>21,6 V</strong></td></tr>
+<tr><td>Longueur qui laisse juste 21 V, répartis</td><td><strong>375 m</strong> — le document retient 350</td></tr>
+<tr><td>Longueur qui laisse juste 21 V, tous au bout</td><td><strong>187 m</strong></td></tr>
+<tr><td>200 m, tous au bout</td><td>il reste 20,4 V : <strong>ne fonctionne pas</strong></td></tr>
+</tbody>
+</table>
+
+<h2>Les 10 mA d'un participant</h2>
+<p>Le document parle de puissance, 200 mW, pas de courant. À puissance constante, le
+courant <strong>monte quand la tension baisse</strong> : 6,7 mA à 30 V, 9,5 mA à 21 V.
+Les 10 mA qu'on emploie pour dimensionner — 640 mA pour 64 — couvrent donc le cas le
+plus défavorable, le participant au bout de la ligne.</p>
+
+<nav class="suite">
+<span class="etiquette">Pour la suite</span>
+<ul>
+<li><a href="../lessons/0002-les-350-metres-se-calculent.html">Leçon 2 — les 350 mètres se calculent</a></li>
+<li><a href="https://www.u-lux.com/fileadmin/user_upload/Downloads/PDF/Technische_Downloads/en/KNX_Basics.pdf">KNX Association, cours de base, installation TP1</a></li>
+</ul>
+</nav>
+
+</main>
+</body>
+</html>

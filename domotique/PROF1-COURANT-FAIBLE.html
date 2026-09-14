@@ -3,27 +3,27 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Prof 1 — le courant faible</title>
-<link rel="stylesheet" href="../assets/kit.css?v=13b3bbbd">
-<link rel="stylesheet" href="../assets/site.css?v=13b3bbbd">
-<link rel="stylesheet" href="../assets/calque.css?v=13b3bbbd">
-<link rel="stylesheet" href="../assets/vivant.css?v=13b3bbbd">
+<link rel="stylesheet" href="../assets/kit.css?v=2863feac">
+<link rel="stylesheet" href="../assets/site.css?v=2863feac">
+<link rel="stylesheet" href="../assets/calque.css?v=2863feac">
+<link rel="stylesheet" href="../assets/vivant.css?v=2863feac">
 
 <div class="page" data-site="fed-prof" data-page="domotique/PROF1-COURANT-FAIBLE" data-public="prof">
-<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="PROF2-MEDIAS.html" rel="next" title="Prof 2 — les médias" aria-label="Prof 2 — les médias">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/PROF1-COURANT-FAIBLE">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS10-PROJET-KNX.html" rel="prev" title="Domotique, cours 10 — le projet KNX" aria-label="Domotique, cours 10 — le projet KNX">&lsaquo;</a><a class="fleche" href="PROF2-MEDIAS.html" rel="next" title="Prof 2 — les médias" aria-label="Prof 2 — les médias">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/PROF1-COURANT-FAIBLE">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
 <header class="tete">
   
   <div class="titraille">
     <p class="sur">Formation du professeur · BTS FED option C</p>
     <h1>Le courant faible<span>et les deux chaînes</span></h1>
   </div>
-  <p class="accroche">Pourquoi le mot « pré-actionneur » existe et pourquoi les catalogues ne l'emploient pas. D'où viennent 29 V, 10 mA, 64 participants et 350 mètres, le dernier se retrouve à la main en trois lignes. Et les vingt nombres qui permettent de refuser une valeur avant d'avoir refait le calcul.</p>
+  <p class="accroche">Pourquoi le mot « pré-actionneur » existe et pourquoi les catalogues ne l'emploient pas. D'où viennent 30 V, 10 mA, 64 participants et 350 mètres, le dernier se retrouve à la main en trois lignes. Et les vingt nombres qui permettent de refuser une valeur avant d'avoir refait le calcul.</p>
   
   <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B8-1 Architecture des systèmes centralisés · niveau 3</span><span class="tag n3">D1-1 Médias de communication · niveau 3</span><span class="tag">C1-1 Distribution BT · niveau 2</span></div>
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b>La loi d'Ohm et la puissance électrique</b><span class="car">courant faible veut dire puissance faible, pas tension faible ; U, I et P se manient sans hésiter.</span></li><li><b>Signal et énergie, au niveau du bac</b><span class="car">un fil peut porter l'un, l'autre ou les deux ; la page construit tout sur cette frontière.</span></li><li><b>Le référentiel, savoirs B8 et D1</b><span class="car">la page cite les niveaux exigés ; les avoir sous la main évite d'enseigner le réseau d'un ingénieur à des techniciens.</span></li></ul></aside>
-<nav class="somm"><div class="in"><a href="#ce-qu-un-etudiant-demande-c-est-ou-passe-le-courant">Ce qu’un étudiant demande, c’est où passe le courant</a><a href="#la-frontiere-et-le-seul-mot-qui-compte">La frontière, et le seul mot qui compte</a><a href="#courant-faible-ne-veut-pas-dire-sans-danger">« Courant faible » ne veut pas dire « sans danger »</a><a href="#ce-qui-circule-vraiment-dans-les-deux-fils-d-un-bus">Ce qui circule vraiment dans les deux fils d’un bus</a><a href="#les-vingt-nombres">Les vingt nombres</a><a href="#les-questions-qui-destabilisent">Les questions qui déstabilisent</a></div></nav>
+<nav class="somm"><div class="in"><a href="#ce-qu-un-etudiant-demande-c-est-ou-passe-le-courant">Ce qu’un étudiant demande, c’est où passe le courant</a><a href="#la-frontiere-et-le-seul-mot-qui-compte">La frontière, et le seul mot qui compte</a><a href="#courant-faible-ne-veut-pas-dire-sans-danger">« Courant faible » ne veut pas dire « sans danger »</a><a href="#ce-qui-circule-vraiment-dans-les-deux-fils-d-un-bus">Ce qui circule vraiment dans les deux fils d’un bus</a><a href="#deux-cas-reels-et-ce-qu-ils-enseignent">Deux cas réels, et ce qu’ils enseignent</a><a href="#les-vingt-nombres">Les vingt nombres</a><a href="#les-questions-qui-destabilisent">Les questions qui déstabilisent</a></div></nav>
 <h2 id="ce-qu-un-etudiant-demande-c-est-ou-passe-le-courant">Ce qu’un étudiant demande, c’est où passe le courant</h2>
-<p>Presque jamais « quelle est la formule ». Pourquoi un module s’appelle actionneur chez le fabricant et pré-actionneur en cours, pourquoi le bus fait 29 V et pas 24, pourquoi une ligne s’arrête à 350 mètres alors que le câble en fait mille.</p>
+<p>Presque jamais « quelle est la formule ». Pourquoi un module s’appelle actionneur chez le fabricant et pré-actionneur en cours, pourquoi le bus fait 30 V et pas 24, pourquoi une ligne s’arrête à 350 mètres alors que le câble en fait mille.</p>
 <p>Les réponses tiennent en deux idées : <strong>une frontière</strong>, celle où l’information devient de la puissance, et <strong>une chute de tension</strong>. Le reste en découle, y compris les trois longueurs que tout le monde apprend par cœur sans savoir d’où elles sortent.</p>
 <div class="cle">
 <p>Ce qui rapporte le plus en classe : <strong>savoir refuser un nombre en une seconde</strong>. Un bus à 24 V, un participant à 100 mA, une ligne de 2 kilomètres, la table d’ordres de grandeur en fin de page est l’outil le plus rentable de ce document.</p>
@@ -75,16 +75,16 @@
 </tr>
 </tbody>
 </table></div>
-<p>Un bus KNX est en <strong>TBTS</strong>. Les fils de commande d’un télérupteur ordinaire sont en <strong>230 V</strong> : sa bobine l’est. Les deux sont du « courant faible » au sens du métier, un seul est sans danger au toucher.</p>
+<p>Un bus KNX est en <strong>TBTS</strong>. Les fils de commande d’un télérupteur ordinaire sont en <strong>230 V</strong> : sa bobine l’est. Les deux sont du « courant faible » au sens du métier, un seul est sans danger au toucher. Le cas des chargeurs contrefaits, présenté plus bas, montre ce que devient cette sécurité quand la séparation manque.</p>
 <div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">D&#39;où viennent 50 V et 120 V</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Ce sont les limites de la très basse tension en <strong>milieu sec</strong> : 50 V en alternatif, 120 V en continu. Elles ne sont pas arbitraires, elles encadrent le courant qui traverserait un corps humain à travers une impédance de peau sèche, sous le seuil de fibrillation.</p>
 <p>En <strong>milieu mouillé</strong>, les limites tombent à 25 V et 60 V, et c’est ce qui change tout dans une salle de bains ou une piscine. Le rapport de deux entre alternatif et continu tient à la fréquence : à 50 Hz, le courant alternatif est nettement plus dangereux à intensité égale.</p>
 <p>Ce qu’il faut faire dire aux étudiants : <strong>la tension ne tue pas, le courant tue</strong> , et la tension n’est réglementée que parce qu’elle détermine le courant à impédance donnée.</p></div></details>
 </div><h2 id="ce-qui-circule-vraiment-dans-les-deux-fils-d-un-bus">Ce qui circule vraiment dans les deux fils d’un bus</h2>
-<p>Sur un bus KNX TP1, la paire porte <strong>l’alimentation et l’information en même temps</strong>. L’alimentation est un 29 V continu ; l’information est une modulation superposée, de quelques volts, que chaque participant fabrique en tirant brièvement sur le bus.</p>
+<p>Sur un bus KNX TP1, la paire porte <strong>l’alimentation et l’information en même temps</strong>. L’alimentation est un 30 V continu ; l’information est une modulation superposée, de quelques volts, que chaque participant fabrique en tirant brièvement sur le bus.</p>
 <div class="formule">
-<p><strong>29 V continu · 10 mA par participant · 64 participants</strong></p>
+<p><strong>30 V continu · 10 mA par participant · 64 participants</strong></p>
 <ul>
-<li><strong>29 V</strong><span>: tension nominale du bus, fournie par une alimentation de 30 V à self</span></li>
+<li><strong>30 V</strong><span>: tension système du bus selon la KNX Association, maintenue par une alimentation à self</span></li>
 <li><strong>10 mA</strong><span>: consommation normalisée d’un participant sur le bus</span></li>
 <li><strong>64</strong><span>: nombre maximal de participants sur une ligne</span></li>
 <li><strong>640 mA</strong><span>: le calibre d’alimentation le plus fort, soit exactement 64 × 10 mA</span></li>
@@ -93,14 +93,34 @@
 <p>Les deux limites d’une ligne tombent ensemble, et ce n’est pas un hasard : elles sont le même nombre écrit deux fois.</p>
 </blockquote>
 </div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">D&#39;où sortent les 350 mètres, la démonstration tient en trois lignes</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le câble TP1 a des conducteurs de <strong>0,8 mm de diamètre</strong>, soit une section de <strong>0,50 mm²</strong>. Avec une résistivité du cuivre de 0,0172 Ω·mm²/m, un conducteur fait <strong>0,034 Ω par mètre</strong>, et la boucle aller-retour <strong>0,069 Ω par mètre</strong>.</p>
-<p>Sur 350 m, la boucle vaut donc <strong>24 Ω</strong>. Si les 640 mA traversaient toute la longueur, la chute serait de <strong>15,4 V</strong>, le bus tomberait à 13,6 V et plus rien ne fonctionnerait. Mais les participants sont <strong>répartis</strong> le long de la ligne : le courant décroît de 640 mA à zéro, et la chute réelle vaut la moitié, soit <strong>7,7 V</strong>.</p>
-<p>Il reste <strong>21,3 V</strong> au participant le plus éloigné. Un appareil KNX fonctionne jusqu’à <strong>21 V</strong>. Le compte tombe juste, à trois dixièmes de volt près.</p>
-<p>C’est une reconstruction, pas la dérivation officielle, mais elle donne le bon ordre de grandeur, elle explique pourquoi la règle porte sur la distance à <em>l’alimentation</em> et non sur la longueur totale, et elle se refait au tableau en deux minutes. C’est le meilleur usage qu’on puisse faire de cette limite en cours.</p></div></details>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">D&#39;où sortent les 350 mètres, la démonstration tient en trois lignes</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La KNX Association spécifie pour le câble TP1 une résistance de boucle de <strong>75 Ω par kilomètre</strong>, soit 0,075 Ω par mètre. Le calcul pour des conducteurs de 0,8 mm de diamètre (0,50 mm², résistivité du cuivre 0,0172 Ω·mm²/m) donne un peu moins, 0,069 Ω par mètre de boucle : la valeur de spécification couvre les connexions et l’échauffement.</p>
+<p>Sur 350 m, la boucle vaut donc <strong>26 Ω</strong>. Si les 640 mA traversaient toute la longueur, la chute serait de <strong>16,8 V</strong>, le bus tomberait à 13,2 V et plus aucun participant ne fonctionnerait. Les participants étant <strong>répartis</strong> le long de la ligne, le courant décroît de 640 mA à zéro, et la chute réelle vaut la moitié, soit <strong>8,4 V</strong>.</p>
+<p>Il reste <strong>21,6 V</strong> au participant le plus éloigné, pour un minimum de fonctionnement de <strong>21 V</strong>. Le compte tombe juste, à six dixièmes de volt près.</p>
+<p>Le document de la KNX Association attribue les trois longueurs, ensemble, aux chutes de tension et aux temps de propagation des télégrammes. Rattacher les 350 m à la chute de tension se déduit de ce que cette limite relie, l’alimentation et un participant ; le calcul explique pourquoi la règle porte sur la distance à <em>l’alimentation</em> et non sur la longueur totale, et il se refait au tableau en deux minutes.</p></div></details>
 </div><div class="piege">
 <p>La règle des 350 m se mesure <strong>de l’alimentation au participant</strong>, pas depuis le tableau. Déplacer l’alimentation sur la ligne change le résultat sans changer un mètre de câble, et c’est souvent la correction la moins chère d’une ligne non conforme.</p>
 </div>
-<h2 id="les-vingt-nombres">Les vingt nombres</h2>
+<h2 id="deux-cas-reels-et-ce-qu-ils-enseignent">Deux cas réels, et ce qu’ils enseignent</h2>
+<p>Deux affirmations de cette page ont un prix mesurable : la protection d’un circuit TBTS tient à sa séparation autant qu’à sa tension, et le pré-actionneur est le seul point où les deux chaînes se touchent. Chacune a été éprouvée par un cas réel, instruit par un organisme public.</p>
+<h3 id="trois-chargeurs-sur-quatre-cents-royaume-uni-2016">Trois chargeurs sur quatre cents, Royaume-Uni, 2016</h3>
+<p><em>Le 2 décembre 2016, le Chartered Trading Standards Institute, organisme britannique de protection des consommateurs, publie le résultat d’une campagne d’essais. Le laboratoire UL a acheté 400 chargeurs Apple contrefaits auprès de fournisseurs de huit pays, dont les États-Unis, le Canada, la Chine et l’Australie, puis leur a appliqué un essai de rigidité diélectrique : une tension élevée entre l’entrée et la sortie, et un refus si le courant qui passe dépasse un seuil. Trois appareils seulement l’ont réussi.</em></p>
+<p>Un chargeur délivre 5 V, une tension que personne ne songe à craindre, et les 397 appareils refusés délivraient bien 5 V. Ce qui leur manquait est la barrière qui sépare ces 5 V du 230 V qui les produit, dans quelques centimètres cubes. Au premier défaut d’isolement, le potentiel du réseau peut passer sur la prise USB, puis sur le câble tenu en main. C’est la colonne « séparation de sécurité » du tableau des domaines de tension : sans elle, un circuit à 5 V n’est pas une TBTS, et sa faible tension ne protège plus de rien.</p>
+<div class="cle">
+<p><strong>La TBTS repose sur deux conditions, une tension limitée et une séparation sûre. En cas de défaut, c’est la seconde qui cède : c’est donc elle qu’il faut vérifier.</strong></p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que mesure l&#39;essai, et ce qu&#39;il faut regarder sur une alimentation de bus</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’essai de rigidité diélectrique ne vérifie pas la tension de sortie : il éprouve la barrière. Le communiqué ne détaille pas les défauts appareil par appareil ; il établit seulement que 397 isolements sur 400 n’ont pas tenu, soit 99,25 %.</p>
+<p>Dans un chargeur, la séparation se lit dans la géométrie : un transformateur à isolation renforcée, et des distances d’isolement, dans l’air et le long des surfaces, qui occupent de la place. Un défaut de cette géométrie ne se voit pas de l’extérieur de l’appareil, et seul un essai le révèle.</p>
+<p>Le bus KNX obéit à la même logique. Sa séparation est portée par l’alimentation, dont la notice doit annoncer une sortie TBTS (SELV dans les notices en anglais), et par la distance d’isolement visible sur chaque module de sortie, entre bornes de bus et bornes de puissance. Un bus raccordé par erreur au 230 V perd sa séparation d’un seul coup, sur toute la ligne et pour tous ceux qui touchent un poussoir.</p></div></details>
+</div><p><strong>En classe.</strong> En DOMA1, après la question l), qui demande deux raisons de ne jamais raccorder un luminaire sur la sortie d’un poussoir bus, poser un chargeur de téléphone sur la table et demander : « Il délivre 5 V. S’il était l’un des 397, que se passerait-il au premier défaut, et qui serait exposé ? » La réponse attendue ramène au bus : ce qui protège l’occupant qui touche un poussoir, en cas de défaut, est la séparation assurée par l’alimentation.</p>
+<h3 id="réarmer-un-relais-dans-une-armoire-à-480-v-new-jersey-1991">Réarmer un relais dans une armoire à 480 V, New Jersey, 1991</h3>
+<p><em>Le 8 avril 1991, dans une usine de bouteilles en plastique du New Jersey, le convoyeur automatique de palettes s’arrête sur une surcharge électrique. Un ouvrier de 50 ans intervient dans l’armoire électrique pour réarmer un relais ; il tombe sur des conducteurs nus sous 480 V et meurt électrocuté. Le rapport FACE 91NJ006 du NIOSH, publié le 23 juillet 1991, recommande en premier lieu des armoires verrouillées, dont l’ouverture met le contenu hors tension, puis la formation des salariés et la signalisation du danger sur les enveloppes.</em></p>
+<p>Le geste relevait de la chaîne d’information : réarmer, c’est acquitter un défaut pour autoriser la reprise. Il s’accomplissait pourtant dans l’enveloppe de la chaîne d’énergie, au contact des parties actives de la puissance. La page établit que le pré-actionneur est le seul endroit où une panne peut se trouver des deux côtés à la fois ; le cas ajoute que c’est aussi le seul endroit où un geste d’information expose à l’énergie. <strong>Un geste se juge au lieu où il s’accomplit, et non à la chaîne dont il relève.</strong></p>
+<p>Un tableau domotique réunit les deux chaînes sur le même rail : bornes de bus en TBTS et bornes de sortie à 230 V, à quelques centimètres les unes des autres. Tant que le plastron est en place, les gestes de la chaîne d’information, bouton de programmation ou commande manuelle d’une sortie, se font sans accès aux parties actives. Dès qu’il faut le déposer pour atteindre un bornier, le geste le plus anodin s’accomplit dans l’enveloppe de l’énergie, et l’intervention relève de la consignation.</p>
+<p><strong>En classe.</strong> En DOMB1, au bloc « consigner », après la question f) sur l’ordre des cinq étapes, lire les faits du rapport et demander : « L’ouvrier ne voulait que réarmer un relais. Pourquoi l’enquête recommande-t-elle en premier une armoire dont l’ouverture coupe tout ce qu’elle contient, plutôt qu’une consigne de prudence ? » La réponse attendue relie le danger au lieu du geste, et non au geste lui-même ; elle reconnaît dans l’armoire verrouillée l’étape « séparer » de la consignation, rendue indépendante de l’attention de l’opérateur.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les ordres de grandeur français, pour situer ces deux cas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Selon l’Observatoire national de la sécurité électrique, 34 personnes sont mortes électrocutées accidentellement en France en 2022 ; ce nombre a été divisé par deux entre 2000 et 2010, et il se maintient entre 30 et 40 par an depuis. Promotelec, dans une publication du 3 juin 2025, compte environ 3 000 admissions aux urgences par an pour une électrisation accidentelle, et indique que la moitié des victimes a moins de 15 ans. L’INRS, dans sa page mise à jour le 20 mai 2022, écrit que moins d’une dizaine de travailleurs meurent électrocutés chaque année.</p>
+<p>Ces sources ne comptent pas exactement la même chose, et leur rapprochement ne donne qu’un ordre de grandeur : la plupart des décès surviennent hors du travail, chez des personnes qui n’ont ni habilitation ni procédure. Le professionnel est protégé par la consignation ; l’occupant ne l’est que par l’installation elle-même. C’est l’intérêt d’une TBTS appliquée à ce que l’occupant touche : sa protection ne dépend pas de son comportement.</p>
+<p>Ces chiffres ne disent pas combien d’accidents une installation en TBTS aurait évités, et il convient de ne pas le leur faire dire en classe.</p></div></details>
+</div><h2 id="les-vingt-nombres">Les vingt nombres</h2>
 <div class="enveloppe-tbl"><table>
 <colgroup>
 <col style="width: 50%" />
@@ -115,7 +135,7 @@
 <tbody>
 <tr>
 <td>Tension d’un bus KNX TP1</td>
-<td><strong>29 V</strong> continu, TBTS</td>
+<td><strong>30 V</strong> continu, TBTS</td>
 </tr>
 <tr>
 <td>Tension minimale de fonctionnement d’un participant</td>
@@ -139,7 +159,7 @@
 </tr>
 <tr>
 <td>Résistance d’une boucle TP1</td>
-<td>0,069 Ω/m</td>
+<td>75 Ω/km spécifiés : 69 Ω/km calculés</td>
 </tr>
 <tr>
 <td>Débit d’un bus KNX TP1</td>
@@ -196,9 +216,9 @@
 </tbody>
 </table></div>
 <h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi 29 V, et pas 24 comme partout ailleurs ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que le bus doit <strong>alimenter et transmettre</strong> sur les mêmes deux fils, et que la transmission consomme de la marge de tension.</p>
-<p>L’alimentation délivre 30 V ; la self qui la suit maintient la tension pendant les brèves chutes provoquées par l’émission d’un bit. Le bus s’établit à 29 V au repos, descend de quelques volts à chaque bit dominant, et doit rester au-dessus de 21 V chez le participant le plus éloigné. Entre 29 et 21, il reste 8 V : c’est exactement le budget de chute de tension calculé plus haut.</p>
-<p>À 24 V, ce budget tomberait à 3 V et une ligne ne dépasserait pas 140 mètres. Le choix de 29 V n’est donc pas une lubie de norme : c’est ce qui rend une ligne de 350 mètres possible.</p></div></details>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi 30 V, et pas 24 comme partout ailleurs ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que le bus doit <strong>alimenter et transmettre</strong> sur les mêmes deux fils, et que la transmission consomme de la marge de tension.</p>
+<p>L’alimentation délivre 30 V ; la self qui la suit maintient la tension pendant les brèves chutes provoquées par l’émission d’un bit. Le bus doit rester au-dessus de 21 V chez le participant le plus éloigné. Entre 30 et 21 V, il reste 9 V : c’est le budget dans lequel doit tenir la chute de tension de ligne, 8,4 V à pleine charge sur 350 m.</p>
+<p>À 24 V, ce budget tomberait à 3 V, et une ligne chargée à 640 mA ne dépasserait pas 125 mètres. Le choix de 30 V répond donc à une nécessité : c’est ce qui rend possible une ligne de 350 mètres.</p></div></details>
 <details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Si le bus alimente les appareils, pourquoi un actionneur a-t-il besoin du 230 V ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce qu’il est des deux côtés de la frontière. Le bus alimente son <strong>électronique de communication</strong>, quelques milliampères, de quoi écouter, décoder et décider. Il n’alimente pas les <strong>contacts de puissance</strong>, qui commutent des ampères sous 230 V.</p>
 <p>C’est vérifiable à l’œil : un module de sortie a deux bornes de bus et des bornes de puissance séparées, avec une distance d’isolement visible entre les deux. Cette distance <em>est</em> la séparation de sécurité qui fait du bus un circuit TBTS.</p>
 <p>Un poussoir bus, lui, n’a que deux fils. C’est ce qui montre le mieux la différence : il n’agit sur rien, il ne fait qu’informer.</p></div></details>
@@ -207,9 +227,17 @@
 <p><strong>L’alimentation est le vrai sujet.</strong> Un participant bus est alimenté par ses deux fils. En Wi-Fi, chaque interrupteur demande une pile ou une alimentation locale, et une installation de cent points devient un parc de cent piles à remplacer. C’est l’argument qui fait basculer les clients.</p>
 <p><strong>La durée de vie décide.</strong> Un bâtiment tertiaire se pilote pendant vingt ans. Un protocole radio grand public change de version tous les trois ans, et l’infrastructure Wi-Fi appartient à l’informatique du client, qui la reconfigure sans prévenir. Le bus filaire ne dépend de personne.</p>
 <p>La bonne réponse n’est donc pas « le Wi-Fi est mauvais » : c’est <strong>« le sans-fil se choisit quand aucun câble ne peut passer »</strong>, ce qui est exactement la règle de choix d’un média, et le sujet de la page Prof 2.</p></div></details>
-</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="ap" href="PROF2-MEDIAS.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Prof 2 — les médias</span></a></div></nav>
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Les sources des cas réels</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><ul>
+<li>Chartered Trading Standards Institute, « Warning over fake chargers and second-hand electrics », 2 décembre 2016, <a href="https://www.tradingstandards.uk/news-policy-campaigns/news-room/2016/warning-over-fake-chargers-and-second-hand-electrics/" class="uri">https://www.tradingstandards.uk/news-policy-campaigns/news-room/2016/warning-over-fake-chargers-and-second-hand-electrics/</a> : les 400 chargeurs, les huit pays d’achat, l’essai de rigidité diélectrique conduit par UL et ses trois réussites.</li>
+<li>NIOSH, programme FACE, rapport 91NJ006, « Factory Worker Electrocuted After Contacting 480 Volts While Attempting to Reset a Relay in an Electrical Cabinet », 23 juillet 1991, <a href="https://stacks.cdc.gov/view/cdc/170126" class="uri">https://stacks.cdc.gov/view/cdc/170126</a> : la date, le lieu, les circonstances et les trois recommandations.</li>
+<li>Observatoire national de la sécurité électrique, page d’accueil, sans date, <a href="https://www.onse.fr/" class="uri">https://www.onse.fr/</a> : les 34 décès par électrocution de 2022 et leur évolution depuis 2000.</li>
+<li>Promotelec, « Sécurité électrique : des chiffres toujours aussi préoccupants », 3 juin 2025, <a href="https://www.promotelec.com/actualite/securite-electrique-des-chiffres-toujours-aussi-preoccupants/" class="uri">https://www.promotelec.com/actualite/securite-electrique-des-chiffres-toujours-aussi-preoccupants/</a> : les 3 000 admissions aux urgences par an et la part des victimes de moins de 15 ans.</li>
+<li>INRS, « Risques électriques. Accidents d’origine électrique », mise à jour du 20 mai 2022, <a href="https://www.inrs.fr/risques/electriques/accidents-origine-electrique.html" class="uri">https://www.inrs.fr/risques/electriques/accidents-origine-electrique.html</a> : moins d’une dizaine de travailleurs électrocutés par an.</li>
+</ul>
+<p>Sources consultées le 13 septembre 2026.</p></div></details>
+</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="COURS10-PROJET-KNX.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Domotique, cours 10 — le projet KNX</span></a><a class="ap" href="PROF2-MEDIAS.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Prof 2 — les médias</span></a></div></nav>
 <p class="pied">Page de formation. Elle contient des démonstrations, des réponses et des corrigés, c'est ce qui la distingue des pages étudiantes. Voir aussi les pages Prof 2 à 5.</p>
 </div>
-<script src="../assets/kit.js?v=13b3bbbd"></script>
-<script src="../assets/site.js?v=13b3bbbd"></script>
-<script src="../assets/vivant.js?v=13b3bbbd"></script>
+<script src="../assets/kit.js?v=2863feac"></script>
+<script src="../assets/site.js?v=2863feac"></script>
+<script src="../assets/vivant.js?v=2863feac"></script>

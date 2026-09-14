@@ -1,0 +1,595 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Domotique, cours 7 — accès, intrusion, vidéo</title>
+<link rel="stylesheet" href="../assets/kit.css?v=2863feac">
+<link rel="stylesheet" href="../assets/site.css?v=2863feac">
+<link rel="stylesheet" href="../assets/calque.css?v=2863feac">
+<link rel="stylesheet" href="../assets/vivant.css?v=2863feac">
+
+<div class="page" data-site="fed-prof" data-page="domotique/COURS7-ACCES-INTRUSION-VIDEO" data-public="prof">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS6-GTB-OBLIGATIONS.html" rel="prev" title="Domotique, cours 6 — la GTB et la loi" aria-label="Domotique, cours 6 — la GTB et la loi">&lsaquo;</a><a class="fleche" href="COURS8-PRODUIRE-STOCKER-SECOURIR.html" rel="next" title="Domotique, cours 8 — produire, stocker, secourir" aria-label="Domotique, cours 8 — produire, stocker, secourir">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/COURS7-ACCES-INTRUSION-VIDEO">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">Formation du professeur · BTS FED option C</p>
+    <h1>Cours détaillé<span>contrôle d'accès, intrusion et vidéoprotection, par des cas réels</span></h1>
+  </div>
+  <p class="accroche">Des badges MIFARE Classic cassés à Nimègue, des centres de données retardés par leur propre contrôle d'accès, quatre minutes entre l'alarme et la fuite au Louvre. Puis 150 000 caméras derrière un compte de support, six traducteurs filmés à leur poste et une norme d'image fixée en 2007, avec ce que chacun oblige à savoir sur l'identification, la porte, la détection, le débit et la durée de conservation.</p>
+  
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B8-2 Contrôle d'accès, alarme intrusion, vidéosurveillance · niveau 3</span><span class="tag n3">D2-2 VDI, aspect logiciel : débit de données, sécurité logicielle · niveau 3</span><span class="tag n3">B10 Alimentations secourues · niveau 3</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="PROF4-SURETE.html">Sûreté contre sécurité, analyse de risques, alimentation secourue</a></b><span class="ou">Prof 4 — sûreté et sécurité</span><span class="car">la page applique ces trois outils à l'accès, à l'intrusion et à la vidéo sans les redéfinir.</span></li><li><b><a href="PROF1-COURANT-FAIBLE.html">Le pré-actionneur et les deux chaînes</a></b><span class="ou">Prof 1 — le courant faible</span><span class="car">une gâche est un actionneur commandé par un relais de l'UTL, et la page raisonne sur ce que fait la porte quand l'énergie manque.</span></li><li><b>Bits, octets et préfixes</b><span class="car">un débit se compte en bits par seconde et un disque en octets ; confondre les deux fausse un stockage d'un facteur huit.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#six-cas-et-ce-qu-ils-ont-en-commun">Six cas, et ce qu’ils ont en commun</a><a href="#le-chiffrement-des-badges-mifare-classic-casse-universite-radboud-de-nimegue-2008">Le chiffrement des badges MIFARE Classic cassé, université Radboud de Nimègue, 2008</a><a href="#des-centres-de-donnees-retardes-par-leur-propre-controle-d-acces-meta-2021">Des centres de données retardés par leur propre contrôle d’accès, Meta, 2021</a><a href="#quatre-minutes-entre-l-alarme-et-la-fuite-musee-du-louvre-2025">Quatre minutes entre l’alarme et la fuite, musée du Louvre, 2025</a><a href="#150-000-cameras-derriere-un-compte-de-support-verkada-2021">150 000 caméras derrière un compte de support, Verkada, 2021</a><a href="#six-traducteurs-filmes-en-continu-a-leur-poste-uniontrad-company-2019">Six traducteurs filmés en continu à leur poste, Uniontrad Company, 2019</a><a href="#une-norme-d-image-pour-les-lieux-ouverts-au-public-ministere-de-l-interieur-2007">Une norme d’image pour les lieux ouverts au public, ministère de l’Intérieur, 2007</a><a href="#la-ou-la-methode-change">Là où la méthode change</a><a href="#le-calcul-retourne">Le calcul retourné</a><a href="#trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#les-questions-qui-destabilisent">Les questions qui déstabilisent</a></div></nav>
+<h2 id="six-cas-et-ce-qu-ils-ont-en-commun">Six cas, et ce qu’ils ont en commun</h2>
+<p>Le contrôle d’accès, l’alarme intrusion et la vidéosurveillance sont trois domaines de B8-2 que le référentiel place au niveau 3 pour l’option C, sous les mêmes rubriques. Ils partagent une architecture : un organe qui identifie ou détecte, une unité qui décide ou enregistre, un organe qui agit ou conserve, et un réseau IP qui relie désormais l’ensemble.</p>
+<p>Cinq des six cas qui suivent sont des incidents, et aucun n’est une panne de matériel : le badge, les détecteurs et les caméras ont fait ce pour quoi ils avaient été conçus. Ce qui a cédé est un maillon que le catalogue ne montre pas : un secret mal protégé, un délai mal compté, un compte trop puissant, une règle d’usage ignorée. Le sixième cas est un texte, la norme d’image imposée depuis 2007 aux systèmes qui filment le public.</p>
+<div class="cle">
+<p>Un système de sûreté se juge à son maillon le plus faible, et ce maillon est rarement l’appareil. B8-2 demande le principe, les grandeurs, les signaux, le choix et le paramétrage : c’est dans les deux dernières rubriques que se sont joués les cinq incidents de cette page.</p>
+</div>
+<p>La page Prof 4 a posé la distinction entre sûreté et sécurité, l’analyse de risques et le calcul d’une alimentation secourue. Ils ne sont pas repris ici, seulement appliqués.</p>
+<figure>
+<img src="img/COURS7-ACCES-INTRUSION-VIDEO/c7-chaine-acces.png" alt="La chaîne d’un contrôle d’accès : chaque numéro renvoie à un cas de la page, et le dernier à la section « Là où la méthode change »." />
+<figcaption aria-hidden="true">La chaîne d’un contrôle d’accès : chaque numéro renvoie à un cas de la page, et le dernier à la section « Là où la méthode change ».</figcaption>
+</figure>
+<h2 id="le-chiffrement-des-badges-mifare-classic-casse-universite-radboud-de-nimegue-2008">Le chiffrement des badges MIFARE Classic cassé, université Radboud de Nimègue, 2008</h2>
+<p><em>En mars 2008, le groupe de sécurité numérique de l’université Radboud de Nimègue annonce avoir reconstitué CRYPTO1, l’algorithme de chiffrement propriétaire des cartes sans contact MIFARE Classic de NXP. Selon son communiqué du 12 mars 2008, environ un milliard de ces cartes ont été vendues dans le monde ; elles portent la carte de transport néerlandaise OV-chipkaart et servent aussi de badges d’entreprise pour l’accès aux bâtiments. L’équipe prévient les autorités et le fabricant avant de publier. NXP demande en justice l’interdiction de l’article ; le juge rejette sa demande le 18 juillet 2008, et l’article paraît à la conférence ESORICS la même année.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Le fonctionnement de CRYPTO1, tenu secret par le fabricant, est reconstitué, et une faiblesse du protocole d’authentification entre carte et lecteur est mise au jour.</li>
+<li>Quelques données recueillies auprès d’un lecteur authentique suffisent à calculer hors ligne la clé secrète, <strong>en moins d’une seconde</strong> selon l’université.</li>
+<li>Une seule trace d’échange interceptée entre une carte et un lecteur livre toutes les clés.</li>
+<li>Avec la clé, la carte se copie : l’université illustre le risque par le badge d’un employé, copiable en frôlant son porteur avec un lecteur portatif.</li>
+</ol>
+</div>
+<p>La longueur de la clé n’est pas la cause principale. Une clé de 48 bits offre 2<sup>48</sup>, soit 2,8 × 10<sup>14</sup> valeurs, dont l’essai exhaustif demandait neuf heures sur du matériel avancé selon le rapport TNO cité par l’université. L’attaque de Nimègue exploite la structure de l’algorithme et ramène le calcul à moins d’une seconde. <strong>Un chiffrement tenu secret n’est pas un chiffrement sûr</strong> : l’université invoque le principe de Kerckhoffs, selon lequel un système doit rester sûr quand son fonctionnement est public.</p>
+<p>En août 2024, Philippe Teuwen (Quarkslab) publie l’analyse de la puce FM11RF08S, une variante « compatible MIFARE Classic » de Shanghai Fudan Microelectronics : une porte dérobée matérielle livre toutes les clés d’une carte en quelques minutes. Il indique avoir trouvé ces cartes dans de nombreux hôtels aux États-Unis, en Europe et en Inde, et conclut que le protocole est cassé par nature, quelle que soit la carte.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Identifier n&#39;est pas authentifier : trois niveaux de badge</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Identifier</strong>, c’est annoncer une identité : le badge présente un numéro. <strong>Authentifier</strong>, c’est prouver qu’on la détient : le badge répond à un défi que seul le détenteur de la clé sait résoudre.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Niveau</th>
+<th>Ce que le lecteur exploite</th>
+<th>Ce qu’il faut pour copier le badge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Numéro seul</td>
+<td>le numéro de série de la puce, ou un numéro en clair</td>
+<td>le lire une fois, puis l’écrire sur une carte au numéro réinscriptible</td>
+</tr>
+<tr>
+<td>MIFARE Classic</td>
+<td>un secteur protégé par une clé de 48 bits et CRYPTO1</td>
+<td>retrouver la clé, ce que l’attaque de 2008 fait en moins d’une seconde</td>
+</tr>
+<tr>
+<td>Cryptographie normalisée</td>
+<td>un échange authentifié par un algorithme public, AES par exemple</td>
+<td>aucune attaque pratique sur l’algorithme : le risque passe à la gestion des clés</td>
+</tr>
+</tbody>
+</table></div>
+<p>Un lecteur qui n’exploite d’un badge chiffré que son numéro de série redescend au premier niveau, quelle que soit la carte achetée. Pour la migration, la page produit DESFire de NXP (source commerciale) annonce des moteurs DES, triple DES et AES ; une clé AES de 128 bits offre 2<sup>80</sup>, soit 1,2 × 10<sup>24</sup> fois plus de valeurs qu’une clé de 48 bits.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">La liaison lecteur-UTL, le maillon qui suit le badge</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le format Wiegand, liaison historique entre lecteur et UTL, transmet l’identifiant par impulsions sur deux fils, D0 et D1, sous 5 V. Sa trame de 26 bits compte deux bits de parité, 8 bits de code de site (256 valeurs) et 16 bits de numéro de carte (65 536 valeurs). <strong>Rien n’y est chiffré</strong> : qui se branche sur les deux fils, derrière un lecteur posé côté public, lit le numéro et peut le rejouer. Le chiffrement du badge ne protège rien au-delà du lecteur si la liaison est en clair.</p>
+<p>D’où l’architecture qui laisse le lecteur, côté attaquable, sans clé ni décision : il relaie un échange chiffré jusqu’à l’UTL, en zone protégée. Le guide de l’ANSSI et du CNPP <em>Sécurisation des systèmes de contrôle d’accès physique et vidéoprotection</em> (4 mars 2020, version 2.2 du 5 juin 2025) traite cette architecture et fournit en annexe des exigences qu’un acheteur peut imposer dans un appel d’offres.</p></div></details>
+</div><div class="piege">
+<p>Un parc MIFARE Classic ne se corrige pas par une mise à jour : la faiblesse est dans la carte et dans le protocole. Il se remplace, ou il se compense : code personnel sur les portes sensibles, lecteur qui refuse le simple numéro de série, journal qui signale un même badge à deux endroits incompatibles.</p>
+</div>
+<p><strong>En classe.</strong> En DOMA17, ouvrir par la question « votre badge de cantine est-il identifié ou authentifié ? », qui sépare ce que la carte présente de ce qu’elle prouve. En DOMB19, faire relever ce que l’UTL de l’atelier exploite réellement, numéro de série ou secteur chiffré.</p>
+<h2 id="des-centres-de-donnees-retardes-par-leur-propre-controle-d-acces-meta-2021">Des centres de données retardés par leur propre contrôle d’accès, Meta, 2021</h2>
+<p><em>Le 4 octobre 2021, une commande lancée pendant une maintenance du réseau dorsal de Meta, destinée à en mesurer la capacité, coupe toutes les liaisons entre ses centres de données ; l’outil d’audit censé la bloquer ne l’arrête pas, à cause d’une erreur. Les serveurs de noms, conçus pour se retirer quand ils ne joignent plus les centres, retirent leurs annonces de routage, et les services deviennent injoignables.</em></p>
+<p><em>Selon le compte rendu signé le lendemain par Santosh Janardhan, les ingénieurs ne peuvent plus atteindre les centres par les moyens habituels, qui passent par ce réseau, et doivent s’y rendre. Or ces bâtiments sont conçus pour être difficiles d’accès, et l’activation des protocoles d’accès sécurisés prend un temps supplémentaire.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Une commande de maintenance coupe toutes les liaisons du réseau dorsal.</li>
+<li>Les serveurs de noms se retirent : les services sont injoignables, et l’accès distant aux centres de données, qui passe par le même réseau, est perdu.</li>
+<li>Des ingénieurs sont envoyés sur place ; les faire entrer demande d’activer des protocoles d’accès sécurisés.</li>
+<li>Le compte rendu assume l’arbitrage entre une sécurité quotidienne renforcée et une reprise plus lente.</li>
+</ol>
+</div>
+<p>Le cas ne parle pas d’une porte défaillante : il montre que l’accès physique devient <strong>le dernier chemin</strong> quand le réseau tombe, et l’auteur oppose « greatly increased day-to-day security vs. a slower recovery ». Reste à savoir où se prend la décision d’ouvrir. L’UTL tient les droits et les plages horaires, reçoit l’identifiant, décide et commande le relais ; le serveur gère la base et centralise les journaux. <strong>Une UTL qui décide seule</strong> continue d’ouvrir aux personnes autorisées quand le réseau tombe et transmet les passages à son retour ; une UTL qui interroge le serveur à chaque badge transforme toute panne de réseau en panne de porte.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Sécurité positive, sécurité négative : ce que fait la porte quand l&#39;énergie manque</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Organe</th>
+<th>Sous tension</th>
+<th>Sans énergie</th>
+<th>Nom usuel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gâche à émission de courant</td>
+<td>libère le pêne pendant l’ouverture</td>
+<td>reste fermée</td>
+<td>sécurité négative</td>
+</tr>
+<tr>
+<td>Gâche à rupture de courant</td>
+<td>retient le pêne</td>
+<td>libère la porte</td>
+<td>sécurité positive</td>
+</tr>
+<tr>
+<td>Ventouse électromagnétique</td>
+<td>retient le vantail</td>
+<td>libère la porte</td>
+<td>sécurité positive, par construction</td>
+</tr>
+</tbody>
+</table></div>
+<p>Le mot « sécurité » y est pris au sens des personnes : la sécurité positive laisse sortir quand tout s’éteint. <strong>Le critère décisif est la sortie.</strong> Une gâche montée sur une serrure dont la béquille intérieure rétracte le pêne laisse toujours sortir : elle ne verrouille que l’entrée. Une ventouse retient le vantail dans les deux sens : c’est elle que visent les conditions posées aux issues de secours. Elle consomme en outre en permanence, quand la gâche à émission ne consomme que pendant l’ouverture : c’est l’exercice 2.</p></div></details>
+</div><div class="piege">
+<p>Un organe à sécurité négative commandé par une UTL dépendante du serveur additionne deux fragilités : réseau ou courant perdu, plus personne n’entre au badge, et la clé mécanique devient le seul accès. Qui la détient, et comment son usage est tracé, doit avoir été décidé avant la panne.</p>
+</div>
+<p><strong>En classe.</strong> En DOMB19, couper le réseau de l’UTL, puis son alimentation, et relever pour chaque porte ce qui se passe au badge et à la poignée. En DOMA16, demander quelles portes doivent s’ouvrir quand tout s’éteint : la réponse vient de l’analyse de risques, la technique l’applique.</p>
+<h2 id="quatre-minutes-entre-l-alarme-et-la-fuite-musee-du-louvre-2025">Quatre minutes entre l’alarme et la fuite, musée du Louvre, 2025</h2>
+<p><em>Le dimanche 19 octobre 2025 à 9 h 30, selon le récit fait le 22 octobre devant la commission de la culture du Sénat par la présidente-directrice du musée, Laurence des Cars, un camion-nacelle se gare quai François-Mitterrand. Des individus en gilets de chantier, simulant une opération de maintenance, se hissent jusqu’au balcon de la galerie d’Apollon et forcent la porte-fenêtre ; le détecteur de la porte se déclenche aussitôt, puis les alarmes de deux vitrines. Moins de quatre minutes après la première alarme, ils repartent avec neuf pièces du département des objets d’art ; la couronne de l’impératrice Eugénie, abandonnée dans la fuite, est retrouvée endommagée. Personne n’est blessé.</em></p>
+<figure>
+<img src="img/COURS7-ACCES-INTRUSION-VIDEO/c7-louvre-quatre-minutes.png" alt="La chronologie exposée devant la commission de la culture du Sénat. Chaque maillon a fonctionné dans l’ordre ; aucun obstacle n’a retenu les voleurs plus longtemps que l’intervention ne demandait." />
+<figcaption aria-hidden="true">La chronologie exposée devant la commission de la culture du Sénat. Chaque maillon a fonctionné dans l’ordre ; aucun obstacle n’a retenu les voleurs plus longtemps que l’intervention ne demandait.</figcaption>
+</figure>
+<div class="etapes">
+<ol type="1">
+<li><strong>9 h 34</strong> : effraction ; le détecteur de la porte transmet aussitôt au poste de sécurité.</li>
+<li><strong>9 h 35</strong> : un agent en salle alerte le PC par radio ; la salle est évacuée.</li>
+<li><strong>9 h 35 min 33 s</strong> : le chef d’exploitation appelle le commissariat du 1<sup>er</sup> arrondissement.</li>
+<li><strong>9 h 36</strong> : le bouton de télésécurité police, dit dispositif Ramsès, est activé depuis le PC central.</li>
+<li><strong>9 h 37</strong> : ordre de fermeture des portes publiques et des portes du personnel.</li>
+<li><strong>9 h 38</strong> : fuite par la même fenêtre.</li>
+</ol>
+</div>
+<p>Chaque maillon a fonctionné, dans l’ordre et vite : détection immédiate, confirmation humaine une minute plus tard, appel des forces de l’ordre entre une demi-minute et une minute et demie après l’effraction. La chaîne n’a pas interrompu le vol pour autant, parce qu’une chaîne de détection ne retient personne. <strong>Elle ne sert que si un obstacle retient l’intrus plus longtemps que l’alerte et l’intervention n’en demandent.</strong></p>
+<div class="formule">
+<p><strong>t<sub>r</sub> &gt; t<sub>d</sub> + t<sub>a</sub> + t<sub>i</sub></strong></p>
+<ul>
+<li><strong>t<sub>r</sub></strong><span>: temps de retard, durée pendant laquelle les obstacles retiennent l’intrus après sa détection</span></li>
+<li><strong>t<sub>d</sub></strong><span>: temps de détection, quasi nul pour un contact d’ouverture</span></li>
+<li><strong>t<sub>a</sub></strong><span>: temps d’alerte : transmission, levée de doute, appel</span></li>
+<li><strong>t<sub>i</sub></strong><span>: temps d’intervention, jusqu’à l’arrivée de ceux qui peuvent interrompre</span></li>
+</ul>
+<blockquote>
+<p>Au Louvre, t<sub>d</sub> était nul et t<sub>a</sub> inférieur à une minute et demie ; entre l’appel et la fuite, il restait moins de trois minutes et demie à l’intervention.</p>
+</blockquote>
+</div>
+<p>Au sens de la page Prof 4, la protection périmétrique a joué son rôle : la détection a eu lieu à l’enveloppe. Ce qui a manqué relève de la mécanique et de l’organisation : un vitrage et des vitrines qui retiennent, une intervention qui arrive avant la fin. La Cour des comptes relève, le 6 novembre 2025, des retards considérables dans la mise à niveau des infrastructures de sûreté et de sécurité : de 2018 à 2024, 87 M€ d’entretien, de mise à niveau et de restauration, deux fois moins que les 169 M€ de rénovations muséographiques et d’acquisitions. La présidente a présenté un schéma directeur de sûreté de 80 M€, dont les travaux débutent en 2026.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La levée de doute : ce que dit la loi, et ce qu&#39;elle coûte en temps</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’article L. 613-6 du code de la sécurité intérieure qualifie d’injustifié l’appel de la police ou de la gendarmerie par un opérateur de surveillance à distance qui entraîne une intervention indue, faute d’une <strong>levée de doute</strong> préalable : des vérifications « de la matérialité et de la concordance des indices » laissant présumer un crime ou un délit flagrant. La sanction peut atteindre <strong>450 € par appel injustifié</strong>. La levée de doute, par la vidéo, l’écoute ou un agent, allonge t<sub>a</sub> ; au Louvre, elle a été humaine et immédiate.</p>
+<p>Côté matériel, la marque NF&amp;A2P (application NF324, AFNOR Certification) certifie notamment la résistance à la fraude des équipements de détection d’intrusion, en types 1, 2 ou 3. Les grades de sécurité de la série EN 50131 se lisent dans la norme, payante, qui n’a pas été consultée pour cette page.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">L&#39;autonomie d&#39;une centrale : la veille, puis l&#39;alarme</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La formule de la page Prof 4 se dimensionne sur la veille ; le calcul complet d’une centrale le justifie : <strong>C = k × (I<sub>v</sub> × t<sub>v</sub> + I<sub>al</sub> × t<sub>al</sub>)</strong>.</p>
+<p>Données d’exemple : centrale 0,15 A, dix détecteurs à 0,015 A, clavier 0,05 A, transmetteur 0,08 A, soit I<sub>v</sub> = 0,43 A ; veille exigée de 36 h ; alarme de 1,1 A pendant un quart d’heure ; k = 1,25. C = 1,25 × (0,43 × 36 + 1,1 × 0,25) = 1,25 × (15,48 + 0,275) = <strong>19,7 Ah</strong>.</p>
+<p>L’alarme ne pèse que 1,7 % du besoin ; dimensionner sur le courant d’alarme pendant 36 h donnerait 49,5 Ah, deux fois et demie trop. La durée exigée se lit dans le cahier des charges : les 36 h sont une donnée d’exemple.</p></div></details>
+</div><p><strong>En classe.</strong> En DOMA16 puis en DOMA18, faire construire la même chronologie pour l’atelier : détection, confirmation, appel, arrivée, avec leurs durées ; puis demander combien de secondes la porte retient un intrus décidé. L’écart conclut l’analyse de risques, et le DS É3 peut l’évaluer. En DOMB21, mesurer le délai entre l’ouverture d’un contact et le message du transmetteur.</p>
+<h2 id="150-000-cameras-derriere-un-compte-de-support-verkada-2021">150 000 caméras derrière un compte de support, Verkada, 2021</h2>
+<p><em>Le 30 août 2024, la Federal Trade Commission annonce un accord avec Verkada, fournisseur de caméras administrées depuis son nuage. Selon la plainte, l’entreprise a subi au moins deux intrusions entre décembre 2020 et mars 2021 ; lors de celle de mars 2021, un pirate a pu accéder à plus de 150 000 caméras de clients en direct, dont certaines filmaient des hôpitaux psychiatriques et des cliniques de santé des femmes. L’accord impose un programme de sécurité de l’information, des audits, et une pénalité de 2,95 millions de dollars qui sanctionne des manquements à la loi CAN-SPAM sur les courriels commerciaux.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Un serveur du support client, mal configuré, est exposé sur Internet ; les attaquants y trouvent les identifiants d’un administrateur du support.</li>
+<li>Ils ouvrent l’interface web du support, qui permet d’emprunter la session d’un client.</li>
+<li>Ils consultent la vidéo en direct, ouvrent 87 archives et lancent des recherches d’images de personnes dans cinq organisations.</li>
+<li>Ils envoient des commandes système à 25 caméras et atteignent des identifiants Wi-Fi chez huit clients et, chez huit autres, des données du contrôle d’accès, dont des identifiants de badges.</li>
+</ol>
+</div>
+<p>Une caméra IP est un ordinateur : un capteur, un encodeur, un serveur web d’administration, une pile réseau, reliés à un enregistreur, un logiciel de gestion ou un nuage, chacun paramétré par des comptes. <strong>Le périmètre d’une fuite est celui du compte compromis, pas celui des images vues</strong> : entre 150 000 caméras accessibles selon la FTC et 4 530 caméras, chez 97 clients, selon le rapport d’incident de Verkada, soit 3 %, l’écart mesure la puissance d’un compte de support que les attaquants n’ont exploitée qu’en partie.</p>
+<p>La plainte reproche à Verkada de ne pas avoir exigé de mots de passe uniques et complexes, chiffré correctement les données ni sécurisé son réseau ; ces manquements relèvent de l’injonction et des audits, la pénalité visant les courriels. Le cours 2 traite des caméras enrôlées dans des réseaux de machines piratées.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les trois chemins d&#39;administration d&#39;une caméra, et comment chacun se ferme</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Chemin</th>
+<th>Qui l’emprunte</th>
+<th>Ce qui le ferme</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>local, depuis le réseau du bâtiment</td>
+<td>l’installateur, l’exploitant</td>
+<td>un réseau vidéo séparé du réseau bureautique, des comptes nominatifs, les mots de passe d’usine changés à la mise en service</td>
+</tr>
+<tr>
+<td>distant, par l’Internet du client</td>
+<td>l’exploitant d’astreinte, le mainteneur</td>
+<td>un réseau privé virtuel plutôt qu’une redirection de port, une authentification à deux facteurs, un journal des connexions</td>
+</tr>
+<tr>
+<td>par le nuage du fabricant</td>
+<td>le fabricant et son support</td>
+<td>un accès support ouvert par le client, limité dans le temps et journalisé, et la lecture du contrat sur ce point</td>
+</tr>
+</tbody>
+</table></div>
+<p>Chez Verkada, le troisième chemin passait par une interface capable d’emprunter la session d’un client, ouverte par un seul jeu d’identifiants d’administrateur. Les deux premiers se paramètrent à la mise en service ; la séparation des réseaux vue en DOMA6 limite ce qu’une caméra compromise peut atteindre.</p></div></details>
+</div><div class="piege">
+<p>Une caméra joignable depuis Internet par une redirection de port est un serveur web exposé, souvent avec le mot de passe de sa mise en service. <strong>Aucune caméra ne doit être joignable directement depuis Internet</strong> ; l’accès distant passe par un point d’entrée unique, authentifié et journalisé.</p>
+</div>
+<p><strong>En classe.</strong> En DOMA19, poser sur un devis réel la question « qui, en dehors du client, peut voir les images ? », dont la réponse se lit dans le contrat de service. En DOMB22, faire l’inventaire des comptes de l’enregistreur de l’atelier et changer le mot de passe d’usine s’il est encore en place.</p>
+<h2 id="six-traducteurs-filmes-en-continu-a-leur-poste-uniontrad-company-2019">Six traducteurs filmés en continu à leur poste, Uniontrad Company, 2019</h2>
+<p><em>Par une délibération du 13 juin 2019 (SAN-2019-006), la formation restreinte de la CNIL inflige 20 000 € d’amende à une société parisienne de traduction de neuf salariés, que la presse identifie comme Uniontrad Company ; des salariés s’en plaignaient depuis 2013. Aux contrôles du 16 février et du 10 octobre 2018, la CNIL constate qu’une caméra du bureau des traducteurs filme en continu six postes de travail sans information des salariés, que les postes s’ouvrent sans mot de passe et que la messagerie n’a qu’un mot de passe commun. La mise en demeure du 26 juillet 2018, qui demandait notamment de déplacer la caméra et d’instaurer des mots de passe individuels, est restée sans effet.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Minimisation : filmer six postes en continu excède ce que la finalité justifie.</li>
+<li>Information : les salariés ne sont informés ni par un panneau ni individuellement.</li>
+<li>Sécurité : postes sans mot de passe, messagerie à mot de passe commun.</li>
+</ol>
+</div>
+<p>Deux décisions plus récentes appliquent la même règle. Le 19 décembre 2024 (SAN-2024-021), la CNIL sanctionne de 40 000 € une petite entreprise immobilière dont deux caméras captaient en continu l’image et le son des salariés, dans des locaux de travail et de pause, visibles en direct par les dirigeants sur une application. Le 27 décembre 2023 (SAN-2023-021), elle inflige 32 M€ à Amazon France Logistique, entre autres pour une vidéosurveillance mal signalée et mal sécurisée sur deux sites ; le Conseil d’État ramène l’amende à 15 M€ le 23 décembre 2025 (n° 492830), mais confirme les griefs qui portent sur la vidéosurveillance.</p>
+<p><strong>Chaque règle rappelée par la CNIL se traduit en un réglage que l’installateur fait ou ne fait pas</strong> : pour leur partie vidéo, les trois décisions portent sur l’orientation, le son, les comptes et l’information. Les bureaux d’Uniontrad n’étant pas ouverts au public, aucune autorisation préfectorale n’y était requise ; un lieu ouvert au public relève en plus du code de la sécurité intérieure, objet du cas suivant.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Sept règles, sept paramètres</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Règle rappelée par la CNIL</th>
+<th>Le réglage ou le geste qui la met en œuvre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ne pas filmer les salariés à leur poste, sauf circonstances particulières, comme la manipulation d’argent</td>
+<td>orientation de la caméra et <strong>masques de confidentialité</strong> sur les postes</td>
+</tr>
+<tr>
+<td>ne filmer ni les zones de pause ni les toilettes</td>
+<td>implantation vérifiée sur l’image, pas seulement sur le plan</td>
+</tr>
+<tr>
+<td>conserver quelques jours, un mois au plus en principe</td>
+<td><strong>durée d’effacement automatique</strong> réglée dans l’enregistreur</td>
+</tr>
+<tr>
+<td>réserver l’accès aux personnes habilitées</td>
+<td>comptes nominatifs, droits par caméra, journal des consultations</td>
+</tr>
+<tr>
+<td>ne pas enregistrer le son, sauf cas très particuliers</td>
+<td>micro désactivé dans la configuration de la caméra</td>
+</tr>
+<tr>
+<td>informer par un panneau et individuellement</td>
+<td>panneau posé à la mise en service ; information individuelle par l’employeur (code du travail, art. L. 1222-4)</td>
+</tr>
+<tr>
+<td>consulter les représentants du personnel</td>
+<td>avant l’installation (code du travail, art. L. 2312-38) : une échéance à inscrire au planning du chantier</td>
+</tr>
+</tbody>
+</table></div></div></details>
+</div><div class="piege">
+<p>La durée de conservation se règle dans l’enregistreur ; elle ne résulte pas de la taille du disque. Un enregistreur qui écrase « quand le disque est plein » conserve une durée qui varie avec le débit, donc avec l’activité, et qui dépasse facilement le mois sur un site calme enregistré sur détection de mouvement.</p>
+</div>
+<p><strong>En classe.</strong> En DOMA19, faire juger l’image d’une caméra de l’atelier au regard des sept règles avant de parler de résolution. En DOMB22, faire régler une durée d’effacement de sept jours et un masque, puis vérifier sur un enregistrement relu que le masque s’applique à l’image enregistrée.</p>
+<h2 id="une-norme-d-image-pour-les-lieux-ouverts-au-public-ministere-de-l-interieur-2007">Une norme d’image pour les lieux ouverts au public, ministère de l’Intérieur, 2007</h2>
+<p><em>L’arrêté du 3 août 2007 portant définition des normes techniques des systèmes de vidéosurveillance (NOR IOCD0762353A), en vigueur dans sa version du 16 mars 2011, fixe ce que doit enregistrer un système qui filme un lieu ouvert au public. En plan étroit, il exige au moins 704 × 576 pixels, le format 4CIF, ou des vignettes de visage d’au moins 90 × 60 pixels, et douze images par seconde si les mouvements observés sont rapides ; ailleurs, 352 × 288 pixels, le format CIF, et six images par seconde. Il impose aussi l’horodatage de chaque séquence et un export sur un support non réinscriptible.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Vérifier que le lieu filmé est ouvert au public ; sinon, le régime est celui du cas précédent.</li>
+<li>Obtenir l’autorisation du préfet, ou du préfet de police à Paris, après avis de la commission départementale de vidéoprotection (CSI, art. L. 252-1) ; elle vaut cinq ans, renouvelable, et suppose le respect des normes techniques fixées par arrêté (art. L. 252-4).</li>
+<li>Régler la conservation : hors enquête judiciaire, les enregistrements sont détruits dans le délai fixé par l’autorisation, qui <strong>ne peut excéder un mois</strong> (art. L. 252-5).</li>
+<li>Informer le public par une signalétique et ne pas visualiser l’intérieur des immeubles d’habitation ni, de façon spécifique, leurs entrées (art. L. 251-3).</li>
+</ol>
+</div>
+<p><strong>La résolution d’une caméra ne dit pas ce qu’elle permet de reconnaître</strong> : ce qui compte est le nombre de pixels qui tombent sur l’objet, donc la largeur du champ au plan de l’objet. La vignette de visage de l’arrêté se traduit en densité de pixels, et la densité en un couple résolution et objectif.</p>
+<div class="formule">
+<p><strong>p = N<sub>h</sub> / W avec W = 2 · d · tan(α / 2)</strong></p>
+<ul>
+<li><strong>p</strong><span>: densité de pixels au plan observé, en pixels par mètre</span></li>
+<li><strong>N<sub>h</sub></strong><span>: nombre de pixels de l’image en largeur</span></li>
+<li><strong>W</strong><span>: largeur du champ au plan observé, en mètres</span></li>
+<li><strong>d</strong><span>: distance de la caméra à ce plan, en mètres ; <strong>α</strong> : angle de champ horizontal de l’objectif</span></li>
+</ul>
+<blockquote>
+<p>Lire la vignette de 90 × 60 pixels comme 60 pixels sur la largeur d’un visage d’environ 15 cm donne p = 400 pixels par mètre. Cette lecture est une hypothèse de calcul : l’arrêté ne fixe pas la largeur du visage.</p>
+</blockquote>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que 400 pixels par mètre imposent au choix de la caméra</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le champ maximal vaut W = N<sub>h</sub> / 400, et la distance maximale d = W / (2 tan(α / 2)), avec tan 45° = 1 pour un objectif de 90° et 2 tan 15° = 0,536 pour un objectif de 30°.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Image</th>
+<th>Champ maximal</th>
+<th>Distance maximale à 90°</th>
+<th>Distance maximale à 30°</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4CIF, 704 × 576</td>
+<td>1,76 m</td>
+<td>0,88 m</td>
+<td>3,28 m</td>
+</tr>
+<tr>
+<td>1080p, 1 920 × 1 080</td>
+<td>4,80 m</td>
+<td>2,40 m</td>
+<td>8,96 m</td>
+</tr>
+<tr>
+<td>4 Mpx, 2 688 × 1 520</td>
+<td>6,72 m</td>
+<td>3,36 m</td>
+<td>12,54 m</td>
+</tr>
+<tr>
+<td>4K, 3 840 × 2 160</td>
+<td>9,60 m</td>
+<td>4,80 m</td>
+<td>17,91 m</td>
+</tr>
+</tbody>
+</table></div>
+<p>La norme de 2007 est dépassée en nombre de pixels par toute caméra récente : une 1080p en compte 5,1 fois plus que le 4CIF, une 4K 20,5 fois plus. Elle reste exigeante sur la géométrie : derrière un grand-angle de 90°, une 1080p n’identifie un visage qu’à moins de 2,40 m. <strong>Une caméra de porte se choisit par son angle de champ autant que par sa résolution.</strong></p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Du nombre de pixels au débit, et du débit au disque</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le débit d’une caméra dépend de la scène, du codec et de la qualité ; il se lit dans l’interface de la caméra ou l’outil du fabricant, jamais dans un tableau générique. Deux relations suffisent à juger un devis. <strong>Au premier ordre, à scène et qualité égales, le débit suit le nombre de pixels par seconde</strong> : la 4K quadruple les pixels de la 1080p, douze images par seconde doublent six. <strong>Le volume se déduit du débit sans approximation</strong>, V = D × t / 8 : 1 Mbit/s produit 10<sup>6</sup> × 86 400 / 8 octets, soit <strong>10,8 Go par jour</strong> et 324 Go en trente jours.</p></div></details>
+</div><p><strong>En classe.</strong> En DOMA19, demander où poser, sur le plan d’entrée d’un ERP, une caméra qui identifie un visage au sens de l’arrêté de 2007 : les étudiants choisissent une résolution, puis constatent que l’angle décide. En DOMB22, faire mesurer le champ à 3 m et calculer la densité obtenue.</p>
+<h2 id="la-ou-la-methode-change">Là où la méthode change</h2>
+<p>Tout ce qui précède raisonne en sûreté : refuser l’entrée, retarder, garder fermé quand l’énergie manque si l’analyse de risques le demande. Sur une porte placée sur un chemin d’évacuation, ce raisonnement cesse de valoir : la sécurité des personnes prime sur la sûreté des biens, et le règlement le traduit sans ambiguïté.</p>
+<p>Le règlement de sécurité contre l’incendie des établissements recevant du public (arrêté du 25 juin 1980) n’admet le verrouillage électromagnétique d’une issue de secours qu’à des conditions que l’arrêté du 2 février 1993 a précisées : l’accord de la commission de sécurité, un dispositif de commande manuelle près de la porte, un boîtier à bris de glace par exemple, et un déverrouillage automatique dès le déclenchement du processus d’alarme, dans les conditions de l’article MS 60. Une temporisation n’y est admise que bornée : 8 secondes au plus, ou 3 minutes lorsque l’établissement dispose d’un service de sécurité, dans la rédaction de 1993.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Porte d’accès ordinaire</th>
+<th>Issue de secours verrouillée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Organe courant</td>
+<td>gâche électrique, la sortie restant libre par la béquille</td>
+<td>ventouse, qui verrouille aussi la sortie</td>
+</tr>
+<tr>
+<td>Sans énergie</td>
+<td>l’état se choisit par l’analyse de risques</td>
+<td>la porte se libère</td>
+</tr>
+<tr>
+<td>En cas d’incendie</td>
+<td>l’UTL décide</td>
+<td>le SSI déverrouille, quoi que décide l’UTL</td>
+</tr>
+<tr>
+<td>Rôle de la sûreté</td>
+<td>empêcher et retarder</td>
+<td>détecter et constater</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Sur une issue de secours, la sûreté cesse d’empêcher ; elle détecte.</strong> Un contact d’ouverture relié à la centrale intrusion, un avertisseur local, une caméra et le journal de l’UTL remplacent le verrou qu’on n’a pas le droit de garder fermé. Le cas du Louvre prend ici son sens inverse : on ne retarde personne sur une issue de secours, donc le retard se place ailleurs, sur les vitrines, les réserves, les coffres.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce qui doit se passer quand on actionne le boîtier</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le boîtier de commande manuelle agit sur l’alimentation de la ventouse, pas sur un programme : il doit libérer la porte même si l’UTL est en panne. C’est la sécurité positive appliquée au câblage ; elle se vérifie à la réception, UTL débranchée, et l’ouverture est ensuite journalisée par l’UTL et signalée par la centrale intrusion. La question à poser aux étudiants : « si l’UTL brûle en premier, la porte s’ouvre-t-elle ? » Un schéma qui n’y répond pas en dix secondes est à refaire.</p></div></details>
+</div><div class="piege">
+<p><strong>Le critère est la sortie, pas l’entrée.</strong> Une gâche électrique sur une serrure dont la béquille intérieure rétracte le pêne laisse toujours sortir : son état sans énergie est une affaire de sûreté. Une ventouse retient le vantail dans les deux sens : c’est elle que visent les conditions du règlement, et elle ne se pose jamais sans commande manuelle ni déverrouillage par le SSI.</p>
+</div>
+<h2 id="le-calcul-retourne">Le calcul retourné</h2>
+<p>La séance vérifie qu’un disque tient la durée de conservation. Le bureau d’études part de l’autre bout : l’enregistreur est choisi, la durée est fixée par l’analyse et plafonnée par la loi, le nombre de caméras découle du plan. <strong>Ce qui reste libre est le débit de chaque caméra</strong>, qui décide ensuite de la résolution, de la cadence et du mode d’enregistrement.</p>
+<div class="formule">
+<p><strong>D<sub>max</sub> = 8 · C<sub>u</sub> / (N · t · r)</strong></p>
+<ul>
+<li><strong>D<sub>max</sub></strong><span>: débit moyen maximal par caméra, en bits par seconde</span></li>
+<li><strong>C<sub>u</sub></strong><span>: capacité utile après redondance et réserve, en octets ; le facteur 8 convertit les octets en bits</span></li>
+<li><strong>N</strong><span>: nombre de caméras ; <strong>t</strong> : durée de conservation, en secondes</span></li>
+<li><strong>r</strong><span>: fraction du temps enregistrée, 1 en continu, moins sur détection de mouvement</span></li>
+</ul>
+<blockquote>
+<p>Un disque de 12 To s’affiche 10,9 Tio dans un système d’exploitation : les fabricants comptent en puissances de 10, les logiciels souvent en puissances de 2.</p>
+</blockquote>
+</div>
+<p>Exemple : quatre disques de 4 To en RAID 5 offrent 3 × 4 = 12 To utiles ; avec 10 % de réserve, C<sub>u</sub> = 10,8 To, pour seize caméras.</p>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Conservation</th>
+<th>En continu, r = 1</th>
+<th>Sur mouvement, r = 0,4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7 jours</td>
+<td>8,93 Mbit/s</td>
+<td>22,3 Mbit/s</td>
+</tr>
+<tr>
+<td>14 jours</td>
+<td>4,46 Mbit/s</td>
+<td>11,2 Mbit/s</td>
+</tr>
+<tr>
+<td>21 jours</td>
+<td>2,98 Mbit/s</td>
+<td>7,44 Mbit/s</td>
+</tr>
+<tr>
+<td>30 jours, maximum de l’article L. 252-5</td>
+<td>2,08 Mbit/s</td>
+<td>5,21 Mbit/s</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Chaque jour de conservation supplémentaire se paie en débit, donc en qualité d’image.</strong> Garder trente jours au lieu de sept divise par 4,3 le débit autorisé, et c’est souvent la différence entre une image qui identifie et une image qui ne fait que constater.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La règle qui dispense de tout calculer, et ses deux pièges</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un flux de 1 Mbit/s remplit 0,324 To en trente jours : un système se vérifie de tête, N × D × 0,324 To par mois, soit 16 × 2,08 × 0,324 = 10,8 To pour l’exemple.</p>
+<p><strong>Premier piège : r n’est pas une constante.</strong> Un couloir de nuit enregistre peu, un hall aux heures d’affluence en continu ; le jour le plus chargé doit encore tenir. <strong>Second piège : en débit variable, le débit réel n’est pas celui de la fiche.</strong> Il se mesure sur le site, de jour et de nuit, sur l’enregistreur.</p>
+<p>Le calcul se retourne une seconde fois quand l’identification impose le débit : à 4 Mbit/s sur seize caméras pendant trente jours, il faut 16 × 4 × 0,324 = 20,7 To utiles, soit, en RAID 5 à quatre disques avec 10 % de réserve, des disques de 7,68 To au moins.</p></div></details>
+</div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : le disque d&#39;un enregistreur</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un enregistreur reçoit douze caméras qui émettent chacune 4 Mbit/s en continu, avec une conservation de quatorze jours. Quel volume faut-il ? Un disque de 8 To suffit-il ?</p>
+<p><strong>Résolution.</strong> Par caméra et par jour : 4 × 10<sup>6</sup> × 86 400 / 8 = 43,2 × 10<sup>9</sup> octets, soit 43,2 Go ; pour douze caméras, 518,4 Go par jour ; sur quatorze jours, 7 257,6 Go, soit <strong>7,26 To</strong>. Le disque de 8 To suffit, avec 0,74 To de marge, soit 9,3 % ; il tiendrait 15,4 jours.</p>
+<p><strong>Vérification de plausibilité.</strong> Par la règle de 0,324 To par Mbit/s et par mois : 12 × 4 × 0,324 = 15,6 To pour trente jours, donc 7,3 To pour quatorze. Le système affichera 7,28 Tio pour le disque et 6,60 Tio pour les enregistrements.</p>
+<p><strong>Ce que l’étudiant doit rédiger.</strong> La formule avec ses unités, la division par huit justifiée, la comparaison dans une seule unité. L’erreur attendue est un débit en mégabits traité comme des mégaoctets.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, intermédiaire : ventouses ou gâches, ce que coûte la sécurité positive</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une UTL commande quatre portes, avec 4 h d’autonomie exigées. Sous 12 V, l’UTL consomme 0,25 A et chaque lecteur 0,10 A. Variante A : quatre ventouses de 0,5 A. Variante B : quatre gâches à émission de 0,3 A, alimentées 5 s par passage, 60 passages par heure et par porte. k = 1,25 ; ce sont des données d’exercice. Comparer les capacités, puis dire ce que fait chaque variante au bout des 4 h.</p>
+<p><strong>Résolution.</strong> Variante A : les ventouses consomment en permanence. I = 0,25 + 4 × 0,10 + 4 × 0,5 = 2,65 A ; C = 2,65 × 4 × 1,25 = <strong>13,25 Ah</strong>. Variante B : en une heure, 4 × 60 × 5 = 1 200 s d’alimentation des gâches, soit un courant moyen de 0,3 × 1 200 / 3 600 = 0,10 A ; I = 0,25 + 0,40 + 0,10 = 0,75 A ; C = 0,75 × 4 × 1,25 = <strong>3,75 Ah</strong>. La variante A demande 3,5 fois plus de batterie, et les ventouses y font 75 % du courant.</p>
+<p><strong>Au bout des 4 h.</strong> Batterie épuisée, les ventouses libèrent les quatre portes et le bâtiment est ouvert ; les gâches restent fermées, on n’entre plus qu’à la clé et l’on sort toujours par la béquille. La variante A convient à une issue de secours, la variante B à une porte d’accès dont la sortie reste mécanique.</p>
+<p><strong>Vérification de plausibilité.</strong> Avec une batterie de 7 Ah, la variante A tiendrait 2,1 h et la variante B 7,5 h.</p>
+<p><strong>Ce que l’étudiant doit rédiger.</strong> Le courant moyen d’un organe intermittent, calculé et non estimé, et une phrase qui relie l’organe à l’état de la porte sans énergie.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : la vidéoprotection d&#39;une médiathèque</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une commune équipe sa médiathèque, fermée le dimanche et le lundi : six caméras en salles publiques, deux à l’entrée pour identifier les visages, deux dans la réserve et le bureau, fermés au public. Les huit caméras hors entrée émettent 3 Mbit/s, les deux d’entrée 6 Mbit/s, en continu ; chacune consomme 6,5 W en PoE. L’issue de secours arrière doit être verrouillée hors ouverture. Proposer une durée, dimensionner le stockage, vérifier l’identification et régler la porte.</p>
+<p><strong>Choisir la méthode avant de calculer.</strong> Le plan se découpe par régime, pas par caméra. Salles publiques et entrée relèvent du code de la sécurité intérieure : autorisation préfectorale, cinq ans renouvelables, un mois de conservation au plus. La réserve et le bureau relèvent du RGPD et du code du travail ; la caméra du bureau ne doit pas filmer un poste, elle est réorientée ou supprimée.</p>
+<p><strong>La durée.</strong> Elle se justifie par le délai de constat, pas par le disque : un incident du samedi soir est constaté le mardi, l’extraction demande quelques jours de plus, et sept jours suffisent.</p>
+<p><strong>Le stockage.</strong> Débit total : 8 × 3 + 2 × 6 = 36 Mbit/s ; volume : 36 × 10,8 = 388,8 Go par jour, soit <strong>2,72 To</strong> pour sept jours. Un disque de 4 To laisse 32 % de marge ; trente jours auraient demandé 11,7 To.</p>
+<p><strong>L’identification.</strong> La caméra d’entrée est une 1080p à 6 m de la porte. Avec un objectif de 30°, le champ vaut 2 × 6 × tan 15° = 3,22 m, soit 597 pixels par mètre : un visage de 15 cm occupe 90 pixels, au-delà des 60 retenus. Avec un objectif de 90°, le champ vaut 12 m et le visage 24 pixels : l’image constate, elle n’identifie pas.</p>
+<p><strong>Le PoE et la porte.</strong> Dix caméras de 6,5 W demandent 65 W, soit un budget PoE de 78 W avec 20 % de réserve. L’issue de secours reçoit une ventouse, un boîtier de commande manuelle et un déverrouillage par le SSI, après accord de la commission de sécurité ; sa sûreté repose sur un contact d’ouverture et une caméra.</p>
+<p><strong>Ce que l’étudiant doit rédiger.</strong> Le découpage par régime, la durée justifiée par le délai de constat, le calcul de densité, et pourquoi la sûreté de l’issue de secours ne repose pas sur son verrou.</p></div></details>
+</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Grandeur</th>
+<th>Ordre de grandeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clé d’une carte MIFARE Classic</td>
+<td><strong>48 bits</strong>, soit 2,8 × 10<sup>14</sup> valeurs ; calculée hors ligne en moins d’une seconde</td>
+</tr>
+<tr>
+<td>Clé AES d’une carte récente</td>
+<td>128 bits, soit 1,2 × 10<sup>24</sup> fois plus de valeurs qu’en 48 bits</td>
+</tr>
+<tr>
+<td>Trame Wiegand de 26 bits</td>
+<td>256 codes de site, 65 536 numéros de carte, <strong>aucun chiffrement</strong></td>
+</tr>
+<tr>
+<td>Temporisation d’une issue de secours verrouillée</td>
+<td>8 s, ou 3 min avec service de sécurité (rédaction de 1993)</td>
+</tr>
+<tr>
+<td>Louvre, de la première alarme à la fuite</td>
+<td><strong>moins de 4 min</strong></td>
+</tr>
+<tr>
+<td>Louvre, de l’effraction à l’appel au commissariat</td>
+<td>entre une demi-minute et une minute et demie</td>
+</tr>
+<tr>
+<td>Sanction d’un appel injustifié, faute de levée de doute</td>
+<td>jusqu’à <strong>450 €</strong> par appel</td>
+</tr>
+<tr>
+<td>Résistance à la fraude NF&amp;A2P</td>
+<td>types 1, 2 ou 3</td>
+</tr>
+<tr>
+<td>Verkada, caméras accessibles au compte compromis</td>
+<td>plus de <strong>150 000</strong></td>
+</tr>
+<tr>
+<td>Verkada, caméras exposées selon l’entreprise</td>
+<td>4 530, chez 97 clients, soit 3 %</td>
+</tr>
+<tr>
+<td>Conservation des images</td>
+<td>quelques jours en général, <strong>un mois au plus</strong></td>
+</tr>
+<tr>
+<td>Autorisation préfectorale de vidéoprotection</td>
+<td>5 ans, renouvelable</td>
+</tr>
+<tr>
+<td>Norme d’image de 2007</td>
+<td>704 × 576 en plan étroit, 352 × 288 sinon ; 12 ou 6 images par seconde</td>
+</tr>
+<tr>
+<td>Vignette de visage minimale</td>
+<td>90 × 60 pixels, soit environ <strong>400 pixels par mètre</strong></td>
+</tr>
+<tr>
+<td>Champ maximal à 400 pixels par mètre</td>
+<td>1,76 m en 4CIF, 4,8 m en 1080p, 9,6 m en 4K</td>
+</tr>
+<tr>
+<td>Volume d’un flux de 1 Mbit/s</td>
+<td><strong>10,8 Go par jour</strong>, 324 Go en trente jours</td>
+</tr>
+<tr>
+<td>PoE, puissance côté source</td>
+<td>15,4 W, puis 30 W</td>
+</tr>
+<tr>
+<td>Journaux d’un contrôle d’accès biométrique</td>
+<td>six mois glissants au plus</td>
+</tr>
+<tr>
+<td>Amendes de la CNIL citées</td>
+<td>20 000 € en 2019, 40 000 € en 2024, 32 M€ ramenés à 15 M€</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Trois réflexes suffisent à trier la plupart des affirmations : <strong>1 Mbit/s en continu remplit 10,8 Go par jour</strong> ; <strong>une image se juge en pixels par mètre au plan de l’objet</strong>, pas en mégapixels ; <strong>une alarme ne retient personne</strong>, seul un obstacle retient. Une valeur qui contredit l’un des trois mérite qu’on refasse le calcul.</p>
+</div>
+<h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi ne pas garder les images un an, puisque le disque le permet ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que la loi ne le permet pas, et le disque non plus. Pour un lieu ouvert au public, l’article L. 252-5 plafonne la conservation à un mois hors enquête judiciaire ; pour un lieu de travail, la CNIL rappelle que quelques jours suffisent en général. Seize caméras à 2 Mbit/s produisent 126 To par an, près de douze fois la capacité utile de l’enregistreur de l’exemple. Et chaque image conservée peut fuir : chez Verkada, les attaquants ont ouvert 87 archives vidéo.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Si la ventouse lâche quand le courant manque, il suffit de couper le courant pour entrer ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Non, pour trois raisons de conception. L’alimentation est secourue par une batterie, et la coupure du secteur doit être signalée. Elle se trouve du côté protégé : la couper suppose d’être déjà entré. Et une issue de secours n’offre en général aucune prise côté extérieur, tandis que son ouverture déclenche le contact relié à la centrale intrusion. La libération sans énergie y est voulue : elle protège les occupants.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Un badge qui ne contient qu&#39;un numéro, que risque-t-on à le copier ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Tout ce que ce numéro ouvre. Un numéro lu sans authentification se copie en une lecture ; la protection ne vient alors que de ce qui entoure le badge : des plages horaires étroites, un code personnel sur les portes sensibles, un journal qui fait apparaître un passage incohérent. La question utile est donc « que protège la porte qu’il ouvre ? » : un badge de parking et un badge de salle serveur n’appellent pas la même technologie, et l’analyse de risques de DOMA16 les départage.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi pas l&#39;empreinte digitale, puisque c&#39;est plus sûr ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que le règlement type de la CNIL, la délibération n° 2019-001 du 10 janvier 2019, en fait une exception à justifier : l’employeur doit documenter le besoin d’un niveau de protection élevé et le choix de la biométrie plutôt qu’une autre technologie. Le gabarit se conserve de préférence sur un support détenu par la personne, badge ou carte à puce, et les journaux d’accès ne dépassent pas six mois glissants. L’argument technique complète l’argument juridique : un badge compromis se remplace, une empreinte ne se révoque pas.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Une caméra 4K voit-elle mieux qu&#39;une caméra 1080p ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>À angle égal, oui. À 8 m, une 4K derrière un objectif de 90° couvre 16 m de largeur, soit 240 pixels par mètre ; une 1080p derrière un objectif de 30° couvre 4,29 m, soit 448 pixels par mètre, près du double, avec quatre fois moins de pixels à transmettre et à stocker.</p>
+<p><strong>La résolution se choisit avec l’angle, jamais seule.</strong> C’est la leçon de l’arrêté de 2007, qui fixe une taille de visage et non un nombre de mégapixels.</p></div></details>
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Les sources de cette page</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><ul>
+<li>Université Radboud de Nimègue, groupe Digital Security, <em>Security Flaw in Mifare Classic</em>, communiqué du 12 mars 2008, <a href="https://www.sos.cs.ru.nl/applications/rfid/pressrelease.en.html" class="uri">https://www.sos.cs.ru.nl/applications/rfid/pressrelease.en.html</a> : cartes vendues, usage en contrôle d’accès, estimation TNO de neuf heures, scénario du badge copié.</li>
+<li>Université Radboud de Nimègue, page du projet <em>Security Flaw in Mifare Classic</em>, <a href="https://www.sos.cs.ru.nl/applications/rfid/main.html" class="uri">https://www.sos.cs.ru.nl/applications/rfid/main.html</a> : clé de 48 bits calculée hors ligne en moins d’une seconde, trace unique, décision du 18 juillet 2008 contre NXP, article ESORICS 2008, principe de Kerckhoffs.</li>
+<li>Quarkslab, Philippe Teuwen, <em>MIFARE Classic: exposing the static encrypted nonce variant… and a few hardware backdoors</em>, 20 août 2024, <a href="https://blog.quarkslab.com/mifare-classic-static-encrypted-nonce-and-backdoors.html" class="uri">https://blog.quarkslab.com/mifare-classic-static-encrypted-nonce-and-backdoors.html</a> : puce FM11RF08S, porte dérobée, clés retrouvées en quelques minutes, hôtels, protocole cassé par nature.</li>
+<li>NXP Semiconductors, page produit MIFARE DESFire, source commerciale, <a href="https://www.nxp.com/products/rfid-nfc/mifare-hf/mifare-desfire:MC_53450" class="uri">https://www.nxp.com/products/rfid-nfc/mifare-hf/mifare-desfire:MC_53450</a> : moteurs cryptographiques DES, triple DES et AES, usage en contrôle d’accès.</li>
+<li>Wikipédia, article <em>Wiegand interface</em>, <a href="https://en.wikipedia.org/wiki/Wiegand_interface" class="uri">https://en.wikipedia.org/wiki/Wiegand_interface</a> : fils D0 et D1, 5 V, composition de la trame de 26 bits.</li>
+<li>ANSSI, <em>Sécurisation des systèmes de contrôle d’accès physique et vidéoprotection</em>, publié le 4 mars 2020, mis à jour le 5 juin 2025, version 2.2, <a href="https://messervices.cyber.gouv.fr/guides/securisation-des-systemes-de-controle-dacces-physique-et-videoprotection" class="uri">https://messervices.cyber.gouv.fr/guides/securisation-des-systemes-de-controle-dacces-physique-et-videoprotection</a> : titre, dates, partenariat avec le CNPP, exigences en annexe pour les acheteurs.</li>
+<li>Meta Engineering, Santosh Janardhan, <em>More details about the October 4 outage</em>, 5 octobre 2021, <a href="https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/" class="uri">https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/</a> : cause de la panne, accès physique aux centres de données, arbitrage entre sécurité et reprise.</li>
+<li>Légifrance, arrêté du 25 juin 1980 portant approbation des dispositions générales du règlement de sécurité contre les risques d’incendie et de panique dans les ERP, <a href="https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000290033" class="uri">https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000290033</a> : texte de base du règlement.</li>
+<li>Légifrance, arrêté du 2 février 1993 modifiant et complétant ce règlement, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000163710" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000163710</a> : conditions du verrouillage électromagnétique des issues de secours, temporisations.</li>
+<li>Sénat, compte rendu de la commission de la culture, semaine du 20 octobre 2025, audition de Laurence des Cars le 22 octobre 2025, <a href="https://www.senat.fr/compte-rendu-commissions/20251020/cult.html" class="uri">https://www.senat.fr/compte-rendu-commissions/20251020/cult.html</a> : chronologie minute par minute, pièces emportées, schéma directeur de sûreté.</li>
+<li>Cour des comptes, <em>L’établissement public du musée du Louvre et son fonds de dotation</em>, 6 novembre 2025, <a href="https://www.ccomptes.fr/fr/publications/letablissement-public-du-musee-du-louvre-et-son-fonds-de-dotation" class="uri">https://www.ccomptes.fr/fr/publications/letablissement-public-du-musee-du-louvre-et-son-fonds-de-dotation</a> : retards de mise à niveau, montants de 2018 à 2024.</li>
+<li>Légifrance, code de la sécurité intérieure, article L. 613-6, <a href="https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000025503132/LEGISCTA000025506284" class="uri">https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000025503132/LEGISCTA000025506284</a> : définition de la levée de doute, sanction de 450 € par appel injustifié.</li>
+<li>Marque NF, application NF324, <em>NF – Matériels de sécurité électronique, détection d’intrusion, équipements de gestion de contrôle d’accès associés à la marque A2P</em>, <a href="https://marque-nf.com/categories/protection-des-biens-et-des-personnes/nf-materiels-de-securite-electronique-detection-dintrusion-equipements-de-gestion-de-controle-dacces-nf324/" class="uri">https://marque-nf.com/categories/protection-des-biens-et-des-personnes/nf-materiels-de-securite-electronique-detection-dintrusion-equipements-de-gestion-de-controle-dacces-nf324/</a> : organisme certificateur, caractéristiques certifiées, types de fraudabilité.</li>
+<li>Federal Trade Commission, <em>FTC Takes Action Against Security Camera Firm Verkada over Charges it Failed to Secure Videos, Other Personal Data and Violated CAN-SPAM Act</em>, 30 août 2024, <a href="https://www.ftc.gov/news-events/news/press-releases/2024/08/ftc-takes-action-against-security-camera-firm-verkada-over-charges-it-failed-secure-videos-other" class="uri">https://www.ftc.gov/news-events/news/press-releases/2024/08/ftc-takes-action-against-security-camera-firm-verkada-over-charges-it-failed-secure-videos-other</a> : intrusions de 2020 et 2021, 150 000 caméras, lieux filmés, reproches, pénalité et injonction.</li>
+<li>Verkada, <em>Summary: March 9, 2021 Security Incident Report</em>, source de l’entreprise concernée, <a href="https://www.verkada.com/security-update/report/" class="uri">https://www.verkada.com/security-update/report/</a> : vecteur d’entrée, 97 clients, 4 530 caméras, archives, commandes système, données Wi-Fi et de contrôle d’accès.</li>
+<li>Légifrance, délibération de la CNIL SAN-2019-006 du 13 juin 2019, <a href="https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000038629823/" class="uri">https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000038629823/</a> : effectif, caméra sur six postes, contrôles, mise en demeure, manquements, amende.</li>
+<li>Europe 1, <em>Surveillance vidéo : la Cnil inflige 20.000 euros d’amende à une TPE</em>, 18 juin 2019, <a href="https://www.europe1.fr/technologies/surveillance-video-la-cnil-inflige-20000-euros-damende-a-une-tpe-3905266" class="uri">https://www.europe1.fr/technologies/surveillance-video-la-cnil-inflige-20000-euros-damende-a-une-tpe-3905266</a> : nom de l’entreprise, plaintes depuis 2013, contenu de la mise en demeure.</li>
+<li>CNIL, <em>Surveillance excessive des salariés : sanction de 40 000 euros à l’encontre d’une entreprise du secteur immobilier</em>, publié le 4 février 2025, <a href="https://www.cnil.fr/fr/surveillance-excessive-des-salaries-sanction-de-40-000-euros-entreprise-secteur-immobilier" class="uri">https://www.cnil.fr/fr/surveillance-excessive-des-salaries-sanction-de-40-000-euros-entreprise-secteur-immobilier</a> : délibération SAN-2024-021, caméras captant image et son, manquements.</li>
+<li>Légifrance, délibération de la CNIL SAN-2023-021 du 27 décembre 2023, <a href="https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000048989272" class="uri">https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000048989272</a> : vidéosurveillance de deux sites d’Amazon France Logistique, amende initiale.</li>
+<li>Conseil d’État, décision n° 492830 du 23 décembre 2025, <a href="https://www.conseil-etat.fr/fr/arianeweb/CE/decision/2025-12-23/492830" class="uri">https://www.conseil-etat.fr/fr/arianeweb/CE/decision/2025-12-23/492830</a> : amende ramenée à 15 M€, manquements confirmés sur la vidéosurveillance.</li>
+<li>CNIL, <em>La vidéosurveillance – vidéoprotection au travail</em>, mise à jour du 23 juillet 2018, <a href="https://www.cnil.fr/fr/la-videosurveillance-videoprotection-au-travail" class="uri">https://www.cnil.fr/fr/la-videosurveillance-videoprotection-au-travail</a> : lieux filmés ou non, durée de conservation, information, consultation des représentants du personnel, régime des lieux ouverts au public.</li>
+<li>Légifrance, code du travail, article L. 1222-4, <a href="https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006072050" class="uri">https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006072050</a> : information préalable du salarié.</li>
+<li>Légifrance, code de la sécurité intérieure, titre V, vidéoprotection, articles L. 251-1 à L. 255-1, <a href="https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000025503132/LEGISCTA000025505402/" class="uri">https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000025503132/LEGISCTA000025505402/</a> : articles L. 251-3, L. 252-1, L. 252-4 et L. 252-5, lus aussi un par un aux adresses <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047569431" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047569431</a> et <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000025505435" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000025505435</a>.</li>
+<li>Légifrance, arrêté du 3 août 2007 portant définition des normes techniques des systèmes de vidéosurveillance, <a href="https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000649127" class="uri">https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000649127</a>, et son annexe technique n° 1, <a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000006557606/2007-08-21" class="uri">https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000006557606/2007-08-21</a> : résolutions, cadences, vignette de visage, horodatage, export.</li>
+<li>Légifrance, délibération de la CNIL n° 2019-001 du 10 janvier 2019 portant règlement type sur le contrôle d’accès biométrique sur les lieux de travail, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000038277620" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000038277620</a> : trois types de conservation du gabarit, justification, journaux de six mois.</li>
+</ul>
+<p>Sources consultées le 13 septembre 2026.</p></div></details>
+</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="COURS6-GTB-OBLIGATIONS.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Domotique, cours 6 — la GTB et la loi</span></a><a class="ap" href="COURS8-PRODUIRE-STOCKER-SECOURIR.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Domotique, cours 8 — produire, stocker, secourir</span></a></div></nav>
+<p class="pied">Page de formation, réservée au professeur. Elle s'appuie sur des cas réels documentés ; les sources sont données en fin de page.</p>
+</div>
+<script src="../assets/kit.js?v=2863feac"></script>
+<script src="../assets/site.js?v=2863feac"></script>
+<script src="../assets/vivant.js?v=2863feac"></script>

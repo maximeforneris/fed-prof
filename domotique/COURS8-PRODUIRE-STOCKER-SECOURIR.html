@@ -1,0 +1,742 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Domotique, cours 8 — produire, stocker, secourir</title>
+<link rel="stylesheet" href="../assets/kit.css?v=2863feac">
+<link rel="stylesheet" href="../assets/site.css?v=2863feac">
+<link rel="stylesheet" href="../assets/calque.css?v=2863feac">
+<link rel="stylesheet" href="../assets/vivant.css?v=2863feac">
+
+<div class="page" data-site="fed-prof" data-page="domotique/COURS8-PRODUIRE-STOCKER-SECOURIR" data-public="prof">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS7-ACCES-INTRUSION-VIDEO.html" rel="prev" title="Domotique, cours 7 — accès, intrusion, vidéo" aria-label="Domotique, cours 7 — accès, intrusion, vidéo">&lsaquo;</a><a class="fleche" href="COURS9-MOTEURS-VOLETS-VARIATION.html" rel="next" title="Domotique, cours 9 — moteurs, volets, variation" aria-label="Domotique, cours 9 — moteurs, volets, variation">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/COURS8-PRODUIRE-STOCKER-SECOURIR">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">Formation du professeur · BTS FED option C</p>
+    <h1>Cours détaillé<span>produire, stocker et secourir l'énergie, par des cas réels</span></h1>
+  </div>
+  <p class="accroche">Des ombrières imposées sur les parkings par la loi APER, des toitures à couvrir par l'article L. 171-4, une production partagée à Montigny-lès-Metz, un stockage de 300 MW qui brûle à Moss Landing, des éoliennes de toit mesurées à Warwick, une péninsule privée de courant le 28 avril 2025. Six cas réels, et la théorie que chacun oblige à tenir, du productible à l'onduleur de secours, avec des calculs refaits pour les bureaux du cours 1.</p>
+  
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B6-1 Photovoltaïque · niveau 3</span><span class="tag n3">B6-2 Éolien · niveau 3</span><span class="tag n3">B10 Piles, accumulateurs, condensateurs · niveau 3</span><span class="tag n3">B10 Alimentations secourues · niveau 3</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="COURS1-ENERGIE-ELECTRIQUE.html#le-compteur-tourne-la-nuit-et-le-batiment-est-vide">Le talon des bureaux et leur courbe de charge</a></b><span class="ou">Domotique, cours 1 — l'énergie électrique</span><span class="car">la page reprend ce bâtiment, et son talon de 14 kW borne ce qu'il peut autoconsommer.</span></li><li><b><a href="PROF4-SURETE.html#les-alimentations-secourues-le-calcul-qu-on-demande">L'alimentation de sécurité et son calcul C = I × t × k</a></b><span class="ou">Prof 4 — sûreté et sécurité</span><span class="car">la page traite l'alimentation de confort et renvoie à celle-ci pour tout ce que la réglementation impose de secourir.</span></li><li><b>Le productible, les deux taux et le découplage tels que la séance 22 de fluides les définit</b><span class="car">la page les emploie sans les redéfinir, et va au-delà.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#six-cas-et-ce-qu-ils-ont-en-commun">Six cas, et ce qu’ils ont en commun</a><a href="#des-ombrieres-imposees-sur-les-parkings-loi-aper-2023">Des ombrières imposées sur les parkings, loi APER, 2023</a><a href="#des-toitures-qu-il-faut-couvrir-article-l-171-4-2019-2027">Des toitures qu’il faut couvrir, article L. 171-4, 2019-2027</a><a href="#une-production-partagee-entre-une-commune-et-une-entreprise-montigny-les-metz-2023">Une production partagée entre une commune et une entreprise, Montigny-lès-Metz, 2023</a><a href="#un-stockage-de-300-mw-qui-brule-moss-landing-2025">Un stockage de 300 MW qui brûle, Moss Landing, 2025</a><a href="#des-eoliennes-de-toit-mesurees-pendant-un-an-warwick-2007-2009">Des éoliennes de toit mesurées pendant un an, Warwick, 2007-2009</a><a href="#une-peninsule-sans-courant-pendant-dix-huit-heures-espagne-et-portugal-2025">Une péninsule sans courant pendant dix-huit heures, Espagne et Portugal, 2025</a><a href="#la-ou-la-methode-change">Là où la méthode change</a><a href="#le-calcul-retourne">Le calcul retourné</a><a href="#trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#les-questions-qui-destabilisent">Les questions qui déstabilisent</a></div></nav>
+<h2 id="six-cas-et-ce-qu-ils-ont-en-commun">Six cas, et ce qu’ils ont en commun</h2>
+<p>Un bâtiment qui produit son électricité ne choisit ni l’heure ni la saison de sa production. Le soleil de juin tombe sur des bureaux vides le samedi, le vent souffle mal au-dessus des toits, et le réseau, qui absorbait tous les écarts, peut disparaître pendant dix-huit heures. Deux textes de loi, une opération partagée, un incendie, une campagne de mesure et une panne générale posent la même question sous six formes : <strong>à quel moment l’énergie est-elle disponible, et à quel moment sert-elle ?</strong></p>
+<p>La réponse change la grandeur qui compte. Produire se juge en kilowattheures par an, comme la séance 22 de fluides l’a posé. Valoriser se juge heure par heure, et au quart d’heure dans une opération collective. Stocker et secourir se jugent en kilowatts et en minutes : un secours trop faible ou trop court ne sert à rien le jour où il est appelé.</p>
+<div class="cle">
+<p>Un kilowattheure produit n’a de valeur qu’au moment où quelqu’un le consomme. Taux d’autoconsommation, clé de répartition, capacité d’une batterie, autonomie d’un onduleur : tout ce que cette page calcule mesure l’écart entre le moment de la production et celui du besoin.</p>
+</div>
+<p>Les bureaux du cours 1 servent de fil : 2 000 m², 220 000 kWh par an, un talon de 14 kW la nuit et le week-end. On les suppose sur trois niveaux, soit une emprise au sol de 667 m², et à Fréjus, pour lequel la base européenne PVGIS fournit l’ensoleillement heure par heure. Les taux calculés sortent d’un modèle horaire décrit au deuxième cas ; les faits des six cas sont documentés et attribués.</p>
+<h2 id="des-ombrieres-imposees-sur-les-parkings-loi-aper-2023">Des ombrières imposées sur les parkings, loi APER, 2023</h2>
+<p><em>La loi n° 2023-175 du 10 mars 2023 relative à l’accélération de la production d’énergies renouvelables, dite loi APER, impose par son article 40 que les parcs de stationnement extérieurs de plus de 1 500 m² soient équipés, sur au moins la moitié de leur superficie, d’ombrières intégrant un procédé de production d’énergie renouvelable. Selon la version en vigueur sur Légifrance, l’échéance est le 1er juillet 2026 pour les parcs d’au moins 10 000 m² et le 1er juillet 2028 pour les autres. Le manquement est sanctionné chaque année jusqu’à la mise en conformité, dans la limite de 40 000 € pour les grands parcs et de 20 000 € pour les autres.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>10 mars 2023 : l’article 40 vise les parcs extérieurs existant au 1er juillet 2023 et ceux dont l’autorisation d’urbanisme est demandée ensuite.</li>
+<li>13 novembre 2024 : le décret n° 2024-1023 précise la superficie à compter, places, voies et zones de péage, espaces verts exclus, et les motifs d’exonération, dont un coût excessif.</li>
+<li>26 novembre 2025 : la loi n° 2025-1129 accorde un délai au propriétaire qui a commandé ses panneaux avec acompte, pour une installation au plus tard le 1er janvier 2028 dans les grands parcs et le 1er janvier 2030 dans les autres.</li>
+<li>En variante, des ombrières sur au moins 35 % de la moitié à couvrir suffisent, si une végétation ombrage le reste.</li>
+</ol>
+</div>
+<p>Le texte fixe une <strong>surface</strong>, jamais une puissance ni une orientation. L’orientation suit le dessin du parking, et l’inclinaison reste faible pour limiter la hauteur de la structure et sa prise au vent. Le productible s’en ressent, et PVGIS le chiffre pour Fréjus avec des pertes système de 14 % :</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Plan des modules, à Fréjus</th>
+<th>kWh par kWc et par an</th>
+<th>Rapport à l’optimum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>optimum calculé par PVGIS : 38°, plein sud</td>
+<td>1 499</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>plein sud, 30°</td>
+<td>1 486</td>
+<td>99 %</td>
+</tr>
+<tr>
+<td>plein sud, 10°</td>
+<td>1 353</td>
+<td>90 %</td>
+</tr>
+<tr>
+<td>à plat</td>
+<td>1 235</td>
+<td>82 %</td>
+</tr>
+<tr>
+<td>ouest, 10°</td>
+<td>1 230</td>
+<td>82 %</td>
+</tr>
+<tr>
+<td>est, 10°</td>
+<td>1 220</td>
+<td>81 %</td>
+</tr>
+<tr>
+<td>façade plein sud, verticale</td>
+<td>1 016</td>
+<td>68 %</td>
+</tr>
+</tbody>
+</table></div>
+<p>Une ombrière perd donc de 10 à 19 % par rapport à l’optimum selon l’orientation que le parking lui impose. Le nombre de kilowattheures par kWc, les heures équivalentes, est le seul qui compare deux projets de tailles différentes.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le ratio de performance se multiplie, il ne s&#39;additionne pas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>PVGIS décompose les pertes du champ plein sud à 30° de Fréjus : angle d’incidence −2,63 %, spectre +0,68 %, température et éclairement −6,79 %, pertes système −14 % (câbles, onduleur, salissure, disponibilité). Les facteurs se <strong>multiplient</strong> : 0,9737 × 1,0068 × 0,9321 × 0,86 = 0,786. La somme des pourcentages donnerait 22,7 % de pertes au lieu de 21,4 %. Le rapport de la production à l’irradiation dans le plan confirme le produit : 1 485,7 kWh par kWc pour 1 890,6 kWh/m², soit 0,786.</p>
+<p>Le ratio varie avec la saison, et dans le sens qui surprend. Plein sud à 10°, il vaut 0,815 en janvier et 0,755 en juillet : <strong>le mois qui produit le plus est celui où le rendement est le plus mauvais</strong>, parce que la cellule chaude perd de sa tension. Le facteur de charge annuel reste modeste, 1 353 / 8 760 = 15,4 %.</p>
+<p>Les ombrières de La Glèbe, à La Rouquette dans l’Aveyron, inaugurées le 26 septembre 2025, portent selon Énergie Partagée 2 298 kW sur environ 10 500 m², soit 219 W/m², et produisent 2 673 MWh par an : 1 163 kWh par kW, quand PVGIS donne 1 177 pour ce lieu à 10° plein sud. L’annonce est cohérente. Son coût, 3,4 M€, fait 1 480 € par kW, davantage qu’une toiture, parce que la structure porte les modules.</p></div></details>
+</div><div class="piege">
+<p>La loi dimensionne l’ombrière sur le parking, et non sur un consommateur. Un parking de 12 000 m² reçoit de l’ordre de 1,2 MWc, soit 1,6 GWh par an à Fréjus, et ne consomme presque rien. La règle de la séance 22, « dimensionner au plus près de la consommation », ne s’applique plus : la surface est imposée, et c’est l’usage de l’énergie qu’il faut concevoir, recharge des véhicules, autoconsommation collective ou injection. À La Glèbe, 98 % de la production va à des industriels situés dans un rayon de dix kilomètres.</p>
+</div>
+<p><strong>En classe.</strong> Le cas ouvre DOMA24, « Produire et stocker » : la loi est récente, elle touche des parkings que les étudiants connaissent, et elle oblige à calculer un productible sans choisir l’orientation. Question à poser : « Le parking de 12 000 m² du centre commercial voisin doit être équipé ; combien de kWc, combien de MWh, et à qui les vendre ? » L’exercice 1 en donne la résolution ; le relevé d’entreprise n° 6, une facture, fournit le prix de comparaison.</p>
+<h2 id="des-toitures-qu-il-faut-couvrir-article-l-171-4-2019-2027">Des toitures qu’il faut couvrir, article L. 171-4, 2019-2027</h2>
+<p><em>L’article L. 171-4 du code de la construction et de l’habitation impose aux constructions non résidentielles qui créent plus de 500 m² d’emprise au sol, commerces, bureaux, entrepôts, hôpitaux, établissements scolaires et parcs de stationnement couverts, de couvrir une part de leur toiture par un procédé de production d’énergie renouvelable ou par une végétalisation. Selon la version en vigueur sur Légifrance, cette part est d’au moins 30 % depuis le 1er juillet 2023, de 40 % depuis le 1er juillet 2026 et de 50 % à compter du 1er juillet 2027. Le champ et le seuil ont évolué avec chaque loi depuis 2019.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>10 novembre 2019 : l’article L. 111-18-1 du code de l’urbanisme, créé par la loi énergie-climat, vise les commerces, locaux industriels, entrepôts et parcs couverts de plus de 1 000 m² d’emprise, sur 30 % de la toiture.</li>
+<li>1er juillet 2023 : la loi Climat et résilience transfère l’obligation à l’article L. 171-4 ; le seuil descend à 500 m², mais reste de 1 000 m² pour les bureaux, selon le cabinet Gossement.</li>
+<li>1er janvier 2025 : l’article 41 de la loi APER ajoute bâtiments administratifs, hôpitaux, équipements sportifs et bâtiments scolaires, et soumet les bureaux au seuil de 500 m².</li>
+<li>26 mai 2026 : la loi n° 2026-403 modifie encore l’article ; selon le ministère, des revêtements réfléchissants pourront remplacer certaines obligations.</li>
+<li>1er janvier 2028 : l’article L. 171-5, issu de l’article 43 de la loi APER, étend l’obligation aux bâtiments existants de plus de 500 m², ce que confirme une réponse ministérielle au Sénat du 25 juin 2026.</li>
+</ol>
+</div>
+<p>Construits aujourd’hui, les bureaux du cours 1 créeraient 667 m² d’emprise et entreraient dans le champ. À 40 % de la toiture, ils porteraient 267 m² de modules, soit 53 kWc à 200 Wc/m² ; à 50 %, 333 m² et 67 kWc. La loi fixe la surface, le bâtiment la courbe de charge, et les deux taux en découlent.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>Part de toiture</th>
+<th>Surface</th>
+<th>Puissance</th>
+<th>Production</th>
+<th>Autoconsommation</th>
+<th>Autoproduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>30 % (2023)</td>
+<td>200 m²</td>
+<td>40 kWc</td>
+<td>54 MWh</td>
+<td>89 %</td>
+<td>22 %</td>
+</tr>
+<tr>
+<td>40 % (2026)</td>
+<td>267 m²</td>
+<td>53 kWc</td>
+<td>72 MWh</td>
+<td>80 %</td>
+<td>26 %</td>
+</tr>
+<tr>
+<td>50 % (2027)</td>
+<td>333 m²</td>
+<td>67 kWc</td>
+<td>90 MWh</td>
+<td>72 %</td>
+<td>30 %</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img src="img/COURS8-PRODUIRE-STOCKER-SECOURIR/c8-semaine-juin.png" alt="Une semaine de juin sur les bureaux, à 40 % de la toiture : les jours ouvrés absorbent presque tout, le week-end envoie l’essentiel au réseau." />
+<figcaption aria-hidden="true">Une semaine de juin sur les bureaux, à 40 % de la toiture : les jours ouvrés absorbent presque tout, le week-end envoie l’essentiel au réseau.</figcaption>
+</figure>
+<div class="formule">
+<p><strong>τ_ap = τ_ac × E_prod / E_cons</strong></p>
+<ul>
+<li><strong>τ_ac</strong><span>: taux d’autoconsommation, part de la production consommée sur place</span></li>
+<li><strong>τ_ap</strong><span>: taux d’autoproduction, part de la consommation couverte par la production</span></li>
+<li><strong>E_prod</strong><span>, <strong>E_cons</strong> : production et consommation annuelles, en kWh</span></li>
+</ul>
+<blockquote>
+<p>À 50 % de la toiture : 0,721 × 90 195 / 220 000 = 0,296. Les deux taux ne sont liés que par le rapport des deux énergies.</p>
+</blockquote>
+</div>
+<p>Tant que la production reste sous le talon, rien ne part au réseau. Dans le modèle, un kWc ne dépasse pas 0,77 kW au pas horaire à Fréjus : la limite est de 14 / 0,77 = 18 kWc, en dessous de laquelle tout est autoconsommé. Au-delà, le week-end décide. À 53 kWc, les deux jours de repos portent 30 % de la production et <strong>64 % du surplus</strong>, parce que les bureaux n’y consomment que leur talon.</p>
+<div class="cle">
+<p>Ajouter des modules augmente toujours l’énergie autoconsommée et le taux d’autoproduction, et diminue toujours le taux d’autoconsommation. Un objectif s’énonce donc avec les deux taux, et avec la puissance qui les produit.</p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le modèle horaire, ce qu&#39;il suppose et ce qu&#39;il vaut en euros</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>La production</strong> vient de PVGIS, la base de la Commission européenne : pour Fréjus, plein sud à 10°, pertes système de 14 %, le jour moyen de chaque mois heure par heure et l’énergie mensuelle, 1 353 kWh par kWc sur l’année. Un jour moyen efface les journées claires qui font le surplus ; le modèle distingue donc des jours clairs et des jours couverts, à 25 % d’un jour clair, dans la proportion qui reproduit le jour moyen, de 56 % de jours clairs en janvier à 87 % en juillet. Sur jours moyens, le taux à 53 kWc serait de 85,0 % au lieu de 79,7 % : <strong>un calcul sur jours moyens flatte l’installation de cinq points</strong>.</p>
+<p><strong>La consommation</strong> reprend les bureaux du cours 1 : talon de 14 kW, occupation du lundi au vendredi de 7 h à 19 h, 26 000 kWh en janvier, 15 000 kWh en octobre, jours fériés ignorés. C’est la méthode que recommande photovoltaique.info, le site de ressources de l’association Hespul : production horaire tirée de PVGIS, courbe de charge horaire, et somme heure par heure du minimum des deux.</p>
+<p><strong>La valeur.</strong> Le kilowattheure évité vaut sa part variable : 22,5 c€ HT en heures pleines de saison haute et 15,7 c€ en saison basse avec la facture du cours 1, 17,7 c€ en moyenne pondérée par la production ; on retient 18 c€. Le surplus est vendu 4 c€, hypothèse que la séance 22 envisage. À 53 kWc, le gain vaut 57 511 × 0,18 + 14 644 × 0,04 = <strong>10 938 € par an</strong>, 205 € par kWc, et le retour brut 5,4 ans à 1 100 € par kWc. Les 13 kWc ajoutés en 2027 rapportent 133 € par kWc, <strong>35 % de moins que les premiers</strong>. L’arrêté du 19 décembre 2023 exonère le maître d’ouvrage dont le coût net, recettes sur vingt ans déduites, dépasse 15 % du coût hors taxes des travaux.</p></div></details>
+</div><p><strong>En classe.</strong> En DOMA24, faire lire le tableau à l’envers : pourquoi le taux d’autoconsommation baisse-t-il quand on applique mieux la loi ? La réponse attendue nomme le talon et le week-end. En DOMA22, où l’on compte l’énergie, les trois index de production, d’injection et de soutirage suffisent à calculer les deux taux, à condition de savoir lequel on cherche.</p>
+<h2 id="une-production-partagee-entre-une-commune-et-une-entreprise-montigny-les-metz-2023">Une production partagée entre une commune et une entreprise, Montigny-lès-Metz, 2023</h2>
+<p><em>Le 6 décembre 2023, la ville de Montigny-lès-Metz, le distributeur messin UEM et le groupe Demathieu Bard ont inauguré un parc photovoltaïque au sol de 300 kWc, propriété d’UEM, sur un terrain situé derrière les services techniques municipaux. Selon UEM, il produit 305 MWh par an, répartis à 85 % entre huit bâtiments communaux, dont l’hôtel de ville, une école, la piscine et un stade, et à 15 % au siège voisin de Demathieu Bard. Le réseau régional Grand Est 100 EnR indique un taux d’autoconsommation de près de 90 %, et le maire estimait que l’opération pourrait couvrir 20 % des besoins des bâtiments communaux.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Chaque participant dispose d’un compteur communicant, dont le gestionnaire de réseau relève la courbe de charge ; selon photovoltaique.info, la répartition se fait aujourd’hui au pas de quinze minutes, là où la séance 22 de fluides retient encore trente minutes.</li>
+<li>La personne morale organisatrice communique la clé : fixe, dynamique par défaut au prorata des consommations, ou formule dynamique qu’elle définit elle-même.</li>
+<li>À chaque pas, la production est répartie selon la clé, sans qu’aucun participant ne reçoive plus qu’il n’a consommé.</li>
+<li>Ce qui n’est attribué à personne forme le surplus, injecté ; le complément reste acheté au fournisseur de chacun.</li>
+</ol>
+</div>
+<p>La répartition annoncée, 85 % et 15 %, a la forme d’une <strong>clé fixe</strong>. Un jour ouvré à 12 h 30, le parc produit 250 kW ; la commune consomme 300 kW et l’entreprise 20 kW. La clé attribue 212,5 kW à la commune et 37,5 kW à l’entreprise, plafonnés à ses 20 kW : <strong>17,5 kW partent au réseau alors que l’opération consomme 320 kW</strong>. Au prorata des consommations, la commune aurait reçu 234,4 kW et l’entreprise 15,6 kW, sans aucun surplus.</p>
+<div class="piege">
+<p>Une clé fixe fabrique du surplus même quand l’opération consomme plus qu’elle ne produit : la part d’un participant qui consomme peu est perdue pour les autres. Selon photovoltaique.info, les clés fixes ne redistribuent pas la part inutilisée ; une formule dynamique définie par l’organisateur peut le faire.</p>
+</div>
+<p>L’article L. 315-2 du code de l’énergie lie les participants au sein d’une personne morale. L’arrêté du 21 novembre 2019, en vigueur depuis le 6 mars 2025, borne une opération étendue à deux kilomètres entre les participants les plus éloignés, raccordés en basse tension, et à 5 MW en métropole ; le ministre peut accorder dix kilomètres en zone rurale ou périurbaine, vingt en zone rurale, et 10 MW à certains projets publics.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que les chiffres de Montigny permettent de vérifier</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le productible.</strong> 305 MWh pour 300 kWc font 1 017 kWh par kWc. PVGIS donne 1 100 kWh par kWc à Metz plein sud à 30° : l’annonce vaut 92 % de l’optimum, ce qui est plausible pour un champ au sol dont l’inclinaison n’est pas connue.</p>
+<p><strong>La consommation qu’impliquent les deux taux.</strong> À 90 %, 274,5 MWh sont autoconsommés. S’ils couvrent 20 % des besoins, les bâtiments communaux consomment de l’ordre de 274,5 / 0,20 = 1 372 MWh par an : la production ne représente qu’un cinquième de la consommation. Avec un tel rapport, le taux d’autoconsommation devrait approcher 100 % ; les 10 % perdus viennent des jours de fermeture et de la clé fixe, qui plafonne chaque participant à sa part.</p>
+<p><strong>Ce que le comptage doit fournir.</strong> Les courbes de charge de tous les participants, l’index de production, et une clé transmise dans les délais : quatre jours ouvrés par période de facturation pour une formule dynamique, selon photovoltaique.info. C’est le savoir B9 du référentiel.</p></div></details>
+</div><p><strong>En classe.</strong> En DOMA22 et en DOMA24, faire calculer un pas de quinze minutes avec les deux clés, puis demander : « Demathieu Bard ferme en août ; que devient sa part de 15 % ? » La réponse, le surplus, montre que la clé est une décision d’exploitation autant qu’une clause de contrat. L’exercice 3 déroule quatre pas.</p>
+<h2 id="un-stockage-de-300-mw-qui-brule-moss-landing-2025">Un stockage de 300 MW qui brûle, Moss Landing, 2025</h2>
+<p><em>Le jeudi 16 janvier 2025, vers 15 h, un incendie s’est déclaré dans la phase I du site de stockage par batteries de Vistra à Moss Landing, en Californie : un bâtiment de 300 MW qui contenait environ 100 000 modules lithium-ion, selon l’Agence américaine de protection de l’environnement (EPA). Environ 1 500 personnes ont été visées par des ordres d’évacuation selon ESS News, et les pompiers ont attendu que le feu se consume. L’EPA estime qu’environ 55 % des batteries ont été endommagées ; selon sa page mise à jour le 6 août 2026, l’exploitant et le fabricant recherchent toujours la cause.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>16 janvier 2025 : départ de feu dans le bâtiment de la phase I ; l’incendie dure plusieurs jours.</li>
+<li>17 au 20 janvier : l’EPA installe neuf points de mesure de l’air, recherche les gaz acides, dont le fluorure d’hydrogène, et les particules ; les résultats restent sous les seuils sanitaires.</li>
+<li>27 janvier : des chercheurs de l’université d’État de San José annoncent une forte hausse du nickel, du manganèse et du cobalt dans les sols du marais voisin, selon CBS News.</li>
+<li>Février et mars : les batteries sont déconnectées ; Vistra déprécie environ 400 millions de dollars, selon Energy-Storage.news.</li>
+<li>17 juillet 2025 : un accord entre l’EPA et Vistra organise le retrait des modules, commencé le 29 septembre par les modules intacts.</li>
+<li>24 juin 2026 : 33 943 modules intacts de la zone brûlée ont été déchargés et évacués ; environ 5 000 restent dans des zones difficiles d’accès.</li>
+</ol>
+</div>
+<p>Le site entier, 750 MW pour 3 000 MWh selon ESS News, est bâti sur quatre heures de décharge. Le rapport de la puissance à l’énergie s’appelle le <strong>régime</strong>, ou C-rate : 750 / 3 000 = 0,25 C. C’est la deuxième grandeur d’une batterie après sa capacité, parce qu’elle fixe la durée de décharge à pleine puissance et l’échauffement des cellules.</p>
+<div class="formule">
+<p><strong>C-rate = P / E et t = E × DoD × η / P</strong></p>
+<ul>
+<li><strong>P</strong><span>: puissance de charge ou de décharge, en kW</span></li>
+<li><strong>E</strong><span>: capacité nominale, en kWh</span></li>
+<li><strong>DoD</strong><span>: profondeur de décharge utilisable, de l’ordre de 0,9 en lithium fer phosphate et de 0,5 en plomb pour préserver la durée de vie</span></li>
+<li><strong>η</strong><span>: rendement de la décharge, onduleur compris</span></li>
+</ul>
+<blockquote>
+<p>Une batterie domestique de 10 kWh derrière un onduleur de 5 kW travaille à 0,5 C : 10 × 0,9 × 0,95 / 5 = 1,7 h à pleine puissance.</p>
+</blockquote>
+</div>
+<p>Selon ESS News, la phase I employait des cellules NMC (nickel, manganèse, cobalt) de LG Energy Solution, logées dans l’ancienne salle des turbines d’une centrale des années 1950, alors que plus de 80 % des stockages de réseau récents emploient le lithium fer phosphate (LFP), qui supporte des températures plus élevées avant de s’enflammer, dans des conteneurs extérieurs conçus pour isoler une défaillance.</p>
+<div class="cle">
+<p>Le risque d’une batterie se juge sur trois questions posées avant sa capacité : quelle chimie, où est-elle installée, et qu’est-ce qui empêche une cellule en emballement thermique d’enflammer la suivante ? Moss Landing cumulait une chimie moins stable et un bâtiment clos où la chaleur s’est propagée.</p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que coûte un kilowattheure restitué</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Par cycle.</strong> Une batterie de 10 kWh nominaux déchargée à 90 % avec un rendement de 0,95 restitue 8,55 kWh ; l’aller-retour, 0,95 × 0,95 ≈ 0,90, perd un dixième de l’énergie stockée.</p>
+<p><strong>Sur la vie.</strong> Le capital se divise par l’énergie restituée pendant toute la durée de vie. Hypothèses d’école : 500 € par kWh installé, profondeur 0,9, rendement 0,9, capacité moyenne de 90 % du neuf.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Technologie et durée de vie</th>
+<th>kWh restitués par kWh installé</th>
+<th>Capital par kWh restitué</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lithium, 6 000 cycles</td>
+<td>4 374</td>
+<td>0,11 €</td>
+</tr>
+<tr>
+<td>lithium, 3 000 cycles</td>
+<td>2 187</td>
+<td>0,23 €</td>
+</tr>
+<tr>
+<td>plomb à 250 €/kWh, 1 200 cycles, profondeur 0,5</td>
+<td>486</td>
+<td>0,51 €</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Dans les bureaux.</strong> Le modèle du deuxième cas, avec 53 kWc et une batterie de 50 kWh utiles, restitue 7 133 kWh par an, soit <strong>143 cycles</strong> : le surplus du week-end ne trouve à se vider que dans les nuits de talon. Chaque kilowattheure restitué évite 18 c€ et prive de la vente de 1 / 0,9 kWh à 4 c€ : il rapporte 0,136 €, soit 967 € par an. Au prix de la séance 22, 25 000 € pour 50 kWh, le retour atteint 26 ans ; sur quinze ans, l’équilibre demande 290 € par kWh. <strong>La limite tient aux cycles que le bâtiment offre, bien avant la durée de vie de la batterie.</strong></p>
+<p><strong>Le condensateur, que le référentiel range dans le même savoir,</strong> stocke de la puissance plutôt que de l’énergie. Un supercondensateur de 3 000 F sous 2,7 V contient ½ × 3 000 × 2,7² = 10 935 J, soit 3 Wh : de quoi franchir une microcoupure, pas une heure.</p></div></details>
+</div><p><strong>En classe.</strong> En DOMA24, puis en DOMA20 pour le local des sources secourues, poser la question d’un client : « Je veux une batterie de 10 kWh dans le garage ; que faut-il vérifier avant le devis ? » On attend la chimie, le lieu et sa séparation des pièces de vie, la ventilation, la notice, le régime imposé par l’onduleur, et la fonction visée : les critères de choix du savoir B10.</p>
+<h2 id="des-eoliennes-de-toit-mesurees-pendant-un-an-warwick-2007-2009">Des éoliennes de toit mesurées pendant un an, Warwick, 2007-2009</h2>
+<p><em>Les Warwick Wind Trials, conduits par le bureau d’études britannique Encraft avec le soutien du Pilkington Energy Efficiency Trust, du conseil de district de Warwick et du BRE Trust, ont suivi pendant douze mois, à partir de 2007, vingt-trois éoliennes de toit sur des sites urbains et ruraux, d’Aberdeen à la Cornouailles, dont dix à Warwick. Le parc comptait quatorze Ampair 600, cinq Windsave WS1000, trois Zephyr AirDolphin, une Swift de 1,5 kW et une Eclectic Stealthgen 400, dont une machine de réserve. Chaque site enregistrait la vitesse du vent et l’énergie produite, pour comparer la production réelle à la prévision. Les résultats ont été présentés le 13 janvier 2009.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Choisir des sites variés : trois tours d’habitation, des pignons, un bâtiment à ossature métallique, une maison à ossature bois.</li>
+<li>Mesurer en continu, sur chaque site, la vitesse du vent et l’énergie produite.</li>
+<li>Comparer la production mesurée à celle que prédisent la courbe de puissance et le vent attendu.</li>
+</ol>
+</div>
+<p>Le site du projet en tire deux constats : l’emplacement pèse plus que tout sur la production, et la courbe de puissance du constructeur renseigne mal sur ce qu’une machine produira en ville. Le rapport final, qui donne les chiffres site par site, n’est plus accessible à l’adresse du projet ; aucun n’est repris ici, et le calcul qui suit est celui que la campagne oblige à poser.</p>
+<p>La séance 22 de fluides a donné P = ½ ρ S v³ et la limite de Betz. Deux compléments expliquent la déception. La puissance moyenne n’est pas celle de la vitesse moyenne : pour une distribution de Rayleigh, la moyenne des cubes vaut <strong>6/π ≈ 1,91 fois le cube de la moyenne</strong>. Et sous le seuil de démarrage, 3 m/s pour une petite machine, rien n’est produit : à 3,5 m/s de moyenne, le vent reste 44 % du temps sous ce seuil.</p>
+<div class="formule">
+<p><strong>P moyenne = ½ × ρ × S × Cp × (6/π) × v³</strong>, sans seuil ni plafond</p>
+<ul>
+<li><strong>ρ</strong><span>: masse volumique de l’air, 1,225 kg/m³</span></li>
+<li><strong>S</strong><span>: surface balayée par le rotor, en m²</span></li>
+<li><strong>Cp</strong><span>: coefficient de puissance, 0,25 retenu ici pour une petite machine</span></li>
+<li><strong>v</strong><span>: vitesse moyenne du vent à hauteur du rotor, en m/s</span></li>
+</ul>
+<blockquote>
+<p>Rotor de 1,7 m à 5 m/s de moyenne : 83 W par la formule, 80 W une fois le seuil et le plafond appliqués.</p>
+</blockquote>
+</div>
+<p>Le calcul complet, pour une machine de 600 W et de 1,7 m de diamètre dont la puissance suit ½ ρ S Cp v³ entre 3 m/s et sa vitesse nominale de 12 m/s :</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Vitesse moyenne au rotor</th>
+<th>Puissance moyenne</th>
+<th>Énergie par an</th>
+<th>Facteur de charge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3,0 m/s</td>
+<td>16 W</td>
+<td>142 kWh</td>
+<td>2,7 %</td>
+</tr>
+<tr>
+<td>3,5 m/s</td>
+<td>27 W</td>
+<td>237 kWh</td>
+<td>4,5 %</td>
+</tr>
+<tr>
+<td>4,0 m/s</td>
+<td>41 W</td>
+<td>360 kWh</td>
+<td>6,9 %</td>
+</tr>
+<tr>
+<td>5,0 m/s</td>
+<td>80 W</td>
+<td>698 kWh</td>
+<td>13,3 %</td>
+</tr>
+<tr>
+<td>6,0 m/s</td>
+<td>129 W</td>
+<td>1 126 kWh</td>
+<td>21,4 %</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Sur un toit, la vitesse moyenne décide de tout : de 4 à 5 m/s, la même machine produit 1,94 fois plus. Une promesse de production ne vaut que par la vitesse moyenne qu’elle suppose, et c’est cette vitesse qu’il faut demander.</p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi un toit contredit la courbe de puissance</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La courbe de puissance d’une éolienne se mesure dans un vent établi, régulier en vitesse et en direction. Sur un toit, l’écoulement décolle au bord de la toiture, change sans cesse de direction et fluctue : le rotor passe son temps à s’orienter, et une partie du vent qui le traverse ne produit rien. Le constat de Warwick tient à cette différence.</p>
+<p>La vitesse moyenne elle-même baisse près des obstacles, et le cube amplifie chaque perte : 20 % de vitesse en moins font 0,8³ = 0,51, <strong>la moitié de la puissance</strong>. Le calcul inverse est aussi parlant : une machine de 1 kW et de 2,1 m annoncée pour 1 500 kWh par an suppose 5,65 m/s de moyenne à hauteur du rotor, une vitesse qu’il faut avoir mesurée sur le toit avant de signer.</p></div></details>
+</div><p><strong>En classe.</strong> En DOMA24, donner la promesse avant la formule : « une éolienne de 1 kW produit 1 500 kWh par an ». Faire retrouver la vitesse moyenne qu’elle suppose, puis la comparer au productible d’un kWc photovoltaïque sur le même toit. Le protocole de Warwick, un anémomètre et un compteur par site pendant un an, montre la seule façon honnête de conclure.</p>
+<h2 id="une-peninsule-sans-courant-pendant-dix-huit-heures-espagne-et-portugal-2025">Une péninsule sans courant pendant dix-huit heures, Espagne et Portugal, 2025</h2>
+<p><em>Le 28 avril 2025 à 12 h 33, l’Espagne continentale et le Portugal ont perdu la totalité de leur alimentation électrique ; une petite zone du sud-ouest de la France a été brièvement touchée. Le panel d’experts d’ENTSO-E, qui a publié son rapport final le 20 mars 2026, attribue l’incident à une combinaison de facteurs, dont des oscillations, des lacunes du réglage de la tension et de la puissance réactive et des déconnexions de production en cascade, qui ont fait monter la tension. Selon France 24, plus de 99 % de la demande espagnole était rétablie le lendemain à 7 h.</em></p>
+<p>Toujours selon France 24, le Portugal avait reconnecté ses 6,4 millions de clients dans la nuit, et trois personnes âgées sont mortes en Galice, probablement intoxiquées au monoxyde de carbone après avoir utilisé un groupe électrogène. Près de dix-huit heures et demie séparent la coupure du rétablissement espagnol, une durée qu’aucune batterie de bâtiment ordinaire ne couvre.</p>
+<div class="etapes">
+<ol type="1">
+<li>À l’instant de la coupure, les onduleurs photovoltaïques se découplent : sans référence de tension ni de fréquence, ils s’arrêtent, soleil ou non.</li>
+<li>L’onduleur de confort, ou ASI, reprend les charges qu’il protège, sans interruption s’il est à double conversion, en quelques millisecondes sinon.</li>
+<li>En une dizaine de secondes, un groupe électrogène, s’il existe, reprend les départs secourus ; l’ASI assure la transition.</li>
+<li>Pendant une heure, l’éclairage et les sources de sécurité tiennent leur autonomie réglementaire : c’est le domaine de la fiche PROF4.</li>
+<li>Au-delà, seul le carburant d’un groupe prolonge le secours.</li>
+</ol>
+</div>
+<p>Une alimentation sans interruption, que le métier appelle onduleur, se range selon la norme IEC 62040-3 en trois familles, qui diffèrent par ce que la charge reçoit du réseau en fonctionnement normal.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Famille IEC 62040-3</th>
+<th>Nom courant</th>
+<th>En fonctionnement normal</th>
+<th>À la coupure</th>
+<th>Emploi type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VFD</td>
+<td>attente passive, off-line</td>
+<td>le réseau tel quel</td>
+<td>bascule en quelques millisecondes</td>
+<td>poste isolé</td>
+</tr>
+<tr>
+<td>VI</td>
+<td>interactive</td>
+<td>le réseau, corrigé en tension</td>
+<td>bascule courte</td>
+<td>baie de brassage, petit serveur</td>
+</tr>
+<tr>
+<td>VFI</td>
+<td>double conversion, on-line</td>
+<td>tension et fréquence refabriquées en permanence</td>
+<td>aucune bascule</td>
+<td>salle informatique, GTB, charges sensibles</td>
+</tr>
+</tbody>
+</table></div>
+<div class="formule">
+<p><strong>t = E_restituée × η / P</strong></p>
+<ul>
+<li><strong>t</strong><span>: autonomie, en h</span></li>
+<li><strong>E_restituée</strong><span>: énergie que la batterie restitue <strong>au régime de la décharge</strong>, en kWh</span></li>
+<li><strong>η</strong><span>: rendement de l’onduleur en décharge, de l’ordre de 0,9</span></li>
+<li><strong>P</strong><span>: puissance active de la charge, en kW</span></li>
+</ul>
+<blockquote>
+<p>Une batterie au plomb déchargée en un quart d’heure ne restitue guère plus de la moitié de sa capacité nominale en dix heures : l’autonomie se lit dans les tables du fabricant, pas sur l’étiquette. L’exercice 2 en fait le calcul.</p>
+</blockquote>
+</div>
+<div class="piege">
+<p>Un onduleur photovoltaïque n’est pas une alimentation secourue. Le 28 avril 2025, une toiture solaire sans batterie ni fonction d’îlotage s’est arrêtée avec le réseau, comme sa protection de découplage l’impose pour ne pas alimenter une ligne sur laquelle un agent peut intervenir. Autoconsommer et secourir sont deux fonctions, qui demandent deux matériels.</p>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Confort ou sécurité, et ce que l&#39;onduleur de confort ne fait pas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Deux régimes.</strong> La fiche PROF4 traite la <strong>sécurité</strong>, ce que la réglementation impose de maintenir, avec un calcul en ampères-heures sur le courant de veille, C = I × t × k. Cette page traite le <strong>confort</strong>, ce que l’exploitant choisit de maintenir : informatique, GTB, contrôle d’accès, un ascenseur. Le premier se prescrit, le second se négocie avec le client.</p>
+<p><strong>kVA et kW.</strong> Une ASI se désigne par sa puissance apparente, et sa plaque indique aussi une puissance active. Un appareil de 3 kVA au facteur de puissance 0,9 ne fournit que 2,7 kW : il ne tient pas une baie de 3 kW. On choisit sur les kilowatts, puis on vérifie les kilovoltampères.</p>
+<p><strong>Le groupe.</strong> Une ASI de dix minutes suffit à franchir les dix secondes de démarrage d’un groupe et à arrêter proprement un serveur. Le groupe, lui, s’installe à l’extérieur ou dans un local ventilé conçu pour lui : les décès de Galice rappellent qu’un moteur thermique dans un local fermé tue.</p></div></details>
+</div><p><strong>En classe.</strong> La question se pose en DOMA20, « SSI, balisage et sources secourues », puis en DOMA24 : « Le 28 avril 2025 à 14 h, qu’est-ce qui fonctionne encore dans les bureaux du cours 1 ? » La réponse attendue sépare ce que la réglementation impose de secourir, qui relève de la fiche PROF4, de ce que l’exploitant choisit de secourir, et constate que les 53 kWc de la toiture ne servent à rien ce jour-là.</p>
+<h2 id="la-ou-la-methode-change">Là où la méthode change</h2>
+<p>Tout ce qui précède raisonne avec un réseau présent. Le réseau absorbe le surplus, fournit le manque, impose la tension et la fréquence : l’autoconsommation se calcule alors en énergie, sur une année, et une erreur de quelques kilowatts coûte quelques euros. Dès que le réseau disparaît, le bâtiment devient un <strong>îlot</strong>, et les grandeurs changent de rôle.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>Réseau présent</th>
+<th>Réseau absent, en îlot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ce qui fixe tension et fréquence</td>
+<td>le réseau</td>
+<td>un onduleur de batterie formeur de réseau</td>
+</tr>
+<tr>
+<td>Ce qui se dimensionne</td>
+<td>l’énergie annuelle, en kWh</td>
+<td>la puissance simultanée, en kW, démarrages compris</td>
+</tr>
+<tr>
+<td>Le jour de référence</td>
+<td>l’année moyenne</td>
+<td>le pire jour : hiver, ciel couvert, bureaux occupés</td>
+</tr>
+<tr>
+<td>Le surplus</td>
+<td>injecté et vendu</td>
+<td>à écrêter, faute de preneur</td>
+</tr>
+<tr>
+<td>Une erreur de dimensionnement</td>
+<td>quelques euros par an</td>
+<td>l’arrêt de tout le tableau</td>
+</tr>
+</tbody>
+</table></div>
+<p>Les bureaux appellent en moyenne 70,5 kW pendant l’occupation en janvier et 27,6 kW en juin. La batterie de 50 kWh utiles du calcul de rentabilité les tiendrait 43 minutes en janvier et 1 h 49 en juin, derrière un onduleur de plus de 70 kW. On ne secourt donc pas un bâtiment : on secourt un <strong>tableau</strong>, les départs qu’on a décidé de maintenir, regroupés en aval d’un inverseur de sources. C’est le savoir C1-1 du référentiel, la gestion des sources et des départs d’un TGBT, et la décision précède le choix de toute batterie.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;il faut pour que les panneaux servent pendant une coupure</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Séparer.</strong> Un organe de coupure automatique isole le bâtiment du réseau public avant toute réalimentation : c’est la condition de sécurité des agents du distributeur, la même que celle du découplage.</p>
+<p><strong>Former le réseau.</strong> Un onduleur de batterie capable de fabriquer seul la tension et la fréquence prend la place du réseau. Les onduleurs photovoltaïques ordinaires se synchronisent sur lui comme sur le réseau public.</p>
+<p><strong>Écrêter.</strong> Batterie pleine, le surplus n’a plus de destination : l’onduleur de batterie élève la fréquence, et les onduleurs photovoltaïques, qui réduisent leur puissance quand la fréquence monte, suivent la consigne sans liaison de communication.</p>
+<p><strong>Dimensionner sur le tableau secouru.</strong> À 3 kW, les dix-huit heures et demie de l’incident ibérique demanderaient 55 kWh utiles, soit 82 kWh nominaux en lithium fer phosphate. La batterie grossit comme la durée, alors qu’un groupe ne demande que du carburant : les bâtiments qui ne peuvent pas s’arrêter s’équipent de groupes.</p></div></details>
+</div><h2 id="le-calcul-retourne">Le calcul retourné</h2>
+<p>La séance 22 de fluides vérifie une installation donnée. Le bureau d’études part de l’autre bout : on lui fixe un <strong>taux d’autoconsommation</strong> visé, ou une <strong>autonomie</strong>, et il cherche la puissance crête ou la capacité. Sont fixés la courbe de charge, le site et l’orientation ; restent libres la puissance et la batterie.</p>
+<p>Pour la puissance, on superpose heure par heure la production et la courbe de charge, on somme le minimum des deux, et l’on fait varier la puissance jusqu’au taux visé. Pour les bureaux, le modèle du deuxième cas donne :</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Taux d’autoconsommation visé</th>
+<th>Puissance crête</th>
+<th>Production</th>
+<th>Taux d’autoproduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100 %</td>
+<td>18 kWc au plus</td>
+<td>24 MWh</td>
+<td>11 %</td>
+</tr>
+<tr>
+<td>95 %</td>
+<td>30 kWc</td>
+<td>41 MWh</td>
+<td>18 %</td>
+</tr>
+<tr>
+<td>90 %</td>
+<td>38 kWc</td>
+<td>52 MWh</td>
+<td>21 %</td>
+</tr>
+<tr>
+<td>80 %</td>
+<td>53 kWc</td>
+<td>71 MWh</td>
+<td>26 %</td>
+</tr>
+<tr>
+<td>70 %</td>
+<td>71 kWc</td>
+<td>96 MWh</td>
+<td>31 %</td>
+</tr>
+</tbody>
+</table></div>
+<figure>
+<img src="img/COURS8-PRODUIRE-STOCKER-SECOURIR/c8-deux-taux.png" alt="Les deux taux en fonction de la puissance crête, pour les bureaux à Fréjus : les trois proportions de toiture de la loi tombent dans la zone où chaque kWc ajouté est de moins en moins autoconsommé." />
+<figcaption aria-hidden="true">Les deux taux en fonction de la puissance crête, pour les bureaux à Fréjus : les trois proportions de toiture de la loi tombent dans la zone où chaque kWc ajouté est de moins en moins autoconsommé.</figcaption>
+</figure>
+<p>Un seul calcul tient sans simulation : <strong>P_c ≤ P_talon / p_max</strong>, où p_max est la puissance maximale d’un kWc sur le site, 0,77 kW au pas horaire à Fréjus dans le modèle. Il donne 14 / 0,77 = 18 kWc, la puissance sous laquelle tout est autoconsommé : un plancher, jamais un optimum. L’optimum dépend des prix, et la valeur décroissante des derniers kWc, calculée au deuxième cas, le situe.</p>
+<p>Pour la batterie de secours, on fixe la puissance du tableau secouru et la durée, et l’on cherche la technologie et la capacité.</p>
+<div class="formule">
+<p><strong>E_nom = P × t / (DoD × η × SoH)</strong></p>
+<ul>
+<li><strong>P</strong><span>: puissance du tableau secouru, en kW</span></li>
+<li><strong>t</strong><span>: autonomie visée, en h</span></li>
+<li><strong>DoD</strong><span>: profondeur de décharge, 0,9 en lithium fer phosphate, 0,5 en plomb</span></li>
+<li><strong>η</strong><span>: rendement de la batterie et de l’onduleur en décharge</span></li>
+<li><strong>SoH</strong><span>: état de santé en fin de vie, 0,8 : la batterie doit encore tenir le jour où elle a vieilli</span></li>
+</ul>
+<blockquote>
+<p>Puis vérifier le régime : P / E_nom ne doit pas dépasser ce que la batterie admet.</p>
+</blockquote>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La baie, la GTB et les circulations des bureaux : 3 kW pendant quatre heures</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’énergie utile vaut 3 × 4 = <strong>12 kWh</strong>.</p>
+<p><strong>En lithium fer phosphate</strong>, profondeur 0,9, rendement 0,94, fin de vie 0,8 : 12 / (0,9 × 0,94 × 0,8) = <strong>17,7 kWh nominaux</strong>. Le régime vaut 3 / 17,7 = 0,17 C, très en dessous de ce que la chimie admet.</p>
+<p><strong>En plomb</strong>, profondeur 0,5, rendement 0,85, fin de vie 0,8 : 12 / (0,5 × 0,85 × 0,8) = <strong>35,3 kWh nominaux</strong>, soit 735 Ah sous 48 V. Pour la même autonomie, il faut deux fois la capacité du lithium, avant même de compter la perte liée au régime de décharge.</p>
+<p><strong>Vérification.</strong> La batterie lithium restitue 17,7 × 0,9 × 0,94 = 15,0 kWh neuve et 12 kWh en fin de vie : l’autonomie est tenue jusqu’au dernier jour. Une capacité rendue sans la liste des départs secourus ne se vérifie pas.</p></div></details>
+</div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : le parking du centre commercial</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un parc de stationnement extérieur de 12 000 m², places, voies et zone de péage comprises, non concédé, se trouve à Fréjus. Donner l’échéance, la surface d’ombrières, la puissance avec des modules de 200 Wc/m², le productible en plein sud à 10° puis vers l’est à 10°, et la sanction encourue.</p>
+<p><strong>Résolution.</strong> Le parc dépasse 10 000 m² : l’échéance est le 1er juillet 2026, sauf délai supplémentaire justifié par un contrat et un bon de commande. La moitié de la superficie, <strong>6 000 m²</strong>, doit être couverte ; en variante mixte, au moins 35 % de cette moitié, 2 100 m², en ombrières, et le reste ombragé par de la végétation. La puissance vaut 6 000 × 0,200 = <strong>1 200 kWc</strong>. Plein sud à 10° : 1 200 × 1 353 = <strong>1 624 MWh par an</strong> ; vers l’est à 10° : 1 200 × 1 220 = <strong>1 464 MWh</strong>, soit 160 MWh et 10 % de moins. La sanction peut atteindre 40 000 € par an jusqu’à la mise en conformité.</p>
+<p><strong>Vérification de plausibilité.</strong> 1 353 kWh par kWc à Fréjus, contre 1 163 mesurés à La Glèbe, où PVGIS donne 1 177 : le rapport de 1,15 est celui des deux ensoleillements. À 25 m² par place, voies comprises, chacune des 480 places porte 2,5 kWc et 3 382 kWh par an, environ 22 500 km pour une voiture électrique à 15 kWh aux 100 km.</p>
+<p><strong>Ce que l’étudiant doit rédiger.</strong> La base de la superficie, telle que le décret la définit, le coefficient d’orientation avec sa source, les unités, et la destination de l’énergie : un productible sans preneur n’est pas un projet.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : l&#39;onduleur de la baie informatique</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> La baie et la GTB des bureaux appellent 3 kW. On veut quinze minutes d’autonomie, le temps d’un arrêt propre ou du démarrage d’un groupe. Choisir la famille d’ASI, sa puissance, et la batterie au plomb sous 48 V, avec un rendement de 0,92, une fin de vie à 0,8, et une batterie qui ne restitue que 55 % de sa capacité nominale en un quart d’heure.</p>
+<p><strong>Choisir avant de calculer.</strong> Des charges informatiques et une GTB appellent une ASI <strong>VFI</strong>, à double conversion, sans bascule. La puissance se choisit en kilowatts : 3 kW au facteur de puissance 0,9 font 3,33 kVA, et un appareil de 3 kVA à 0,9 ne fournit que 2,7 kW. Il faut une plaque qui annonce au moins 3 kW.</p>
+<p><strong>Résolution.</strong> Énergie tirée de la batterie : 3 × 0,25 / 0,92 = 0,815 kWh ; avec la fin de vie, 0,815 / 0,8 = 1,02 kWh ; avec l’effet du régime, 1,02 / 0,55 = <strong>1,85 kWh nominaux</strong>, soit 1 850 / 48 = <strong>38,6 Ah</strong>, arrondis à 40 Ah. Le courant de décharge vaut 3 000 / (0,92 × 48) = 68 A, soit 1,7 fois la capacité par heure : c’est ce régime qui ampute la batterie de près de moitié.</p>
+<p><strong>Vérification de plausibilité.</strong> L’énergie consommée pendant le quart d’heure vaut 0,75 kWh, et la batterie en fait 1,85 : un rapport de 2,5, que le rendement, le vieillissement et le régime expliquent entièrement, 1 / (0,92 × 0,8 × 0,55) = 2,47.</p>
+<p><strong>Ce que l’étudiant doit rédiger.</strong> La distinction entre kW et kVA, l’effet du régime de décharge, et la différence avec le calcul de la fiche PROF4, en ampères-heures sur un courant de veille.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : quatre quarts d&#39;heure d&#39;une opération collective</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une opération réunit une commune et une entreprise, sur le modèle de Montigny-lès-Metz, avec une clé fixe de 85 % et 15 %. Quatre pas de quinze minutes d’un jour ouvré de mai, en puissances moyennes sur le pas :</p>
+<div class="enveloppe-tbl"><table>
+<thead>
+<tr>
+<th>Pas</th>
+<th>Production</th>
+<th>Commune</th>
+<th>Entreprise</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10 h</td>
+<td>180 kW</td>
+<td>240 kW</td>
+<td>25 kW</td>
+</tr>
+<tr>
+<td>12 h 30</td>
+<td>250 kW</td>
+<td>300 kW</td>
+<td>20 kW</td>
+</tr>
+<tr>
+<td>14 h</td>
+<td>230 kW</td>
+<td>180 kW</td>
+<td>60 kW</td>
+</tr>
+<tr>
+<td>17 h</td>
+<td>90 kW</td>
+<td>280 kW</td>
+<td>40 kW</td>
+</tr>
+</tbody>
+</table></div>
+<p>Répartir la production avec la clé fixe, puis avec la clé dynamique par défaut ; calculer le surplus et le taux d’autoconsommation sur les quatre pas ; proposer une clé.</p>
+<p><strong>Résolution avec la clé fixe.</strong> 10 h : commune min(153 ; 240) = 153, entreprise min(27 ; 25) = 25, surplus 2 kW. 12 h 30 : 212,5 et 20, surplus 17,5 kW. 14 h : commune min(195,5 ; 180) = 180, entreprise 34,5, surplus 15,5 kW. 17 h : 76,5 et 13,5, surplus nul. Les surplus s’additionnent à 35 kW, sur des pas d’un quart d’heure : 35 × 0,25 = <strong>8,75 kWh</strong> sur 750 × 0,25 = 187,5 kWh produits, soit un taux d’autoconsommation de <strong>95,3 %</strong>.</p>
+<p><strong>Résolution avec la clé dynamique.</strong> À chaque pas, la consommation totale dépasse la production : tout est attribué au prorata, par exemple 172,5 et 57,5 kW à 14 h. Taux d’autoconsommation : <strong>100 %</strong>.</p>
+<p><strong>Vérification de plausibilité.</strong> Une clé au prorata ne crée de surplus que si la production dépasse la consommation totale ; la clé fixe en crée à 12 h 30 et à 14 h, parce qu’un participant consomme sous sa part pendant que l’autre la dépasse.</p>
+<p><strong>Proposition.</strong> Une formule dynamique définie par l’organisateur peut garder l’accord de 85 % et 15 % en première attribution, puis redistribuer la part inutilisée : à 14 h, les 15,5 kW que la commune ne consomme pas iraient à l’entreprise, qui en manque de 25,5. <strong>Ce que l’étudiant doit rédiger</strong> : la règle du plafonnement, le passage des kilowatts aux kilowattheures par le pas de quinze minutes, et la raison du choix de la clé.</p></div></details>
+</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Grandeur</th>
+<th>Ordre de grandeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Productible à Fréjus, plein sud à 30° (PVGIS, pertes système 14 %)</td>
+<td><strong>1 486 kWh par kWc et par an</strong></td>
+</tr>
+<tr>
+<td>Même site, plein sud à 10° · à plat · est à 10° · façade</td>
+<td>1 353 · 1 235 · 1 220 · 1 016 kWh par kWc</td>
+</tr>
+<tr>
+<td>Productible à Metz, plein sud à 30°</td>
+<td>1 100 kWh par kWc</td>
+</tr>
+<tr>
+<td>Ratio de performance annuel, pertes système de 14 %</td>
+<td>0,78 à 0,79 ; 0,82 l’hiver, 0,76 l’été</td>
+</tr>
+<tr>
+<td>Puissance d’un mètre carré de modules</td>
+<td>200 à 220 Wc</td>
+</tr>
+<tr>
+<td>Puissance maximale d’un kWc à Fréjus, au pas horaire</td>
+<td>0,77 kW</td>
+</tr>
+<tr>
+<td>Puissance crête sous laquelle les bureaux autoconsomment tout</td>
+<td>talon / 0,77, soit 18 kWc</td>
+</tr>
+<tr>
+<td>Bureaux à 40 % de la toiture : autoconsommation · autoproduction</td>
+<td><strong>80 % · 26 %</strong></td>
+</tr>
+<tr>
+<td>Biais d’un calcul sur jours moyens</td>
+<td>cinq points d’autoconsommation de trop</td>
+</tr>
+<tr>
+<td>Tertiaire de 883 MWh avec 250 kWc (photovoltaique.info)</td>
+<td>83 % d’autoconsommation</td>
+</tr>
+<tr>
+<td>Opération collective étendue</td>
+<td>2 km, 5 MW, pas de 15 minutes</td>
+</tr>
+<tr>
+<td>Régime d’un stockage de réseau de quatre heures</td>
+<td>0,25 C</td>
+</tr>
+<tr>
+<td>Rendement aller-retour d’une batterie lithium</td>
+<td>de l’ordre de 90 %</td>
+</tr>
+<tr>
+<td>Profondeur de décharge utile</td>
+<td>0,9 en lithium fer phosphate · 0,5 en plomb</td>
+</tr>
+<tr>
+<td>Cycles par an d’une batterie d’autoconsommation de bureaux</td>
+<td>environ 150</td>
+</tr>
+<tr>
+<td>Supercondensateur de 3 000 F sous 2,7 V</td>
+<td>3 Wh</td>
+</tr>
+<tr>
+<td>Rapport de la moyenne des cubes au cube de la moyenne (Rayleigh)</td>
+<td>1,91</td>
+</tr>
+<tr>
+<td>Éolienne de toit de 600 W à 3,5 m/s de moyenne</td>
+<td><strong>237 kWh par an</strong>, 4,5 % de facteur de charge</td>
+</tr>
+<tr>
+<td>Plomb déchargé en un quart d’heure</td>
+<td>un peu plus de la moitié de sa capacité nominale</td>
+</tr>
+<tr>
+<td>Autonomie d’un bloc d’éclairage de sécurité (fiche PROF4)</td>
+<td>une heure</td>
+</tr>
+<tr>
+<td>Coupure ibérique du 28 avril 2025</td>
+<td>18 h 30 avant 99 % de la demande espagnole</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Trois réflexes suffisent à trier la plupart des affirmations : <strong>un kWc produit de 900 à 1 500 kWh par an environ en France métropolitaine</strong>, selon le site et l’orientation ; <strong>un taux d’autoconsommation seul ne dit rien</strong> sans la puissance et la consommation ; <strong>une éolienne de toit se juge sur la vitesse moyenne mesurée</strong>, jamais sur sa puissance nominale.</p>
+</div>
+<h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi mes panneaux ne produisent-ils rien pendant une coupure, en plein soleil ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que l’onduleur photovoltaïque ordinaire suit le réseau : il se cale sur sa tension et sa fréquence, et il doit s’arrêter quand elles disparaissent, pour ne pas alimenter une ligne sur laquelle un agent peut travailler. Produire pendant une coupure demande une batterie, un onduleur formeur de réseau, un organe de séparation et un tableau secouru, détaillés à la section « Là où la méthode change ». Pour la baie et la GTB des bureaux, 3 kW pendant quatre heures, il faut 17,7 kWh nominaux en lithium fer phosphate.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Si l&#39;on ajoute des panneaux, on autoconsomme davantage, non ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Oui en kilowattheures, non en taux. De 40 à 67 kWc sur les bureaux, l’énergie autoconsommée passe de 48,0 à 65,0 MWh, mais le taux d’autoconsommation tombe de 89 à 72 % : chaque kWc ajouté produit surtout aux heures où le bâtiment est déjà couvert, le week-end et à midi en été. En euros, les derniers kWc exigés par la loi rapportent 133 € par kWc et par an, contre 205 € pour les premiers : ajouter des panneaux reste rentable, de moins en moins.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Une commune annonce 87 % d&#39;autoconsommation et 18 % d&#39;autoproduction : est-ce un bon résultat ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les deux taux seuls ne permettent pas de répondre ; il faut les confronter au productible. Le cas est réel : selon la société Enogrid, source commerciale, Mougins, dans les Alpes-Maritimes, alimente depuis 2023 59 bâtiments communaux par 546 kWc répartis en quatre boucles, avec 87 % d’autoconsommation, 18 % des besoins couverts et 330 MWh autoconsommés chaque année.</p>
+<p>Le calcul de cohérence : 330 MWh à 87 % supposent 379 MWh produits, soit 695 kWh par kWc, quand PVGIS donne 1 359 kWh par kWc à Mougins plein sud à 10°. Les trois nombres ne décrivent pas ensemble une année pleine des 546 kWc ; une mise en service échelonnée des boucles l’expliquerait, et c’est la question à poser. <strong>Un taux se vérifie par le productible qu’il implique.</strong></p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Avec une batterie, l&#39;installation devient rentable ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Rarement dans un bâtiment tertiaire. Sur les bureaux à 53 kWc, le calcul du quatrième cas donne 143 cycles par an et 967 € de gain annuel pour une batterie de 50 kWh utiles, soit 26 ans de retour à 25 000 €. Elle peut devenir rentable dans trois situations : un surplus vendu presque rien et consommable le soir même, un tarif qui fait payer cher la pointe, ou un besoin de secours qu’on aurait payé de toute façon. Dans le dernier cas, on achète une autonomie, et l’autoconsommation vient en supplément.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Une batterie au lithium peut-elle prendre feu dans un garage ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Oui : une cellule qui chauffe au-delà d’un seuil libère sa propre énergie, chauffe ses voisines, et l’emballement thermique se propage. La réponse utile porte sur ce qui limite le risque : le lithium fer phosphate, plus stable ; un emplacement séparé des pièces de vie et des issues ; une ventilation ; la notice du fabricant ; un système de gestion qui coupe avant l’emballement. Selon la base de l’institut américain EPRI citée par ESS News, les incidents sont restés autour d’une dizaine par an dans le monde, pendant que les capacités installées étaient multipliées par vingt.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi ne pas mettre une éolienne sur le toit du lycée ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que le vent d’un toit est faible et turbulent, et que la puissance varie comme le cube de la vitesse. Une machine de 600 W et de 1,7 m produit 237 kWh par an à 3,5 m/s de moyenne ; un seul kWc photovoltaïque, cinq mètres carrés environ, produit 1 353 kWh par an à Fréjus, 5,7 fois plus. Si le lycée veut une éolienne pour enseigner, elle a sa place sur un mât dégagé, avec un anémomètre, comme à Warwick ; pour produire, le toit revient aux modules.</p></div></details>
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Les sources de cette page</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><ul>
+<li>Référentiel du BTS FED, arrêté de mars 2014, dans le dépôt : <code>01-referentiel</code>, pages 70 et 72 ; niveaux 3 de l’option C pour B6-1, B6-2 et les deux lignes de B10.</li>
+<li>Légifrance, loi n° 2023-175 du 10 mars 2023, article 40, version en vigueur depuis le 28 novembre 2025 (modifiée par la loi n° 2025-1129 du 26 novembre 2025), <a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000048250403/" class="uri">https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000048250403/</a> : seuils, proportion, échéances, délais supplémentaires, sanctions.</li>
+<li>Légifrance, décret n° 2024-1023 du 13 novembre 2024 portant application de l’article 40 de la loi n° 2023-175, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000050495478" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000050495478</a> : superficie à compter, exonérations.</li>
+<li>Légifrance, article L. 171-4 du code de la construction et de l’habitation, version en vigueur depuis le 28 mai 2026 (loi n° 2026-403 du 26 mai 2026, article 47), <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000051560692" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000051560692</a> : champ, seuil de 500 m², proportions de 30, 40 et 50 %.</li>
+<li>Légifrance, article L. 171-4, version du 1er janvier au 3 mai 2025, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043963538/2025-01-01" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043963538/2025-01-01</a> : seuil unique de 500 m², bureaux compris, issu de l’article 41 de la loi APER.</li>
+<li>Légifrance, article L. 111-18-1 du code de l’urbanisme, en vigueur du 10 novembre 2019 au 1er juillet 2023, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000039360925/" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000039360925/</a> : seuil de 1 000 m², 30 % de la toiture.</li>
+<li>Légifrance, loi n° 2021-1104 du 22 août 2021, article 101, <a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000043957890/2021-08-25" class="uri">https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000043957890/2021-08-25</a> : transfert de l’obligation au 1er juillet 2023.</li>
+<li>Légifrance, loi n° 2023-175, article 41, <a href="https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000047294292" class="uri">https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000047294292</a> : extension de la liste des bâtiments.</li>
+<li>Légifrance, loi n° 2023-175, article 43, <a href="https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000047294294" class="uri">https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000047294294</a> : article L. 171-5, bâtiments existants au 1er janvier 2028.</li>
+<li>Cabinet Gossement Avocats, « Solarisation et végétalisation des toitures », 20 décembre 2023, <a href="https://www.gossement-avocats.com/blog/solarisation-et-vegetalisation-des-toitures/" class="uri">https://www.gossement-avocats.com/blog/solarisation-et-vegetalisation-des-toitures/</a> : seuils de 2023, 500 m² et 1 000 m² pour les bureaux.</li>
+<li>Sénat, question écrite de M. Patrick Chaize, 17 octobre 2024, réponse ministérielle du 25 juin 2026, <a href="https://www.senat.fr/questions/base/2024/qSEQ241001892.html" class="uri">https://www.senat.fr/questions/base/2024/qSEQ241001892.html</a> : échéances et bâtiments existants.</li>
+<li>AIDA (INERIS), arrêté du 19 décembre 2023 portant application de l’article L. 171-4, <a href="https://aida.ineris.fr/reglementation/arrete-191223-portant-application-larticle-171-4-code-construction-lhabitation-0" class="uri">https://aida.ineris.fr/reglementation/arrete-191223-portant-application-larticle-171-4-code-construction-lhabitation-0</a> : proportions par date, seuil économique de 15 %.</li>
+<li>Ministère de la Transition écologique, « Loi de simplification de la vie économique : mesures urbanisme, construction et aménagement commercial », <a href="https://www.ecologie.gouv.fr/politiques-publiques/loi-simplification-vie-economique-sve-mesures-urbanisme-construction" class="uri">https://www.ecologie.gouv.fr/politiques-publiques/loi-simplification-vie-economique-sve-mesures-urbanisme-construction</a> : revêtements réfléchissants.</li>
+<li>Commission européenne, JRC, PVGIS 5.2, calculs PVcalc et DRcalc pour Fréjus, Metz, La Rouquette et Mougins, par exemple <a href="https://re.jrc.ec.europa.eu/api/v5_2/PVcalc?lat=43.433&amp;lon=6.737&amp;peakpower=1&amp;loss=14&amp;angle=30&amp;aspect=0&amp;outputformat=json" class="uri">https://re.jrc.ec.europa.eu/api/v5_2/PVcalc?lat=43.433&amp;lon=6.737&amp;peakpower=1&amp;loss=14&amp;angle=30&amp;aspect=0&amp;outputformat=json</a> : productibles, pertes, profils horaires du modèle.</li>
+<li>Groupe UEM, « UEM, la Ville de Montigny-lès-Metz et Demathieu Bard inaugurent le 1er parc photovoltaïque en autoconsommation collective de la commune », décembre 2023, <a href="https://www.uem-metz.fr/uem-la-ville-de-montigny-les-metz-et-demathieu-bard-inaugurent-le-1er-parc-photovoltaique-en-autoconsommation-collective-de-la-commune/" class="uri">https://www.uem-metz.fr/uem-la-ville-de-montigny-les-metz-et-demathieu-bard-inaugurent-le-1er-parc-photovoltaique-en-autoconsommation-collective-de-la-commune/</a> : 300 kWc, 305 MWh, 85 % et 15 %, bâtiments desservis.</li>
+<li>Grand Est 100 EnR, « L’opération d’autoconsommation collective de Montigny-lès-Metz », <a href="https://grandest100enr.org/loperation-dautoconsommation-collective-de-montigny-les-metz/" class="uri">https://grandest100enr.org/loperation-dautoconsommation-collective-de-montigny-les-metz/</a> : taux de près de 90 %, couverture estimée de 20 %.</li>
+<li>Légifrance, code de l’énergie, articles L. 315-1 à L. 315-8, <a href="https://www.legifrance.gouv.fr/codes/id/LEGISCTA000032939883" class="uri">https://www.legifrance.gouv.fr/codes/id/LEGISCTA000032939883</a> : définitions de l’autoconsommation individuelle et collective.</li>
+<li>Légifrance, arrêté du 21 novembre 2019 fixant le critère de proximité géographique de l’autoconsommation collective étendue, version en vigueur depuis le 6 mars 2025, <a href="https://www.legifrance.gouv.fr/loda/id/JORFTEXT000039417566/" class="uri">https://www.legifrance.gouv.fr/loda/id/JORFTEXT000039417566/</a> : 2 km, basse tension, 5 MW, dérogations.</li>
+<li>photovoltaique.info (Hespul), « Règles et clés de répartition de la production », page modifiée le 11 septembre 2026, <a href="https://www.photovoltaique.info/fr/tarifs-dachat-et-autoconsommation/autoconsommation/autoconsommation-collective/regles-et-cles-de-repartition-de-la-production/" class="uri">https://www.photovoltaique.info/fr/tarifs-dachat-et-autoconsommation/autoconsommation/autoconsommation-collective/regles-et-cles-de-repartition-de-la-production/</a> : clés, pas de quinze minutes, plafonnement.</li>
+<li>photovoltaique.info (Hespul), « Estimer le taux d’autoconsommation », 26 novembre 2024, <a href="https://www.photovoltaique.info/fr/realiser-une-installation/analyse-de-la-faisabilite-technique/estimer-le-taux-d-autoconsommation/" class="uri">https://www.photovoltaique.info/fr/realiser-une-installation/analyse-de-la-faisabilite-technique/estimer-le-taux-d-autoconsommation/</a> : méthode horaire, exemple tertiaire à 83,4 %.</li>
+<li>Enogrid, source commerciale, « Autoconsommation collective photovoltaïque : 6 retours d’expériences », 21 juillet 2026, <a href="https://enogrid.com/autoconsommation-collective-photovoltaique-6-retours-dexperiences/" class="uri">https://enogrid.com/autoconsommation-collective-photovoltaique-6-retours-dexperiences/</a> : chiffres annoncés pour Mougins.</li>
+<li>Énergie Partagée, « Ombrières de La Glèbe », <a href="https://energie-partagee.org/projets/ombrieres-de-la-glebe/" class="uri">https://energie-partagee.org/projets/ombrieres-de-la-glebe/</a> : 2 298 kW, 10 500 m², 2 673 MWh, 98 % consommés sur place, 3,4 M€.</li>
+<li>US EPA, « Moss Landing Vistra Battery Fire Response », page mise à jour le 6 août 2026, <a href="https://www.epa.gov/ca/moss-landing-vistra-battery-fire" class="uri">https://www.epa.gov/ca/moss-landing-vistra-battery-fire</a> : 300 MW, environ 100 000 modules, 55 % endommagés, accord de retrait.</li>
+<li>US EPA, « Response Timeline », <a href="https://www.epa.gov/ca/moss-landing-vistra-battery-fire-updates" class="uri">https://www.epa.gov/ca/moss-landing-vistra-battery-fire-updates</a> : mesures de l’air, étapes du retrait, 33 943 modules au 24 juin 2026, cause en cours d’investigation.</li>
+<li>ESS News, « Fire at California’s Moss Landing battery plant triggers evacuation », 17 janvier 2025, <a href="https://www.ess-news.com/2025/01/17/fire-at-californias-moss-landing-battery-plant-triggers-evacuation/" class="uri">https://www.ess-news.com/2025/01/17/fire-at-californias-moss-landing-battery-plant-triggers-evacuation/</a> : heure, évacuations, 750 MW et 3 000 MWh, stratégie des pompiers.</li>
+<li>ESS News, « Incidents similar to Moss Landing battery fire are unlikely but stricter regulations proposed », 28 janvier 2025, <a href="https://www.ess-news.com/2025/01/28/incidents-similar-to-moss-landing-battery-fire-are-unlikely-but-stricter-regulations-proposed/" class="uri">https://www.ess-news.com/2025/01/28/incidents-similar-to-moss-landing-battery-fire-are-unlikely-but-stricter-regulations-proposed/</a> : cellules NMC, salle des turbines, part du LFP, données de l’EPRI.</li>
+<li>CBS News San Francisco, 28 janvier 2025, <a href="https://www.cbsnews.com/sanfrancisco/news/elevated-levels-heavy-metals-elkhorn-slough-lithium-battery-facility-fire/" class="uri">https://www.cbsnews.com/sanfrancisco/news/elevated-levels-heavy-metals-elkhorn-slough-lithium-battery-facility-fire/</a> : nickel, manganèse et cobalt dans les sols d’Elkhorn Slough.</li>
+<li>Energy-Storage.news, « Vistra to write off US$400 million from Moss Landing BESS », 21 mars 2025, <a href="https://www.energy-storage.news/vistra-to-write-off-us400-million-from-moss-landing-bess/" class="uri">https://www.energy-storage.news/vistra-to-write-off-us400-million-from-moss-landing-bess/</a> : dépréciation.</li>
+<li>Encraft, site des Warwick Wind Trials, <a href="http://www.warwickwindtrials.org.uk/" class="uri">http://www.warwickwindtrials.org.uk/</a> et ses pages <a href="http://www.warwickwindtrials.org.uk/3.html" class="uri">http://www.warwickwindtrials.org.uk/3.html</a> et <a href="http://www.warwickwindtrials.org.uk/8.html" class="uri">http://www.warwickwindtrials.org.uk/8.html</a> : protocole, machines, sites, conclusions qualitatives ; le rapport final n’est plus en ligne.</li>
+<li>ENTSO-E, « 28 April 2025 Iberian Blackout », <a href="https://www.entsoe.eu/publications/blackout/28-april-2025-iberian-blackout/" class="uri">https://www.entsoe.eu/publications/blackout/28-april-2025-iberian-blackout/</a> : heure, périmètre, dates des rapports.</li>
+<li>ENTSO-E, communiqué du 20 mars 2026 sur le rapport final, <a href="https://www.entsoe.eu/news/2026/03/20/entso-e-publishes-expert-panel-final-report-on-28-april-2025-blackout-in-spain-and-portugal/" class="uri">https://www.entsoe.eu/news/2026/03/20/entso-e-publishes-expert-panel-final-report-on-28-april-2025-blackout-in-spain-and-portugal/</a> : causes.</li>
+<li>France 24, « Power restored in Spain after massive blackout leaves millions stranded », 29 avril 2025, <a href="https://www.france24.com/en/europe/20250429-power-restored-spain-after-massive-blackout-leaves-millions-stranded" class="uri">https://www.france24.com/en/europe/20250429-power-restored-spain-after-massive-blackout-leaves-millions-stranded</a> : rétablissement, évacuations, décès liés à un groupe électrogène.</li>
+</ul>
+<p>Les calculs de la page, taux, économie, stockage, éolien, onduleur, sont refaits par un modèle horaire dont le script, <code>_commun/modeles/figs-cours-domo-8.py</code>, porte les données et les hypothèses. Sources consultées le 13 septembre 2026.</p></div></details>
+</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="COURS7-ACCES-INTRUSION-VIDEO.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Domotique, cours 7 — accès, intrusion, vidéo</span></a><a class="ap" href="COURS9-MOTEURS-VOLETS-VARIATION.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Domotique, cours 9 — moteurs, volets, variation</span></a></div></nav>
+<p class="pied">Page de formation, réservée au professeur. Elle s'appuie sur des cas réels documentés ; les sources sont données en fin de page.</p>
+</div>
+<script src="../assets/kit.js?v=2863feac"></script>
+<script src="../assets/site.js?v=2863feac"></script>
+<script src="../assets/vivant.js?v=2863feac"></script>

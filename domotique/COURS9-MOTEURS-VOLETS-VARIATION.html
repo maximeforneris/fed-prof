@@ -1,0 +1,551 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex, nofollow">
+<title>Domotique, cours 9 — moteurs, volets, variation</title>
+<link rel="stylesheet" href="../assets/kit.css?v=2863feac">
+<link rel="stylesheet" href="../assets/site.css?v=2863feac">
+<link rel="stylesheet" href="../assets/calque.css?v=2863feac">
+<link rel="stylesheet" href="../assets/vivant.css?v=2863feac">
+
+<div class="page" data-site="fed-prof" data-page="domotique/COURS9-MOTEURS-VOLETS-VARIATION" data-public="prof">
+<div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS8-PRODUIRE-STOCKER-SECOURIR.html" rel="prev" title="Domotique, cours 8 — produire, stocker, secourir" aria-label="Domotique, cours 8 — produire, stocker, secourir">&lsaquo;</a><a class="fleche" href="COURS10-PROJET-KNX.html" rel="next" title="Domotique, cours 10 — le projet KNX" aria-label="Domotique, cours 10 — le projet KNX">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/COURS9-MOTEURS-VOLETS-VARIATION">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
+<header class="tete">
+  
+  <div class="titraille">
+    <p class="sur">Formation du professeur · BTS FED option C</p>
+    <h1>Cours détaillé<span>moteurs, volets et variation de vitesse, par des cas réels</span></h1>
+  </div>
+  <p class="accroche">Un règlement européen qui fixe le rendement des moteurs, une fiche d'économies d'énergie qui paie le variateur au forfait, une pompe égyptienne mesurée avant et après son variateur. Puis la tenue au vent que la norme exige d'un store, et trente-six brise-soleil commandés par un anémomètre dans un lycée de Moselle.</p>
+  
+  <p class="k-savoirs">Savoirs travaillés</p><div class="savoirs"><span class="tag n3">B8-2 Automatismes du bâtiment : volets et protections solaires · niveau 3</span><span class="tag">C2-1 Moteurs asynchrones et moteurs EC · niveau 2</span><span class="tag">C2-2 Variation de vitesse · niveau 2</span></div>
+</header>
+<aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="PROF1-COURANT-FAIBLE.html">Pré-actionneur et actionneur</a></b><span class="ou">Prof 1 — le courant faible</span><span class="car">le moteur du store est l'actionneur, la voie qui le commande est un pré-actionneur ; toute la partie consacrée aux volets repose sur cette distinction.</span></li><li><b><a href="COURS1-ENERGIE-ELECTRIQUE.html">Puissance active, puissance apparente et triphasé 400 V</a></b><span class="ou">Domotique, cours 1 — l'énergie électrique</span><span class="car">une plaque de moteur se lit en puissance utile, en courant et en cos φ, et un variateur se choisit sur le courant.</span></li><li><b>Les lois de similitude des pompes, démontrées au chapitre 3 du manuel de fluides</b><span class="car">la page les suppose connues et part de l'endroit où elles cessent de s'appliquer.</span></li></ul></aside>
+<nav class="somm"><div class="in"><a href="#cinq-cas-et-ce-qu-ils-ont-en-commun">Cinq cas, et ce qu’ils ont en commun</a><a href="#le-rendement-des-moteurs-devient-une-obligation-union-europeenne-2019">Le rendement des moteurs devient une obligation, Union européenne, 2019</a><a href="#un-variateur-paye-au-forfait-fiche-cee-bat-th-112-2026">Un variateur payé au forfait, fiche CEE BAT-TH-112, 2026</a><a href="#une-vanne-remplacee-par-un-variateur-station-de-pompage-d-un-village-egyptien-2024">Une vanne remplacée par un variateur, station de pompage d’un village égyptien, 2024</a><a href="#des-stores-qui-ne-se-protegent-pas-seuls-du-vent-nf-dtu-34-4-en-revision-2023">Des stores qui ne se protègent pas seuls du vent, NF DTU 34.4 en révision, 2023</a><a href="#trente-six-brise-soleil-et-un-anemometre-lycee-saint-vincent-de-paul-d-algrange-2023">Trente-six brise-soleil et un anémomètre, lycée Saint-Vincent-de-Paul d’Algrange, 2023</a><a href="#la-ou-la-methode-change">Là où la méthode change</a><a href="#le-calcul-retourne">Le calcul retourné</a><a href="#trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#les-questions-qui-destabilisent">Les questions qui déstabilisent</a></div></nav>
+<h2 id="cinq-cas-et-ce-qu-ils-ont-en-commun">Cinq cas, et ce qu’ils ont en commun</h2>
+<p>Un moteur asynchrone branché sur le réseau tourne à la vitesse que lui impose la fréquence : un peu moins de 1 500 tr/min pour quatre pôles, quel que soit le besoin du bâtiment. Or ce besoin varie sans cesse : le débit d’une pompe de chauffage suit la saison, celui d’une centrale de traitement d’air suit l’occupation, la position d’un store suit le soleil et le vent. Il n’existe que trois manières de combler l’écart : <strong>dissiper</strong> l’excédent dans une vanne ou un registre, <strong>changer la vitesse</strong> par un variateur, ou <strong>arrêter le moteur au bon moment</strong>, sur un fin de course ou sur une alarme de vent.</p>
+<p>Les cinq cas retenus couvrent ces trois manières. Les deux premiers sont des textes : le règlement européen qui fixe le rendement minimal des moteurs, puis la fiche d’économies d’énergie qui rémunère un variateur au forfait. Le troisième est une mesure, celle d’une pompe suivie une journée avec sa vanne, puis une journée avec son variateur. Les deux derniers concernent les protections solaires : la tenue au vent que la norme exige d’un store, et trente-six brise-soleil commandés par un anémomètre.</p>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Cas</th>
+<th>Ce qu’il oblige à savoir</th>
+<th>Séance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Règlement (UE) 2019/1781, 2019</td>
+<td>glissement, plaque signalétique, classes IE, moteurs EC, démarrage</td>
+<td>DOMA13</td>
+</tr>
+<tr>
+<td>Fiche CEE BAT-TH-112, 2026</td>
+<td>le variateur, la loi U/f, ses harmoniques, son paramétrage</td>
+<td>DOMA13</td>
+</tr>
+<tr>
+<td>Station de pompage, Égypte, 2024</td>
+<td>vanne contre vitesse, couple quadratique, limite de la loi du cube</td>
+<td>DOMA13</td>
+</tr>
+<tr>
+<td>NF EN 13659 et NF DTU 34.4, 2023</td>
+<td>classes de vent, pression dynamique, rafales</td>
+<td>DOMB14</td>
+</tr>
+<tr>
+<td>Lycée d’Algrange, 2023</td>
+<td>moteur de store, fins de course, sécurité vent, scénario solaire</td>
+<td>DOMB14</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Le rendement d’un moteur se gagne en points, le débit inutile se perd en dizaines de pour cent, et un store mal protégé se détruit en une rafale. Les priorités du technicien suivent cet ordre de grandeur : <strong>la bonne vitesse d’abord, le bon moteur ensuite, et la sécurité vent avant tout confort.</strong></p>
+</div>
+<h2 id="le-rendement-des-moteurs-devient-une-obligation-union-europeenne-2019">Le rendement des moteurs devient une obligation, Union européenne, 2019</h2>
+<p><em>Le règlement (UE) 2019/1781 de la Commission, du 1er octobre 2019, fixe les exigences d’écoconception des moteurs électriques et des variateurs de vitesse. Depuis le 1er juillet 2021, un moteur triphasé de 0,75 à 1 000 kW, à 2, 4, 6 ou 8 pôles, doit atteindre la classe IE3, un moteur de 0,12 à 0,75 kW la classe IE2, et les variateurs la classe IE2. Depuis le 1er juillet 2023, les moteurs de 75 à 200 kW à 2, 4 ou 6 pôles doivent atteindre IE4, hors moteurs-freins et moteurs pour atmosphères explosives. Le texte abroge le règlement (CE) n° 640/2009.</em></p>
+<p><em>Selon la Commission européenne, 380 millions de moteurs relevant de ces règles étaient en service dans l’Union en 2020 ; ils ont absorbé 1 326 TWh, soit 53 % de l’électricité consommée. Les mesures d’écoconception en ont économisé 52 TWh cette année-là, et devraient en économiser 107 TWh par an en 2030.</em></p>
+<div class="etapes">
+<ol type="1">
+<li><strong>2015 puis 2017</strong> : sous le règlement de 2009, un moteur IE2 de 7,5 à 375 kW, puis de 0,75 à 375 kW, n’est plus admis sans variateur.</li>
+<li><strong>1er octobre 2019</strong> : le nouveau règlement vise les moteurs à induction, conçus pour un fonctionnement continu et une connexion directe au réseau.</li>
+<li><strong>1er juillet 2021</strong> : IE3 de 0,75 à 1 000 kW, IE2 en dessous, IE2 pour les variateurs ; le texte de 2009 est abrogé.</li>
+<li><strong>1er juillet 2023</strong> : IE4 de 75 à 200 kW, IE2 pour les moteurs monophasés dès 0,12 kW.</li>
+</ol>
+</div>
+<p>Le règlement ne vise que les <strong>moteurs à induction</strong>, c’est-à-dire asynchrones, conçus pour tourner en continu et branchés directement sur le réseau. Trois familles du bâtiment lui échappent, chacune pour une raison que l’étudiant doit savoir donner : le moteur à commutation électronique, qui n’est pas asynchrone ; le moteur tubulaire de volet, prévu pour un service de courte durée ; le moteur compact, dont le variateur intégré ne peut pas être mesuré séparément.</p>
+<p>Un moteur asynchrone tourne un peu moins vite que son champ. Le stator crée un champ tournant à la <strong>vitesse de synchronisme</strong>, 1 500 tr/min à 50 Hz pour quatre pôles ; le rotor ne reçoit de courant que par induction, donc seulement s’il glisse par rapport à ce champ. Le <strong>glissement</strong> vaut 0,67 % pour les moteurs de 132 kW du troisième cas, qui tournent à 1 490 tr/min, et plusieurs pour cent pour un petit moteur.</p>
+<div class="formule">
+<p><strong>nₛ = 60 f / p · g = (nₛ − n) / nₛ · C = P / Ω</strong></p>
+<ul>
+<li><strong>nₛ</strong><span>: vitesse de synchronisme, en tr/min ; <strong>f</strong> : fréquence, en Hz ; <strong>p</strong> : nombre de paires de pôles</span></li>
+<li><strong>n</strong><span>: vitesse du rotor, en tr/min ; <strong>g</strong> : glissement, sans unité</span></li>
+<li><strong>C</strong><span>: couple, en N·m ; <strong>P</strong> : puissance utile, en W ; <strong>Ω = 2π n / 60</strong>, en rad/s</span></li>
+</ul>
+<blockquote>
+<p>À 50 Hz : 3 000, 1 500, 1 000 et 750 tr/min pour 2, 4, 6 et 8 pôles.</p>
+</blockquote>
+</div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Lire une plaque signalétique, ligne par ligne</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Soit un moteur de 7,5 kW, 4 pôles, IE3, 230/400 V, cos φ 0,82, 1 460 tr/min, dont le rendement est pris au minimum IE3 du règlement, <strong>90,4 %</strong>.</p>
+<p><strong>La puissance de la plaque est utile</strong>, sur l’arbre : le moteur absorbe 7 500 / 0,904 = <strong>8 297 W</strong>. <strong>La double tension</strong> dit que chaque enroulement supporte 230 V : sur un réseau 3 × 400 V, on couple en <strong>étoile</strong> ; en triangle, chaque enroulement recevrait 400 V. Un démarrage étoile-triangle exige donc un moteur 400/690 V. <strong>Le courant</strong> vaut I = P / (η · √3 · U · cos φ) = 7 500 / (0,904 × 1,732 × 400 × 0,82) = <strong>14,6 A</strong> ; très au-dessus, le moteur est surchargé, très au-dessous, il est surdimensionné et son cos φ se dégrade. <strong>La vitesse</strong> donne le glissement, (1 500 − 1 460) / 1 500 = <strong>2,7 %</strong>, et le couple, 7 500 / (2π × 1 460 / 60) = <strong>49 N·m</strong>.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le glissement fait les pertes du rotor, et c&#39;est l&#39;argument des moteurs EC</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le champ transmet au rotor la puissance P_tr = C · Ωₛ ; le rotor la restitue sur l’arbre à sa propre vitesse, (1 − g) · P_tr. La différence, <strong>g · P_tr</strong>, chauffe les barres du rotor : le glissement mesure exactement les pertes rotoriques. Pour le moteur de 7,5 kW, 0,0267 × 49,05 × 157,08 = <strong>205 W</strong>, le quart des 797 W de pertes qu’autorise la classe IE3.</p>
+<p>Sur un petit moteur, le glissement dépasse souvent 5 %. Le règlement le montre sans le dire : à 0,12 kW, le rendement minimal IE2 n’est que de <strong>59,1 %</strong>, et IE4 n’exige que 69,8 %. Le <strong>moteur EC</strong> porte des aimants au rotor : il tourne au synchronisme, sans courant rotorique, et une électronique commute les enroulements du stator selon la position du rotor. C’est pourquoi les circulateurs et les petits ventilateurs modernes sont à moteur EC.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démarrer un moteur : direct, étoile-triangle, progressif, variateur</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Rotor immobile, le glissement vaut 1 et le courant atteint 5 à 8 fois le nominal ; à sept fois, environ <strong>102 A</strong> pour le moteur de 7,5 kW. <strong>Le démarrage direct</strong> l’accepte jusqu’à quelques kilowatts, si la ligne et sa protection supportent la pointe. <strong>L’étoile-triangle</strong> alimente d’abord chaque enroulement sous 230 V : courant et couple sont <strong>divisés par trois</strong>, soit 34 A, ce qui convient à une charge qui démarre à faible couple, comme un ventilateur. <strong>Le démarreur progressif</strong> monte la tension sans changer la fréquence : il limite la pointe mais ne permet pas de tourner lentement. <strong>Le variateur</strong> démarre à fréquence faible, sous le courant nominal : la pointe disparaît, sans qu’on l’ait choisi pour cela.</p></div></details>
+</div><div class="piege">
+<p><strong>La puissance de la plaque est une puissance utile.</strong> Le compteur voit la puissance absorbée, plus grande de 11 % pour un moteur IE3 de 7,5 kW et de 21 % pour un moteur de 0,75 kW. L’erreur inverse est aussi fréquente : additionner les puissances des plaques pour estimer une consommation, alors qu’un moteur surdimensionné n’absorbe que ce que sa charge lui demande.</p>
+</div>
+<p><strong>En classe.</strong> En DOMA13, la plaque se lit avant toute formule : puissance vue par le compteur, couplage sur 400 V, glissement, couple. La question qui fait discuter vient ensuite : pourquoi le règlement ne s’applique-t-il ni au circulateur de chauffage ni au moteur du volet roulant, alors qu’ils sont les plus nombreux du bâtiment ? La réponse attendue nomme les deux critères du texte, le moteur à induction et le fonctionnement continu.</p>
+<h2 id="un-variateur-paye-au-forfait-fiche-cee-bat-th-112-2026">Un variateur payé au forfait, fiche CEE BAT-TH-112, 2026</h2>
+<p><em>L’arrêté du 22 décembre 2014 définit les opérations standardisées d’économies d’énergie ; son annexe 3, consacrée au tertiaire, porte dans sa version en vigueur depuis le 30 avril 2026 la fiche BAT-TH-112, « Système de variation électronique de vitesse sur un moteur asynchrone ». Selon la version A22-2 de la fiche, telle que la reproduisent trois sites d’opérateurs du dispositif (sources commerciales), l’opération équipe d’un variateur un moteur asynchrone existant qui n’en a pas, ou un moteur neuf, de 3 MW au plus.</em></p>
+<p><em>La durée de vie conventionnelle est de quinze ans. Le montant, en kWh cumac par kilowatt de puissance nominale, vaut 9 600 pour le chauffage et le pompage, 11 400 pour la ventilation, 3 900 pour la réfrigération, 990 pour la climatisation et les autres usages. Sont exclus les moteurs IE2 achetés de 2015 à 2016 entre 7,5 et 375 kW, puis à partir de 2017 entre 0,75 et 375 kW. La fiche équivalente de l’industrie porte le numéro IND-UT-102.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Relever la puissance nominale sur la plaque : elle seule entre dans le calcul.</li>
+<li>Identifier l’usage, et vérifier que le moteur n’avait pas de variateur et n’est pas un IE2 acheté après les dates d’exclusion.</li>
+<li>Multiplier : un variateur sur le ventilateur de 7,5 kW d’une centrale vaut 7,5 × 11 400 = <strong>85 500 kWh cumac</strong>.</li>
+<li>Conserver la preuve de réalisation, qui mentionne le variateur, et le document qui atteste la puissance du moteur.</li>
+</ol>
+</div>
+<p>Le kWh cumac n’est pas un kWh économisé chaque année. L’arrêté du 29 décembre 2014 en fait la somme des économies annuelles sur la durée de vie, chaque année étant divisée par 1,04 par rapport à la précédente. Sur quinze ans, cette somme vaut 11,56 fois l’économie de la première année, et la fiche se lit alors à l’envers.</p>
+<div class="formule">
+<p><strong>E_an = M / Σ 1,04⁻ᵏ (k de 0 à 14) = M / 11,56</strong></p>
+<ul>
+<li><strong>M</strong><span>: montant de la fiche, en kWh cumac par kW de puissance nominale</span></li>
+<li><strong>E_an</strong><span>: économie annuelle conventionnelle, en kWh par kW et par an</span></li>
+</ul>
+<blockquote>
+<p>Chauffage et pompage : 9 600 / 11,56 = <strong>830 kWh/kW/an</strong>. Ventilation : <strong>986 kWh/kW/an</strong>.</p>
+</blockquote>
+</div>
+<p>Lue ainsi, la fiche dit ce que l’État suppose : un variateur sur une pompe de chauffage économise chaque année l’équivalent de <strong>830 heures</strong> à la puissance nominale, et sur un ventilateur <strong>986 heures</strong>. Rapportés à une saison de chauffe de 5 500 heures, ou aux 3 000 heures d’occupation d’un bureau, ces forfaits valent 15 % et 33 % de la consommation à pleine puissance.</p>
+<p>Un variateur change la fréquence, et la tension avec elle. La force électromotrice d’un enroulement vaut E = 4,44 · N · f · Φ : le flux reste constant tant que U / f l’est. Le variateur applique donc 400 V à 50 Hz et 200 V à 25 Hz, soit 8 V/Hz : c’est la <strong>loi U/f constante</strong>, qui garde le couple disponible. Pour une pompe ou un ventilateur, dont le couple décroît comme le carré de la vitesse, la <strong>loi quadratique</strong> réduit le flux à basse vitesse et économise le courant magnétisant. Au-delà de 50 Hz, la tension ne peut plus suivre, et le couple disponible baisse.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Du réseau au moteur : ce que fait un variateur, et ce qu&#39;il renvoie</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Trois étages.</strong> Un pont de six diodes redresse le 3 × 400 V ; le bus continu, filtré par des condensateurs, se tient entre 540 V, moyenne du pont (1,35 × 400), et 566 V, crête du réseau (√2 × 400) ; l’onduleur, six transistors IGBT, découpe cette tension en impulsions de largeur modulée, et l’inductance des enroulements lisse le courant en une sinusoïde. Le moteur reçoit des fronts de plusieurs centaines de volts établis en une fraction de microseconde.</p>
+<p><strong>Côté réseau</strong>, le pont ne prélève du courant qu’au voisinage de la crête. Ce courant ne contient que les rangs <strong>h = 6k ± 1</strong> : 5, 7, 11, 13. Les rangs multiples de 3 sont absents d’un pont triphasé équilibré : un variateur triphasé ne charge pas le neutre, à la différence des alimentations monophasées du cours 1. Une self réduit fortement ces rangs.</p>
+<p><strong>Côté moteur</strong>, les fronts raides rayonnent et fuient vers la terre par la capacité du câble : câble blindé, blindage repris sur 360° aux deux bouts, longueur conforme à la notice. La séance DOMA7 traite la reprise de masse ; le variateur en est le cas d’école. <strong>Côté protection</strong>, le courant de fuite contient une composante continue : un variateur triphasé se protège par un différentiel de type B.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Choisir et paramétrer un variateur</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le choix se fait sur le courant du moteur</strong>, pas sur sa puissance : un variateur annoncé pour 7,5 kW est calibré sur un moteur standard à quatre pôles, qu’un moteur ancien ou à deux pôles peut dépasser. Viennent ensuite la nature du couple, quadratique pour une pompe, constant pour un convoyeur ; l’indice de protection ; la catégorie CEM de la NF EN 61800-3, C1 en résidentiel, C2 en premier environnement installé par un professionnel, C3 en industrie ; la communication, Modbus ou BACnet vers la GTB, ou une entrée 0-10 V pour la consigne.</p>
+<p><strong>Le paramétrage minimal</strong> : données de plaque, loi U/f quadratique, fréquence minimale, souvent 20 à 25 Hz pour une pompe, fréquence maximale de 50 Hz sauf étude, rampes, fréquences à sauter en cas de vibration, source de la consigne. Si le variateur régule lui-même une pression, s’ajoutent la consigne et le correcteur PI, dont le réglage relève du cours 4 de fluides.</p></div></details>
+</div><div class="cle">
+<p><strong>Un forfait d’économies d’énergie n’est pas une économie mesurée.</strong> Il rémunère une opération et non un résultat : un variateur laissé à 50 Hz reçoit le même montant qu’un variateur bien réglé, et il consomme davantage que l’alimentation directe, puisqu’il ajoute ses propres pertes.</p>
+</div>
+<p><strong>En classe.</strong> En DOMA13, la fiche se lit comme un document de dossier : on donne la plaque d’un ventilateur de centrale, on demande le montant, puis l’économie annuelle qu’il suppose. La question suivante n’a pas de réponse dans la fiche : pourquoi le forfait de la ventilation dépasse-t-il celui du pompage, alors qu’une pompe de chauffage tourne plus d’heures ? Une réponse argumentée fait intervenir l’écart habituel entre le débit installé et le débit utile.</p>
+<h2 id="une-vanne-remplacee-par-un-variateur-station-de-pompage-d-un-village-egyptien-2024">Une vanne remplacée par un variateur, station de pompage d’un village égyptien, 2024</h2>
+<p><em>Selon l’étude de M. A. E. Salama, N. M. El-Naggar et S. Abu-Zaid, publiée dans Scientific Reports le 12 novembre 2024, une station de potabilisation d’un village du sud de l’Égypte, 200 litres par seconde pour environ 30 000 habitants, dispose de trois pompes identiques de 60 m de hauteur, entraînées par des moteurs asynchrones de 132 kW, 400 V, quatre pôles, 1 490 tr/min. Une pompe assure la base ; une seconde suit la demande pour tenir 4 bars au refoulement.</em></p>
+<p><em>Un analyseur de puissance a suivi vingt-quatre heures le moteur de cette seconde pompe, d’abord réglée par étranglement de sa vanne, puis pilotée par un variateur qui régule les mêmes 4 bars : 2 466 kWh par jour avec la vanne, à puissance presque constante, et 1 521 kWh avec le variateur. La simulation des auteurs donnait 2,48 et 1,579 MWh ; leur conclusion retient une économie d’environ 30 %.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Avec la vanne : 2 466 kWh en 24 h, soit <strong>103 kW</strong> en moyenne, presque sans variation dans la journée.</li>
+<li>Avec le variateur, à la même consigne : 1 521 kWh, soit <strong>63 kW</strong> en moyenne.</li>
+<li>Écart : 945 kWh par jour, <strong>38 %</strong>, environ 345 000 kWh sur une année de même profil ; la simulation donnait 36 %.</li>
+<li>Reste à comprendre pourquoi l’économie n’est pas plus forte, alors que la puissance d’une pompe varie comme le cube de sa vitesse.</li>
+</ol>
+</div>
+<p>La mesure à la vanne contient toute la leçon : <strong>fermer une vanne réduit peu la puissance d’une pompe centrifuge</strong>. La pompe continue de tourner à sa vitesse nominale, sur sa propre courbe, et la vanne ajoute la perte de charge qui ramène le débit au besoin ; l’énergie inutile s’y dissipe en chaleur et en bruit. Le variateur, lui, cesse de fabriquer une pression inutile.</p>
+<p>Les lois de similitude, démontrées au chapitre 3 du manuel de fluides, disent que le débit suit la vitesse, la hauteur son carré, la puissance son cube. Elles décrivent la pompe et non le réseau : à pression tenue constante, l’économie reste loin de ce que le cube laisserait croire, et la section « Là où la méthode change » en fait le calcul.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le couple quadratique, et ce qu&#39;il change au réglage du variateur</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La puissance d’une pompe varie comme N³ et sa vitesse angulaire comme N : le couple résistant, C = P / Ω, varie comme <strong>N²</strong>. À mi-vitesse, la pompe ne demande plus que le quart de son couple. Pour les moteurs du cas égyptien, le couple nominal vaut 132 000 / (2π × 1 490 / 60) = <strong>846 N·m</strong>, et 541 N·m à 80 % de la vitesse.</p>
+<p>Deux conséquences. Le flux peut être réduit à basse vitesse sans perte de couple utile : c’est la loi U/f quadratique. Et un moteur autoventilé, moins bien refroidi à basse vitesse, n’y chauffe pas, car ses pertes décroissent plus vite que sa ventilation, le courant actif suivant le couple. Sur un convoyeur à couple constant, il chauffe, et il faut une ventilation séparée.</p></div></details>
+</div><div class="piege">
+<p><strong>Appliquer la loi du cube à une pompe qui régule une pression.</strong> « 80 % du débit, donc la moitié de la puissance » suppose un réseau sans consigne. Avec 4 bars à tenir, la pompe fournit toujours cette hauteur, et sa puissance décroît à peu près comme le débit. Annoncer la moitié d’économie sur un tel réseau, c’est promettre au client ce que la mesure ne donnera pas.</p>
+</div>
+<p><strong>En classe.</strong> En DOMA13, on donne les deux relevés journaliers, la plaque et la consigne de 4 bars, sans l’article. Première question : quelle économie, en pourcentage et en kWh par an ? Seconde question, celle qui fait travailler : pourquoi n’est-elle pas plus forte ? L’étudiant qui désigne seul la consigne de pression a compris la différence entre une loi de pompe et le comportement d’une installation.</p>
+<h2 id="des-stores-qui-ne-se-protegent-pas-seuls-du-vent-nf-dtu-34-4-en-revision-2023">Des stores qui ne se protègent pas seuls du vent, NF DTU 34.4 en révision, 2023</h2>
+<p><em>La norme NF EN 13659 fixe les performances des fermetures et des stores vénitiens extérieurs, et classe leur résistance au vent d’après un essai selon la NF EN 1932. Selon le cahier des charges type des bâtiments publics de Wallonie et le laboratoire Istituto Giordano, organisme notifié, les classes 1 à 6 correspondent à des pressions nominales de 50, 70, 100, 170, 270 et 400 Pa. Sous la pression nominale, le produit ne doit pas se déformer au point de mal fonctionner ; sous une pression de sécurité de 1,5 fois la nominale, arrondie, il ne doit pas devenir dangereux.</em></p>
+<p><em>Selon la revue professionnelle Technicbaie (18 janvier 2023), le NF DTU 34.4 est alors en cours d’évolution sur la protection des stores automatisés contre les vents forts. Sa version en vigueur distingue déjà deux familles : une fermeture conforme à la NF EN 13659, choisie pour sa zone, peut rester exposée sans surveillance ; la classe de vent d’un store extérieur, relevant de la NF EN 13561, ne suffit pas à le laisser en plein vent. Le fabricant du store déclare la vitesse au-delà de laquelle il doit être replié, et des anémomètres doivent être installés sur le site.</em></p>
+<div class="etapes">
+<ol type="1">
+<li>Situer la baie : région de vent et situation du site ; le prescripteur en déduit la classe d’une fermeture.</li>
+<li>Pour un volet roulant, retenir une classe au moins égale : il reste baissé par tempête.</li>
+<li>Pour un store, lire la vitesse maximale que déclare le fabricant pour ce produit, cette taille et ce guidage.</li>
+<li>Fixer le seuil de l’automatisme au-dessous de cette vitesse, avec une marge pour les rafales.</li>
+</ol>
+</div>
+<p>Le brise-soleil orientable occupe une position intermédiaire : il relève de la NF EN 13659, comme les volets, mais le lycée d’Algrange comme le fabricant ROMA le traitent en store, relevé par l’automatisme dès que le vent forcit. Ses lames ne sont tenues que par des coulisses ou des câbles.</p>
+<p>Une classe de vent s’exprime en pascals, un anémomètre en km/h ; le lien est la <strong>pression dynamique</strong>, surpression qu’exerce un air arrêté par une paroi. La correspondance reste conventionnelle, car le vent réel contourne le bâtiment et crée des dépressions aussi fortes que les surpressions.</p>
+<div class="formule">
+<p><strong>q = ½ ρ v²</strong></p>
+<ul>
+<li><strong>q</strong><span>: pression dynamique, en Pa</span></li>
+<li><strong>ρ</strong><span>: masse volumique de l’air, 1,225 kg/m³ au niveau de la mer à 15 °C</span></li>
+<li><strong>v</strong><span>: vitesse du vent, en m/s ; 1 m/s = 3,6 km/h</span></li>
+</ul>
+</div>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Classe NF EN 13659</th>
+<th>Pression nominale</th>
+<th>Vitesse équivalente</th>
+<th>Pression de sécurité</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>50 Pa</td>
+<td>32,5 km/h</td>
+<td>75 Pa</td>
+</tr>
+<tr>
+<td>2</td>
+<td>70 Pa</td>
+<td>38,5 km/h</td>
+<td>100 Pa</td>
+</tr>
+<tr>
+<td>3</td>
+<td>100 Pa</td>
+<td>46,0 km/h</td>
+<td>150 Pa</td>
+</tr>
+<tr>
+<td>4</td>
+<td>170 Pa</td>
+<td>60,0 km/h</td>
+<td>250 Pa</td>
+</tr>
+<tr>
+<td>5</td>
+<td>270 Pa</td>
+<td>75,6 km/h</td>
+<td>400 Pa</td>
+</tr>
+<tr>
+<td>6</td>
+<td>400 Pa</td>
+<td>92,0 km/h</td>
+<td>600 Pa</td>
+</tr>
+</tbody>
+</table></div>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que pèse une rafale, et pourquoi le seuil se règle bas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La pression suit le <strong>carré</strong> de la vitesse : une rafale qui dépasse de 50 % la vitesse moyenne multiplie la charge par <strong>2,25</strong>. Un vent moyen de 40 km/h porte 76 Pa ; si ses rafales atteignent 60 km/h, elles portent 170 Pa, toute la classe 4. Sur un brise-soleil de 3,0 m sur 2,5 m, 70 Pa représentent déjà 525 N, le poids d’une masse de 53 kg, repris par des lames d’aluminium minces et leurs coulisses.</p>
+<p>Le produit ne cède donc pas à la pression de sa classe, mais à la première rafale que l’automatisme a laissée passer. Le seuil se règle nettement au-dessous de la vitesse déclarée, sur une mesure courte qui suit les rafales, et la redescente n’est autorisée qu’après un calme prolongé.</p></div></details>
+</div><div class="cle">
+<p><strong>Un volet se choisit pour la tempête, un store se replie avant elle.</strong> La classe protège un volet baissé ; elle ne protège un store qu’à la condition qu’un automatisme le relève avant la vitesse déclarée par son fabricant.</p>
+</div>
+<p><strong>En classe.</strong> En DOMB14, la séance commence par la notice du store de l’atelier, et non par le câblage : quelle classe, quelle vitesse maximale déclarée, donc quel seuil ? Le tableau se reconstruit en cinq minutes avec q = ½ ρ v², et l’étudiant constate que la classe 2 correspond à 38,5 km/h, un vent que chacun a déjà senti dans la rue.</p>
+<h2 id="trente-six-brise-soleil-et-un-anemometre-lycee-saint-vincent-de-paul-d-algrange-2023">Trente-six brise-soleil et un anémomètre, lycée Saint-Vincent-de-Paul d’Algrange, 2023</h2>
+<p><em>Selon Technicbaie (12 janvier 2024), le lycée technique privé Saint-Vincent-de-Paul d’Algrange, en Moselle, a construit de janvier à septembre 2023 un bâtiment de 2 300 m² sur deux niveaux, destiné à des formations post-baccalauréat. Ses fenêtres ont reçu 36 brise-soleil orientables Noval 90 de Baumann Hüppe, motorisation Somfy « Io Protect », posés en applique extérieure par l’entreprise LCB Technique et déclarés conformes à la NF EN 13659. Les façades portent plusieurs capteurs, dont des capteurs de vent : l’anémomètre sert à construire un scénario propre au site, qui relève les brise-soleil quand le vent atteint la force retenue. L’article ne publie ni le seuil ni les temporisations.</em></p>
+<p>Ces valeurs se lisent chez les fabricants, qui sont des sources commerciales. Le fabricant allemand ROMA (12 août 2025) situe le seuil usuel d’un automatisme vers <strong>40 km/h</strong>, demande de relever dès 39 km/h les stores guidés par câbles et toujours à partir de <strong>62 km/h</strong>, force 8, et recommande de placer le capteur au point le plus exposé, près des stores. Somfy annonce pour son anémomètre Eolis WireFree io un seuil réglable de 10 à 80 km/h, et une reprise des commandes solaires <strong>environ douze minutes</strong> après que le vent est retombé sous le seuil.</p>
+<div class="etapes">
+<ol type="1">
+<li><strong>Mesurer</strong> : l’anémomètre transmet une vitesse ou un dépassement de seuil, sur une mesure qui suit les rafales.</li>
+<li><strong>Déclencher</strong> : dès le seuil franchi, l’ordre de montée part vers tous les brise-soleil de la zone.</li>
+<li><strong>Verrouiller</strong> : pendant l’alarme, les commandes manuelles, horaires et solaires sont ignorées.</li>
+<li><strong>Temporiser</strong> : l’alarme ne retombe qu’après un calme continu de l’ordre de dix minutes.</li>
+<li><strong>Surveiller le capteur</strong> : un anémomètre muet est traité comme un vent fort ; c’est la règle de sécurité positive.</li>
+</ol>
+</div>
+<p>La fonction se conçoit comme une <strong>hiérarchie de priorités</strong>. Chaque voie d’un pré-actionneur de store reçoit des ordres concurrents : alarme de vent, parfois de pluie ou de gel, commande manuelle de la salle, automatisme solaire, programmation horaire. L’ordre se paramètre, et une seule règle est intangible : <strong>la sécurité vent passe avant tout, y compris avant l’utilisateur.</strong></p>
+<figure class="schema"><div class="dessin" data-schema="deux-chaines"></div><figcaption>L’anémomètre est un capteur de la chaîne d’information ; la voie du pré-actionneur de store marque la frontière avec la chaîne d’énergie, où le moteur de chaque brise-soleil est l’actionneur.</figcaption></figure>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Seuil, hystérésis et temporisation : ce qu&#39;ils évitent</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un seuil seul fait <strong>pomper</strong> l’installation : si le vent oscille autour de 40 km/h, chaque passage relève ou redescend les stores. Or un moteur de store est prévu pour un service de courte durée ; sa protection thermique coupe après quelques minutes cumulées, et le store reste bloqué à mi-course, exposé.</p>
+<p><strong>L’hystérésis</strong> place le seuil de retour sous le seuil d’alarme, par exemple 40 km/h à la montée et 30 km/h au retour. <strong>La temporisation dissymétrique</strong> donne quelques secondes au plus pour déclencher, parce qu’une rafale suffit à détruire, et une dizaine de minutes pour libérer, parce qu’un creux entre deux rafales ne prouve rien. Un brise-soleil qui met 50 s à remonter, commandé vingt fois en une heure de vent irrégulier, cumule plus de seize minutes de moteur ; avec douze minutes de temporisation de retour, il fait au plus cinq cycles dans l’heure.</p></div></details>
+</div><p>Trente-six brise-soleil ne se commandent pas par trois inverseurs de douze moteurs. Chaque moteur de store porte un condensateur branché en permanence entre ses deux fils de sens ; deux moteurs en parallèle se renvoient ce condensateur, et leurs fins de course ne protègent plus rien. Une commande de groupe passe donc par <strong>un pré-actionneur par moteur</strong> : une voie de store du bus, ou un relais de groupe qui isole chaque moteur.</p>
+<figure>
+<img src="img/COURS9-MOTEURS-VOLETS-VARIATION/c9-moteur-volet.png" alt="Deux moteurs sur un seul inverseur. Le fil de descente du moteur B, mis sous tension par son condensateur, fait repartir vers le bas le moteur A qui avait atteint son fin de course haut." />
+<figcaption aria-hidden="true">Deux moteurs sur un seul inverseur. Le fil de descente du moteur B, mis sous tension par son condensateur, fait repartir vers le bas le moteur A qui avait atteint son fin de course haut.</figcaption>
+</figure>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le moteur de store, et pourquoi deux moteurs ne se câblent pas en parallèle</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un moteur de volet ou de brise-soleil est le plus souvent un <strong>moteur asynchrone monophasé à condensateur permanent</strong>. Une seule phase ne crée pas de champ tournant : le moteur porte deux enroulements, et le condensateur, en série avec l’un d’eux, décale son courant d’environ un quart de période. Le sens se choisit par le fil qui reçoit la phase ; le condensateur relie donc en permanence les deux fils de sens, et le fil qui ne commande pas porte une tension du même ordre que celle du réseau. Les <strong>fins de course</strong>, mécaniques à cames ou électroniques à codeur, coupent chacun un fil de sens à l’intérieur du moteur.</p>
+<p>Soit deux moteurs A et B dont les fils de même sens sont reliés, sur un inverseur placé sur « montée ».</p>
+<ol type="1">
+<li>Les deux moteurs montent ; le fil de descente commun est sous tension, mais il s’arrête sur le contact ouvert de l’inverseur.</li>
+<li>A arrive le premier en haut et ouvre son fin de course de montée.</li>
+<li>Son fil de descente reçoit la tension du condensateur de B, qui tourne encore : A repart vers le bas.</li>
+<li>A quitte la butée, son fin de course se referme, il remonte : il oscille tant que B tourne, pendant que les couples s’opposent et que les enroulements chauffent.</li>
+</ol>
+<p>Le montage semble fonctionner à la mise en service, parce que deux moteurs neufs et identiques atteignent leur butée presque ensemble. Il cesse de fonctionner le jour où l’un d’eux ralentit.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le scénario solaire : quand le soleil frappe la façade, et de combien fermer les lames</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le soleil éclaire la façade si son azimut s’écarte de moins de 90° de la normale et s’il est au-dessus de l’horizon ; un capteur d’éclairement par façade le confirme, avec son seuil et son hystérésis. Il suffit alors de couper le rayonnement direct : le reste de la lumière du jour entre, et l’éclairage reste éteint.</p>
+<p>L’angle utile est l’<strong>angle de profil</strong> α, hauteur apparente du soleil dans le plan perpendiculaire à la façade : tan α = tan h / cos γ, où h est la hauteur du soleil et γ l’écart d’azimut. Un soleil haut de 30°, arrivant à 60° de la normale, a un angle de profil de 49°.</p>
+<p>Pour des lames planes de largeur w, au pas s, inclinées de β bord extérieur vers le bas, le rayon direct est coupé dès que <strong>s · cos α ≤ w · sin(α + β)</strong>. Avec des lames aussi larges que leur pas, il vient <strong>β = 90° − 2α</strong> : un soleil de profil à 20° demande 50° d’inclinaison, un soleil à 45° n’en demande aucune. C’est le calcul qu’un pilotage à suivi du soleil refait toutes les quelques minutes.</p></div></details>
+</div><div class="piege">
+<p><strong>Donner la priorité à la commande manuelle.</strong> L’utilisateur qui redescend son store pendant une alarme, parce que le vent semble tombé dans la cour, annule la seule fonction qui protège le matériel. La commande de la salle doit être refusée tant que l’alarme est active, et la notice doit le dire, faute de quoi un store qui fonctionne exactement comme prévu sera signalé comme en panne.</p>
+</div>
+<p><strong>En classe.</strong> Le cas sert de support au TP noté É2 de DOMB14, qui évalue C6, réaliser une fonction imposée et sa notice. La fonction reprend celle d’Algrange à l’échelle de l’atelier : un groupe de stores, un anémomètre ou un poussoir qui le simule, un seuil, une temporisation et une priorité. La notice se juge sur une question : que doit lire l’utilisateur dont le store refuse de descendre ? Le relevé d’entreprise n° 3, qui rapporte une fonction livrée et sa notice, en fournit souvent un contre-exemple.</p>
+<h2 id="la-ou-la-methode-change">Là où la méthode change</h2>
+<p>Le raisonnement ordinaire tient en une ligne : la puissance varie comme le cube de la vitesse, donc moitié de débit, un huitième de puissance. Il suppose un réseau dont la courbe passe par l’origine, la hauteur demandée s’annulant avec le débit. Le cas égyptien a montré ce qu’il advient quand une pression doit être tenue : l’économie mesurée, 38 %, reste très loin de ce que le cube laisserait attendre.</p>
+<p>Soit une pompe d’école de 40 m³/h à 20 m au point nominal, qui donne 25 m à débit nul. Seule change la hauteur qu’on lui demande : <strong>à vitesse fixe</strong>, elle suit la courbe de la pompe et la vanne absorbe l’excédent ; <strong>à pression constante</strong>, elle reste à 20 m ; <strong>à pression proportionnelle</strong>, elle descend de 20 à 10 m avec le débit ; <strong>sans consigne</strong>, elle suit la parabole du réseau.</p>
+<figure>
+<img src="img/COURS9-MOTEURS-VOLETS-VARIATION/c9-trois-regulations.png" alt="Puissance absorbée en fonction du débit pour les quatre modes, et fréquence lue à 25 % du débit. Seul le réseau sans consigne suit la loi du cube." />
+<figcaption aria-hidden="true">Puissance absorbée en fonction du débit pour les quatre modes, et fréquence lue à 25 % du débit. Seul le réseau sans consigne suit la loi du cube.</figcaption>
+</figure>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>Débit</th>
+<th>Part du temps</th>
+<th>Vitesse fixe</th>
+<th>Δp constant</th>
+<th>Δp proportionnel</th>
+<th>Sans consigne</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100 %</td>
+<td>6 %</td>
+<td>50 Hz</td>
+<td>50 Hz</td>
+<td>50 Hz</td>
+<td>50 Hz</td>
+</tr>
+<tr>
+<td>75 %</td>
+<td>15 %</td>
+<td>50 Hz</td>
+<td>47,8 Hz</td>
+<td>45,1 Hz</td>
+<td>37,5 Hz</td>
+</tr>
+<tr>
+<td>50 %</td>
+<td>35 %</td>
+<td>50 Hz</td>
+<td>46,1 Hz</td>
+<td>40,3 Hz</td>
+<td>25,0 Hz</td>
+</tr>
+<tr>
+<td>25 %</td>
+<td>44 %</td>
+<td>50 Hz</td>
+<td>45,1 Hz</td>
+<td>35,8 Hz</td>
+<td>12,5 Hz</td>
+</tr>
+</tbody>
+</table>
+<p><strong>À pression constante, toute la plage de débit tient entre 45 et 50 Hz.</strong> À débit nul, la pompe doit déjà fournir ses 20 m, ce qui demande 50 × √(20 / 25) = 44,7 Hz. La vitesse ne peut presque pas baisser, et la puissance, produit d’une hauteur fixe par un débit variable, décroît comme le débit et non comme son cube : le variateur économise de l’ordre du tiers, ce que la station égyptienne a mesuré.</p>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La démonstration, et trois autres situations où le cube tombe</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>À la fréquence f, la pompe suit <strong>H = H₀ · (f / 50)² − b · Q²</strong>, avec H₀ = 25 m et b tel que H vaille 20 m au débit nominal. Le point de fonctionnement impose H = H_c(Q), la hauteur exigée par la consigne ou le réseau, d’où :</p>
+<p><strong>f = 50 × √[(H_c(Q) + b · Q²) / H₀]</strong>, et la puissance hydraulique ρ · g · Q · H_c(Q).</p>
+<p>Sans consigne, H_c = H_n · (Q / Q_n)² et f devient proportionnelle au débit : on retrouve exactement les lois de similitude. Avec une consigne constante, la puissance est proportionnelle à Q.</p>
+<p>Trois autres situations font tomber le cube. <strong>La hauteur statique</strong> d’un circuit ouvert, tour de refroidissement ou relevage, joue comme une consigne : sous une certaine vitesse, la pompe tourne sans débiter. <strong>Les rendements</strong> baissent à faible charge, et le variateur ajoute 2 à 3 % de pertes. <strong>Le point nominal</strong> coûte plus cher avec un variateur qu’en alimentation directe : sur le profil qui suit, les 6 % du temps passés à pleine charge sont les seuls où il fait perdre.</p></div></details>
+</div><h2 id="le-calcul-retourne">Le calcul retourné</h2>
+<p>Le cas égyptien vérifie une économie après coup ; le bureau d’études doit la prévoir, et régler le variateur avant la mise en service. <strong>Ce qui est fixé</strong> : la courbe de la pompe, le mode de régulation et le profil de fonctionnement. <strong>Ce qui est libre</strong> : la fréquence de chaque point, que donne la formule précédente, et donc l’énergie. Le profil retenu est celui que le règlement (UE) n° 622/2012 impose pour évaluer les circulateurs : 100 % du débit pendant 6 % du temps, 75 % pendant 15 %, 50 % pendant 35 % et 25 % pendant 44 %.</p>
+<div class="formule">
+<p><strong>E = P_n · h · Σ tᵢ · (P / P_n)ᵢ / η_v</strong></p>
+<ul>
+<li><strong>P_n</strong><span>: 3,79 kW absorbés au point nominal : 2,18 kW hydrauliques, pompe à 65 %, moteur IE3 de 4 kW à 88,6 %</span></li>
+<li><strong>h</strong><span>: 5 500 heures de saison de chauffe ; <strong>tᵢ</strong> : part du temps au débit i</span></li>
+<li><strong>(P / P_n)ᵢ</strong><span>: puissance relative du mode ; <strong>η_v</strong> : variateur à 0,97, 1 sans variateur</span></li>
+</ul>
+</div>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Σ tᵢ · (P / P_n)ᵢ</th>
+<th>Énergie annuelle</th>
+<th>Économie contre la vanne</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vitesse fixe, vanne</td>
+<td>0,756</td>
+<td>15 737 kWh</td>
+<td>référence</td>
+</tr>
+<tr>
+<td>Variateur, Δp constant</td>
+<td>0,458</td>
+<td>9 820 kWh</td>
+<td>5 917 kWh, soit 37,6 %</td>
+</tr>
+<tr>
+<td>Variateur, Δp proportionnel</td>
+<td>0,358</td>
+<td>7 693 kWh</td>
+<td>8 044 kWh, soit 51,1 %</td>
+</tr>
+<tr>
+<td>Variateur, sans consigne</td>
+<td>0,174</td>
+<td>3 733 kWh</td>
+<td>12 004 kWh, soit 76,3 %</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Le mode de régulation pèse plus lourd que le variateur lui-même</strong> : entre la pression constante et la pression proportionnelle, le même matériel, autrement réglé, économise 2 126 kWh de plus par an. Le forfait de la fiche BAT-TH-112 vaut, pour ce moteur, 4 × 9 600 / 11,56 = 3 321 kWh par an : ici, les trois résultats le dépassent.</p>
+<h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : ce moteur est-il IE3 ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un ventilateur de centrale est entraîné par un moteur de 4 kW, 4 pôles, couplé en étoile sur 3 × 400 V. À pleine charge, on relève 8,2 A, un cos φ de 0,80 et 1 445 tr/min. Le moteur est-il IE3 ? Quels sont son glissement et son couple ? Un variateur posé sur lui ouvrirait-il droit à la fiche BAT-TH-112 ?</p>
+<p><strong>Résolution.</strong> Puissance absorbée : √3 × 400 × 8,2 × 0,80 = <strong>4 545 W</strong>. Rendement : 4 000 / 4 545 = <strong>88,0 %</strong>, sous le minimum IE3 de 88,6 % et au-dessus du minimum IE2 de 86,6 % : le moteur est IE2. Glissement : 55 / 1 500 = <strong>3,7 %</strong>. Couple : 4 000 / (2π × 1 445 / 60) = <strong>26,4 N·m</strong>. Pour la fiche, tout dépend de la date d’achat : acheté à partir de 2017, ce moteur IE2 est exclu ; acheté avant, il est éligible.</p>
+<p><strong>Vérification de plausibilité.</strong> Un rendement de 88 % à 4 kW se situe entre IE2 et IE3, comme la plupart des moteurs posés avant 2021 ; 95 % aurait signalé une erreur de relevé.</p>
+<p><strong>Ce que l’étudiant doit rédiger.</strong> La puissance absorbée en triphasé, avec le √3, et la comparaison explicite aux deux seuils du règlement.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : régler le ventilateur d&#39;une centrale à débit variable</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un ventilateur de soufflage fournit 12 000 m³/h sous 600 Pa à 50 Hz, et 800 Pa à débit nul ; son rendement global est de 0,60. Un variateur le régule pour tenir 150 Pa en gaine. La centrale tourne 3 000 heures par an, dont 2 000 heures à 9 000 m³/h. Quelle fréquence le variateur affichera-t-il à 9 000 m³/h, et quelle énergie économise-t-il par rapport à la marche permanente à 50 Hz ?</p>
+<p><strong>Choisir la méthode.</strong> La consigne de 150 Pa joue comme une hauteur statique : la loi du cube est écartée. Le ventilateur fournit 800 · (f / 50)² − 200 · q², avec q = Q / Q_n, et le réseau demande 150 + 450 · q².</p>
+<p><strong>Résolution.</strong> À q = 0,75 : (f / 50)² = (150 + 650 × 0,5625) / 800 = 0,6445, d’où <strong>f = 40,1 Hz</strong>, sous 403 Pa ; puissance relative 0,75 × 403 / 600 = <strong>0,504</strong>. Au nominal, P = 12 000 × 600 / (3 600 × 0,60) = <strong>3,33 kW</strong>. Avant : 3,33 × 3 000 = <strong>10 000 kWh</strong>. Après, variateur à 97 % : 1 000 × 3,33 / 0,97 + 2 000 × 3,33 × 0,504 / 0,97 = 3 436 + 3 463 = <strong>6 900 kWh</strong>. Économie : <strong>3 100 kWh</strong>, soit 31 %.</p>
+<p><strong>Vérification de plausibilité.</strong> La fréquence dépasse les 37,5 Hz de la simple proportionnalité, ce qui est le sens attendu dès qu’une pression est tenue. Pour un moteur de 4 kW, le forfait de la fiche donnerait 4 × 986 = 3 944 kWh par an, davantage que le calcul : le forfait ignore le profil, dans un sens comme dans l’autre.</p>
+<p><strong>Ce que l’étudiant doit rédiger.</strong> Pourquoi le cube est écarté, l’équation du point de fonctionnement, puis la fréquence, puisque c’est elle qu’on règle.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : la sécurité vent d&#39;une façade de lycée</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une façade reçoit 12 brise-soleil de 3,0 m sur 2,5 m, guidés par coulisses, déclarés pour 60 km/h en position baissée. Chaque moteur absorbe 0,55 A sous 230 V et met 50 s à remonter ; une station météo en toiture mesure le vent. Proposer le réglage de la sécurité vent, l’architecture de commande et la notice. Ces données sont celles de l’énoncé.</p>
+<p><strong>La charge.</strong> À 60 km/h, q = ½ × 1,225 × 16,67² = <strong>170 Pa</strong>, soit 1 276 N par brise-soleil ; à 40 km/h, 76 Pa et 567 N.</p>
+<p><strong>Les réglages.</strong> Seuil à <strong>40 km/h</strong>, la valeur usuelle que cite ROMA : 50 % de marge sur la vitesse, 125 % sur la pression, pour couvrir l’écart entre la toiture, où l’on mesure, et la façade, où l’on subit. Retour sous <strong>30 km/h</strong>, déclenchement en moins de trois secondes, libération après <strong>douze minutes</strong> de calme. Priorité au vent, puis à la salle, puis à l’automatisme solaire ; un anémomètre qui ne transmet plus déclenche l’alarme.</p>
+<p><strong>L’architecture.</strong> Douze moteurs, donc <strong>douze voies</strong> de pré-actionneur de store, montée et descente verrouillées. Montée générale : 12 × 0,55 = <strong>6,6 A</strong>, admissible sur un circuit de 10 A.</p>
+<p><strong>La notice.</strong> « Au-delà de 40 km/h de vent, les brise-soleil remontent seuls et les commandes de la salle sont neutralisées. Ils ne redescendent qu’après douze minutes de vent inférieur à 30 km/h. Un brise-soleil qui refuse de descendre par vent fort n’est pas en panne. »</p>
+<p><strong>Vérification de plausibilité.</strong> Une heure de vent irrégulier provoque au plus cinq remontées, un peu plus de quatre minutes de moteur : la protection thermique n’intervient pas.</p>
+<p><strong>Ce que l’étudiant doit rédiger.</strong> Chaque valeur avec sa raison : la pression pour le seuil, le pompage pour l’hystérésis, le condensateur pour les douze voies, l’utilisateur pour la notice.</p></div></details>
+</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+<div class="enveloppe-tbl"><table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Grandeur</th>
+<th>Ordre de grandeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vitesse de synchronisme à 50 Hz</td>
+<td>3 000 · 1 500 · 1 000 · 750 tr/min pour 2, 4, 6, 8 pôles</td>
+</tr>
+<tr>
+<td>Glissement nominal</td>
+<td>0,7 % à 132 kW, 2 à 4 % vers 5 kW, davantage en petite puissance</td>
+</tr>
+<tr>
+<td>Rendement minimal IE3, 4 pôles</td>
+<td>82,5 % à 0,75 kW · 90,4 % à 7,5 kW · 95,0 % à 75 kW</td>
+</tr>
+<tr>
+<td>Rendement minimal IE2 à 0,12 kW</td>
+<td><strong>59,1 %</strong>, et 69,8 % en IE4</td>
+</tr>
+<tr>
+<td>Gain IE3 vers IE4, moteur de 7,5 kW</td>
+<td>197 W, soit 2,4 % de la puissance absorbée</td>
+</tr>
+<tr>
+<td>Part des moteurs dans l’électricité de l’Union, 2020</td>
+<td><strong>53 %</strong></td>
+</tr>
+<tr>
+<td>Courant de démarrage direct</td>
+<td>5 à 8 fois le nominal ; divisé par 3 en étoile-triangle</td>
+</tr>
+<tr>
+<td>Couple d’une pompe ou d’un ventilateur</td>
+<td>proportionnel à N², puissance à N³</td>
+</tr>
+<tr>
+<td>80 % de la vitesse, réseau sans consigne</td>
+<td>51 % de la puissance</td>
+</tr>
+<tr>
+<td>Loi U/f d’un moteur 400 V, 50 Hz</td>
+<td>8 V/Hz</td>
+</tr>
+<tr>
+<td>Bus continu d’un variateur 400 V</td>
+<td>540 à 566 V</td>
+</tr>
+<tr>
+<td>Harmoniques d’un pont triphasé à six diodes</td>
+<td>rangs 5, 7, 11, 13 ; aucun multiple de 3</td>
+</tr>
+<tr>
+<td>Forfait BAT-TH-112, chauffage et pompage</td>
+<td>9 600 kWh cumac/kW, soit <strong>830 kWh/kW/an</strong></td>
+</tr>
+<tr>
+<td>Forfait BAT-TH-112, ventilation</td>
+<td>11 400 kWh cumac/kW, soit 986 kWh/kW/an</td>
+</tr>
+<tr>
+<td>Somme d’actualisation sur 15 ans à 4 %</td>
+<td>11,56</td>
+</tr>
+<tr>
+<td>Économie mesurée à pression constante, Égypte</td>
+<td><strong>38 %</strong></td>
+</tr>
+<tr>
+<td>Pompe à pression constante, 25 % du débit</td>
+<td>encore 45 Hz</td>
+</tr>
+<tr>
+<td>Classes de vent NF EN 13659</td>
+<td>50 à 400 Pa, soit 32,5 à 92 km/h</td>
+</tr>
+<tr>
+<td>Pression dynamique à 40 km/h · 62 km/h</td>
+<td>76 Pa · 182 Pa</td>
+</tr>
+<tr>
+<td>Rafale de 50 % au-dessus de la moyenne</td>
+<td>charge multipliée par 2,25</td>
+</tr>
+<tr>
+<td>Seuil vent usuel d’un automatisme, selon ROMA</td>
+<td>environ 40 km/h ; repli impératif dès 62 km/h</td>
+</tr>
+<tr>
+<td>Reprise après une alarme de vent, selon Somfy</td>
+<td>environ 12 min</td>
+</tr>
+<tr>
+<td>Lames aussi larges que leur pas</td>
+<td>soleil direct coupé pour β = 90° − 2α</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cle">
+<p>Deux réflexes trient la plupart des affirmations : <strong>une économie de variateur supérieure à la moitié suppose un réseau sans consigne</strong>, ce qu’il faut vérifier avant de la croire ; <strong>un seuil de vent se compare à une pression</strong>, donc au carré de la vitesse.</p>
+</div>
+<h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Si un variateur économise autant, pourquoi n&#39;en met-on pas sur tous les moteurs ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce qu’il n’économise que sur une charge qui varie. Sur un moteur qui fournit sa pleine puissance en permanence, il ajoute ses pertes : pour la pompe du calcul retourné, 3,79 kW deviennent 3,90 kW, soit <strong>644 kWh de plus par an</strong> à débit constant, sans compter le coût, les harmoniques et le câblage blindé. Le variateur se justifie par le <strong>profil</strong> : la pompe de chauffage passe 44 % de sa saison au quart de son débit, et c’est là que se font ses 8 044 kWh d’économie.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Un moteur IE4 ne ferait-il pas mieux qu&#39;un variateur ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Passer d’IE3 à IE4 sur un moteur de 4 kW réduit les pertes de 124 W à pleine charge, soit <strong>681 kWh par an</strong> sur 5 500 heures, et moins à charge partielle. Le variateur réglé en pression proportionnelle économise <strong>8 044 kWh</strong> sur la même pompe, douze fois plus. Le rendement du moteur agit sur les dernières décimales de la consommation, la vitesse sur son premier chiffre : on commence par la vitesse, et l’on prend le meilleur moteur au moment de le remplacer.</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi les stores remontent-ils alors qu&#39;il n&#39;y a pas un souffle dans la cour ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que l’anémomètre n’est pas dans la cour. ROMA recommande de le poser au point le plus exposé, souvent en toiture, où le vent est plus fort qu’au sol et où chaque rafale se mesure. Les stores restent ensuite relevés pendant la temporisation de retour, de l’ordre de douze minutes. C’est le fonctionnement voulu, et l’argument qui convainc est chiffré : la rafale de 40 km/h qu’on ne sent pas dans la cour porte déjà plus de 50 kg sur un brise-soleil de 7,5 m².</p></div></details>
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Deux volets sur le même interrupteur, chez moi, cela marche depuis des années. »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Cela fonctionne tant que les deux moteurs atteignent leur butée presque en même temps. Le fil de descente de chacun porte la tension renvoyée par son condensateur ; relié à celui de l’autre, il fait repartir le premier arrivé en butée. Deux moteurs neufs et identiques, sur deux fenêtres de même hauteur, masquent le défaut ; un tablier plus lourd ou un moteur usé le révèlent. Le défaut est donc déjà là : il attend que les deux volets cessent d’être identiques.</p></div></details>
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Les sources de cette page</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><ul>
+<li><strong>Commission européenne</strong>, règlement (UE) 2019/1781 du 1er octobre 2019, écoconception des moteurs électriques et des variateurs de vitesse, EUR-Lex, <a href="https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32019R1781" class="uri">https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32019R1781</a> : champ d’application, exclusions, classes, dates, tableaux de rendement, abrogation du règlement de 2009.</li>
+<li><strong>Commission européenne</strong>, page « Electric motors » du site Energy efficient products, non datée, <a href="https://energy-efficient-products.ec.europa.eu/product-list/electric-motors_en" class="uri">https://energy-efficient-products.ec.europa.eu/product-list/electric-motors_en</a> : parc de 380 millions de moteurs, 1 326 TWh et 53 % de l’électricité de l’Union en 2020, 52 TWh économisés en 2020 et 107 TWh attendus en 2030.</li>
+<li><strong>Commission européenne</strong>, règlement (UE) n° 622/2012 du 11 juillet 2012 sur les circulateurs, EUR-Lex, <a href="https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32012R0622" class="uri">https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32012R0622</a> : profil de charge 6, 15, 35 et 44 % du temps.</li>
+<li><strong>Légifrance</strong>, arrêté du 22 décembre 2014 définissant les opérations standardisées d’économies d’énergie, annexe 3 en vigueur depuis le 30 avril 2026, <a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000048137979" class="uri">https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000048137979</a> : numéro et intitulé de la fiche BAT-TH-112.</li>
+<li><strong>Légifrance</strong>, arrêté du 29 décembre 2014 relatif aux modalités d’application du dispositif des certificats d’économies d’énergie, article 3, <a href="https://www.legifrance.gouv.fr/loda/id/JORFTEXT000030001603" class="uri">https://www.legifrance.gouv.fr/loda/id/JORFTEXT000030001603</a> : kWh cumac et actualisation annuelle par 1,04.</li>
+<li><strong>Opéra Énergie</strong>, source commerciale, « BAT-TH-112 : spécificités et montant des CEE en 2026 », <a href="https://opera-energie.com/bat-th-112/" class="uri">https://opera-energie.com/bat-th-112/</a> : conditions, montants par usage, exclusions des moteurs IE2.</li>
+<li><strong>GC2E</strong>, source commerciale, « BAT-TH-112 », <a href="https://gc2e.fr/bat-th-112/" class="uri">https://gc2e.fr/bat-th-112/</a> : mêmes montants, durée de vie de quinze ans.</li>
+<li><strong>La French Rénov</strong>, source commerciale, fiche CEE BAT-TH-112, <a href="https://lafrenchrenov.com/fiche-cee/batiment-tertiaire/bat-th-112/" class="uri">https://lafrenchrenov.com/fiche-cee/batiment-tertiaire/bat-th-112/</a> : pièces justificatives, exclusions rattachées au règlement (CE) n° 640/2009.</li>
+<li><strong>ATEE, Club C2E</strong>, « FC - IND-UT-102 : Système de variation électronique de vitesse sur un moteur asynchrone », 13 janvier 2020, <a href="https://atee.fr/document/fc-ind-ut-102-systeme-de-variation-electronique-de-vitesse-sur-un-moteur-asynchrone" class="uri">https://atee.fr/document/fc-ind-ut-102-systeme-de-variation-electronique-de-vitesse-sur-un-moteur-asynchrone</a> : intitulé de la fiche industrielle.</li>
+<li><strong>M. A. E. Salama, N. M. El-Naggar, S. Abu-Zaid</strong>, « Energy saving analysis for pump-motor set in water purification plant using variable speed drive », Scientific Reports, 12 novembre 2024, DOI 10.1038/s41598-024-75601-z, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11557826/" class="uri">https://pmc.ncbi.nlm.nih.gov/articles/PMC11557826/</a> : station, moteurs, consigne, énergies mesurées et simulées, conclusion.</li>
+<li><strong>Service public de Wallonie</strong>, cahier des charges type bâtiments, poste 41.51 « Volets », <a href="https://batiments.wallonie.be/files/unzip/html_CCTB_01.13/resources/41-51-volets.html" class="uri">https://batiments.wallonie.be/files/unzip/html_CCTB_01.13/resources/41-51-volets.html</a> : classes de vent selon la NBN EN 13659.</li>
+<li><strong>Istituto Giordano</strong>, organisme notifié, « CE Marking: performance and safety requirements of external blinds and shutters (EN 13659) », <a href="https://www.giordano.it/en/p1-c1185-t1-ce-marking-performance-and-safety-requirements-of-external-blinds-and-shutters-en-13659.php" class="uri">https://www.giordano.it/en/p1-c1185-t1-ce-marking-performance-and-safety-requirements-of-external-blinds-and-shutters-en-13659.php</a> : classes, charge de sécurité de 1,5 p, vitesses de 32 à 92 km/h.</li>
+<li><strong>Technicbaie</strong>, J. Poitier-Canet, « La tenue au vent des stores extérieurs », 18 janvier 2023, <a href="https://technicbaie.fr/technique/19921/la-tenue-au-vent-des-stores-exterieurs" class="uri">https://technicbaie.fr/technique/19921/la-tenue-au-vent-des-stores-exterieurs</a> : révision du NF DTU 34.4, fermetures et stores, vitesse déclarée, anémomètres.</li>
+<li><strong>Technicbaie</strong>, J. Poitier-Canet, « BSO en applique extérieure », 12 janvier 2024, <a href="https://technicbaie.fr/realisation/23154/bso-en-applique-exterieure" class="uri">https://technicbaie.fr/realisation/23154/bso-en-applique-exterieure</a> : le lycée d’Algrange et son scénario de vent.</li>
+<li><strong>ROMA KG</strong>, fabricant, source commerciale, « Wind speed with External Venetian Blinds: When does it become critical? », 12 août 2025, <a href="https://www.roma.eu/en/blog/wind-speed-with-external-venetian-blinds-when-does-it-become-critical" class="uri">https://www.roma.eu/en/blog/wind-speed-with-external-venetian-blinds-when-does-it-become-critical</a> : seuils de 39, 40 et 62 km/h, position du capteur.</li>
+<li><strong>Somfy</strong>, fabricant, source commerciale, capteur Eolis WireFree io, boutique Somfy Suisse, <a href="https://www.somfy-onlineshop.ch/fr/catalog/product/view/id/136/s/capteur-vent-eolis-wirefree-io/" class="uri">https://www.somfy-onlineshop.ch/fr/catalog/product/view/id/136/s/capteur-vent-eolis-wirefree-io/</a> : seuil de 10 à 80 km/h, reprise après environ douze minutes.</li>
+<li><strong>Ministère de l’Éducation nationale</strong>, référentiel du BTS Fluides, énergies, domotique, mars 2014, pages 72 et 73, copie dans le dépôt : savoirs C2-1, C2-2 et B8-2, et leurs niveaux.</li>
+</ul>
+<p>Sources consultées les 13 et 14 septembre 2026.</p></div></details>
+</div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="COURS8-PRODUIRE-STOCKER-SECOURIR.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Domotique, cours 8 — produire, stocker, secourir</span></a><a class="ap" href="COURS10-PROJET-KNX.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Domotique, cours 10 — le projet KNX</span></a></div></nav>
+<p class="pied">Page de formation, réservée au professeur. Elle s'appuie sur des cas réels documentés ; les sources sont données en fin de page.</p>
+</div>
+<script src="../assets/kit.js?v=2863feac"></script>
+<script src="../assets/site.js?v=2863feac"></script>
+<script src="../assets/vivant.js?v=2863feac"></script>

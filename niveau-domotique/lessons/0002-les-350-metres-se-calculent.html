@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les 350 mètres se calculent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../assets/cours.css">
+</head>
+<body>
+<main class="page">
+
+<p class="surtitre">Leçon 2 · <a href="../reference/longueurs-d-une-ligne-knx.html">Les longueurs d'une ligne KNX</a></p>
+<h1>Les 350 mètres se calculent</h1>
+<p class="these">La limite des 350 m entre l'alimentation et un participant n'est
+pas une règle à apprendre. C'est une chute de tension, qui se refait en trois lignes
+avec quatre nombres du document de la KNX Association. À la fin de la leçon, vous la
+referez au tableau, et vous saurez ce qu'elle suppose.</p>
+
+<p>Au <a href="0001-bilan-de-niveau.html">bilan</a>, la question 7 demandait d'où
+vient cette limite. Vous connaissez la règle ; il vous manque sa raison, et c'est
+elle qu'un étudiant vous demandera en semaine 5, quand le fil A traitera la
+topologie. En semaine 4, le fil B aura déjà fait <em>mesurer</em> cette chute sur une
+couronne de 100 m.</p>
+
+<h2>Quatre nombres, tous dans le document KNX</h2>
+
+<table>
+<thead><tr><th>Donnée</th><th>Valeur</th><th>Ce que dit le document</th></tr></thead>
+<tbody>
+<tr><td>Tension du système</td><td><strong>30 V</strong> continu, TBTS</td><td>produite par l'alimentation — p. 4 et 10</td></tr>
+<tr><td>Tension minimale d'un participant</td><td><strong>21 V</strong></td><td>« a minimum of 21 V for safe operation » — p. 10</td></tr>
+<tr><td>Résistance de boucle du câble TP1</td><td><strong>75 Ω</strong> par 1 000 m</td><td>la base des longueurs garanties — p. 5</td></tr>
+<tr><td>Courant de l'alimentation</td><td><strong>640 mA</strong> pour 64 participants</td><td>« an almost identical distribution on the line » — p. 10</td></tr>
+</tbody>
+</table>
+
+<span class="marge">Source : KNX Association,
+<a href="https://www.u-lux.com/fileadmin/user_upload/Downloads/PDF/Technische_Downloads/en/KNX_Basics.pdf">KNX
+Basic Course, TP1 Installation</a>. La fiche Prof 1 fait ce calcul avec 29 V et
+69 Ω/km ; les valeurs du document sont celles-ci, et la conclusion ne change pas.</span>
+
+<p>Retenez surtout la dernière colonne de la dernière ligne : <strong>des participants
+répartis de façon presque identique</strong>. Tout le calcul repose sur cette
+hypothèse, et le document l'écrit.</p>
+
+<h2>Le calcul, en trois lignes</h2>
+
+<p><strong>Si tout le courant parcourait toute la ligne</strong>, la boucle de 350 m
+— 26,25 Ω — traversée par 0,64 A ferait chuter 16,8 V. Il resterait 13,2 V au bout :
+rien ne fonctionnerait.</p>
+
+<p><strong>Mais le courant diminue en chemin.</strong> Chaque participant prélève son
+courant au passage ; au départ passent 640 mA, au bout il ne reste rien. En moyenne
+sur la longueur, il passe la moitié du courant, donc la chute vaut la moitié :
+<strong>8,4 V</strong>. Il reste <strong>21,6 V</strong> au dernier participant, pour
+21 V exigés.</p>
+
+<span class="marge">La moitié vient d'une intégrale : si le courant décroît
+linéairement, I(x) = I·(1 − x/L), la chute vaut ∫ r·I(x) dx = r·I·L/2 sur la longueur
+L, r étant la résistance de boucle par mètre.</span>
+
+<div class="retenir">
+<p><strong>ΔU = ½ · r · I · L</strong> pour des participants répartis ; <strong>ΔU =
+r · I · L</strong> s'ils sont tous au bout. r en Ω/m de boucle, I en A, L en m.</p>
+<p>Sur 350 m : 30 − ½ × 0,075 × 0,64 × 350 = <strong>21,6 V</strong>.</p>
+</div>
+
+<h2>Retournez-le</h2>
+
+<p>Au lieu de vérifier 350 m, cherchez la longueur qui laisse exactement 21 V :
+L = 2 × (30 − 21) / (0,075 × 0,64) = <strong>375 m</strong>. Le document écrit 350 :
+les 25 m d'écart sont une marge pour les raccordements, la température du câble et
+les participants un peu plus gourmands que prévu.</p>
+
+<p><strong>Et la règle tombe dès que l'hypothèse tombe.</strong> Si les 64
+participants sont regroupés au bout — un bâtiment annexe desservi par une longue
+liaison —, toute la chute compte : L = (30 − 21) / (0,075 × 0,64) =
+<strong>187 m</strong>. Une installation peut respecter les 350 m et ne pas
+fonctionner.</p>
+
+<h2>À vous</h2>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">Une ligne de 200 m. Les 64 participants sont tous regroupés au bout. Tension au dernier participant :</p>
+<ol>
+<li><button type="button">20,4 V, trop peu</button><p class="retour" hidden>0,075 × 0,64 × 200 = 9,6 V de chute, tout le courant parcourant toute la longueur : 20,4 V, sous les 21 V — alors que la ligne respecte les 350 m.</p></li>
+<li><button type="button">25,2 V, bien assez</button><p class="retour" hidden>C'est la valeur si les participants étaient répartis : la moitié de la chute. Ici, aucun ne prélève en chemin.</p></li>
+<li><button type="button">21,6 V, tout juste</button><p class="retour" hidden>C'est le résultat pour 350 m et des participants répartis. Relisez la situation : 200 m, et tout au bout.</p></li>
+</ol>
+</div>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">Le calcul donne 375 m. Pourquoi le document écrit-il 350 m ?</p>
+<ol>
+<li><button type="button">une marge de sécurité</button><p class="retour" hidden>375 m suppose un câble à 75 Ω/km exactement, des raccordements parfaits et 64 participants à la puissance nominale. Les 25 m restants absorbent le réel.</p></li>
+<li><button type="button">la vitesse du signal</button><p class="retour" hidden>Le temps de parcours d'un télégramme fixe une autre limite, entre deux participants. Pas celle-ci.</p></li>
+<li><button type="button">le nombre de participants</button><p class="retour" hidden>Il est déjà dans le calcul : 640 mA, ce sont 64 participants.</p></li>
+</ol>
+</div>
+
+<div class="qcm" data-bonne="0">
+<p class="enonce">La limite de 700 m relie deux participants quelconques. D'après les deux points qu'elle relie, sa cause est :</p>
+<ol>
+<li><button type="button">le temps de parcours</button><p class="retour" hidden>Aucune alimentation entre ces deux points : la chute de tension n'y joue pas. Reste le temps que met un télégramme à aller de l'un à l'autre — le document parle de « telegram run times », p. 25.</p></li>
+<li><button type="button">la chute de tension</button><p class="retour" hidden>La chute se compte depuis l'alimentation. Entre deux participants, il n'y a pas de source : ce n'est pas elle.</p></li>
+<li><button type="button">le courant des participants</button><p class="retour" hidden>Il fixe la chute, donc les 350 m. Les 700 m relient deux participants, pas une source.</p></li>
+</ol>
+</div>
+
+<p class="bilan" data-pour="qcm"></p>
+
+<div class="rappel">
+<label class="consigne" for="r1">Un étudiant : « Monsieur, pourquoi 350 m ? » Répondez
+en trois lignes, comme au tableau, sans relire la page.</label>
+<textarea id="r1"></textarea>
+<button class="comparer" type="button">Comparer</button>
+<div class="modele" hidden>
+<span class="etiquette">Une réponse qui tient</span>
+<p>Parce que la paire du bus alimente les participants, et que le câble a une
+résistance. La tension part à 30 V et doit rester au-dessus de 21 V chez le dernier.
+Avec 64 participants répartis, le courant diminue le long de la ligne et la chute
+vaut la moitié de ce qu'elle serait au bout : 8,4 V sur 350 m. Il reste 21,6 V : la
+limite est là.</p>
+<p>Cochez ce que votre réponse contient :</p>
+<ul class="bareme">
+<li><label><input type="checkbox" data-points="1"> La chute de tension dans le câble, parce que le bus alimente</label></li>
+<li><label><input type="checkbox" data-points="1"> Les deux bornes : 30 V au départ, 21 V minimum</label></li>
+<li><label><input type="checkbox" data-points="1"> Les participants supposés répartis, d'où la moitié</label></li>
+<li><label><input type="checkbox" data-points="1"> Aucune phrase du type « c'est la norme »</label></li>
+</ul>
+<p class="total"></p>
+</div>
+</div>
+
+<p><strong>La source à lire :</strong> le
+<a href="https://www.u-lux.com/fileadmin/user_upload/Downloads/PDF/Technische_Downloads/en/KNX_Basics.pdf">cours
+de base KNX, installation TP1</a>, de la KNX Association — pages 4, 5, 10 et 25, dix
+minutes. C'est le document de l'organisme du standard, et le seul qui écrive
+l'hypothèse de répartition.</p>
+
+<p class="demande">Un chiffre qui vous gêne, une objection d'étudiant que vous voyez
+venir ? <strong>Posez-la dans la conversation</strong> : c'est à ça que je sers. Dans
+trois jours, refaites le calcul des 350 m de tête avant d'ouvrir la leçon 3 : elle
+commencera par là.</p>
+
+<nav class="suite">
+<span class="etiquette">Pour la suite</span>
+<ul>
+<li><a href="../reference/longueurs-d-une-ligne-knx.html">Référence : les longueurs d'une ligne KNX et leur cause</a></li>
+<li><a href="0001-bilan-de-niveau.html">Leçon 1 — le bilan de départ</a></li>
+<li><a href="../reference/carte-des-dix-sept-savoirs.html">Référence : les dix-sept savoirs</a></li>
+<li>Leçon 3, à venir : l'adresse de groupe, ou pourquoi KNX n'a pas de centrale</li>
+</ul>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

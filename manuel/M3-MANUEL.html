@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Manuel · chapitre 3</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="manuel/M3-MANUEL">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M2-MANUEL.html" rel="prev" title="Manuel · chapitre 2" aria-label="Manuel · chapitre 2">&lsaquo;</a><a class="fleche" href="M4-MANUEL.html" rel="next" title="Manuel · chapitre 4" aria-label="Manuel · chapitre 4">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M3-MANUEL">Marquer comme lu</button></div>
@@ -23,378 +31,741 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M2-MANUEL.html">Débit, diamètre et vitesse</a></b><span class="ou">Manuel · chapitre 2</span><span class="car">la perte de charge dépend de la vitesse au carré, et le chapitre 2 a défini les trois.</span></li><li><b>Lire une échelle logarithmique</b><span class="car">l'abaque a deux axes en log, et la section 3.3 s'y appuie ; entre 1 et 10 les intervalles ne sont pas égaux.</span></li><li><b>L'intersection de deux courbes</b><span class="car">le point de fonctionnement se lit sur le graphique ; il faut savoir tracer une parabole et la couper par une autre.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#3-1-le-debit-ne-se-commande-pas">3.1 Le débit ne se commande pas</a><a href="#3-2-d-ou-vient-la-perte-de-charge">3.2 D’où vient la perte de charge</a><a href="#3-3-le-calcul-de-tous-les-jours-l-abaque">3.3 Le calcul de tous les jours : l’abaque</a><a href="#3-4-les-singularites-converties-en-metres-de-tube">3.4 Les singularités, converties en mètres de tube</a><a href="#3-5-le-circuit-le-plus-defavorise">3.5 Le circuit le plus défavorisé</a><a href="#3-6-la-courbe-de-pompe-et-le-point-de-fonctionnement">3.6 La courbe de pompe et le point de fonctionnement</a><a href="#3-7-le-calcul-retourne-choisir-la-pompe">3.7 Le calcul retourné : choisir la pompe</a><a href="#3-8-la-vitesse-variable-et-pourquoi-elle-rapporte-tant">3.8 La vitesse variable, et pourquoi elle rapporte tant</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
-<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
-<div class="etapes">
-<ol type="1">
-<li><strong>Calculer</strong> la perte de charge d’un circuit, tube droit et singularités comprises.</li>
-<li><strong>Démontrer</strong> pourquoi elle varie comme le carré du débit et l’inverse de D⁵.</li>
-<li><strong>Placer</strong> un point de fonctionnement à l’intersection de deux courbes.</li>
-<li><strong>Choisir</strong> une pompe à partir d’un débit et d’une hauteur manométrique.</li>
-<li><strong>Expliquer</strong> ce qu’économise une pompe à vitesse variable, chiffres à l’appui.</li>
-</ol>
-</div>
-<p>Le chapitre 2 a fixé un débit et un diamètre. Il reste à savoir <strong>ce qu’il faut dépenser</strong> pour faire circuler ce débit dans ce diamètre. C’est le rôle de la pompe, et la moitié des questions d’hydraulique de l’épreuve porte là-dessus.</p>
-<h2 id="3-1-le-debit-ne-se-commande-pas">3.1 Le débit ne se commande pas</h2>
-<p>Prenez deux pailles, une fine et une large, et buvez le même verre. Avec la fine, vous aspirez plus fort pour le même résultat. Vous n’avez pas changé le débit voulu : vous avez changé <strong>l’effort</strong> qu’il coûte.</p>
-<p>Une pompe est dans cette situation. Elle ne décide pas du débit : elle fournit une <strong>différence de pression</strong>, et le circuit répond par le débit qu’il veut bien laisser passer.</p>
-<div class="cle">
-<p>Un circuit ne se pilote donc jamais en débit directement. On agit sur la pression fournie ou sur la résistance du circuit, et le débit <strong>en résulte</strong>. C’est l’idée qui structure tout le chapitre.</p>
-</div>
-<p>La grandeur perdue s’appelle <strong>perte de charge</strong>. Elle s’exprime en pascals, ou plus souvent en <strong>mètres de colonne d’eau</strong>, mCE.</p>
-<div class="formule">
-<p><strong>1 mCE = ρ × g × 1 = 1 000 × 9,81 = 9 810 Pa ≈ 0,1 bar</strong></p>
-<ul>
-<li>10 mCE ≈ 1 bar</li>
-<li>une pompe de chauffage courante fournit 3 à 6 mCE</li>
-<li>une perte de charge linéique se note <strong>j</strong>, en mmCE par mètre</li>
-</ul>
-</div>
-<h2 id="3-2-d-ou-vient-la-perte-de-charge">3.2 D’où vient la perte de charge</h2>
-<p>L’eau frotte contre la paroi, et les couches d’eau frottent entre elles. La loi qui décrit cela porte le nom de Darcy et Weisbach, et le manuel la donne pour que vous sachiez ce qu’il y a <strong>derrière l’abaque</strong> que vous utiliserez.</p>
-<div class="formule">
-<p><strong>ΔP = λ × (L / D) × (ρ × v² / 2)</strong></p>
-<ul>
-<li><strong>λ</strong><span>: coefficient de frottement, <strong>sans unité</strong>, de 0,02 à 0,04</span></li>
-<li><strong>L</strong><span>: longueur du tube, en m · <strong>D</strong> : diamètre intérieur, en m</span></li>
-<li><strong>ρ</strong><span>: masse volumique, 1 000 kg/m³ · <strong>v</strong> : vitesse, en m/s</span></li>
-</ul>
-</div>
-<div class="piege">
-<p>Ce λ-là <strong>n’est pas</strong> la conductivité thermique du chapitre 1. Même lettre, deux grandeurs sans rapport. Le contexte tranche : un λ sans unité dans un calcul hydraulique, un λ en W/(m·K) dans un calcul de paroi.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : pourquoi ΔP varie comme Q² / D⁵</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Partons de Darcy et remplaçons la vitesse par le débit.</p>
-<p><strong>Étape 1.</strong> La vitesse s’écrit v = Q / S avec S = πD²/4, donc</p>
-<p>v = 4Q / (πD²)</p>
-<p><strong>Étape 2.</strong> On la porte au carré dans Darcy :</p>
-<p>ΔP = λ × (L/D) × (ρ/2) × 16Q² / (π²D⁴)</p>
-<p><strong>Étape 3.</strong> On regroupe les D :</p>
-<p><strong>ΔP = (8 λ ρ L / π²) × Q² / D⁵</strong></p>
-<p>Tout ce qui est devant Q²/D⁵ est fixé par le circuit. D’où les deux lois qu’il faut retenir <strong>par cœur</strong> :</p>
-<ul>
-<li>à diamètre fixé, <strong>ΔP ∝ Q²</strong> : doubler le débit quadruple la perte de charge ;</li>
-<li>à débit fixé, <strong>ΔP ∝ 1/D⁵</strong> : monter d’un diamètre de 25 %, c’est diviser la perte de charge par 1,25⁵ = <strong>3,05</strong>.</li>
-</ul>
-<p><strong>Les quatre hypothèses qui la portent.</strong></p>
-<ol type="1">
-<li><strong>Régime turbulent rugueux.</strong> C’est ce qui permet de traiter λ comme une constante. Vrai au-dessus d’un nombre de Reynolds de 4 000, ce qui couvre presque toute la distribution de chauffage.</li>
-<li><strong>Régime établi.</strong> Le profil de vitesse est stabilisé ; on néglige les longueurs d’établissement après un coude.</li>
-<li><strong>Fluide incompressible et isotherme.</strong> ρ est pris constant sur le tronçon.</li>
-<li><strong>Paroi de rugosité uniforme.</strong> L’entartrage et la corrosion la changent, et c’est pourquoi un vieux réseau perd plus qu’au calcul.</li>
-</ol>
-<p><strong>Là où la première hypothèse tombe.</strong> En régime <strong>laminaire</strong>, sous Reynolds 2 000, λ = 64/Re et le calcul refait donne <strong>ΔP ∝ Q</strong>, plus Q². La perte devient proportionnelle au débit, pas à son carré. On rencontre ce cas dans les boucles de plancher chauffant à très faible débit et dans les circuits d’eau glycolée froide, où la viscosité double. Une courbe de réseau y est presque une droite, et non une parabole.</p></div></details>
-</div><div class="cle">
-<p>Les deux exposants sont la matière à retenir : <strong>le carré sur le débit, la puissance cinq sur le diamètre</strong>. Ils expliquent à eux seuls pourquoi on surdimensionne les tubes et pourquoi on réduit les débits.</p>
-</div>
-<h2 id="3-3-le-calcul-de-tous-les-jours-l-abaque">3.3 Le calcul de tous les jours : l’abaque</h2>
-<p>Personne n’applique Darcy à la main sur un chantier. On lit une <strong>perte de charge linéique j</strong> dans un abaque, à partir du débit et du diamètre, et on multiplie par la longueur.</p>
-<div class="formule">
-<p><strong>ΔP tronçon = j × L</strong> (j en mmCE/m, L en m)</p>
-<p>Critère de dimensionnement usuel : <strong>j compris entre 10 et 20 mmCE/m</strong>.</p>
-</div>
-<p>En dessous de 10, on a payé du tube pour rien. Au-dessus de 20, la pompe grossit et le réseau siffle. Cette fourchette prime sur le critère de vitesse dans les longues distributions, et c’est le critère de vitesse qui prime dans les logements, pour le bruit.</p>
-<div class="outil" data-outil="pertes">
-
-</div>
-<h2 id="3-4-les-singularites-converties-en-metres-de-tube">3.4 Les singularités, converties en mètres de tube</h2>
-<p>Un coude, une vanne, un té, un rétrécissement : chacun coûte de la pression, parce que l’eau y change de direction ou de vitesse. Deux façons de le compter, et la seconde est celle de l’épreuve.</p>
-<div class="formule">
-<p><strong>Méthode du coefficient : ΔP = ζ × ρ v² / 2</strong></p>
-<p><strong>Méthode des longueurs équivalentes : Leq = ζ × D / λ</strong>, puis on ajoute Leq à la longueur droite et on multiplie le tout par j.</p>
-</div>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Singularité</th>
-<th style="text-align: right;">ζ</th>
-<th style="text-align: right;">Leq en DN 20, ordre de grandeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Coude à 90°, rayon court</td>
-<td style="text-align: right;">1,0</td>
-<td style="text-align: right;">1,0 m</td>
-</tr>
-<tr>
-<td>Coude à 90°, rayon long</td>
-<td style="text-align: right;">0,4</td>
-<td style="text-align: right;">0,4 m</td>
-</tr>
-<tr>
-<td>Té en dérivation</td>
-<td style="text-align: right;">1,5</td>
-<td style="text-align: right;">1,5 m</td>
-</tr>
-<tr>
-<td>Té en passage direct</td>
-<td style="text-align: right;">0,3</td>
-<td style="text-align: right;">0,3 m</td>
-</tr>
-<tr>
-<td>Vanne à boisseau ouverte</td>
-<td style="text-align: right;">0,2</td>
-<td style="text-align: right;">0,2 m</td>
-</tr>
-<tr>
-<td>Vanne d’équilibrage ouverte</td>
-<td style="text-align: right;">3 à 6</td>
-<td style="text-align: right;">3 à 6 m</td>
-</tr>
-<tr>
-<td>Clapet anti-retour</td>
-<td style="text-align: right;">2,5</td>
-<td style="text-align: right;">2,5 m</td>
-</tr>
-<tr>
-<td>Corps de chaudière</td>
-<td style="text-align: right;">—</td>
-<td style="text-align: right;">2 à 6 mCE, <strong>donnée constructeur</strong></td>
-</tr>
-</tbody>
-</table></div>
-<div class="piege">
-<p>Une règle de terrain circule : « on majore la longueur droite de 15 % ». Elle tient sur une distribution rectiligne. Elle est <strong>fausse</strong> sur une sous-station, où les singularités du local technique pèsent souvent plus que tout le reste du réseau. Comptez-les.</p>
-</div>
-<h3 id="exemple-résolu-1.-un-tronçon-complet">Exemple résolu 1. Un tronçon complet</h3>
-<p>Un tronçon de <strong>24 m</strong> de cuivre 22 × 1, débit <strong>900 L/h</strong>, avec 6 coudes à rayon court, 2 tés en dérivation et 1 vanne d’équilibrage.</p>
-<p><strong>1. Le linéique.</strong> L’abaque donne, pour 900 L/h en 20 mm intérieur, <strong>j ≈ 17 mmCE/m</strong>.</p>
-<p><strong>2. Les longueurs équivalentes.</strong> 6 × 1,0 + 2 × 1,5 + 1 × 4,0 = <strong>13,0 m</strong>.</p>
-<p><strong>3. La longueur totale.</strong> 24 + 13 = <strong>37 m</strong>.</p>
-<p><strong>4. La perte de charge.</strong> ΔP = 17 × 37 = <strong>629 mmCE ≈ 0,63 mCE</strong>.</p>
-<p>Notez le poids des singularités : <strong>35 % du total</strong> pour un tronçon pourtant banal.</p>
-<h2 id="3-5-le-circuit-le-plus-defavorise">3.5 Le circuit le plus défavorisé</h2>
-<p>Un réseau a autant de chemins que d’émetteurs. Chacun a sa propre perte de charge, et la pompe n’en voit qu’une seule : <strong>la plus grande</strong>.</p>
-<div class="cle">
-<p>La hauteur manométrique de la pompe se calcule sur le <strong>circuit le plus défavorisé</strong>, celui dont la somme aller-retour est la plus élevée. Ce n’est pas forcément le plus long : un circuit court avec une batterie très résistante peut le battre.</p>
-</div>
-<p>Tous les autres circuits reçoivent alors <strong>trop de pression</strong>, donc trop de débit. C’est exactement le problème du dernier radiateur du couloir, vu au chapitre 2 : ce n’est pas lui qui manque, ce sont les autres qui prennent tout.</p>
-<figure class="schema"><div class="dessin" data-schema="retour-inverse"></div><figcaption>Le débit se répartit selon la résistance du chemin, pas selon le besoin de l’émetteur : quatre circuits, deux façons de les boucler.</figcaption></figure>
-<p><strong>L’équilibrage</strong> consiste à <strong>freiner volontairement</strong> les circuits favorisés, en fermant partiellement une vanne de réglage, jusqu’à ce que tous aient la même perte de charge. On ne gagne rien en énergie : on rend le débit juste.</p>
-<h2 id="3-6-la-courbe-de-pompe-et-le-point-de-fonctionnement">3.6 La courbe de pompe et le point de fonctionnement</h2>
-<p>Une pompe ne fournit pas une pression fixe. Elle fournit <strong>une courbe</strong> : plus elle débite, moins elle monte haut. Le constructeur la donne, hauteur en ordonnée, débit en abscisse.</p>
-<p>Le circuit, lui, a aussi une courbe : la parabole <strong>ΔP = k × Q²</strong> démontrée au 3.2.</p>
-<div class="formule">
-<p><strong>Point de fonctionnement = intersection des deux courbes</strong></p>
-<p>C’est le seul couple (Q, H) où ce que la pompe fournit égale exactement ce que le circuit demande. Il ne se choisit pas : il <strong>s’impose</strong>.</p>
-</div>
-<div class="outil" data-outil="point-fonctionnement">
-
-</div>
-<div class="piege">
-<p>Une pompe surdimensionnée ne donne pas « plus de pression » : elle donne <strong>plus de débit</strong>, en glissant vers la droite de sa courbe. Résultat : bruit, Δθ écrasé au retour, condensation impossible en chaudière, et une consommation électrique qui monte au cube. Le surdimensionnement d’une pompe est l’un des défauts les plus fréquents du parc existant.</p>
-</div>
-<h3 id="exemple-résolu-2.-le-point-de-fonctionnement">Exemple résolu 2. Le point de fonctionnement</h3>
-<p>Un circuit demande <strong>2,4 mCE à 1 200 L/h</strong>. Une pompe a la courbe suivante :</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Débit (L/h)</th>
-<th style="text-align: right;">0</th>
-<th style="text-align: right;">800</th>
-<th style="text-align: right;">1 200</th>
-<th style="text-align: right;">1 600</th>
-<th style="text-align: right;">2 000</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Hauteur (mCE)</td>
-<td style="text-align: right;">5,4</td>
-<td style="text-align: right;">4,6</td>
-<td style="text-align: right;">4,0</td>
-<td style="text-align: right;">3,1</td>
-<td style="text-align: right;">1,9</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>1. La courbe du réseau.</strong> k = ΔP / Q² = 2,4 / 1 200² = 1,67 × 10⁻⁶.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Débit (L/h)</th>
-<th style="text-align: right;">800</th>
-<th style="text-align: right;">1 200</th>
-<th style="text-align: right;">1 600</th>
-<th style="text-align: right;">2 000</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Réseau (mCE)</td>
-<td style="text-align: right;">1,07</td>
-<td style="text-align: right;">2,40</td>
-<td style="text-align: right;">4,27</td>
-<td style="text-align: right;">6,67</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>2. L’intersection.</strong> Entre 1 200 et 1 600, la courbe réseau passe <strong>au-dessus</strong> de la pompe : le point est dans cet intervalle. En interpolant, les deux valent environ <strong>3,5 mCE à 1 450 L/h</strong>.</p>
-<p><strong>3. La lecture.</strong> La pompe donnera <strong>1 450 L/h</strong>, soit <strong>21 % de plus</strong> que prévu, parce que la courbe du réseau a été calculée sur un circuit qui n’oppose pas encore la résistance de ses vannes d’équilibrage. C’est le rôle de l’équilibrage que de ramener le point sur 1 200.</p>
-<h2 id="3-7-le-calcul-retourne-choisir-la-pompe">3.7 Le calcul retourné : choisir la pompe</h2>
-<p>C’est la question de bureau d’études, et elle est exactement l’inverse de la précédente : on connaît le besoin, on cherche la machine.</p>
-<div class="etapes">
-<ol type="1">
-<li><strong>Le débit</strong> vient de la puissance et du régime : Q = Φ / (1,163 × Δθ).</li>
-<li><strong>La hauteur</strong> vient du circuit le plus défavorisé : Σ (j × L) sur l’aller, plus le retour, plus les appareils donnés par leur constructeur.</li>
-<li><strong>On majore</strong> de 10 à 15 %, pour l’encrassement et l’incertitude d’abaque.</li>
-<li><strong>On choisit</strong> la pompe dont la courbe passe <strong>juste au-dessus</strong> du point voulu, et <strong>jamais très au-dessus</strong>.</li>
-<li><strong>On vérifie</strong> que le point tombe dans le tiers central de la courbe, là où le rendement est maximal.</li>
-</ol>
-</div>
-<h3 id="exemple-résolu-3.-dimensionner-la-pompe-dune-sous-station">Exemple résolu 3. Dimensionner la pompe d’une sous-station</h3>
-<p>Une sous-station alimente <strong>60 kW</strong> en <strong>80/60</strong>. Le circuit le plus défavorisé fait <strong>48 m</strong> aller-retour, avec un linéique moyen de <strong>15 mmCE/m</strong> et <strong>22 m</strong> de longueurs équivalentes. L’échangeur annonce <strong>1,8 mCE</strong>, la vanne trois voies <strong>0,8 mCE</strong>.</p>
-<p><strong>1. Le débit.</strong> Q = 60 000 / (1,163 × 20) = <strong>2 580 L/h</strong>, soit 2,58 m³/h.</p>
-<p><strong>2. La perte du réseau.</strong> (48 + 22) × 15 = 1 050 mmCE = <strong>1,05 mCE</strong>.</p>
-<p><strong>3. Le total.</strong> 1,05 + 1,8 + 0,8 = <strong>3,65 mCE</strong>.</p>
-<p><strong>4. La majoration.</strong> 3,65 × 1,10 = <strong>4,0 mCE</strong>.</p>
-<p><strong>5. Le choix.</strong> Une pompe donnant <strong>4,0 mCE à 2,6 m³/h</strong>. Sur un catalogue, on prendra le modèle dont le point nominal est le plus proche par excès, et on réglera la vitesse variable sur la courbe qui passe par ce point.</p>
-<div class="cle">
-<p>Notez la répartition : le réseau ne pèse que <strong>29 %</strong> de la hauteur totale. Les appareils, échangeur et vanne, pèsent le reste. Sur une sous-station, chercher à gagner sur les tubes est un mauvais calcul ; sur une longue distribution de campus, c’est l’inverse.</p>
-</div>
-<h2 id="3-8-la-vitesse-variable-et-pourquoi-elle-rapporte-tant">3.8 La vitesse variable, et pourquoi elle rapporte tant</h2>
-<p>Une pompe moderne change de vitesse. Trois lois, dites <strong>lois de similitude</strong>, disent ce qui se passe alors. Elles sont simples et elles tombent souvent.</p>
-<div class="formule">
-<p><strong>Q₂ / Q₁ = N₂ / N₁</strong> · <strong>H₂ / H₁ = (N₂ / N₁)²</strong> · <strong>P₂ / P₁ = (N₂ / N₁)³</strong></p>
-<p>Le débit suit la vitesse, la hauteur son carré, <strong>la puissance son cube</strong>.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration des trois exposants</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le débit.</strong> Une roue de pompe déplace un volume par tour. Multiplier le nombre de tours par seconde multiplie le volume déplacé dans le même rapport, tant que le remplissage de la roue reste complet. D’où <strong>Q ∝ N</strong>.</p>
-<p><strong>La hauteur.</strong> L’eau sort de la roue à une vitesse périphérique u = π × D × N, donc <strong>u ∝ N</strong>. L’énergie qu’elle emporte est une énergie cinétique, en u²/2 : la hauteur convertie varie donc comme <strong>N²</strong>.</p>
-<p><strong>La puissance.</strong> La puissance hydraulique vaut P = ρ g Q H. Le débit varie comme N, la hauteur comme N² : leur produit varie comme <strong>N³</strong>.</p>
-<p><strong>Les hypothèses.</strong> Ces lois supposent le <strong>rendement constant</strong> entre les deux vitesses, et une <strong>similitude géométrique parfaite</strong>, la même roue, seulement plus vite. La première hypothèse tient sur une plage de ± 30 % ; en dessous de la moitié de la vitesse nominale, le rendement du moteur et de la roue chute et la loi cubique surestime l’économie réelle.</p>
-<p><strong>Ce que les lois ne disent pas.</strong> Elles décrivent la pompe, pas le circuit. Le point de fonctionnement réel se déplace sur la <strong>courbe du réseau</strong>, et non le long d’une courbe de similitude, sauf si le réseau est une parabole passant par l’origine, c’est-à-dire un circuit <strong>sans soupape différentielle et sans pression résiduelle imposée</strong>. Dès qu’une pression minimale est maintenue en pied de colonne, l’économie réelle est plus proche de N² que de N³.</p></div></details>
-</div><div class="cle">
-<p>Réduire la vitesse de <strong>20 %</strong> ne fait perdre que 20 % de débit, mais divise la puissance par 1,95 : <strong>la moitié de l’électricité pour 80 % du débit</strong>. C’est tout l’argument de la pompe à vitesse variable, et le calcul se refait en dix secondes à l’épreuve.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : la cavitation et le NPSH</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Tout ce chapitre suppose que l’eau reste liquide dans la pompe. Elle peut cesser de l’être.</p>
-<p>À l’entrée d’une roue, la pression <strong>chute</strong> localement avant que la pompe ne la relève. Si elle descend sous la <strong>pression de vapeur saturante</strong> du liquide à sa température, l’eau bout sur place. Les bulles formées implosent quelques millimètres plus loin, dans la zone de haute pression, et arrachent la matière de la roue : c’est la <strong>cavitation</strong>. Elle s’entend (un bruit de graviers) et elle détruit une pompe en quelques semaines.</p>
-<p>La condition à respecter s’écrit :</p>
-<p><strong>NPSH disponible &gt; NPSH requis + 0,5 m</strong></p>
-<p>Le NPSH requis est <strong>une donnée constructeur</strong>, qui croît avec le débit. Le NPSH disponible est <strong>une propriété de l’installation</strong> : pression à l’aspiration, moins pression de vapeur saturante, moins pertes de charge de l’aspiration.</p>
-<p>Trois cas où la marge s’effondre, et ils sont tous fréquents :</p>
-<ul>
-<li><strong>eau chaude.</strong> À 20 °C, la pression de vapeur vaut 0,023 bar ; <strong>à 90 °C, 0,70 bar</strong>, trente fois plus. Une pompe en sortie de chaudière est le point le plus exposé de l’installation.</li>
-<li><strong>pression statique insuffisante.</strong> Un vase mal gonflé ou un manque d’eau fait tomber la pression au point haut, donc partout.</li>
-<li><strong>aspiration étranglée.</strong> Un filtre encrassé à l’aspiration mange la marge.</li>
-</ul>
-<p>D’où la règle de montage : <strong>on place toujours la pompe au refoulement</strong>, jamais à l’aspiration du générateur, et l’expansion se raccorde <strong>à l’aspiration de la pompe</strong>. Ce point-là se demande en épreuve sous la forme « justifier l’emplacement du vase d’expansion ».</p></div></details>
-</div><h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Valeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1 mCE</td>
-<td>9 810 Pa ≈ 0,1 bar</td>
-</tr>
-<tr>
-<td>Perte linéique visée en dimensionnement</td>
-<td><strong>10 à 20 mmCE/m</strong></td>
-</tr>
-<tr>
-<td>λ de frottement, tube courant</td>
-<td>0,02 à 0,04</td>
-</tr>
-<tr>
-<td>Coude 90° rayon court · té en dérivation</td>
-<td>ζ = 1,0 · 1,5</td>
-</tr>
-<tr>
-<td>Vanne d’équilibrage ouverte</td>
-<td>ζ = 3 à 6</td>
-</tr>
-<tr>
-<td>Hauteur d’un circulateur de logement</td>
-<td>2 à 4 mCE</td>
-</tr>
-<tr>
-<td>Hauteur d’une pompe de sous-station</td>
-<td>4 à 8 mCE</td>
-</tr>
-<tr>
-<td>Part des singularités sur un tronçon banal</td>
-<td>20 à 40 %</td>
-</tr>
-<tr>
-<td>Majoration de sécurité sur la HMT</td>
-<td>10 à 15 %</td>
-</tr>
-<tr>
-<td>Reynolds de transition laminaire / turbulent</td>
-<td>2 000 / 4 000</td>
-</tr>
-<tr>
-<td>Pression de vapeur de l’eau à 20 °C · 90 °C</td>
-<td>0,023 · 0,70 bar</td>
-</tr>
-<tr>
-<td>Marge de NPSH à respecter</td>
-<td>0,5 m</td>
-</tr>
-<tr>
-<td>Puissance d’un circulateur de logement</td>
-<td>15 à 60 W</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le réflexe qui rattrape une erreur de calcul : <strong>doubler un débit multiplie la perte de charge par quatre</strong>. Si votre résultat n’a pas ce comportement quand vous changez une donnée, vous avez oublié un carré quelque part.</p>
-</div>
-<h2 id="s-entrainer">S’entraîner</h2>
-<section class="exo" id="M3-MANUEL-e1" data-exo="M3-MANUEL-e1" data-type="calcul" data-savoir="A3-2" data-a="IXgueGB4OTs2OS82eHZ4LHhganRsamh2eC41NnhgbnRqdngveGB4NxkfeCc="><p class="k">Exercice · A3-2</p><h4>La perte de charge d’un tronçon</h4><div class="enonce">
-
-<p>Un tronçon de <strong>32 m</strong> droits présente une perte linéique de <strong>14 mmCE/m</strong>, et ses singularités valent <strong>11 m</strong> de longueur équivalente. Quelle est sa perte de charge totale, en mCE ?</p>
-</div><div class="indice" hidden>Ajoutez la longueur équivalente à la longueur droite avant de multiplier par j. Le résultat est en mmCE : divisez par 1 000.</div></section>
-<section class="exo" id="M3-MANUEL-e2" data-exo="M3-MANUEL-e2" data-type="calcul" data-savoir="A3-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgbnRvdnguNTZ4YGl0anZ4L3hgeDcZH3gn"><p class="k">Exercice · A3-2</p><h4>L’effet du débit</h4><div class="enonce">
-
-<p>Un circuit perd <strong>2,0 mCE</strong> au débit nominal. Le débit est augmenté de <strong>50 %</strong>. Quelle est la nouvelle perte de charge ?</p>
-</div><div class="indice" hidden>ΔP varie comme le carré du débit. Multipliez la perte de charge initiale par 1,5 au carré, pas par 1,5.</div></section>
-<section class="exo" id="M3-MANUEL-e3" data-exo="M3-MANUEL-e3" data-type="calcul" data-savoir="A3-3" data-a="IXgueGB4OTs2OS82eHZ4LHhgbGt0bXZ4LjU2eGBvdGp2eC94YHgNeCc="><p class="k">Exercice · A3-3</p><h4>La loi cubique</h4><div class="enonce">
-
-<p>Une pompe absorbe <strong>180 W</strong> à pleine vitesse. Le variateur la ramène à <strong>70 %</strong> de sa vitesse. Quelle puissance absorbe-t-elle alors, en négligeant la chute de rendement ?</p>
-</div><div class="indice" hidden>La puissance varie comme le cube du rapport des vitesses. Élevez 0,70 au cube avant de multiplier.</div></section>
-<section class="exo" id="M3-MANUEL-e4" data-exo="M3-MANUEL-e4" data-type="justification" data-savoir="A3-4" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · A3-4</p><h4>Une pompe trop grosse</h4><div class="enonce">
-
-<p>Sur une installation existante, vous relevez un Δθ de <strong>7 K</strong> entre le départ et le retour, alors que le projet prévoyait 20 K. La chaudière est à condensation. Expliquez ce qui se passe et ce que vous proposez.</p>
-</div><div class="indice" hidden>À puissance constante, le produit du débit par l’écart de température est fixé. Un écart trois fois trop petit signale un débit trois fois trop grand, et le retour arrive alors trop chaud pour que la vapeur des fumées condense.</div><ul class="verifier" hidden><li>J’ai relié le Δθ faible à un débit trop grand, en citant Φ = Q × 1,163 × Δθ.</li><li>J’ai nommé la cause probable : pompe surdimensionnée ou vitesse trop élevée.</li><li>J’ai dit ce que cela coûte à une chaudière à condensation : un retour trop chaud l’empêche de condenser.</li><li>J’ai proposé une action chiffrable : baisser la vitesse, équilibrer, et vérifier le nouveau Δθ.</li></ul></section>
-<h2 id="vous-verifier">Vous vérifier</h2>
-<div class="quiz">
-<ul>
-<li>Une pompe fournit d’abord : <strong>une pression</strong> | un débit</li>
-<li>1 mCE vaut environ : <strong>0,1 bar</strong> | 1 bar</li>
-<li>La perte de charge varie comme : <strong>le carré du débit</strong> | le débit</li>
-<li>Elle varie avec le diamètre comme : <strong>1/D⁵</strong> | 1/D</li>
-<li>Le λ de Darcy s’exprime en : <strong>rien, il est sans unité</strong> | W/(m·K)</li>
-<li>Une singularité se convertit en : <strong>longueur équivalente de tube</strong> | mètres cubes</li>
-<li>La HMT se calcule sur le circuit : <strong>le plus défavorisé</strong> | le plus long</li>
-<li>Le point de fonctionnement est : <strong>l’intersection des deux courbes</strong> | le point nominal de la pompe</li>
-<li>Une pompe surdimensionnée donne surtout : <strong>trop de débit</strong> | trop de pression</li>
-<li>À 70 % de vitesse, la puissance vaut : <strong>34 % environ</strong> | 70 %</li>
-<li>L’équilibrage consiste à : <strong>freiner les circuits favorisés</strong> | ouvrir en grand les circuits froids</li>
-<li>En régime laminaire, la perte de charge varie comme : <strong>le débit</strong> | son carré</li>
-<li>La cavitation est provoquée par : <strong>une pression trop basse à l’aspiration</strong> | une pression trop forte au refoulement</li>
-</ul>
-</div>
-<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi la vanne trois voies ne change pas le débit du générateur</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une vanne trois voies en <strong>mélange</strong> répartit un débit entre deux origines ; en <strong>décharge</strong>, elle le répartit entre deux destinations. Dans les deux cas, la somme est conservée.</p>
-<p>C’est là son intérêt : elle règle la <strong>température</strong> envoyée aux émetteurs sans toucher au <strong>débit</strong> qui traverse le générateur. Une chaudière fonte supporte mal une baisse de débit (choc thermique, condensation dans le foyer) et une pompe à chaleur s’arrête si son débit d’évaporateur descend trop bas.</p>
-<p>À l’inverse, une vanne <strong>deux voies</strong> ferme le passage : elle réduit le débit et déplace le point de fonctionnement sur la courbe de la pompe. Elle n’est donc admissible qu’avec une pompe à <strong>pression différentielle constante</strong>, ou avec une soupape différentielle, ou avec une bouteille de découplage qui isole les deux circuits.</p>
-<p><strong>La question d’épreuve, sous ses deux formes.</strong> « Justifier le choix d’une vanne trois voies » attend le débit constant au générateur. « Justifier la présence d’une bouteille de découplage » attend l’indépendance des deux débits, primaire et secondaire, quand ils ne sont pas égaux.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un bureau d&#39;études calcule vraiment</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La méthode de ce chapitre, j × L, plus les singularités, sur le circuit le plus défavorisé, est celle qu’un logiciel applique, tronçon par tronçon, sur plusieurs centaines de segments. Elle est exacte dans son principe.</p>
-<p>Ce qui s’y ajoute en réalité tient en trois points. <strong>L’autorité de la vanne</strong> d’abord : le rapport entre la perte de charge de la vanne de régulation ouverte et celle du circuit qu’elle commande. En dessous de 0,3, la vanne ne régule plus, elle agit comme un interrupteur, et la boucle du chapitre 12 devient instable.</p>
-<p><strong>La pression différentielle disponible</strong> ensuite, en chaque point du réseau : c’est elle qu’on trace, et non la seule perte de charge, parce qu’un émetteur proche de la pompe peut recevoir 4 mCE là où il n’en faut que 0,3.</p>
-<p><strong>Le calcul en débit variable</strong> enfin. Un réseau moderne à vannes deux voies ne travaille presque jamais au débit nominal : on simule alors plusieurs taux de charge, 100 %, 75 %, 50 %, 25 %, et l’on vérifie que la pompe reste dans sa plage de rendement et que chaque émetteur garde sa pression. C’est ce calcul-là qui justifie économiquement le variateur, et il ne se fait pas à la main.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« Il n’y a pas assez de pression dans le radiateur. »</strong> Un radiateur ne consomme pas de la pression, il en <strong>perd</strong>. Ce qui lui manque est un débit, et ce débit manque parce que la pression <strong>différentielle</strong> à ses bornes est trop faible, ou parce que sa vanne est fermée. Nommer la bonne grandeur oriente le diagnostic.</p>
-<p><strong>« La pompe force sur le circuit. »</strong> Une pompe centrifuge ne force sur rien : si le circuit résiste plus, elle débite moins, et elle glisse sur sa courbe. C’est même la raison pour laquelle elle ne casse pas quand on ferme une vanne , contrairement à une pompe volumétrique, qu’il ne faut jamais faire refouler fermé.</p>
-<p><strong>« On monte la vitesse pour chauffer plus. »</strong> Le débit ne fabrique pas de chaleur. Monter la vitesse augmente le débit, donc <strong>réduit</strong> le Δθ, et n’augmente la puissance émise qu’à la marge, par un meilleur coefficient d’échange. Ce qui chauffe plus, c’est une température de départ plus haute ou une surface d’émetteur plus grande.</p></div></details>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Calculer</strong> la perte de charge d’un circuit, tube droit et singularités comprises.</li>
+
+<li><strong>Démontrer</strong> pourquoi elle varie comme le carré du débit et l’inverse de D⁵.</li>
+
+<li><strong>Placer</strong> un point de fonctionnement à l’intersection de deux courbes.</li>
+
+<li><strong>Choisir</strong> une pompe à partir d’un débit et d’une hauteur manométrique.</li>
+
+<li><strong>Expliquer</strong> ce qu’économise une pompe à vitesse variable, chiffres à l’appui.</li>
+
+</ol>
+
+</div>
+
+<p>Le chapitre 2 a fixé un débit et un diamètre. Il reste à savoir <strong>ce qu’il faut dépenser</strong> pour faire circuler ce débit dans ce diamètre. C’est le rôle de la pompe, et la moitié des questions d’hydraulique de l’épreuve porte là-dessus.</p>
+
+<h2 id="3-1-le-debit-ne-se-commande-pas">3.1 Le débit ne se commande pas</h2>
+
+<p>Prenez deux pailles, une fine et une large, et buvez le même verre. Avec la fine, vous aspirez plus fort pour le même résultat. Vous n’avez pas changé le débit voulu : vous avez changé <strong>l’effort</strong> qu’il coûte.</p>
+
+<p>Une pompe est dans cette situation. Elle ne décide pas du débit : elle fournit une <strong>différence de pression</strong>, et le circuit répond par le débit qu’il veut bien laisser passer.</p>
+
+<div class="cle">
+
+<p>Un circuit ne se pilote donc jamais en débit directement. On agit sur la pression fournie ou sur la résistance du circuit, et le débit <strong>en résulte</strong>. C’est l’idée qui structure tout le chapitre.</p>
+
+</div>
+
+<p>La grandeur perdue s’appelle <strong>perte de charge</strong>. Elle s’exprime en pascals, ou plus souvent en <strong>mètres de colonne d’eau</strong>, mCE.</p>
+
+<div class="formule">
+
+<p><strong>1 mCE = ρ × g × 1 = 1 000 × 9,81 = 9 810 Pa ≈ 0,1 bar</strong></p>
+
+<ul>
+
+<li>10 mCE ≈ 1 bar</li>
+
+<li>une pompe de chauffage courante fournit 3 à 6 mCE</li>
+
+<li>une perte de charge linéique se note <strong>j</strong>, en mmCE par mètre</li>
+
+</ul>
+
+</div>
+
+<h2 id="3-2-d-ou-vient-la-perte-de-charge">3.2 D’où vient la perte de charge</h2>
+
+<p>L’eau frotte contre la paroi, et les couches d’eau frottent entre elles. La loi qui décrit cela porte le nom de Darcy et Weisbach, et le manuel la donne pour que vous sachiez ce qu’il y a <strong>derrière l’abaque</strong> que vous utiliserez.</p>
+
+<div class="formule">
+
+<p><strong>ΔP = λ × (L / D) × (ρ × v² / 2)</strong></p>
+
+<ul>
+
+<li><strong>λ</strong><span>: coefficient de frottement, <strong>sans unité</strong>, de 0,02 à 0,04</span></li>
+
+<li><strong>L</strong><span>: longueur du tube, en m · <strong>D</strong> : diamètre intérieur, en m</span></li>
+
+<li><strong>ρ</strong><span>: masse volumique, 1 000 kg/m³ · <strong>v</strong> : vitesse, en m/s</span></li>
+
+</ul>
+
+</div>
+
+<div class="piege">
+
+<p>Ce λ-là <strong>n’est pas</strong> la conductivité thermique du chapitre 1. Même lettre, deux grandeurs sans rapport. Le contexte tranche : un λ sans unité dans un calcul hydraulique, un λ en W/(m·K) dans un calcul de paroi.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : pourquoi ΔP varie comme Q² / D⁵</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Partons de Darcy et remplaçons la vitesse par le débit.</p>
+
+<p><strong>Étape 1.</strong> La vitesse s’écrit v = Q / S avec S = πD²/4, donc</p>
+
+<p>v = 4Q / (πD²)</p>
+
+<p><strong>Étape 2.</strong> On la porte au carré dans Darcy :</p>
+
+<p>ΔP = λ × (L/D) × (ρ/2) × 16Q² / (π²D⁴)</p>
+
+<p><strong>Étape 3.</strong> On regroupe les D :</p>
+
+<p><strong>ΔP = (8 λ ρ L / π²) × Q² / D⁵</strong></p>
+
+<p>Tout ce qui est devant Q²/D⁵ est fixé par le circuit. D’où les deux lois qu’il faut retenir <strong>par cœur</strong> :</p>
+
+<ul>
+
+<li>à diamètre fixé, <strong>ΔP ∝ Q²</strong> : doubler le débit quadruple la perte de charge ;</li>
+
+<li>à débit fixé, <strong>ΔP ∝ 1/D⁵</strong> : monter d’un diamètre de 25 %, c’est diviser la perte de charge par 1,25⁵ = <strong>3,05</strong>.</li>
+
+</ul>
+
+<p><strong>Les quatre hypothèses qui la portent.</strong></p>
+
+<ol type="1">
+
+<li><strong>Régime turbulent rugueux.</strong> C’est ce qui permet de traiter λ comme une constante. Vrai au-dessus d’un nombre de Reynolds de 4 000, ce qui couvre presque toute la distribution de chauffage.</li>
+
+<li><strong>Régime établi.</strong> Le profil de vitesse est stabilisé ; on néglige les longueurs d’établissement après un coude.</li>
+
+<li><strong>Fluide incompressible et isotherme.</strong> ρ est pris constant sur le tronçon.</li>
+
+<li><strong>Paroi de rugosité uniforme.</strong> L’entartrage et la corrosion la changent, et c’est pourquoi un vieux réseau perd plus qu’au calcul.</li>
+
+</ol>
+
+<p><strong>Là où la première hypothèse tombe.</strong> En régime <strong>laminaire</strong>, sous Reynolds 2 000, λ = 64/Re et le calcul refait donne <strong>ΔP ∝ Q</strong>, plus Q². La perte devient proportionnelle au débit, pas à son carré. On rencontre ce cas dans les boucles de plancher chauffant à très faible débit et dans les circuits d’eau glycolée froide, où la viscosité double. Une courbe de réseau y est presque une droite, et non une parabole.</p></div></details>
+
+</div><div class="cle">
+
+<p>Les deux exposants sont la matière à retenir : <strong>le carré sur le débit, la puissance cinq sur le diamètre</strong>. Ils expliquent à eux seuls pourquoi on surdimensionne les tubes et pourquoi on réduit les débits.</p>
+
+</div>
+
+<h2 id="3-3-le-calcul-de-tous-les-jours-l-abaque">3.3 Le calcul de tous les jours : l’abaque</h2>
+
+<p>Personne n’applique Darcy à la main sur un chantier. On lit une <strong>perte de charge linéique j</strong> dans un abaque, à partir du débit et du diamètre, et on multiplie par la longueur.</p>
+
+<div class="formule">
+
+<p><strong>ΔP tronçon = j × L</strong> (j en mmCE/m, L en m)</p>
+
+<p>Critère de dimensionnement usuel : <strong>j compris entre 10 et 20 mmCE/m</strong>.</p>
+
+</div>
+
+<p>En dessous de 10, on a payé du tube pour rien. Au-dessus de 20, la pompe grossit et le réseau siffle. Cette fourchette prime sur le critère de vitesse dans les longues distributions, et c’est le critère de vitesse qui prime dans les logements, pour le bruit.</p>
+
+<div class="outil" data-outil="pertes">
+
+
+
+</div>
+
+<h2 id="3-4-les-singularites-converties-en-metres-de-tube">3.4 Les singularités, converties en mètres de tube</h2>
+
+<p>Un coude, une vanne, un té, un rétrécissement : chacun coûte de la pression, parce que l’eau y change de direction ou de vitesse. Deux façons de le compter, et la seconde est celle de l’épreuve.</p>
+
+<div class="formule">
+
+<p><strong>Méthode du coefficient : ΔP = ζ × ρ v² / 2</strong></p>
+
+<p><strong>Méthode des longueurs équivalentes : Leq = ζ × D / λ</strong>, puis on ajoute Leq à la longueur droite et on multiplie le tout par j.</p>
+
+</div>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Singularité</th>
+
+<th style="text-align: right;">ζ</th>
+
+<th style="text-align: right;">Leq en DN 20, ordre de grandeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Coude à 90°, rayon court</td>
+
+<td style="text-align: right;">1,0</td>
+
+<td style="text-align: right;">1,0 m</td>
+
+</tr>
+
+<tr>
+
+<td>Coude à 90°, rayon long</td>
+
+<td style="text-align: right;">0,4</td>
+
+<td style="text-align: right;">0,4 m</td>
+
+</tr>
+
+<tr>
+
+<td>Té en dérivation</td>
+
+<td style="text-align: right;">1,5</td>
+
+<td style="text-align: right;">1,5 m</td>
+
+</tr>
+
+<tr>
+
+<td>Té en passage direct</td>
+
+<td style="text-align: right;">0,3</td>
+
+<td style="text-align: right;">0,3 m</td>
+
+</tr>
+
+<tr>
+
+<td>Vanne à boisseau ouverte</td>
+
+<td style="text-align: right;">0,2</td>
+
+<td style="text-align: right;">0,2 m</td>
+
+</tr>
+
+<tr>
+
+<td>Vanne d’équilibrage ouverte</td>
+
+<td style="text-align: right;">3 à 6</td>
+
+<td style="text-align: right;">3 à 6 m</td>
+
+</tr>
+
+<tr>
+
+<td>Clapet anti-retour</td>
+
+<td style="text-align: right;">2,5</td>
+
+<td style="text-align: right;">2,5 m</td>
+
+</tr>
+
+<tr>
+
+<td>Corps de chaudière</td>
+
+<td style="text-align: right;">—</td>
+
+<td style="text-align: right;">2 à 6 mCE, <strong>donnée constructeur</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="piege">
+
+<p>Une règle de terrain circule : « on majore la longueur droite de 15 % ». Elle tient sur une distribution rectiligne. Elle est <strong>fausse</strong> sur une sous-station, où les singularités du local technique pèsent souvent plus que tout le reste du réseau. Comptez-les.</p>
+
+</div>
+
+<h3 id="exemple-résolu-1.-un-tronçon-complet">Exemple résolu 1. Un tronçon complet</h3>
+
+<p>Un tronçon de <strong>24 m</strong> de cuivre 22 × 1, débit <strong>900 L/h</strong>, avec 6 coudes à rayon court, 2 tés en dérivation et 1 vanne d’équilibrage.</p>
+
+<p><strong>1. Le linéique.</strong> L’abaque donne, pour 900 L/h en 20 mm intérieur, <strong>j ≈ 17 mmCE/m</strong>.</p>
+
+<p><strong>2. Les longueurs équivalentes.</strong> 6 × 1,0 + 2 × 1,5 + 1 × 4,0 = <strong>13,0 m</strong>.</p>
+
+<p><strong>3. La longueur totale.</strong> 24 + 13 = <strong>37 m</strong>.</p>
+
+<p><strong>4. La perte de charge.</strong> ΔP = 17 × 37 = <strong>629 mmCE ≈ 0,63 mCE</strong>.</p>
+
+<p>Notez le poids des singularités : <strong>35 % du total</strong> pour un tronçon pourtant banal.</p>
+
+<h2 id="3-5-le-circuit-le-plus-defavorise">3.5 Le circuit le plus défavorisé</h2>
+
+<p>Un réseau a autant de chemins que d’émetteurs. Chacun a sa propre perte de charge, et la pompe n’en voit qu’une seule : <strong>la plus grande</strong>.</p>
+
+<div class="cle">
+
+<p>La hauteur manométrique de la pompe se calcule sur le <strong>circuit le plus défavorisé</strong>, celui dont la somme aller-retour est la plus élevée. Ce n’est pas forcément le plus long : un circuit court avec une batterie très résistante peut le battre.</p>
+
+</div>
+
+<p>Tous les autres circuits reçoivent alors <strong>trop de pression</strong>, donc trop de débit. C’est exactement le problème du dernier radiateur du couloir, vu au chapitre 2 : ce n’est pas lui qui manque, ce sont les autres qui prennent tout.</p>
+
+<figure class="schema"><div class="dessin" data-schema="retour-inverse"></div><figcaption>Le débit se répartit selon la résistance du chemin, pas selon le besoin de l’émetteur : quatre circuits, deux façons de les boucler.</figcaption></figure>
+
+<p><strong>L’équilibrage</strong> consiste à <strong>freiner volontairement</strong> les circuits favorisés, en fermant partiellement une vanne de réglage, jusqu’à ce que tous aient la même perte de charge. On ne gagne rien en énergie : on rend le débit juste.</p>
+
+<h2 id="3-6-la-courbe-de-pompe-et-le-point-de-fonctionnement">3.6 La courbe de pompe et le point de fonctionnement</h2>
+
+<p>Une pompe ne fournit pas une pression fixe. Elle fournit <strong>une courbe</strong> : plus elle débite, moins elle monte haut. Le constructeur la donne, hauteur en ordonnée, débit en abscisse.</p>
+
+<p>Le circuit, lui, a aussi une courbe : la parabole <strong>ΔP = k × Q²</strong> démontrée au 3.2.</p>
+
+<div class="formule">
+
+<p><strong>Point de fonctionnement = intersection des deux courbes</strong></p>
+
+<p>C’est le seul couple (Q, H) où ce que la pompe fournit égale exactement ce que le circuit demande. Il ne se choisit pas : il <strong>s’impose</strong>.</p>
+
+</div>
+
+<div class="outil" data-outil="point-fonctionnement">
+
+
+
+</div>
+
+<div class="piege">
+
+<p>Une pompe surdimensionnée ne donne pas « plus de pression » : elle donne <strong>plus de débit</strong>, en glissant vers la droite de sa courbe. Résultat : bruit, Δθ écrasé au retour, condensation impossible en chaudière, et une consommation électrique qui monte au cube. Le surdimensionnement d’une pompe est l’un des défauts les plus fréquents du parc existant.</p>
+
+</div>
+
+<h3 id="exemple-résolu-2.-le-point-de-fonctionnement">Exemple résolu 2. Le point de fonctionnement</h3>
+
+<p>Un circuit demande <strong>2,4 mCE à 1 200 L/h</strong>. Une pompe a la courbe suivante :</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Débit (L/h)</th>
+
+<th style="text-align: right;">0</th>
+
+<th style="text-align: right;">800</th>
+
+<th style="text-align: right;">1 200</th>
+
+<th style="text-align: right;">1 600</th>
+
+<th style="text-align: right;">2 000</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Hauteur (mCE)</td>
+
+<td style="text-align: right;">5,4</td>
+
+<td style="text-align: right;">4,6</td>
+
+<td style="text-align: right;">4,0</td>
+
+<td style="text-align: right;">3,1</td>
+
+<td style="text-align: right;">1,9</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>1. La courbe du réseau.</strong> k = ΔP / Q² = 2,4 / 1 200² = 1,67 × 10⁻⁶.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Débit (L/h)</th>
+
+<th style="text-align: right;">800</th>
+
+<th style="text-align: right;">1 200</th>
+
+<th style="text-align: right;">1 600</th>
+
+<th style="text-align: right;">2 000</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Réseau (mCE)</td>
+
+<td style="text-align: right;">1,07</td>
+
+<td style="text-align: right;">2,40</td>
+
+<td style="text-align: right;">4,27</td>
+
+<td style="text-align: right;">6,67</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>2. L’intersection.</strong> Entre 1 200 et 1 600, la courbe réseau passe <strong>au-dessus</strong> de la pompe : le point est dans cet intervalle. En interpolant, les deux valent environ <strong>3,5 mCE à 1 450 L/h</strong>.</p>
+
+<p><strong>3. La lecture.</strong> La pompe donnera <strong>1 450 L/h</strong>, soit <strong>21 % de plus</strong> que prévu, parce que la courbe du réseau a été calculée sur un circuit qui n’oppose pas encore la résistance de ses vannes d’équilibrage. C’est le rôle de l’équilibrage que de ramener le point sur 1 200.</p>
+
+<h2 id="3-7-le-calcul-retourne-choisir-la-pompe">3.7 Le calcul retourné : choisir la pompe</h2>
+
+<p>C’est la question de bureau d’études, et elle est exactement l’inverse de la précédente : on connaît le besoin, on cherche la machine.</p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Le débit</strong> vient de la puissance et du régime : Q = Φ / (1,163 × Δθ).</li>
+
+<li><strong>La hauteur</strong> vient du circuit le plus défavorisé : Σ (j × L) sur l’aller, plus le retour, plus les appareils donnés par leur constructeur.</li>
+
+<li><strong>On majore</strong> de 10 à 15 %, pour l’encrassement et l’incertitude d’abaque.</li>
+
+<li><strong>On choisit</strong> la pompe dont la courbe passe <strong>juste au-dessus</strong> du point voulu, et <strong>jamais très au-dessus</strong>.</li>
+
+<li><strong>On vérifie</strong> que le point tombe dans le tiers central de la courbe, là où le rendement est maximal.</li>
+
+</ol>
+
+</div>
+
+<h3 id="exemple-résolu-3.-dimensionner-la-pompe-dune-sous-station">Exemple résolu 3. Dimensionner la pompe d’une sous-station</h3>
+
+<p>Une sous-station alimente <strong>60 kW</strong> en <strong>80/60</strong>. Le circuit le plus défavorisé fait <strong>48 m</strong> aller-retour, avec un linéique moyen de <strong>15 mmCE/m</strong> et <strong>22 m</strong> de longueurs équivalentes. L’échangeur annonce <strong>1,8 mCE</strong>, la vanne trois voies <strong>0,8 mCE</strong>.</p>
+
+<p><strong>1. Le débit.</strong> Q = 60 000 / (1,163 × 20) = <strong>2 580 L/h</strong>, soit 2,58 m³/h.</p>
+
+<p><strong>2. La perte du réseau.</strong> (48 + 22) × 15 = 1 050 mmCE = <strong>1,05 mCE</strong>.</p>
+
+<p><strong>3. Le total.</strong> 1,05 + 1,8 + 0,8 = <strong>3,65 mCE</strong>.</p>
+
+<p><strong>4. La majoration.</strong> 3,65 × 1,10 = <strong>4,0 mCE</strong>.</p>
+
+<p><strong>5. Le choix.</strong> Une pompe donnant <strong>4,0 mCE à 2,6 m³/h</strong>. Sur un catalogue, on prendra le modèle dont le point nominal est le plus proche par excès, et on réglera la vitesse variable sur la courbe qui passe par ce point.</p>
+
+<div class="cle">
+
+<p>Notez la répartition : le réseau ne pèse que <strong>29 %</strong> de la hauteur totale. Les appareils, échangeur et vanne, pèsent le reste. Sur une sous-station, chercher à gagner sur les tubes est un mauvais calcul ; sur une longue distribution de campus, c’est l’inverse.</p>
+
+</div>
+
+<h2 id="3-8-la-vitesse-variable-et-pourquoi-elle-rapporte-tant">3.8 La vitesse variable, et pourquoi elle rapporte tant</h2>
+
+<p>Une pompe moderne change de vitesse. Trois lois, dites <strong>lois de similitude</strong>, disent ce qui se passe alors. Elles sont simples et elles tombent souvent.</p>
+
+<div class="formule">
+
+<p><strong>Q₂ / Q₁ = N₂ / N₁</strong> · <strong>H₂ / H₁ = (N₂ / N₁)²</strong> · <strong>P₂ / P₁ = (N₂ / N₁)³</strong></p>
+
+<p>Le débit suit la vitesse, la hauteur son carré, <strong>la puissance son cube</strong>.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration des trois exposants</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le débit.</strong> Une roue de pompe déplace un volume par tour. Multiplier le nombre de tours par seconde multiplie le volume déplacé dans le même rapport, tant que le remplissage de la roue reste complet. D’où <strong>Q ∝ N</strong>.</p>
+
+<p><strong>La hauteur.</strong> L’eau sort de la roue à une vitesse périphérique u = π × D × N, donc <strong>u ∝ N</strong>. L’énergie qu’elle emporte est une énergie cinétique, en u²/2 : la hauteur convertie varie donc comme <strong>N²</strong>.</p>
+
+<p><strong>La puissance.</strong> La puissance hydraulique vaut P = ρ g Q H. Le débit varie comme N, la hauteur comme N² : leur produit varie comme <strong>N³</strong>.</p>
+
+<p><strong>Les hypothèses.</strong> Ces lois supposent le <strong>rendement constant</strong> entre les deux vitesses, et une <strong>similitude géométrique parfaite</strong>, la même roue, seulement plus vite. La première hypothèse tient sur une plage de ± 30 % ; en dessous de la moitié de la vitesse nominale, le rendement du moteur et de la roue chute et la loi cubique surestime l’économie réelle.</p>
+
+<p><strong>Ce que les lois ne disent pas.</strong> Elles décrivent la pompe, pas le circuit. Le point de fonctionnement réel se déplace sur la <strong>courbe du réseau</strong>, et non le long d’une courbe de similitude, sauf si le réseau est une parabole passant par l’origine, c’est-à-dire un circuit <strong>sans soupape différentielle et sans pression résiduelle imposée</strong>. Dès qu’une pression minimale est maintenue en pied de colonne, l’économie réelle est plus proche de N² que de N³.</p></div></details>
+
+</div><div class="cle">
+
+<p>Réduire la vitesse de <strong>20 %</strong> ne fait perdre que 20 % de débit, mais divise la puissance par 1,95 : <strong>la moitié de l’électricité pour 80 % du débit</strong>. C’est tout l’argument de la pompe à vitesse variable, et le calcul se refait en dix secondes à l’épreuve.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : la cavitation et le NPSH</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Tout ce chapitre suppose que l’eau reste liquide dans la pompe. Elle peut cesser de l’être.</p>
+
+<p>À l’entrée d’une roue, la pression <strong>chute</strong> localement avant que la pompe ne la relève. Si elle descend sous la <strong>pression de vapeur saturante</strong> du liquide à sa température, l’eau bout sur place. Les bulles formées implosent quelques millimètres plus loin, dans la zone de haute pression, et arrachent la matière de la roue : c’est la <strong>cavitation</strong>. Elle s’entend (un bruit de graviers) et elle détruit une pompe en quelques semaines.</p>
+
+<p>La condition à respecter s’écrit :</p>
+
+<p><strong>NPSH disponible &gt; NPSH requis + 0,5 m</strong></p>
+
+<p>Le NPSH requis est <strong>une donnée constructeur</strong>, qui croît avec le débit. Le NPSH disponible est <strong>une propriété de l’installation</strong> : pression à l’aspiration, moins pression de vapeur saturante, moins pertes de charge de l’aspiration.</p>
+
+<p>Trois cas où la marge s’effondre, et ils sont tous fréquents :</p>
+
+<ul>
+
+<li><strong>eau chaude.</strong> À 20 °C, la pression de vapeur vaut 0,023 bar ; <strong>à 90 °C, 0,70 bar</strong>, trente fois plus. Une pompe en sortie de chaudière est le point le plus exposé de l’installation.</li>
+
+<li><strong>pression statique insuffisante.</strong> Un vase mal gonflé ou un manque d’eau fait tomber la pression au point haut, donc partout.</li>
+
+<li><strong>aspiration étranglée.</strong> Un filtre encrassé à l’aspiration mange la marge.</li>
+
+</ul>
+
+<p>D’où la règle de montage : <strong>on place toujours la pompe au refoulement</strong>, jamais à l’aspiration du générateur, et l’expansion se raccorde <strong>à l’aspiration de la pompe</strong>. Ce point-là se demande en épreuve sous la forme « justifier l’emplacement du vase d’expansion ».</p></div></details>
+
+</div><h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Valeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>1 mCE</td>
+
+<td>9 810 Pa ≈ 0,1 bar</td>
+
+</tr>
+
+<tr>
+
+<td>Perte linéique visée en dimensionnement</td>
+
+<td><strong>10 à 20 mmCE/m</strong></td>
+
+</tr>
+
+<tr>
+
+<td>λ de frottement, tube courant</td>
+
+<td>0,02 à 0,04</td>
+
+</tr>
+
+<tr>
+
+<td>Coude 90° rayon court · té en dérivation</td>
+
+<td>ζ = 1,0 · 1,5</td>
+
+</tr>
+
+<tr>
+
+<td>Vanne d’équilibrage ouverte</td>
+
+<td>ζ = 3 à 6</td>
+
+</tr>
+
+<tr>
+
+<td>Hauteur d’un circulateur de logement</td>
+
+<td>2 à 4 mCE</td>
+
+</tr>
+
+<tr>
+
+<td>Hauteur d’une pompe de sous-station</td>
+
+<td>4 à 8 mCE</td>
+
+</tr>
+
+<tr>
+
+<td>Part des singularités sur un tronçon banal</td>
+
+<td>20 à 40 %</td>
+
+</tr>
+
+<tr>
+
+<td>Majoration de sécurité sur la HMT</td>
+
+<td>10 à 15 %</td>
+
+</tr>
+
+<tr>
+
+<td>Reynolds de transition laminaire / turbulent</td>
+
+<td>2 000 / 4 000</td>
+
+</tr>
+
+<tr>
+
+<td>Pression de vapeur de l’eau à 20 °C · 90 °C</td>
+
+<td>0,023 · 0,70 bar</td>
+
+</tr>
+
+<tr>
+
+<td>Marge de NPSH à respecter</td>
+
+<td>0,5 m</td>
+
+</tr>
+
+<tr>
+
+<td>Puissance d’un circulateur de logement</td>
+
+<td>15 à 60 W</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le réflexe qui rattrape une erreur de calcul : <strong>doubler un débit multiplie la perte de charge par quatre</strong>. Si votre résultat n’a pas ce comportement quand vous changez une donnée, vous avez oublié un carré quelque part.</p>
+
+</div>
+
+<h2 id="s-entrainer">S’entraîner</h2>
+
+<section class="exo" id="M3-MANUEL-e1" data-exo="M3-MANUEL-e1" data-type="calcul" data-savoir="A3-2" data-a="IXgueGB4OTs2OS82eHZ4LHhganRsamh2eC41NnhgbnRqdngveGB4NxkfeCc="><p class="k">Exercice · A3-2</p><h4>La perte de charge d’un tronçon</h4><div class="enonce">
+
+
+
+<p>Un tronçon de <strong>32 m</strong> droits présente une perte linéique de <strong>14 mmCE/m</strong>, et ses singularités valent <strong>11 m</strong> de longueur équivalente. Quelle est sa perte de charge totale, en mCE ?</p>
+
+</div><div class="indice" hidden>Ajoutez la longueur équivalente à la longueur droite avant de multiplier par j. Le résultat est en mmCE : divisez par 1 000.</div></section>
+
+<section class="exo" id="M3-MANUEL-e2" data-exo="M3-MANUEL-e2" data-type="calcul" data-savoir="A3-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgbnRvdnguNTZ4YGl0anZ4L3hgeDcZH3gn"><p class="k">Exercice · A3-2</p><h4>L’effet du débit</h4><div class="enonce">
+
+
+
+<p>Un circuit perd <strong>2,0 mCE</strong> au débit nominal. Le débit est augmenté de <strong>50 %</strong>. Quelle est la nouvelle perte de charge ?</p>
+
+</div><div class="indice" hidden>ΔP varie comme le carré du débit. Multipliez la perte de charge initiale par 1,5 au carré, pas par 1,5.</div></section>
+
+<section class="exo" id="M3-MANUEL-e3" data-exo="M3-MANUEL-e3" data-type="calcul" data-savoir="A3-3" data-a="IXgueGB4OTs2OS82eHZ4LHhgbGt0bXZ4LjU2eGBvdGp2eC94YHgNeCc="><p class="k">Exercice · A3-3</p><h4>La loi cubique</h4><div class="enonce">
+
+
+
+<p>Une pompe absorbe <strong>180 W</strong> à pleine vitesse. Le variateur la ramène à <strong>70 %</strong> de sa vitesse. Quelle puissance absorbe-t-elle alors, en négligeant la chute de rendement ?</p>
+
+</div><div class="indice" hidden>La puissance varie comme le cube du rapport des vitesses. Élevez 0,70 au cube avant de multiplier.</div></section>
+
+<section class="exo" id="M3-MANUEL-e4" data-exo="M3-MANUEL-e4" data-type="justification" data-savoir="A3-4" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · A3-4</p><h4>Une pompe trop grosse</h4><div class="enonce">
+
+
+
+<p>Sur une installation existante, vous relevez un Δθ de <strong>7 K</strong> entre le départ et le retour, alors que le projet prévoyait 20 K. La chaudière est à condensation. Expliquez ce qui se passe et ce que vous proposez.</p>
+
+</div><div class="indice" hidden>À puissance constante, le produit du débit par l’écart de température est fixé. Un écart trois fois trop petit signale un débit trois fois trop grand, et le retour arrive alors trop chaud pour que la vapeur des fumées condense.</div><ul class="verifier" hidden><li>J’ai relié le Δθ faible à un débit trop grand, en citant Φ = Q × 1,163 × Δθ.</li><li>J’ai nommé la cause probable : pompe surdimensionnée ou vitesse trop élevée.</li><li>J’ai dit ce que cela coûte à une chaudière à condensation : un retour trop chaud l’empêche de condenser.</li><li>J’ai proposé une action chiffrable : baisser la vitesse, équilibrer, et vérifier le nouveau Δθ.</li></ul></section>
+
+<h2 id="vous-verifier">Vous vérifier</h2>
+
+<div class="quiz">
+
+<ul>
+
+<li>Une pompe fournit d’abord : <strong>une pression</strong> | un débit</li>
+
+<li>1 mCE vaut environ : <strong>0,1 bar</strong> | 1 bar</li>
+
+<li>La perte de charge varie comme : <strong>le carré du débit</strong> | le débit</li>
+
+<li>Elle varie avec le diamètre comme : <strong>1/D⁵</strong> | 1/D</li>
+
+<li>Le λ de Darcy s’exprime en : <strong>rien, il est sans unité</strong> | W/(m·K)</li>
+
+<li>Une singularité se convertit en : <strong>longueur équivalente de tube</strong> | mètres cubes</li>
+
+<li>La HMT se calcule sur le circuit : <strong>le plus défavorisé</strong> | le plus long</li>
+
+<li>Le point de fonctionnement est : <strong>l’intersection des deux courbes</strong> | le point nominal de la pompe</li>
+
+<li>Une pompe surdimensionnée donne surtout : <strong>trop de débit</strong> | trop de pression</li>
+
+<li>À 70 % de vitesse, la puissance vaut : <strong>34 % environ</strong> | 70 %</li>
+
+<li>L’équilibrage consiste à : <strong>freiner les circuits favorisés</strong> | ouvrir en grand les circuits froids</li>
+
+<li>En régime laminaire, la perte de charge varie comme : <strong>le débit</strong> | son carré</li>
+
+<li>La cavitation est provoquée par : <strong>une pression trop basse à l’aspiration</strong> | une pression trop forte au refoulement</li>
+
+</ul>
+
+</div>
+
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi la vanne trois voies ne change pas le débit du générateur</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une vanne trois voies en <strong>mélange</strong> répartit un débit entre deux origines ; en <strong>décharge</strong>, elle le répartit entre deux destinations. Dans les deux cas, la somme est conservée.</p>
+
+<p>C’est là son intérêt : elle règle la <strong>température</strong> envoyée aux émetteurs sans toucher au <strong>débit</strong> qui traverse le générateur. Une chaudière fonte supporte mal une baisse de débit (choc thermique, condensation dans le foyer) et une pompe à chaleur s’arrête si son débit d’évaporateur descend trop bas.</p>
+
+<p>À l’inverse, une vanne <strong>deux voies</strong> ferme le passage : elle réduit le débit et déplace le point de fonctionnement sur la courbe de la pompe. Elle n’est donc admissible qu’avec une pompe à <strong>pression différentielle constante</strong>, ou avec une soupape différentielle, ou avec une bouteille de découplage qui isole les deux circuits.</p>
+
+<p><strong>La question d’épreuve, sous ses deux formes.</strong> « Justifier le choix d’une vanne trois voies » attend le débit constant au générateur. « Justifier la présence d’une bouteille de découplage » attend l’indépendance des deux débits, primaire et secondaire, quand ils ne sont pas égaux.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un bureau d&#39;études calcule vraiment</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La méthode de ce chapitre, j × L, plus les singularités, sur le circuit le plus défavorisé, est celle qu’un logiciel applique, tronçon par tronçon, sur plusieurs centaines de segments. Elle est exacte dans son principe.</p>
+
+<p>Ce qui s’y ajoute en réalité tient en trois points. <strong>L’autorité de la vanne</strong> d’abord : le rapport entre la perte de charge de la vanne de régulation ouverte et celle du circuit qu’elle commande. En dessous de 0,3, la vanne ne régule plus, elle agit comme un interrupteur, et la boucle du chapitre 12 devient instable.</p>
+
+<p><strong>La pression différentielle disponible</strong> ensuite, en chaque point du réseau : c’est elle qu’on trace, et non la seule perte de charge, parce qu’un émetteur proche de la pompe peut recevoir 4 mCE là où il n’en faut que 0,3.</p>
+
+<p><strong>Le calcul en débit variable</strong> enfin. Un réseau moderne à vannes deux voies ne travaille presque jamais au débit nominal : on simule alors plusieurs taux de charge, 100 %, 75 %, 50 %, 25 %, et l’on vérifie que la pompe reste dans sa plage de rendement et que chaque émetteur garde sa pression. C’est ce calcul-là qui justifie économiquement le variateur, et il ne se fait pas à la main.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« Il n’y a pas assez de pression dans le radiateur. »</strong> Un radiateur ne consomme pas de la pression, il en <strong>perd</strong>. Ce qui lui manque est un débit, et ce débit manque parce que la pression <strong>différentielle</strong> à ses bornes est trop faible, ou parce que sa vanne est fermée. Nommer la bonne grandeur oriente le diagnostic.</p>
+
+<p><strong>« La pompe force sur le circuit. »</strong> Une pompe centrifuge ne force sur rien : si le circuit résiste plus, elle débite moins, et elle glisse sur sa courbe. C’est même la raison pour laquelle elle ne casse pas quand on ferme une vanne , contrairement à une pompe volumétrique, qu’il ne faut jamais faire refouler fermé.</p>
+
+<p><strong>« On monte la vitesse pour chauffer plus. »</strong> Le débit ne fabrique pas de chaleur. Monter la vitesse augmente le débit, donc <strong>réduit</strong> le Δθ, et n’augmente la puissance émise qu’à la marge, par un meilleur coefficient d’échange. Ce qui chauffe plus, c’est une température de départ plus haute ou une surface d’émetteur plus grande.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M2-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 2</span></a><a class="ap" href="M4-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 4</span></a></div></nav>
 <p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

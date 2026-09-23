@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Manuel · chapitre 8</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="manuel/M8-MANUEL">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M7-MANUEL.html" rel="prev" title="Manuel · chapitre 7" aria-label="Manuel · chapitre 7">&lsaquo;</a><a class="fleche" href="M9-MANUEL.html" rel="next" title="Manuel · chapitre 9" aria-label="Manuel · chapitre 9">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M8-MANUEL">Marquer comme lu</button></div>
@@ -23,433 +31,851 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M1-MANUEL.html">Les déperditions par renouvellement d'air</a></b><span class="ou">Manuel · chapitre 1</span><span class="car">ventiler coûte 0,34 × Qv × Δθ, une ligne du bilan du chapitre 1.</span></li><li><b><a href="M2-MANUEL.html">Débit, section et vitesse</a></b><span class="ou">Manuel · chapitre 2</span><span class="car">une gaine se calcule comme un tube, avec de l'air et des vitesses dix fois plus grandes.</span></li><li><b>Les parties par million</b><span class="car">les débits imposés se justifient par le CO₂ que produit une personne, et une partie par million est une fraction.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#8-1-pourquoi-on-ventile">8.1 Pourquoi on ventile</a><a href="#8-2-les-debits-imposes">8.2 Les débits imposés</a><a href="#8-3-les-trois-familles-de-systeme">8.3 Les trois familles de système</a><a href="#8-4-ce-que-l-air-neuf-coute">8.4 Ce que l’air neuf coûte</a><a href="#8-5-le-calcul-retourne-dimensionner-une-gaine">8.5 Le calcul retourné : dimensionner une gaine</a><a href="#8-6-le-free-cooling">8.6 Le free-cooling</a><a href="#8-7-ventiler-suppose-d-etre-etanche">8.7 Ventiler suppose d’être étanche</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
-<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
-<div class="etapes">
-<ol type="1">
-<li><strong>Justifier</strong> un débit d’air neuf par le CO₂ ou par la réglementation.</li>
-<li><strong>Distinguer</strong> simple flux, hygroréglable et double flux sur un schéma.</li>
-<li><strong>Chiffrer</strong> ce que coûte l’air neuf dans le bilan thermique d’un bâtiment.</li>
-<li><strong>Dimensionner</strong> une gaine à partir d’un débit et d’une vitesse admissible.</li>
-<li><strong>Expliquer</strong> le free-cooling, et dire quand il ne sert à rien.</li>
-</ol>
-</div>
-<p><strong>B2-1 est au niveau 3.</strong> La ventilation ouvre le bloc « traitement d’air », qui pèse <strong>19 % de l’épreuve à chaque session, sans exception</strong>.</p>
-<h2 id="8-1-pourquoi-on-ventile">8.1 Pourquoi on ventile</h2>
-<p>Une salle de classe fermée, vingt-cinq élèves, une heure. Les vitres se couvrent de buée, l’air devient lourd, l’attention tombe. Rien de mystérieux : chaque occupant y a déposé <strong>du CO₂, de la vapeur d’eau et de la chaleur</strong>.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Ce qu’un occupant assis produit</th>
-<th style="text-align: right;">Par heure</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Chaleur sensible</td>
-<td style="text-align: right;">≈ 70 W</td>
-</tr>
-<tr>
-<td>Chaleur latente, sous forme de vapeur</td>
-<td style="text-align: right;">≈ 45 W, soit <strong>65 g d’eau</strong></td>
-</tr>
-<tr>
-<td>Gaz carbonique</td>
-<td style="text-align: right;">≈ <strong>18 L de CO₂</strong></td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le CO₂ n’est pas dangereux aux concentrations d’un bâtiment : il est un <strong>traceur</strong>. Là où il s’accumule, tout le reste s’accumule aussi, humidité, odeurs, composés organiques volatils. On le mesure parce qu’il est facile à mesurer, pas parce qu’il est le problème.</p>
-</div>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th style="text-align: right;">Concentration en CO₂</th>
-<th>Situation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">420 ppm</td>
-<td>Air extérieur, aujourd’hui</td>
-</tr>
-<tr>
-<td style="text-align: right;">800 ppm</td>
-<td>Local correctement ventilé</td>
-</tr>
-<tr>
-<td style="text-align: right;"><strong>1 000 ppm</strong></td>
-<td><strong>Seuil de bonne qualité d’air</strong></td>
-</tr>
-<tr>
-<td style="text-align: right;">1 500 ppm</td>
-<td>Seuil d’action en établissement scolaire</td>
-</tr>
-<tr>
-<td style="text-align: right;">2 500 ppm</td>
-<td>Somnolence, maux de tête, attention en baisse</td>
-</tr>
-</tbody>
-</table></div>
-<div class="formule">
-<p><strong>Débit d’équilibre : Qv = production de CO₂ / ( C intérieur − C extérieur )</strong></p>
-<p>En régime établi, avec les concentrations en fractions volumiques.</p>
-</div>
-<h3 id="exemple-résolu-1.-le-débit-qui-tient-une-salle-sous-1-000-ppm">Exemple résolu 1. Le débit qui tient une salle sous 1 000 ppm</h3>
-<p>Vingt-cinq élèves produisant chacun <strong>18 L/h</strong> de CO₂, air extérieur à <strong>420 ppm</strong>, objectif <strong>1 000 ppm</strong>.</p>
-<p><strong>La production.</strong> 25 × 18 = <strong>450 L/h de CO₂</strong>.</p>
-<p><strong>L’écart de concentration.</strong> 1 000 − 420 = 580 ppm = <strong>0,000 58</strong>.</p>
-<p><strong>Le débit.</strong> 450 / 0,000 58 = 776 000 L/h = <strong>776 m³/h</strong>.</p>
-<p><strong>Par élève.</strong> 776 / 25 = <strong>31 m³/h</strong>, ce qui est très exactement l’ordre de grandeur du code du travail. Les deux approches, physique et réglementaire, tombent sur le même nombre : ce n’est pas un hasard, la réglementation a été calée là-dessus.</p>
-<h2 id="8-2-les-debits-imposes">8.2 Les débits imposés</h2>
-<p>Deux textes, deux logiques, et il faut savoir lequel s’applique.</p>
-<div class="formule">
-<p><strong>En logement, arrêté du 24 mars 1982.</strong> Les débits sont <strong>extraits</strong> des pièces de service, et l’air neuf entre par les pièces principales.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Logement</th>
-<th style="text-align: right;">Cuisine</th>
-<th style="text-align: right;">Salle de bains</th>
-<th style="text-align: right;">WC</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>T1</td>
-<td style="text-align: right;">75 m³/h</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">15</td>
-</tr>
-<tr>
-<td>T3</td>
-<td style="text-align: right;">105 m³/h</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">15</td>
-</tr>
-<tr>
-<td>T5</td>
-<td style="text-align: right;">135 m³/h</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">30</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="formule">
-<p><strong>En tertiaire, code du travail, article R. 4222-6.</strong> Les débits sont donnés <strong>par occupant</strong>.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Local</th>
-<th style="text-align: right;">Débit minimal</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Bureaux, locaux sans travail physique</td>
-<td style="text-align: right;"><strong>25 m³/h</strong></td>
-</tr>
-<tr>
-<td>Locaux de restauration, de vente, de réunion</td>
-<td style="text-align: right;"><strong>30 m³/h</strong></td>
-</tr>
-<tr>
-<td>Ateliers, travail physique léger</td>
-<td style="text-align: right;">45 m³/h</td>
-</tr>
-<tr>
-<td>Autres ateliers</td>
-<td style="text-align: right;">60 m³/h</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="piege">
-<p>Ne mélangez jamais les deux logiques. En <strong>logement</strong>, on impose un débit <strong>extrait par pièce de service</strong> ; en <strong>tertiaire</strong>, un débit <strong>soufflé par occupant</strong>. Appliquer la règle du logement à une salle de classe donne un résultat sans rapport, et c’est une erreur classique en épreuve.</p>
-</div>
-<h2 id="8-3-les-trois-familles-de-systeme">8.3 Les trois familles de système</h2>
-<figure class="schema"><div class="dessin" data-schema="flux-ventilation"></div><figcaption>Simple flux, double flux, free-cooling : d’où entre l’air, par où il sort, et ce qu’on récupère au passage.</figcaption></figure>
-<p><strong>Le simple flux autoréglable.</strong> Un caisson d’extraction met le logement en dépression ; l’air neuf entre par des entrées d’air en menuiserie. Le débit est constant quoi qu’il arrive. Simple, robuste, et il extrait autant la nuit qu’à l’heure du repas.</p>
-<p><strong>Le simple flux hygroréglable.</strong> Les bouches d’extraction, et parfois les entrées d’air, se referment quand l’air est sec. Le débit suit l’occupation, ce qui économise <strong>20 à 40 % du débit moyen</strong> sans capteur ni électronique : un tissu hygroscopique se détend avec l’humidité.</p>
-<p><strong>Le double flux.</strong> Deux réseaux, deux ventilateurs, et surtout <strong>un récupérateur</strong> qui préchauffe l’air neuf sur l’air rejeté. C’est le seul système qui traite l’air neuf avant de l’introduire, donc le seul acceptable en tertiaire à fort débit.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th></th>
-<th>Simple flux</th>
-<th>Hygroréglable</th>
-<th>Double flux</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Ventilateurs</td>
-<td>1</td>
-<td>1</td>
-<td><strong>2</strong></td>
-</tr>
-<tr>
-<td>Récupération</td>
-<td>aucune</td>
-<td>aucune</td>
-<td><strong>60 à 90 %</strong></td>
-</tr>
-<tr>
-<td>Filtration de l’air neuf</td>
-<td>non</td>
-<td>non</td>
-<td><strong>oui</strong></td>
-</tr>
-<tr>
-<td>Consommation électrique</td>
-<td>15 à 40 W</td>
-<td>10 à 30 W</td>
-<td><strong>50 à 120 W</strong></td>
-</tr>
-<tr>
-<td>Encombrement</td>
-<td>faible</td>
-<td>faible</td>
-<td><strong>un réseau complet</strong></td>
-</tr>
-<tr>
-<td>Entretien</td>
-<td>2 bouches</td>
-<td>idem</td>
-<td><strong>filtres, 2 fois par an</strong></td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le double flux ne se justifie pas par l’électricité qu’il consomme mais par la <strong>chaleur qu’il récupère</strong>. En dessous d’un certain débit et d’un certain climat, les deux se compensent : le calcul du 8.4 dit à partir d’où il gagne.</p>
-</div>
-<h2 id="8-4-ce-que-l-air-neuf-coute">8.4 Ce que l’air neuf coûte</h2>
-<div class="formule">
-<p><strong>Φ air neuf = 0,34 × Qv × Δθ</strong> (Qv en m³/h, Δθ en K, Φ en W)</p>
-<p><strong>Avec un récupérateur d’efficacité ε :</strong></p>
-<p><strong>Φ = 0,34 × Qv × Δθ × (1 − ε)</strong></p>
-</div>
-<div class="outil" data-outil="ventilation">
-
-</div>
-<h3 id="exemple-résolu-2.-la-part-de-la-ventilation-dans-un-collège">Exemple résolu 2. La part de la ventilation dans un collège</h3>
-<p>Un collège de <strong>600 élèves</strong>, débit d’air neuf <strong>25 m³/h</strong> par élève, température de base <strong>−5 °C</strong>, intérieur <strong>19 °C</strong>.</p>
-<p><strong>Le débit total.</strong> 600 × 25 = <strong>15 000 m³/h</strong>.</p>
-<p><strong>La puissance sans récupération.</strong> 0,34 × 15 000 × 24 = <strong>122 400 W ≈ 122 kW</strong>.</p>
-<p><strong>La comparaison.</strong> Les déperditions par les parois de ce collège valent environ <strong>180 kW</strong>. L’air neuf pèse donc <strong>40 % du bilan total</strong>, et il est en général l’oublié du calcul.</p>
-<p><strong>Avec un récupérateur à 70 %.</strong> 122 × (1 − 0,70) = <strong>37 kW</strong>. On a effacé <strong>85 kW</strong> de puissance installée, soit un générateur bien plus petit.</p>
-<div class="cle">
-<p>Retenez la hiérarchie : <strong>sur un bâtiment récent bien isolé, l’air neuf devient le premier poste de déperdition</strong>, devant les parois. C’est le renversement qui justifie à lui seul le double flux dans le neuf, et c’est une justification qui tombe régulièrement à l’épreuve.</p>
-</div>
-<div class="piege">
-<p>L’efficacité annoncée d’un récupérateur, 85 ou 90 %, est mesurée à <strong>débits équilibrés</strong> et en chaleur <strong>sensible</strong> seulement. Un réseau déséquilibré, plus d’extraction que de soufflage, fait chuter cette efficacité de 10 à 20 points, sans que rien ne le signale.</p>
-</div>
-<h2 id="8-5-le-calcul-retourne-dimensionner-une-gaine">8.5 Le calcul retourné : dimensionner une gaine</h2>
-<p>Le raisonnement du chapitre 2 se transpose mot pour mot, avec d’autres nombres.</p>
-<div class="formule">
-<p><strong>Qv = v × S</strong> · <strong>S = π D² / 4</strong> en circulaire · <strong>S = a × b</strong> en rectangulaire</p>
-<p>Attention aux unités : <strong>Qv en m³/s</strong> dans cette formule, donc on divise les m³/h par 3 600.</p>
-</div>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Où</th>
-<th>Vitesse admissible</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Bouche de soufflage, zone d’occupation</td>
-<td><strong>2 à 3 m/s</strong></td>
-</tr>
-<tr>
-<td>Gaine en logement</td>
-<td>3 à 4 m/s</td>
-</tr>
-<tr>
-<td>Gaine secondaire en tertiaire</td>
-<td>4 à 6 m/s</td>
-</tr>
-<tr>
-<td>Gaine principale, local technique</td>
-<td><strong>6 à 8 m/s</strong></td>
-</tr>
-<tr>
-<td>Au-delà de 10 m/s</td>
-<td>bruit, perte de charge inacceptable</td>
-</tr>
-</tbody>
-</table></div>
-<h3 id="exemple-résolu-3.-la-gaine-principale-du-collège">Exemple résolu 3. La gaine principale du collège</h3>
-<p>Le collège du 8.4 : <strong>15 000 m³/h</strong> dans la gaine principale, vitesse maximale admise <strong>7 m/s</strong>.</p>
-<p><strong>1. Le débit en m³/s.</strong> 15 000 / 3 600 = <strong>4,17 m³/s</strong>.</p>
-<p><strong>2. La section nécessaire.</strong> S = 4,17 / 7 = <strong>0,595 m²</strong>.</p>
-<p><strong>3. En circulaire.</strong> D = √(4 × 0,595 / π) = <strong>0,871 m</strong>, soit une gaine de <strong>900 mm</strong> de diamètre.</p>
-<p><strong>4. En rectangulaire.</strong> Pour tenir en faux plafond, on prendra plutôt <strong>1 200 × 500 mm</strong>, soit 0,60 m², même section, hauteur divisée par deux.</p>
-<div class="cle">
-<p>Une gaine de 900 mm ne passe nulle part dans un faux plafond ordinaire. <strong>C’est la ventilation qui commande la hauteur sous plafond d’un bâtiment tertiaire</strong>, et c’est pourquoi les gaines sont presque toujours rectangulaires : à section égale, elles sont deux fois plus plates.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : les pertes de charge aérauliques</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La formule de Darcy du chapitre 3 reste valable pour l’air : rien dans sa démonstration n’était propre à l’eau. Trois choses changent pourtant dans son emploi.</p>
-<p><strong>Les unités.</strong> On ne parle plus en mCE mais en <strong>pascals</strong>. Une centrale courante développe 300 à 800 Pa, une CTA de tertiaire 800 à 1 500 Pa. Comme 1 mCE = 9 810 Pa, une CTA à 1 000 Pa ne « monte » que 10 cm d’eau : le fluide est 800 fois plus léger.</p>
-<p><strong>Le critère de dimensionnement.</strong> À la place des 10 à 20 mmCE/m de l’eau, on vise <strong>0,8 à 1,2 pascal par mètre</strong> de gaine. Les abaques aérauliques donnent directement ce linéique en fonction du débit et du diamètre.</p>
-<p><strong>Le diamètre équivalent.</strong> Une gaine rectangulaire ne se calcule pas avec sa section : sa perte de charge dépend aussi de son périmètre mouillé. On passe par un <strong>diamètre équivalent</strong> :</p>
-<p><strong>De = 1,3 × (a × b)^0,625 / (a + b)^0,25</strong></p>
-<p>Pour 1 200 × 500 : De = 1,3 × 0,60^0,625 / 1,70^0,25 = <strong>0,827 m</strong>, soit un peu moins que les 871 mm du calcul circulaire. <strong>Une gaine plate perd davantage qu’une gaine ronde de même section</strong> : plus elle est aplatie, plus l’écart grandit, et au-delà d’un rapport de 4 pour 1 la pénalité devient sévère.</p>
-<p><strong>Ce qui domine en réalité.</strong> Sur un réseau aéraulique, ce ne sont ni les longueurs droites ni les coudes qui pèsent le plus : ce sont <strong>les filtres</strong> , 50 à 250 Pa selon leur encrassement, <strong>les batteries</strong>, 30 à 120 Pa, et <strong>les bouches</strong>. Un dimensionnement qui ne compte que les gaines sous-estime la pression de la centrale d’un facteur deux.</p></div></details>
-</div><h2 id="8-6-le-free-cooling">8.6 Le free-cooling</h2>
-<p>En mi-saison, un bâtiment tertiaire a <strong>trop chaud</strong> alors qu’il fait frais dehors : les occupants, l’éclairage et les machines suffisent à le chauffer. Le free-cooling consiste alors à <strong>ouvrir en grand l’air neuf</strong> au lieu de faire tourner un groupe froid.</p>
-<div class="formule">
-<p><strong>Φ gratuit = 0,34 × Qv × ( θ intérieure − θ extérieure )</strong></p>
-<p>Condition : θ extérieure <strong>inférieure</strong> à θ intérieure, et humidité extérieure compatible.</p>
-</div>
-<div class="cle">
-<p>Un débit de 15 000 m³/h avec 8 K d’écart apporte 0,34 × 15 000 × 8 = <strong>41 kW de refroidissement gratuit</strong>, pour le seul coût des ventilateurs, quelques kilowatts. C’est l’économie la plus rentable de toute la GTB, et elle ne demande aucun matériel supplémentaire.</p>
-</div>
-<div class="piege">
-<p>Le free-cooling ne sert à rien dans trois cas, et l’épreuve aime les faire citer : quand <strong>l’air extérieur est plus chaud</strong> que l’intérieur ; quand il est <strong>trop humide</strong>, auquel cas on introduit de la vapeur qu’il faudra retirer ; et quand le bâtiment n’a <strong>pas de registre motorisé</strong> capable d’ouvrir au-delà du taux d’air neuf hygiénique.</p>
-</div>
-<h2 id="8-7-ventiler-suppose-d-etre-etanche">8.7 Ventiler suppose d’être étanche</h2>
-<p>Un bâtiment qui fuit ne se ventile pas : il se dépressurise par les défauts, et l’air neuf n’emprunte plus le chemin prévu.</p>
-<div class="formule">
-<p><strong>Perméabilité Q4Pa-surf</strong> : débit de fuite sous 4 Pa, par m² de parois froides hors plancher bas.</p>
-<ul>
-<li>Bâtiment ancien : 2 à 4 m³/(h·m²)</li>
-<li>Exigence courante en logement neuf : <strong>0,6 m³/(h·m²)</strong></li>
-<li>Bâtiment passif : 0,2</li>
-</ul>
-</div>
-<div class="cle">
-<p>Sur un bâtiment étanche, <strong>la ventilation devient la seule voie d’entrée de l’air</strong>, ce qui est précisément le but : on choisit alors le débit, le chemin, la filtration et la récupération. Sur un bâtiment qui fuit, la VMC double flux récupère sur un air qui est déjà entré ailleurs, l’investissement est perdu.</p>
-</div>
-<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Valeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Constante de l’air</td>
-<td><strong>0,34 Wh/(m³·K)</strong></td>
-</tr>
-<tr>
-<td>CO₂ de l’air extérieur</td>
-<td>420 ppm</td>
-</tr>
-<tr>
-<td>Seuil de bonne qualité d’air</td>
-<td><strong>1 000 ppm</strong></td>
-</tr>
-<tr>
-<td>CO₂ produit par un occupant assis</td>
-<td>≈ 18 L/h</td>
-</tr>
-<tr>
-<td>Vapeur produite par un occupant assis</td>
-<td>≈ 65 g/h</td>
-</tr>
-<tr>
-<td>Débit en bureau, par occupant</td>
-<td><strong>25 m³/h</strong></td>
-</tr>
-<tr>
-<td>Débit en salle de classe ou de réunion</td>
-<td>30 m³/h</td>
-</tr>
-<tr>
-<td>Extraction cuisine, logement T3</td>
-<td>105 m³/h</td>
-</tr>
-<tr>
-<td>Efficacité d’un récupérateur à plaques</td>
-<td>60 à 85 %</td>
-</tr>
-<tr>
-<td>Vitesse en gaine principale</td>
-<td><strong>6 à 8 m/s</strong></td>
-</tr>
-<tr>
-<td>Vitesse à la bouche de soufflage</td>
-<td>2 à 3 m/s</td>
-</tr>
-<tr>
-<td>Perte de charge linéique visée</td>
-<td><strong>0,8 à 1,2 Pa/m</strong></td>
-</tr>
-<tr>
-<td>Pression d’une CTA de tertiaire</td>
-<td>800 à 1 500 Pa</td>
-</tr>
-<tr>
-<td>Perte d’un filtre, propre à colmaté</td>
-<td>50 à 250 Pa</td>
-</tr>
-<tr>
-<td>Perméabilité exigée en logement neuf</td>
-<td>0,6 m³/(h·m²)</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le contrôle qui refuse un nombre : <strong>un débit d’air neuf de bureau vaut environ 25 m³/h par personne, soit 1 m³ par personne toutes les deux minutes et demie</strong>. Un résultat qui donne 2 m³/h ou 500 m³/h par occupant se rejette sans calcul.</p>
-</div>
-<h2 id="s-entrainer">S’entraîner</h2>
-<section class="exo" id="M8-MANUEL-e1" data-exo="M8-MANUEL-e1" data-type="calcul" data-savoir="B2-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgY2xqdGp2eC41NnhgaHRqdngveGB4NwYvamo4aXUyeCc="><p class="k">Exercice · B2-1</p><h4>Le débit d’une salle</h4><div class="enonce">
-
-<p>Une salle de réunion accueille <strong>32 personnes</strong>. Quel débit d’air neuf faut-il, au titre du code du travail ?</p>
-</div><div class="indice" hidden>Une salle de réunion relève du débit de 30 m³/h par occupant, et non des 25 m³/h des bureaux.</div></section>
-<section class="exo" id="M8-MANUEL-e2" data-exo="M8-MANUEL-e2" data-type="calcul" data-savoir="B2-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgaGpuamp0anZ4LjU2eGBpdGp2eC94YHgNeCc="><p class="k">Exercice · B2-1</p><h4>Le coût de l’air neuf</h4><div class="enonce">
-
-<p>Un local est ventilé à <strong>2 400 m³/h</strong>. L’air extérieur est à <strong>−5 °C</strong>, le local à <strong>20 °C</strong>. Quelle puissance faut-il pour réchauffer cet air neuf ?</p>
-</div><div class="indice" hidden>Φ = 0,34 × Qv × Δθ, avec Qv en mètres cubes par heure. Le Δθ est l’écart entre l’intérieur et l’extérieur.</div></section>
-<section class="exo" id="M8-MANUEL-e3" data-exo="M8-MANUEL-e3" data-type="calcul" data-savoir="B2-1" data-a="IXgueGB4OTs2OS82eHZ4LHhganRva292eC41NnhgbnRqdngveGB4N3gn"><p class="k">Exercice · B2-1</p><h4>Le diamètre d’une gaine</h4><div class="enonce">
-
-<p>Une gaine circulaire doit transporter <strong>4 500 m³/h</strong> à une vitesse maximale de <strong>6 m/s</strong>. Quel diamètre intérieur minimal faut-il ?</p>
-</div><div class="indice" hidden>Convertissez d’abord le débit en m³ par seconde. La section vaut le débit divisé par la vitesse, et le diamètre se tire de S = π D² / 4.</div></section>
-<section class="exo" id="M8-MANUEL-e4" data-exo="M8-MANUEL-e4" data-type="justification" data-savoir="B2-1" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B2-1</p><h4>Un double flux qui ne récupère rien</h4><div class="enonce">
-
-<p>Sur une VMC double flux d’école, vous mesurez <strong>2 800 m³/h</strong> au soufflage et <strong>3 900 m³/h</strong> à l’extraction. Le récupérateur est annoncé à 85 %. Expliquez ce qui se passe et ce que vous vérifiez.</p>
-</div><div class="indice" hidden>Un récupérateur n’échange qu’entre les deux airs qui le traversent. Demandez-vous par où entrent les mètres cubes extraits en trop, et s’ils sont passés par l’échangeur.</div><ul class="verifier" hidden><li>J’ai relevé le déséquilibre des débits, et je l’ai chiffré en pourcentage.</li><li>J’ai dit que l’écart est compensé par des infiltrations, qui ne passent pas par le récupérateur.</li><li>J’ai conclu que l’efficacité réelle est bien inférieure à celle annoncée.</li><li>J’ai proposé une vérification : filtres colmatés, réglage des ventilateurs, ou fuites de réseau.</li></ul></section>
-<h2 id="vous-verifier">Vous vérifier</h2>
-<div class="quiz">
-<ul>
-<li>On mesure le CO₂ parce qu’il est : <strong>un traceur commode</strong> | le polluant dangereux</li>
-<li>L’air extérieur contient environ : <strong>420 ppm</strong> | 1 000 ppm</li>
-<li>Le seuil de bonne qualité d’air est à : <strong>1 000 ppm</strong> | 5 000 ppm</li>
-<li>Un occupant de bureau demande : <strong>25 m³/h</strong> | 25 m³/jour</li>
-<li>En logement, la réglementation impose des débits : <strong>extraits</strong> | soufflés</li>
-<li>Un hygroréglable module le débit selon : <strong>l’humidité</strong> | la température</li>
-<li>Le double flux se justifie surtout par : <strong>la récupération de chaleur</strong> | sa consommation électrique</li>
-<li>Sur un bâtiment très isolé, l’air neuf pèse : <strong>davantage que les parois</strong> | toujours moins</li>
-<li>La constante de l’air vaut : <strong>0,34 Wh/(m³·K)</strong> | 1,163</li>
-<li>La vitesse en gaine principale est de : <strong>6 à 8 m/s</strong> | 15 m/s</li>
-<li>Une gaine plate, à section égale, perd : <strong>plus qu’une ronde</strong> | autant</li>
-<li>Le free-cooling suppose un air extérieur : <strong>plus frais que l’intérieur</strong> | plus sec seulement</li>
-<li>Sur un réseau aéraulique, ce qui pèse le plus est : <strong>filtres et batteries</strong> | les longueurs droites</li>
-</ul>
-</div>
-<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le taux de brassage, et pourquoi il ne dit rien</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>On lit souvent qu’un local doit être « ventilé à 4 volumes par heure ». Ce critère existe, il s’appelle <strong>taux de renouvellement</strong>, et il est le plus mal employé du métier.</p>
-<p><strong>Sa définition.</strong> n = Qv / Volume du local, en h⁻¹. Un local de 200 m³ ventilé à 800 m³/h est à 4 h⁻¹.</p>
-<p><strong>Pourquoi il trompe.</strong> La pollution n’est pas produite par le volume : elle est produite par <strong>les occupants</strong>. Deux salles de 200 m³, l’une avec 4 personnes, l’autre avec 40, ont besoin de débits dans un rapport de 10, et le même taux de brassage les déclarerait identiques. Un hall d’entrée de 2 000 m³ où passent trois personnes n’a besoin d’aucun renouvellement à 4 volumes par heure.</p>
-<p><strong>Où il est légitime.</strong> Là où la pollution est effectivement liée au volume ou à la surface, et non aux personnes : <strong>local technique</strong>, parking, chaufferie, local à déchets, laboratoire. Un local de chaufferie gaz se ventile sur un taux de brassage parce que ce qu’on y dilue est une fuite éventuelle, pas une respiration.</p>
-<p><strong>Ce qu’il faut donc retenir.</strong> Débit par occupant quand la source est humaine ; taux de brassage quand la source est le local lui-même. Confondre les deux conduit à ventiler des couloirs et à asphyxier des salles de classe.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce que la réglementation impose au-delà des débits</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Trois textes se superposent sur un projet de ventilation, et un bureau d’études les traite ensemble.</p>
-<p><strong>L’arrêté du 24 mars 1982</strong> pour le logement, déjà cité, qui fixe des débits extraits et <strong>le principe du balayage</strong> : l’air entre par les pièces principales, traverse le logement, et sort par les pièces de service. Un détalonnage de porte de 1 à 2 cm en fait partie, et son absence suffit à annuler tout le système.</p>
-<p><strong>Le code du travail</strong> pour le tertiaire, avec une nuance rarement lue : les débits de l’article R. 4222-6 valent pour les locaux <strong>à pollution non spécifique</strong>. Dès qu’il y a une pollution particulière, atelier de peinture, laboratoire, cuisine professionnelle, c’est un captage à la source qui s’impose, dimensionné sur le polluant, et non un débit forfaitaire.</p>
-<p><strong>La RE2020</strong> enfin, qui n’impose pas de débit mais <strong>pèse la consommation des ventilateurs</strong> dans le Cep et impose une vérification de la perméabilité par mesure. C’est elle qui a rendu le double flux quasi obligatoire en logement collectif neuf, non par une règle explicite mais par le jeu des seuils.</p>
-<p><strong>Le point qui décide en pratique</strong>, et qu’aucun texte ne chiffre : l’<strong>acoustique</strong>. Un débit correct, soufflé par une bouche trop petite, produit 40 dB(A) dans une chambre. Les occupants bouchent alors les bouches, et le système entier tombe. C’est la première cause de non-fonctionnement des VMC en logement.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La VMC fait entrer de l’air froid, donc elle fait perdre de l’énergie. »</strong> Elle fait entrer l’air qu’il faut. Ce qui fait perdre de l’énergie, c’est de chauffer cet air ; le supprimer économiserait de l’énergie <strong>et</strong> rendrait le local impropre à l’usage. La bonne question n’est pas s’il faut ventiler, mais comment récupérer.</p>
-<p><strong>« On ventile pour évacuer le CO₂. »</strong> On ventile pour évacuer <strong>l’humidité, les odeurs et les composés organiques volatils</strong> ; le CO₂ n’est que l’indicateur commode qui suit les mêmes courbes. Le dire correctement change le diagnostic : un local peut être sous 1 000 ppm et rester malsain, s’il y a une source chimique.</p>
-<p><strong>« Ouvrir les fenêtres suffit. »</strong> Cela suffit à corriger une pointe, jamais à tenir un débit. Une fenêtre ouverte donne un débit <strong>incontrôlé et non récupéré</strong> (de 30 m³/h sans vent à 900 avec) et il n’existe aucun moyen de le régler. C’est un secours, pas un système.</p></div></details>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Justifier</strong> un débit d’air neuf par le CO₂ ou par la réglementation.</li>
+
+<li><strong>Distinguer</strong> simple flux, hygroréglable et double flux sur un schéma.</li>
+
+<li><strong>Chiffrer</strong> ce que coûte l’air neuf dans le bilan thermique d’un bâtiment.</li>
+
+<li><strong>Dimensionner</strong> une gaine à partir d’un débit et d’une vitesse admissible.</li>
+
+<li><strong>Expliquer</strong> le free-cooling, et dire quand il ne sert à rien.</li>
+
+</ol>
+
+</div>
+
+<p><strong>B2-1 est au niveau 3.</strong> La ventilation ouvre le bloc « traitement d’air », qui pèse <strong>19 % de l’épreuve à chaque session, sans exception</strong>.</p>
+
+<h2 id="8-1-pourquoi-on-ventile">8.1 Pourquoi on ventile</h2>
+
+<p>Une salle de classe fermée, vingt-cinq élèves, une heure. Les vitres se couvrent de buée, l’air devient lourd, l’attention tombe. Rien de mystérieux : chaque occupant y a déposé <strong>du CO₂, de la vapeur d’eau et de la chaleur</strong>.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Ce qu’un occupant assis produit</th>
+
+<th style="text-align: right;">Par heure</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Chaleur sensible</td>
+
+<td style="text-align: right;">≈ 70 W</td>
+
+</tr>
+
+<tr>
+
+<td>Chaleur latente, sous forme de vapeur</td>
+
+<td style="text-align: right;">≈ 45 W, soit <strong>65 g d’eau</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Gaz carbonique</td>
+
+<td style="text-align: right;">≈ <strong>18 L de CO₂</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le CO₂ n’est pas dangereux aux concentrations d’un bâtiment : il est un <strong>traceur</strong>. Là où il s’accumule, tout le reste s’accumule aussi, humidité, odeurs, composés organiques volatils. On le mesure parce qu’il est facile à mesurer, pas parce qu’il est le problème.</p>
+
+</div>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th style="text-align: right;">Concentration en CO₂</th>
+
+<th>Situation</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align: right;">420 ppm</td>
+
+<td>Air extérieur, aujourd’hui</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">800 ppm</td>
+
+<td>Local correctement ventilé</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;"><strong>1 000 ppm</strong></td>
+
+<td><strong>Seuil de bonne qualité d’air</strong></td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">1 500 ppm</td>
+
+<td>Seuil d’action en établissement scolaire</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">2 500 ppm</td>
+
+<td>Somnolence, maux de tête, attention en baisse</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="formule">
+
+<p><strong>Débit d’équilibre : Qv = production de CO₂ / ( C intérieur − C extérieur )</strong></p>
+
+<p>En régime établi, avec les concentrations en fractions volumiques.</p>
+
+</div>
+
+<h3 id="exemple-résolu-1.-le-débit-qui-tient-une-salle-sous-1-000-ppm">Exemple résolu 1. Le débit qui tient une salle sous 1 000 ppm</h3>
+
+<p>Vingt-cinq élèves produisant chacun <strong>18 L/h</strong> de CO₂, air extérieur à <strong>420 ppm</strong>, objectif <strong>1 000 ppm</strong>.</p>
+
+<p><strong>La production.</strong> 25 × 18 = <strong>450 L/h de CO₂</strong>.</p>
+
+<p><strong>L’écart de concentration.</strong> 1 000 − 420 = 580 ppm = <strong>0,000 58</strong>.</p>
+
+<p><strong>Le débit.</strong> 450 / 0,000 58 = 776 000 L/h = <strong>776 m³/h</strong>.</p>
+
+<p><strong>Par élève.</strong> 776 / 25 = <strong>31 m³/h</strong>, ce qui est très exactement l’ordre de grandeur du code du travail. Les deux approches, physique et réglementaire, tombent sur le même nombre : ce n’est pas un hasard, la réglementation a été calée là-dessus.</p>
+
+<h2 id="8-2-les-debits-imposes">8.2 Les débits imposés</h2>
+
+<p>Deux textes, deux logiques, et il faut savoir lequel s’applique.</p>
+
+<div class="formule">
+
+<p><strong>En logement, arrêté du 24 mars 1982.</strong> Les débits sont <strong>extraits</strong> des pièces de service, et l’air neuf entre par les pièces principales.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Logement</th>
+
+<th style="text-align: right;">Cuisine</th>
+
+<th style="text-align: right;">Salle de bains</th>
+
+<th style="text-align: right;">WC</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>T1</td>
+
+<td style="text-align: right;">75 m³/h</td>
+
+<td style="text-align: right;">15</td>
+
+<td style="text-align: right;">15</td>
+
+</tr>
+
+<tr>
+
+<td>T3</td>
+
+<td style="text-align: right;">105 m³/h</td>
+
+<td style="text-align: right;">15</td>
+
+<td style="text-align: right;">15</td>
+
+</tr>
+
+<tr>
+
+<td>T5</td>
+
+<td style="text-align: right;">135 m³/h</td>
+
+<td style="text-align: right;">30</td>
+
+<td style="text-align: right;">30</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+</div>
+
+<div class="formule">
+
+<p><strong>En tertiaire, code du travail, article R. 4222-6.</strong> Les débits sont donnés <strong>par occupant</strong>.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Local</th>
+
+<th style="text-align: right;">Débit minimal</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Bureaux, locaux sans travail physique</td>
+
+<td style="text-align: right;"><strong>25 m³/h</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Locaux de restauration, de vente, de réunion</td>
+
+<td style="text-align: right;"><strong>30 m³/h</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Ateliers, travail physique léger</td>
+
+<td style="text-align: right;">45 m³/h</td>
+
+</tr>
+
+<tr>
+
+<td>Autres ateliers</td>
+
+<td style="text-align: right;">60 m³/h</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+</div>
+
+<div class="piege">
+
+<p>Ne mélangez jamais les deux logiques. En <strong>logement</strong>, on impose un débit <strong>extrait par pièce de service</strong> ; en <strong>tertiaire</strong>, un débit <strong>soufflé par occupant</strong>. Appliquer la règle du logement à une salle de classe donne un résultat sans rapport, et c’est une erreur classique en épreuve.</p>
+
+</div>
+
+<h2 id="8-3-les-trois-familles-de-systeme">8.3 Les trois familles de système</h2>
+
+<figure class="schema"><div class="dessin" data-schema="flux-ventilation"></div><figcaption>Simple flux, double flux, free-cooling : d’où entre l’air, par où il sort, et ce qu’on récupère au passage.</figcaption></figure>
+
+<p><strong>Le simple flux autoréglable.</strong> Un caisson d’extraction met le logement en dépression ; l’air neuf entre par des entrées d’air en menuiserie. Le débit est constant quoi qu’il arrive. Simple, robuste, et il extrait autant la nuit qu’à l’heure du repas.</p>
+
+<p><strong>Le simple flux hygroréglable.</strong> Les bouches d’extraction, et parfois les entrées d’air, se referment quand l’air est sec. Le débit suit l’occupation, ce qui économise <strong>20 à 40 % du débit moyen</strong> sans capteur ni électronique : un tissu hygroscopique se détend avec l’humidité.</p>
+
+<p><strong>Le double flux.</strong> Deux réseaux, deux ventilateurs, et surtout <strong>un récupérateur</strong> qui préchauffe l’air neuf sur l’air rejeté. C’est le seul système qui traite l’air neuf avant de l’introduire, donc le seul acceptable en tertiaire à fort débit.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th></th>
+
+<th>Simple flux</th>
+
+<th>Hygroréglable</th>
+
+<th>Double flux</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Ventilateurs</td>
+
+<td>1</td>
+
+<td>1</td>
+
+<td><strong>2</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Récupération</td>
+
+<td>aucune</td>
+
+<td>aucune</td>
+
+<td><strong>60 à 90 %</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Filtration de l’air neuf</td>
+
+<td>non</td>
+
+<td>non</td>
+
+<td><strong>oui</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Consommation électrique</td>
+
+<td>15 à 40 W</td>
+
+<td>10 à 30 W</td>
+
+<td><strong>50 à 120 W</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Encombrement</td>
+
+<td>faible</td>
+
+<td>faible</td>
+
+<td><strong>un réseau complet</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Entretien</td>
+
+<td>2 bouches</td>
+
+<td>idem</td>
+
+<td><strong>filtres, 2 fois par an</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le double flux ne se justifie pas par l’électricité qu’il consomme mais par la <strong>chaleur qu’il récupère</strong>. En dessous d’un certain débit et d’un certain climat, les deux se compensent : le calcul du 8.4 dit à partir d’où il gagne.</p>
+
+</div>
+
+<h2 id="8-4-ce-que-l-air-neuf-coute">8.4 Ce que l’air neuf coûte</h2>
+
+<div class="formule">
+
+<p><strong>Φ air neuf = 0,34 × Qv × Δθ</strong> (Qv en m³/h, Δθ en K, Φ en W)</p>
+
+<p><strong>Avec un récupérateur d’efficacité ε :</strong></p>
+
+<p><strong>Φ = 0,34 × Qv × Δθ × (1 − ε)</strong></p>
+
+</div>
+
+<div class="outil" data-outil="ventilation">
+
+
+
+</div>
+
+<h3 id="exemple-résolu-2.-la-part-de-la-ventilation-dans-un-collège">Exemple résolu 2. La part de la ventilation dans un collège</h3>
+
+<p>Un collège de <strong>600 élèves</strong>, débit d’air neuf <strong>25 m³/h</strong> par élève, température de base <strong>−5 °C</strong>, intérieur <strong>19 °C</strong>.</p>
+
+<p><strong>Le débit total.</strong> 600 × 25 = <strong>15 000 m³/h</strong>.</p>
+
+<p><strong>La puissance sans récupération.</strong> 0,34 × 15 000 × 24 = <strong>122 400 W ≈ 122 kW</strong>.</p>
+
+<p><strong>La comparaison.</strong> Les déperditions par les parois de ce collège valent environ <strong>180 kW</strong>. L’air neuf pèse donc <strong>40 % du bilan total</strong>, et il est en général l’oublié du calcul.</p>
+
+<p><strong>Avec un récupérateur à 70 %.</strong> 122 × (1 − 0,70) = <strong>37 kW</strong>. On a effacé <strong>85 kW</strong> de puissance installée, soit un générateur bien plus petit.</p>
+
+<div class="cle">
+
+<p>Retenez la hiérarchie : <strong>sur un bâtiment récent bien isolé, l’air neuf devient le premier poste de déperdition</strong>, devant les parois. C’est le renversement qui justifie à lui seul le double flux dans le neuf, et c’est une justification qui tombe régulièrement à l’épreuve.</p>
+
+</div>
+
+<div class="piege">
+
+<p>L’efficacité annoncée d’un récupérateur, 85 ou 90 %, est mesurée à <strong>débits équilibrés</strong> et en chaleur <strong>sensible</strong> seulement. Un réseau déséquilibré, plus d’extraction que de soufflage, fait chuter cette efficacité de 10 à 20 points, sans que rien ne le signale.</p>
+
+</div>
+
+<h2 id="8-5-le-calcul-retourne-dimensionner-une-gaine">8.5 Le calcul retourné : dimensionner une gaine</h2>
+
+<p>Le raisonnement du chapitre 2 se transpose mot pour mot, avec d’autres nombres.</p>
+
+<div class="formule">
+
+<p><strong>Qv = v × S</strong> · <strong>S = π D² / 4</strong> en circulaire · <strong>S = a × b</strong> en rectangulaire</p>
+
+<p>Attention aux unités : <strong>Qv en m³/s</strong> dans cette formule, donc on divise les m³/h par 3 600.</p>
+
+</div>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Où</th>
+
+<th>Vitesse admissible</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Bouche de soufflage, zone d’occupation</td>
+
+<td><strong>2 à 3 m/s</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Gaine en logement</td>
+
+<td>3 à 4 m/s</td>
+
+</tr>
+
+<tr>
+
+<td>Gaine secondaire en tertiaire</td>
+
+<td>4 à 6 m/s</td>
+
+</tr>
+
+<tr>
+
+<td>Gaine principale, local technique</td>
+
+<td><strong>6 à 8 m/s</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Au-delà de 10 m/s</td>
+
+<td>bruit, perte de charge inacceptable</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<h3 id="exemple-résolu-3.-la-gaine-principale-du-collège">Exemple résolu 3. La gaine principale du collège</h3>
+
+<p>Le collège du 8.4 : <strong>15 000 m³/h</strong> dans la gaine principale, vitesse maximale admise <strong>7 m/s</strong>.</p>
+
+<p><strong>1. Le débit en m³/s.</strong> 15 000 / 3 600 = <strong>4,17 m³/s</strong>.</p>
+
+<p><strong>2. La section nécessaire.</strong> S = 4,17 / 7 = <strong>0,595 m²</strong>.</p>
+
+<p><strong>3. En circulaire.</strong> D = √(4 × 0,595 / π) = <strong>0,871 m</strong>, soit une gaine de <strong>900 mm</strong> de diamètre.</p>
+
+<p><strong>4. En rectangulaire.</strong> Pour tenir en faux plafond, on prendra plutôt <strong>1 200 × 500 mm</strong>, soit 0,60 m², même section, hauteur divisée par deux.</p>
+
+<div class="cle">
+
+<p>Une gaine de 900 mm ne passe nulle part dans un faux plafond ordinaire. <strong>C’est la ventilation qui commande la hauteur sous plafond d’un bâtiment tertiaire</strong>, et c’est pourquoi les gaines sont presque toujours rectangulaires : à section égale, elles sont deux fois plus plates.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : les pertes de charge aérauliques</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La formule de Darcy du chapitre 3 reste valable pour l’air : rien dans sa démonstration n’était propre à l’eau. Trois choses changent pourtant dans son emploi.</p>
+
+<p><strong>Les unités.</strong> On ne parle plus en mCE mais en <strong>pascals</strong>. Une centrale courante développe 300 à 800 Pa, une CTA de tertiaire 800 à 1 500 Pa. Comme 1 mCE = 9 810 Pa, une CTA à 1 000 Pa ne « monte » que 10 cm d’eau : le fluide est 800 fois plus léger.</p>
+
+<p><strong>Le critère de dimensionnement.</strong> À la place des 10 à 20 mmCE/m de l’eau, on vise <strong>0,8 à 1,2 pascal par mètre</strong> de gaine. Les abaques aérauliques donnent directement ce linéique en fonction du débit et du diamètre.</p>
+
+<p><strong>Le diamètre équivalent.</strong> Une gaine rectangulaire ne se calcule pas avec sa section : sa perte de charge dépend aussi de son périmètre mouillé. On passe par un <strong>diamètre équivalent</strong> :</p>
+
+<p><strong>De = 1,3 × (a × b)^0,625 / (a + b)^0,25</strong></p>
+
+<p>Pour 1 200 × 500 : De = 1,3 × 0,60^0,625 / 1,70^0,25 = <strong>0,827 m</strong>, soit un peu moins que les 871 mm du calcul circulaire. <strong>Une gaine plate perd davantage qu’une gaine ronde de même section</strong> : plus elle est aplatie, plus l’écart grandit, et au-delà d’un rapport de 4 pour 1 la pénalité devient sévère.</p>
+
+<p><strong>Ce qui domine en réalité.</strong> Sur un réseau aéraulique, ce ne sont ni les longueurs droites ni les coudes qui pèsent le plus : ce sont <strong>les filtres</strong> , 50 à 250 Pa selon leur encrassement, <strong>les batteries</strong>, 30 à 120 Pa, et <strong>les bouches</strong>. Un dimensionnement qui ne compte que les gaines sous-estime la pression de la centrale d’un facteur deux.</p></div></details>
+
+</div><h2 id="8-6-le-free-cooling">8.6 Le free-cooling</h2>
+
+<p>En mi-saison, un bâtiment tertiaire a <strong>trop chaud</strong> alors qu’il fait frais dehors : les occupants, l’éclairage et les machines suffisent à le chauffer. Le free-cooling consiste alors à <strong>ouvrir en grand l’air neuf</strong> au lieu de faire tourner un groupe froid.</p>
+
+<div class="formule">
+
+<p><strong>Φ gratuit = 0,34 × Qv × ( θ intérieure − θ extérieure )</strong></p>
+
+<p>Condition : θ extérieure <strong>inférieure</strong> à θ intérieure, et humidité extérieure compatible.</p>
+
+</div>
+
+<div class="cle">
+
+<p>Un débit de 15 000 m³/h avec 8 K d’écart apporte 0,34 × 15 000 × 8 = <strong>41 kW de refroidissement gratuit</strong>, pour le seul coût des ventilateurs, quelques kilowatts. C’est l’économie la plus rentable de toute la GTB, et elle ne demande aucun matériel supplémentaire.</p>
+
+</div>
+
+<div class="piege">
+
+<p>Le free-cooling ne sert à rien dans trois cas, et l’épreuve aime les faire citer : quand <strong>l’air extérieur est plus chaud</strong> que l’intérieur ; quand il est <strong>trop humide</strong>, auquel cas on introduit de la vapeur qu’il faudra retirer ; et quand le bâtiment n’a <strong>pas de registre motorisé</strong> capable d’ouvrir au-delà du taux d’air neuf hygiénique.</p>
+
+</div>
+
+<h2 id="8-7-ventiler-suppose-d-etre-etanche">8.7 Ventiler suppose d’être étanche</h2>
+
+<p>Un bâtiment qui fuit ne se ventile pas : il se dépressurise par les défauts, et l’air neuf n’emprunte plus le chemin prévu.</p>
+
+<div class="formule">
+
+<p><strong>Perméabilité Q4Pa-surf</strong> : débit de fuite sous 4 Pa, par m² de parois froides hors plancher bas.</p>
+
+<ul>
+
+<li>Bâtiment ancien : 2 à 4 m³/(h·m²)</li>
+
+<li>Exigence courante en logement neuf : <strong>0,6 m³/(h·m²)</strong></li>
+
+<li>Bâtiment passif : 0,2</li>
+
+</ul>
+
+</div>
+
+<div class="cle">
+
+<p>Sur un bâtiment étanche, <strong>la ventilation devient la seule voie d’entrée de l’air</strong>, ce qui est précisément le but : on choisit alors le débit, le chemin, la filtration et la récupération. Sur un bâtiment qui fuit, la VMC double flux récupère sur un air qui est déjà entré ailleurs, l’investissement est perdu.</p>
+
+</div>
+
+<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Valeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Constante de l’air</td>
+
+<td><strong>0,34 Wh/(m³·K)</strong></td>
+
+</tr>
+
+<tr>
+
+<td>CO₂ de l’air extérieur</td>
+
+<td>420 ppm</td>
+
+</tr>
+
+<tr>
+
+<td>Seuil de bonne qualité d’air</td>
+
+<td><strong>1 000 ppm</strong></td>
+
+</tr>
+
+<tr>
+
+<td>CO₂ produit par un occupant assis</td>
+
+<td>≈ 18 L/h</td>
+
+</tr>
+
+<tr>
+
+<td>Vapeur produite par un occupant assis</td>
+
+<td>≈ 65 g/h</td>
+
+</tr>
+
+<tr>
+
+<td>Débit en bureau, par occupant</td>
+
+<td><strong>25 m³/h</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Débit en salle de classe ou de réunion</td>
+
+<td>30 m³/h</td>
+
+</tr>
+
+<tr>
+
+<td>Extraction cuisine, logement T3</td>
+
+<td>105 m³/h</td>
+
+</tr>
+
+<tr>
+
+<td>Efficacité d’un récupérateur à plaques</td>
+
+<td>60 à 85 %</td>
+
+</tr>
+
+<tr>
+
+<td>Vitesse en gaine principale</td>
+
+<td><strong>6 à 8 m/s</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Vitesse à la bouche de soufflage</td>
+
+<td>2 à 3 m/s</td>
+
+</tr>
+
+<tr>
+
+<td>Perte de charge linéique visée</td>
+
+<td><strong>0,8 à 1,2 Pa/m</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Pression d’une CTA de tertiaire</td>
+
+<td>800 à 1 500 Pa</td>
+
+</tr>
+
+<tr>
+
+<td>Perte d’un filtre, propre à colmaté</td>
+
+<td>50 à 250 Pa</td>
+
+</tr>
+
+<tr>
+
+<td>Perméabilité exigée en logement neuf</td>
+
+<td>0,6 m³/(h·m²)</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le contrôle qui refuse un nombre : <strong>un débit d’air neuf de bureau vaut environ 25 m³/h par personne, soit 1 m³ par personne toutes les deux minutes et demie</strong>. Un résultat qui donne 2 m³/h ou 500 m³/h par occupant se rejette sans calcul.</p>
+
+</div>
+
+<h2 id="s-entrainer">S’entraîner</h2>
+
+<section class="exo" id="M8-MANUEL-e1" data-exo="M8-MANUEL-e1" data-type="calcul" data-savoir="B2-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgY2xqdGp2eC41NnhgaHRqdngveGB4NwYvamo4aXUyeCc="><p class="k">Exercice · B2-1</p><h4>Le débit d’une salle</h4><div class="enonce">
+
+
+
+<p>Une salle de réunion accueille <strong>32 personnes</strong>. Quel débit d’air neuf faut-il, au titre du code du travail ?</p>
+
+</div><div class="indice" hidden>Une salle de réunion relève du débit de 30 m³/h par occupant, et non des 25 m³/h des bureaux.</div></section>
+
+<section class="exo" id="M8-MANUEL-e2" data-exo="M8-MANUEL-e2" data-type="calcul" data-savoir="B2-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgaGpuamp0anZ4LjU2eGBpdGp2eC94YHgNeCc="><p class="k">Exercice · B2-1</p><h4>Le coût de l’air neuf</h4><div class="enonce">
+
+
+
+<p>Un local est ventilé à <strong>2 400 m³/h</strong>. L’air extérieur est à <strong>−5 °C</strong>, le local à <strong>20 °C</strong>. Quelle puissance faut-il pour réchauffer cet air neuf ?</p>
+
+</div><div class="indice" hidden>Φ = 0,34 × Qv × Δθ, avec Qv en mètres cubes par heure. Le Δθ est l’écart entre l’intérieur et l’extérieur.</div></section>
+
+<section class="exo" id="M8-MANUEL-e3" data-exo="M8-MANUEL-e3" data-type="calcul" data-savoir="B2-1" data-a="IXgueGB4OTs2OS82eHZ4LHhganRva292eC41NnhgbnRqdngveGB4N3gn"><p class="k">Exercice · B2-1</p><h4>Le diamètre d’une gaine</h4><div class="enonce">
+
+
+
+<p>Une gaine circulaire doit transporter <strong>4 500 m³/h</strong> à une vitesse maximale de <strong>6 m/s</strong>. Quel diamètre intérieur minimal faut-il ?</p>
+
+</div><div class="indice" hidden>Convertissez d’abord le débit en m³ par seconde. La section vaut le débit divisé par la vitesse, et le diamètre se tire de S = π D² / 4.</div></section>
+
+<section class="exo" id="M8-MANUEL-e4" data-exo="M8-MANUEL-e4" data-type="justification" data-savoir="B2-1" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B2-1</p><h4>Un double flux qui ne récupère rien</h4><div class="enonce">
+
+
+
+<p>Sur une VMC double flux d’école, vous mesurez <strong>2 800 m³/h</strong> au soufflage et <strong>3 900 m³/h</strong> à l’extraction. Le récupérateur est annoncé à 85 %. Expliquez ce qui se passe et ce que vous vérifiez.</p>
+
+</div><div class="indice" hidden>Un récupérateur n’échange qu’entre les deux airs qui le traversent. Demandez-vous par où entrent les mètres cubes extraits en trop, et s’ils sont passés par l’échangeur.</div><ul class="verifier" hidden><li>J’ai relevé le déséquilibre des débits, et je l’ai chiffré en pourcentage.</li><li>J’ai dit que l’écart est compensé par des infiltrations, qui ne passent pas par le récupérateur.</li><li>J’ai conclu que l’efficacité réelle est bien inférieure à celle annoncée.</li><li>J’ai proposé une vérification : filtres colmatés, réglage des ventilateurs, ou fuites de réseau.</li></ul></section>
+
+<h2 id="vous-verifier">Vous vérifier</h2>
+
+<div class="quiz">
+
+<ul>
+
+<li>On mesure le CO₂ parce qu’il est : <strong>un traceur commode</strong> | le polluant dangereux</li>
+
+<li>L’air extérieur contient environ : <strong>420 ppm</strong> | 1 000 ppm</li>
+
+<li>Le seuil de bonne qualité d’air est à : <strong>1 000 ppm</strong> | 5 000 ppm</li>
+
+<li>Un occupant de bureau demande : <strong>25 m³/h</strong> | 25 m³/jour</li>
+
+<li>En logement, la réglementation impose des débits : <strong>extraits</strong> | soufflés</li>
+
+<li>Un hygroréglable module le débit selon : <strong>l’humidité</strong> | la température</li>
+
+<li>Le double flux se justifie surtout par : <strong>la récupération de chaleur</strong> | sa consommation électrique</li>
+
+<li>Sur un bâtiment très isolé, l’air neuf pèse : <strong>davantage que les parois</strong> | toujours moins</li>
+
+<li>La constante de l’air vaut : <strong>0,34 Wh/(m³·K)</strong> | 1,163</li>
+
+<li>La vitesse en gaine principale est de : <strong>6 à 8 m/s</strong> | 15 m/s</li>
+
+<li>Une gaine plate, à section égale, perd : <strong>plus qu’une ronde</strong> | autant</li>
+
+<li>Le free-cooling suppose un air extérieur : <strong>plus frais que l’intérieur</strong> | plus sec seulement</li>
+
+<li>Sur un réseau aéraulique, ce qui pèse le plus est : <strong>filtres et batteries</strong> | les longueurs droites</li>
+
+</ul>
+
+</div>
+
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le taux de brassage, et pourquoi il ne dit rien</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>On lit souvent qu’un local doit être « ventilé à 4 volumes par heure ». Ce critère existe, il s’appelle <strong>taux de renouvellement</strong>, et il est le plus mal employé du métier.</p>
+
+<p><strong>Sa définition.</strong> n = Qv / Volume du local, en h⁻¹. Un local de 200 m³ ventilé à 800 m³/h est à 4 h⁻¹.</p>
+
+<p><strong>Pourquoi il trompe.</strong> La pollution n’est pas produite par le volume : elle est produite par <strong>les occupants</strong>. Deux salles de 200 m³, l’une avec 4 personnes, l’autre avec 40, ont besoin de débits dans un rapport de 10, et le même taux de brassage les déclarerait identiques. Un hall d’entrée de 2 000 m³ où passent trois personnes n’a besoin d’aucun renouvellement à 4 volumes par heure.</p>
+
+<p><strong>Où il est légitime.</strong> Là où la pollution est effectivement liée au volume ou à la surface, et non aux personnes : <strong>local technique</strong>, parking, chaufferie, local à déchets, laboratoire. Un local de chaufferie gaz se ventile sur un taux de brassage parce que ce qu’on y dilue est une fuite éventuelle, pas une respiration.</p>
+
+<p><strong>Ce qu’il faut donc retenir.</strong> Débit par occupant quand la source est humaine ; taux de brassage quand la source est le local lui-même. Confondre les deux conduit à ventiler des couloirs et à asphyxier des salles de classe.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce que la réglementation impose au-delà des débits</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Trois textes se superposent sur un projet de ventilation, et un bureau d’études les traite ensemble.</p>
+
+<p><strong>L’arrêté du 24 mars 1982</strong> pour le logement, déjà cité, qui fixe des débits extraits et <strong>le principe du balayage</strong> : l’air entre par les pièces principales, traverse le logement, et sort par les pièces de service. Un détalonnage de porte de 1 à 2 cm en fait partie, et son absence suffit à annuler tout le système.</p>
+
+<p><strong>Le code du travail</strong> pour le tertiaire, avec une nuance rarement lue : les débits de l’article R. 4222-6 valent pour les locaux <strong>à pollution non spécifique</strong>. Dès qu’il y a une pollution particulière, atelier de peinture, laboratoire, cuisine professionnelle, c’est un captage à la source qui s’impose, dimensionné sur le polluant, et non un débit forfaitaire.</p>
+
+<p><strong>La RE2020</strong> enfin, qui n’impose pas de débit mais <strong>pèse la consommation des ventilateurs</strong> dans le Cep et impose une vérification de la perméabilité par mesure. C’est elle qui a rendu le double flux quasi obligatoire en logement collectif neuf, non par une règle explicite mais par le jeu des seuils.</p>
+
+<p><strong>Le point qui décide en pratique</strong>, et qu’aucun texte ne chiffre : l’<strong>acoustique</strong>. Un débit correct, soufflé par une bouche trop petite, produit 40 dB(A) dans une chambre. Les occupants bouchent alors les bouches, et le système entier tombe. C’est la première cause de non-fonctionnement des VMC en logement.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La VMC fait entrer de l’air froid, donc elle fait perdre de l’énergie. »</strong> Elle fait entrer l’air qu’il faut. Ce qui fait perdre de l’énergie, c’est de chauffer cet air ; le supprimer économiserait de l’énergie <strong>et</strong> rendrait le local impropre à l’usage. La bonne question n’est pas s’il faut ventiler, mais comment récupérer.</p>
+
+<p><strong>« On ventile pour évacuer le CO₂. »</strong> On ventile pour évacuer <strong>l’humidité, les odeurs et les composés organiques volatils</strong> ; le CO₂ n’est que l’indicateur commode qui suit les mêmes courbes. Le dire correctement change le diagnostic : un local peut être sous 1 000 ppm et rester malsain, s’il y a une source chimique.</p>
+
+<p><strong>« Ouvrir les fenêtres suffit. »</strong> Cela suffit à corriger une pointe, jamais à tenir un débit. Une fenêtre ouverte donne un débit <strong>incontrôlé et non récupéré</strong> (de 30 m³/h sans vent à 900 avec) et il n’existe aucun moyen de le régler. C’est un secours, pas un système.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M7-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 7</span></a><a class="ap" href="M9-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 9</span></a></div></nav>
 <p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

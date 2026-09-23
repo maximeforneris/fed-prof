@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Manuel · chapitre 7</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="manuel/M7-MANUEL">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M6-MANUEL.html" rel="prev" title="Manuel · chapitre 6" aria-label="Manuel · chapitre 6">&lsaquo;</a><a class="fleche" href="M8-MANUEL.html" rel="next" title="Manuel · chapitre 8" aria-label="Manuel · chapitre 8">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M7-MANUEL">Marquer comme lu</button></div>
@@ -23,382 +31,749 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M5-MANUEL.html">Le rendement d'un générateur</a></b><span class="ou">Manuel · chapitre 5</span><span class="car">le COP est un rendement supérieur à un, et il se compare à celui d'une chaudière sur une saison.</span></li><li><b><a href="M1-MANUEL.html">La chaleur latente</a></b><span class="ou">Manuel · chapitre 1</span><span class="car">l'évaporateur et le condenseur échangent de la chaleur latente, que le chapitre 1 a définie.</span></li><li><b>Pression et température de saturation</b><span class="car">l'eau bout à 100 °C sous 1 bar et à 120 °C sous 2 bar ; tout le cycle repose sur cette seule idée.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#7-1-un-refrigerateur-qu-on-a-retourne">7.1 Un réfrigérateur qu’on a retourné</a><a href="#7-2-les-quatre-organes-les-quatre-transformations">7.2 Les quatre organes, les quatre transformations</a><a href="#7-3-lire-le-diagramme-enthalpique">7.3 Lire le diagramme enthalpique</a><a href="#7-4-le-cop-maximal-carnot">7.4 Le COP maximal : Carnot</a><a href="#7-5-pourquoi-le-cop-s-effondre-le-jour-ou-l-on-en-a-besoin">7.5 Pourquoi le COP s’effondre le jour où l’on en a besoin</a><a href="#7-6-le-calcul-retourne-dimensionner-en-bivalent">7.6 Le calcul retourné : dimensionner en bivalent</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
-<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
-<div class="etapes">
-<ol type="1">
-<li><strong>Nommer</strong> les quatre organes et les quatre transformations, dans l’ordre.</li>
-<li><strong>Tracer</strong> et <strong>lire</strong> un cycle sur un diagramme enthalpique.</li>
-<li><strong>Calculer</strong> un COP réel, un COP de Carnot, et le rapport des deux.</li>
-<li><strong>Expliquer</strong> pourquoi le COP chute quand la température extérieure baisse.</li>
-<li><strong>Placer</strong> un point de bivalence et dimensionner l’appoint.</li>
-</ol>
-</div>
-<p><strong>Ce que l’option C ne demande pas.</strong> Le référentiel place les compresseurs, les détendeurs, les huiles et les fluides frigorigènes aux niveaux 0 et 1. Ce chapitre traite donc <strong>la PAC comme un générateur</strong>, savoir B1-1 au niveau 3, et non comme un cours de frigoriste.</p>
-<h2 id="7-1-un-refrigerateur-qu-on-a-retourne">7.1 Un réfrigérateur qu’on a retourné</h2>
-<p>Passez la main derrière un réfrigérateur : la grille est chaude. La machine n’a pas détruit la chaleur de vos aliments, <strong>elle l’a déplacée</strong>, du froid vers le chaud, ce que la nature ne fait pas toute seule.</p>
-<div class="cle">
-<p>Une pompe à chaleur est exactement cette machine, avec deux différences : elle est plus grosse, et <strong>c’est le côté chaud qui nous intéresse</strong>. Le froid produit, elle le rejette dehors ; c’est le radiateur du fond du frigo, à l’échelle d’une maison.</p>
-</div>
-<p>Déplacer de la chaleur coûte moins que la fabriquer. C’est la raison d’être de la machine, et le rapport se mesure : il s’appelle <strong>COP</strong>.</p>
-<div class="formule">
-<p><strong>COP = Φ restituée / P électrique absorbée</strong></p>
-<p>Un COP de 4 signifie : <strong>1 kWh d’électricité, 4 kWh de chaleur</strong>. Les 3 autres ont été <strong>pris dehors</strong>, ils n’ont pas été créés.</p>
-</div>
-<figure class="schema"><div class="dessin" data-schema="pac-bilan"></div><figcaption>Ce qui entre, ce qui sort : l’électricité du compresseur s’ajoute à la chaleur prise à la source froide.</figcaption></figure>
-<div class="formule">
-<p><strong>Le bilan qui vérifie tout : Φ condenseur = Φ évaporateur + P compresseur</strong></p>
-<p>Un COP de 4 se lit donc aussi : 3 unités prises dehors, 1 unité électrique, 4 unités livrées.</p>
-</div>
-<h2 id="7-2-les-quatre-organes-les-quatre-transformations">7.2 Les quatre organes, les quatre transformations</h2>
-<p>Le fluide fait le tour d’un circuit fermé et change deux fois d’état. Rien d’autre ne se passe.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Organe</th>
-<th>Ce qu’il fait</th>
-<th>État du fluide</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Évaporateur</strong></td>
-<td>prend la chaleur dehors</td>
-<td>liquide → <strong>vapeur</strong>, à BP</td>
-</tr>
-<tr>
-<td><strong>Compresseur</strong></td>
-<td>élève la pression</td>
-<td>vapeur BP → vapeur <strong>HP</strong>, chaude</td>
-</tr>
-<tr>
-<td><strong>Condenseur</strong></td>
-<td>rend la chaleur dedans</td>
-<td>vapeur → <strong>liquide</strong>, à HP</td>
-</tr>
-<tr>
-<td><strong>Détendeur</strong></td>
-<td>fait chuter la pression</td>
-<td>liquide HP → mélange froid, à BP</td>
-</tr>
-</tbody>
-</table></div>
-<figure>
-<img src="img/M7-MANUEL/pac-quatre-organes.png" alt="La machine : quatre organes, un fluide qui tourne dans un seul sens." />
-<figcaption aria-hidden="true">La machine : quatre organes, un fluide qui tourne dans un seul sens.</figcaption>
-</figure>
-<div class="cle">
-<p>La question à se poser à chaque fois : <strong>pourquoi le fluide s’évapore-t-il dehors, alors qu’il fait froid ?</strong> Parce que sous très basse pression, sa température d’ébullition descend à −10 ou −15 °C. <strong>C’est la pression qui décide de la température de changement d’état</strong>, et c’est toute l’astuce de la machine.</p>
-</div>
-<div class="piege">
-<p>Le détendeur ne produit pas de froid en « libérant » quelque chose. La détente est <strong>isenthalpique</strong> : l’enthalpie ne change pas, la pression chute, et une partie du liquide se vaporise instantanément en prenant sa chaleur latente <strong>au reste du liquide</strong>, qui se refroidit d’autant. Le froid vient de là.</p>
-</div>
-<h2 id="7-3-lire-le-diagramme-enthalpique">7.3 Lire le diagramme enthalpique</h2>
-<figure class="schema"><div class="dessin" data-schema="cycle-mollier"></div><figcaption>Le cycle sur le diagramme pression-enthalpie : la cloche, les quatre points, et les trois longueurs qui donnent le COP.</figcaption></figure>
-<p>Le diagramme porte la <strong>pression en ordonnée</strong>, en échelle logarithmique, et l’<strong>enthalpie en abscisse</strong>. La courbe en cloche sépare trois régions :</p>
-<ul>
-<li>à <strong>gauche</strong> de la cloche : liquide seul ;</li>
-<li><strong>sous</strong> la cloche : mélange liquide + vapeur, <strong>à température constante</strong> ;</li>
-<li>à <strong>droite</strong> : vapeur seule, dite surchauffée.</li>
-</ul>
-<div class="cle">
-<p><strong>Ce que compte l’axe horizontal.</strong> L’enthalpie h est l’énergie que porte un kilogramme de fluide qui circule, depuis un zéro conventionnel ; seule sa différence a un sens, comme pour deux index de compteur. Chaque organe ajoute ou retire à chaque kilogramme ce qu’il échange : il devient une longueur horizontale, et le détendeur, qui n’échange rien, est vertical.</p>
-</div>
-<div class="formule">
-<p>Sur le tracé, tout se lit en <strong>différences d’enthalpie</strong> :</p>
-<ul>
-<li><strong>Évaporation : h₁ − h₄</strong><span>· la chaleur prise dehors</span></li>
-<li><strong>Compression : h₂ − h₁</strong><span>· le travail fourni</span></li>
-<li><strong>Condensation : h₂ − h₃</strong><span>· la chaleur rendue</span></li>
-</ul>
-<p><strong>COP = (h₂ − h₃) / (h₂ − h₁)</strong></p>
-</div>
-<h3 id="exemple-résolu-1.-un-cop-lu-sur-le-diagramme">Exemple résolu 1. Un COP lu sur le diagramme</h3>
-<p>Relevés sur une maquette : h₁ = 400 kJ/kg, h₂ = 445 kJ/kg, h₃ = h₄ = 250 kJ/kg.</p>
-<p><strong>Chaleur prise dehors.</strong> 400 − 250 = <strong>150 kJ/kg</strong>. <strong>Travail de compression.</strong> 445 − 400 = <strong>45 kJ/kg</strong>. <strong>Chaleur rendue.</strong> 445 − 250 = <strong>195 kJ/kg</strong>.</p>
-<p><strong>Vérification du bilan.</strong> 150 + 45 = 195 ✔</p>
-<p><strong>COP = 195 / 45 = 4,3.</strong></p>
-<p><strong>Et si la machine servait à refroidir ?</strong> L’utile serait alors l’évaporateur : EER = 150 / 45 = <strong>3,3</strong>. On note au passage la relation générale <strong>COP = EER + 1</strong>, qui vient directement du bilan.</p>
-<div class="cle">
-<p>Deux réglages fins apparaissent sur tout diagramme réel. La <strong>surchauffe</strong>, 5 à 8 K après l’évaporateur, garantit qu’aucune goutte de liquide n’entre dans le compresseur, elle le détruirait. Le <strong>sous-refroidissement</strong>, 3 à 6 K après le condenseur, garantit qu’aucune bulle n’entre dans le détendeur, et augmente au passage la puissance frigorifique de 1 à 2 % par kelvin.</p>
-</div>
-<h2 id="7-4-le-cop-maximal-carnot">7.4 Le COP maximal : Carnot</h2>
-<p>Aucune machine ne peut faire mieux qu’une limite, et cette limite ne dépend que <strong>des deux températures</strong>.</p>
-<div class="formule">
-<p><strong>COP Carnot = T chaude / ( T chaude − T froide )</strong>, les deux <strong>températures en kelvins</strong></p>
-<p>T(K) = θ(°C) + 273</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : d&#39;où sort le COP de Carnot</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Considérons une machine qui prélève Qf à la source froide, à la température Tf, et rend Qc à la source chaude, à la température Tc, en consommant un travail W.</p>
-<p><strong>Le premier principe.</strong> La conservation de l’énergie :</p>
-<p>Qc = Qf + W</p>
-<p><strong>Le second principe.</strong> Pour un cycle <strong>réversible</strong>, la variation d’entropie de l’univers est nulle. Les deux sources échangent :</p>
-<p>Qf / Tf = Qc / Tc</p>
-<p><strong>On combine.</strong> Le COP vaut Qc/W = Qc / (Qc − Qf). En divisant haut et bas par Qc :</p>
-<p>COP = 1 / (1 − Qf/Qc) = 1 / (1 − Tf/Tc) = <strong>Tc / (Tc − Tf)</strong></p>
-<p><strong>Ce que la formule dit, et qui compte plus que la formule.</strong> Le COP ne dépend d’<strong>aucune</strong> caractéristique de la machine : ni fluide, ni compresseur, ni taille. Il ne dépend que de l’<strong>écart</strong> entre les deux températures, et il tend vers l’infini quand cet écart tend vers zéro.</p>
-<p><strong>Les hypothèses, et ce qu’elles coûtent en vrai.</strong></p>
-<ol type="1">
-<li><strong>Réversibilité.</strong> Aucune irréversibilité nulle part. En réalité la compression a un rendement isentropique de <strong>0,60 à 0,80</strong>, et la détente au détendeur est totalement irréversible.</li>
-<li><strong>Sources à température constante.</strong> L’air extérieur se refroidit en traversant l’évaporateur, l’eau se réchauffe au condenseur.</li>
-<li><strong>Pas d’écart d’approche aux échangeurs.</strong> En pratique l’évaporateur travaille <strong>5 à 8 K sous</strong> la source froide et le condenseur <strong>5 à 10 K au-dessus</strong> de la source chaude. Ces deux pincements élargissent l’écart réel de 10 à 18 K, et c’est la plus grosse perte des trois.</li>
-<li><strong>Aucun auxiliaire.</strong> Ventilateurs, pompes, dégivrage et résistance de carter ne sont pas comptés.</li>
-</ol>
-<p><strong>Le rapport des deux COP</strong> s’appelle le <strong>rendement exergétique</strong> :</p>
-<p>η = COP réel / COP Carnot, et il vaut <strong>0,40 à 0,55</strong> sur une bonne machine.</p>
-<p>C’est le seul nombre qui juge vraiment une pompe à chaleur, parce qu’il compare la machine à ce qui était possible <strong>dans ses conditions</strong>, et non à une autre machine dans d’autres conditions.</p></div></details>
-</div><div class="outil" data-outil="cop">
-
-</div>
-<h3 id="exemple-résolu-2.-comparer-deux-machines-honnêtement">Exemple résolu 2. Comparer deux machines honnêtement</h3>
-<p><strong>Machine A</strong>, air/eau : extérieur 7 °C, départ d’eau 35 °C, COP mesuré <strong>4,4</strong>. <strong>Machine B</strong>, air/eau : extérieur −7 °C, départ d’eau 45 °C, COP mesuré <strong>2,5</strong>.</p>
-<p><strong>Les COP de Carnot.</strong></p>
-<p>A : Tc = 308 K, Tf = 280 K → 308 / 28 = <strong>11,0</strong> B : Tc = 318 K, Tf = 266 K → 318 / 52 = <strong>6,1</strong></p>
-<p><strong>Les rendements exergétiques.</strong></p>
-<p>A : 4,4 / 11,0 = <strong>0,40</strong> · B : 2,5 / 6,1 = <strong>0,41</strong></p>
-<p><strong>La conclusion, contre-intuitive.</strong> Les deux machines sont <strong>aussi bonnes l’une que l’autre</strong>. L’écart de COP ne vient pas de leur qualité, il vient des conditions. Comparer deux COP sans donner les températures ne veut rien dire, et c’est précisément ce que font toutes les publicités.</p>
-<h2 id="7-5-pourquoi-le-cop-s-effondre-le-jour-ou-l-on-en-a-besoin">7.5 Pourquoi le COP s’effondre le jour où l’on en a besoin</h2>
-<div class="cle">
-<p>Le COP baisse quand l’écart grandit. Or <strong>l’écart grandit exactement quand il fait froid</strong> : la source froide descend, et la loi d’eau fait monter le départ au même moment. Les deux effets s’ajoutent.</p>
-</div>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th style="text-align: right;">Extérieur</th>
-<th style="text-align: right;">Départ d’eau</th>
-<th style="text-align: right;">COP typique, air/eau</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">12 °C</td>
-<td style="text-align: right;">30 °C</td>
-<td style="text-align: right;">5,5</td>
-</tr>
-<tr>
-<td style="text-align: right;">7 °C</td>
-<td style="text-align: right;">35 °C</td>
-<td style="text-align: right;"><strong>4,5</strong></td>
-</tr>
-<tr>
-<td style="text-align: right;">2 °C</td>
-<td style="text-align: right;">40 °C</td>
-<td style="text-align: right;">3,4</td>
-</tr>
-<tr>
-<td style="text-align: right;">−7 °C</td>
-<td style="text-align: right;">45 °C</td>
-<td style="text-align: right;"><strong>2,4</strong></td>
-</tr>
-<tr>
-<td style="text-align: right;">−15 °C</td>
-<td style="text-align: right;">50 °C</td>
-<td style="text-align: right;">1,8</td>
-</tr>
-</tbody>
-</table></div>
-<div class="formule">
-<p>Deux règles de terrain, à retenir :</p>
-<ul>
-<li><strong>+ 1 K de source froide : + 2 à 3 % de COP</strong><span></span></li>
-<li><strong>− 1 K de départ d’eau : + 2 à 3 % de COP</strong><span></span></li>
-</ul>
-</div>
-<p>Trois pertes s’ajoutent en dessous de 5 °C, et elles n’apparaissent pas dans la formule de Carnot :</p>
-<p><strong>Le givre.</strong> Sous 5 °C avec de l’air humide, l’évaporateur se couvre de glace. Il faut le dégivrer, en inversant le cycle : la machine chauffe alors l’extérieur pendant quelques minutes. <strong>Perte : 5 à 15 % de l’énergie saisonnière.</strong></p>
-<p><strong>Le court-cycle.</strong> En mi-saison, le besoin descend sous la puissance minimale du compresseur. Sans modulation, la machine démarre et s’arrête sans cesse.</p>
-<p><strong>Les auxiliaires.</strong> Ventilateur, pompe, carter : 100 à 400 W en permanence, qui comptent peu à pleine charge et beaucoup à charge réduite.</p>
-<div class="piege">
-<p>Le COP affiché sur une plaque est mesuré à <strong>7 °C extérieur et 35 °C de départ</strong>, point A7/W35. Ce n’est pas une tricherie, c’est une convention de comparaison : mais aucune installation ne passe sa saison à ce point. Le nombre utile est le <strong>SCOP</strong>, saisonnier, qui intègre tous les points et le dégivrage.</p>
-</div>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Machine</th>
-<th style="text-align: right;">COP à A7/W35</th>
-<th style="text-align: right;">SCOP réel</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Air/eau, plancher 35 °C</td>
-<td style="text-align: right;">4,5 à 5,0</td>
-<td style="text-align: right;"><strong>3,5 à 4,2</strong></td>
-</tr>
-<tr>
-<td>Air/eau, radiateurs 55 °C</td>
-<td style="text-align: right;">3,2 à 3,6</td>
-<td style="text-align: right;">2,5 à 3,0</td>
-</tr>
-<tr>
-<td>Eau glycolée/eau, sondes verticales</td>
-<td style="text-align: right;">4,5 à 5,2</td>
-<td style="text-align: right;"><strong>4,0 à 4,8</strong></td>
-</tr>
-<tr>
-<td>Air/air, split</td>
-<td style="text-align: right;">4,0 à 5,0</td>
-<td style="text-align: right;">3,5 à 4,5</td>
-</tr>
-</tbody>
-</table></div>
-<h2 id="7-6-le-calcul-retourne-dimensionner-en-bivalent">7.6 Le calcul retourné : dimensionner en bivalent</h2>
-<p>Une pompe à chaleur ne se dimensionne <strong>pas</strong> sur la puissance de pointe. Deux raisons : sa puissance chute justement quand le besoin monte, et une machine dimensionnée pour −7 °C fait des cycles courts toute la saison.</p>
-<figure class="schema"><div class="dessin" data-schema="bivalence"></div><figcaption>Le besoin du bâtiment monte quand la température baisse ; la puissance de la machine descend. Elles se croisent au point de bivalence.</figcaption></figure>
-<div class="etapes">
-<ol type="1">
-<li><strong>Tracer le besoin</strong> : Φ(θ) = GV × (θ intérieure − θ), une droite.</li>
-<li><strong>Tracer la puissance restituée</strong> de la machine, qui décroît avec θ.</li>
-<li><strong>Lire le point de bivalence</strong> à l’intersection.</li>
-<li><strong>Dimensionner l’appoint</strong> sur ce qui manque à la température de base.</li>
-<li><strong>Estimer la part d’énergie</strong> laissée à l’appoint, et vérifier qu’elle reste faible.</li>
-</ol>
-</div>
-<h3 id="exemple-résolu-3.-une-pac-sur-un-collège">Exemple résolu 3. Une PAC sur un collège</h3>
-<p>Déperditions <strong>24 kW</strong> à la base de <strong>−7 °C</strong>, intérieur <strong>19 °C</strong>. Machine retenue : <strong>24 kW à 7 °C</strong>, <strong>16,5 kW à −7 °C</strong>.</p>
-<p><strong>1. Le GV.</strong> 24 / (19 + 7) = <strong>0,923 kW/K</strong>.</p>
-<p><strong>2. Le besoin.</strong> Φ(θ) = 0,923 × (19 − θ).</p>
-<p><strong>3. La machine</strong>, en interpolant linéairement entre les deux points donnés : P(θ) = 16,5 + 0,536 × (θ + 7).</p>
-<p><strong>4. Le point de bivalence</strong>, en égalant les deux :</p>
-<p>0,923 × (19 − θ) = 16,5 + 0,536 × (θ + 7)</p>
-<p>17,54 − 0,923 θ = 20,25 + 0,536 θ → θ = <strong>−1,9 °C</strong></p>
-<p><strong>5. L’appoint.</strong> À −7 °C : 24 − 16,5 = <strong>7,5 kW</strong> manquants.</p>
-<p><strong>6. La part d’énergie.</strong> En plaine tempérée, les heures sous −2 °C représentent <strong>3 à 5 %</strong> de la saison de chauffe. L’appoint fournit donc de l’ordre de <strong>5 à 8 % de l’énergie annuelle</strong>, pour 31 % de la puissance installée.</p>
-<div class="cle">
-<p>Voilà le résultat qui surprend, et qu’il faut savoir défendre : <strong>une machine dont la puissance nominale égale pourtant le besoin de pointe ne tient plus seule dès −2 °C</strong>. Ce n’est pas un défaut de dimensionnement, c’est la conséquence de la chute de puissance avec la température extérieure.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : les trois montages de bivalence</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le point de bivalence ne dit pas encore <strong>comment</strong> l’appoint intervient. Trois montages, trois comportements, et l’épreuve demande de les distinguer.</p>
-<p><strong>Bivalent parallèle.</strong> Sous le point de bivalence, l’appoint démarre <strong>en plus</strong> de la pompe à chaleur, qui continue de travailler. C’est le meilleur choix énergétique : la machine produit encore aux trois quarts de sa puissance à −7 °C, avec un COP de 2,4, ce qui reste deux fois mieux qu’une résistance. Il demande un régime d’eau compatible avec la PAC.</p>
-<p><strong>Bivalent alternatif.</strong> Sous le point de bivalence, la pompe à chaleur <strong>s’arrête</strong> et la chaudière prend tout. C’est le montage des rénovations en radiateurs 70/50 : au-delà d’un certain départ, la PAC ne sait plus produire. Il est simple, et il gaspille la machine par grand froid.</p>
-<p><strong>Bivalent parallèle partiel.</strong> L’appoint démarre avec la PAC, mais la PAC s’arrête en dessous d’une limite basse, souvent −10 ou −15 °C, fixée par son domaine d’emploi. C’est le montage réel de la plupart des installations neuves.</p>
-<p><strong>Le piège du montage.</strong> Un appoint électrique intégré à la machine est facile et se paie cher : à 7,5 kW de résistance, on remplace un COP de 2,4 par un COP de 1 sur les heures les plus froides, c’est-à-dire sur les heures où le réseau électrique est déjà tendu. Une relève par chaudière existante, quand elle est là, est presque toujours meilleure.</p>
-<p><strong>Le cas où tout change : la production d’ECS.</strong> Elle demande 55 °C toute l’année, y compris en été où la PAC serait à l’arrêt. Une machine unique pour chauffage et ECS travaille alors à un départ imposé par l’ECS, ce qui écrase le COP du chauffage. D’où la règle : <strong>on sépare les deux productions</strong>, ou on accepte un ballon avec appoint électrique pour la seule montée de 45 à 60 °C.</p></div></details>
-</div><h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Valeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>COP à A7/W35, air/eau</td>
-<td>4,5 à 5,0</td>
-</tr>
-<tr>
-<td>COP à A−7/W45</td>
-<td><strong>2,2 à 2,6</strong></td>
-</tr>
-<tr>
-<td>SCOP, air/eau sur plancher</td>
-<td>3,5 à 4,2</td>
-</tr>
-<tr>
-<td>SCOP, air/eau sur radiateurs 55 °C</td>
-<td>2,5 à 3,0</td>
-</tr>
-<tr>
-<td>Rendement exergétique d’une bonne machine</td>
-<td><strong>0,40 à 0,55</strong></td>
-</tr>
-<tr>
-<td>Effet de + 1 K de source froide</td>
-<td>+ 2 à 3 % de COP</td>
-</tr>
-<tr>
-<td>Effet de − 1 K de départ d’eau</td>
-<td>+ 2 à 3 % de COP</td>
-</tr>
-<tr>
-<td>Pincement à l’évaporateur · au condenseur</td>
-<td>5 à 8 K · 5 à 10 K</td>
-</tr>
-<tr>
-<td>Surchauffe · sous-refroidissement</td>
-<td>5 à 8 K · 3 à 6 K</td>
-</tr>
-<tr>
-<td>Perte annuelle due au dégivrage</td>
-<td>5 à 15 %</td>
-</tr>
-<tr>
-<td>Auxiliaires permanents</td>
-<td>100 à 400 W</td>
-</tr>
-<tr>
-<td>Point de bivalence usuel, plaine tempérée</td>
-<td><strong>−2 à −7 °C</strong></td>
-</tr>
-<tr>
-<td>Part d’énergie laissée à l’appoint</td>
-<td>5 à 15 %</td>
-</tr>
-<tr>
-<td>Relation entre les deux indices</td>
-<td><strong>COP = EER + 1</strong></td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le contrôle qui refuse un nombre en une seconde : <strong>un COP supérieur à 6 sur une machine air/eau en hiver est impossible</strong>. Comparez-le au COP de Carnot des mêmes températures : s’il en dépasse la moitié, il y a une erreur, une confusion d’unités, ou une publicité.</p>
-</div>
-<h2 id="s-entrainer">S’entraîner</h2>
-<section class="exo" id="M7-MANUEL-e1" data-exo="M7-MANUEL-e1" data-type="calcul" data-savoir="A5-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgYnRobnZ4LjU2eGBudGp2eC94YHgpOzQpei80My4GL2pqP2N4Jw=="><p class="k">Exercice · A5-1</p><h4>Le COP de Carnot</h4><div class="enonce">
-
-<p>Une pompe à chaleur prend la chaleur dans l’air à <strong>2 °C</strong> et la restitue à de l’eau à <strong>40 °C</strong>. Quel est son COP de Carnot ?</p>
-</div><div class="indice" hidden>Convertissez les deux températures en kelvins en ajoutant 273, puis divisez la température chaude par l’écart entre les deux.</div></section>
-<section class="exo" id="M7-MANUEL-e2" data-exo="M7-MANUEL-e2" data-type="calcul" data-savoir="A5-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgbnRobnZ4LjU2eGBudGp2eC94YHgpOzQpei80My4GL2pqP2N4Jw=="><p class="k">Exercice · A5-2</p><h4>Le COP lu sur un diagramme</h4><div class="enonce">
-
-<p>Sur un diagramme enthalpique, on relève h₁ = <strong>398 kJ/kg</strong>, h₂ = <strong>440 kJ/kg</strong>, h₃ = <strong>262 kJ/kg</strong>. Quel est le COP de la machine ?</p>
-</div><div class="indice" hidden>Le COP est le rapport de la chaleur rendue au condenseur, h₂ − h₃, au travail de compression, h₂ − h₁.</div></section>
-<section class="exo" id="M7-MANUEL-e3" data-exo="M7-MANUEL-e3" data-type="calcul" data-savoir="B1-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgbXRjbnZ4LjU2eGBudGp2eC94YHgxDXgn"><p class="k">Exercice · B1-1</p><h4>La chaleur prise dehors</h4><div class="enonce">
-
-<p>Une pompe à chaleur restitue <strong>11 kW</strong> avec un COP de <strong>3,6</strong>. Quelle puissance prélève-t-elle sur l’air extérieur ?</p>
-</div><div class="indice" hidden>Calculez d’abord la puissance électrique absorbée en divisant la puissance restituée par le COP, puis retranchez-la de la puissance restituée : le bilan dit que le condenseur rend la somme des deux.</div></section>
-<section class="exo" id="M7-MANUEL-e4" data-exo="M7-MANUEL-e4" data-type="justification" data-savoir="B1-1" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B1-1</p><h4>Le COP annoncé par le vendeur</h4><div class="enonce">
-
-<p>Un fournisseur annonce « COP 5,1 » pour une machine air/eau destinée à remplacer une chaudière sur des radiateurs en <strong>70/50</strong>. Rédigez votre réserve en quatre lignes.</p>
-</div><div class="indice" hidden>Le COP ne dépend que de l’écart entre les deux températures. Comparez l’écart du point d’essai, 7 vers 35, et l’écart réel, 7 vers 70, puis dites ce que devient le rapport.</div><ul class="verifier" hidden><li>J’ai demandé à quelles températures ce COP est mesuré, et cité le point A7/W35.</li><li>J’ai dit que le départ réel, 70 °C, est très éloigné de ce point d’essai.</li><li>J’ai donné un ordre de grandeur réaliste du COP ou du SCOP dans ces conditions.</li><li>J’ai proposé une action : baisser le régime, surdimensionner les émetteurs, ou prévoir une relève.</li></ul></section>
-<h2 id="vous-verifier">Vous vérifier</h2>
-<div class="quiz">
-<ul>
-<li>Une pompe à chaleur, avant tout : <strong>déplace de la chaleur</strong> | en fabrique</li>
-<li>Un COP de 4 signifie : <strong>4 kWh de chaleur pour 1 kWh électrique</strong> | 4 kWh pris dehors</li>
-<li>Le bilan de la machine s’écrit : <strong>condenseur = évaporateur + compresseur</strong> | condenseur = évaporateur</li>
-<li>Le fluide s’évapore dehors parce que : <strong>sa pression y est très basse</strong> | il fait chaud</li>
-<li>La détente au détendeur se fait : <strong>à enthalpie constante</strong> | à température constante</li>
-<li>Sous la cloche du diagramme, la température est : <strong>constante</strong> | croissante</li>
-<li>Le COP de Carnot se calcule : <strong>en kelvins</strong> | en degrés Celsius</li>
-<li>Il dépend : <strong>des deux températures seulement</strong> | du fluide employé</li>
-<li>Le rendement exergétique d’une bonne machine vaut : <strong>0,4 à 0,55</strong> | 0,9</li>
-<li>Quand la température extérieure baisse, le COP : <strong>baisse</strong> | monte</li>
-<li>Le dégivrage coûte, sur une saison : <strong>5 à 15 %</strong> | moins de 1 %</li>
-<li>Le point de bivalence est là où : <strong>besoin et puissance se croisent</strong> | la PAC s’arrête toujours</li>
-<li>Un COP mesuré à A7/W35 : <strong>est un point de comparaison, pas un usage</strong> | vaut pour toute la saison</li>
-</ul>
-</div>
-<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi la géothermie tient et l&#39;air ne tient pas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La différence entre une machine sur air et une machine sur sonde ne se joue pas sur la qualité du matériel : elle se joue sur <strong>la stabilité de la source froide</strong>.</p>
-<p><strong>L’air extérieur</strong> suit la météo : de −7 à +15 °C dans une saison. La source froide est donc la plus froide au moment exact où le besoin est le plus grand. C’est la pire coïncidence possible, et c’est la faiblesse structurelle de la machine air/eau.</p>
-<p><strong>Le sol, à 100 mètres</strong>, reste entre 10 et 14 °C toute l’année, parce que l’onde thermique annuelle s’amortit avec la profondeur : à 10 m elle est déjà réduite à quelques dixièmes de kelvin. Une sonde géothermique voit donc <strong>la même source en janvier qu’en juillet</strong>, et son COP ne s’effondre pas.</p>
-<p><strong>Ce que cela coûte.</strong> Un forage de 100 m par tranche de 5 kW environ, et un budget qui triple. La géothermie n’est arbitrable que sur des installations importantes, ou là où l’air est exclu pour des raisons de bruit ou d’espace.</p>
-<p><strong>Et le cas qui trompe.</strong> Une nappe phréatique donne une source encore plus stable et de meilleurs COP, mais elle impose un dossier « loi sur l’eau », une autorisation, et souvent une obligation de réinjection. Ce sont ces contraintes, et non la thermodynamique, qui décident du projet.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Le SCOP, et pourquoi il ne se calcule pas de tête</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le COP est instantané ; ce qui paie la facture est saisonnier. La norme <strong>EN 14825</strong> définit le calcul du SCOP, et il vaut la peine de savoir ce qu’il contient.</p>
-<p>On découpe la saison en <strong>classes de température</strong>, chacune avec son nombre d’heures, tirées d’un climat de référence. Strasbourg pour le climat « moyen », Athènes et Helsinki pour les deux autres. Pour chaque classe, on calcule le besoin du bâtiment, la puissance disponible et le COP à ce point, en tenant compte de la <strong>modulation</strong> de la machine et des pertes de dégivrage. L’appoint est ajouté là où la machine ne suffit plus. Le SCOP est le rapport de l’énergie totale livrée à l’électricité totale consommée.</p>
-<p><strong>Trois conséquences pratiques.</strong> D’abord, un SCOP est <strong>attaché à un climat et à une température de départ</strong> : un SCOP « 4,2 » sans mention de W35 ou W55 est inexploitable. Ensuite, la <strong>modulation</strong> pèse énormément : une machine Inverter descendant à 25 % de sa puissance gagne 0,3 à 0,6 point de SCOP sur une machine tout-ou-rien identique. Enfin, le SCOP normalisé suppose un bâtiment conventionnel : sur un bâtiment très inertiel ou très intermittent, l’écart avec le relevé réel atteint 20 %.</p>
-<p><strong>Ce qu’un bureau d’études fait donc en plus</strong> : une simulation horaire avec le fichier météo du site, la loi d’eau réellement prévue, et le profil d’occupation. C’est le seul moyen d’arbitrer entre deux machines dont les SCOP normalisés ne diffèrent que de 0,2.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La pompe à chaleur produit de l’énergie gratuite. »</strong> Elle n’en produit aucune : elle en <strong>prélève</strong> dehors, et cette chaleur est bien réelle, elle vient du soleil, stockée dans l’air ou le sol. Le mot juste est <em>renouvelable</em>, pas <em>gratuit</em> : la machine, elle, se paie, et son électricité aussi.</p>
-<p><strong>« Elle rend 400 % de rendement. »</strong> Un rendement ne dépasse pas 100 %, par définition, parce qu’il compare une sortie à <strong>la même chose</strong> en entrée. Le COP n’est pas un rendement : il compare une chaleur à un travail, deux formes d’énergie de qualités différentes. Écrire « rendement de 400 % » dans une copie coûte le point.</p>
-<p><strong>« On la dimensionne comme une chaudière. »</strong> Non : une chaudière garde sa puissance à −10 °C, une pompe à chaleur en perd le tiers. C’est ce qui rend le point de bivalence obligatoire, et c’est ce que le 7.6 calcule.</p></div></details>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Nommer</strong> les quatre organes et les quatre transformations, dans l’ordre.</li>
+
+<li><strong>Tracer</strong> et <strong>lire</strong> un cycle sur un diagramme enthalpique.</li>
+
+<li><strong>Calculer</strong> un COP réel, un COP de Carnot, et le rapport des deux.</li>
+
+<li><strong>Expliquer</strong> pourquoi le COP chute quand la température extérieure baisse.</li>
+
+<li><strong>Placer</strong> un point de bivalence et dimensionner l’appoint.</li>
+
+</ol>
+
+</div>
+
+<p><strong>Ce que l’option C ne demande pas.</strong> Le référentiel place les compresseurs, les détendeurs, les huiles et les fluides frigorigènes aux niveaux 0 et 1. Ce chapitre traite donc <strong>la PAC comme un générateur</strong>, savoir B1-1 au niveau 3, et non comme un cours de frigoriste.</p>
+
+<h2 id="7-1-un-refrigerateur-qu-on-a-retourne">7.1 Un réfrigérateur qu’on a retourné</h2>
+
+<p>Passez la main derrière un réfrigérateur : la grille est chaude. La machine n’a pas détruit la chaleur de vos aliments, <strong>elle l’a déplacée</strong>, du froid vers le chaud, ce que la nature ne fait pas toute seule.</p>
+
+<div class="cle">
+
+<p>Une pompe à chaleur est exactement cette machine, avec deux différences : elle est plus grosse, et <strong>c’est le côté chaud qui nous intéresse</strong>. Le froid produit, elle le rejette dehors ; c’est le radiateur du fond du frigo, à l’échelle d’une maison.</p>
+
+</div>
+
+<p>Déplacer de la chaleur coûte moins que la fabriquer. C’est la raison d’être de la machine, et le rapport se mesure : il s’appelle <strong>COP</strong>.</p>
+
+<div class="formule">
+
+<p><strong>COP = Φ restituée / P électrique absorbée</strong></p>
+
+<p>Un COP de 4 signifie : <strong>1 kWh d’électricité, 4 kWh de chaleur</strong>. Les 3 autres ont été <strong>pris dehors</strong>, ils n’ont pas été créés.</p>
+
+</div>
+
+<figure class="schema"><div class="dessin" data-schema="pac-bilan"></div><figcaption>Ce qui entre, ce qui sort : l’électricité du compresseur s’ajoute à la chaleur prise à la source froide.</figcaption></figure>
+
+<div class="formule">
+
+<p><strong>Le bilan qui vérifie tout : Φ condenseur = Φ évaporateur + P compresseur</strong></p>
+
+<p>Un COP de 4 se lit donc aussi : 3 unités prises dehors, 1 unité électrique, 4 unités livrées.</p>
+
+</div>
+
+<h2 id="7-2-les-quatre-organes-les-quatre-transformations">7.2 Les quatre organes, les quatre transformations</h2>
+
+<p>Le fluide fait le tour d’un circuit fermé et change deux fois d’état. Rien d’autre ne se passe.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Organe</th>
+
+<th>Ce qu’il fait</th>
+
+<th>État du fluide</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td><strong>Évaporateur</strong></td>
+
+<td>prend la chaleur dehors</td>
+
+<td>liquide → <strong>vapeur</strong>, à BP</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Compresseur</strong></td>
+
+<td>élève la pression</td>
+
+<td>vapeur BP → vapeur <strong>HP</strong>, chaude</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Condenseur</strong></td>
+
+<td>rend la chaleur dedans</td>
+
+<td>vapeur → <strong>liquide</strong>, à HP</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Détendeur</strong></td>
+
+<td>fait chuter la pression</td>
+
+<td>liquide HP → mélange froid, à BP</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<figure>
+
+<img src="img/M7-MANUEL/pac-quatre-organes.png" alt="La machine : quatre organes, un fluide qui tourne dans un seul sens." />
+
+<figcaption aria-hidden="true">La machine : quatre organes, un fluide qui tourne dans un seul sens.</figcaption>
+
+</figure>
+
+<div class="cle">
+
+<p>La question à se poser à chaque fois : <strong>pourquoi le fluide s’évapore-t-il dehors, alors qu’il fait froid ?</strong> Parce que sous très basse pression, sa température d’ébullition descend à −10 ou −15 °C. <strong>C’est la pression qui décide de la température de changement d’état</strong>, et c’est toute l’astuce de la machine.</p>
+
+</div>
+
+<div class="piege">
+
+<p>Le détendeur ne produit pas de froid en « libérant » quelque chose. La détente est <strong>isenthalpique</strong> : l’enthalpie ne change pas, la pression chute, et une partie du liquide se vaporise instantanément en prenant sa chaleur latente <strong>au reste du liquide</strong>, qui se refroidit d’autant. Le froid vient de là.</p>
+
+</div>
+
+<h2 id="7-3-lire-le-diagramme-enthalpique">7.3 Lire le diagramme enthalpique</h2>
+
+<figure class="schema"><div class="dessin" data-schema="cycle-mollier"></div><figcaption>Le cycle sur le diagramme pression-enthalpie : la cloche, les quatre points, et les trois longueurs qui donnent le COP.</figcaption></figure>
+
+<p>Le diagramme porte la <strong>pression en ordonnée</strong>, en échelle logarithmique, et l’<strong>enthalpie en abscisse</strong>. La courbe en cloche sépare trois régions :</p>
+
+<ul>
+
+<li>à <strong>gauche</strong> de la cloche : liquide seul ;</li>
+
+<li><strong>sous</strong> la cloche : mélange liquide + vapeur, <strong>à température constante</strong> ;</li>
+
+<li>à <strong>droite</strong> : vapeur seule, dite surchauffée.</li>
+
+</ul>
+
+<div class="cle">
+
+<p><strong>Ce que compte l’axe horizontal.</strong> L’enthalpie h est l’énergie que porte un kilogramme de fluide qui circule, depuis un zéro conventionnel ; seule sa différence a un sens, comme pour deux index de compteur. Chaque organe ajoute ou retire à chaque kilogramme ce qu’il échange : il devient une longueur horizontale, et le détendeur, qui n’échange rien, est vertical.</p>
+
+</div>
+
+<div class="formule">
+
+<p>Sur le tracé, tout se lit en <strong>différences d’enthalpie</strong> :</p>
+
+<ul>
+
+<li><strong>Évaporation : h₁ − h₄</strong><span>· la chaleur prise dehors</span></li>
+
+<li><strong>Compression : h₂ − h₁</strong><span>· le travail fourni</span></li>
+
+<li><strong>Condensation : h₂ − h₃</strong><span>· la chaleur rendue</span></li>
+
+</ul>
+
+<p><strong>COP = (h₂ − h₃) / (h₂ − h₁)</strong></p>
+
+</div>
+
+<h3 id="exemple-résolu-1.-un-cop-lu-sur-le-diagramme">Exemple résolu 1. Un COP lu sur le diagramme</h3>
+
+<p>Relevés sur une maquette : h₁ = 400 kJ/kg, h₂ = 445 kJ/kg, h₃ = h₄ = 250 kJ/kg.</p>
+
+<p><strong>Chaleur prise dehors.</strong> 400 − 250 = <strong>150 kJ/kg</strong>. <strong>Travail de compression.</strong> 445 − 400 = <strong>45 kJ/kg</strong>. <strong>Chaleur rendue.</strong> 445 − 250 = <strong>195 kJ/kg</strong>.</p>
+
+<p><strong>Vérification du bilan.</strong> 150 + 45 = 195 ✔</p>
+
+<p><strong>COP = 195 / 45 = 4,3.</strong></p>
+
+<p><strong>Et si la machine servait à refroidir ?</strong> L’utile serait alors l’évaporateur : EER = 150 / 45 = <strong>3,3</strong>. On note au passage la relation générale <strong>COP = EER + 1</strong>, qui vient directement du bilan.</p>
+
+<div class="cle">
+
+<p>Deux réglages fins apparaissent sur tout diagramme réel. La <strong>surchauffe</strong>, 5 à 8 K après l’évaporateur, garantit qu’aucune goutte de liquide n’entre dans le compresseur, elle le détruirait. Le <strong>sous-refroidissement</strong>, 3 à 6 K après le condenseur, garantit qu’aucune bulle n’entre dans le détendeur, et augmente au passage la puissance frigorifique de 1 à 2 % par kelvin.</p>
+
+</div>
+
+<h2 id="7-4-le-cop-maximal-carnot">7.4 Le COP maximal : Carnot</h2>
+
+<p>Aucune machine ne peut faire mieux qu’une limite, et cette limite ne dépend que <strong>des deux températures</strong>.</p>
+
+<div class="formule">
+
+<p><strong>COP Carnot = T chaude / ( T chaude − T froide )</strong>, les deux <strong>températures en kelvins</strong></p>
+
+<p>T(K) = θ(°C) + 273</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : d&#39;où sort le COP de Carnot</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Considérons une machine qui prélève Qf à la source froide, à la température Tf, et rend Qc à la source chaude, à la température Tc, en consommant un travail W.</p>
+
+<p><strong>Le premier principe.</strong> La conservation de l’énergie :</p>
+
+<p>Qc = Qf + W</p>
+
+<p><strong>Le second principe.</strong> Pour un cycle <strong>réversible</strong>, la variation d’entropie de l’univers est nulle. Les deux sources échangent :</p>
+
+<p>Qf / Tf = Qc / Tc</p>
+
+<p><strong>On combine.</strong> Le COP vaut Qc/W = Qc / (Qc − Qf). En divisant haut et bas par Qc :</p>
+
+<p>COP = 1 / (1 − Qf/Qc) = 1 / (1 − Tf/Tc) = <strong>Tc / (Tc − Tf)</strong></p>
+
+<p><strong>Ce que la formule dit, et qui compte plus que la formule.</strong> Le COP ne dépend d’<strong>aucune</strong> caractéristique de la machine : ni fluide, ni compresseur, ni taille. Il ne dépend que de l’<strong>écart</strong> entre les deux températures, et il tend vers l’infini quand cet écart tend vers zéro.</p>
+
+<p><strong>Les hypothèses, et ce qu’elles coûtent en vrai.</strong></p>
+
+<ol type="1">
+
+<li><strong>Réversibilité.</strong> Aucune irréversibilité nulle part. En réalité la compression a un rendement isentropique de <strong>0,60 à 0,80</strong>, et la détente au détendeur est totalement irréversible.</li>
+
+<li><strong>Sources à température constante.</strong> L’air extérieur se refroidit en traversant l’évaporateur, l’eau se réchauffe au condenseur.</li>
+
+<li><strong>Pas d’écart d’approche aux échangeurs.</strong> En pratique l’évaporateur travaille <strong>5 à 8 K sous</strong> la source froide et le condenseur <strong>5 à 10 K au-dessus</strong> de la source chaude. Ces deux pincements élargissent l’écart réel de 10 à 18 K, et c’est la plus grosse perte des trois.</li>
+
+<li><strong>Aucun auxiliaire.</strong> Ventilateurs, pompes, dégivrage et résistance de carter ne sont pas comptés.</li>
+
+</ol>
+
+<p><strong>Le rapport des deux COP</strong> s’appelle le <strong>rendement exergétique</strong> :</p>
+
+<p>η = COP réel / COP Carnot, et il vaut <strong>0,40 à 0,55</strong> sur une bonne machine.</p>
+
+<p>C’est le seul nombre qui juge vraiment une pompe à chaleur, parce qu’il compare la machine à ce qui était possible <strong>dans ses conditions</strong>, et non à une autre machine dans d’autres conditions.</p></div></details>
+
+</div><div class="outil" data-outil="cop">
+
+
+
+</div>
+
+<h3 id="exemple-résolu-2.-comparer-deux-machines-honnêtement">Exemple résolu 2. Comparer deux machines honnêtement</h3>
+
+<p><strong>Machine A</strong>, air/eau : extérieur 7 °C, départ d’eau 35 °C, COP mesuré <strong>4,4</strong>. <strong>Machine B</strong>, air/eau : extérieur −7 °C, départ d’eau 45 °C, COP mesuré <strong>2,5</strong>.</p>
+
+<p><strong>Les COP de Carnot.</strong></p>
+
+<p>A : Tc = 308 K, Tf = 280 K → 308 / 28 = <strong>11,0</strong> B : Tc = 318 K, Tf = 266 K → 318 / 52 = <strong>6,1</strong></p>
+
+<p><strong>Les rendements exergétiques.</strong></p>
+
+<p>A : 4,4 / 11,0 = <strong>0,40</strong> · B : 2,5 / 6,1 = <strong>0,41</strong></p>
+
+<p><strong>La conclusion, contre-intuitive.</strong> Les deux machines sont <strong>aussi bonnes l’une que l’autre</strong>. L’écart de COP ne vient pas de leur qualité, il vient des conditions. Comparer deux COP sans donner les températures ne veut rien dire, et c’est précisément ce que font toutes les publicités.</p>
+
+<h2 id="7-5-pourquoi-le-cop-s-effondre-le-jour-ou-l-on-en-a-besoin">7.5 Pourquoi le COP s’effondre le jour où l’on en a besoin</h2>
+
+<div class="cle">
+
+<p>Le COP baisse quand l’écart grandit. Or <strong>l’écart grandit exactement quand il fait froid</strong> : la source froide descend, et la loi d’eau fait monter le départ au même moment. Les deux effets s’ajoutent.</p>
+
+</div>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th style="text-align: right;">Extérieur</th>
+
+<th style="text-align: right;">Départ d’eau</th>
+
+<th style="text-align: right;">COP typique, air/eau</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align: right;">12 °C</td>
+
+<td style="text-align: right;">30 °C</td>
+
+<td style="text-align: right;">5,5</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">7 °C</td>
+
+<td style="text-align: right;">35 °C</td>
+
+<td style="text-align: right;"><strong>4,5</strong></td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">2 °C</td>
+
+<td style="text-align: right;">40 °C</td>
+
+<td style="text-align: right;">3,4</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">−7 °C</td>
+
+<td style="text-align: right;">45 °C</td>
+
+<td style="text-align: right;"><strong>2,4</strong></td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">−15 °C</td>
+
+<td style="text-align: right;">50 °C</td>
+
+<td style="text-align: right;">1,8</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="formule">
+
+<p>Deux règles de terrain, à retenir :</p>
+
+<ul>
+
+<li><strong>+ 1 K de source froide : + 2 à 3 % de COP</strong><span></span></li>
+
+<li><strong>− 1 K de départ d’eau : + 2 à 3 % de COP</strong><span></span></li>
+
+</ul>
+
+</div>
+
+<p>Trois pertes s’ajoutent en dessous de 5 °C, et elles n’apparaissent pas dans la formule de Carnot :</p>
+
+<p><strong>Le givre.</strong> Sous 5 °C avec de l’air humide, l’évaporateur se couvre de glace. Il faut le dégivrer, en inversant le cycle : la machine chauffe alors l’extérieur pendant quelques minutes. <strong>Perte : 5 à 15 % de l’énergie saisonnière.</strong></p>
+
+<p><strong>Le court-cycle.</strong> En mi-saison, le besoin descend sous la puissance minimale du compresseur. Sans modulation, la machine démarre et s’arrête sans cesse.</p>
+
+<p><strong>Les auxiliaires.</strong> Ventilateur, pompe, carter : 100 à 400 W en permanence, qui comptent peu à pleine charge et beaucoup à charge réduite.</p>
+
+<div class="piege">
+
+<p>Le COP affiché sur une plaque est mesuré à <strong>7 °C extérieur et 35 °C de départ</strong>, point A7/W35. Ce n’est pas une tricherie, c’est une convention de comparaison : mais aucune installation ne passe sa saison à ce point. Le nombre utile est le <strong>SCOP</strong>, saisonnier, qui intègre tous les points et le dégivrage.</p>
+
+</div>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Machine</th>
+
+<th style="text-align: right;">COP à A7/W35</th>
+
+<th style="text-align: right;">SCOP réel</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Air/eau, plancher 35 °C</td>
+
+<td style="text-align: right;">4,5 à 5,0</td>
+
+<td style="text-align: right;"><strong>3,5 à 4,2</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Air/eau, radiateurs 55 °C</td>
+
+<td style="text-align: right;">3,2 à 3,6</td>
+
+<td style="text-align: right;">2,5 à 3,0</td>
+
+</tr>
+
+<tr>
+
+<td>Eau glycolée/eau, sondes verticales</td>
+
+<td style="text-align: right;">4,5 à 5,2</td>
+
+<td style="text-align: right;"><strong>4,0 à 4,8</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Air/air, split</td>
+
+<td style="text-align: right;">4,0 à 5,0</td>
+
+<td style="text-align: right;">3,5 à 4,5</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<h2 id="7-6-le-calcul-retourne-dimensionner-en-bivalent">7.6 Le calcul retourné : dimensionner en bivalent</h2>
+
+<p>Une pompe à chaleur ne se dimensionne <strong>pas</strong> sur la puissance de pointe. Deux raisons : sa puissance chute justement quand le besoin monte, et une machine dimensionnée pour −7 °C fait des cycles courts toute la saison.</p>
+
+<figure class="schema"><div class="dessin" data-schema="bivalence"></div><figcaption>Le besoin du bâtiment monte quand la température baisse ; la puissance de la machine descend. Elles se croisent au point de bivalence.</figcaption></figure>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Tracer le besoin</strong> : Φ(θ) = GV × (θ intérieure − θ), une droite.</li>
+
+<li><strong>Tracer la puissance restituée</strong> de la machine, qui décroît avec θ.</li>
+
+<li><strong>Lire le point de bivalence</strong> à l’intersection.</li>
+
+<li><strong>Dimensionner l’appoint</strong> sur ce qui manque à la température de base.</li>
+
+<li><strong>Estimer la part d’énergie</strong> laissée à l’appoint, et vérifier qu’elle reste faible.</li>
+
+</ol>
+
+</div>
+
+<h3 id="exemple-résolu-3.-une-pac-sur-un-collège">Exemple résolu 3. Une PAC sur un collège</h3>
+
+<p>Déperditions <strong>24 kW</strong> à la base de <strong>−7 °C</strong>, intérieur <strong>19 °C</strong>. Machine retenue : <strong>24 kW à 7 °C</strong>, <strong>16,5 kW à −7 °C</strong>.</p>
+
+<p><strong>1. Le GV.</strong> 24 / (19 + 7) = <strong>0,923 kW/K</strong>.</p>
+
+<p><strong>2. Le besoin.</strong> Φ(θ) = 0,923 × (19 − θ).</p>
+
+<p><strong>3. La machine</strong>, en interpolant linéairement entre les deux points donnés : P(θ) = 16,5 + 0,536 × (θ + 7).</p>
+
+<p><strong>4. Le point de bivalence</strong>, en égalant les deux :</p>
+
+<p>0,923 × (19 − θ) = 16,5 + 0,536 × (θ + 7)</p>
+
+<p>17,54 − 0,923 θ = 20,25 + 0,536 θ → θ = <strong>−1,9 °C</strong></p>
+
+<p><strong>5. L’appoint.</strong> À −7 °C : 24 − 16,5 = <strong>7,5 kW</strong> manquants.</p>
+
+<p><strong>6. La part d’énergie.</strong> En plaine tempérée, les heures sous −2 °C représentent <strong>3 à 5 %</strong> de la saison de chauffe. L’appoint fournit donc de l’ordre de <strong>5 à 8 % de l’énergie annuelle</strong>, pour 31 % de la puissance installée.</p>
+
+<div class="cle">
+
+<p>Voilà le résultat qui surprend, et qu’il faut savoir défendre : <strong>une machine dont la puissance nominale égale pourtant le besoin de pointe ne tient plus seule dès −2 °C</strong>. Ce n’est pas un défaut de dimensionnement, c’est la conséquence de la chute de puissance avec la température extérieure.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : les trois montages de bivalence</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le point de bivalence ne dit pas encore <strong>comment</strong> l’appoint intervient. Trois montages, trois comportements, et l’épreuve demande de les distinguer.</p>
+
+<p><strong>Bivalent parallèle.</strong> Sous le point de bivalence, l’appoint démarre <strong>en plus</strong> de la pompe à chaleur, qui continue de travailler. C’est le meilleur choix énergétique : la machine produit encore aux trois quarts de sa puissance à −7 °C, avec un COP de 2,4, ce qui reste deux fois mieux qu’une résistance. Il demande un régime d’eau compatible avec la PAC.</p>
+
+<p><strong>Bivalent alternatif.</strong> Sous le point de bivalence, la pompe à chaleur <strong>s’arrête</strong> et la chaudière prend tout. C’est le montage des rénovations en radiateurs 70/50 : au-delà d’un certain départ, la PAC ne sait plus produire. Il est simple, et il gaspille la machine par grand froid.</p>
+
+<p><strong>Bivalent parallèle partiel.</strong> L’appoint démarre avec la PAC, mais la PAC s’arrête en dessous d’une limite basse, souvent −10 ou −15 °C, fixée par son domaine d’emploi. C’est le montage réel de la plupart des installations neuves.</p>
+
+<p><strong>Le piège du montage.</strong> Un appoint électrique intégré à la machine est facile et se paie cher : à 7,5 kW de résistance, on remplace un COP de 2,4 par un COP de 1 sur les heures les plus froides, c’est-à-dire sur les heures où le réseau électrique est déjà tendu. Une relève par chaudière existante, quand elle est là, est presque toujours meilleure.</p>
+
+<p><strong>Le cas où tout change : la production d’ECS.</strong> Elle demande 55 °C toute l’année, y compris en été où la PAC serait à l’arrêt. Une machine unique pour chauffage et ECS travaille alors à un départ imposé par l’ECS, ce qui écrase le COP du chauffage. D’où la règle : <strong>on sépare les deux productions</strong>, ou on accepte un ballon avec appoint électrique pour la seule montée de 45 à 60 °C.</p></div></details>
+
+</div><h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Valeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>COP à A7/W35, air/eau</td>
+
+<td>4,5 à 5,0</td>
+
+</tr>
+
+<tr>
+
+<td>COP à A−7/W45</td>
+
+<td><strong>2,2 à 2,6</strong></td>
+
+</tr>
+
+<tr>
+
+<td>SCOP, air/eau sur plancher</td>
+
+<td>3,5 à 4,2</td>
+
+</tr>
+
+<tr>
+
+<td>SCOP, air/eau sur radiateurs 55 °C</td>
+
+<td>2,5 à 3,0</td>
+
+</tr>
+
+<tr>
+
+<td>Rendement exergétique d’une bonne machine</td>
+
+<td><strong>0,40 à 0,55</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Effet de + 1 K de source froide</td>
+
+<td>+ 2 à 3 % de COP</td>
+
+</tr>
+
+<tr>
+
+<td>Effet de − 1 K de départ d’eau</td>
+
+<td>+ 2 à 3 % de COP</td>
+
+</tr>
+
+<tr>
+
+<td>Pincement à l’évaporateur · au condenseur</td>
+
+<td>5 à 8 K · 5 à 10 K</td>
+
+</tr>
+
+<tr>
+
+<td>Surchauffe · sous-refroidissement</td>
+
+<td>5 à 8 K · 3 à 6 K</td>
+
+</tr>
+
+<tr>
+
+<td>Perte annuelle due au dégivrage</td>
+
+<td>5 à 15 %</td>
+
+</tr>
+
+<tr>
+
+<td>Auxiliaires permanents</td>
+
+<td>100 à 400 W</td>
+
+</tr>
+
+<tr>
+
+<td>Point de bivalence usuel, plaine tempérée</td>
+
+<td><strong>−2 à −7 °C</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Part d’énergie laissée à l’appoint</td>
+
+<td>5 à 15 %</td>
+
+</tr>
+
+<tr>
+
+<td>Relation entre les deux indices</td>
+
+<td><strong>COP = EER + 1</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le contrôle qui refuse un nombre en une seconde : <strong>un COP supérieur à 6 sur une machine air/eau en hiver est impossible</strong>. Comparez-le au COP de Carnot des mêmes températures : s’il en dépasse la moitié, il y a une erreur, une confusion d’unités, ou une publicité.</p>
+
+</div>
+
+<h2 id="s-entrainer">S’entraîner</h2>
+
+<section class="exo" id="M7-MANUEL-e1" data-exo="M7-MANUEL-e1" data-type="calcul" data-savoir="A5-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgYnRobnZ4LjU2eGBudGp2eC94YHgpOzQpei80My4GL2pqP2N4Jw=="><p class="k">Exercice · A5-1</p><h4>Le COP de Carnot</h4><div class="enonce">
+
+
+
+<p>Une pompe à chaleur prend la chaleur dans l’air à <strong>2 °C</strong> et la restitue à de l’eau à <strong>40 °C</strong>. Quel est son COP de Carnot ?</p>
+
+</div><div class="indice" hidden>Convertissez les deux températures en kelvins en ajoutant 273, puis divisez la température chaude par l’écart entre les deux.</div></section>
+
+<section class="exo" id="M7-MANUEL-e2" data-exo="M7-MANUEL-e2" data-type="calcul" data-savoir="A5-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgbnRobnZ4LjU2eGBudGp2eC94YHgpOzQpei80My4GL2pqP2N4Jw=="><p class="k">Exercice · A5-2</p><h4>Le COP lu sur un diagramme</h4><div class="enonce">
+
+
+
+<p>Sur un diagramme enthalpique, on relève h₁ = <strong>398 kJ/kg</strong>, h₂ = <strong>440 kJ/kg</strong>, h₃ = <strong>262 kJ/kg</strong>. Quel est le COP de la machine ?</p>
+
+</div><div class="indice" hidden>Le COP est le rapport de la chaleur rendue au condenseur, h₂ − h₃, au travail de compression, h₂ − h₁.</div></section>
+
+<section class="exo" id="M7-MANUEL-e3" data-exo="M7-MANUEL-e3" data-type="calcul" data-savoir="B1-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgbXRjbnZ4LjU2eGBudGp2eC94YHgxDXgn"><p class="k">Exercice · B1-1</p><h4>La chaleur prise dehors</h4><div class="enonce">
+
+
+
+<p>Une pompe à chaleur restitue <strong>11 kW</strong> avec un COP de <strong>3,6</strong>. Quelle puissance prélève-t-elle sur l’air extérieur ?</p>
+
+</div><div class="indice" hidden>Calculez d’abord la puissance électrique absorbée en divisant la puissance restituée par le COP, puis retranchez-la de la puissance restituée : le bilan dit que le condenseur rend la somme des deux.</div></section>
+
+<section class="exo" id="M7-MANUEL-e4" data-exo="M7-MANUEL-e4" data-type="justification" data-savoir="B1-1" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B1-1</p><h4>Le COP annoncé par le vendeur</h4><div class="enonce">
+
+
+
+<p>Un fournisseur annonce « COP 5,1 » pour une machine air/eau destinée à remplacer une chaudière sur des radiateurs en <strong>70/50</strong>. Rédigez votre réserve en quatre lignes.</p>
+
+</div><div class="indice" hidden>Le COP ne dépend que de l’écart entre les deux températures. Comparez l’écart du point d’essai, 7 vers 35, et l’écart réel, 7 vers 70, puis dites ce que devient le rapport.</div><ul class="verifier" hidden><li>J’ai demandé à quelles températures ce COP est mesuré, et cité le point A7/W35.</li><li>J’ai dit que le départ réel, 70 °C, est très éloigné de ce point d’essai.</li><li>J’ai donné un ordre de grandeur réaliste du COP ou du SCOP dans ces conditions.</li><li>J’ai proposé une action : baisser le régime, surdimensionner les émetteurs, ou prévoir une relève.</li></ul></section>
+
+<h2 id="vous-verifier">Vous vérifier</h2>
+
+<div class="quiz">
+
+<ul>
+
+<li>Une pompe à chaleur, avant tout : <strong>déplace de la chaleur</strong> | en fabrique</li>
+
+<li>Un COP de 4 signifie : <strong>4 kWh de chaleur pour 1 kWh électrique</strong> | 4 kWh pris dehors</li>
+
+<li>Le bilan de la machine s’écrit : <strong>condenseur = évaporateur + compresseur</strong> | condenseur = évaporateur</li>
+
+<li>Le fluide s’évapore dehors parce que : <strong>sa pression y est très basse</strong> | il fait chaud</li>
+
+<li>La détente au détendeur se fait : <strong>à enthalpie constante</strong> | à température constante</li>
+
+<li>Sous la cloche du diagramme, la température est : <strong>constante</strong> | croissante</li>
+
+<li>Le COP de Carnot se calcule : <strong>en kelvins</strong> | en degrés Celsius</li>
+
+<li>Il dépend : <strong>des deux températures seulement</strong> | du fluide employé</li>
+
+<li>Le rendement exergétique d’une bonne machine vaut : <strong>0,4 à 0,55</strong> | 0,9</li>
+
+<li>Quand la température extérieure baisse, le COP : <strong>baisse</strong> | monte</li>
+
+<li>Le dégivrage coûte, sur une saison : <strong>5 à 15 %</strong> | moins de 1 %</li>
+
+<li>Le point de bivalence est là où : <strong>besoin et puissance se croisent</strong> | la PAC s’arrête toujours</li>
+
+<li>Un COP mesuré à A7/W35 : <strong>est un point de comparaison, pas un usage</strong> | vaut pour toute la saison</li>
+
+</ul>
+
+</div>
+
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi la géothermie tient et l&#39;air ne tient pas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La différence entre une machine sur air et une machine sur sonde ne se joue pas sur la qualité du matériel : elle se joue sur <strong>la stabilité de la source froide</strong>.</p>
+
+<p><strong>L’air extérieur</strong> suit la météo : de −7 à +15 °C dans une saison. La source froide est donc la plus froide au moment exact où le besoin est le plus grand. C’est la pire coïncidence possible, et c’est la faiblesse structurelle de la machine air/eau.</p>
+
+<p><strong>Le sol, à 100 mètres</strong>, reste entre 10 et 14 °C toute l’année, parce que l’onde thermique annuelle s’amortit avec la profondeur : à 10 m elle est déjà réduite à quelques dixièmes de kelvin. Une sonde géothermique voit donc <strong>la même source en janvier qu’en juillet</strong>, et son COP ne s’effondre pas.</p>
+
+<p><strong>Ce que cela coûte.</strong> Un forage de 100 m par tranche de 5 kW environ, et un budget qui triple. La géothermie n’est arbitrable que sur des installations importantes, ou là où l’air est exclu pour des raisons de bruit ou d’espace.</p>
+
+<p><strong>Et le cas qui trompe.</strong> Une nappe phréatique donne une source encore plus stable et de meilleurs COP, mais elle impose un dossier « loi sur l’eau », une autorisation, et souvent une obligation de réinjection. Ce sont ces contraintes, et non la thermodynamique, qui décident du projet.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Le SCOP, et pourquoi il ne se calcule pas de tête</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le COP est instantané ; ce qui paie la facture est saisonnier. La norme <strong>EN 14825</strong> définit le calcul du SCOP, et il vaut la peine de savoir ce qu’il contient.</p>
+
+<p>On découpe la saison en <strong>classes de température</strong>, chacune avec son nombre d’heures, tirées d’un climat de référence. Strasbourg pour le climat « moyen », Athènes et Helsinki pour les deux autres. Pour chaque classe, on calcule le besoin du bâtiment, la puissance disponible et le COP à ce point, en tenant compte de la <strong>modulation</strong> de la machine et des pertes de dégivrage. L’appoint est ajouté là où la machine ne suffit plus. Le SCOP est le rapport de l’énergie totale livrée à l’électricité totale consommée.</p>
+
+<p><strong>Trois conséquences pratiques.</strong> D’abord, un SCOP est <strong>attaché à un climat et à une température de départ</strong> : un SCOP « 4,2 » sans mention de W35 ou W55 est inexploitable. Ensuite, la <strong>modulation</strong> pèse énormément : une machine Inverter descendant à 25 % de sa puissance gagne 0,3 à 0,6 point de SCOP sur une machine tout-ou-rien identique. Enfin, le SCOP normalisé suppose un bâtiment conventionnel : sur un bâtiment très inertiel ou très intermittent, l’écart avec le relevé réel atteint 20 %.</p>
+
+<p><strong>Ce qu’un bureau d’études fait donc en plus</strong> : une simulation horaire avec le fichier météo du site, la loi d’eau réellement prévue, et le profil d’occupation. C’est le seul moyen d’arbitrer entre deux machines dont les SCOP normalisés ne diffèrent que de 0,2.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La pompe à chaleur produit de l’énergie gratuite. »</strong> Elle n’en produit aucune : elle en <strong>prélève</strong> dehors, et cette chaleur est bien réelle, elle vient du soleil, stockée dans l’air ou le sol. Le mot juste est <em>renouvelable</em>, pas <em>gratuit</em> : la machine, elle, se paie, et son électricité aussi.</p>
+
+<p><strong>« Elle rend 400 % de rendement. »</strong> Un rendement ne dépasse pas 100 %, par définition, parce qu’il compare une sortie à <strong>la même chose</strong> en entrée. Le COP n’est pas un rendement : il compare une chaleur à un travail, deux formes d’énergie de qualités différentes. Écrire « rendement de 400 % » dans une copie coûte le point.</p>
+
+<p><strong>« On la dimensionne comme une chaudière. »</strong> Non : une chaudière garde sa puissance à −10 °C, une pompe à chaleur en perd le tiers. C’est ce qui rend le point de bivalence obligatoire, et c’est ce que le 7.6 calcule.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M6-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 6</span></a><a class="ap" href="M8-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 8</span></a></div></nav>
 <p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

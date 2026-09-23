@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Manuel · chapitre 12</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="manuel/M12-MANUEL">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M11-MANUEL.html" rel="prev" title="Manuel · chapitre 11" aria-label="Manuel · chapitre 11">&lsaquo;</a><a class="fleche" href="M13-MANUEL.html" rel="next" title="Manuel · chapitre 13" aria-label="Manuel · chapitre 13">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M12-MANUEL">Marquer comme lu</button></div>
@@ -23,368 +31,721 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M6-MANUEL.html">L'inertie des émetteurs</a></b><span class="ou">Manuel · chapitre 6</span><span class="car">la vanne est l'actionneur, et le temps de réponse est celui de l'émetteur ; c'est la section 6.7.</span></li><li><b><a href="M11-MANUEL.html">Les organes d'une CTA</a></b><span class="ou">Manuel · chapitre 11</span><span class="car">les boucles du chapitre règlent des caissons, et il faut les connaître pour savoir ce qu'on règle.</span></li><li><b>Lire une courbe en fonction du temps</b><span class="car">dépassement, oscillation et écart statique se lisent sur une courbe temps-température.</span></li><li><b>Le coefficient directeur d'une droite</b><span class="car">la bande proportionnelle est une pente, et le régulateur P est une droite y = ax + b.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#12-1-regler-une-douche">12.1 Régler une douche</a><a href="#12-2-les-deux-facons-de-regler">12.2 Les deux façons de régler</a><a href="#12-3-le-vocabulaire-et-il-compte">12.3 Le vocabulaire, et il compte</a><a href="#12-4-le-tout-ou-rien">12.4 Le tout ou rien</a><a href="#12-5-le-proportionnel-et-son-ecart-qui-ne-part-pas">12.5 Le proportionnel, et son écart qui ne part pas</a><a href="#12-6-p-pi-pid">12.6 P, PI, PID</a><a href="#12-7-le-calcul-retourne-regler-une-boucle">12.7 Le calcul retourné : régler une boucle</a><a href="#12-8-l-autorite-de-la-vanne">12.8 L’autorité de la vanne</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
-<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
-<div class="etapes">
-<ol type="1">
-<li><strong>Distinguer</strong> une boucle ouverte d’une boucle fermée sur un schéma.</li>
-<li><strong>Nommer</strong> les cinq éléments d’une boucle, sans en oublier la perturbation.</li>
-<li><strong>Calculer</strong> l’écart statique d’un régulateur proportionnel.</li>
-<li><strong>Choisir</strong> une bande proportionnelle, et dire ce qui arrive si on la rate.</li>
-<li><strong>Vérifier</strong> l’autorité d’une vanne, et expliquer pourquoi elle décide de tout.</li>
-</ol>
-</div>
-<p><strong>La régulation pèse 22 % du temps de l’épreuve</strong>, davantage que tout autre thème, et c’est le terrain fort de l’option C. Vous y êtes meilleurs que les autres options : ce chapitre est celui où l’écart se creuse.</p>
-<h2 id="12-1-regler-une-douche">12.1 Régler une douche</h2>
-<p>Sous la douche, vous tournez le mitigeur, vous attendez, l’eau est trop chaude, vous corrigez, elle est trop froide. Vous venez d’exécuter une boucle de régulation complète, et d’en rencontrer les trois difficultés.</p>
-<div class="cle">
-<p><strong>Le retard</strong> : entre l’action et l’effet, il s’écoule le temps que l’eau parcoure le tuyau. <strong>Le gain</strong> : un petit geste change beaucoup, ou peu. <strong>L’oscillation</strong> : trop corriger, trop vite, fait dépasser dans l’autre sens. Toute la régulation tient dans ces trois mots.</p>
-</div>
-<h2 id="12-2-les-deux-facons-de-regler">12.2 Les deux façons de régler</h2>
-<figure class="schema"><div class="dessin" data-schema="boucle-regulation"></div><figcaption>Boucle ouverte et boucle fermée : la seconde mesure ce qu’elle a produit, la première fait confiance.</figcaption></figure>
-<p><strong>La boucle ouverte.</strong> On agit sur une grandeur d’entrée, sans jamais vérifier le résultat. La loi d’eau du chapitre 13 en est l’exemple type : on choisit une température de départ <strong>d’après la météo</strong>, sans mesurer l’ambiance.</p>
-<p><strong>La boucle fermée.</strong> On mesure la grandeur qu’on veut tenir, on la compare à la consigne, et on agit sur l’écart. C’est le thermostat d’ambiance.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th></th>
-<th>Boucle ouverte</th>
-<th>Boucle fermée</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Mesure la sortie</td>
-<td><strong>non</strong></td>
-<td><strong>oui</strong></td>
-</tr>
-<tr>
-<td>Corrige les perturbations imprévues</td>
-<td>non</td>
-<td><strong>oui</strong></td>
-</tr>
-<tr>
-<td>Risque d’instabilité</td>
-<td><strong>aucun</strong></td>
-<td>oui</td>
-</tr>
-<tr>
-<td>Rapidité</td>
-<td>immédiate</td>
-<td>limitée par le retard</td>
-</tr>
-<tr>
-<td>Exemple</td>
-<td>loi d’eau</td>
-<td>thermostat d’ambiance</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Les deux ne s’opposent pas : <strong>elles se combinent</strong>. Une installation correcte règle la température de départ en boucle ouverte sur la météo, et corrige le résultat en boucle fermée par une sonde d’ambiance. La première fait le gros du travail sans risque, la seconde rattrape ce que la première ne peut pas savoir.</p>
-</div>
-<h2 id="12-3-le-vocabulaire-et-il-compte">12.3 Le vocabulaire, et il compte</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Terme</th>
-<th>Ce que c’est</th>
-<th>Exemple</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Grandeur réglée</strong></td>
-<td>ce qu’on veut tenir</td>
-<td>la température du local</td>
-</tr>
-<tr>
-<td><strong>Consigne</strong></td>
-<td>la valeur voulue</td>
-<td>20 °C</td>
-</tr>
-<tr>
-<td><strong>Écart</strong></td>
-<td>consigne moins mesure</td>
-<td>+ 1,5 K</td>
-</tr>
-<tr>
-<td><strong>Grandeur réglante</strong></td>
-<td>ce sur quoi on agit</td>
-<td>l’ouverture de la vanne</td>
-</tr>
-<tr>
-<td><strong>Perturbation</strong></td>
-<td>ce qui dérange, non mesuré</td>
-<td>le soleil, une porte ouverte</td>
-</tr>
-<tr>
-<td><strong>Organe de réglage</strong></td>
-<td>ce qui exécute</td>
-<td>vanne, registre, variateur</td>
-</tr>
-<tr>
-<td><strong>Capteur</strong></td>
-<td>ce qui mesure</td>
-<td>sonde Pt1000</td>
-</tr>
-</tbody>
-</table></div>
-<div class="piege">
-<p>Confondre <strong>grandeur réglée</strong> et <strong>grandeur réglante</strong> est l’erreur la plus sanctionnée du thème, parce qu’elle révèle qu’on n’a pas compris le sens de la boucle. La réglée est <strong>en sortie</strong>, c’est le but ; la réglante est <strong>en entrée</strong>, c’est le moyen.</p>
-</div>
-<h2 id="12-4-le-tout-ou-rien">12.4 Le tout ou rien</h2>
-<p>Le plus simple des régulateurs : au-dessous d’un seuil, on chauffe ; au-dessus, on arrête. Un <strong>différentiel</strong> sépare les deux seuils, sans quoi l’appareil claquerait en permanence.</p>
-<div class="formule">
-<p><strong>Nombre de cycles par heure : N = Φ × x × (1 − x) / ( C × Δ )</strong></p>
-<ul>
-<li><strong>Φ</strong><span>: puissance de l’appareil · <strong>C</strong> : capacité thermique du système</span></li>
-<li><strong>Δ</strong><span>: différentiel · <strong>x</strong> : taux de charge, entre 0 et 1</span></li>
-</ul>
-<p>Le maximum est atteint à <strong>mi-charge</strong> : <strong>N max = Φ / ( 4 × C × Δ )</strong></p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : d&#39;où vient le taux de cycles, et pourquoi il culmine à mi-charge</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Appelons Φ la puissance de l’appareil, x la fraction de cette puissance que le système consomme en permanence, C la capacité thermique et Δ le différentiel.</p>
-<p><strong>Pendant la marche</strong>, le système reçoit Φ et en perd xΦ : il monte donc de Δ à la vitesse (1 − x)Φ / C. La durée de marche vaut :</p>
-<p>t marche = C Δ / [ (1 − x) Φ ]</p>
-<p><strong>Pendant l’arrêt</strong>, il ne reçoit rien et perd xΦ : il descend de Δ à la vitesse xΦ / C. La durée d’arrêt vaut :</p>
-<p>t arrêt = C Δ / ( x Φ )</p>
-<p><strong>La période</strong> est la somme :</p>
-<p>T = (C Δ / Φ) × [ 1/(1−x) + 1/x ] = C Δ / [ Φ x (1 − x) ]</p>
-<p><strong>La fréquence</strong> est son inverse : N = Φ x (1 − x) / (C Δ).</p>
-<p><strong>Le maximum.</strong> Le produit x(1 − x) est maximal en x = 0,5, où il vaut 0,25. D’où <strong>N max = Φ / (4 C Δ)</strong>.</p>
-<p><strong>Ce que la formule enseigne, et qui compte plus que la formule.</strong></p>
-<ol type="1">
-<li><strong>Une machine surdimensionnée cycle davantage</strong>, à cause du Φ au numérateur : c’est la démonstration quantitative du court-cycle du chapitre 5.</li>
-<li><strong>Un système inertiel cycle moins</strong>, à cause du C au dénominateur. Un plancher chauffant en tout ou rien est acceptable, un ventilo-convecteur ne l’est pas.</li>
-<li><strong>Le pire moment est la mi-saison</strong>, pas le grand froid. À 100 % de charge la machine ne s’arrête jamais, et ne cycle donc pas du tout.</li>
-</ol>
-<p><strong>Les hypothèses.</strong> Pertes proportionnelles à l’écart, capacité concentrée en un seul point, aucun retard de mesure. Le retard, en pratique, <strong>allonge</strong> la période et <strong>augmente l’amplitude</strong> : le local dépasse le différentiel des deux côtés, et c’est ce qu’on voit sur un enregistrement réel.</p></div></details>
-</div><h3 id="exemple-résolu-1.-un-générateur-qui-cycle">Exemple résolu 1. Un générateur qui cycle</h3>
-<p>Une chaudière de <strong>25 kW</strong>, un circuit contenant l’équivalent de <strong>200 litres</strong> d’eau, différentiel de <strong>6 K</strong>.</p>
-<p><strong>La capacité.</strong> C = 200 × 4 185 = 837 000 J/K = <strong>0,232 kWh/K</strong>.</p>
-<p><strong>Le nombre maximal de cycles.</strong> N = 25 / (4 × 0,232 × 6) = 25 / 5,57 = <strong>4,5 cycles par heure</strong>.</p>
-<p><strong>La lecture.</strong> Environ un cycle toutes les treize minutes : c’est acceptable. Avec une chaudière de 75 kW sur le même circuit, on passerait à <strong>13 cycles par heure</strong>, soit un toutes les quatre minutes, ce qui est le comportement d’une installation surdimensionnée.</p>
-<p><strong>La parade la moins chère.</strong> Augmenter C, en ajoutant une <strong>bouteille de mélange</strong> ou un ballon tampon. Doubler le volume d’eau divise le nombre de cycles par deux, sans toucher au générateur.</p>
-<h2 id="12-5-le-proportionnel-et-son-ecart-qui-ne-part-pas">12.5 Le proportionnel, et son écart qui ne part pas</h2>
-<p>Un régulateur proportionnel n’ouvre pas tout ou rien : il ouvre <strong>d’autant plus que l’écart est grand</strong>.</p>
-<div class="formule">
-<p><strong>Sortie = 100 × écart / BP</strong>, en pourcentage d’ouverture</p>
-<p><strong>BP</strong>, la <strong>bande proportionnelle</strong>, est l’écart qui fait passer la sortie de 0 à 100 %. Elle s’exprime dans l’unité de la grandeur réglée : en kelvins pour une température.</p>
-</div>
-<div class="cle">
-<p>Conséquence immédiate, et elle surprend toujours : <strong>pour que la vanne reste ouverte, il faut qu’un écart subsiste</strong>. Un régulateur proportionnel ne rejoint donc jamais exactement sa consigne. Cet écart résiduel s’appelle <strong>l’écart statique</strong>.</p>
-</div>
-<div class="formule">
-<p><strong>Écart statique = BP × taux de charge</strong></p>
-<p>À mi-charge, avec une BP de 4 K, la température se stabilise <strong>2 K sous la consigne</strong>.</p>
-</div>
-<div class="piege">
-<p>Réduire la BP réduit l’écart statique, et <strong>rapproche de l’instabilité</strong> : à BP trop faible, le régulateur se comporte comme un tout ou rien et le système oscille. C’est le compromis central de la régulation proportionnelle, et il ne se résout pas en réglant mieux : il se résout en ajoutant l’intégrale.</p>
-</div>
-<h2 id="12-6-p-pi-pid">12.6 P, PI, PID</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Action</th>
-<th>Ce qu’elle fait</th>
-<th>Ce qu’elle coûte</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>P</strong>, proportionnelle</td>
-<td>réagit à l’écart présent</td>
-<td>laisse un écart statique</td>
-</tr>
-<tr>
-<td><strong>I</strong>, intégrale</td>
-<td>cumule l’écart et l’annule</td>
-<td>ralentit, peut faire dépasser</td>
-</tr>
-<tr>
-<td><strong>D</strong>, dérivée</td>
-<td>réagit à la <strong>vitesse</strong> de l’écart</td>
-<td>amplifie le bruit de mesure</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>En génie climatique, <strong>le PI suffit presque toujours</strong>. Les processus thermiques sont lents et les mesures bruitées : la dérivée y apporte peu et déstabilise souvent. On la réserve aux boucles rapides, comme un débit ou une pression.</p>
-</div>
-<div class="formule">
-<p><strong>Temps d’intégrale Ti</strong> : le temps au bout duquel l’action intégrale a répété l’action proportionnelle.</p>
-<ul>
-<li>boucle de température de local : <strong>10 à 30 minutes</strong></li>
-<li>boucle de température d’eau : 2 à 5 minutes</li>
-<li>boucle de pression ou de débit : 10 à 60 secondes</li>
-</ul>
-</div>
-<div class="outil" data-outil="regulation">
-
-</div>
-<h2 id="12-7-le-calcul-retourne-regler-une-boucle">12.7 Le calcul retourné : régler une boucle</h2>
-<h3 id="exemple-résolu-2.-choisir-une-bande-proportionnelle">Exemple résolu 2. Choisir une bande proportionnelle</h3>
-<p>Un local doit être tenu à <strong>20 °C</strong>, avec un écart statique acceptable de <strong>0,5 K</strong> au taux de charge courant, qui vaut <strong>50 %</strong>.</p>
-<p><strong>1. La BP nécessaire.</strong> Écart = BP × charge, donc BP = 0,5 / 0,50 = <strong>1,0 K</strong>.</p>
-<p><strong>2. La vérification de stabilité.</strong> Une BP de 1 K sur un local, avec un retard de mesure de plusieurs minutes, est <strong>trop serrée</strong> : le système oscillera.</p>
-<p><strong>3. La bonne réponse.</strong> On garde une <strong>BP de 3 à 4 K</strong>, stable, et on ajoute une <strong>action intégrale</strong> de 15 minutes, qui annule l’écart statique sans toucher à la stabilité.</p>
-<p><strong>4. Le résultat.</strong> Écart statique nul en régime établi, dépassement transitoire d’environ 0,3 K après une relance, et pas d’oscillation entretenue.</p>
-<div class="cle">
-<p>Le raisonnement à retenir : <strong>on règle la BP pour la stabilité, et l’intégrale pour la précision</strong>. Chercher la précision avec la seule BP est ce qui produit les installations qui oscillent, et c’est la réponse attendue en épreuve.</p>
-</div>
-<h2 id="12-8-l-autorite-de-la-vanne">12.8 L’autorité de la vanne</h2>
-<p>Une vanne de régulation ne règle rien si elle est trop grosse pour son circuit.</p>
-<div class="formule">
-<p><strong>Autorité : a = ΔP vanne ouverte / ΔP total de la branche régulée</strong></p>
-<ul>
-<li><strong>a &gt; 0,5</strong><span>: excellent</span></li>
-<li><strong>a = 0,3 à 0,5</strong><span>: acceptable, c’est la cible</span></li>
-<li><strong>a &lt; 0,3</strong><span>: la vanne devient un interrupteur</span></li>
-</ul>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi une vanne surdimensionnée transforme le proportionnel en tout ou rien</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une vanne de régulation est censée délivrer un débit proportionnel à sa commande. Elle n’y arrive que si sa perte de charge domine celle du circuit qu’elle commande.</p>
-<p><strong>Le mécanisme.</strong> Quand la vanne se ferme, sa perte de charge augmente, mais la perte de charge du reste du circuit <strong>diminue</strong> puisque le débit baisse. Si le reste du circuit pesait déjà beaucoup, cette diminution compense presque l’augmentation, et le débit ne change quasiment pas. La vanne peut alors se fermer de 90 % sans que le débit tombe de plus de 30 %.</p>
-<p><strong>Ce que cela donne en courbe.</strong> La caractéristique installée se déforme : elle devient très plate sur les trois quarts de la course, puis chute brutalement à la fin. Le régulateur, qui suppose une réponse linéaire, se retrouve avec un gain qui varie d’un facteur dix selon la position : il est mou en haut de course et brutal en bas. Le résultat s’observe toujours de la même façon : <strong>un local qui ne bouge pas, puis qui s’effondre.</strong></p>
-<p><strong>La parade, en deux temps.</strong> D’abord <strong>choisir le Kvs correct</strong> : le Kvs est le débit en m³/h que la vanne laisse passer sous 1 bar, et on le calcule pour que la vanne consomme 30 à 50 % de la perte de la branche. Ensuite <strong>choisir la bonne caractéristique</strong> : une vanne à caractéristique <strong>égal pourcentage</strong> compense justement la déformation ci-dessus, et c’est pourquoi elle est la règle sur les batteries, dont la puissance n’est déjà pas linéaire avec le débit.</p>
-<p><strong>Un troisième outil, moderne.</strong> La vanne <strong>à pression différentielle indépendante</strong>, dite PIBCV, contient un régulateur de pression qui maintient constante la perte de charge à ses bornes. Son autorité vaut alors 1 par construction, quel que soit le reste du réseau, et l’équilibrage du chapitre 3 se fait par simple réglage de débit. C’est la solution qui s’impose en tertiaire neuf, et « justifier le choix d’une vanne PIBCV » est une question d’épreuve plausible dès les prochaines sessions.</p></div></details>
-</div><div class="cle">
-<p>Une batterie chaude est <strong>très non linéaire</strong> : à 30 % de débit, elle donne déjà 70 % de sa puissance, parce que l’eau y séjourne plus longtemps et se refroidit davantage. Une vanne linéaire sur une batterie donne donc une boucle ingouvernable ; c’est la vanne <strong>égal pourcentage</strong> qui redresse l’ensemble.</p>
-</div>
-<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Valeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Différentiel d’un thermostat d’ambiance</td>
-<td>0,5 à 1 K</td>
-</tr>
-<tr>
-<td>Différentiel d’un thermostat de chaudière</td>
-<td>5 à 8 K</td>
-</tr>
-<tr>
-<td>Cycles par heure acceptables, générateur</td>
-<td><strong>moins de 6</strong></td>
-</tr>
-<tr>
-<td>Bande proportionnelle, local</td>
-<td>2 à 5 K</td>
-</tr>
-<tr>
-<td>Bande proportionnelle, batterie d’eau</td>
-<td>5 à 15 K</td>
-</tr>
-<tr>
-<td>Écart statique</td>
-<td><strong>BP × taux de charge</strong></td>
-</tr>
-<tr>
-<td>Temps d’intégrale, local</td>
-<td>10 à 30 min</td>
-</tr>
-<tr>
-<td>Temps d’intégrale, eau</td>
-<td>2 à 5 min</td>
-</tr>
-<tr>
-<td>Temps d’intégrale, pression ou débit</td>
-<td>10 à 60 s</td>
-</tr>
-<tr>
-<td><strong>Autorité de vanne visée</strong></td>
-<td><strong>0,3 à 0,5</strong></td>
-</tr>
-<tr>
-<td>Caractéristique sur batterie</td>
-<td><strong>égal pourcentage</strong></td>
-</tr>
-<tr>
-<td>Caractéristique sur mélange trois voies</td>
-<td>linéaire</td>
-</tr>
-<tr>
-<td>Temps de course d’un servomoteur de vanne</td>
-<td>60 à 240 s</td>
-</tr>
-<tr>
-<td>Précision d’une sonde Pt1000 classe B</td>
-<td>± 0,3 K à 0 °C</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le réflexe de diagnostic : <strong>un local qui oscille a un gain trop fort ou un retard trop long ; un local qui n’atteint jamais sa consigne a un écart statique, donc il manque une intégrale.</strong> Ces deux phrases classent la moitié des pannes de régulation.</p>
-</div>
-<h2 id="s-entrainer">S’entraîner</h2>
-<section class="exo" id="M12-MANUEL-e1" data-exo="M12-MANUEL-e1" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhgaHRudnguNTZ4YGl0anZ4L3hgeBF4Jw=="><p class="k">Exercice · B11</p><h4>L’écart statique</h4><div class="enonce">
-
-<p>Un régulateur proportionnel a une bande proportionnelle de <strong>6 K</strong>. Le système demande <strong>40 %</strong> de la puissance disponible. Quel écart subsiste entre la mesure et la consigne ?</p>
-</div><div class="indice" hidden>L’écart statique vaut la bande proportionnelle multipliée par le taux de charge exprimé en fraction, pas en pourcentage.</div></section>
-<section class="exo" id="M12-MANUEL-e2" data-exo="M12-MANUEL-e2" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhgbml0bW92eC41NnhgaXRqdngveGB4f3gn"><p class="k">Exercice · B11</p><h4>L’ouverture de la vanne</h4><div class="enonce">
-
-<p>Une boucle proportionnelle a une <strong>BP de 8 K</strong> et une consigne de <strong>45 °C</strong>. La mesure indique <strong>41,5 °C</strong>. Quelle est l’ouverture de l’organe de réglage ?</p>
-</div><div class="indice" hidden>L’ouverture vaut 100 fois l’écart divisé par la bande proportionnelle. L’écart est la différence entre la consigne et la mesure.</div></section>
-<section class="exo" id="M12-MANUEL-e3" data-exo="M12-MANUEL-e3" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhganRpa2x2eC41NnhgbnRqdngveGB4KTs0KXovNDMuBi9qaj9jeCc="><p class="k">Exercice · B11</p><h4>L’autorité d’une vanne</h4><div class="enonce">
-
-<p>Une vanne ouverte perd <strong>12 kPa</strong>. La branche qu’elle commande, vanne comprise, perd <strong>38 kPa</strong>. Quelle est l’autorité de la vanne ?</p>
-</div><div class="indice" hidden>L’autorité est le rapport de la perte de charge de la vanne ouverte à la perte de charge totale de la branche régulée. Le résultat est compris entre 0 et 1.</div></section>
-<section class="exo" id="M12-MANUEL-e4" data-exo="M12-MANUEL-e4" data-type="justification" data-savoir="B11" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B11</p><h4>Un local qui oscille</h4><div class="enonce">
-
-<p>Dans une salle de classe régulée en proportionnel, la température oscille de ±1,5 K avec une période d’environ vingt minutes, alors que la consigne est stable. Expliquez et proposez.</p>
-</div><div class="indice" hidden>Une oscillation entretenue signale que la boucle corrige trop fort ou trop tard. Cherchez d’abord ce qui règle l’amplitude de la correction, puis vérifiez où la sonde est posée.</div><ul class="verifier" hidden><li>J’ai relié l’oscillation à un gain trop fort, c’est-à-dire une bande proportionnelle trop étroite.</li><li>J’ai cité l’autre cause possible : un retard entre l’action et la mesure, sonde mal placée ou vanne lente.</li><li>J’ai proposé d’élargir la BP et dit ce que cela coûte : un écart statique.</li><li>J’ai proposé de compenser par l’intégrale, avec un ordre de grandeur de Ti.</li></ul></section>
-<h2 id="vous-verifier">Vous vérifier</h2>
-<div class="quiz">
-<ul>
-<li>Une boucle fermée se reconnaît à : <strong>la mesure de la grandeur réglée</strong> | la présence d’une vanne</li>
-<li>La loi d’eau est une régulation : <strong>en boucle ouverte</strong> | en boucle fermée</li>
-<li>La grandeur réglée est : <strong>ce qu’on veut tenir</strong> | ce sur quoi on agit</li>
-<li>Un différentiel sert à : <strong>éviter les claquements</strong> | améliorer la précision</li>
-<li>Une machine surdimensionnée en tout ou rien : <strong>cycle davantage</strong> | cycle moins</li>
-<li>Le nombre de cycles est maximal : <strong>à mi-charge</strong> | à pleine charge</li>
-<li>Ajouter un ballon tampon : <strong>réduit le nombre de cycles</strong> | l’augmente</li>
-<li>Un régulateur proportionnel laisse : <strong>un écart statique</strong> | une oscillation permanente</li>
-<li>Cet écart vaut : <strong>BP × taux de charge</strong> | BP seule</li>
-<li>Pour l’annuler, on ajoute : <strong>l’action intégrale</strong> | l’action dérivée</li>
-<li>En génie climatique, la dérivée est : <strong>rarement utile</strong> | indispensable</li>
-<li>L’autorité d’une vanne doit valoir au moins : <strong>0,3</strong> | 0,05</li>
-<li>Sur une batterie, on choisit une caractéristique : <strong>égal pourcentage</strong> | linéaire</li>
-</ul>
-</div>
-<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Régler une boucle sans modèle : la méthode du point critique</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Il existe une méthode expérimentale pour régler un PID sans rien connaître du processus. Elle date de 1942, elle porte le nom de Ziegler et Nichols, et elle sert encore.</p>
-<p><strong>Le protocole.</strong> On coupe l’intégrale et la dérivée, on ne garde que le proportionnel. On <strong>réduit progressivement la bande proportionnelle</strong> jusqu’à obtenir une oscillation <strong>entretenue</strong>, ni amortie ni divergente. On note alors deux nombres : la bande proportionnelle critique <strong>BPc</strong>, et la période de l’oscillation <strong>Tc</strong>.</p>
-<p><strong>Les réglages qui en découlent</strong>, pour un PI :</p>
-<p>BP = 2,2 × BPc et Ti = 0,83 × Tc</p>
-<p>et pour un PID : BP = 1,7 × BPc, Ti = 0,50 × Tc, Td = 0,125 × Tc.</p>
-<p><strong>Pourquoi cela marche.</strong> Au point critique, la boucle est exactement à la limite de stabilité : on connaît donc son gain limite et sa période propre, ce qui suffit à caler un correcteur avec une marge choisie. Les coefficients ci-dessus correspondent à un amortissement d’un quart par période, jugé confortable pour un procédé industriel.</p>
-<p><strong>Pourquoi on ne le fait presque jamais en génie climatique.</strong> Il faut faire osciller volontairement l’installation, ce qu’on ne peut pas se permettre dans un bâtiment occupé, et attendre plusieurs périodes de vingt minutes. En pratique on part donc <strong>des valeurs par défaut du constructeur</strong>, tirées de tables par type de boucle, et on les affine sur les courbes de tendance de la GTB. C’est le chapitre 14 qui fournit ces courbes, et c’est l’un des usages les plus concrets d’une supervision.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un automaticien vérifie avant de régler quoi que ce soit</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un régulateur mal réglé se corrige en dix minutes. Une boucle mal conçue ne se corrige pas du tout, et voici ce qui se contrôle avant.</p>
-<p><strong>L’emplacement de la sonde.</strong> Une sonde d’ambiance sur un mur de refend, à 1,50 m, loin d’une porte, d’un radiateur et du soleil. Une sonde en gaine à au moins trois diamètres d’un coude. Une sonde de départ après la pompe et après le point de mélange, jamais avant. La moitié des boucles instables le sont par l’emplacement de leur sonde, pas par leurs paramètres.</p>
-<p><strong>La cohérence des temps.</strong> Le temps de course du servomoteur, 60 à 240 s, doit être petit devant le temps de réponse du processus. Un servomoteur de 240 s sur une boucle de température d’eau qui répond en 90 s est ingouvernable, quel que soit le réglage.</p>
-<p><strong>Le sens d’action.</strong> Un régulateur de chauffage est <strong>inverse</strong> : la sortie augmente quand la mesure baisse. Un régulateur de refroidissement est <strong>direct</strong>. L’erreur de sens produit une boucle qui part en butée dès la première perturbation, et elle se voit en une minute sur une courbe de tendance.</p>
-<p><strong>Le recouvrement des séquences.</strong> Sur une CTA, batterie chaude, registres et batterie froide se partagent une même sortie 0 à 100 %. Une zone neutre de 5 à 10 % doit séparer les séquences, sans quoi la centrale chauffe et refroidit en même temps. C’est l’anomalie la plus coûteuse d’une installation tertiaire, elle ne se voit sur aucun relevé de température, et seule la lecture des états de sortie la révèle.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« Le thermostat envoie de la chaleur. »</strong> Il n’envoie qu’un ordre. La chaleur vient du générateur et de l’émetteur ; le thermostat ne fait que fermer un contact ou déplacer une consigne. La distinction paraît puérile jusqu’au moment où l’on doit expliquer pourquoi un local reste froid malgré un thermostat « à fond ».</p>
-<p><strong>« Il faut une BP la plus petite possible pour être précis. »</strong> La précision se gagne avec l’intégrale, la stabilité se gagne avec la BP. Chercher la précision en resserrant la BP produit une installation qui oscille, use les servomoteurs et fatigue les occupants.</p>
-<p><strong>« La vanne est trop petite, elle ne laisse pas passer assez d’eau. »</strong> Une vanne de régulation <strong>doit</strong> perdre de la charge : c’est sa fonction. Une vanne qui ne perd rien ne régule rien. La bonne question n’est pas si elle est petite, mais si son autorité atteint 0,3.</p></div></details>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Distinguer</strong> une boucle ouverte d’une boucle fermée sur un schéma.</li>
+
+<li><strong>Nommer</strong> les cinq éléments d’une boucle, sans en oublier la perturbation.</li>
+
+<li><strong>Calculer</strong> l’écart statique d’un régulateur proportionnel.</li>
+
+<li><strong>Choisir</strong> une bande proportionnelle, et dire ce qui arrive si on la rate.</li>
+
+<li><strong>Vérifier</strong> l’autorité d’une vanne, et expliquer pourquoi elle décide de tout.</li>
+
+</ol>
+
+</div>
+
+<p><strong>La régulation pèse 22 % du temps de l’épreuve</strong>, davantage que tout autre thème, et c’est le terrain fort de l’option C. Vous y êtes meilleurs que les autres options : ce chapitre est celui où l’écart se creuse.</p>
+
+<h2 id="12-1-regler-une-douche">12.1 Régler une douche</h2>
+
+<p>Sous la douche, vous tournez le mitigeur, vous attendez, l’eau est trop chaude, vous corrigez, elle est trop froide. Vous venez d’exécuter une boucle de régulation complète, et d’en rencontrer les trois difficultés.</p>
+
+<div class="cle">
+
+<p><strong>Le retard</strong> : entre l’action et l’effet, il s’écoule le temps que l’eau parcoure le tuyau. <strong>Le gain</strong> : un petit geste change beaucoup, ou peu. <strong>L’oscillation</strong> : trop corriger, trop vite, fait dépasser dans l’autre sens. Toute la régulation tient dans ces trois mots.</p>
+
+</div>
+
+<h2 id="12-2-les-deux-facons-de-regler">12.2 Les deux façons de régler</h2>
+
+<figure class="schema"><div class="dessin" data-schema="boucle-regulation"></div><figcaption>Boucle ouverte et boucle fermée : la seconde mesure ce qu’elle a produit, la première fait confiance.</figcaption></figure>
+
+<p><strong>La boucle ouverte.</strong> On agit sur une grandeur d’entrée, sans jamais vérifier le résultat. La loi d’eau du chapitre 13 en est l’exemple type : on choisit une température de départ <strong>d’après la météo</strong>, sans mesurer l’ambiance.</p>
+
+<p><strong>La boucle fermée.</strong> On mesure la grandeur qu’on veut tenir, on la compare à la consigne, et on agit sur l’écart. C’est le thermostat d’ambiance.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th></th>
+
+<th>Boucle ouverte</th>
+
+<th>Boucle fermée</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Mesure la sortie</td>
+
+<td><strong>non</strong></td>
+
+<td><strong>oui</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Corrige les perturbations imprévues</td>
+
+<td>non</td>
+
+<td><strong>oui</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Risque d’instabilité</td>
+
+<td><strong>aucun</strong></td>
+
+<td>oui</td>
+
+</tr>
+
+<tr>
+
+<td>Rapidité</td>
+
+<td>immédiate</td>
+
+<td>limitée par le retard</td>
+
+</tr>
+
+<tr>
+
+<td>Exemple</td>
+
+<td>loi d’eau</td>
+
+<td>thermostat d’ambiance</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Les deux ne s’opposent pas : <strong>elles se combinent</strong>. Une installation correcte règle la température de départ en boucle ouverte sur la météo, et corrige le résultat en boucle fermée par une sonde d’ambiance. La première fait le gros du travail sans risque, la seconde rattrape ce que la première ne peut pas savoir.</p>
+
+</div>
+
+<h2 id="12-3-le-vocabulaire-et-il-compte">12.3 Le vocabulaire, et il compte</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Terme</th>
+
+<th>Ce que c’est</th>
+
+<th>Exemple</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td><strong>Grandeur réglée</strong></td>
+
+<td>ce qu’on veut tenir</td>
+
+<td>la température du local</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Consigne</strong></td>
+
+<td>la valeur voulue</td>
+
+<td>20 °C</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Écart</strong></td>
+
+<td>consigne moins mesure</td>
+
+<td>+ 1,5 K</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Grandeur réglante</strong></td>
+
+<td>ce sur quoi on agit</td>
+
+<td>l’ouverture de la vanne</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Perturbation</strong></td>
+
+<td>ce qui dérange, non mesuré</td>
+
+<td>le soleil, une porte ouverte</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Organe de réglage</strong></td>
+
+<td>ce qui exécute</td>
+
+<td>vanne, registre, variateur</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Capteur</strong></td>
+
+<td>ce qui mesure</td>
+
+<td>sonde Pt1000</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="piege">
+
+<p>Confondre <strong>grandeur réglée</strong> et <strong>grandeur réglante</strong> est l’erreur la plus sanctionnée du thème, parce qu’elle révèle qu’on n’a pas compris le sens de la boucle. La réglée est <strong>en sortie</strong>, c’est le but ; la réglante est <strong>en entrée</strong>, c’est le moyen.</p>
+
+</div>
+
+<h2 id="12-4-le-tout-ou-rien">12.4 Le tout ou rien</h2>
+
+<p>Le plus simple des régulateurs : au-dessous d’un seuil, on chauffe ; au-dessus, on arrête. Un <strong>différentiel</strong> sépare les deux seuils, sans quoi l’appareil claquerait en permanence.</p>
+
+<div class="formule">
+
+<p><strong>Nombre de cycles par heure : N = Φ × x × (1 − x) / ( C × Δ )</strong></p>
+
+<ul>
+
+<li><strong>Φ</strong><span>: puissance de l’appareil · <strong>C</strong> : capacité thermique du système</span></li>
+
+<li><strong>Δ</strong><span>: différentiel · <strong>x</strong> : taux de charge, entre 0 et 1</span></li>
+
+</ul>
+
+<p>Le maximum est atteint à <strong>mi-charge</strong> : <strong>N max = Φ / ( 4 × C × Δ )</strong></p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : d&#39;où vient le taux de cycles, et pourquoi il culmine à mi-charge</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Appelons Φ la puissance de l’appareil, x la fraction de cette puissance que le système consomme en permanence, C la capacité thermique et Δ le différentiel.</p>
+
+<p><strong>Pendant la marche</strong>, le système reçoit Φ et en perd xΦ : il monte donc de Δ à la vitesse (1 − x)Φ / C. La durée de marche vaut :</p>
+
+<p>t marche = C Δ / [ (1 − x) Φ ]</p>
+
+<p><strong>Pendant l’arrêt</strong>, il ne reçoit rien et perd xΦ : il descend de Δ à la vitesse xΦ / C. La durée d’arrêt vaut :</p>
+
+<p>t arrêt = C Δ / ( x Φ )</p>
+
+<p><strong>La période</strong> est la somme :</p>
+
+<p>T = (C Δ / Φ) × [ 1/(1−x) + 1/x ] = C Δ / [ Φ x (1 − x) ]</p>
+
+<p><strong>La fréquence</strong> est son inverse : N = Φ x (1 − x) / (C Δ).</p>
+
+<p><strong>Le maximum.</strong> Le produit x(1 − x) est maximal en x = 0,5, où il vaut 0,25. D’où <strong>N max = Φ / (4 C Δ)</strong>.</p>
+
+<p><strong>Ce que la formule enseigne, et qui compte plus que la formule.</strong></p>
+
+<ol type="1">
+
+<li><strong>Une machine surdimensionnée cycle davantage</strong>, à cause du Φ au numérateur : c’est la démonstration quantitative du court-cycle du chapitre 5.</li>
+
+<li><strong>Un système inertiel cycle moins</strong>, à cause du C au dénominateur. Un plancher chauffant en tout ou rien est acceptable, un ventilo-convecteur ne l’est pas.</li>
+
+<li><strong>Le pire moment est la mi-saison</strong>, pas le grand froid. À 100 % de charge la machine ne s’arrête jamais, et ne cycle donc pas du tout.</li>
+
+</ol>
+
+<p><strong>Les hypothèses.</strong> Pertes proportionnelles à l’écart, capacité concentrée en un seul point, aucun retard de mesure. Le retard, en pratique, <strong>allonge</strong> la période et <strong>augmente l’amplitude</strong> : le local dépasse le différentiel des deux côtés, et c’est ce qu’on voit sur un enregistrement réel.</p></div></details>
+
+</div><h3 id="exemple-résolu-1.-un-générateur-qui-cycle">Exemple résolu 1. Un générateur qui cycle</h3>
+
+<p>Une chaudière de <strong>25 kW</strong>, un circuit contenant l’équivalent de <strong>200 litres</strong> d’eau, différentiel de <strong>6 K</strong>.</p>
+
+<p><strong>La capacité.</strong> C = 200 × 4 185 = 837 000 J/K = <strong>0,232 kWh/K</strong>.</p>
+
+<p><strong>Le nombre maximal de cycles.</strong> N = 25 / (4 × 0,232 × 6) = 25 / 5,57 = <strong>4,5 cycles par heure</strong>.</p>
+
+<p><strong>La lecture.</strong> Environ un cycle toutes les treize minutes : c’est acceptable. Avec une chaudière de 75 kW sur le même circuit, on passerait à <strong>13 cycles par heure</strong>, soit un toutes les quatre minutes, ce qui est le comportement d’une installation surdimensionnée.</p>
+
+<p><strong>La parade la moins chère.</strong> Augmenter C, en ajoutant une <strong>bouteille de mélange</strong> ou un ballon tampon. Doubler le volume d’eau divise le nombre de cycles par deux, sans toucher au générateur.</p>
+
+<h2 id="12-5-le-proportionnel-et-son-ecart-qui-ne-part-pas">12.5 Le proportionnel, et son écart qui ne part pas</h2>
+
+<p>Un régulateur proportionnel n’ouvre pas tout ou rien : il ouvre <strong>d’autant plus que l’écart est grand</strong>.</p>
+
+<div class="formule">
+
+<p><strong>Sortie = 100 × écart / BP</strong>, en pourcentage d’ouverture</p>
+
+<p><strong>BP</strong>, la <strong>bande proportionnelle</strong>, est l’écart qui fait passer la sortie de 0 à 100 %. Elle s’exprime dans l’unité de la grandeur réglée : en kelvins pour une température.</p>
+
+</div>
+
+<div class="cle">
+
+<p>Conséquence immédiate, et elle surprend toujours : <strong>pour que la vanne reste ouverte, il faut qu’un écart subsiste</strong>. Un régulateur proportionnel ne rejoint donc jamais exactement sa consigne. Cet écart résiduel s’appelle <strong>l’écart statique</strong>.</p>
+
+</div>
+
+<div class="formule">
+
+<p><strong>Écart statique = BP × taux de charge</strong></p>
+
+<p>À mi-charge, avec une BP de 4 K, la température se stabilise <strong>2 K sous la consigne</strong>.</p>
+
+</div>
+
+<div class="piege">
+
+<p>Réduire la BP réduit l’écart statique, et <strong>rapproche de l’instabilité</strong> : à BP trop faible, le régulateur se comporte comme un tout ou rien et le système oscille. C’est le compromis central de la régulation proportionnelle, et il ne se résout pas en réglant mieux : il se résout en ajoutant l’intégrale.</p>
+
+</div>
+
+<h2 id="12-6-p-pi-pid">12.6 P, PI, PID</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Action</th>
+
+<th>Ce qu’elle fait</th>
+
+<th>Ce qu’elle coûte</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td><strong>P</strong>, proportionnelle</td>
+
+<td>réagit à l’écart présent</td>
+
+<td>laisse un écart statique</td>
+
+</tr>
+
+<tr>
+
+<td><strong>I</strong>, intégrale</td>
+
+<td>cumule l’écart et l’annule</td>
+
+<td>ralentit, peut faire dépasser</td>
+
+</tr>
+
+<tr>
+
+<td><strong>D</strong>, dérivée</td>
+
+<td>réagit à la <strong>vitesse</strong> de l’écart</td>
+
+<td>amplifie le bruit de mesure</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>En génie climatique, <strong>le PI suffit presque toujours</strong>. Les processus thermiques sont lents et les mesures bruitées : la dérivée y apporte peu et déstabilise souvent. On la réserve aux boucles rapides, comme un débit ou une pression.</p>
+
+</div>
+
+<div class="formule">
+
+<p><strong>Temps d’intégrale Ti</strong> : le temps au bout duquel l’action intégrale a répété l’action proportionnelle.</p>
+
+<ul>
+
+<li>boucle de température de local : <strong>10 à 30 minutes</strong></li>
+
+<li>boucle de température d’eau : 2 à 5 minutes</li>
+
+<li>boucle de pression ou de débit : 10 à 60 secondes</li>
+
+</ul>
+
+</div>
+
+<div class="outil" data-outil="regulation">
+
+
+
+</div>
+
+<h2 id="12-7-le-calcul-retourne-regler-une-boucle">12.7 Le calcul retourné : régler une boucle</h2>
+
+<h3 id="exemple-résolu-2.-choisir-une-bande-proportionnelle">Exemple résolu 2. Choisir une bande proportionnelle</h3>
+
+<p>Un local doit être tenu à <strong>20 °C</strong>, avec un écart statique acceptable de <strong>0,5 K</strong> au taux de charge courant, qui vaut <strong>50 %</strong>.</p>
+
+<p><strong>1. La BP nécessaire.</strong> Écart = BP × charge, donc BP = 0,5 / 0,50 = <strong>1,0 K</strong>.</p>
+
+<p><strong>2. La vérification de stabilité.</strong> Une BP de 1 K sur un local, avec un retard de mesure de plusieurs minutes, est <strong>trop serrée</strong> : le système oscillera.</p>
+
+<p><strong>3. La bonne réponse.</strong> On garde une <strong>BP de 3 à 4 K</strong>, stable, et on ajoute une <strong>action intégrale</strong> de 15 minutes, qui annule l’écart statique sans toucher à la stabilité.</p>
+
+<p><strong>4. Le résultat.</strong> Écart statique nul en régime établi, dépassement transitoire d’environ 0,3 K après une relance, et pas d’oscillation entretenue.</p>
+
+<div class="cle">
+
+<p>Le raisonnement à retenir : <strong>on règle la BP pour la stabilité, et l’intégrale pour la précision</strong>. Chercher la précision avec la seule BP est ce qui produit les installations qui oscillent, et c’est la réponse attendue en épreuve.</p>
+
+</div>
+
+<h2 id="12-8-l-autorite-de-la-vanne">12.8 L’autorité de la vanne</h2>
+
+<p>Une vanne de régulation ne règle rien si elle est trop grosse pour son circuit.</p>
+
+<div class="formule">
+
+<p><strong>Autorité : a = ΔP vanne ouverte / ΔP total de la branche régulée</strong></p>
+
+<ul>
+
+<li><strong>a &gt; 0,5</strong><span>: excellent</span></li>
+
+<li><strong>a = 0,3 à 0,5</strong><span>: acceptable, c’est la cible</span></li>
+
+<li><strong>a &lt; 0,3</strong><span>: la vanne devient un interrupteur</span></li>
+
+</ul>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi une vanne surdimensionnée transforme le proportionnel en tout ou rien</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une vanne de régulation est censée délivrer un débit proportionnel à sa commande. Elle n’y arrive que si sa perte de charge domine celle du circuit qu’elle commande.</p>
+
+<p><strong>Le mécanisme.</strong> Quand la vanne se ferme, sa perte de charge augmente, mais la perte de charge du reste du circuit <strong>diminue</strong> puisque le débit baisse. Si le reste du circuit pesait déjà beaucoup, cette diminution compense presque l’augmentation, et le débit ne change quasiment pas. La vanne peut alors se fermer de 90 % sans que le débit tombe de plus de 30 %.</p>
+
+<p><strong>Ce que cela donne en courbe.</strong> La caractéristique installée se déforme : elle devient très plate sur les trois quarts de la course, puis chute brutalement à la fin. Le régulateur, qui suppose une réponse linéaire, se retrouve avec un gain qui varie d’un facteur dix selon la position : il est mou en haut de course et brutal en bas. Le résultat s’observe toujours de la même façon : <strong>un local qui ne bouge pas, puis qui s’effondre.</strong></p>
+
+<p><strong>La parade, en deux temps.</strong> D’abord <strong>choisir le Kvs correct</strong> : le Kvs est le débit en m³/h que la vanne laisse passer sous 1 bar, et on le calcule pour que la vanne consomme 30 à 50 % de la perte de la branche. Ensuite <strong>choisir la bonne caractéristique</strong> : une vanne à caractéristique <strong>égal pourcentage</strong> compense justement la déformation ci-dessus, et c’est pourquoi elle est la règle sur les batteries, dont la puissance n’est déjà pas linéaire avec le débit.</p>
+
+<p><strong>Un troisième outil, moderne.</strong> La vanne <strong>à pression différentielle indépendante</strong>, dite PIBCV, contient un régulateur de pression qui maintient constante la perte de charge à ses bornes. Son autorité vaut alors 1 par construction, quel que soit le reste du réseau, et l’équilibrage du chapitre 3 se fait par simple réglage de débit. C’est la solution qui s’impose en tertiaire neuf, et « justifier le choix d’une vanne PIBCV » est une question d’épreuve plausible dès les prochaines sessions.</p></div></details>
+
+</div><div class="cle">
+
+<p>Une batterie chaude est <strong>très non linéaire</strong> : à 30 % de débit, elle donne déjà 70 % de sa puissance, parce que l’eau y séjourne plus longtemps et se refroidit davantage. Une vanne linéaire sur une batterie donne donc une boucle ingouvernable ; c’est la vanne <strong>égal pourcentage</strong> qui redresse l’ensemble.</p>
+
+</div>
+
+<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Valeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Différentiel d’un thermostat d’ambiance</td>
+
+<td>0,5 à 1 K</td>
+
+</tr>
+
+<tr>
+
+<td>Différentiel d’un thermostat de chaudière</td>
+
+<td>5 à 8 K</td>
+
+</tr>
+
+<tr>
+
+<td>Cycles par heure acceptables, générateur</td>
+
+<td><strong>moins de 6</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Bande proportionnelle, local</td>
+
+<td>2 à 5 K</td>
+
+</tr>
+
+<tr>
+
+<td>Bande proportionnelle, batterie d’eau</td>
+
+<td>5 à 15 K</td>
+
+</tr>
+
+<tr>
+
+<td>Écart statique</td>
+
+<td><strong>BP × taux de charge</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Temps d’intégrale, local</td>
+
+<td>10 à 30 min</td>
+
+</tr>
+
+<tr>
+
+<td>Temps d’intégrale, eau</td>
+
+<td>2 à 5 min</td>
+
+</tr>
+
+<tr>
+
+<td>Temps d’intégrale, pression ou débit</td>
+
+<td>10 à 60 s</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Autorité de vanne visée</strong></td>
+
+<td><strong>0,3 à 0,5</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Caractéristique sur batterie</td>
+
+<td><strong>égal pourcentage</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Caractéristique sur mélange trois voies</td>
+
+<td>linéaire</td>
+
+</tr>
+
+<tr>
+
+<td>Temps de course d’un servomoteur de vanne</td>
+
+<td>60 à 240 s</td>
+
+</tr>
+
+<tr>
+
+<td>Précision d’une sonde Pt1000 classe B</td>
+
+<td>± 0,3 K à 0 °C</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le réflexe de diagnostic : <strong>un local qui oscille a un gain trop fort ou un retard trop long ; un local qui n’atteint jamais sa consigne a un écart statique, donc il manque une intégrale.</strong> Ces deux phrases classent la moitié des pannes de régulation.</p>
+
+</div>
+
+<h2 id="s-entrainer">S’entraîner</h2>
+
+<section class="exo" id="M12-MANUEL-e1" data-exo="M12-MANUEL-e1" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhgaHRudnguNTZ4YGl0anZ4L3hgeBF4Jw=="><p class="k">Exercice · B11</p><h4>L’écart statique</h4><div class="enonce">
+
+
+
+<p>Un régulateur proportionnel a une bande proportionnelle de <strong>6 K</strong>. Le système demande <strong>40 %</strong> de la puissance disponible. Quel écart subsiste entre la mesure et la consigne ?</p>
+
+</div><div class="indice" hidden>L’écart statique vaut la bande proportionnelle multipliée par le taux de charge exprimé en fraction, pas en pourcentage.</div></section>
+
+<section class="exo" id="M12-MANUEL-e2" data-exo="M12-MANUEL-e2" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhgbml0bW92eC41NnhgaXRqdngveGB4f3gn"><p class="k">Exercice · B11</p><h4>L’ouverture de la vanne</h4><div class="enonce">
+
+
+
+<p>Une boucle proportionnelle a une <strong>BP de 8 K</strong> et une consigne de <strong>45 °C</strong>. La mesure indique <strong>41,5 °C</strong>. Quelle est l’ouverture de l’organe de réglage ?</p>
+
+</div><div class="indice" hidden>L’ouverture vaut 100 fois l’écart divisé par la bande proportionnelle. L’écart est la différence entre la consigne et la mesure.</div></section>
+
+<section class="exo" id="M12-MANUEL-e3" data-exo="M12-MANUEL-e3" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhganRpa2x2eC41NnhgbnRqdngveGB4KTs0KXovNDMuBi9qaj9jeCc="><p class="k">Exercice · B11</p><h4>L’autorité d’une vanne</h4><div class="enonce">
+
+
+
+<p>Une vanne ouverte perd <strong>12 kPa</strong>. La branche qu’elle commande, vanne comprise, perd <strong>38 kPa</strong>. Quelle est l’autorité de la vanne ?</p>
+
+</div><div class="indice" hidden>L’autorité est le rapport de la perte de charge de la vanne ouverte à la perte de charge totale de la branche régulée. Le résultat est compris entre 0 et 1.</div></section>
+
+<section class="exo" id="M12-MANUEL-e4" data-exo="M12-MANUEL-e4" data-type="justification" data-savoir="B11" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B11</p><h4>Un local qui oscille</h4><div class="enonce">
+
+
+
+<p>Dans une salle de classe régulée en proportionnel, la température oscille de ±1,5 K avec une période d’environ vingt minutes, alors que la consigne est stable. Expliquez et proposez.</p>
+
+</div><div class="indice" hidden>Une oscillation entretenue signale que la boucle corrige trop fort ou trop tard. Cherchez d’abord ce qui règle l’amplitude de la correction, puis vérifiez où la sonde est posée.</div><ul class="verifier" hidden><li>J’ai relié l’oscillation à un gain trop fort, c’est-à-dire une bande proportionnelle trop étroite.</li><li>J’ai cité l’autre cause possible : un retard entre l’action et la mesure, sonde mal placée ou vanne lente.</li><li>J’ai proposé d’élargir la BP et dit ce que cela coûte : un écart statique.</li><li>J’ai proposé de compenser par l’intégrale, avec un ordre de grandeur de Ti.</li></ul></section>
+
+<h2 id="vous-verifier">Vous vérifier</h2>
+
+<div class="quiz">
+
+<ul>
+
+<li>Une boucle fermée se reconnaît à : <strong>la mesure de la grandeur réglée</strong> | la présence d’une vanne</li>
+
+<li>La loi d’eau est une régulation : <strong>en boucle ouverte</strong> | en boucle fermée</li>
+
+<li>La grandeur réglée est : <strong>ce qu’on veut tenir</strong> | ce sur quoi on agit</li>
+
+<li>Un différentiel sert à : <strong>éviter les claquements</strong> | améliorer la précision</li>
+
+<li>Une machine surdimensionnée en tout ou rien : <strong>cycle davantage</strong> | cycle moins</li>
+
+<li>Le nombre de cycles est maximal : <strong>à mi-charge</strong> | à pleine charge</li>
+
+<li>Ajouter un ballon tampon : <strong>réduit le nombre de cycles</strong> | l’augmente</li>
+
+<li>Un régulateur proportionnel laisse : <strong>un écart statique</strong> | une oscillation permanente</li>
+
+<li>Cet écart vaut : <strong>BP × taux de charge</strong> | BP seule</li>
+
+<li>Pour l’annuler, on ajoute : <strong>l’action intégrale</strong> | l’action dérivée</li>
+
+<li>En génie climatique, la dérivée est : <strong>rarement utile</strong> | indispensable</li>
+
+<li>L’autorité d’une vanne doit valoir au moins : <strong>0,3</strong> | 0,05</li>
+
+<li>Sur une batterie, on choisit une caractéristique : <strong>égal pourcentage</strong> | linéaire</li>
+
+</ul>
+
+</div>
+
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Régler une boucle sans modèle : la méthode du point critique</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Il existe une méthode expérimentale pour régler un PID sans rien connaître du processus. Elle date de 1942, elle porte le nom de Ziegler et Nichols, et elle sert encore.</p>
+
+<p><strong>Le protocole.</strong> On coupe l’intégrale et la dérivée, on ne garde que le proportionnel. On <strong>réduit progressivement la bande proportionnelle</strong> jusqu’à obtenir une oscillation <strong>entretenue</strong>, ni amortie ni divergente. On note alors deux nombres : la bande proportionnelle critique <strong>BPc</strong>, et la période de l’oscillation <strong>Tc</strong>.</p>
+
+<p><strong>Les réglages qui en découlent</strong>, pour un PI :</p>
+
+<p>BP = 2,2 × BPc et Ti = 0,83 × Tc</p>
+
+<p>et pour un PID : BP = 1,7 × BPc, Ti = 0,50 × Tc, Td = 0,125 × Tc.</p>
+
+<p><strong>Pourquoi cela marche.</strong> Au point critique, la boucle est exactement à la limite de stabilité : on connaît donc son gain limite et sa période propre, ce qui suffit à caler un correcteur avec une marge choisie. Les coefficients ci-dessus correspondent à un amortissement d’un quart par période, jugé confortable pour un procédé industriel.</p>
+
+<p><strong>Pourquoi on ne le fait presque jamais en génie climatique.</strong> Il faut faire osciller volontairement l’installation, ce qu’on ne peut pas se permettre dans un bâtiment occupé, et attendre plusieurs périodes de vingt minutes. En pratique on part donc <strong>des valeurs par défaut du constructeur</strong>, tirées de tables par type de boucle, et on les affine sur les courbes de tendance de la GTB. C’est le chapitre 14 qui fournit ces courbes, et c’est l’un des usages les plus concrets d’une supervision.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un automaticien vérifie avant de régler quoi que ce soit</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un régulateur mal réglé se corrige en dix minutes. Une boucle mal conçue ne se corrige pas du tout, et voici ce qui se contrôle avant.</p>
+
+<p><strong>L’emplacement de la sonde.</strong> Une sonde d’ambiance sur un mur de refend, à 1,50 m, loin d’une porte, d’un radiateur et du soleil. Une sonde en gaine à au moins trois diamètres d’un coude. Une sonde de départ après la pompe et après le point de mélange, jamais avant. La moitié des boucles instables le sont par l’emplacement de leur sonde, pas par leurs paramètres.</p>
+
+<p><strong>La cohérence des temps.</strong> Le temps de course du servomoteur, 60 à 240 s, doit être petit devant le temps de réponse du processus. Un servomoteur de 240 s sur une boucle de température d’eau qui répond en 90 s est ingouvernable, quel que soit le réglage.</p>
+
+<p><strong>Le sens d’action.</strong> Un régulateur de chauffage est <strong>inverse</strong> : la sortie augmente quand la mesure baisse. Un régulateur de refroidissement est <strong>direct</strong>. L’erreur de sens produit une boucle qui part en butée dès la première perturbation, et elle se voit en une minute sur une courbe de tendance.</p>
+
+<p><strong>Le recouvrement des séquences.</strong> Sur une CTA, batterie chaude, registres et batterie froide se partagent une même sortie 0 à 100 %. Une zone neutre de 5 à 10 % doit séparer les séquences, sans quoi la centrale chauffe et refroidit en même temps. C’est l’anomalie la plus coûteuse d’une installation tertiaire, elle ne se voit sur aucun relevé de température, et seule la lecture des états de sortie la révèle.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« Le thermostat envoie de la chaleur. »</strong> Il n’envoie qu’un ordre. La chaleur vient du générateur et de l’émetteur ; le thermostat ne fait que fermer un contact ou déplacer une consigne. La distinction paraît puérile jusqu’au moment où l’on doit expliquer pourquoi un local reste froid malgré un thermostat « à fond ».</p>
+
+<p><strong>« Il faut une BP la plus petite possible pour être précis. »</strong> La précision se gagne avec l’intégrale, la stabilité se gagne avec la BP. Chercher la précision en resserrant la BP produit une installation qui oscille, use les servomoteurs et fatigue les occupants.</p>
+
+<p><strong>« La vanne est trop petite, elle ne laisse pas passer assez d’eau. »</strong> Une vanne de régulation <strong>doit</strong> perdre de la charge : c’est sa fonction. Une vanne qui ne perd rien ne régule rien. La bonne question n’est pas si elle est petite, mais si son autorité atteint 0,3.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M11-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 11</span></a><a class="ap" href="M13-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 13</span></a></div></nav>
 <p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

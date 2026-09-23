@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Domotique, cours 2 — réseau IP et sécurité</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="domotique/COURS2-RESEAU-IP-CYBERSECURITE" data-public="prof">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS1-ENERGIE-ELECTRIQUE.html" rel="prev" title="Domotique, cours 1 — l'énergie électrique" aria-label="Domotique, cours 1 — l'énergie électrique">&lsaquo;</a><a class="fleche" href="COURS3-VDI-FIBRE-CEM.html" rel="next" title="Domotique, cours 3 — VDI, fibre et CEM" aria-label="Domotique, cours 3 — VDI, fibre et CEM">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/COURS2-RESEAU-IP-CYBERSECURITE">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
@@ -23,816 +31,1617 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="PROF2-MEDIAS.html">La paire torsadée et ses 100 m</a></b><span class="ou">Prof 2 — les médias</span><span class="car">le PoE fait passer l'énergie par ce câble, et la limite de longueur y vaut pour la puissance comme pour les données.</span></li><li><b><a href="PROF3-PROTOCOLES.html">Les trois couches d'un protocole</a></b><span class="ou">Prof 3 — les protocoles</span><span class="car">BACnet/IP et Modbus/TCP traversent le réseau IP du bâtiment, et un pare-feu les filtre comme n'importe quel autre service.</span></li><li><b><a href="PROF4-SURETE.html">Sûreté contre sécurité</a></b><span class="ou">Prof 4 — sûreté et sécurité</span><span class="car">une attaque informatique est un acte volontaire, et l'on conçoit contre un adversaire qui contourne ce qu'il voit.</span></li><li><b>L'écriture binaire d'un nombre</b><span class="car">un masque se lit en bits, et tout découpage d'adresses se fait en puissances de deux.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#cinq-cas-et-ce-qu-ils-ont-en-commun">Cinq cas, et ce qu’ils ont en commun</a><a href="#des-cartes-bancaires-volees-avec-les-identifiants-d-un-frigoriste-target-2013">Des cartes bancaires volées avec les identifiants d’un frigoriste, Target, 2013</a><a href="#dix-gigaoctets-sortis-par-un-aquarium-un-casino-nord-americain-2017">Dix gigaoctets sortis par un aquarium, un casino nord-américain, 2017</a><a href="#une-gtb-joignable-depuis-internet-le-bureau-de-google-a-sydney-2013">Une GTB joignable depuis Internet, le bureau de Google à Sydney, 2013</a><a href="#des-cameras-qui-font-tomber-une-partie-d-internet-mirai-et-dyn-2016">Des caméras qui font tomber une partie d’Internet, Mirai et Dyn, 2016</a><a href="#deux-immeubles-prives-de-chauffage-lappeenranta-finlande-2016">Deux immeubles privés de chauffage, Lappeenranta (Finlande), 2016</a><a href="#la-ou-la-methode-change-l-attaquant-qui-entre-par-la-porte-prevue">Là où la méthode change : l’attaquant qui entre par la porte prévue</a><a href="#le-calcul-retourne">Le calcul retourné</a><a href="#trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#les-questions-qui-destabilisent">Les questions qui déstabilisent</a></div></nav>
-<h2 id="cinq-cas-et-ce-qu-ils-ont-en-commun">Cinq cas, et ce qu’ils ont en commun</h2>
-<p>Le réseau IP d’un bâtiment tertiaire raccorde des équipements que personne ne tient pour des ordinateurs : un régulateur de chaufferie, une caméra, un contrôleur de porte, le thermomètre d’un aquarium. Les cinq incidents qui suivent sont réels et documentés ; chacun est entré par l’un de ces équipements, ou par le compte de l’entreprise qui les entretient.</p>
-<p>Leur point commun tient en une phrase. <strong>Chaque fois, un équipement ou un compte du côté technique pouvait joindre ce qu’il n’avait aucune raison de joindre, ou être joint par qui n’avait aucune raison de le faire.</strong> Le mot de passe d’usine, la mise à jour oubliée, l’identifiant volé ne sont que des clés ; la porte était ouverte parce que le réseau ne disait pas qui a le droit de parler à qui.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr>
-<th>Cas</th>
-<th>Ce qui a servi de porte</th>
-<th>Ce qui manquait</th>
-<th>La théorie qu’il oblige à tenir</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Target, 2013</td>
-<td>les identifiants d’un prestataire de froid et de climatisation</td>
-<td>un portail extérieur isolé du reste du réseau</td>
-<td>commutateur, routeur, VLAN, pare-feu, DMZ</td>
-</tr>
-<tr>
-<td>Un casino, 2017</td>
-<td>un aquarium connecté</td>
-<td>un filtrage de ce qui sort</td>
-<td>adresse, masque, passerelle, plan d’adressage</td>
-</tr>
-<tr>
-<td>Google, Sydney, 2013</td>
-<td>une GTB joignable depuis Internet</td>
-<td>un accès distant maîtrisé</td>
-<td>exposition, accès distant, mises à jour</td>
-</tr>
-<tr>
-<td>Mirai, 2016</td>
-<td>des caméras et des enregistreurs</td>
-<td>le changement des identifiants d’usine</td>
-<td>services, identifiants, PoE</td>
-</tr>
-<tr>
-<td>Lappeenranta, 2016</td>
-<td>une régulation de chauffage joignable</td>
-<td>l’autonomie de la régulation</td>
-<td>déni de service, mode dégradé</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Un réseau de bâtiment se conçoit comme une liste de conversations autorisées. <strong>Ce qui n’y figure pas doit être techniquement impossible, et pas seulement interdit</strong> : c’est le travail du plan d’adressage, des VLAN et du pare-feu.</p>
-</div>
-<p>Le référentiel place l’aspect matériel des réseaux au niveau 3 pour l’option C, l’aspect logiciel au niveau 2 et la « sécurité logicielle » du VDI au niveau 3 ; les deux autres options sont à 0 ou 1. Le binaire des masques et le découpage en sous-réseaux dépassent le niveau 2 : la fiche professeur de DOMA6 demande de ne pas les introduire en séance.</p>
-<h2 id="des-cartes-bancaires-volees-avec-les-identifiants-d-un-frigoriste-target-2013">Des cartes bancaires volées avec les identifiants d’un frigoriste, Target, 2013</h2>
-<p><em>Selon le rapport de la majorité de la commission du Commerce du Sénat des États-Unis, rendu public le 25 mars 2014, les attaquants ont volé par un courriel piégé les identifiants de Fazio Mechanical Services, entreprise de chauffage, climatisation et froid de Pennsylvanie. Ils ouvraient un portail de fournisseurs, vraisemblablement la facturation Ariba, mal isolé du reste du réseau. Les attaquants ont atteint les terminaux de paiement : 40 millions de cartes et les données de 70 millions de clients ont été exposées. Le prestataire, cité par Brian Krebs, n’utilisait cette liaison que pour la facturation, les contrats et la gestion de projets.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Un courriel piégé infecte un poste du prestataire, protégé par un antivirus gratuit pour particuliers ; un logiciel espion récupère ses identifiants.</li>
-<li>Vers le 12 novembre 2013, les attaquants se connectent au portail des fournisseurs.</li>
-<li>Du portail, ils atteignent le réseau interne ; le rapport relève l’emploi d’un compte par défaut d’un logiciel d’administration.</li>
-<li>Du 15 au 30 novembre, ils infectent la majorité des terminaux de paiement.</li>
-<li>À partir du 2 décembre, les données sortent vers un serveur extérieur ; les alertes de l’outil de détection restent sans suite.</li>
-<li>Le 12 décembre, le ministère de la Justice prévient Target, trente jours après la première connexion.</li>
-</ol>
-</div>
-<div class="piege">
-<p>Le cas circule sous la forme « Target piraté par sa climatisation ». <strong>Ce récit est faux, et sa correction est la leçon</strong> : aucun équipement de climatisation n’a été attaqué. Un compte fait pour déposer des factures a ouvert un réseau où il n’avait rien à faire. Le défaut tenait à l’architecture, et non au mot de passe, qui sera toujours volable.</p>
-</div>
-<p>Le <strong>commutateur</strong> relie les équipements d’un même réseau et aiguille les trames d’après l’adresse physique, dite MAC. Le <strong>routeur</strong> relie des réseaux différents d’après l’adresse IP. Le <strong>VLAN</strong> découpe un commutateur en plusieurs commutateurs logiques : deux ports de VLAN différents ne communiquent pas directement, et chaque VLAN porte son propre sous-réseau, avec sa passerelle.</p>
-<p><strong>Séparer en VLAN ne filtre rien : c’est le routeur qui relie les VLAN, et c’est donc sur lui que se décide ce qui passe.</strong> Un routeur qui laisse tout passer rend la segmentation décorative. Le rapport le constate : entrés par un compte de fournisseur, les attaquants sont passés des zones les moins sensibles à celles qui portaient les données des clients.</p>
-<p>Le <strong>pare-feu</strong> applique des règles écrites flux par flux : source, destination, protocole et port, sens, décision ; la dernière règle refuse tout ce que les précédentes n’ont pas autorisé. La <strong>zone démilitarisée</strong>, ou DMZ, reçoit ce qui doit être joignable de l’extérieur : un portail de fournisseurs, un relais VPN, un poste de rebond. Aucune connexion n’en part vers l’intérieur, sauf celle, unique, qu’on a écrite.</p>
-<figure>
-<img src="img/COURS2-RESEAU-IP-CYBERSECURITE/c2-zones.png" alt="Les zones d’un réseau de bâtiment et les seuls flux autorisés. Le prestataire entre par la DMZ et n’atteint que la supervision ; rien d’interne n’est joignable depuis Internet." />
-<figcaption aria-hidden="true">Les zones d’un réseau de bâtiment et les seuls flux autorisés. Le prestataire entre par la DMZ et n’atteint que la supervision ; rien d’interne n’est joignable depuis Internet.</figcaption>
-</figure>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La matrice des flux d&#39;un immeuble de bureaux</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La matrice se remplit avant le câblage, à partir de l’inventaire, et produit les règles du pare-feu. Ce qui n’y figure pas est refusé.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>De</th>
-<th>Vers</th>
-<th>Ce qui passe</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Vidéo : caméras</td>
-<td>Vidéo : enregistreurs</td>
-<td>le flux vidéo, sans traverser le pare-feu</td>
-</tr>
-<tr>
-<td>Serveurs : supervision</td>
-<td>GTB : automates</td>
-<td>BACnet/IP, Modbus/TCP</td>
-</tr>
-<tr>
-<td>Accès : contrôleurs</td>
-<td>Serveurs : supervision</td>
-<td>événements et alarmes de porte</td>
-</tr>
-<tr>
-<td>Bureautique : poste d’accueil</td>
-<td>Vidéo : un enregistreur</td>
-<td>la consultation des images</td>
-</tr>
-<tr>
-<td>DMZ : poste de rebond</td>
-<td>Serveurs : supervision</td>
-<td>l’interface d’exploitation</td>
-</tr>
-<tr>
-<td>VLAN techniques</td>
-<td>Serveurs : heure</td>
-<td>NTP</td>
-</tr>
-<tr>
-<td>Invités</td>
-<td>Internet</td>
-<td>la navigation, et rien d’autre</td>
-</tr>
-</tbody>
-</table></div>
-<p>Deux absences sont voulues : <strong>aucun VLAN technique ne sort vers Internet</strong>, et <strong>la bureautique n’atteint ni la GTB ni le contrôle d’accès</strong>, pour qu’un poste compromis par une pièce jointe ne puisse pas ouvrir une porte.</p></div></details>
-</div><p><strong>En classe.</strong> En DOMA6, « le réseau IP du bâtiment », le cas répond mieux qu’une liste de raisons à la question d), où le maître d’ouvrage demande pourquoi deux réseaux. En DOMA16, « analyser le risque, zoner le bâtiment », les six étapes se lisent comme une analyse de risques menée à l’envers. La question à poser : « De quoi le frigoriste avait-il besoin, et à quoi avait-il accès ? » L’écart entre les deux colonnes est la faute.</p>
-<h2 id="dix-gigaoctets-sortis-par-un-aquarium-un-casino-nord-americain-2017">Dix gigaoctets sortis par un aquarium, un casino nord-américain, 2017</h2>
-<p><em>L’incident n’est connu que par l’éditeur Darktrace, qui vend l’outil de détection qui l’a repéré : c’est une source commerciale, et le casino n’est pas nommé. Selon son rapport de juillet 2017, rapporté par SecurityWeek, un casino d’Amérique du Nord avait installé un aquarium à capteurs, raccordé par un VPN pour l’isoler. Environ 10 Go de données sont sortis par l’aquarium vers un appareil situé en Finlande, sur un protocole habituellement réservé à l’audio et à la vidéo.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>L’aquarium joint son fournisseur par un tunnel VPN dédié.</li>
-<li>L’attaquant, déjà présent dans le réseau, se connecte à ce VPN par force brute ou avec des identifiants volés.</li>
-<li>Environ 10 Go sortent par ce chemin vers la Finlande.</li>
-<li>L’outil signale un transfert vers une destination rare ; l’éditeur ignore le contenu des données.</li>
-<li>En avril 2018, la présidente de Darktrace présente au contraire le thermomètre comme l’entrée, et nomme la base des gros joueurs.</li>
-</ol>
-</div>
-<p>Tout équipement IP reçoit trois réglages : une <strong>adresse</strong>, un <strong>masque</strong>, une <strong>passerelle</strong>. Pour chaque paquet, il applique le masque à sa propre adresse et à celle du destinataire : si les résultats sont égaux, il parle directement au destinataire ; sinon, il remet le paquet à la passerelle. <strong>La passerelle est le seul chemin vers tout ce qui n’est pas le réseau local : c’est sur elle que se décide ce qu’un objet a le droit de dire au monde.</strong></p>
-<div class="formule">
-<p><strong>réseau = adresse ET masque</strong></p>
-<ul>
-<li><strong>adresse</strong><span>: 32 bits, écrits en quatre octets de 0 à 255</span></li>
-<li><strong>masque</strong><span>: /n, soit n bits à 1 en tête ; /24 s’écrit 255.255.255.0</span></li>
-<li><strong>ET</strong><span>: opération bit à bit ; un bit du résultat vaut 1 si les deux bits valent 1</span></li>
-<li><strong>2^(32 − n) − 2</strong><span>: nombre d’adresses utilisables d’un réseau /n</span></li>
-</ul>
-<blockquote>
-<p>254 en /24, 62 en /26, 14 en /28 : l’adresse du réseau et celle de diffusion sont retirées. La RFC 3021 fait exception pour les liaisons point à point en /31.</p>
-</blockquote>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le masque en binaire, sur un réseau qui n&#39;est pas un /24</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Soit une caméra en 192.168.20.75, masque 255.255.255.192, soit /26. Les trois premiers octets du masque valent 255 et recopient l’adresse ; tout se joue sur le dernier. 75 s’écrit 01001011, 192 s’écrit 11000000 : le ET donne 01000000, soit <strong>64</strong>. La caméra est dans <strong>192.168.20.64/26</strong> : équipements de .65 à .126, diffusion en .127. L’enregistreur, en 192.168.20.11, donne 11 ET 192 = 0 : il est dans un autre réseau, et la caméra passe par la passerelle pour le joindre.</p>
-<p>En /24, le masque coupe entre deux octets et le calcul se fait à l’œil, comme en DOMA6 ; en /26, il coupe au milieu d’un octet et il faut le binaire. C’est pourquoi le niveau 2 s’arrête au /24.</p></div></details>
-</div><p>Le plan d’adressage de DOMA6 range chaque famille d’équipements dans une plage du dernier octet. Il sert à reconnaître un équipement à son adresse, et surtout à <strong>écrire des règles courtes</strong> : « la plage des caméras ne parle qu’à l’enregistreur » tient en une ligne. Avec un sous-réseau par famille, la même règle porte sur un réseau entier et survit à l’ajout d’une caméra.</p>
-<div class="cle">
-<p>Un objet technique a peu d’interlocuteurs, et on les connaît. <strong>Ce qui sort d’un VLAN technique se filtre donc par liste blanche</strong> : la supervision, le serveur d’heure, éventuellement le serveur du fabricant, et rien d’autre. L’aquarium n’avait aucune raison de parler à la Finlande.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Deux récits d&#39;une même source, et ce qu&#39;on peut en affirmer</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>En 2017, le rapport décrit un attaquant déjà dans le réseau, qui se sert du tunnel de l’aquarium comme d’une <strong>sortie</strong>. En 2018, la présidente de l’éditeur décrit le thermomètre comme une <strong>entrée</strong>. Rien dans les sources ouvertes ne permet de trancher.</p>
-<p>Ce qui reste établi suffit au cours : un objet raccordé par un tunnel qui devait l’isoler a laissé passer un volume sans rapport avec sa fonction, et la destination inhabituelle l’a trahi. <strong>La leçon tient dans les deux versions</strong>, et le cas enseigne aussi une méthode : une source commerciale se cite comme telle, et deux récits divergents se signalent.</p></div></details>
-</div><p><strong>En classe.</strong> En DOMA6, partie 2, le cas donne au plan d’adressage une seconde raison d’être, écrire des règles. En DOMB6, « commutateur, plan d’adressage, PoE : mettre un réseau en service », une passerelle volontairement fausse fait constater que l’image arrive et que l’alerte ne part pas. La question à poser : « Un aquarium connecté arrive dans le hall : dans quelle plage le mettre, et à qui a-t-il le droit de parler ? »</p>
-<h2 id="une-gtb-joignable-depuis-internet-le-bureau-de-google-a-sydney-2013">Une GTB joignable depuis Internet, le bureau de Google à Sydney, 2013</h2>
-<p><em>Selon SecurityWeek et Threatpost, en mai 2013, deux chercheurs de Cylance, Billy Rios et Terry McCorkle, ont trouvé parmi les systèmes Tridium Niagara joignables sur Internet celui du bureau de Google à Sydney, dans l’immeuble Wharf 7. Prévenu, Google a retiré le système d’Internet. Cylance comptait plus de 25 000 systèmes semblables exposés.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Les chercheurs recensent les interfaces Tridium Niagara joignables depuis Internet ; le nom de Wharf 7 y apparaît.</li>
-<li>Un défaut de la version ancienne installée permet de lire le fichier « config.bog ».</li>
-<li>Ce fichier livre les comptes et les mots de passe, conservés sous une forme trop faible.</li>
-<li>Avec un compte d’administrateur, l’interface donne la main sur la climatisation et les alarmes ; les chercheurs ne modifient rien.</li>
-</ol>
-</div>
-<p>Un équipement est <strong>exposé</strong> quand l’un de ses services répond depuis Internet : une interface web, un port BACnet/IP, un Telnet. Une adresse privée, au sens de la RFC 1918, ne l’est pas par elle-même, puisque ces adresses ne sont pas routées sur Internet. L’exposition naît d’un geste, la <strong>redirection de port</strong> posée sur le routeur « pour intervenir à distance », ou d’un automatisme, l’<strong>UPnP</strong>, par lequel l’équipement demande lui-même au routeur de lui ouvrir un port.</p>
-<p>Une fois exposé, un équipement est trouvé : les chercheurs ne cherchaient pas Google, leur recensement a fait apparaître son nom, et les 2³² adresses IPv4 ne cachent rien à une machine. <strong>Un bon mot de passe ne protège pas d’une faille qui permet de le lire</strong> : à Wharf 7, rien n’a été deviné. Une interface d’administration ne doit pas être seulement protégée ; elle ne doit pas être joignable.</p>
-<figure class="schema"><div class="dessin" data-schema="couches-protocole"></div><figcaption>Sur IP, BACnet circule en UDP sur le port 47808. Un protocole de bâtiment devient un service réseau comme un autre : joignable de loin si rien ne filtre, et, dans sa forme d’origine, sans vérification de l’émetteur d’une commande.</figcaption></figure>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois façons d&#39;intervenir à distance, de la pire à la bonne</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>La redirection de port vers l’interface.</strong> Tout Internet la voit, et sa sécurité est celle du logiciel le moins à jour : c’est Wharf 7.</p>
-<p><strong>Le service de connexion du fabricant.</strong> L’équipement ouvre une connexion sortante vers un serveur du fabricant, par où passe le technicien. Aucun port n’est ouvert, mais la sécurité du bâtiment dépend des comptes et des serveurs du fabricant.</p>
-<p><strong>Le VPN qui aboutit dans la DMZ.</strong> Un compte à son nom par technicien, un second facteur, un poste de rebond qui seul atteint la supervision, un accès ouvert à la demande, des connexions journalisées : c’est la figure des zones. <strong>Un VPN ouvert en permanence avec un compte partagé reproduit le cas Target.</strong></p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Le guide de l&#39;ANSSI pour la GTB, 2026</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’ANSSI a mis en ligne le 4 juin 2026 ses « Recommandations de sécurité relatives à la gestion technique et centralisée du bâtiment (GTB/GTC) », qui portent sur les architectures déployées, exemples hospitaliers à l’appui, et valent pour tous les secteurs. Selon un intégrateur, source commerciale, le guide compte vingt-six recommandations et deux annexes sur le filtrage de BACnet/IP et de Modbus ; le texte se relit sur le site de l’ANSSI avant d’être cité dans un CCTP. Son lien avec l’obligation d’automatiser les bâtiments tertiaires relève du cours 6.</p></div></details>
-</div><div class="piege">
-<p><strong>Déplacer l’interface du port 80 vers le port 8081 ne la cache pas.</strong> Une adresse n’a que 65 535 ports, et un balayage les essaie tous. La seule interface qu’on ne trouve pas depuis Internet est celle qui n’y répond pas.</p>
-</div>
-<p><strong>En classe.</strong> En DOMA25, « la GTB : supervision, hypervision, alarmes techniques », le cas montre que la supervision est aussi une porte. En DOMB26, « GTB : bâtir un synoptique, régler les alarmes », l’accès distant au synoptique se prépare comme une règle de pare-feu, jamais comme une redirection de port. La question à poser : « L’intégrateur demande d’ouvrir le port 443 du superviseur sur Internet. Que lui répondre, et que lui proposer ? »</p>
-<h2 id="des-cameras-qui-font-tomber-une-partie-d-internet-mirai-et-dyn-2016">Des caméras qui font tomber une partie d’Internet, Mirai et Dyn, 2016</h2>
-<p><em>Selon l’alerte TA16-288A de la CISA, l’agence américaine de cybersécurité, du 14 octobre 2016, Mirai cherche sur Internet des routeurs, des caméras et des enregistreurs vidéo, et s’y connecte en Telnet, sur les ports 23 et 2323, avec 62 couples d’identifiants d’usine. En septembre 2016, il frappe le site du journaliste Brian Krebs à plus de 620 Gbit/s et l’hébergeur OVH à au moins 1,1 Tbit/s. Le 21 octobre, l’opérateur de noms de domaine Dyn subit deux vagues qui perturbent Twitter, Amazon, Reddit, Spotify et Netflix ; Dyn compte 100 000 appareils engagés au plus. Une étude publiée à USENIX Security en 2017 estime le pic du réseau à 600 000 appareils.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>La caméra répond en Telnet depuis Internet, directement ou par une redirection de port.</li>
-<li>Mirai essaie ses 62 couples ; celui de l’usine est dans la liste.</li>
-<li>Le logiciel s’installe en mémoire vive, se signale à son serveur de commande, puis cherche à son tour d’autres appareils.</li>
-<li>Sur ordre, la caméra inonde la cible désignée, tout en continuant de filmer.</li>
-<li>Un redémarrage l’efface ; si l’identifiant n’a pas changé, rien n’empêche une nouvelle infection.</li>
-</ol>
-</div>
-<p><strong>Mirai n’a exploité aucune faille savante : il a essayé 62 mots de passe.</strong> Tout y relève donc du geste de mise en service. Chez le fabricant XiongMai, dont les appareils étaient au cœur de l’attaque contre Dyn selon la société Flashpoint, le mot de passe changé dans l’interface web ne changeait pas celui du Telnet, inscrit en dur dans le micrologiciel. Un équipement porte plusieurs <strong>services</strong>, et chacun est une porte, y compris ceux que l’installateur ne voit jamais.</p>
-<p>La mise en service d’une caméra comporte donc trois gestes, dans cet ordre : fermer les services inutiles, changer tous les identifiants, installer le dernier micrologiciel. Le débit explique le choix des caméras : cent mille appareils à 10 Mbit/s font 1 Tbit/s, et <strong>une caméra est conçue pour émettre en continu</strong> ; personne ne s’étonne de la voir émettre.</p>
-<p>Les caméras sont aussi, le plus souvent, le premier poste de puissance du réseau technique. Un commutateur PoE se choisit sur deux vérifications, que DOMA6 installe : <strong>chaque port</strong> fournit la puissance de la classe de l’équipement, et <strong>la somme des puissances réservées</strong> reste sous le budget. Le câble dissipe l’écart entre le port et l’équipement.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-</colgroup>
-<thead>
-<tr>
-<th>Classe</th>
-<th>Norme et type</th>
-<th>Au port</th>
-<th>À l’équipement</th>
-<th>Écart, dissipé dans 100 m de câble</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>802.3af, type 1</td>
-<td>4,0 W</td>
-<td>3,84 W</td>
-<td>0,16 W</td>
-</tr>
-<tr>
-<td>2</td>
-<td>802.3af, type 1</td>
-<td>7,0 W</td>
-<td>6,49 W</td>
-<td>0,51 W</td>
-</tr>
-<tr>
-<td>3</td>
-<td>802.3af, type 1</td>
-<td>15,4 W</td>
-<td>12,95 W</td>
-<td>2,45 W</td>
-</tr>
-<tr>
-<td>4</td>
-<td>802.3at, type 2</td>
-<td>30 W</td>
-<td>25,5 W</td>
-<td>4,5 W</td>
-</tr>
-<tr>
-<td>5</td>
-<td>802.3bt, type 3</td>
-<td>45 W</td>
-<td>40 W</td>
-<td>5 W</td>
-</tr>
-<tr>
-<td>6</td>
-<td>802.3bt, type 3</td>
-<td>60 W</td>
-<td>51 W</td>
-<td>9 W</td>
-</tr>
-<tr>
-<td>7</td>
-<td>802.3bt, type 4</td>
-<td>75 W</td>
-<td>62 W</td>
-<td>13 W</td>
-</tr>
-<tr>
-<td>8</td>
-<td>802.3bt, type 4</td>
-<td>90 W</td>
-<td>71,3 W</td>
-<td>18,7 W</td>
-</tr>
-</tbody>
-</table></div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La table des classes se retrouve avec trois nombres</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les normes IEEE sont payantes et n’ont pas été relues ; les valeurs de la table, tirées de documentations de fabricants, se <strong>reconstruisent</strong> avec trois hypothèses, ce qui vaut vérification : une tension minimale au port de 44 V en type 1, 50 V en types 2 et 3, 52 V en type 4 ; une résistance de boucle de 20 Ω en type 1, puis 12,5 Ω par jeu de paires ; un jeu de paires jusqu’au type 2, deux en 802.3bt.</p>
-<p>Avec I = P / U, k jeux de paires et des pertes k × R × (I / k)² : <strong>classe 3</strong>, 0,35 A, pertes 2,45 W, reste 12,95 W ; <strong>classe 6</strong>, 1,2 A, soit 0,6 A par jeu, pertes 9 W, reste 51 W ; <strong>classe 8</strong>, 1,73 A, soit 0,87 A par jeu, pertes 18,7 W, reste 71,3 W.</p>
-<p><strong>Le 802.3bt existe à cause de ce carré.</strong> Les mêmes 60 W sur deux paires feraient passer 1,2 A dans 12,5 Ω : 18 W de pertes, 42 W à l’équipement. Deux jeux de paires divisent le courant de chacun par deux, et ses pertes par quatre.</p></div></details>
-</div><div class="piege">
-<p><strong>Couper le port PoE d’une caméra infectée l’efface, et ne la guérit pas.</strong> Mirai réside en mémoire vive, que le redémarrage vide ; l’identifiant d’usine reste, et la caméra redevient une cible dès qu’elle répond de nouveau.</p>
-</div>
-<p><strong>En classe.</strong> En DOMA19, « vidéosurveillance », puis en DOMB22, « vidéosurveillance : caméras IP, enregistreur, champs et stockage », la mise en service commence par les trois gestes, que la fiche de recette consigne. Le budget PoE se traite en DOMA6, activité 3, puis sur le commutateur de l’atelier en DOMB6. La question à poser : « La caméra a été redémarrée et filme de nouveau : est-elle saine ? » Le droit propre à la vidéo relève du cours 7.</p>
-<h2 id="deux-immeubles-prives-de-chauffage-lappeenranta-finlande-2016">Deux immeubles privés de chauffage, Lappeenranta (Finlande), 2016</h2>
-<p><em>Selon BleepingComputer, qui s’appuie sur la presse finlandaise, le chauffage et l’eau chaude de deux immeubles de Lappeenranta, gérés par la société Valtia, ont été coupés de la fin d’octobre au 3 novembre 2016 par un déni de service distribué, sous des températures négatives. Les automates redémarraient en boucle ; déconnectés d’Internet, ils ont fonctionné de nouveau, selon le directeur de Valtia, Simo Rounela. Pour l’autorité finlandaise des communications, citée par Yle le 8 novembre, ils n’étaient pas la cible : ils ont servi à amplifier une attaque contre un organisme européen, et leur surcharge en a été l’effet secondaire.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Les régulateurs de chauffage sont joignables depuis Internet.</li>
-<li>Un flot de trafic les atteint, qu’ils en soient la cible ou qu’on les emploie comme relais ; l’auteur reste inconnu, selon le journal local Etelä-Saimaa.</li>
-<li>Les automates redémarrent en boucle ; le mécanisme exact n’a pas été publié.</li>
-<li>La régulation ne tourne plus : ni chauffage, ni eau chaude.</li>
-<li>La déconnexion d’Internet rétablit le fonctionnement : la régulation savait travailler seule.</li>
-</ol>
-</div>
-<p>Un déni de service ne vole rien : il empêche, en saturant une liaison ou un processeur. Dans l’<strong>amplification</strong>, l’attaquant envoie à des milliers d’équipements une courte requête UDP portant l’adresse de sa victime en guise d’origine ; UDP ne la vérifie pas, et chacun renvoie à la victime une réponse beaucoup plus longue. Tout équipement qui répond ainsi depuis Internet devient <strong>l’arme d’une attaque contre un tiers</strong>.</p>
-<div class="formule">
-<p><strong>débit reçu par la victime = débit des requêtes × facteur d’amplification</strong></p>
-<ul>
-<li><strong>facteur d’amplification</strong><span>: octets de la réponse sur octets de la requête, en charge utile UDP</span></li>
-<li><strong>SNMPv2</strong><span>: 6,3 ; <strong>SSDP</strong>, la découverte de l’UPnP : 30,8 ; <strong>NTP</strong> : 556,9</span></li>
-<li><strong>WS-Discovery</strong><span>, un protocole de découverte d’appareils : de 10 à 500</span></li>
-</ul>
-<blockquote>
-<p>Valeurs de l’alerte TA14-017A de la CISA, qui recommande de refuser l’accès aux services locaux depuis Internet. Avec SSDP, 10 Mbit/s de requêtes deviennent 308 Mbit/s chez la victime.</p>
-</blockquote>
-</div>
-<p>Le second enseignement pèse davantage. La boucle de régulation, sonde, régulateur, vanne, se ferme dans l’automate local ; le réseau ne transporte que des consignes, des mesures et des alarmes. Sa perte doit laisser le régulateur continuer avec ses derniers réglages et lever une alarme de communication. À Lappeenranta, <strong>la régulation savait travailler seule, mais le trafic du réseau pouvait la faire tomber.</strong></p>
-<figure class="schema"><div class="dessin" data-schema="deux-chaines"></div><figcaption>La régulation se ferme entre l’acquisition, le traitement et la vanne. La communication vers la GTB se situe au-dessus : si elle tombe, seule la supervision doit tomber avec elle.</figcaption></figure>
-<div class="cle">
-<p><strong>Une GTB supervise ; elle ne doit jamais être le maillon sans lequel le bâtiment ne chauffe plus.</strong> Perte de liaison ou flot de trafic, rien de ce qui arrive par le réseau ne doit arrêter la boucle locale.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un régulateur doit faire quand le réseau disparaît</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Trois comportements se spécifient au CCTP. <strong>Garder les derniers réglages</strong> : loi d’eau, consignes et plages horaires restent dans l’automate. <strong>Replier sur une valeur choisie à l’avance</strong> ce qui dépend d’une information distante. <strong>Signaler sans s’effondrer</strong> : la supervision lève une alarme de communication, et l’automate ne redémarre pas parce que son port réseau est inondé, ce qui a manqué en Finlande. L’essai de recette tient en trois minutes : débrancher le câble réseau, relever ce que fait la vanne, rebrancher, vérifier l’alarme.</p></div></details>
-</div><p><strong>En classe.</strong> Le cas relie DOMA21, « réguler : boucles, TOR, proportionnel, intermittence », où la boucle fermée localement devient une exigence de sûreté de fonctionnement, et DOMA25, où la supervision apprend à signaler une perte de communication. En DOMB24, « régulation : régler une boucle », l’essai du câble débranché s’ajoute aux relevés. La question à poser : « Le lien vers la supervision tombe un soir de janvier : que fait la chaufferie ? »</p>
-<h2 id="la-ou-la-methode-change-l-attaquant-qui-entre-par-la-porte-prevue">Là où la méthode change : l’attaquant qui entre par la porte prévue</h2>
-<p>Les cinq cas appellent une méthode de périmètre : séparer les zones, filtrer les passages, ne rien exposer. Elle suppose l’attaquant dehors. Chez Target, il s’est présenté avec le compte d’un fournisseur, sur un portail fait pour être joint ; au casino, il est passé par le tunnel qui devait isoler l’aquarium. <strong>Aucun pare-feu ne refuse un compte valide sur un chemin autorisé.</strong> La question n’est plus « où est la frontière », mais « qui parle à qui, avec quel droit, et est-ce normal ».</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th></th>
-<th>Raisonnement de périmètre</th>
-<th>Raisonnement par flux et par compte</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>L’unité de décision</td>
-<td>la zone</td>
-<td>le compte, et le flux qu’il ouvre</td>
-</tr>
-<tr>
-<td>Un prestataire</td>
-<td>entre dans la zone technique</td>
-<td>atteint une application, pendant l’intervention</td>
-</tr>
-<tr>
-<td>Le mot de passe</td>
-<td>protège l’entrée</td>
-<td>ne suffit plus : second facteur</td>
-</tr>
-<tr>
-<td>Ce qui se surveille</td>
-<td>les tentatives refusées</td>
-<td>les accès réussis, leur volume, leur destination</td>
-</tr>
-</tbody>
-</table></div>
-<p>Trois outils portent ce raisonnement : le <strong>moindre privilège</strong>, une application par compte ; le <strong>second facteur</strong>, que Target exigeait rarement de ses petits prestataires selon le rapport du Sénat ; la <strong>détection</strong>, qui ne vaut que si quelqu’un lit les alertes, restées sans suite chez Target.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi un réseau technique se surveille mieux qu&#39;un réseau bureautique</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un réseau bureautique est imprévisible ; un réseau technique est d’une régularité parfaite : un thermomètre parle à une ou deux adresses, au même rythme, avec des messages de même taille. Sous l’hypothèse d’un relevé de 100 octets par minute, il émet 144 000 octets par jour. <strong>Les 10 Go du casino représentent environ 69 000 jours de ce trafic, soit 190 ans.</strong> Rien n’a besoin d’être déchiffré : le volume, la destination et l’heure suffisent, et une alarme sur toute destination nouvelle d’un VLAN technique coûte peu.</p></div></details>
-</div><h2 id="le-calcul-retourne">Le calcul retourné</h2>
-<p>DOMA6 vérifie un plan d’adressage donné. Le bureau d’études fait l’inverse : il <strong>construit</strong> les sous-réseaux à partir d’un bloc et des usages, et il <strong>choisit</strong> les commutateurs à partir des caméras. L’immeuble qui suit, six niveaux de bureaux, est un cas d’étude construit pour le calcul.</p>
-<p><strong>Découper le bloc.</strong> Ce qui est fixé : les effectifs, une marge de 25 %, une passerelle par sous-réseau, et l’alignement, qui fait commencer chaque réseau à un multiple de sa taille. Ce qui est libre : la taille de chaque sous-réseau, leur ordre, et la taille du bloc à demander au service informatique du propriétaire.</p>
-<table style="width:100%;">
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-</colgroup>
-<thead>
-<tr>
-<th>VLAN</th>
-<th>Usage</th>
-<th>Appareils</th>
-<th>Avec 25 %</th>
-<th>Avec la passerelle</th>
-<th>Préfixe</th>
-<th>Adresses utiles</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>30</td>
-<td>Vidéo : caméras et enregistreurs</td>
-<td>152</td>
-<td>190</td>
-<td>191</td>
-<td>/24</td>
-<td>254</td>
-</tr>
-<tr>
-<td>40</td>
-<td>Accès et interphonie</td>
-<td>58</td>
-<td>73</td>
-<td>74</td>
-<td>/25</td>
-<td>126</td>
-</tr>
-<tr>
-<td>20</td>
-<td>GTB : automates, passerelles KNX/IP</td>
-<td>36</td>
-<td>45</td>
-<td>46</td>
-<td>/26</td>
-<td>62</td>
-</tr>
-<tr>
-<td>50</td>
-<td>Comptage</td>
-<td>21</td>
-<td>27</td>
-<td>28</td>
-<td>/27</td>
-<td>30</td>
-</tr>
-<tr>
-<td>60</td>
-<td>Serveurs techniques</td>
-<td>6</td>
-<td>8</td>
-<td>9</td>
-<td>/28</td>
-<td>14</td>
-</tr>
-<tr>
-<td>90</td>
-<td>Administration du réseau</td>
-<td>9</td>
-<td>12</td>
-<td>13</td>
-<td>/28</td>
-<td>14</td>
-</tr>
-<tr>
-<td>100</td>
-<td>DMZ des prestataires</td>
-<td>2</td>
-<td>3</td>
-<td>4</td>
-<td>/29</td>
-<td>6</td>
-</tr>
-<tr>
-<td></td>
-<td><strong>Total</strong></td>
-<td><strong>284</strong></td>
-<td></td>
-<td><strong>365</strong></td>
-<td></td>
-<td><strong>520 adresses consommées</strong></td>
-</tr>
-</tbody>
-</table>
-<p>Le service informatique propose un /23, 512 adresses, puisque 284 appareils y tiennent largement. <strong>Le calcul montre le contraire</strong> : chaque besoin arrondi à la puissance de deux supérieure, les sept réseaux consomment 520 adresses. Les six premiers remplissent le /23 à l’adresse près, la DMZ n’y tient plus, et il ne reste aucune réserve. La bonne demande est un /22, 1 024 adresses, qui laisse 504 adresses de réserve, alignées.</p>
-<figure>
-<img src="img/COURS2-RESEAU-IP-CYBERSECURITE/c2-decoupage.png" alt="Le découpage du bloc 10.40.8.0/22, à l’échelle : chaque ligne vaut 256 adresses, et chaque réseau commence à un multiple de sa taille." />
-<figcaption aria-hidden="true">Le découpage du bloc 10.40.8.0/22, à l’échelle : chaque ligne vaut 256 adresses, et chaque réseau commence à un multiple de sa taille.</figcaption>
-</figure>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le plan obtenu, et pourquoi l&#39;on commence par le plus grand</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><table style="width:100%;">
-<colgroup>
-<col style="width: 16%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
-</colgroup>
-<thead>
-<tr>
-<th>VLAN</th>
-<th>Réseau</th>
-<th>Masque</th>
-<th>Passerelle</th>
-<th>Équipements</th>
-<th>Diffusion</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>30</td>
-<td>10.40.8.0/24</td>
-<td>255.255.255.0</td>
-<td>10.40.8.1</td>
-<td>.2 à .254</td>
-<td>10.40.8.255</td>
-</tr>
-<tr>
-<td>40</td>
-<td>10.40.9.0/25</td>
-<td>255.255.255.128</td>
-<td>10.40.9.1</td>
-<td>.2 à .126</td>
-<td>10.40.9.127</td>
-</tr>
-<tr>
-<td>20</td>
-<td>10.40.9.128/26</td>
-<td>255.255.255.192</td>
-<td>10.40.9.129</td>
-<td>.130 à .190</td>
-<td>10.40.9.191</td>
-</tr>
-<tr>
-<td>50</td>
-<td>10.40.9.192/27</td>
-<td>255.255.255.224</td>
-<td>10.40.9.193</td>
-<td>.194 à .222</td>
-<td>10.40.9.223</td>
-</tr>
-<tr>
-<td>60</td>
-<td>10.40.9.224/28</td>
-<td>255.255.255.240</td>
-<td>10.40.9.225</td>
-<td>.226 à .238</td>
-<td>10.40.9.239</td>
-</tr>
-<tr>
-<td>90</td>
-<td>10.40.9.240/28</td>
-<td>255.255.255.240</td>
-<td>10.40.9.241</td>
-<td>.242 à .254</td>
-<td>10.40.9.255</td>
-</tr>
-<tr>
-<td>100</td>
-<td>10.40.10.0/29</td>
-<td>255.255.255.248</td>
-<td>10.40.10.1</td>
-<td>.2 à .6</td>
-<td>10.40.10.7</td>
-</tr>
-</tbody>
-</table>
-<p>La réserve court de 10.40.10.8 à 10.40.11.255 : 8 + 16 + 32 + 64 + 128 + 256 = 504 adresses, en blocs alignés.</p>
-<p><strong>On alloue du plus grand au plus petit</strong> : chaque taille divise la précédente, et chaque bloc tombe sur une limite alignée, sans trou. Dans l’ordre inverse, la DMZ placée en 10.40.8.0/29 repousse la vidéo en 10.40.9.0 et laisse 248 adresses à combler au compte-gouttes. Le service informatique donne un bloc, et non des /24 épars, pour annoncer le bâtiment par une seule route, 10.40.8.0/22 : c’est l’agrégation de la RFC 4632.</p></div></details>
-</div><p><strong>Dimensionner les commutateurs PoE.</strong> Au local technique du troisième étage, le plan fixe 22 dômes intérieurs de classe 2, 4 caméras extérieures à infrarouge et chauffage de classe 4, une caméra motorisée de classe 6 et 3 contrôleurs de porte de classe 3, tous à moins de 90 m de la baie. Ce qui est libre : le nombre de commutateurs, leur budget, et la répartition des équipements.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Équipements</th>
-<th>Nombre</th>
-<th>Classe</th>
-<th>Réservé par port</th>
-<th>Total</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Dômes intérieurs</td>
-<td>22</td>
-<td>2</td>
-<td>7,0 W</td>
-<td>154,0 W</td>
-</tr>
-<tr>
-<td>Caméras extérieures</td>
-<td>4</td>
-<td>4</td>
-<td>30 W</td>
-<td>120,0 W</td>
-</tr>
-<tr>
-<td>Caméra motorisée</td>
-<td>1</td>
-<td>6</td>
-<td>60 W</td>
-<td>60,0 W</td>
-</tr>
-<tr>
-<td>Contrôleurs de porte</td>
-<td>3</td>
-<td>3</td>
-<td>15,4 W</td>
-<td>46,2 W</td>
-</tr>
-<tr>
-<td><strong>Total</strong></td>
-<td><strong>30</strong></td>
-<td></td>
-<td></td>
-<td><strong>380,2 W</strong></td>
-</tr>
-</tbody>
-</table></div>
-<p>Avec 20 % de réserve, le budget atteint 456,2 W sur 30 ports PoE, dont <strong>un port de 60 W</strong>. Un commutateur de 48 ports suffirait ; deux valent mieux, si l’on y répartit les dômes d’une même zone un sur deux : une panne n’aveugle plus qu’environ une caméra sur deux. On dimensionne <strong>à la classe</strong>, et ces 380,2 W, avec la consommation propre des commutateurs, sont ce que l’onduleur de la baie doit secourir.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-</colgroup>
-<thead>
-<tr>
-<th>Commutateur</th>
-<th>Ce qu’il alimente</th>
-<th>Réservé</th>
-<th>Avec 20 %</th>
-<th>Ports PoE</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>11 dômes, 2 caméras extérieures, 2 portes</td>
-<td>167,8 W</td>
-<td>201,4 W</td>
-<td>15</td>
-</tr>
-<tr>
-<td>B</td>
-<td>11 dômes, 2 caméras extérieures, la motorisée, 1 porte</td>
-<td>212,4 W</td>
-<td>254,9 W</td>
-<td>15, dont un de 60 W</td>
-</tr>
-</tbody>
-</table></div>
-<h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : le thermomètre de l&#39;aquarium</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Dans l’immeuble du calcul retourné, le thermomètre d’un aquarium est réglé en 10.40.9.140, masque 255.255.255.192, passerelle 10.40.9.129 ; le serveur de supervision est en 10.40.9.226. a) Dans quel réseau est le thermomètre ? b) Joint-il directement le serveur ? c) Qu’arrive-t-il si l’installateur saisit le masque 255.255.255.0 ?</p>
-<p><strong>Résolution.</strong> a) 140 s’écrit 10001100, 192 s’écrit 11000000 : le ET donne 10000000, soit 128. Le thermomètre est dans <strong>10.40.9.128/26</strong>, le VLAN de la GTB. b) 226 ET 192 donne 192 : le serveur est dans 10.40.9.224/28. Le paquet passe par la passerelle, et le pare-feu porte une seule règle, <strong>thermomètre vers supervision</strong>. c) En /24, le thermomètre croit le serveur dans son réseau et le cherche par une requête ARP que le serveur, dans un autre VLAN, n’entend pas ; le reste part vers la passerelle. <strong>Il joint Internet si le pare-feu le laisse faire, et plus la supervision.</strong></p>
-<p><strong>Vérification de plausibilité.</strong> La passerelle est la première adresse du /26, le thermomètre est dans la plage .130 à .190, et un équipement qui atteint l’extérieur mais pas son voisin a presque toujours un masque trop large.</p>
-<p><strong>Ce que l’étudiant doit rédiger.</strong> La même question en /24, comme en DOMA6, partie 3 : le réglage en cause, puis la conséquence constatée.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : combien de caméras ce commutateur accepte-t-il encore ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un commutateur de 24 ports PoE+, à 30 W par port et 370 W de budget, alimente 12 dômes de classe 2 et 3 contrôleurs de classe 3 ; un port sert à la liaison montante. Combien de caméras de classe 4 accepte-t-il encore, a) en consommant tout le budget, b) en gardant 20 % de réserve ?</p>
-<p><strong>Résolution.</strong> Déjà réservé : 12 × 7,0 + 3 × 15,4 = <strong>130,2 W</strong>. Ports libres : 24 − 15 − 1 = <strong>8</strong>. a) Il reste 239,8 W, et 239,8 / 30 = 7,99 : <strong>sept caméras</strong>. La huitième demanderait 240 W, soit 0,2 W de trop : les ports en permettaient huit, le budget en permet sept. b) Le budget utilisable vaut 0,8 × 370 = 296 W ; il reste 165,8 W, et 165,8 / 30 = 5,5 : <strong>cinq caméras</strong>.</p>
-<p><strong>Vérification de plausibilité.</strong> À vide, 370 W alimentent 12 ports de classe 4 ; les 130,2 W réservés en valent un peu plus de 4 ; il en reste environ 8, et l’arrondi par défaut donne 7.</p>
-<p><strong>Ce que l’étudiant doit rédiger.</strong> Les deux limites chiffrées, celle des ports et celle du budget, celle qui s’impose, et la raison de l’arrondi par défaut : une caméra ne se branche pas à 99 %.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : la télémaintenance demandée par le chauffagiste</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Dans un immeuble d’habitation, le routeur de l’accès Internet redirige les ports TCP 80 et UDP 47808 vers le régulateur de la chaufferie, qui accepte le compte d’usine et dont le micrologiciel a quatre ans. Le chauffagiste veut garder « son » accès, deux heures par mois. Rédiger la proposition au syndic : a) les expositions ; b) l’architecture ; c) le comportement si le réseau tombe.</p>
-<p><strong>a) Trois expositions.</strong> L’interface web et son compte d’usine laissent n’importe qui modifier les consignes : c’est Wharf 7 sans même une faille. Le port 47808 expose BACnet/IP, qui ne vérifie pas l’émetteur, et un régulateur qui répond sur Internet peut être saturé ou détourné, comme à Lappeenranta. Un micrologiciel de quatre ans porte vraisemblablement des failles publiées depuis.</p>
-<p><strong>b) L’architecture.</strong> Supprimer les deux redirections ; placer le régulateur dans un VLAN technique, en 192.168.20.20, comme en DOMA6 ; changer le compte d’usine, mettre à jour le micrologiciel ; ouvrir l’accès distant par un VPN sur le routeur-pare-feu, un compte à son nom par technicien, un second facteur, à la demande.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-</colgroup>
-<thead>
-<tr>
-<th>Règle</th>
-<th>Source</th>
-<th>Destination</th>
-<th>Service</th>
-<th>Décision</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>comptes VPN du chauffagiste</td>
-<td>régulateur 192.168.20.20</td>
-<td>HTTPS</td>
-<td>autorisée pendant l’intervention</td>
-</tr>
-<tr>
-<td>2</td>
-<td>régulateur</td>
-<td>serveur d’heure</td>
-<td>NTP</td>
-<td>autorisée</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Internet</td>
-<td>réseau technique</td>
-<td>tout</td>
-<td>refusée</td>
-</tr>
-<tr>
-<td>4</td>
-<td>réseau technique</td>
-<td>Internet</td>
-<td>tout</td>
-<td>refusée</td>
-</tr>
-<tr>
-<td>5</td>
-<td>tout</td>
-<td>tout</td>
-<td>tout</td>
-<td>refusée</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>c) Le repli.</strong> Le régulateur calcule la loi d’eau à partir de sa sonde extérieure ; la perte du réseau ne change rien au chauffage, et la supervision affiche une alarme de communication. L’essai du câble débranché figure au procès-verbal.</p>
-<p><strong>Vérification de plausibilité.</strong> Une redirection permanente ouvre la porte environ 730 heures par mois, l’accès à la demande deux heures, soit 0,27 % du temps ; le chauffagiste garde son accès, et rien n’est acheté si le routeur sait établir un VPN.</p>
-<p><strong>Ce que l’étudiant doit rédiger.</strong> Chaque exposition avec sa conséquence, et non « c’est dangereux » ; le tableau des règles, dernière ligne comprise ; la phrase de repli ; une note que le syndic peut lire sans connaître le mot VLAN.</p></div></details>
-</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Ordre de grandeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Adresses IPv4 en tout</td>
-<td>2³² = 4 294 967 296 : un balayage complet est à la portée d’une machine</td>
-</tr>
-<tr>
-<td>Adresses utiles d’un /n</td>
-<td>2^(32 − n) − 2 : 254 en /24, 126 en /25, 62 en /26, 30 en /27, 14 en /28, 6 en /29</td>
-</tr>
-<tr>
-<td>Blocs privés de la RFC 1918</td>
-<td>10/8 : 16 777 216 · 172.16/12 : 1 048 576 · 192.168/16 : 65 536 adresses</td>
-</tr>
-<tr>
-<td>Ports TCP ou UDP d’une adresse</td>
-<td>65 535</td>
-</tr>
-<tr>
-<td>Puissance au port, 802.3af · at · bt</td>
-<td>15,4 W · 30 W · 60 ou 90 W</td>
-</tr>
-<tr>
-<td>Puissance à l’équipement</td>
-<td>12,95 W · 25,5 W · 51 ou 71,3 W</td>
-</tr>
-<tr>
-<td>24 ports en classe 4</td>
-<td>720 W de budget ; 370 W n’en alimentent que 12</td>
-</tr>
-<tr>
-<td>Identifiants essayés par Mirai</td>
-<td>62 couples</td>
-</tr>
-<tr>
-<td>Pic du réseau Mirai</td>
-<td>environ 600 000 appareils infectés</td>
-</tr>
-<tr>
-<td>Appareils engagés contre Dyn</td>
-<td>100 000 au plus</td>
-</tr>
-<tr>
-<td>Attaques de septembre 2016</td>
-<td>plus de 620 Gbit/s contre KrebsOnSecurity · au moins 1,1 Tbit/s contre OVH, soit 11 Mbit/s par appareil pour 100 000 appareils</td>
-</tr>
-<tr>
-<td>Facteurs d’amplification relevés par la CISA</td>
-<td>SNMPv2 6,3 · SSDP 30,8 · NTP 556,9</td>
-</tr>
-<tr>
-<td>Systèmes Tridium Niagara exposés, recensés en 2013</td>
-<td>plus de 25 000</td>
-</tr>
-<tr>
-<td>Target, de la première connexion</td>
-<td>20 jours jusqu’à la fuite des données, 30 jusqu’à l’alerte extérieure</td>
-</tr>
-<tr>
-<td>Target, données exposées</td>
-<td>40 millions de cartes · 70 millions de clients</td>
-</tr>
-<tr>
-<td>Casino, données sorties</td>
-<td>10 Go, soit 190 ans d’un relevé de 100 octets par minute</td>
-</tr>
-<tr>
-<td>Télémaintenance d’une chaufferie</td>
-<td>2 heures d’ouverture par mois, contre 730 pour une redirection permanente</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Deux réflexes suffisent à trier la plupart des affirmations. <strong>Une adresse privée ne dit rien de l’exposition</strong> : seule la configuration du routeur le dit. <strong>Un budget PoE se compare à la somme des classes, jamais au nombre de ports.</strong></p>
-</div>
-<h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Nos caméras ont une adresse en 192.168 : elles ne sont pas sur Internet, où est le risque ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’adresse privée n’est pas routée sur Internet ; elle ne dit rien pour autant de ce que le routeur laisse passer. Trois mécanismes rendent une caméra joignable malgré elle : la <strong>redirection de port</strong> posée pour voir les images sur un téléphone, l’<strong>UPnP</strong>, que la CISA recommande de désactiver sur les routeurs, et le <strong>service de connexion du fabricant</strong>, qu’on emprunte en sens inverse. Mirai a trouvé environ <strong>600 000 appareils</strong> avec 62 couples d’identifiants, et aucun n’était « sur Internet » aux yeux de son propriétaire.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Le prestataire doit intervenir à distance : on ne va pas lui refuser l&#39;accès ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Personne ne le demande. Il s’agit de lui donner <strong>l’accès dont il a besoin, et pas davantage</strong> : une application, un compte à son nom, un second facteur, une durée. Chez Target, le compte du frigoriste servait à déposer des factures, et il a mené à 40 millions de cartes. Un chauffagiste qui intervient deux heures par mois n’a pas besoin d’une porte ouverte 730 heures : <strong>l’accès à la demande réduit l’exposition à 0,27 % du temps</strong>, sans rien lui retirer.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« La caméra ne consomme que 5 W d&#39;après sa fiche : pourquoi le commutateur lui réserve-t-il 15,4 W ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce qu’elle s’annonce en classe 3 à la connexion, et qu’un commutateur réglé pour réserver à la classe lui attribue ce que la classe garantit. La fiche donne une consommation typique ; la classe donne le plafond, celui des nuits froides où l’infrarouge et le chauffage fonctionnent ensemble. 24 caméras de ce type réservent 24 × 15,4 = 369,6 W, tout un budget de 370 W, pour 24 × 5 = 120 W de consommation typique. Réserver à la consommation mesurée en fait entrer davantage, et la première nuit froide, le commutateur coupera les ports les moins prioritaires.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pirater un chauffage, à quoi bon ? Ce n&#39;est pas une banque. »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le chauffage mène à la banque</strong> : chez Target, le compte d’un frigoriste a ouvert la route vers 40 millions de cartes. <strong>Le chauffage compte par lui-même</strong> : à Lappeenranta, deux immeubles ont perdu chauffage et eau chaude par des températures négatives, et l’expert de l’agence finlandaise de sécurité des approvisionnements cité par Yle estime que ces attaques peuvent menacer des vies. <strong>Le chauffage sert d’arme</strong> : cent mille appareils à 10 Mbit/s font 1 Tbit/s. La phrase à laisser aux étudiants : <strong>l’attaquant ne choisit pas un équipement pour ce qu’il commande, mais pour ce qu’il ouvre.</strong></p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Les sources de cette page</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><ul>
-<li>Sénat des États-Unis, commission du Commerce, de la Science et des Transports, compte rendu de l’audition du 26 mars 2014, qui reproduit le rapport de la majorité « A “Kill Chain” Analysis of the 2013 Target Data Breach », <a href="https://www.govinfo.gov/content/pkg/CHRG-113shrg92594/html/CHRG-113shrg92594.htm" class="uri">https://www.govinfo.gov/content/pkg/CHRG-113shrg92594/html/CHRG-113shrg92594.htm</a> : le prestataire, le portail non isolé, le compte par défaut, les alertes, la chronologie, les 40 et 70 millions, le second facteur.</li>
-<li>NBC News, dépêche Reuters, « Target Missed Many Warning Signs Leading to Breach: Senate Report », 25 mars 2014, <a href="https://www.nbcnews.com/business/consumer/target-missed-many-warning-signs-leading-breach-senate-report-n62021" class="uri">https://www.nbcnews.com/business/consumer/target-missed-many-warning-signs-leading-breach-senate-report-n62021</a> : la date de publication du rapport.</li>
-<li>KrebsOnSecurity, Brian Krebs, « Target Hackers Broke in Via HVAC Company », 5 février 2014, <a href="https://krebsonsecurity.com/2014/02/target-hackers-broke-in-via-hvac-company/" class="uri">https://krebsonsecurity.com/2014/02/target-hackers-broke-in-via-hvac-company/</a> : la nature de l’accès du prestataire, selon sa déclaration.</li>
-<li>SecurityWeek, « Hacked Smart Fish Tank Exfiltrated Data to “Rare External Destination” », 26 juillet 2017, <a href="https://www.securityweek.com/hacked-smart-fish-tank-exfiltrated-data-rare-external-destination/" class="uri">https://www.securityweek.com/hacked-smart-fish-tank-exfiltrated-data-rare-external-destination/</a> : la version de 2017, d’après le rapport de Darktrace, source commerciale.</li>
-<li>Business Insider, repris par Yahoo Finance, Oscar Williams-Grut, « Hackers stole a casino’s high-roller database through a thermometer in the lobby fish tank », 16 avril 2018, <a href="https://finance.yahoo.com/news/hackers-stole-casino-apos-high-070800573.html" class="uri">https://finance.yahoo.com/news/hackers-stole-casino-apos-high-070800573.html</a> : la version de 2018.</li>
-<li>CISA, alerte TA16-288A « Heightened DDoS Threat Posed by Mirai and Other Botnets », 14 octobre 2016, révisée le 17 octobre 2017, <a href="https://www.cisa.gov/news-events/alerts/2016/10/14/heightened-ddos-threat-posed-mirai-and-other-botnets" class="uri">https://www.cisa.gov/news-events/alerts/2016/10/14/heightened-ddos-threat-posed-mirai-and-other-botnets</a> : les 62 identifiants, les ports Telnet, les attaques de septembre, la mémoire vive, l’UPnP.</li>
-<li>M. Antonakakis et al., « Understanding the Mirai Botnet », USENIX Security Symposium, 2017, notice sur <a href="https://research.google/pubs/understanding-the-mirai-botnet/" class="uri">https://research.google/pubs/understanding-the-mirai-botnet/</a> : le pic de 600 000 infections.</li>
-<li>New Hampshire Business Review, « Dyn issues analysis of “complex and sophisticated” cyberattacks », 27 octobre 2016, <a href="https://www.nhbr.com/dyn-issues-analysis-of-complex-and-sophisticated-cyberattacks/" class="uri">https://www.nhbr.com/dyn-issues-analysis-of-complex-and-sophisticated-cyberattacks/</a> : les 100 000 appareils et le rôle de Mirai.</li>
-<li>KrebsOnSecurity, Brian Krebs, « Hacked Cameras, DVRs Powered Today’s Massive Internet Outage », 21 octobre 2016, <a href="https://krebsonsecurity.com/2016/10/hacked-cameras-dvrs-powered-todays-massive-internet-outage/" class="uri">https://krebsonsecurity.com/2016/10/hacked-cameras-dvrs-powered-todays-massive-internet-outage/</a> : les sites perturbés, le mot de passe inscrit en dur chez XiongMai.</li>
-<li>The Register, Alexander J. Martin, « Chinese electronics biz recalls webcams at heart of botnet DDoS woes », 24 octobre 2016, <a href="https://www.theregister.com/security/2016/10/24/chinese-electronics-biz-recalls-webcams-at-heart-of-botnet-ddos-woes/606369" class="uri">https://www.theregister.com/security/2016/10/24/chinese-electronics-biz-recalls-webcams-at-heart-of-botnet-ddos-woes/606369</a> : XiongMai au cœur de l’attaque selon Flashpoint.</li>
-<li>BleepingComputer, Catalin Cimpanu, « DDoS Attacks Bring Down Heating System for Two Buildings in Small Finnish Town », 8 novembre 2016, <a href="https://www.bleepingcomputer.com/news/security/ddos-attacks-bring-down-heating-system-for-two-buildings-in-small-finnish-town/" class="uri">https://www.bleepingcomputer.com/news/security/ddos-attacks-bring-down-heating-system-for-two-buildings-in-small-finnish-town/</a> : Valtia, les dates, les redémarrages, la déconnexion.</li>
-<li>Yle, « Suomi heräsi taloja kylmentäneisiin verkkohyökkäyksiin », 8 novembre 2016, <a href="https://yle.fi/a/3-9278446" class="uri">https://yle.fi/a/3-9278446</a> : l’analyse de l’autorité des communications, l’amplification, l’avis sur les vies menacées.</li>
-<li>Etelä-Saimaa, « Pannuhuoneeseen Lappeenrannassa tehty palvelunestohyökkäys jää arvoitukseksi », 11 novembre 2016, <a href="https://www.esaimaa.fi/paikalliset/3836547" class="uri">https://www.esaimaa.fi/paikalliset/3836547</a> : l’auteur inconnu ; article en partie réservé aux abonnés.</li>
-<li>SecurityWeek, Steve Ragan, « Building Control System at Google Found Hackable », 8 mai 2013, <a href="https://www.securityweek.com/building-control-system-google-found-hackable/" class="uri">https://www.securityweek.com/building-control-system-google-found-hackable/</a> : Cylance, config.bog, la version ancienne, les 25 000 systèmes.</li>
-<li>Threatpost, Brian Donohue, « Researchers Hack Google Office’s Building Management System », 7 mai 2013, <a href="https://threatpost.com/researchers-hack-google-offices-building-management-system/100298/" class="uri">https://threatpost.com/researchers-hack-google-offices-building-management-system/100298/</a> : la climatisation et les alarmes, le retrait du système.</li>
-<li>CISA, alerte TA14-017A « UDP-Based Amplification Attacks », révisée le 18 décembre 2019, <a href="https://www.cisa.gov/news-events/alerts/2014/01/17/udp-based-amplification-attacks" class="uri">https://www.cisa.gov/news-events/alerts/2014/01/17/udp-based-amplification-attacks</a> : le mécanisme et les facteurs d’amplification.</li>
-<li>ANSSI, « Recommandations de sécurité relatives à la gestion technique et centralisée du bâtiment (GTB/GTC) », page MesServicesCyber, mise en ligne le 4 juin 2026, <a href="https://messervices.cyber.gouv.fr/guides/recommandations-gestion-technique-batiment" class="uri">https://messervices.cyber.gouv.fr/guides/recommandations-gestion-technique-batiment</a> : le titre, la date, le champ du guide.</li>
-<li>Vesta-System, intégrateur, source commerciale, « Guide ANSSI 2026 : comment sécuriser votre GTB face aux nouvelles cybermenaces », 16 juin 2026, <a href="https://www.vesta-system.fr/2026/06/16/cybersecurite-gtb-guide-officiel-anssi/" class="uri">https://www.vesta-system.fr/2026/06/16/cybersecurite-gtb-guide-officiel-anssi/</a> : le nombre de recommandations et les annexes, tels que présentés.</li>
-<li>IETF, RFC 1918, février 1996, <a href="https://www.rfc-editor.org/rfc/rfc1918.html" class="uri">https://www.rfc-editor.org/rfc/rfc1918.html</a> ; RFC 4632, août 2006, <a href="https://www.rfc-editor.org/rfc/rfc4632.html" class="uri">https://www.rfc-editor.org/rfc/rfc4632.html</a> ; RFC 3021, décembre 2000, <a href="https://www.rfc-editor.org/rfc/rfc3021.html" class="uri">https://www.rfc-editor.org/rfc/rfc3021.html</a> : les blocs privés, la notation /n et l’agrégation, l’exception du /31.</li>
-<li>Cabling Installation &amp; Maintenance, article financé par Molex, source commerciale, « PoE Types, Classes and RP Categories Explained », 20 avril 2023, <a href="https://www.cablinginstall.com/sponsored/article/14292663/poe-types-classes-and-rp-categories-explained" class="uri">https://www.cablinginstall.com/sponsored/article/14292663/poe-types-classes-and-rp-categories-explained</a> : les types, les paires, les courants, la plage de 44 à 57 V.</li>
-<li>NORDIX, distributeur, source commerciale, « PoE Wattage Chart », non daté, <a href="https://www.nordixhq.com/reference/poe-wattage-chart" class="uri">https://www.nordixhq.com/reference/poe-wattage-chart</a> : la table des classes, au port et à l’équipement.</li>
-</ul>
-<p>Le référentiel du BTS FED, pages 71 à 74, et la séance DOMA6 ont fourni les niveaux et le plan d’adressage de référence. Sources consultées le 13 septembre 2026.</p></div></details>
+<h2 id="cinq-cas-et-ce-qu-ils-ont-en-commun">Cinq cas, et ce qu’ils ont en commun</h2>
+
+<p>Le réseau IP d’un bâtiment tertiaire raccorde des équipements que personne ne tient pour des ordinateurs : un régulateur de chaufferie, une caméra, un contrôleur de porte, le thermomètre d’un aquarium. Les cinq incidents qui suivent sont réels et documentés ; chacun est entré par l’un de ces équipements, ou par le compte de l’entreprise qui les entretient.</p>
+
+<p>Leur point commun tient en une phrase. <strong>Chaque fois, un équipement ou un compte du côté technique pouvait joindre ce qu’il n’avait aucune raison de joindre, ou être joint par qui n’avait aucune raison de le faire.</strong> Le mot de passe d’usine, la mise à jour oubliée, l’identifiant volé ne sont que des clés ; la porte était ouverte parce que le réseau ne disait pas qui a le droit de parler à qui.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Cas</th>
+
+<th>Ce qui a servi de porte</th>
+
+<th>Ce qui manquait</th>
+
+<th>La théorie qu’il oblige à tenir</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Target, 2013</td>
+
+<td>les identifiants d’un prestataire de froid et de climatisation</td>
+
+<td>un portail extérieur isolé du reste du réseau</td>
+
+<td>commutateur, routeur, VLAN, pare-feu, DMZ</td>
+
+</tr>
+
+<tr>
+
+<td>Un casino, 2017</td>
+
+<td>un aquarium connecté</td>
+
+<td>un filtrage de ce qui sort</td>
+
+<td>adresse, masque, passerelle, plan d’adressage</td>
+
+</tr>
+
+<tr>
+
+<td>Google, Sydney, 2013</td>
+
+<td>une GTB joignable depuis Internet</td>
+
+<td>un accès distant maîtrisé</td>
+
+<td>exposition, accès distant, mises à jour</td>
+
+</tr>
+
+<tr>
+
+<td>Mirai, 2016</td>
+
+<td>des caméras et des enregistreurs</td>
+
+<td>le changement des identifiants d’usine</td>
+
+<td>services, identifiants, PoE</td>
+
+</tr>
+
+<tr>
+
+<td>Lappeenranta, 2016</td>
+
+<td>une régulation de chauffage joignable</td>
+
+<td>l’autonomie de la régulation</td>
+
+<td>déni de service, mode dégradé</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Un réseau de bâtiment se conçoit comme une liste de conversations autorisées. <strong>Ce qui n’y figure pas doit être techniquement impossible, et pas seulement interdit</strong> : c’est le travail du plan d’adressage, des VLAN et du pare-feu.</p>
+
+</div>
+
+<p>Le référentiel place l’aspect matériel des réseaux au niveau 3 pour l’option C, l’aspect logiciel au niveau 2 et la « sécurité logicielle » du VDI au niveau 3 ; les deux autres options sont à 0 ou 1. Le binaire des masques et le découpage en sous-réseaux dépassent le niveau 2 : la fiche professeur de DOMA6 demande de ne pas les introduire en séance.</p>
+
+<h2 id="des-cartes-bancaires-volees-avec-les-identifiants-d-un-frigoriste-target-2013">Des cartes bancaires volées avec les identifiants d’un frigoriste, Target, 2013</h2>
+
+<p><em>Selon le rapport de la majorité de la commission du Commerce du Sénat des États-Unis, rendu public le 25 mars 2014, les attaquants ont volé par un courriel piégé les identifiants de Fazio Mechanical Services, entreprise de chauffage, climatisation et froid de Pennsylvanie. Ils ouvraient un portail de fournisseurs, vraisemblablement la facturation Ariba, mal isolé du reste du réseau. Les attaquants ont atteint les terminaux de paiement : 40 millions de cartes et les données de 70 millions de clients ont été exposées. Le prestataire, cité par Brian Krebs, n’utilisait cette liaison que pour la facturation, les contrats et la gestion de projets.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Un courriel piégé infecte un poste du prestataire, protégé par un antivirus gratuit pour particuliers ; un logiciel espion récupère ses identifiants.</li>
+
+<li>Vers le 12 novembre 2013, les attaquants se connectent au portail des fournisseurs.</li>
+
+<li>Du portail, ils atteignent le réseau interne ; le rapport relève l’emploi d’un compte par défaut d’un logiciel d’administration.</li>
+
+<li>Du 15 au 30 novembre, ils infectent la majorité des terminaux de paiement.</li>
+
+<li>À partir du 2 décembre, les données sortent vers un serveur extérieur ; les alertes de l’outil de détection restent sans suite.</li>
+
+<li>Le 12 décembre, le ministère de la Justice prévient Target, trente jours après la première connexion.</li>
+
+</ol>
+
+</div>
+
+<div class="piege">
+
+<p>Le cas circule sous la forme « Target piraté par sa climatisation ». <strong>Ce récit est faux, et sa correction est la leçon</strong> : aucun équipement de climatisation n’a été attaqué. Un compte fait pour déposer des factures a ouvert un réseau où il n’avait rien à faire. Le défaut tenait à l’architecture, et non au mot de passe, qui sera toujours volable.</p>
+
+</div>
+
+<p>Le <strong>commutateur</strong> relie les équipements d’un même réseau et aiguille les trames d’après l’adresse physique, dite MAC. Le <strong>routeur</strong> relie des réseaux différents d’après l’adresse IP. Le <strong>VLAN</strong> découpe un commutateur en plusieurs commutateurs logiques : deux ports de VLAN différents ne communiquent pas directement, et chaque VLAN porte son propre sous-réseau, avec sa passerelle.</p>
+
+<p><strong>Séparer en VLAN ne filtre rien : c’est le routeur qui relie les VLAN, et c’est donc sur lui que se décide ce qui passe.</strong> Un routeur qui laisse tout passer rend la segmentation décorative. Le rapport le constate : entrés par un compte de fournisseur, les attaquants sont passés des zones les moins sensibles à celles qui portaient les données des clients.</p>
+
+<p>Le <strong>pare-feu</strong> applique des règles écrites flux par flux : source, destination, protocole et port, sens, décision ; la dernière règle refuse tout ce que les précédentes n’ont pas autorisé. La <strong>zone démilitarisée</strong>, ou DMZ, reçoit ce qui doit être joignable de l’extérieur : un portail de fournisseurs, un relais VPN, un poste de rebond. Aucune connexion n’en part vers l’intérieur, sauf celle, unique, qu’on a écrite.</p>
+
+<figure>
+
+<img src="img/COURS2-RESEAU-IP-CYBERSECURITE/c2-zones.png" alt="Les zones d’un réseau de bâtiment et les seuls flux autorisés. Le prestataire entre par la DMZ et n’atteint que la supervision ; rien d’interne n’est joignable depuis Internet." />
+
+<figcaption aria-hidden="true">Les zones d’un réseau de bâtiment et les seuls flux autorisés. Le prestataire entre par la DMZ et n’atteint que la supervision ; rien d’interne n’est joignable depuis Internet.</figcaption>
+
+</figure>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La matrice des flux d&#39;un immeuble de bureaux</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La matrice se remplit avant le câblage, à partir de l’inventaire, et produit les règles du pare-feu. Ce qui n’y figure pas est refusé.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>De</th>
+
+<th>Vers</th>
+
+<th>Ce qui passe</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Vidéo : caméras</td>
+
+<td>Vidéo : enregistreurs</td>
+
+<td>le flux vidéo, sans traverser le pare-feu</td>
+
+</tr>
+
+<tr>
+
+<td>Serveurs : supervision</td>
+
+<td>GTB : automates</td>
+
+<td>BACnet/IP, Modbus/TCP</td>
+
+</tr>
+
+<tr>
+
+<td>Accès : contrôleurs</td>
+
+<td>Serveurs : supervision</td>
+
+<td>événements et alarmes de porte</td>
+
+</tr>
+
+<tr>
+
+<td>Bureautique : poste d’accueil</td>
+
+<td>Vidéo : un enregistreur</td>
+
+<td>la consultation des images</td>
+
+</tr>
+
+<tr>
+
+<td>DMZ : poste de rebond</td>
+
+<td>Serveurs : supervision</td>
+
+<td>l’interface d’exploitation</td>
+
+</tr>
+
+<tr>
+
+<td>VLAN techniques</td>
+
+<td>Serveurs : heure</td>
+
+<td>NTP</td>
+
+</tr>
+
+<tr>
+
+<td>Invités</td>
+
+<td>Internet</td>
+
+<td>la navigation, et rien d’autre</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p>Deux absences sont voulues : <strong>aucun VLAN technique ne sort vers Internet</strong>, et <strong>la bureautique n’atteint ni la GTB ni le contrôle d’accès</strong>, pour qu’un poste compromis par une pièce jointe ne puisse pas ouvrir une porte.</p></div></details>
+
+</div><p><strong>En classe.</strong> En DOMA6, « le réseau IP du bâtiment », le cas répond mieux qu’une liste de raisons à la question d), où le maître d’ouvrage demande pourquoi deux réseaux. En DOMA16, « analyser le risque, zoner le bâtiment », les six étapes se lisent comme une analyse de risques menée à l’envers. La question à poser : « De quoi le frigoriste avait-il besoin, et à quoi avait-il accès ? » L’écart entre les deux colonnes est la faute.</p>
+
+<h2 id="dix-gigaoctets-sortis-par-un-aquarium-un-casino-nord-americain-2017">Dix gigaoctets sortis par un aquarium, un casino nord-américain, 2017</h2>
+
+<p><em>L’incident n’est connu que par l’éditeur Darktrace, qui vend l’outil de détection qui l’a repéré : c’est une source commerciale, et le casino n’est pas nommé. Selon son rapport de juillet 2017, rapporté par SecurityWeek, un casino d’Amérique du Nord avait installé un aquarium à capteurs, raccordé par un VPN pour l’isoler. Environ 10 Go de données sont sortis par l’aquarium vers un appareil situé en Finlande, sur un protocole habituellement réservé à l’audio et à la vidéo.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>L’aquarium joint son fournisseur par un tunnel VPN dédié.</li>
+
+<li>L’attaquant, déjà présent dans le réseau, se connecte à ce VPN par force brute ou avec des identifiants volés.</li>
+
+<li>Environ 10 Go sortent par ce chemin vers la Finlande.</li>
+
+<li>L’outil signale un transfert vers une destination rare ; l’éditeur ignore le contenu des données.</li>
+
+<li>En avril 2018, la présidente de Darktrace présente au contraire le thermomètre comme l’entrée, et nomme la base des gros joueurs.</li>
+
+</ol>
+
+</div>
+
+<p>Tout équipement IP reçoit trois réglages : une <strong>adresse</strong>, un <strong>masque</strong>, une <strong>passerelle</strong>. Pour chaque paquet, il applique le masque à sa propre adresse et à celle du destinataire : si les résultats sont égaux, il parle directement au destinataire ; sinon, il remet le paquet à la passerelle. <strong>La passerelle est le seul chemin vers tout ce qui n’est pas le réseau local : c’est sur elle que se décide ce qu’un objet a le droit de dire au monde.</strong></p>
+
+<div class="formule">
+
+<p><strong>réseau = adresse ET masque</strong></p>
+
+<ul>
+
+<li><strong>adresse</strong><span>: 32 bits, écrits en quatre octets de 0 à 255</span></li>
+
+<li><strong>masque</strong><span>: /n, soit n bits à 1 en tête ; /24 s’écrit 255.255.255.0</span></li>
+
+<li><strong>ET</strong><span>: opération bit à bit ; un bit du résultat vaut 1 si les deux bits valent 1</span></li>
+
+<li><strong>2^(32 − n) − 2</strong><span>: nombre d’adresses utilisables d’un réseau /n</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>254 en /24, 62 en /26, 14 en /28 : l’adresse du réseau et celle de diffusion sont retirées. La RFC 3021 fait exception pour les liaisons point à point en /31.</p>
+
+</blockquote>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le masque en binaire, sur un réseau qui n&#39;est pas un /24</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Soit une caméra en 192.168.20.75, masque 255.255.255.192, soit /26. Les trois premiers octets du masque valent 255 et recopient l’adresse ; tout se joue sur le dernier. 75 s’écrit 01001011, 192 s’écrit 11000000 : le ET donne 01000000, soit <strong>64</strong>. La caméra est dans <strong>192.168.20.64/26</strong> : équipements de .65 à .126, diffusion en .127. L’enregistreur, en 192.168.20.11, donne 11 ET 192 = 0 : il est dans un autre réseau, et la caméra passe par la passerelle pour le joindre.</p>
+
+<p>En /24, le masque coupe entre deux octets et le calcul se fait à l’œil, comme en DOMA6 ; en /26, il coupe au milieu d’un octet et il faut le binaire. C’est pourquoi le niveau 2 s’arrête au /24.</p></div></details>
+
+</div><p>Le plan d’adressage de DOMA6 range chaque famille d’équipements dans une plage du dernier octet. Il sert à reconnaître un équipement à son adresse, et surtout à <strong>écrire des règles courtes</strong> : « la plage des caméras ne parle qu’à l’enregistreur » tient en une ligne. Avec un sous-réseau par famille, la même règle porte sur un réseau entier et survit à l’ajout d’une caméra.</p>
+
+<div class="cle">
+
+<p>Un objet technique a peu d’interlocuteurs, et on les connaît. <strong>Ce qui sort d’un VLAN technique se filtre donc par liste blanche</strong> : la supervision, le serveur d’heure, éventuellement le serveur du fabricant, et rien d’autre. L’aquarium n’avait aucune raison de parler à la Finlande.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Deux récits d&#39;une même source, et ce qu&#39;on peut en affirmer</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>En 2017, le rapport décrit un attaquant déjà dans le réseau, qui se sert du tunnel de l’aquarium comme d’une <strong>sortie</strong>. En 2018, la présidente de l’éditeur décrit le thermomètre comme une <strong>entrée</strong>. Rien dans les sources ouvertes ne permet de trancher.</p>
+
+<p>Ce qui reste établi suffit au cours : un objet raccordé par un tunnel qui devait l’isoler a laissé passer un volume sans rapport avec sa fonction, et la destination inhabituelle l’a trahi. <strong>La leçon tient dans les deux versions</strong>, et le cas enseigne aussi une méthode : une source commerciale se cite comme telle, et deux récits divergents se signalent.</p></div></details>
+
+</div><p><strong>En classe.</strong> En DOMA6, partie 2, le cas donne au plan d’adressage une seconde raison d’être, écrire des règles. En DOMB6, « commutateur, plan d’adressage, PoE : mettre un réseau en service », une passerelle volontairement fausse fait constater que l’image arrive et que l’alerte ne part pas. La question à poser : « Un aquarium connecté arrive dans le hall : dans quelle plage le mettre, et à qui a-t-il le droit de parler ? »</p>
+
+<h2 id="une-gtb-joignable-depuis-internet-le-bureau-de-google-a-sydney-2013">Une GTB joignable depuis Internet, le bureau de Google à Sydney, 2013</h2>
+
+<p><em>Selon SecurityWeek et Threatpost, en mai 2013, deux chercheurs de Cylance, Billy Rios et Terry McCorkle, ont trouvé parmi les systèmes Tridium Niagara joignables sur Internet celui du bureau de Google à Sydney, dans l’immeuble Wharf 7. Prévenu, Google a retiré le système d’Internet. Cylance comptait plus de 25 000 systèmes semblables exposés.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Les chercheurs recensent les interfaces Tridium Niagara joignables depuis Internet ; le nom de Wharf 7 y apparaît.</li>
+
+<li>Un défaut de la version ancienne installée permet de lire le fichier « config.bog ».</li>
+
+<li>Ce fichier livre les comptes et les mots de passe, conservés sous une forme trop faible.</li>
+
+<li>Avec un compte d’administrateur, l’interface donne la main sur la climatisation et les alarmes ; les chercheurs ne modifient rien.</li>
+
+</ol>
+
+</div>
+
+<p>Un équipement est <strong>exposé</strong> quand l’un de ses services répond depuis Internet : une interface web, un port BACnet/IP, un Telnet. Une adresse privée, au sens de la RFC 1918, ne l’est pas par elle-même, puisque ces adresses ne sont pas routées sur Internet. L’exposition naît d’un geste, la <strong>redirection de port</strong> posée sur le routeur « pour intervenir à distance », ou d’un automatisme, l’<strong>UPnP</strong>, par lequel l’équipement demande lui-même au routeur de lui ouvrir un port.</p>
+
+<p>Une fois exposé, un équipement est trouvé : les chercheurs ne cherchaient pas Google, leur recensement a fait apparaître son nom, et les 2³² adresses IPv4 ne cachent rien à une machine. <strong>Un bon mot de passe ne protège pas d’une faille qui permet de le lire</strong> : à Wharf 7, rien n’a été deviné. Une interface d’administration ne doit pas être seulement protégée ; elle ne doit pas être joignable.</p>
+
+<figure class="schema"><div class="dessin" data-schema="couches-protocole"></div><figcaption>Sur IP, BACnet circule en UDP sur le port 47808. Un protocole de bâtiment devient un service réseau comme un autre : joignable de loin si rien ne filtre, et, dans sa forme d’origine, sans vérification de l’émetteur d’une commande.</figcaption></figure>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois façons d&#39;intervenir à distance, de la pire à la bonne</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>La redirection de port vers l’interface.</strong> Tout Internet la voit, et sa sécurité est celle du logiciel le moins à jour : c’est Wharf 7.</p>
+
+<p><strong>Le service de connexion du fabricant.</strong> L’équipement ouvre une connexion sortante vers un serveur du fabricant, par où passe le technicien. Aucun port n’est ouvert, mais la sécurité du bâtiment dépend des comptes et des serveurs du fabricant.</p>
+
+<p><strong>Le VPN qui aboutit dans la DMZ.</strong> Un compte à son nom par technicien, un second facteur, un poste de rebond qui seul atteint la supervision, un accès ouvert à la demande, des connexions journalisées : c’est la figure des zones. <strong>Un VPN ouvert en permanence avec un compte partagé reproduit le cas Target.</strong></p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Le guide de l&#39;ANSSI pour la GTB, 2026</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’ANSSI a mis en ligne le 4 juin 2026 ses « Recommandations de sécurité relatives à la gestion technique et centralisée du bâtiment (GTB/GTC) », qui portent sur les architectures déployées, exemples hospitaliers à l’appui, et valent pour tous les secteurs. Selon un intégrateur, source commerciale, le guide compte vingt-six recommandations et deux annexes sur le filtrage de BACnet/IP et de Modbus ; le texte se relit sur le site de l’ANSSI avant d’être cité dans un CCTP. Son lien avec l’obligation d’automatiser les bâtiments tertiaires relève du cours 6.</p></div></details>
+
+</div><div class="piege">
+
+<p><strong>Déplacer l’interface du port 80 vers le port 8081 ne la cache pas.</strong> Une adresse n’a que 65 535 ports, et un balayage les essaie tous. La seule interface qu’on ne trouve pas depuis Internet est celle qui n’y répond pas.</p>
+
+</div>
+
+<p><strong>En classe.</strong> En DOMA25, « la GTB : supervision, hypervision, alarmes techniques », le cas montre que la supervision est aussi une porte. En DOMB26, « GTB : bâtir un synoptique, régler les alarmes », l’accès distant au synoptique se prépare comme une règle de pare-feu, jamais comme une redirection de port. La question à poser : « L’intégrateur demande d’ouvrir le port 443 du superviseur sur Internet. Que lui répondre, et que lui proposer ? »</p>
+
+<h2 id="des-cameras-qui-font-tomber-une-partie-d-internet-mirai-et-dyn-2016">Des caméras qui font tomber une partie d’Internet, Mirai et Dyn, 2016</h2>
+
+<p><em>Selon l’alerte TA16-288A de la CISA, l’agence américaine de cybersécurité, du 14 octobre 2016, Mirai cherche sur Internet des routeurs, des caméras et des enregistreurs vidéo, et s’y connecte en Telnet, sur les ports 23 et 2323, avec 62 couples d’identifiants d’usine. En septembre 2016, il frappe le site du journaliste Brian Krebs à plus de 620 Gbit/s et l’hébergeur OVH à au moins 1,1 Tbit/s. Le 21 octobre, l’opérateur de noms de domaine Dyn subit deux vagues qui perturbent Twitter, Amazon, Reddit, Spotify et Netflix ; Dyn compte 100 000 appareils engagés au plus. Une étude publiée à USENIX Security en 2017 estime le pic du réseau à 600 000 appareils.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>La caméra répond en Telnet depuis Internet, directement ou par une redirection de port.</li>
+
+<li>Mirai essaie ses 62 couples ; celui de l’usine est dans la liste.</li>
+
+<li>Le logiciel s’installe en mémoire vive, se signale à son serveur de commande, puis cherche à son tour d’autres appareils.</li>
+
+<li>Sur ordre, la caméra inonde la cible désignée, tout en continuant de filmer.</li>
+
+<li>Un redémarrage l’efface ; si l’identifiant n’a pas changé, rien n’empêche une nouvelle infection.</li>
+
+</ol>
+
+</div>
+
+<p><strong>Mirai n’a exploité aucune faille savante : il a essayé 62 mots de passe.</strong> Tout y relève donc du geste de mise en service. Chez le fabricant XiongMai, dont les appareils étaient au cœur de l’attaque contre Dyn selon la société Flashpoint, le mot de passe changé dans l’interface web ne changeait pas celui du Telnet, inscrit en dur dans le micrologiciel. Un équipement porte plusieurs <strong>services</strong>, et chacun est une porte, y compris ceux que l’installateur ne voit jamais.</p>
+
+<p>La mise en service d’une caméra comporte donc trois gestes, dans cet ordre : fermer les services inutiles, changer tous les identifiants, installer le dernier micrologiciel. Le débit explique le choix des caméras : cent mille appareils à 10 Mbit/s font 1 Tbit/s, et <strong>une caméra est conçue pour émettre en continu</strong> ; personne ne s’étonne de la voir émettre.</p>
+
+<p>Les caméras sont aussi, le plus souvent, le premier poste de puissance du réseau technique. Un commutateur PoE se choisit sur deux vérifications, que DOMA6 installe : <strong>chaque port</strong> fournit la puissance de la classe de l’équipement, et <strong>la somme des puissances réservées</strong> reste sous le budget. Le câble dissipe l’écart entre le port et l’équipement.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Classe</th>
+
+<th>Norme et type</th>
+
+<th>Au port</th>
+
+<th>À l’équipement</th>
+
+<th>Écart, dissipé dans 100 m de câble</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>1</td>
+
+<td>802.3af, type 1</td>
+
+<td>4,0 W</td>
+
+<td>3,84 W</td>
+
+<td>0,16 W</td>
+
+</tr>
+
+<tr>
+
+<td>2</td>
+
+<td>802.3af, type 1</td>
+
+<td>7,0 W</td>
+
+<td>6,49 W</td>
+
+<td>0,51 W</td>
+
+</tr>
+
+<tr>
+
+<td>3</td>
+
+<td>802.3af, type 1</td>
+
+<td>15,4 W</td>
+
+<td>12,95 W</td>
+
+<td>2,45 W</td>
+
+</tr>
+
+<tr>
+
+<td>4</td>
+
+<td>802.3at, type 2</td>
+
+<td>30 W</td>
+
+<td>25,5 W</td>
+
+<td>4,5 W</td>
+
+</tr>
+
+<tr>
+
+<td>5</td>
+
+<td>802.3bt, type 3</td>
+
+<td>45 W</td>
+
+<td>40 W</td>
+
+<td>5 W</td>
+
+</tr>
+
+<tr>
+
+<td>6</td>
+
+<td>802.3bt, type 3</td>
+
+<td>60 W</td>
+
+<td>51 W</td>
+
+<td>9 W</td>
+
+</tr>
+
+<tr>
+
+<td>7</td>
+
+<td>802.3bt, type 4</td>
+
+<td>75 W</td>
+
+<td>62 W</td>
+
+<td>13 W</td>
+
+</tr>
+
+<tr>
+
+<td>8</td>
+
+<td>802.3bt, type 4</td>
+
+<td>90 W</td>
+
+<td>71,3 W</td>
+
+<td>18,7 W</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La table des classes se retrouve avec trois nombres</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les normes IEEE sont payantes et n’ont pas été relues ; les valeurs de la table, tirées de documentations de fabricants, se <strong>reconstruisent</strong> avec trois hypothèses, ce qui vaut vérification : une tension minimale au port de 44 V en type 1, 50 V en types 2 et 3, 52 V en type 4 ; une résistance de boucle de 20 Ω en type 1, puis 12,5 Ω par jeu de paires ; un jeu de paires jusqu’au type 2, deux en 802.3bt.</p>
+
+<p>Avec I = P / U, k jeux de paires et des pertes k × R × (I / k)² : <strong>classe 3</strong>, 0,35 A, pertes 2,45 W, reste 12,95 W ; <strong>classe 6</strong>, 1,2 A, soit 0,6 A par jeu, pertes 9 W, reste 51 W ; <strong>classe 8</strong>, 1,73 A, soit 0,87 A par jeu, pertes 18,7 W, reste 71,3 W.</p>
+
+<p><strong>Le 802.3bt existe à cause de ce carré.</strong> Les mêmes 60 W sur deux paires feraient passer 1,2 A dans 12,5 Ω : 18 W de pertes, 42 W à l’équipement. Deux jeux de paires divisent le courant de chacun par deux, et ses pertes par quatre.</p></div></details>
+
+</div><div class="piege">
+
+<p><strong>Couper le port PoE d’une caméra infectée l’efface, et ne la guérit pas.</strong> Mirai réside en mémoire vive, que le redémarrage vide ; l’identifiant d’usine reste, et la caméra redevient une cible dès qu’elle répond de nouveau.</p>
+
+</div>
+
+<p><strong>En classe.</strong> En DOMA19, « vidéosurveillance », puis en DOMB22, « vidéosurveillance : caméras IP, enregistreur, champs et stockage », la mise en service commence par les trois gestes, que la fiche de recette consigne. Le budget PoE se traite en DOMA6, activité 3, puis sur le commutateur de l’atelier en DOMB6. La question à poser : « La caméra a été redémarrée et filme de nouveau : est-elle saine ? » Le droit propre à la vidéo relève du cours 7.</p>
+
+<h2 id="deux-immeubles-prives-de-chauffage-lappeenranta-finlande-2016">Deux immeubles privés de chauffage, Lappeenranta (Finlande), 2016</h2>
+
+<p><em>Selon BleepingComputer, qui s’appuie sur la presse finlandaise, le chauffage et l’eau chaude de deux immeubles de Lappeenranta, gérés par la société Valtia, ont été coupés de la fin d’octobre au 3 novembre 2016 par un déni de service distribué, sous des températures négatives. Les automates redémarraient en boucle ; déconnectés d’Internet, ils ont fonctionné de nouveau, selon le directeur de Valtia, Simo Rounela. Pour l’autorité finlandaise des communications, citée par Yle le 8 novembre, ils n’étaient pas la cible : ils ont servi à amplifier une attaque contre un organisme européen, et leur surcharge en a été l’effet secondaire.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Les régulateurs de chauffage sont joignables depuis Internet.</li>
+
+<li>Un flot de trafic les atteint, qu’ils en soient la cible ou qu’on les emploie comme relais ; l’auteur reste inconnu, selon le journal local Etelä-Saimaa.</li>
+
+<li>Les automates redémarrent en boucle ; le mécanisme exact n’a pas été publié.</li>
+
+<li>La régulation ne tourne plus : ni chauffage, ni eau chaude.</li>
+
+<li>La déconnexion d’Internet rétablit le fonctionnement : la régulation savait travailler seule.</li>
+
+</ol>
+
+</div>
+
+<p>Un déni de service ne vole rien : il empêche, en saturant une liaison ou un processeur. Dans l’<strong>amplification</strong>, l’attaquant envoie à des milliers d’équipements une courte requête UDP portant l’adresse de sa victime en guise d’origine ; UDP ne la vérifie pas, et chacun renvoie à la victime une réponse beaucoup plus longue. Tout équipement qui répond ainsi depuis Internet devient <strong>l’arme d’une attaque contre un tiers</strong>.</p>
+
+<div class="formule">
+
+<p><strong>débit reçu par la victime = débit des requêtes × facteur d’amplification</strong></p>
+
+<ul>
+
+<li><strong>facteur d’amplification</strong><span>: octets de la réponse sur octets de la requête, en charge utile UDP</span></li>
+
+<li><strong>SNMPv2</strong><span>: 6,3 ; <strong>SSDP</strong>, la découverte de l’UPnP : 30,8 ; <strong>NTP</strong> : 556,9</span></li>
+
+<li><strong>WS-Discovery</strong><span>, un protocole de découverte d’appareils : de 10 à 500</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>Valeurs de l’alerte TA14-017A de la CISA, qui recommande de refuser l’accès aux services locaux depuis Internet. Avec SSDP, 10 Mbit/s de requêtes deviennent 308 Mbit/s chez la victime.</p>
+
+</blockquote>
+
+</div>
+
+<p>Le second enseignement pèse davantage. La boucle de régulation, sonde, régulateur, vanne, se ferme dans l’automate local ; le réseau ne transporte que des consignes, des mesures et des alarmes. Sa perte doit laisser le régulateur continuer avec ses derniers réglages et lever une alarme de communication. À Lappeenranta, <strong>la régulation savait travailler seule, mais le trafic du réseau pouvait la faire tomber.</strong></p>
+
+<figure class="schema"><div class="dessin" data-schema="deux-chaines"></div><figcaption>La régulation se ferme entre l’acquisition, le traitement et la vanne. La communication vers la GTB se situe au-dessus : si elle tombe, seule la supervision doit tomber avec elle.</figcaption></figure>
+
+<div class="cle">
+
+<p><strong>Une GTB supervise ; elle ne doit jamais être le maillon sans lequel le bâtiment ne chauffe plus.</strong> Perte de liaison ou flot de trafic, rien de ce qui arrive par le réseau ne doit arrêter la boucle locale.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un régulateur doit faire quand le réseau disparaît</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Trois comportements se spécifient au CCTP. <strong>Garder les derniers réglages</strong> : loi d’eau, consignes et plages horaires restent dans l’automate. <strong>Replier sur une valeur choisie à l’avance</strong> ce qui dépend d’une information distante. <strong>Signaler sans s’effondrer</strong> : la supervision lève une alarme de communication, et l’automate ne redémarre pas parce que son port réseau est inondé, ce qui a manqué en Finlande. L’essai de recette tient en trois minutes : débrancher le câble réseau, relever ce que fait la vanne, rebrancher, vérifier l’alarme.</p></div></details>
+
+</div><p><strong>En classe.</strong> Le cas relie DOMA21, « réguler : boucles, TOR, proportionnel, intermittence », où la boucle fermée localement devient une exigence de sûreté de fonctionnement, et DOMA25, où la supervision apprend à signaler une perte de communication. En DOMB24, « régulation : régler une boucle », l’essai du câble débranché s’ajoute aux relevés. La question à poser : « Le lien vers la supervision tombe un soir de janvier : que fait la chaufferie ? »</p>
+
+<h2 id="la-ou-la-methode-change-l-attaquant-qui-entre-par-la-porte-prevue">Là où la méthode change : l’attaquant qui entre par la porte prévue</h2>
+
+<p>Les cinq cas appellent une méthode de périmètre : séparer les zones, filtrer les passages, ne rien exposer. Elle suppose l’attaquant dehors. Chez Target, il s’est présenté avec le compte d’un fournisseur, sur un portail fait pour être joint ; au casino, il est passé par le tunnel qui devait isoler l’aquarium. <strong>Aucun pare-feu ne refuse un compte valide sur un chemin autorisé.</strong> La question n’est plus « où est la frontière », mais « qui parle à qui, avec quel droit, et est-ce normal ».</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th></th>
+
+<th>Raisonnement de périmètre</th>
+
+<th>Raisonnement par flux et par compte</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>L’unité de décision</td>
+
+<td>la zone</td>
+
+<td>le compte, et le flux qu’il ouvre</td>
+
+</tr>
+
+<tr>
+
+<td>Un prestataire</td>
+
+<td>entre dans la zone technique</td>
+
+<td>atteint une application, pendant l’intervention</td>
+
+</tr>
+
+<tr>
+
+<td>Le mot de passe</td>
+
+<td>protège l’entrée</td>
+
+<td>ne suffit plus : second facteur</td>
+
+</tr>
+
+<tr>
+
+<td>Ce qui se surveille</td>
+
+<td>les tentatives refusées</td>
+
+<td>les accès réussis, leur volume, leur destination</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p>Trois outils portent ce raisonnement : le <strong>moindre privilège</strong>, une application par compte ; le <strong>second facteur</strong>, que Target exigeait rarement de ses petits prestataires selon le rapport du Sénat ; la <strong>détection</strong>, qui ne vaut que si quelqu’un lit les alertes, restées sans suite chez Target.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi un réseau technique se surveille mieux qu&#39;un réseau bureautique</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un réseau bureautique est imprévisible ; un réseau technique est d’une régularité parfaite : un thermomètre parle à une ou deux adresses, au même rythme, avec des messages de même taille. Sous l’hypothèse d’un relevé de 100 octets par minute, il émet 144 000 octets par jour. <strong>Les 10 Go du casino représentent environ 69 000 jours de ce trafic, soit 190 ans.</strong> Rien n’a besoin d’être déchiffré : le volume, la destination et l’heure suffisent, et une alarme sur toute destination nouvelle d’un VLAN technique coûte peu.</p></div></details>
+
+</div><h2 id="le-calcul-retourne">Le calcul retourné</h2>
+
+<p>DOMA6 vérifie un plan d’adressage donné. Le bureau d’études fait l’inverse : il <strong>construit</strong> les sous-réseaux à partir d’un bloc et des usages, et il <strong>choisit</strong> les commutateurs à partir des caméras. L’immeuble qui suit, six niveaux de bureaux, est un cas d’étude construit pour le calcul.</p>
+
+<p><strong>Découper le bloc.</strong> Ce qui est fixé : les effectifs, une marge de 25 %, une passerelle par sous-réseau, et l’alignement, qui fait commencer chaque réseau à un multiple de sa taille. Ce qui est libre : la taille de chaque sous-réseau, leur ordre, et la taille du bloc à demander au service informatique du propriétaire.</p>
+
+<table style="width:100%;">
+
+<colgroup>
+
+<col style="width: 14%" />
+
+<col style="width: 14%" />
+
+<col style="width: 14%" />
+
+<col style="width: 14%" />
+
+<col style="width: 14%" />
+
+<col style="width: 14%" />
+
+<col style="width: 14%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>VLAN</th>
+
+<th>Usage</th>
+
+<th>Appareils</th>
+
+<th>Avec 25 %</th>
+
+<th>Avec la passerelle</th>
+
+<th>Préfixe</th>
+
+<th>Adresses utiles</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>30</td>
+
+<td>Vidéo : caméras et enregistreurs</td>
+
+<td>152</td>
+
+<td>190</td>
+
+<td>191</td>
+
+<td>/24</td>
+
+<td>254</td>
+
+</tr>
+
+<tr>
+
+<td>40</td>
+
+<td>Accès et interphonie</td>
+
+<td>58</td>
+
+<td>73</td>
+
+<td>74</td>
+
+<td>/25</td>
+
+<td>126</td>
+
+</tr>
+
+<tr>
+
+<td>20</td>
+
+<td>GTB : automates, passerelles KNX/IP</td>
+
+<td>36</td>
+
+<td>45</td>
+
+<td>46</td>
+
+<td>/26</td>
+
+<td>62</td>
+
+</tr>
+
+<tr>
+
+<td>50</td>
+
+<td>Comptage</td>
+
+<td>21</td>
+
+<td>27</td>
+
+<td>28</td>
+
+<td>/27</td>
+
+<td>30</td>
+
+</tr>
+
+<tr>
+
+<td>60</td>
+
+<td>Serveurs techniques</td>
+
+<td>6</td>
+
+<td>8</td>
+
+<td>9</td>
+
+<td>/28</td>
+
+<td>14</td>
+
+</tr>
+
+<tr>
+
+<td>90</td>
+
+<td>Administration du réseau</td>
+
+<td>9</td>
+
+<td>12</td>
+
+<td>13</td>
+
+<td>/28</td>
+
+<td>14</td>
+
+</tr>
+
+<tr>
+
+<td>100</td>
+
+<td>DMZ des prestataires</td>
+
+<td>2</td>
+
+<td>3</td>
+
+<td>4</td>
+
+<td>/29</td>
+
+<td>6</td>
+
+</tr>
+
+<tr>
+
+<td></td>
+
+<td><strong>Total</strong></td>
+
+<td><strong>284</strong></td>
+
+<td></td>
+
+<td><strong>365</strong></td>
+
+<td></td>
+
+<td><strong>520 adresses consommées</strong></td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>Le service informatique propose un /23, 512 adresses, puisque 284 appareils y tiennent largement. <strong>Le calcul montre le contraire</strong> : chaque besoin arrondi à la puissance de deux supérieure, les sept réseaux consomment 520 adresses. Les six premiers remplissent le /23 à l’adresse près, la DMZ n’y tient plus, et il ne reste aucune réserve. La bonne demande est un /22, 1 024 adresses, qui laisse 504 adresses de réserve, alignées.</p>
+
+<figure>
+
+<img src="img/COURS2-RESEAU-IP-CYBERSECURITE/c2-decoupage.png" alt="Le découpage du bloc 10.40.8.0/22, à l’échelle : chaque ligne vaut 256 adresses, et chaque réseau commence à un multiple de sa taille." />
+
+<figcaption aria-hidden="true">Le découpage du bloc 10.40.8.0/22, à l’échelle : chaque ligne vaut 256 adresses, et chaque réseau commence à un multiple de sa taille.</figcaption>
+
+</figure>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le plan obtenu, et pourquoi l&#39;on commence par le plus grand</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><table style="width:100%;">
+
+<colgroup>
+
+<col style="width: 16%" />
+
+<col style="width: 16%" />
+
+<col style="width: 16%" />
+
+<col style="width: 16%" />
+
+<col style="width: 16%" />
+
+<col style="width: 16%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>VLAN</th>
+
+<th>Réseau</th>
+
+<th>Masque</th>
+
+<th>Passerelle</th>
+
+<th>Équipements</th>
+
+<th>Diffusion</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>30</td>
+
+<td>10.40.8.0/24</td>
+
+<td>255.255.255.0</td>
+
+<td>10.40.8.1</td>
+
+<td>.2 à .254</td>
+
+<td>10.40.8.255</td>
+
+</tr>
+
+<tr>
+
+<td>40</td>
+
+<td>10.40.9.0/25</td>
+
+<td>255.255.255.128</td>
+
+<td>10.40.9.1</td>
+
+<td>.2 à .126</td>
+
+<td>10.40.9.127</td>
+
+</tr>
+
+<tr>
+
+<td>20</td>
+
+<td>10.40.9.128/26</td>
+
+<td>255.255.255.192</td>
+
+<td>10.40.9.129</td>
+
+<td>.130 à .190</td>
+
+<td>10.40.9.191</td>
+
+</tr>
+
+<tr>
+
+<td>50</td>
+
+<td>10.40.9.192/27</td>
+
+<td>255.255.255.224</td>
+
+<td>10.40.9.193</td>
+
+<td>.194 à .222</td>
+
+<td>10.40.9.223</td>
+
+</tr>
+
+<tr>
+
+<td>60</td>
+
+<td>10.40.9.224/28</td>
+
+<td>255.255.255.240</td>
+
+<td>10.40.9.225</td>
+
+<td>.226 à .238</td>
+
+<td>10.40.9.239</td>
+
+</tr>
+
+<tr>
+
+<td>90</td>
+
+<td>10.40.9.240/28</td>
+
+<td>255.255.255.240</td>
+
+<td>10.40.9.241</td>
+
+<td>.242 à .254</td>
+
+<td>10.40.9.255</td>
+
+</tr>
+
+<tr>
+
+<td>100</td>
+
+<td>10.40.10.0/29</td>
+
+<td>255.255.255.248</td>
+
+<td>10.40.10.1</td>
+
+<td>.2 à .6</td>
+
+<td>10.40.10.7</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>La réserve court de 10.40.10.8 à 10.40.11.255 : 8 + 16 + 32 + 64 + 128 + 256 = 504 adresses, en blocs alignés.</p>
+
+<p><strong>On alloue du plus grand au plus petit</strong> : chaque taille divise la précédente, et chaque bloc tombe sur une limite alignée, sans trou. Dans l’ordre inverse, la DMZ placée en 10.40.8.0/29 repousse la vidéo en 10.40.9.0 et laisse 248 adresses à combler au compte-gouttes. Le service informatique donne un bloc, et non des /24 épars, pour annoncer le bâtiment par une seule route, 10.40.8.0/22 : c’est l’agrégation de la RFC 4632.</p></div></details>
+
+</div><p><strong>Dimensionner les commutateurs PoE.</strong> Au local technique du troisième étage, le plan fixe 22 dômes intérieurs de classe 2, 4 caméras extérieures à infrarouge et chauffage de classe 4, une caméra motorisée de classe 6 et 3 contrôleurs de porte de classe 3, tous à moins de 90 m de la baie. Ce qui est libre : le nombre de commutateurs, leur budget, et la répartition des équipements.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Équipements</th>
+
+<th>Nombre</th>
+
+<th>Classe</th>
+
+<th>Réservé par port</th>
+
+<th>Total</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Dômes intérieurs</td>
+
+<td>22</td>
+
+<td>2</td>
+
+<td>7,0 W</td>
+
+<td>154,0 W</td>
+
+</tr>
+
+<tr>
+
+<td>Caméras extérieures</td>
+
+<td>4</td>
+
+<td>4</td>
+
+<td>30 W</td>
+
+<td>120,0 W</td>
+
+</tr>
+
+<tr>
+
+<td>Caméra motorisée</td>
+
+<td>1</td>
+
+<td>6</td>
+
+<td>60 W</td>
+
+<td>60,0 W</td>
+
+</tr>
+
+<tr>
+
+<td>Contrôleurs de porte</td>
+
+<td>3</td>
+
+<td>3</td>
+
+<td>15,4 W</td>
+
+<td>46,2 W</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Total</strong></td>
+
+<td><strong>30</strong></td>
+
+<td></td>
+
+<td></td>
+
+<td><strong>380,2 W</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p>Avec 20 % de réserve, le budget atteint 456,2 W sur 30 ports PoE, dont <strong>un port de 60 W</strong>. Un commutateur de 48 ports suffirait ; deux valent mieux, si l’on y répartit les dômes d’une même zone un sur deux : une panne n’aveugle plus qu’environ une caméra sur deux. On dimensionne <strong>à la classe</strong>, et ces 380,2 W, avec la consommation propre des commutateurs, sont ce que l’onduleur de la baie doit secourir.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Commutateur</th>
+
+<th>Ce qu’il alimente</th>
+
+<th>Réservé</th>
+
+<th>Avec 20 %</th>
+
+<th>Ports PoE</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>A</td>
+
+<td>11 dômes, 2 caméras extérieures, 2 portes</td>
+
+<td>167,8 W</td>
+
+<td>201,4 W</td>
+
+<td>15</td>
+
+</tr>
+
+<tr>
+
+<td>B</td>
+
+<td>11 dômes, 2 caméras extérieures, la motorisée, 1 porte</td>
+
+<td>212,4 W</td>
+
+<td>254,9 W</td>
+
+<td>15, dont un de 60 W</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : le thermomètre de l&#39;aquarium</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Dans l’immeuble du calcul retourné, le thermomètre d’un aquarium est réglé en 10.40.9.140, masque 255.255.255.192, passerelle 10.40.9.129 ; le serveur de supervision est en 10.40.9.226. a) Dans quel réseau est le thermomètre ? b) Joint-il directement le serveur ? c) Qu’arrive-t-il si l’installateur saisit le masque 255.255.255.0 ?</p>
+
+<p><strong>Résolution.</strong> a) 140 s’écrit 10001100, 192 s’écrit 11000000 : le ET donne 10000000, soit 128. Le thermomètre est dans <strong>10.40.9.128/26</strong>, le VLAN de la GTB. b) 226 ET 192 donne 192 : le serveur est dans 10.40.9.224/28. Le paquet passe par la passerelle, et le pare-feu porte une seule règle, <strong>thermomètre vers supervision</strong>. c) En /24, le thermomètre croit le serveur dans son réseau et le cherche par une requête ARP que le serveur, dans un autre VLAN, n’entend pas ; le reste part vers la passerelle. <strong>Il joint Internet si le pare-feu le laisse faire, et plus la supervision.</strong></p>
+
+<p><strong>Vérification de plausibilité.</strong> La passerelle est la première adresse du /26, le thermomètre est dans la plage .130 à .190, et un équipement qui atteint l’extérieur mais pas son voisin a presque toujours un masque trop large.</p>
+
+<p><strong>Ce que l’étudiant doit rédiger.</strong> La même question en /24, comme en DOMA6, partie 3 : le réglage en cause, puis la conséquence constatée.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : combien de caméras ce commutateur accepte-t-il encore ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un commutateur de 24 ports PoE+, à 30 W par port et 370 W de budget, alimente 12 dômes de classe 2 et 3 contrôleurs de classe 3 ; un port sert à la liaison montante. Combien de caméras de classe 4 accepte-t-il encore, a) en consommant tout le budget, b) en gardant 20 % de réserve ?</p>
+
+<p><strong>Résolution.</strong> Déjà réservé : 12 × 7,0 + 3 × 15,4 = <strong>130,2 W</strong>. Ports libres : 24 − 15 − 1 = <strong>8</strong>. a) Il reste 239,8 W, et 239,8 / 30 = 7,99 : <strong>sept caméras</strong>. La huitième demanderait 240 W, soit 0,2 W de trop : les ports en permettaient huit, le budget en permet sept. b) Le budget utilisable vaut 0,8 × 370 = 296 W ; il reste 165,8 W, et 165,8 / 30 = 5,5 : <strong>cinq caméras</strong>.</p>
+
+<p><strong>Vérification de plausibilité.</strong> À vide, 370 W alimentent 12 ports de classe 4 ; les 130,2 W réservés en valent un peu plus de 4 ; il en reste environ 8, et l’arrondi par défaut donne 7.</p>
+
+<p><strong>Ce que l’étudiant doit rédiger.</strong> Les deux limites chiffrées, celle des ports et celle du budget, celle qui s’impose, et la raison de l’arrondi par défaut : une caméra ne se branche pas à 99 %.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : la télémaintenance demandée par le chauffagiste</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Dans un immeuble d’habitation, le routeur de l’accès Internet redirige les ports TCP 80 et UDP 47808 vers le régulateur de la chaufferie, qui accepte le compte d’usine et dont le micrologiciel a quatre ans. Le chauffagiste veut garder « son » accès, deux heures par mois. Rédiger la proposition au syndic : a) les expositions ; b) l’architecture ; c) le comportement si le réseau tombe.</p>
+
+<p><strong>a) Trois expositions.</strong> L’interface web et son compte d’usine laissent n’importe qui modifier les consignes : c’est Wharf 7 sans même une faille. Le port 47808 expose BACnet/IP, qui ne vérifie pas l’émetteur, et un régulateur qui répond sur Internet peut être saturé ou détourné, comme à Lappeenranta. Un micrologiciel de quatre ans porte vraisemblablement des failles publiées depuis.</p>
+
+<p><strong>b) L’architecture.</strong> Supprimer les deux redirections ; placer le régulateur dans un VLAN technique, en 192.168.20.20, comme en DOMA6 ; changer le compte d’usine, mettre à jour le micrologiciel ; ouvrir l’accès distant par un VPN sur le routeur-pare-feu, un compte à son nom par technicien, un second facteur, à la demande.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Règle</th>
+
+<th>Source</th>
+
+<th>Destination</th>
+
+<th>Service</th>
+
+<th>Décision</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>1</td>
+
+<td>comptes VPN du chauffagiste</td>
+
+<td>régulateur 192.168.20.20</td>
+
+<td>HTTPS</td>
+
+<td>autorisée pendant l’intervention</td>
+
+</tr>
+
+<tr>
+
+<td>2</td>
+
+<td>régulateur</td>
+
+<td>serveur d’heure</td>
+
+<td>NTP</td>
+
+<td>autorisée</td>
+
+</tr>
+
+<tr>
+
+<td>3</td>
+
+<td>Internet</td>
+
+<td>réseau technique</td>
+
+<td>tout</td>
+
+<td>refusée</td>
+
+</tr>
+
+<tr>
+
+<td>4</td>
+
+<td>réseau technique</td>
+
+<td>Internet</td>
+
+<td>tout</td>
+
+<td>refusée</td>
+
+</tr>
+
+<tr>
+
+<td>5</td>
+
+<td>tout</td>
+
+<td>tout</td>
+
+<td>tout</td>
+
+<td>refusée</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>c) Le repli.</strong> Le régulateur calcule la loi d’eau à partir de sa sonde extérieure ; la perte du réseau ne change rien au chauffage, et la supervision affiche une alarme de communication. L’essai du câble débranché figure au procès-verbal.</p>
+
+<p><strong>Vérification de plausibilité.</strong> Une redirection permanente ouvre la porte environ 730 heures par mois, l’accès à la demande deux heures, soit 0,27 % du temps ; le chauffagiste garde son accès, et rien n’est acheté si le routeur sait établir un VPN.</p>
+
+<p><strong>Ce que l’étudiant doit rédiger.</strong> Chaque exposition avec sa conséquence, et non « c’est dangereux » ; le tableau des règles, dernière ligne comprise ; la phrase de repli ; une note que le syndic peut lire sans connaître le mot VLAN.</p></div></details>
+
+</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 50%" />
+
+<col style="width: 50%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Ordre de grandeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Adresses IPv4 en tout</td>
+
+<td>2³² = 4 294 967 296 : un balayage complet est à la portée d’une machine</td>
+
+</tr>
+
+<tr>
+
+<td>Adresses utiles d’un /n</td>
+
+<td>2^(32 − n) − 2 : 254 en /24, 126 en /25, 62 en /26, 30 en /27, 14 en /28, 6 en /29</td>
+
+</tr>
+
+<tr>
+
+<td>Blocs privés de la RFC 1918</td>
+
+<td>10/8 : 16 777 216 · 172.16/12 : 1 048 576 · 192.168/16 : 65 536 adresses</td>
+
+</tr>
+
+<tr>
+
+<td>Ports TCP ou UDP d’une adresse</td>
+
+<td>65 535</td>
+
+</tr>
+
+<tr>
+
+<td>Puissance au port, 802.3af · at · bt</td>
+
+<td>15,4 W · 30 W · 60 ou 90 W</td>
+
+</tr>
+
+<tr>
+
+<td>Puissance à l’équipement</td>
+
+<td>12,95 W · 25,5 W · 51 ou 71,3 W</td>
+
+</tr>
+
+<tr>
+
+<td>24 ports en classe 4</td>
+
+<td>720 W de budget ; 370 W n’en alimentent que 12</td>
+
+</tr>
+
+<tr>
+
+<td>Identifiants essayés par Mirai</td>
+
+<td>62 couples</td>
+
+</tr>
+
+<tr>
+
+<td>Pic du réseau Mirai</td>
+
+<td>environ 600 000 appareils infectés</td>
+
+</tr>
+
+<tr>
+
+<td>Appareils engagés contre Dyn</td>
+
+<td>100 000 au plus</td>
+
+</tr>
+
+<tr>
+
+<td>Attaques de septembre 2016</td>
+
+<td>plus de 620 Gbit/s contre KrebsOnSecurity · au moins 1,1 Tbit/s contre OVH, soit 11 Mbit/s par appareil pour 100 000 appareils</td>
+
+</tr>
+
+<tr>
+
+<td>Facteurs d’amplification relevés par la CISA</td>
+
+<td>SNMPv2 6,3 · SSDP 30,8 · NTP 556,9</td>
+
+</tr>
+
+<tr>
+
+<td>Systèmes Tridium Niagara exposés, recensés en 2013</td>
+
+<td>plus de 25 000</td>
+
+</tr>
+
+<tr>
+
+<td>Target, de la première connexion</td>
+
+<td>20 jours jusqu’à la fuite des données, 30 jusqu’à l’alerte extérieure</td>
+
+</tr>
+
+<tr>
+
+<td>Target, données exposées</td>
+
+<td>40 millions de cartes · 70 millions de clients</td>
+
+</tr>
+
+<tr>
+
+<td>Casino, données sorties</td>
+
+<td>10 Go, soit 190 ans d’un relevé de 100 octets par minute</td>
+
+</tr>
+
+<tr>
+
+<td>Télémaintenance d’une chaufferie</td>
+
+<td>2 heures d’ouverture par mois, contre 730 pour une redirection permanente</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Deux réflexes suffisent à trier la plupart des affirmations. <strong>Une adresse privée ne dit rien de l’exposition</strong> : seule la configuration du routeur le dit. <strong>Un budget PoE se compare à la somme des classes, jamais au nombre de ports.</strong></p>
+
+</div>
+
+<h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Nos caméras ont une adresse en 192.168 : elles ne sont pas sur Internet, où est le risque ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’adresse privée n’est pas routée sur Internet ; elle ne dit rien pour autant de ce que le routeur laisse passer. Trois mécanismes rendent une caméra joignable malgré elle : la <strong>redirection de port</strong> posée pour voir les images sur un téléphone, l’<strong>UPnP</strong>, que la CISA recommande de désactiver sur les routeurs, et le <strong>service de connexion du fabricant</strong>, qu’on emprunte en sens inverse. Mirai a trouvé environ <strong>600 000 appareils</strong> avec 62 couples d’identifiants, et aucun n’était « sur Internet » aux yeux de son propriétaire.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Le prestataire doit intervenir à distance : on ne va pas lui refuser l&#39;accès ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Personne ne le demande. Il s’agit de lui donner <strong>l’accès dont il a besoin, et pas davantage</strong> : une application, un compte à son nom, un second facteur, une durée. Chez Target, le compte du frigoriste servait à déposer des factures, et il a mené à 40 millions de cartes. Un chauffagiste qui intervient deux heures par mois n’a pas besoin d’une porte ouverte 730 heures : <strong>l’accès à la demande réduit l’exposition à 0,27 % du temps</strong>, sans rien lui retirer.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« La caméra ne consomme que 5 W d&#39;après sa fiche : pourquoi le commutateur lui réserve-t-il 15,4 W ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce qu’elle s’annonce en classe 3 à la connexion, et qu’un commutateur réglé pour réserver à la classe lui attribue ce que la classe garantit. La fiche donne une consommation typique ; la classe donne le plafond, celui des nuits froides où l’infrarouge et le chauffage fonctionnent ensemble. 24 caméras de ce type réservent 24 × 15,4 = 369,6 W, tout un budget de 370 W, pour 24 × 5 = 120 W de consommation typique. Réserver à la consommation mesurée en fait entrer davantage, et la première nuit froide, le commutateur coupera les ports les moins prioritaires.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pirater un chauffage, à quoi bon ? Ce n&#39;est pas une banque. »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le chauffage mène à la banque</strong> : chez Target, le compte d’un frigoriste a ouvert la route vers 40 millions de cartes. <strong>Le chauffage compte par lui-même</strong> : à Lappeenranta, deux immeubles ont perdu chauffage et eau chaude par des températures négatives, et l’expert de l’agence finlandaise de sécurité des approvisionnements cité par Yle estime que ces attaques peuvent menacer des vies. <strong>Le chauffage sert d’arme</strong> : cent mille appareils à 10 Mbit/s font 1 Tbit/s. La phrase à laisser aux étudiants : <strong>l’attaquant ne choisit pas un équipement pour ce qu’il commande, mais pour ce qu’il ouvre.</strong></p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Les sources de cette page</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><ul>
+
+<li>Sénat des États-Unis, commission du Commerce, de la Science et des Transports, compte rendu de l’audition du 26 mars 2014, qui reproduit le rapport de la majorité « A “Kill Chain” Analysis of the 2013 Target Data Breach », <a href="https://www.govinfo.gov/content/pkg/CHRG-113shrg92594/html/CHRG-113shrg92594.htm" class="uri">https://www.govinfo.gov/content/pkg/CHRG-113shrg92594/html/CHRG-113shrg92594.htm</a> : le prestataire, le portail non isolé, le compte par défaut, les alertes, la chronologie, les 40 et 70 millions, le second facteur.</li>
+
+<li>NBC News, dépêche Reuters, « Target Missed Many Warning Signs Leading to Breach: Senate Report », 25 mars 2014, <a href="https://www.nbcnews.com/business/consumer/target-missed-many-warning-signs-leading-breach-senate-report-n62021" class="uri">https://www.nbcnews.com/business/consumer/target-missed-many-warning-signs-leading-breach-senate-report-n62021</a> : la date de publication du rapport.</li>
+
+<li>KrebsOnSecurity, Brian Krebs, « Target Hackers Broke in Via HVAC Company », 5 février 2014, <a href="https://krebsonsecurity.com/2014/02/target-hackers-broke-in-via-hvac-company/" class="uri">https://krebsonsecurity.com/2014/02/target-hackers-broke-in-via-hvac-company/</a> : la nature de l’accès du prestataire, selon sa déclaration.</li>
+
+<li>SecurityWeek, « Hacked Smart Fish Tank Exfiltrated Data to “Rare External Destination” », 26 juillet 2017, <a href="https://www.securityweek.com/hacked-smart-fish-tank-exfiltrated-data-rare-external-destination/" class="uri">https://www.securityweek.com/hacked-smart-fish-tank-exfiltrated-data-rare-external-destination/</a> : la version de 2017, d’après le rapport de Darktrace, source commerciale.</li>
+
+<li>Business Insider, repris par Yahoo Finance, Oscar Williams-Grut, « Hackers stole a casino’s high-roller database through a thermometer in the lobby fish tank », 16 avril 2018, <a href="https://finance.yahoo.com/news/hackers-stole-casino-apos-high-070800573.html" class="uri">https://finance.yahoo.com/news/hackers-stole-casino-apos-high-070800573.html</a> : la version de 2018.</li>
+
+<li>CISA, alerte TA16-288A « Heightened DDoS Threat Posed by Mirai and Other Botnets », 14 octobre 2016, révisée le 17 octobre 2017, <a href="https://www.cisa.gov/news-events/alerts/2016/10/14/heightened-ddos-threat-posed-mirai-and-other-botnets" class="uri">https://www.cisa.gov/news-events/alerts/2016/10/14/heightened-ddos-threat-posed-mirai-and-other-botnets</a> : les 62 identifiants, les ports Telnet, les attaques de septembre, la mémoire vive, l’UPnP.</li>
+
+<li>M. Antonakakis et al., « Understanding the Mirai Botnet », USENIX Security Symposium, 2017, notice sur <a href="https://research.google/pubs/understanding-the-mirai-botnet/" class="uri">https://research.google/pubs/understanding-the-mirai-botnet/</a> : le pic de 600 000 infections.</li>
+
+<li>New Hampshire Business Review, « Dyn issues analysis of “complex and sophisticated” cyberattacks », 27 octobre 2016, <a href="https://www.nhbr.com/dyn-issues-analysis-of-complex-and-sophisticated-cyberattacks/" class="uri">https://www.nhbr.com/dyn-issues-analysis-of-complex-and-sophisticated-cyberattacks/</a> : les 100 000 appareils et le rôle de Mirai.</li>
+
+<li>KrebsOnSecurity, Brian Krebs, « Hacked Cameras, DVRs Powered Today’s Massive Internet Outage », 21 octobre 2016, <a href="https://krebsonsecurity.com/2016/10/hacked-cameras-dvrs-powered-todays-massive-internet-outage/" class="uri">https://krebsonsecurity.com/2016/10/hacked-cameras-dvrs-powered-todays-massive-internet-outage/</a> : les sites perturbés, le mot de passe inscrit en dur chez XiongMai.</li>
+
+<li>The Register, Alexander J. Martin, « Chinese electronics biz recalls webcams at heart of botnet DDoS woes », 24 octobre 2016, <a href="https://www.theregister.com/security/2016/10/24/chinese-electronics-biz-recalls-webcams-at-heart-of-botnet-ddos-woes/606369" class="uri">https://www.theregister.com/security/2016/10/24/chinese-electronics-biz-recalls-webcams-at-heart-of-botnet-ddos-woes/606369</a> : XiongMai au cœur de l’attaque selon Flashpoint.</li>
+
+<li>BleepingComputer, Catalin Cimpanu, « DDoS Attacks Bring Down Heating System for Two Buildings in Small Finnish Town », 8 novembre 2016, <a href="https://www.bleepingcomputer.com/news/security/ddos-attacks-bring-down-heating-system-for-two-buildings-in-small-finnish-town/" class="uri">https://www.bleepingcomputer.com/news/security/ddos-attacks-bring-down-heating-system-for-two-buildings-in-small-finnish-town/</a> : Valtia, les dates, les redémarrages, la déconnexion.</li>
+
+<li>Yle, « Suomi heräsi taloja kylmentäneisiin verkkohyökkäyksiin », 8 novembre 2016, <a href="https://yle.fi/a/3-9278446" class="uri">https://yle.fi/a/3-9278446</a> : l’analyse de l’autorité des communications, l’amplification, l’avis sur les vies menacées.</li>
+
+<li>Etelä-Saimaa, « Pannuhuoneeseen Lappeenrannassa tehty palvelunestohyökkäys jää arvoitukseksi », 11 novembre 2016, <a href="https://www.esaimaa.fi/paikalliset/3836547" class="uri">https://www.esaimaa.fi/paikalliset/3836547</a> : l’auteur inconnu ; article en partie réservé aux abonnés.</li>
+
+<li>SecurityWeek, Steve Ragan, « Building Control System at Google Found Hackable », 8 mai 2013, <a href="https://www.securityweek.com/building-control-system-google-found-hackable/" class="uri">https://www.securityweek.com/building-control-system-google-found-hackable/</a> : Cylance, config.bog, la version ancienne, les 25 000 systèmes.</li>
+
+<li>Threatpost, Brian Donohue, « Researchers Hack Google Office’s Building Management System », 7 mai 2013, <a href="https://threatpost.com/researchers-hack-google-offices-building-management-system/100298/" class="uri">https://threatpost.com/researchers-hack-google-offices-building-management-system/100298/</a> : la climatisation et les alarmes, le retrait du système.</li>
+
+<li>CISA, alerte TA14-017A « UDP-Based Amplification Attacks », révisée le 18 décembre 2019, <a href="https://www.cisa.gov/news-events/alerts/2014/01/17/udp-based-amplification-attacks" class="uri">https://www.cisa.gov/news-events/alerts/2014/01/17/udp-based-amplification-attacks</a> : le mécanisme et les facteurs d’amplification.</li>
+
+<li>ANSSI, « Recommandations de sécurité relatives à la gestion technique et centralisée du bâtiment (GTB/GTC) », page MesServicesCyber, mise en ligne le 4 juin 2026, <a href="https://messervices.cyber.gouv.fr/guides/recommandations-gestion-technique-batiment" class="uri">https://messervices.cyber.gouv.fr/guides/recommandations-gestion-technique-batiment</a> : le titre, la date, le champ du guide.</li>
+
+<li>Vesta-System, intégrateur, source commerciale, « Guide ANSSI 2026 : comment sécuriser votre GTB face aux nouvelles cybermenaces », 16 juin 2026, <a href="https://www.vesta-system.fr/2026/06/16/cybersecurite-gtb-guide-officiel-anssi/" class="uri">https://www.vesta-system.fr/2026/06/16/cybersecurite-gtb-guide-officiel-anssi/</a> : le nombre de recommandations et les annexes, tels que présentés.</li>
+
+<li>IETF, RFC 1918, février 1996, <a href="https://www.rfc-editor.org/rfc/rfc1918.html" class="uri">https://www.rfc-editor.org/rfc/rfc1918.html</a> ; RFC 4632, août 2006, <a href="https://www.rfc-editor.org/rfc/rfc4632.html" class="uri">https://www.rfc-editor.org/rfc/rfc4632.html</a> ; RFC 3021, décembre 2000, <a href="https://www.rfc-editor.org/rfc/rfc3021.html" class="uri">https://www.rfc-editor.org/rfc/rfc3021.html</a> : les blocs privés, la notation /n et l’agrégation, l’exception du /31.</li>
+
+<li>Cabling Installation &amp; Maintenance, article financé par Molex, source commerciale, « PoE Types, Classes and RP Categories Explained », 20 avril 2023, <a href="https://www.cablinginstall.com/sponsored/article/14292663/poe-types-classes-and-rp-categories-explained" class="uri">https://www.cablinginstall.com/sponsored/article/14292663/poe-types-classes-and-rp-categories-explained</a> : les types, les paires, les courants, la plage de 44 à 57 V.</li>
+
+<li>NORDIX, distributeur, source commerciale, « PoE Wattage Chart », non daté, <a href="https://www.nordixhq.com/reference/poe-wattage-chart" class="uri">https://www.nordixhq.com/reference/poe-wattage-chart</a> : la table des classes, au port et à l’équipement.</li>
+
+</ul>
+
+<p>Le référentiel du BTS FED, pages 71 à 74, et la séance DOMA6 ont fourni les niveaux et le plan d’adressage de référence. Sources consultées le 13 septembre 2026.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="COURS1-ENERGIE-ELECTRIQUE.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Domotique, cours 1 — l'énergie électrique</span></a><a class="ap" href="COURS3-VDI-FIBRE-CEM.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Domotique, cours 3 — VDI, fibre et CEM</span></a></div></nav>
 <p class="pied">Page de formation, réservée au professeur. Elle s'appuie sur des cas réels documentés ; les sources sont données en fin de page.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

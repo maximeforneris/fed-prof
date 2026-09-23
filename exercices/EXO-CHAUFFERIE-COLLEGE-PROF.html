@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Exercice type · chaufferie</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="exercices/EXO-CHAUFFERIE-COLLEGE-PROF" data-public="prof">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="EXO-CTA-AMPHI-PROF.html" rel="next" title="Exercice type · CTA" aria-label="Exercice type · CTA">&rsaquo;</a></span><button type="button" class="lu" data-lu="exercices/EXO-CHAUFFERIE-COLLEGE-PROF">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
@@ -23,243 +31,471 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="../manuel/M5-MANUEL.html">Les générateurs</a></b><span class="ou">Manuel · chapitre 5</span><span class="car">la condensation, et ce qui réchauffe le retour, portent la partie 3.</span></li><li><b><a href="../manuel/M3-MANUEL.html">Pertes de charge et pompes</a></b><span class="ou">Manuel · chapitre 3</span><span class="car">la bouteille de découplage et la vanne trois voies servent aux questions 3 et 11.</span></li><li><b><a href="../manuel/M13-MANUEL.html">La loi d'eau</a></b><span class="ou">Manuel · chapitre 13</span><span class="car">la question 10 la trace.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#utiliser-cette-fiche">Utiliser cette fiche</a><a href="#corrige-partie-1-lire-le-schema">Corrigé, partie 1 : lire le schéma</a><a href="#corrige-partie-2-la-puissance-et-la-cascade">Corrigé, partie 2 : la puissance et la cascade</a><a href="#corrige-partie-3-le-retour-decide">Corrigé, partie 3 : le retour décide</a><a href="#corrige-partie-4-les-radiateurs-et-l-eau-chaude">Corrigé, partie 4 : les radiateurs et l’eau chaude</a><a href="#grille-de-diagnostic-a-remplir-en-circulant">Grille de diagnostic, à remplir en circulant</a></div></nav>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th><strong>Savoirs</strong></th>
-<th><strong>Niveau DBC</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>B1-1 Production de chaleur, chaudières</strong></td>
-<td><strong>3, maîtrise d’outils</strong></td>
-</tr>
-<tr>
-<td><strong>B1-2 Émission, radiateurs</strong></td>
-<td><strong>3, maîtrise d’outils</strong></td>
-</tr>
-<tr>
-<td><strong>B11 Régulation</strong></td>
-<td><strong>3, maîtrise d’outils</strong></td>
-</tr>
-<tr>
-<td>B4-1 Réseaux hydrauliques, typologie</td>
-<td>2 : expression</td>
-</tr>
-</tbody>
-</table></div>
-<blockquote>
-<p><strong>UN CAS CONSTRUIT, PAS UNE CHAUFFERIE RELEVÉE</strong></p>
-<p>Le collège, ses deux chaudières et leurs réglages sont inventés, sur le modèle des chaufferies et des sous-stations des sessions 2018, 2021, 2022, 2023 et 2026. Les valeurs sont cohérentes entre elles et recalculées ; la courbe de rendement du DT2 est indicative, dans l’ordre de grandeur des notices du commerce, et n’est celle d’aucune chaudière. Le schéma est tracé par <code>figs-exo-chaufferie.py</code>.</p>
-</blockquote>
-<h2 id="utiliser-cette-fiche">Utiliser cette fiche</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th>Moment</th>
-<th>Ce qu’on en fait</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Après les séances 11 et 19</td>
-<td>En entraînement, 1 h 15, les documents indiqués dans chaque question</td>
-</tr>
-<tr>
-<td>Avec l’espace « chaudières » du professeur</td>
-<td>La partie 3 prolonge les leçons « le retour décide » et « répartition ou mélange »</td>
-</tr>
-<tr>
-<td>Avant les sujets complets des séances 24 et 26</td>
-<td>En autonomie chronométrée, puis correction croisée avec la grille de la séance 25</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Minutage conseillé : 1 h 15.</strong> Parties 1 et 2 en 30 minutes, partie 3 en 25 minutes, partie 4 en 20 minutes.</p>
-<p><strong>Ce qu’on ne sacrifie jamais : les questions 8 et 9.</strong> Elles portent l’idée qui fait comprendre une chaufferie à condensation : <strong>tout ce qui renvoie de l’eau chaude au retour coûte du gaz</strong>, qu’il s’agisse d’une vanne en décharge ou d’une pompe primaire de trop. La 9 le chiffre.</p>
-<p><strong>Barème indicatif, format des corrigés U41 depuis 2022</strong> : chaque question est cotée de 0 à 3 selon le nombre d’éléments attendus présents. Éval 0 aucun, Éval 1 un élément, Éval 2 deux, Éval 3 tous.</p>
-<h2 id="corrige-partie-1-lire-le-schema">Corrigé, partie 1 : lire le schéma</h2>
-<p><strong>1.</strong></p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Repère</th>
-<th>Désignation</th>
-<th>Fonction</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>Bouteille de découplage</td>
-<td>Rendre le débit du primaire indépendant de celui des circuits : chaque pompe travaille sans perturber les autres</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Neutraliseur de condensats</td>
-<td>Remonter le pH des condensats, acides, avant leur rejet à l’égout</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Pot à boue, ou désemboueur</td>
-<td>Piéger les boues et les particules du réseau avant qu’elles n’encrassent les chaudières</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Vase d’expansion</td>
-<td>Absorber la dilatation de l’eau qui chauffe, et maintenir la pression du réseau</td>
-</tr>
-</tbody>
-</table></div>
-<p><em>Éléments attendus</em> : la bouteille et l’indépendance des débits · le neutraliseur et l’acidité des condensats · le vase et la dilatation. Le pot à boue n’est pas exigé pour Éval 3.</p>
-<p><strong>2.</strong> Le schéma surligné :</p>
-<figure><img src="img/EXO-CHAUFFERIE-COLLEGE-PROF/fig-ch-schema-corrige.png" alt="" /></figure>
-<p><em>Éléments attendus</em> : le primaire limité aux chaudières et à la bouteille · chaque circuit secondaire complet, départ et retour · les flèches. Les collecteurs secondaires sont communs aux trois circuits : les laisser d’une couleur neutre, ou en couleur mêlée, est juste.</p>
-<p><strong>3.</strong> Sans bouteille, les pompes des chaudières et celles des circuits seraient en série et se contrarieraient : une vanne qui se ferme sur un circuit changerait le débit dans les chaudières. La bouteille, sans perte de charge, sépare les deux : les chaudières gardent leur débit, et chaque circuit prend le sien.</p>
-<p><em>Éléments attendus</em> : pompes primaires et secondaires indépendantes · aucune perte de charge dans la bouteille, ou débits indépendants. <strong>« La bouteille stocke de l’eau chaude »</strong> est l’erreur à relever : elle ne stocke rien, elle découple.</p>
-<h2 id="corrige-partie-2-la-puissance-et-la-cascade">Corrigé, partie 2 : la puissance et la cascade</h2>
-<p><strong>4.</strong> Besoins : 170 + 30 + 40 = <strong>240 kW</strong>. Installé : 2 × 130 = <strong>260 kW</strong>. La puissance couvre les besoins, avec une marge de (260 − 240) / 240 ≈ <strong>8 %</strong>.</p>
-<p><em>Éléments attendus</em> : la somme des besoins · la comparaison · la marge rapportée aux besoins. La marge calculée sur 260 kW, 7,7 %, est acceptée si le raisonnement est dit.</p>
-<p><strong>5.</strong></p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-</colgroup>
-<thead>
-<tr>
-<th>Puissance demandée</th>
-<th>Chaudières en marche</th>
-<th>Charge de C1</th>
-<th>Charge de C2</th>
-<th>Remarque</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>20 kW</td>
-<td>C1</td>
-<td>par cycles</td>
-<td>arrêt</td>
-<td>20 kW est sous le minimum de 26 kW : C1 démarre et s’arrête</td>
-</tr>
-<tr>
-<td>80 kW</td>
-<td>C1</td>
-<td>62 %</td>
-<td>arrêt</td>
-<td>C1 seule, sous le seuil de 90 %</td>
-</tr>
-<tr>
-<td>150 kW</td>
-<td>C1 et C2</td>
-<td>58 %</td>
-<td>58 %</td>
-<td>C1 seule dépasserait 90 % ; la charge se partage, 75 kW chacune</td>
-</tr>
-<tr>
-<td>240 kW</td>
-<td>C1 et C2</td>
-<td>92 %</td>
-<td>92 %</td>
-<td>Pleine saison, température de base</td>
-</tr>
-</tbody>
-</table></div>
-<p><em>Éléments attendus</em> : la marche par cycles à 20 kW · C1 seule à 80 kW · le partage à 150 et 240 kW, avec les taux justes.</p>
-<p><strong>6.</strong> Deux raisons parmi trois. <strong>La modulation</strong> : une chaudière de 130 kW descend à 26 kW ; une de 260 kW ne descendrait qu’à 52 kW, et fonctionnerait par cycles une bonne partie de l’année, en mi-saison comme l’été pour l’eau chaude seule. <strong>Le secours</strong> : si une chaudière tombe en panne, l’autre assure 130 kW, plus de la moitié des besoins, assez pour la mi-saison et l’eau chaude. <strong>L’usure répartie</strong> : la permutation hebdomadaire use les deux à l’identique, et l’on entretient l’une sans couper le chauffage.</p>
-<p><em>Éléments attendus</em> : deux raisons justes et expliquées · un chiffre à l’appui, 26 ou 52 kW, ou 130 kW en secours.</p>
-<h2 id="corrige-partie-3-le-retour-decide">Corrigé, partie 3 : le retour décide</h2>
-<p><strong>7.</strong> Brûler du gaz produit de la vapeur d’eau dans les fumées. Elle ne rend sa chaleur latente que si elle se condense, donc si les fumées refroidissent sous leur point de rosée, environ 55 °C. Ce qui les refroidit, c’est l’eau qui entre dans l’échangeur, c’est-à-dire <strong>l’eau de retour</strong>, la plus froide ; l’eau de départ, elle, a déjà été réchauffée.</p>
-<p><em>Éléments attendus</em> : la vapeur d’eau et sa chaleur latente · le point de rosée, 55 °C · le retour, point froid de l’échangeur.</p>
-<p><strong>8.</strong> Une vanne trois voies en décharge renvoie dans le retour l’eau chaude que la batterie n’utilise pas : quand la centrale demande peu, de l’eau à 65 °C arrive droit au retour, qui se réchauffe, et la chaudière ne condense plus. Avec une V2V, le débit baisse et la batterie refroidit davantage l’eau qui la traverse : le retour reste froid. En prime, le débit variable permet au circulateur P4 de ralentir.</p>
-<p><em>Éléments attendus</em> : l’eau chaude renvoyée au retour par la décharge · le retour froid avec la V2V · la condensation préservée. Le gain électrique sur P4 est un plus, pas une exigence.</p>
-<p><strong>9.</strong> <strong>Réglage d’origine</strong> : les deux pompes tournent, le primaire débite 2 × 5,6 = 11,2 m³/h pour 6,0 m³/h aux secondaires. L’excès, 5,2 m³/h à 65 °C, descend dans la bouteille et se mêle au retour des circuits :</p>
-<p>T retour chaudières = (6,0 × 40 + 5,2 × 65) / 11,2 ≈ <strong>51,6 °C</strong>, soit un rendement d’environ <strong>100 %</strong>.</p>
-<p><strong>Une seule chaudière</strong> : le primaire débite 5,6 m³/h, moins que les 6,0 m³/h des circuits. Aucune eau chaude ne redescend : la chaudière reçoit le retour des circuits, à <strong>40 °C</strong>, et son rendement monte à <strong>104 %</strong>. <em>(Les circuits reçoivent alors un départ légèrement mélangé, à 63 °C : c’est sans conséquence ici, chaque circuit régulant sa propre température.)</em></p>
-<p><strong>Le réglage à corriger est la cascade</strong> : C2 ne doit démarrer, avec sa pompe, qu’au-delà de 90 % de C1. Ce jour-là, le gain est de 104 / 100, soit <strong>environ 4 % de gaz</strong>. Répété sur toute la mi-saison, c’est un écart qu’une facture peut montrer.</p>
-<p><em>Éléments attendus</em> : le mélange posé avec les débits, <strong>moyenne pondérée</strong> · les deux températures et les deux rendements · la cascade à corriger. <strong>La moyenne simple</strong> (40 + 65) / 2 = 52,5 °C tombe près de la bonne valeur par hasard : la refuser si les débits n’apparaissent pas.</p>
-<h2 id="corrige-partie-4-les-radiateurs-et-l-eau-chaude">Corrigé, partie 4 : les radiateurs et l’eau chaude</h2>
-<p><strong>10.</strong> La loi tracée :</p>
-<figure><img src="img/EXO-CHAUFFERIE-COLLEGE-PROF/fig-ch-loi-eau-corrige.png" alt="" /></figure>
-<p>À +5 °C : 65 − (65 − 30) × (5 − (−5)) / (18 − (−5)) = 65 − 35 × 10 / 23 ≈ <strong>50 °C</strong>.</p>
-<p><em>Éléments attendus</em> : les deux points · les paliers · la lecture à 50 °C, à 1 °C près.</p>
-<p><strong>11.</strong> La V3V mélange deux eaux : l’eau chaude du collecteur, par la voie directe, et l’eau refroidie qui revient des radiateurs, par le by-pass. La sonde mesure 5 K de trop : la vanne <strong>ferme sa voie directe</strong> et <strong>ouvre le by-pass</strong>. Plus d’eau de retour, vers 40 °C, se mêle au départ, qui redescend vers 50 °C. Le débit dans les radiateurs, lui, ne change pas : seule la température varie.</p>
-<p><em>Éléments attendus</em> : les deux entrées de la vanne · le sens de la manœuvre · l’eau de retour comme source d’eau froide. <strong>La vanne qui « ferme le départ » et coupe les radiateurs</strong> confond mélange et tout ou rien : Éval 1.</p>
-<p><strong>12.</strong> Quand les robinets thermostatiques se ferment, le réseau résiste davantage. Un circulateur à vitesse fixe verrait sa hauteur monter : pression en excès sur les robinets encore ouverts, sifflements, débit trop fort dans les radiateurs restés ouverts. Régulé à pression différentielle constante, P3 <strong>ralentit</strong> pour garder la même pression : le débit baisse avec le besoin, et sa consommation électrique aussi.</p>
-<p><em>Éléments attendus</em> : la résistance du réseau qui augmente · le risque d’une vitesse fixe, bruit ou excès de pression · le ralentissement et l’économie.</p>
-<p><strong>13.</strong> E = 1,163 × 500 × (60 − 45) ≈ <strong>8 700 Wh</strong>, soit 8,7 kWh. Durée : 8,7 / 40 ≈ 0,22 h, soit <strong>13 minutes</strong> environ.</p>
-<p>Les légionelles se développent entre 25 et 45 °C environ et sont détruites au-delà de 60 °C. La réglementation sanitaire impose une eau stockée à 55 °C au moins en sortie de ballon : la consigne de 60 °C tient cette exigence avec une marge.</p>
-<p><em>Éléments attendus</em> : l’énergie en Wh ou kWh · la durée · les légionelles. <strong>Des kWh divisés par des kW donnent des heures</strong> : un résultat de « 0,22 minute » révèle une unité lue de travers.</p>
-<h2 id="grille-de-diagnostic-a-remplir-en-circulant">Grille de diagnostic, à remplir en circulant</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Ce qu’on observe</th>
-<th>Questions</th>
-<th>Ce qu’on reprend</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>La bouteille vue comme un réservoir</td>
-<td>1, 3</td>
-<td>Deux pompes en série qui se contrarient, puis la bouteille qui les sépare</td>
-</tr>
-<tr>
-<td>« C’est le départ qui compte »</td>
-<td>7</td>
-<td>L’échangeur et ses deux entrées : l’eau froide rencontre les fumées</td>
-</tr>
-<tr>
-<td>La décharge vue comme une économie</td>
-<td>8</td>
-<td>Ce que devient l’eau chaude que la batterie n’utilise pas</td>
-</tr>
-<tr>
-<td>La moyenne simple à la place de la moyenne pondérée</td>
-<td>9</td>
-<td>Deux débits qui se mélangent : la leçon « répartition ou mélange »</td>
-</tr>
-<tr>
-<td>La V3V vue comme un robinet tout ou rien</td>
-<td>11</td>
-<td>Deux entrées, une sortie : on dose, on ne coupe pas</td>
-</tr>
-<tr>
-<td>Wh, kWh et minutes mêlés</td>
-<td>13</td>
-<td>L’énergie, la puissance, et la durée qui en sort</td>
-</tr>
-</tbody>
-</table></div>
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 50%" />
+
+<col style="width: 50%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th><strong>Savoirs</strong></th>
+
+<th><strong>Niveau DBC</strong></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td><strong>B1-1 Production de chaleur, chaudières</strong></td>
+
+<td><strong>3, maîtrise d’outils</strong></td>
+
+</tr>
+
+<tr>
+
+<td><strong>B1-2 Émission, radiateurs</strong></td>
+
+<td><strong>3, maîtrise d’outils</strong></td>
+
+</tr>
+
+<tr>
+
+<td><strong>B11 Régulation</strong></td>
+
+<td><strong>3, maîtrise d’outils</strong></td>
+
+</tr>
+
+<tr>
+
+<td>B4-1 Réseaux hydrauliques, typologie</td>
+
+<td>2 : expression</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<blockquote>
+
+<p><strong>UN CAS CONSTRUIT, PAS UNE CHAUFFERIE RELEVÉE</strong></p>
+
+<p>Le collège, ses deux chaudières et leurs réglages sont inventés, sur le modèle des chaufferies et des sous-stations des sessions 2018, 2021, 2022, 2023 et 2026. Les valeurs sont cohérentes entre elles et recalculées ; la courbe de rendement du DT2 est indicative, dans l’ordre de grandeur des notices du commerce, et n’est celle d’aucune chaudière. Le schéma est tracé par <code>figs-exo-chaufferie.py</code>.</p>
+
+</blockquote>
+
+<h2 id="utiliser-cette-fiche">Utiliser cette fiche</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 50%" />
+
+<col style="width: 50%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Moment</th>
+
+<th>Ce qu’on en fait</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Après les séances 11 et 19</td>
+
+<td>En entraînement, 1 h 15, les documents indiqués dans chaque question</td>
+
+</tr>
+
+<tr>
+
+<td>Avec l’espace « chaudières » du professeur</td>
+
+<td>La partie 3 prolonge les leçons « le retour décide » et « répartition ou mélange »</td>
+
+</tr>
+
+<tr>
+
+<td>Avant les sujets complets des séances 24 et 26</td>
+
+<td>En autonomie chronométrée, puis correction croisée avec la grille de la séance 25</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>Minutage conseillé : 1 h 15.</strong> Parties 1 et 2 en 30 minutes, partie 3 en 25 minutes, partie 4 en 20 minutes.</p>
+
+<p><strong>Ce qu’on ne sacrifie jamais : les questions 8 et 9.</strong> Elles portent l’idée qui fait comprendre une chaufferie à condensation : <strong>tout ce qui renvoie de l’eau chaude au retour coûte du gaz</strong>, qu’il s’agisse d’une vanne en décharge ou d’une pompe primaire de trop. La 9 le chiffre.</p>
+
+<p><strong>Barème indicatif, format des corrigés U41 depuis 2022</strong> : chaque question est cotée de 0 à 3 selon le nombre d’éléments attendus présents. Éval 0 aucun, Éval 1 un élément, Éval 2 deux, Éval 3 tous.</p>
+
+<h2 id="corrige-partie-1-lire-le-schema">Corrigé, partie 1 : lire le schéma</h2>
+
+<p><strong>1.</strong></p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Repère</th>
+
+<th>Désignation</th>
+
+<th>Fonction</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>1</td>
+
+<td>Bouteille de découplage</td>
+
+<td>Rendre le débit du primaire indépendant de celui des circuits : chaque pompe travaille sans perturber les autres</td>
+
+</tr>
+
+<tr>
+
+<td>2</td>
+
+<td>Neutraliseur de condensats</td>
+
+<td>Remonter le pH des condensats, acides, avant leur rejet à l’égout</td>
+
+</tr>
+
+<tr>
+
+<td>3</td>
+
+<td>Pot à boue, ou désemboueur</td>
+
+<td>Piéger les boues et les particules du réseau avant qu’elles n’encrassent les chaudières</td>
+
+</tr>
+
+<tr>
+
+<td>4</td>
+
+<td>Vase d’expansion</td>
+
+<td>Absorber la dilatation de l’eau qui chauffe, et maintenir la pression du réseau</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><em>Éléments attendus</em> : la bouteille et l’indépendance des débits · le neutraliseur et l’acidité des condensats · le vase et la dilatation. Le pot à boue n’est pas exigé pour Éval 3.</p>
+
+<p><strong>2.</strong> Le schéma surligné :</p>
+
+<figure><img src="img/EXO-CHAUFFERIE-COLLEGE-PROF/fig-ch-schema-corrige.png" alt="" /></figure>
+
+<p><em>Éléments attendus</em> : le primaire limité aux chaudières et à la bouteille · chaque circuit secondaire complet, départ et retour · les flèches. Les collecteurs secondaires sont communs aux trois circuits : les laisser d’une couleur neutre, ou en couleur mêlée, est juste.</p>
+
+<p><strong>3.</strong> Sans bouteille, les pompes des chaudières et celles des circuits seraient en série et se contrarieraient : une vanne qui se ferme sur un circuit changerait le débit dans les chaudières. La bouteille, sans perte de charge, sépare les deux : les chaudières gardent leur débit, et chaque circuit prend le sien.</p>
+
+<p><em>Éléments attendus</em> : pompes primaires et secondaires indépendantes · aucune perte de charge dans la bouteille, ou débits indépendants. <strong>« La bouteille stocke de l’eau chaude »</strong> est l’erreur à relever : elle ne stocke rien, elle découple.</p>
+
+<h2 id="corrige-partie-2-la-puissance-et-la-cascade">Corrigé, partie 2 : la puissance et la cascade</h2>
+
+<p><strong>4.</strong> Besoins : 170 + 30 + 40 = <strong>240 kW</strong>. Installé : 2 × 130 = <strong>260 kW</strong>. La puissance couvre les besoins, avec une marge de (260 − 240) / 240 ≈ <strong>8 %</strong>.</p>
+
+<p><em>Éléments attendus</em> : la somme des besoins · la comparaison · la marge rapportée aux besoins. La marge calculée sur 260 kW, 7,7 %, est acceptée si le raisonnement est dit.</p>
+
+<p><strong>5.</strong></p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Puissance demandée</th>
+
+<th>Chaudières en marche</th>
+
+<th>Charge de C1</th>
+
+<th>Charge de C2</th>
+
+<th>Remarque</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>20 kW</td>
+
+<td>C1</td>
+
+<td>par cycles</td>
+
+<td>arrêt</td>
+
+<td>20 kW est sous le minimum de 26 kW : C1 démarre et s’arrête</td>
+
+</tr>
+
+<tr>
+
+<td>80 kW</td>
+
+<td>C1</td>
+
+<td>62 %</td>
+
+<td>arrêt</td>
+
+<td>C1 seule, sous le seuil de 90 %</td>
+
+</tr>
+
+<tr>
+
+<td>150 kW</td>
+
+<td>C1 et C2</td>
+
+<td>58 %</td>
+
+<td>58 %</td>
+
+<td>C1 seule dépasserait 90 % ; la charge se partage, 75 kW chacune</td>
+
+</tr>
+
+<tr>
+
+<td>240 kW</td>
+
+<td>C1 et C2</td>
+
+<td>92 %</td>
+
+<td>92 %</td>
+
+<td>Pleine saison, température de base</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><em>Éléments attendus</em> : la marche par cycles à 20 kW · C1 seule à 80 kW · le partage à 150 et 240 kW, avec les taux justes.</p>
+
+<p><strong>6.</strong> Deux raisons parmi trois. <strong>La modulation</strong> : une chaudière de 130 kW descend à 26 kW ; une de 260 kW ne descendrait qu’à 52 kW, et fonctionnerait par cycles une bonne partie de l’année, en mi-saison comme l’été pour l’eau chaude seule. <strong>Le secours</strong> : si une chaudière tombe en panne, l’autre assure 130 kW, plus de la moitié des besoins, assez pour la mi-saison et l’eau chaude. <strong>L’usure répartie</strong> : la permutation hebdomadaire use les deux à l’identique, et l’on entretient l’une sans couper le chauffage.</p>
+
+<p><em>Éléments attendus</em> : deux raisons justes et expliquées · un chiffre à l’appui, 26 ou 52 kW, ou 130 kW en secours.</p>
+
+<h2 id="corrige-partie-3-le-retour-decide">Corrigé, partie 3 : le retour décide</h2>
+
+<p><strong>7.</strong> Brûler du gaz produit de la vapeur d’eau dans les fumées. Elle ne rend sa chaleur latente que si elle se condense, donc si les fumées refroidissent sous leur point de rosée, environ 55 °C. Ce qui les refroidit, c’est l’eau qui entre dans l’échangeur, c’est-à-dire <strong>l’eau de retour</strong>, la plus froide ; l’eau de départ, elle, a déjà été réchauffée.</p>
+
+<p><em>Éléments attendus</em> : la vapeur d’eau et sa chaleur latente · le point de rosée, 55 °C · le retour, point froid de l’échangeur.</p>
+
+<p><strong>8.</strong> Une vanne trois voies en décharge renvoie dans le retour l’eau chaude que la batterie n’utilise pas : quand la centrale demande peu, de l’eau à 65 °C arrive droit au retour, qui se réchauffe, et la chaudière ne condense plus. Avec une V2V, le débit baisse et la batterie refroidit davantage l’eau qui la traverse : le retour reste froid. En prime, le débit variable permet au circulateur P4 de ralentir.</p>
+
+<p><em>Éléments attendus</em> : l’eau chaude renvoyée au retour par la décharge · le retour froid avec la V2V · la condensation préservée. Le gain électrique sur P4 est un plus, pas une exigence.</p>
+
+<p><strong>9.</strong> <strong>Réglage d’origine</strong> : les deux pompes tournent, le primaire débite 2 × 5,6 = 11,2 m³/h pour 6,0 m³/h aux secondaires. L’excès, 5,2 m³/h à 65 °C, descend dans la bouteille et se mêle au retour des circuits :</p>
+
+<p>T retour chaudières = (6,0 × 40 + 5,2 × 65) / 11,2 ≈ <strong>51,6 °C</strong>, soit un rendement d’environ <strong>100 %</strong>.</p>
+
+<p><strong>Une seule chaudière</strong> : le primaire débite 5,6 m³/h, moins que les 6,0 m³/h des circuits. Aucune eau chaude ne redescend : la chaudière reçoit le retour des circuits, à <strong>40 °C</strong>, et son rendement monte à <strong>104 %</strong>. <em>(Les circuits reçoivent alors un départ légèrement mélangé, à 63 °C : c’est sans conséquence ici, chaque circuit régulant sa propre température.)</em></p>
+
+<p><strong>Le réglage à corriger est la cascade</strong> : C2 ne doit démarrer, avec sa pompe, qu’au-delà de 90 % de C1. Ce jour-là, le gain est de 104 / 100, soit <strong>environ 4 % de gaz</strong>. Répété sur toute la mi-saison, c’est un écart qu’une facture peut montrer.</p>
+
+<p><em>Éléments attendus</em> : le mélange posé avec les débits, <strong>moyenne pondérée</strong> · les deux températures et les deux rendements · la cascade à corriger. <strong>La moyenne simple</strong> (40 + 65) / 2 = 52,5 °C tombe près de la bonne valeur par hasard : la refuser si les débits n’apparaissent pas.</p>
+
+<h2 id="corrige-partie-4-les-radiateurs-et-l-eau-chaude">Corrigé, partie 4 : les radiateurs et l’eau chaude</h2>
+
+<p><strong>10.</strong> La loi tracée :</p>
+
+<figure><img src="img/EXO-CHAUFFERIE-COLLEGE-PROF/fig-ch-loi-eau-corrige.png" alt="" /></figure>
+
+<p>À +5 °C : 65 − (65 − 30) × (5 − (−5)) / (18 − (−5)) = 65 − 35 × 10 / 23 ≈ <strong>50 °C</strong>.</p>
+
+<p><em>Éléments attendus</em> : les deux points · les paliers · la lecture à 50 °C, à 1 °C près.</p>
+
+<p><strong>11.</strong> La V3V mélange deux eaux : l’eau chaude du collecteur, par la voie directe, et l’eau refroidie qui revient des radiateurs, par le by-pass. La sonde mesure 5 K de trop : la vanne <strong>ferme sa voie directe</strong> et <strong>ouvre le by-pass</strong>. Plus d’eau de retour, vers 40 °C, se mêle au départ, qui redescend vers 50 °C. Le débit dans les radiateurs, lui, ne change pas : seule la température varie.</p>
+
+<p><em>Éléments attendus</em> : les deux entrées de la vanne · le sens de la manœuvre · l’eau de retour comme source d’eau froide. <strong>La vanne qui « ferme le départ » et coupe les radiateurs</strong> confond mélange et tout ou rien : Éval 1.</p>
+
+<p><strong>12.</strong> Quand les robinets thermostatiques se ferment, le réseau résiste davantage. Un circulateur à vitesse fixe verrait sa hauteur monter : pression en excès sur les robinets encore ouverts, sifflements, débit trop fort dans les radiateurs restés ouverts. Régulé à pression différentielle constante, P3 <strong>ralentit</strong> pour garder la même pression : le débit baisse avec le besoin, et sa consommation électrique aussi.</p>
+
+<p><em>Éléments attendus</em> : la résistance du réseau qui augmente · le risque d’une vitesse fixe, bruit ou excès de pression · le ralentissement et l’économie.</p>
+
+<p><strong>13.</strong> E = 1,163 × 500 × (60 − 45) ≈ <strong>8 700 Wh</strong>, soit 8,7 kWh. Durée : 8,7 / 40 ≈ 0,22 h, soit <strong>13 minutes</strong> environ.</p>
+
+<p>Les légionelles se développent entre 25 et 45 °C environ et sont détruites au-delà de 60 °C. La réglementation sanitaire impose une eau stockée à 55 °C au moins en sortie de ballon : la consigne de 60 °C tient cette exigence avec une marge.</p>
+
+<p><em>Éléments attendus</em> : l’énergie en Wh ou kWh · la durée · les légionelles. <strong>Des kWh divisés par des kW donnent des heures</strong> : un résultat de « 0,22 minute » révèle une unité lue de travers.</p>
+
+<h2 id="grille-de-diagnostic-a-remplir-en-circulant">Grille de diagnostic, à remplir en circulant</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Ce qu’on observe</th>
+
+<th>Questions</th>
+
+<th>Ce qu’on reprend</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>La bouteille vue comme un réservoir</td>
+
+<td>1, 3</td>
+
+<td>Deux pompes en série qui se contrarient, puis la bouteille qui les sépare</td>
+
+</tr>
+
+<tr>
+
+<td>« C’est le départ qui compte »</td>
+
+<td>7</td>
+
+<td>L’échangeur et ses deux entrées : l’eau froide rencontre les fumées</td>
+
+</tr>
+
+<tr>
+
+<td>La décharge vue comme une économie</td>
+
+<td>8</td>
+
+<td>Ce que devient l’eau chaude que la batterie n’utilise pas</td>
+
+</tr>
+
+<tr>
+
+<td>La moyenne simple à la place de la moyenne pondérée</td>
+
+<td>9</td>
+
+<td>Deux débits qui se mélangent : la leçon « répartition ou mélange »</td>
+
+</tr>
+
+<tr>
+
+<td>La V3V vue comme un robinet tout ou rien</td>
+
+<td>11</td>
+
+<td>Deux entrées, une sortie : on dose, on ne coupe pas</td>
+
+</tr>
+
+<tr>
+
+<td>Wh, kWh et minutes mêlés</td>
+
+<td>13</td>
+
+<td>L’énergie, la puissance, et la durée qui en sort</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
 <nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="ap" href="EXO-CTA-AMPHI-PROF.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Exercice type · CTA</span></a></div></nav>
 <p class="pied">L'énoncé élève est le document Word EXO-CHAUFFERIE-COLLEGE, dans BTS FED C/23-exercices-types.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

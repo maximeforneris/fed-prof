@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Exercice type · PAC</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="exercices/EXO-PAC-MEDIATHEQUE-PROF" data-public="prof">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="EXO-CTA-AMPHI-PROF.html" rel="prev" title="Exercice type · CTA" aria-label="Exercice type · CTA">&lsaquo;</a></span><button type="button" class="lu" data-lu="exercices/EXO-PAC-MEDIATHEQUE-PROF">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
@@ -23,239 +31,463 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="../manuel/M7-MANUEL.html">La pompe à chaleur</a></b><span class="ou">Manuel · chapitre 7</span><span class="car">le bilan de la machine, le COP selon le départ et le point de bivalence servent aux questions 4, 7 et 11.</span></li><li><b><a href="../manuel/M12-MANUEL.html">Les boucles de régulation</a></b><span class="ou">Manuel · chapitre 12</span><span class="car">le volume d'eau contre les cycles courts, c'est la question 8.</span></li><li><b><a href="../manuel/M3-MANUEL.html">Pertes de charge et pompes</a></b><span class="ou">Manuel · chapitre 3</span><span class="car">un ballon à quatre piquages découple les débits comme une bouteille, ce que dit le corrigé de la question 1.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#utiliser-cette-fiche">Utiliser cette fiche</a><a href="#corrige-partie-1-lire-l-installation">Corrigé, partie 1 : lire l’installation</a><a href="#corrige-partie-2-ce-que-la-nappe-doit-fournir">Corrigé, partie 2 : ce que la nappe doit fournir</a><a href="#corrige-partie-3-la-pac-et-son-ballon-tampon">Corrigé, partie 3 : la PAC et son ballon tampon</a><a href="#corrige-partie-4-l-appoint-le-fluide-et-le-budget">Corrigé, partie 4 : l’appoint, le fluide et le budget</a><a href="#grille-de-diagnostic-a-remplir-en-circulant">Grille de diagnostic, à remplir en circulant</a></div></nav>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th><strong>Savoirs</strong></th>
-<th><strong>Niveau DBC</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>B1-1 Production de chaleur, PAC</strong></td>
-<td><strong>3, maîtrise d’outils</strong></td>
-</tr>
-<tr>
-<td><strong>B1-2 Émission, plancher chauffant</strong></td>
-<td><strong>3, maîtrise d’outils</strong></td>
-</tr>
-<tr>
-<td>A5-1 Machine thermodynamique, COP</td>
-<td>2 : expression</td>
-</tr>
-<tr>
-<td>B4-1 Réseaux hydrauliques, typologie</td>
-<td>2 : expression</td>
-</tr>
-<tr>
-<td>A5-3 Fluides frigorigènes, GWP</td>
-<td>1 : information</td>
-</tr>
-</tbody>
-</table></div>
-<blockquote>
-<p><strong>UN CAS CONSTRUIT, PAS UNE INSTALLATION RELEVÉE</strong></p>
-<p>La médiathèque, sa nappe et sa PAC sont inventées, sur le modèle des questions de PAC des sessions 2018, 2019, 2021, 2023 et 2025. La notice du DT3 n’est celle d’aucune machine du commerce : ses COP restent dans l’ordre de grandeur d’une PAC eau/eau, 0,44 à 0,45 fois le COP de Carnot des mêmes températures d’eau. Les valeurs sont recalculées par <code>figs-exo-pac.py --valeurs</code>, qui trace aussi les figures : les lectures du DR2 tombent sur celles du corrigé.</p>
-</blockquote>
-<h2 id="utiliser-cette-fiche">Utiliser cette fiche</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th>Moment</th>
-<th>Ce qu’on en fait</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Après les séances 12 et 13</td>
-<td>En entraînement, 1 h 30, les documents indiqués dans chaque question</td>
-</tr>
-<tr>
-<td>Avec la fiche « Une saison de pompe à chaleur »</td>
-<td>La question 11 la prolonge : une source qui ne se refroidit pas, et un appoint qui ne répond plus qu’au besoin</td>
-</tr>
-<tr>
-<td>Avant la séance 26</td>
-<td>Le sujet 2025, traité en séance 26, a lui aussi un forage sur nappe : cet exercice en prépare la partie 2 sans la déflorer</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Minutage conseillé : 1 h 30.</strong> Parties 1 et 2 en 35 minutes, partie 3 en 30 minutes, partie 4 en 25 minutes. Les parties sont indépendantes : un étudiant bloqué sur le ballon passe au budget.</p>
-<p><strong>Ce qu’on ne sacrifie jamais : les questions 8 et 9, le ballon tampon.</strong> Il revient dans quatre sujets, 2018, 2019, 2021 et 2023, et c’est l’organe que les étudiants décrivent le plus mal : « il stocke de la chaleur » ne dit ni pourquoi ni combien. La 8 le chiffre avec la relation du corrigé 2018, la 9 dit où l’on s’y raccorde et pourquoi.</p>
-<p><strong>Barème indicatif, format des corrigés U41 depuis 2022</strong> : chaque question est cotée de 0 à 3 selon le nombre d’éléments attendus présents. Éval 0 aucun, Éval 1 un élément, Éval 2 deux, Éval 3 tous.</p>
-<h2 id="corrige-partie-1-lire-l-installation">Corrigé, partie 1 : lire l’installation</h2>
-<p><strong>1.</strong></p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Repère</th>
-<th>Désignation</th>
-<th>Fonction</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>Échangeur à plaques démontable</td>
-<td>Transmettre la chaleur de l’eau de la nappe à la boucle intermédiaire sans que les deux liquides se touchent ; démontable, il se nettoie</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Filtre à tamis, avec sa purge</td>
-<td>Retenir le sable et les particules de l’eau de nappe avant l’échangeur ; la purge évacue ce qu’il a retenu</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Contrôleur de débit</td>
-<td>Vérifier qu’il passe assez de liquide dans l’évaporateur, et interdire la marche des compresseurs sinon</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Ballon tampon</td>
-<td>Ajouter du volume d’eau au circuit pour que chaque compresseur fasse des cycles assez longs</td>
-</tr>
-</tbody>
-</table></div>
-<p><em>Éléments attendus</em> : l’échangeur et la séparation des deux liquides · le filtre et la protection de l’échangeur · le contrôleur et l’arrêt des compresseurs · le ballon et les cycles longs. Raccordé par quatre piquages, le ballon rend aussi indépendants les débits de la PAC et ceux des circuits, comme une bouteille de découplage : c’est un plus.</p>
-<p><strong>2.</strong> Le tableau du DR1 :</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Réseau</th>
-<th>Régime de température</th>
-<th>Rôle</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Eau de la nappe</td>
-<td>Prélevée à 12 °C, réinjectée à 7 °C</td>
-<td>La source de chaleur : elle cède sa chaleur dans l’échangeur, puis retourne à la nappe</td>
-</tr>
-<tr>
-<td>Boucle intermédiaire</td>
-<td>10 °C vers l’évaporateur, 5 °C au retour</td>
-<td>Porter la chaleur de l’échangeur à l’évaporateur de la PAC</td>
-</tr>
-<tr>
-<td>Circuit de chauffage</td>
-<td>Départ 35 °C, retour 30 °C</td>
-<td>Porter la chaleur du condenseur, par le ballon, au plancher et à la batterie de la CTA</td>
-</tr>
-</tbody>
-</table></div>
-<p><em>Éléments attendus</em> : quatre réseaux distincts et complets · les flèches, dont la descente vers FR · les trois régimes et les rôles. <strong>La boucle intermédiaire de la même couleur que la nappe</strong> est l’erreur à relever : ce sont deux liquides qui ne se touchent jamais, et c’est tout l’objet de la question 3.</p>
-<p>Le schéma surligné :</p>
-<figure><img src="img/EXO-PAC-MEDIATHEQUE-PROF/fig-pac-schema-corrige.png" alt="" /></figure>
-<p><strong>3.</strong> Trois raisons, qui tiennent chacune au dossier.</p>
-<p><strong>L’arrêté</strong> : l’eau doit revenir à la nappe modifiée seulement par sa température. Sans échangeur, elle traverserait l’évaporateur, et une fuite de celui-ci mêlerait à la nappe du fluide frigorigène ou de l’huile. Avec l’échangeur, l’eau de la nappe ne touche que des plaques d’acier inoxydable.</p>
-<p><strong>L’eau chargée</strong> : elle contient du fer et du sable fin. Elle encrasserait et corroderait l’évaporateur, brasé, qu’on ne peut pas ouvrir. L’échangeur démontable prend cet encrassement à sa place et se nettoie chaque année.</p>
-<p><strong>Le gel</strong> : la boucle intermédiaire est glycolée, ce qu’on ne peut pas faire à l’eau d’une nappe. L’évaporateur travaille alors près de 0 °C sans geler.</p>
-<p>Le prix payé : l’échangeur prend 2 K à la source, la PAC voit 10 °C quand la nappe en donne 12, soit environ 5 % de COP, à raison de 2 à 3 % par kelvin, plus l’électricité de P1.</p>
-<p><em>Éléments attendus</em> : l’arrêté et la nappe à protéger · l’eau chargée, qui encrasserait un évaporateur qu’on ne peut pas ouvrir · le glycol, possible dans la boucle et interdit dans la nappe. Le corrigé officiel de 2025 ne demandait que la première raison.</p>
-<h2 id="corrige-partie-2-ce-que-la-nappe-doit-fournir">Corrigé, partie 2 : ce que la nappe doit fournir</h2>
-<p><strong>4.</strong> DT3, colonne 35 °C : la PAC absorbe <strong>17,8 kW</strong>. COP = 96 / 17,8 ≈ <strong>5,4</strong>. Le condenseur rend la chaleur prise à la nappe plus l’énergie électrique du compresseur :</p>
-<p>P nappe = 96 − 17,8 = <strong>78,2 kW</strong>.</p>
-<p><em>Éléments attendus</em> : la lecture de 17,8 kW · le COP · le bilan, condenseur = évaporateur + compresseur. <strong>« P nappe = 96 kW »</strong> oublie que l’électricité finit elle aussi en chaleur : Éval 1.</p>
-<p><strong>5.</strong> qv = P / (1,163 × Δθ) = 78,2 / (1,163 × 5) ≈ <strong>13,4 m³/h</strong>. Le forage donne 15 m³/h : il suffit, à <strong>90 %</strong> de son débit conseillé. La marge est mince : un échangeur encrassé ou une nappe plus froide la mangent vite.</p>
-<p>Sur l’année, la nappe fournit de l’ordre de 116 MWh, pour un COP moyen de la machine seule voisin de 5, soit <strong>environ 20 000 m³</strong> prélevés puis rendus. C’est l’ordre de grandeur du sujet 2025, qui annonçait 19 000 à 21 000 m³ par an.</p>
-<p><em>Éléments attendus</em> : la formule avec la puissance prélevée, 78,2 kW · Δθ = 5 K · la comparaison avec 15 m³/h. <strong>Le débit calculé avec 96 kW</strong> donne 16,5 m³/h et fait conclure à tort que le forage ne suffit pas : Éval 1, la méthode étant juste.</p>
-<p><strong>6.</strong> <strong>À 80 m</strong> : l’eau réinjectée, à 7 °C, forme dans la nappe une zone plus froide. Si elle atteignait le forage de pompage, la PAC pomperait une eau de plus en plus froide, année après année, et son COP comme sa puissance baisseraient. La distance évite ce recyclage thermique. <strong>En aval</strong> : la nappe s’écoule, et elle emporte cette eau froide loin de FP au lieu de la ramener vers lui.</p>
-<p>La réinjection elle-même tient le niveau de la nappe : chaque mètre cube pris lui est rendu, comme l’exige l’arrêté.</p>
-<p><em>Éléments attendus</em> : l’eau rendue plus froide · le risque de la repomper, et le COP qui baisse · l’écoulement qui l’emporte loin de FP.</p>
-<h2 id="corrige-partie-3-la-pac-et-son-ballon-tampon">Corrigé, partie 3 : la PAC et son ballon tampon</h2>
-<p><strong>7.</strong> COP à 55 °C = 84 / 26,3 ≈ <strong>3,2</strong>, contre <strong>5,4</strong> à 35 °C. Pour la même chaleur, des radiateurs en 55/45 °C demanderaient 5,4 / 3,2 ≈ <strong>1,7 fois</strong> plus d’électricité : le plancher en consomme <strong>41 % de moins</strong>. La PAC perdrait aussi 12 kW de puissance, 84 kW au lieu de 96, et la chaudière d’appoint travaillerait davantage.</p>
-<p><em>Éléments attendus</em> : les deux COP · la comparaison chiffrée, en rapport ou en pourcentage · le lien entre une eau de départ basse et un COP élevé. La puissance perdue est un plus.</p>
-<p><strong>8.</strong> Quand les circuits ne prennent rien, toute la chaleur du compresseur va dans le ballon. Un compresseur fournit 96 / 2 = <strong>48 kW</strong>. Le ballon absorbe, sur le différentiel de 5 K :</p>
-<p>E = 1,163 × 1 000 × 5 = <strong>5 815 Wh</strong>, soit 5,8 kWh.</p>
-<p>Durée de marche : 5,8 / 48 ≈ 0,121 h, soit <strong>7,3 minutes</strong>, plus que les 6 minutes exigées : le ballon suffit. À l’inverse, 6 minutes à 48 kW demandent 4,8 kWh, donc un ballon d’au moins <strong>825 L</strong>. C’est la relation du corrigé 2018, V = P × t / (c × Δθ).</p>
-<p>Dès que les circuits prennent une part de la chaleur, la marche s’allonge : l’hypothèse « aucune demande » est le cas le plus défavorable.</p>
-<p><em>Éléments attendus</em> : la puissance d’un seul compresseur, 48 kW · l’énergie stockée sur 5 K · la durée comparée à 6 minutes. <strong>Le calcul fait avec 96 kW</strong> donne 3,6 minutes et conclut à tort que le ballon est trop petit : Éval 1, la méthode étant juste.</p>
-<p><strong>9.</strong> Le ballon est stratifié : l’eau chaude, plus légère, reste en haut, l’eau la plus froide en bas.</p>
-<p><strong>Le retour de la PAC en bas</strong> : la PAC reçoit l’eau la plus froide du ballon, elle condense à plus basse température, et son COP s’améliore.</p>
-<p><strong>La chaudière en haut</strong> : elle ne chauffe que le haut du ballon, là où les circuits prennent leur départ. Elle relève la température de départ sans réchauffer l’eau qui retourne à la PAC. Raccordée en bas, elle enverrait de l’eau chaude à la PAC : COP en baisse, et arrêt possible sur la sécurité haute pression.</p>
-<p>C’est l’idée de la chaufferie du collège, question 9 : tout ce qui réchauffe le retour d’un générateur lui coûte du rendement.</p>
-<p><em>Éléments attendus</em> : la stratification · l’eau la plus froide vers la PAC, et son COP · la chaudière qui ne réchauffe pas le retour de la PAC.</p>
-<p><strong>10.</strong> <strong>Fonction</strong> : vérifier qu’il passe assez d’eau glycolée dans l’évaporateur avant et pendant la marche des compresseurs.</p>
-<p><strong>Le risque</strong> : sans débit, le liquide immobile dans l’évaporateur continue de céder sa chaleur au fluide frigorigène et se refroidit très vite. L’eau glycolée à 25 % gèle vers −10 °C, et l’évaporation peut descendre plus bas : la glace déforme ou perce les plaques, le fluide frigorigène passe dans la boucle, et la PAC est perdue. Sans aller jusqu’au gel, la machine déclenche en basse pression.</p>
-<p><strong>Deux causes</strong> parmi : la pompe P1 arrêtée ou en panne · une vanne restée fermée après un entretien · de l’air dans la boucle · une fuite qui fait chuter la pression de la boucle.</p>
-<p><strong>Les actions de l’automate</strong>, relevées dans le DT3 : arrêt immédiat des compresseurs · affichage du défaut « débit évaporateur » · redémarrage automatique 3 minutes après le retour du débit · verrouillage au troisième défaut en 24 heures, avec réarmement sur place. Renvoyer le défaut vers la GTB est un plus.</p>
-<p><em>Éléments attendus</em> : la fonction · le gel ou la basse pression · deux causes · les actions du DT3.</p>
-<h2 id="corrige-partie-4-l-appoint-le-fluide-et-le-budget">Corrigé, partie 4 : l’appoint, le fluide et le budget</h2>
-<p><strong>11.</strong> Le graphe tracé :</p>
-<figure><img src="img/EXO-PAC-MEDIATHEQUE-PROF/fig-pac-appoint-corrige.png" alt="" /></figure>
-<p>Le besoin passe par 126 kW à −5 °C et par 0 kW à 16 °C. La PAC donne 96 kW quelle que soit la température extérieure. Les deux droites se croisent à <strong>0 °C</strong> : sous 0 °C, l’appoint démarre. À −5 °C, il fournit 126 − 96 = <strong>30 kW</strong>, que la chaudière de 45 kW couvre.</p>
-<p><strong>La puissance ne baisse pas</strong> parce que la PAC prend sa chaleur dans la nappe, à 12 °C toute l’année, et non dans l’air extérieur : sa source ne se refroidit pas quand il gèle dehors. Une PAC air/eau perd au contraire de la puissance au moment où le besoin monte, ce que montre la fiche « Une saison de pompe à chaleur ».</p>
-<p>Au-dessus de 8 °C, le besoin reste sous 48 kW et un seul compresseur tourne, par cycles : c’est là que travaille le ballon de la question 8.</p>
-<p><em>Éléments attendus</em> : les deux tracés justes · 0 °C et 30 kW, lus à 1 °C et 5 kW près · la source à température constante.</p>
-<p><strong>12.</strong> 2 × 8,2 = 16,4 kg ; 16,4 × 675 / 1 000 ≈ <strong>11,1 t éq. CO₂</strong>. Entre 5 et 50 t : contrôle d’étanchéité <strong>au moins tous les 12 mois</strong>. Avec un système de détection des fuites, le contrôle reste obligatoire, <strong>tous les 24 mois</strong> ; le détecteur signale en plus une fuite dès qu’elle survient, avant que la PAC ait perdu sa charge et son COP.</p>
-<p><em>Éléments attendus</em> : la charge des deux circuits · le calcul en tonnes · les deux fréquences, 12 et 24 mois. <strong>La charge d’un seul circuit</strong>, 5,5 t, donne ici la même fréquence par chance : exiger les deux circuits.</p>
-<p><strong>13.</strong> <strong>Chaufferie gaz seule</strong> : 150 000 / 0,90 = 166 667 kWh de gaz, soit <strong>15 000 €</strong> par an.</p>
-<p><strong>Solution PAC</strong> : électricité 150 000 × 0,97 / 4,5 ≈ 32 333 kWh, soit 6 467 € ; gaz de l’appoint 150 000 × 0,03 / 0,90 = 5 000 kWh, soit 450 € ; entretien 1 800 €. Total : environ <strong>8 717 €</strong> par an.</p>
-<p><strong>Économie</strong> : 15 000 − 8 717 ≈ <strong>6 283 €</strong> par an. <strong>Temps de retour</strong> : 70 000 / 6 283 ≈ <strong>11,1 ans</strong>, sous les 12 ans exigés : la solution est acceptable.</p>
-<p>La marge est faible : à 0,24 €/kWh d’électricité, le temps de retour passe à <strong>14 ans</strong>. La bonne conclusion est donc nuancée : acceptable aux prix du jour, sensible au prix de l’électricité.</p>
-<p><em>Éléments attendus</em> : le coût de la solution gaz · celui de la solution PAC, avec l’appoint et l’entretien · le temps de retour et la conclusion. <strong>Un poste oublié</strong>, l’appoint ou l’entretien, gonfle l’économie ; la conclusion reste juste par chance : Éval 2.</p>
-<h2 id="grille-de-diagnostic-a-remplir-en-circulant">Grille de diagnostic, à remplir en circulant</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Ce qu’on observe</th>
-<th>Questions</th>
-<th>Ce qu’on reprend</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>La nappe et la boucle d’une seule couleur</td>
-<td>2, 3</td>
-<td>Deux liquides qui ne se touchent jamais, et l’arrêté qui l’impose</td>
-</tr>
-<tr>
-<td>La puissance prise à la nappe égale à 96 kW</td>
-<td>4, 5</td>
-<td>Le bilan de la machine : condenseur = évaporateur + compresseur</td>
-</tr>
-<tr>
-<td>« Pour que les forages ne se gênent pas », sans dire en quoi</td>
-<td>6</td>
-<td>L’eau froide rendue à la nappe, et la nappe qui s’écoule</td>
-</tr>
-<tr>
-<td>Le ballon qui « stocke de la chaleur » sans chiffre, ou calculé avec 96 kW</td>
-<td>8</td>
-<td>Le cas le plus défavorable : un seul compresseur, 48 kW, et aucune demande</td>
-</tr>
-<tr>
-<td>Le COP de 5,4 employé à la place du SCOP de 4,5</td>
-<td>13</td>
-<td>Un COP à pleine charge est un point d’essai ; la facture suit le SCOP</td>
-</tr>
-</tbody>
-</table></div>
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th><strong>Savoirs</strong></th>
+
+<th><strong>Niveau DBC</strong></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td><strong>B1-1 Production de chaleur, PAC</strong></td>
+
+<td><strong>3, maîtrise d’outils</strong></td>
+
+</tr>
+
+<tr>
+
+<td><strong>B1-2 Émission, plancher chauffant</strong></td>
+
+<td><strong>3, maîtrise d’outils</strong></td>
+
+</tr>
+
+<tr>
+
+<td>A5-1 Machine thermodynamique, COP</td>
+
+<td>2 : expression</td>
+
+</tr>
+
+<tr>
+
+<td>B4-1 Réseaux hydrauliques, typologie</td>
+
+<td>2 : expression</td>
+
+</tr>
+
+<tr>
+
+<td>A5-3 Fluides frigorigènes, GWP</td>
+
+<td>1 : information</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<blockquote>
+
+<p><strong>UN CAS CONSTRUIT, PAS UNE INSTALLATION RELEVÉE</strong></p>
+
+<p>La médiathèque, sa nappe et sa PAC sont inventées, sur le modèle des questions de PAC des sessions 2018, 2019, 2021, 2023 et 2025. La notice du DT3 n’est celle d’aucune machine du commerce : ses COP restent dans l’ordre de grandeur d’une PAC eau/eau, 0,44 à 0,45 fois le COP de Carnot des mêmes températures d’eau. Les valeurs sont recalculées par <code>figs-exo-pac.py --valeurs</code>, qui trace aussi les figures : les lectures du DR2 tombent sur celles du corrigé.</p>
+
+</blockquote>
+
+<h2 id="utiliser-cette-fiche">Utiliser cette fiche</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 50%" />
+
+<col style="width: 50%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Moment</th>
+
+<th>Ce qu’on en fait</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Après les séances 12 et 13</td>
+
+<td>En entraînement, 1 h 30, les documents indiqués dans chaque question</td>
+
+</tr>
+
+<tr>
+
+<td>Avec la fiche « Une saison de pompe à chaleur »</td>
+
+<td>La question 11 la prolonge : une source qui ne se refroidit pas, et un appoint qui ne répond plus qu’au besoin</td>
+
+</tr>
+
+<tr>
+
+<td>Avant la séance 26</td>
+
+<td>Le sujet 2025, traité en séance 26, a lui aussi un forage sur nappe : cet exercice en prépare la partie 2 sans la déflorer</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>Minutage conseillé : 1 h 30.</strong> Parties 1 et 2 en 35 minutes, partie 3 en 30 minutes, partie 4 en 25 minutes. Les parties sont indépendantes : un étudiant bloqué sur le ballon passe au budget.</p>
+
+<p><strong>Ce qu’on ne sacrifie jamais : les questions 8 et 9, le ballon tampon.</strong> Il revient dans quatre sujets, 2018, 2019, 2021 et 2023, et c’est l’organe que les étudiants décrivent le plus mal : « il stocke de la chaleur » ne dit ni pourquoi ni combien. La 8 le chiffre avec la relation du corrigé 2018, la 9 dit où l’on s’y raccorde et pourquoi.</p>
+
+<p><strong>Barème indicatif, format des corrigés U41 depuis 2022</strong> : chaque question est cotée de 0 à 3 selon le nombre d’éléments attendus présents. Éval 0 aucun, Éval 1 un élément, Éval 2 deux, Éval 3 tous.</p>
+
+<h2 id="corrige-partie-1-lire-l-installation">Corrigé, partie 1 : lire l’installation</h2>
+
+<p><strong>1.</strong></p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Repère</th>
+
+<th>Désignation</th>
+
+<th>Fonction</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>1</td>
+
+<td>Échangeur à plaques démontable</td>
+
+<td>Transmettre la chaleur de l’eau de la nappe à la boucle intermédiaire sans que les deux liquides se touchent ; démontable, il se nettoie</td>
+
+</tr>
+
+<tr>
+
+<td>2</td>
+
+<td>Filtre à tamis, avec sa purge</td>
+
+<td>Retenir le sable et les particules de l’eau de nappe avant l’échangeur ; la purge évacue ce qu’il a retenu</td>
+
+</tr>
+
+<tr>
+
+<td>3</td>
+
+<td>Contrôleur de débit</td>
+
+<td>Vérifier qu’il passe assez de liquide dans l’évaporateur, et interdire la marche des compresseurs sinon</td>
+
+</tr>
+
+<tr>
+
+<td>4</td>
+
+<td>Ballon tampon</td>
+
+<td>Ajouter du volume d’eau au circuit pour que chaque compresseur fasse des cycles assez longs</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><em>Éléments attendus</em> : l’échangeur et la séparation des deux liquides · le filtre et la protection de l’échangeur · le contrôleur et l’arrêt des compresseurs · le ballon et les cycles longs. Raccordé par quatre piquages, le ballon rend aussi indépendants les débits de la PAC et ceux des circuits, comme une bouteille de découplage : c’est un plus.</p>
+
+<p><strong>2.</strong> Le tableau du DR1 :</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Réseau</th>
+
+<th>Régime de température</th>
+
+<th>Rôle</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Eau de la nappe</td>
+
+<td>Prélevée à 12 °C, réinjectée à 7 °C</td>
+
+<td>La source de chaleur : elle cède sa chaleur dans l’échangeur, puis retourne à la nappe</td>
+
+</tr>
+
+<tr>
+
+<td>Boucle intermédiaire</td>
+
+<td>10 °C vers l’évaporateur, 5 °C au retour</td>
+
+<td>Porter la chaleur de l’échangeur à l’évaporateur de la PAC</td>
+
+</tr>
+
+<tr>
+
+<td>Circuit de chauffage</td>
+
+<td>Départ 35 °C, retour 30 °C</td>
+
+<td>Porter la chaleur du condenseur, par le ballon, au plancher et à la batterie de la CTA</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><em>Éléments attendus</em> : quatre réseaux distincts et complets · les flèches, dont la descente vers FR · les trois régimes et les rôles. <strong>La boucle intermédiaire de la même couleur que la nappe</strong> est l’erreur à relever : ce sont deux liquides qui ne se touchent jamais, et c’est tout l’objet de la question 3.</p>
+
+<p>Le schéma surligné :</p>
+
+<figure><img src="img/EXO-PAC-MEDIATHEQUE-PROF/fig-pac-schema-corrige.png" alt="" /></figure>
+
+<p><strong>3.</strong> Trois raisons, qui tiennent chacune au dossier.</p>
+
+<p><strong>L’arrêté</strong> : l’eau doit revenir à la nappe modifiée seulement par sa température. Sans échangeur, elle traverserait l’évaporateur, et une fuite de celui-ci mêlerait à la nappe du fluide frigorigène ou de l’huile. Avec l’échangeur, l’eau de la nappe ne touche que des plaques d’acier inoxydable.</p>
+
+<p><strong>L’eau chargée</strong> : elle contient du fer et du sable fin. Elle encrasserait et corroderait l’évaporateur, brasé, qu’on ne peut pas ouvrir. L’échangeur démontable prend cet encrassement à sa place et se nettoie chaque année.</p>
+
+<p><strong>Le gel</strong> : la boucle intermédiaire est glycolée, ce qu’on ne peut pas faire à l’eau d’une nappe. L’évaporateur travaille alors près de 0 °C sans geler.</p>
+
+<p>Le prix payé : l’échangeur prend 2 K à la source, la PAC voit 10 °C quand la nappe en donne 12, soit environ 5 % de COP, à raison de 2 à 3 % par kelvin, plus l’électricité de P1.</p>
+
+<p><em>Éléments attendus</em> : l’arrêté et la nappe à protéger · l’eau chargée, qui encrasserait un évaporateur qu’on ne peut pas ouvrir · le glycol, possible dans la boucle et interdit dans la nappe. Le corrigé officiel de 2025 ne demandait que la première raison.</p>
+
+<h2 id="corrige-partie-2-ce-que-la-nappe-doit-fournir">Corrigé, partie 2 : ce que la nappe doit fournir</h2>
+
+<p><strong>4.</strong> DT3, colonne 35 °C : la PAC absorbe <strong>17,8 kW</strong>. COP = 96 / 17,8 ≈ <strong>5,4</strong>. Le condenseur rend la chaleur prise à la nappe plus l’énergie électrique du compresseur :</p>
+
+<p>P nappe = 96 − 17,8 = <strong>78,2 kW</strong>.</p>
+
+<p><em>Éléments attendus</em> : la lecture de 17,8 kW · le COP · le bilan, condenseur = évaporateur + compresseur. <strong>« P nappe = 96 kW »</strong> oublie que l’électricité finit elle aussi en chaleur : Éval 1.</p>
+
+<p><strong>5.</strong> qv = P / (1,163 × Δθ) = 78,2 / (1,163 × 5) ≈ <strong>13,4 m³/h</strong>. Le forage donne 15 m³/h : il suffit, à <strong>90 %</strong> de son débit conseillé. La marge est mince : un échangeur encrassé ou une nappe plus froide la mangent vite.</p>
+
+<p>Sur l’année, la nappe fournit de l’ordre de 116 MWh, pour un COP moyen de la machine seule voisin de 5, soit <strong>environ 20 000 m³</strong> prélevés puis rendus. C’est l’ordre de grandeur du sujet 2025, qui annonçait 19 000 à 21 000 m³ par an.</p>
+
+<p><em>Éléments attendus</em> : la formule avec la puissance prélevée, 78,2 kW · Δθ = 5 K · la comparaison avec 15 m³/h. <strong>Le débit calculé avec 96 kW</strong> donne 16,5 m³/h et fait conclure à tort que le forage ne suffit pas : Éval 1, la méthode étant juste.</p>
+
+<p><strong>6.</strong> <strong>À 80 m</strong> : l’eau réinjectée, à 7 °C, forme dans la nappe une zone plus froide. Si elle atteignait le forage de pompage, la PAC pomperait une eau de plus en plus froide, année après année, et son COP comme sa puissance baisseraient. La distance évite ce recyclage thermique. <strong>En aval</strong> : la nappe s’écoule, et elle emporte cette eau froide loin de FP au lieu de la ramener vers lui.</p>
+
+<p>La réinjection elle-même tient le niveau de la nappe : chaque mètre cube pris lui est rendu, comme l’exige l’arrêté.</p>
+
+<p><em>Éléments attendus</em> : l’eau rendue plus froide · le risque de la repomper, et le COP qui baisse · l’écoulement qui l’emporte loin de FP.</p>
+
+<h2 id="corrige-partie-3-la-pac-et-son-ballon-tampon">Corrigé, partie 3 : la PAC et son ballon tampon</h2>
+
+<p><strong>7.</strong> COP à 55 °C = 84 / 26,3 ≈ <strong>3,2</strong>, contre <strong>5,4</strong> à 35 °C. Pour la même chaleur, des radiateurs en 55/45 °C demanderaient 5,4 / 3,2 ≈ <strong>1,7 fois</strong> plus d’électricité : le plancher en consomme <strong>41 % de moins</strong>. La PAC perdrait aussi 12 kW de puissance, 84 kW au lieu de 96, et la chaudière d’appoint travaillerait davantage.</p>
+
+<p><em>Éléments attendus</em> : les deux COP · la comparaison chiffrée, en rapport ou en pourcentage · le lien entre une eau de départ basse et un COP élevé. La puissance perdue est un plus.</p>
+
+<p><strong>8.</strong> Quand les circuits ne prennent rien, toute la chaleur du compresseur va dans le ballon. Un compresseur fournit 96 / 2 = <strong>48 kW</strong>. Le ballon absorbe, sur le différentiel de 5 K :</p>
+
+<p>E = 1,163 × 1 000 × 5 = <strong>5 815 Wh</strong>, soit 5,8 kWh.</p>
+
+<p>Durée de marche : 5,8 / 48 ≈ 0,121 h, soit <strong>7,3 minutes</strong>, plus que les 6 minutes exigées : le ballon suffit. À l’inverse, 6 minutes à 48 kW demandent 4,8 kWh, donc un ballon d’au moins <strong>825 L</strong>. C’est la relation du corrigé 2018, V = P × t / (c × Δθ).</p>
+
+<p>Dès que les circuits prennent une part de la chaleur, la marche s’allonge : l’hypothèse « aucune demande » est le cas le plus défavorable.</p>
+
+<p><em>Éléments attendus</em> : la puissance d’un seul compresseur, 48 kW · l’énergie stockée sur 5 K · la durée comparée à 6 minutes. <strong>Le calcul fait avec 96 kW</strong> donne 3,6 minutes et conclut à tort que le ballon est trop petit : Éval 1, la méthode étant juste.</p>
+
+<p><strong>9.</strong> Le ballon est stratifié : l’eau chaude, plus légère, reste en haut, l’eau la plus froide en bas.</p>
+
+<p><strong>Le retour de la PAC en bas</strong> : la PAC reçoit l’eau la plus froide du ballon, elle condense à plus basse température, et son COP s’améliore.</p>
+
+<p><strong>La chaudière en haut</strong> : elle ne chauffe que le haut du ballon, là où les circuits prennent leur départ. Elle relève la température de départ sans réchauffer l’eau qui retourne à la PAC. Raccordée en bas, elle enverrait de l’eau chaude à la PAC : COP en baisse, et arrêt possible sur la sécurité haute pression.</p>
+
+<p>C’est l’idée de la chaufferie du collège, question 9 : tout ce qui réchauffe le retour d’un générateur lui coûte du rendement.</p>
+
+<p><em>Éléments attendus</em> : la stratification · l’eau la plus froide vers la PAC, et son COP · la chaudière qui ne réchauffe pas le retour de la PAC.</p>
+
+<p><strong>10.</strong> <strong>Fonction</strong> : vérifier qu’il passe assez d’eau glycolée dans l’évaporateur avant et pendant la marche des compresseurs.</p>
+
+<p><strong>Le risque</strong> : sans débit, le liquide immobile dans l’évaporateur continue de céder sa chaleur au fluide frigorigène et se refroidit très vite. L’eau glycolée à 25 % gèle vers −10 °C, et l’évaporation peut descendre plus bas : la glace déforme ou perce les plaques, le fluide frigorigène passe dans la boucle, et la PAC est perdue. Sans aller jusqu’au gel, la machine déclenche en basse pression.</p>
+
+<p><strong>Deux causes</strong> parmi : la pompe P1 arrêtée ou en panne · une vanne restée fermée après un entretien · de l’air dans la boucle · une fuite qui fait chuter la pression de la boucle.</p>
+
+<p><strong>Les actions de l’automate</strong>, relevées dans le DT3 : arrêt immédiat des compresseurs · affichage du défaut « débit évaporateur » · redémarrage automatique 3 minutes après le retour du débit · verrouillage au troisième défaut en 24 heures, avec réarmement sur place. Renvoyer le défaut vers la GTB est un plus.</p>
+
+<p><em>Éléments attendus</em> : la fonction · le gel ou la basse pression · deux causes · les actions du DT3.</p>
+
+<h2 id="corrige-partie-4-l-appoint-le-fluide-et-le-budget">Corrigé, partie 4 : l’appoint, le fluide et le budget</h2>
+
+<p><strong>11.</strong> Le graphe tracé :</p>
+
+<figure><img src="img/EXO-PAC-MEDIATHEQUE-PROF/fig-pac-appoint-corrige.png" alt="" /></figure>
+
+<p>Le besoin passe par 126 kW à −5 °C et par 0 kW à 16 °C. La PAC donne 96 kW quelle que soit la température extérieure. Les deux droites se croisent à <strong>0 °C</strong> : sous 0 °C, l’appoint démarre. À −5 °C, il fournit 126 − 96 = <strong>30 kW</strong>, que la chaudière de 45 kW couvre.</p>
+
+<p><strong>La puissance ne baisse pas</strong> parce que la PAC prend sa chaleur dans la nappe, à 12 °C toute l’année, et non dans l’air extérieur : sa source ne se refroidit pas quand il gèle dehors. Une PAC air/eau perd au contraire de la puissance au moment où le besoin monte, ce que montre la fiche « Une saison de pompe à chaleur ».</p>
+
+<p>Au-dessus de 8 °C, le besoin reste sous 48 kW et un seul compresseur tourne, par cycles : c’est là que travaille le ballon de la question 8.</p>
+
+<p><em>Éléments attendus</em> : les deux tracés justes · 0 °C et 30 kW, lus à 1 °C et 5 kW près · la source à température constante.</p>
+
+<p><strong>12.</strong> 2 × 8,2 = 16,4 kg ; 16,4 × 675 / 1 000 ≈ <strong>11,1 t éq. CO₂</strong>. Entre 5 et 50 t : contrôle d’étanchéité <strong>au moins tous les 12 mois</strong>. Avec un système de détection des fuites, le contrôle reste obligatoire, <strong>tous les 24 mois</strong> ; le détecteur signale en plus une fuite dès qu’elle survient, avant que la PAC ait perdu sa charge et son COP.</p>
+
+<p><em>Éléments attendus</em> : la charge des deux circuits · le calcul en tonnes · les deux fréquences, 12 et 24 mois. <strong>La charge d’un seul circuit</strong>, 5,5 t, donne ici la même fréquence par chance : exiger les deux circuits.</p>
+
+<p><strong>13.</strong> <strong>Chaufferie gaz seule</strong> : 150 000 / 0,90 = 166 667 kWh de gaz, soit <strong>15 000 €</strong> par an.</p>
+
+<p><strong>Solution PAC</strong> : électricité 150 000 × 0,97 / 4,5 ≈ 32 333 kWh, soit 6 467 € ; gaz de l’appoint 150 000 × 0,03 / 0,90 = 5 000 kWh, soit 450 € ; entretien 1 800 €. Total : environ <strong>8 717 €</strong> par an.</p>
+
+<p><strong>Économie</strong> : 15 000 − 8 717 ≈ <strong>6 283 €</strong> par an. <strong>Temps de retour</strong> : 70 000 / 6 283 ≈ <strong>11,1 ans</strong>, sous les 12 ans exigés : la solution est acceptable.</p>
+
+<p>La marge est faible : à 0,24 €/kWh d’électricité, le temps de retour passe à <strong>14 ans</strong>. La bonne conclusion est donc nuancée : acceptable aux prix du jour, sensible au prix de l’électricité.</p>
+
+<p><em>Éléments attendus</em> : le coût de la solution gaz · celui de la solution PAC, avec l’appoint et l’entretien · le temps de retour et la conclusion. <strong>Un poste oublié</strong>, l’appoint ou l’entretien, gonfle l’économie ; la conclusion reste juste par chance : Éval 2.</p>
+
+<h2 id="grille-de-diagnostic-a-remplir-en-circulant">Grille de diagnostic, à remplir en circulant</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Ce qu’on observe</th>
+
+<th>Questions</th>
+
+<th>Ce qu’on reprend</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>La nappe et la boucle d’une seule couleur</td>
+
+<td>2, 3</td>
+
+<td>Deux liquides qui ne se touchent jamais, et l’arrêté qui l’impose</td>
+
+</tr>
+
+<tr>
+
+<td>La puissance prise à la nappe égale à 96 kW</td>
+
+<td>4, 5</td>
+
+<td>Le bilan de la machine : condenseur = évaporateur + compresseur</td>
+
+</tr>
+
+<tr>
+
+<td>« Pour que les forages ne se gênent pas », sans dire en quoi</td>
+
+<td>6</td>
+
+<td>L’eau froide rendue à la nappe, et la nappe qui s’écoule</td>
+
+</tr>
+
+<tr>
+
+<td>Le ballon qui « stocke de la chaleur » sans chiffre, ou calculé avec 96 kW</td>
+
+<td>8</td>
+
+<td>Le cas le plus défavorable : un seul compresseur, 48 kW, et aucune demande</td>
+
+</tr>
+
+<tr>
+
+<td>Le COP de 5,4 employé à la place du SCOP de 4,5</td>
+
+<td>13</td>
+
+<td>Un COP à pleine charge est un point d’essai ; la facture suit le SCOP</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
 <nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="EXO-CTA-AMPHI-PROF.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Exercice type · CTA</span></a></div></nav>
 <p class="pied">L'énoncé élève est le document Word EXO-PAC-MEDIATHEQUE, dans BTS FED C/23-exercices-types.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

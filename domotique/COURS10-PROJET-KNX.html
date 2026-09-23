@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Domotique, cours 10 — le projet KNX</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="domotique/COURS10-PROJET-KNX" data-public="prof">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS9-MOTEURS-VOLETS-VARIATION.html" rel="prev" title="Domotique, cours 9 — moteurs, volets, variation" aria-label="Domotique, cours 9 — moteurs, volets, variation">&lsaquo;</a><a class="fleche" href="PROF1-COURANT-FAIBLE.html" rel="next" title="Prof 1 — le courant faible" aria-label="Prof 1 — le courant faible">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/COURS10-PROJET-KNX">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
@@ -23,350 +31,685 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="PROF3-PROTOCOLES.html">Le typage des données KNX, les DPT</a></b><span class="ou">Prof 3 — les protocoles</span><span class="car">la page les réutilise pour dimensionner les objets de communication, non plus pour l'interopérabilité.</span></li><li><b><a href="PROF2-MEDIAS.html">La ligne TP1 et sa paire torsadée</a></b><span class="ou">Prof 2 — les médias</span><span class="car">la charge du bus se calcule sur ce même câble, à 9 600 bit/s.</span></li><li><b>L'adresse physique et l'adresse de groupe</b><span class="car">la page suppose acquise la distinction entre l'appareil, que la première désigne, et la fonction, que la seconde désigne.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#cinq-cas-et-ce-qu-ils-ont-en-commun">Cinq cas, et ce qu’ils ont en commun</a><a href="#un-immeuble-tertiaire-rendu-inutilisable-allemagne-2021">Un immeuble tertiaire rendu inutilisable, Allemagne, 2021</a><a href="#la-meme-faille-classee-activement-exploitee-cisa-juillet-2026">La même faille classée « activement exploitée », CISA, juillet 2026</a><a href="#la-reponse-du-standard-knx-secure-normalise-2017-a-2019">La réponse du standard : KNX Secure normalisé, 2017 à 2019</a><a href="#une-tour-de-34-etages-entierement-sur-knx-buenos-aires-2024">Une tour de 34 étages entièrement sur KNX, Buenos Aires, 2024</a><a href="#l-ordre-des-adresses-knx-association-et-deux-batiments-primes-2024">L’ordre des adresses, KNX Association et deux bâtiments primés, 2024</a><a href="#la-ou-la-methode-change">Là où la méthode change</a><a href="#le-calcul-retourne">Le calcul retourné</a><a href="#trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#les-questions-qui-destabilisent">Les questions qui déstabilisent</a></div></nav>
-<h2 id="cinq-cas-et-ce-qu-ils-ont-en-commun">Cinq cas, et ce qu’ils ont en commun</h2>
-<p>Un projet KNX n’est pas une somme d’appareils, c’est une somme d’adresses. Les cinq cas de cette page le montrent chacun par un bout : une attaque abuse de la manière dont on adresse les participants, une faille tient à un mécanisme de protection posé lors de l’adressage, une tour se tient grâce à une topologie choisie avant le premier téléversement, et une norme de sécurité chiffre ce que transportent les adresses de groupe.</p>
-<p>Le fil commun tient en une phrase, et elle est déjà celle de la séance d’adressage. <strong>L’adresse physique désigne un appareil, l’adresse de groupe désigne une fonction.</strong> Tout le reste, la programmation, le filtrage, la charge du bus, la sécurité, découle de cette séparation. Un projet bien construit est celui où elle est tenue partout.</p>
-<div class="cle">
-<p>On ne programme pas des liaisons entre appareils : on écrit dans chaque appareil sa table d’adresses de groupe, puis on laisse chacun décider seul. C’est ce qui rend un ajout gratuit, un filtrage possible, et une attaque logicielle dévastatrice quand l’installation est jointe à Internet sans protection.</p>
-</div>
-<p>Deux réglages de la ligne TP1 servent tout au long de la page, et ils sont ceux de la documentation KNX : <strong>30 V</strong> à l’alimentation, <strong>21 V</strong> au minimum chez le dernier participant, <strong>640 mA</strong> et <strong>64 participants</strong> par ligne, <strong>10 mA</strong> par participant. Les trois longueurs, 350, 700 et 1 000 m, ne sont pas refaites ici : elles se calculent dans la leçon d’atelier, et le cours de base de la KNX Association les justifie.</p>
-<h2 id="un-immeuble-tertiaire-rendu-inutilisable-allemagne-2021">Un immeuble tertiaire rendu inutilisable, Allemagne, 2021</h2>
-<p><em>En octobre 2021, un bureau d’ingénierie allemand demande de l’aide à la société de sécurité Limes Security : quelqu’un a pris la main sur la gestion technique d’un immeuble de bureaux par Internet. Selon le rapport de Limes Security, environ 75 % de plusieurs centaines de participants KNX ne fonctionnent plus, et l’exploitant fait tourner le bâtiment à la main, certains organes recâblés derrière des disjoncteurs.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>L’attaquant atteint l’installation par un port UDP laissé ouvert sur l’Internet public, selon Dark Reading.</li>
-<li>Il <strong>décharge</strong> les participants : il efface leur application et leur table d’adresses de groupe.</li>
-<li>Il pose sur chacun une <strong>clé BCU</strong>, le mot de passe qui interdit toute reprogrammation.</li>
-<li>Le bâtiment garde le courant, mais plus une seule fonction : c’est l’équivalent d’un disque effacé, puis verrouillé par un mot de passe.</li>
-</ol>
-</div>
-<p>Pour comprendre pourquoi l’attaque porte, il faut savoir ce que « décharger » suppose. Le logiciel de mise en service ne dialogue avec un participant que par son <strong>adresse physique</strong>, <code>zone.ligne.participant</code>. Cette adresse voyage en clair dans le champ source de chaque télégramme, et le mode de programmation la rend lisible à qui écoute le bus. Un attaquant présent sur le bus dispose donc de tout ce qu’il faut pour écrire dans chaque appareil.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Adresse physique, adresse de groupe : deux plans qui ne se recouvrent jamais</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’<strong>adresse physique</strong> est un numéro d’inventaire dans la topologie. Elle tient sur trois nombres, une zone de 0 à 15, une ligne de 0 à 15, un participant de 0 à 255, et le participant 0 d’une ligne est toujours son coupleur. Elle sert à programmer et à diagnostiquer, jamais à commander en fonctionnement normal.</p>
-<p>L’<strong>adresse de groupe</strong> est une fonction. En fonctionnement, un poussoir écrit une valeur sur une adresse de groupe, et tous les appareils dont la table la contient réagissent. La structure à trois niveaux offre 32 × 8 × 256 = <strong>65 536</strong> combinaisons, dont <code>0/0/0</code>, réservée.</p>
-<p>La conséquence, essentielle pour ce cas : <strong>l’attaque ne vise pas les fonctions, elle vise les appareils.</strong> Effacer les tables d’adresses de groupe suffit à ce que plus aucune fonction n’existe, sans qu’aucune adresse de groupe n’ait été touchée. On efface le carnet d’adresses, pas les correspondants.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">La clé BCU, et pourquoi elle se retourne contre l&#39;exploitant</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La clé BCU est une protection prévue par le standard : une fois posée sur un participant, elle interdit tout téléversement à qui ne la connaît pas. Elle tient sur <strong>quatre octets</strong>, huit caractères hexadécimaux, soit 2³² = <strong>4,29 milliards</strong> de valeurs.</p>
-<p>Cette taille est la bonne nouvelle et la mauvaise. Contre un attaquant qui voudrait <em>deviner</em> une clé posée par l’installateur, 4,29 milliards de valeurs sont une muraille. Mais quand l’attaquant <em>pose</em> la clé, c’est l’exploitant qui doit la deviner pour reprendre la main, et une recherche exhaustive sur le bus, à quelques dizaines de millisecondes par essai, demanderait des années.</p>
-<p>Limes Security n’a pas attendu : ses spécialistes ont lu la mémoire des processeurs, là où la protection en lecture manquait, pour en extraire la clé. Selon le récit de Dark Reading, l’attaquant ayant posé <strong>la même clé sur tous les participants</strong>, l’équipe l’a retrouvée en 45 minutes et l’installation a été rétablie ensuite en une demi-heure. Une clé différente par appareil aurait rendu la reprise bien plus longue.</p></div></details>
-</div><div class="piege">
-<p>Un télégramme ne s’adresse jamais à un appareil en fonctionnement, mais la <strong>programmation</strong>, elle, se fait par l’adresse physique. C’est cette voie que l’attaque emprunte. Séparer information et énergie, comme au cours 1, ne protège donc de rien ici : l’attaque reste dans la seule chaîne d’information, et c’est elle qui commande tout.</p>
-</div>
-<p><strong>En classe.</strong> Ce cas est la meilleure entrée en matière de la séance DOMA11 : il rend concret le fait qu’un participant garde tout dans sa propre mémoire, et qu’aucune centrale ne le sauve. On peut demander aux étudiants, avant tout cours, pourquoi couper le courant ne répare rien, et pourquoi rebrancher un appareil neuf à la place ne suffit pas non plus tant qu’on n’a pas le projet.</p>
-<h2 id="la-meme-faille-classee-activement-exploitee-cisa-juillet-2026">La même faille classée « activement exploitée », CISA, juillet 2026</h2>
-<p><em>Le 15 juillet 2026, l’agence américaine de cybersécurité, la CISA, ajoute la faille CVE-2023-4346 à son catalogue des vulnérabilités activement exploitées, et impose aux administrations fédérales de la traiter avant le 29 juillet au titre de la directive BOD 26-04. La faille avait fait l’objet de l’avis ICSA-23-236-01 dès le 24 août 2023, sur signalement de Felix Eberstaller, de Limes Security.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Un participant utilise l’autorisation de connexion « Option 1 » sans clé BCU posée.</li>
-<li>Un attaquant sur le réseau, ou avec un accès physique au bus, s’y connecte sans obstacle.</li>
-<li>Il pose une clé BCU que l’exploitant ne connaît pas.</li>
-<li>Le participant est verrouillé, et le plus souvent irrécupérable : le standard ne prévoit pas de remise à zéro.</li>
-</ol>
-</div>
-<p>La faille n’est pas un défaut de mise en œuvre d’un fabricant, mais une propriété du mécanisme lui-même, ce que traduit son classement : <strong>CWE-645</strong>, mécanisme de verrouillage trop restrictif, et une gravité <strong>CVSS de 7,5</strong>. Aucun correctif logiciel ne peut donc la fermer ; seule la manière de livrer les projets le peut.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que « Option 1 » veut dire, et pourquoi une clé posée ferme la porte</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un participant KNX accorde une autorisation de connexion à qui veut le programmer. Dans la variante la plus simple, l’« Option 1 », cette autorisation est ouverte tant qu’aucune clé BCU n’a été posée : n’importe quel outil peut se connecter et écrire, y compris poser une clé.</p>
-<p>La parade est donc d’une simplicité qui déroute : <strong>poser soi-même la clé BCU sur tous les participants d’un projet terminé.</strong> Une porte que l’installateur a fermée ne peut plus être fermée par un attaquant. La recommandation de la CISA tient en une ligne, et elle est la même que celle de la KNX Association : poser la clé, et la remettre au propriétaire dans la documentation du projet.</p>
-<p>L’ampleur du problème tient à ce qu’il reste ouvert. Selon les relevés d’Alpha Strike Labs cités par Limes Security, <strong>plus de 16 000</strong> installations potentiellement vulnérables étaient encore exposées sur Internet dans les pays germanophones en 2023, et les signalements se poursuivaient au-delà.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">La remise du projet au client, la pièce qu&#39;on oublie</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La faille de 2023 a fait entrer dans les recommandations officielles une exigence que les intégrateurs négligeaient : ce qu’on remet, et à qui. La CISA écrit de remettre la clé BCU au propriétaire du bâtiment dans la documentation du projet. La KNX Association renvoie à sa liste de contrôle de sécurité.</p>
-<p>Concrètement, la fin d’un projet KNX n’est pas le dernier téléversement, c’est la remise d’un ensemble : le fichier de projet du logiciel de mise en service, les clés, dont la clé BCU et, sur une installation sécurisée, le trousseau de clés, et un plan de récolement à jour. Sans le fichier de projet, une évolution ultérieure oblige à tout relire sur le bus ; sans les clés, elle est impossible ; sans le plan de récolement, elle est un dépannage à l’aveugle.</p>
-<p>C’est la même exigence que celle du cours 1 sur la GTB : un dispositif technique n’est livré que lorsque celui qui l’exploite sait s’en servir et le reprendre.</p></div></details>
-</div><p><strong>En classe.</strong> Ce cas prépare la remise du dossier d’installation de la fin de première année. On peut le poser en question ouverte : que faut-il remettre au client pour qu’il ne soit pas prisonnier de son installateur ? La réponse, le fichier de projet et les clés, est aussi ce qui protège l’installation d’une reprise sauvage. Le fil B de la semaine 12 fait vivre l’autre versant, le téléversement, où l’on voit que sans le projet on ne peut rien.</p>
-<h2 id="la-reponse-du-standard-knx-secure-normalise-2017-a-2019">La réponse du standard : KNX Secure normalisé, 2017 à 2019</h2>
-<p><em>Après une première vague d’attaques, la KNX Association a mis en avant son architecture KNX Secure, dont elle a annoncé la normalisation selon la norme EN 50090-4-3 le 24 octobre 2017, puis la reconnaissance internationale comme norme ISO 22510 en novembre 2019. Selon la KNX Association, KNX Secure existe depuis 2015 et repose sur un chiffrement AES 128 CCM conforme à la norme ISO 18033-3.</em></p>
-<div class="etapes">
-<ol type="1">
-<li><strong>KNX Data Secure</strong> chiffre et authentifie les données au niveau des objets de communication, sur n’importe quel média.</li>
-<li><strong>KNX IP Secure</strong> chiffre le trafic entre installations sur le réseau IP, en enveloppant les télégrammes KNXnet/IP.</li>
-<li>Le logiciel de mise en service devient l’administrateur : il exige un mot de passe de projet avant le premier participant sécurisé.</li>
-<li>Chaque participant sécurisé apporte sa clé d’usine, la FDSK, imprimée sur l’appareil et lisible par code QR.</li>
-</ol>
-</div>
-<p>Ce cas oblige à savoir ce que transportent réellement les adresses de groupe, car c’est cela que Data Secure protège. Une adresse de groupe ne relie pas des appareils : elle relie des <strong>objets de communication</strong>. Chaque objet porte une taille, un <strong>type de point de données</strong>, le DPT, et des <strong>drapeaux</strong> qui disent ce qu’il a le droit de faire.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>DPT</th>
-<th>Ce qu’il transporte</th>
-<th>Taille</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1.001</td>
-<td>commutation : marche ou arrêt</td>
-<td>1 bit</td>
-</tr>
-<tr>
-<td>1.008</td>
-<td>montée ou descente</td>
-<td>1 bit</td>
-</tr>
-<tr>
-<td>3.007</td>
-<td>variation relative</td>
-<td>4 bits</td>
-</tr>
-<tr>
-<td>5.001</td>
-<td>pourcentage, de 0 à 100 %</td>
-<td>1 octet</td>
-</tr>
-<tr>
-<td>9.001</td>
-<td>température en degrés Celsius</td>
-<td>2 octets</td>
-</tr>
-</tbody>
-</table></div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les cinq drapeaux, et la règle qui les fixe sans hésiter</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Chaque objet porte cinq drapeaux : <strong>C</strong> communication, <strong>L</strong> lecture, <strong>E</strong> écriture, <strong>T</strong> transmission, <strong>A</strong> actualisation. La logique se formule en une règle, et elle vaut à chaque fois : C partout ; T sur ce qui <strong>émet</strong> ; E sur ce qui <strong>reçoit</strong> ; L sur ce qu’un autre appareil doit pouvoir <strong>interroger</strong>, c’est-à-dire les états et les mesures.</p>
-<p>L’erreur qui révèle une incompréhension est d’inverser T et E. Un poussoir qui commande émet, donc porte T ; le pré-actionneur qui exécute reçoit, donc porte E ; et sur l’adresse d’<strong>état</strong>, les rôles s’inversent, car c’est le pré-actionneur qui émet ce qu’il sait de sa sortie.</p>
-<p>Une adresse de groupe ne réunit que des objets de <strong>même taille</strong>, et en pratique de même type. Associer un objet de 1 bit et un objet de 2 octets est refusé par le logiciel : le récepteur recevrait deux octets là où il en attend un seul bit.</p></div></details>
-</div><div class="piege">
-<p>La commande et l’état sont <strong>deux adresses de groupe distinctes</strong>. L’état d’une sortie peut changer sans passer par la commande : par un détecteur, par l’écran, par la GTB, par la façade du pré-actionneur, au retour du secteur. <strong>Seul le pré-actionneur connaît la position réelle de sa sortie</strong> : l’adresse d’état qu’il émet est l’unique source de vérité, et tout voyant qui affiche un état l’écoute, jamais l’adresse de commande.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce que la mise en service sécurisée change au projet</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le premier logiciel de mise en service à intégrer les deux mécanismes est ETS 5.5, en avril 2016. Depuis, une installation sécurisée impose un ordre : un mot de passe de projet d’abord, car le logiciel devient l’administrateur ; puis, pour chaque participant, la saisie de sa clé d’usine FDSK, par code QR ou à la main. Le logiciel remplace ensuite cette clé d’usine par une clé de travail que lui seul et l’appareil connaissent.</p>
-<p>L’adoption progresse : la KNX Association annonçait plus de mille participants sécurisés certifiés fin 2024, et une certification VDE « sécurité de l’information testée » obtenue en 2022. La cohabitation avec l’existant est prévue : un « proxy de sécurité » permet à des participants non sécurisés de dialoguer avec des participants sécurisés pendant une rénovation.</p>
-<p>Pour la classe, la limite est utile à connaître : Data Secure protège le contenu des télégrammes, il ne masque pas qui parle à qui. Et il ne dispense pas de la clé BCU ni du VPN : ce sont trois protections de nature différente.</p></div></details>
-</div><p><strong>En classe.</strong> Ce cas se traite en prolongement de DOMA11, une fois les objets et les drapeaux installés. La bonne question à poser : puisque Data Secure chiffre les objets de groupe, qu’est-ce qui reste à protéger par ailleurs ? La réponse, l’accès physique au bus et l’exposition IP, ramène aux deux premiers cas et donne la mesure de ce qu’une seule protection ne couvre jamais.</p>
-<h2 id="une-tour-de-34-etages-entierement-sur-knx-buenos-aires-2024">Une tour de 34 étages entièrement sur KNX, Buenos Aires, 2024</h2>
-<p><em>Lauréate d’un KNX Award en 2024, la tour TBM du quartier d’affaires de Buenos Aires, conçue par l’architecte César Pelli et achevée en 2022, est le siège d’une banque. Selon la fiche publiée par la KNX Association, elle réunit 1 987 participants KNX sur 130 m de haut et 52 000 m², avec plus de 6 800 luminaires DALI intérieurs et 415 luminaires extérieurs, le tout remonté dans une supervision qui compte plus de 30 000 points.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Répartir 1 987 participants sur des lignes, avec une réserve, sans jamais dépasser 64 par ligne.</li>
-<li>Grouper les lignes en zones, sans dépasser 15 lignes par zone.</li>
-<li>Relier les zones par une <strong>dorsale IP</strong>, seule capable de franchir 34 étages sans goulet d’étranglement.</li>
-<li>Régler les <strong>tables de filtrage</strong> des coupleurs pour que chaque ligne ne porte que son trafic.</li>
-</ol>
-</div>
-<p>Un tel bâtiment oblige à savoir ce qu’une ligne peut porter, et une ligne ne se mesure pas seulement en participants. Elle se mesure aussi en <strong>télégrammes par seconde</strong>, et ce nombre est petit. À 9 600 bit/s, un télégramme d’un bit occupe le bus environ 20 ms : une ligne n’en transporte qu’une cinquantaine par seconde.</p>
-<figure class="schema"><div class="dessin" data-schema="topologies-bus"></div><figcaption>Les topologies admises sur une ligne, ligne, étoile, arbre, et les trois longueurs à vérifier. La tour combine les trois formes selon les étages ; c’est la dorsale IP, et non le bus, qui relie les zones.</figcaption></figure>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La charge du bus, calculée sur un télégramme</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un caractère KNX vaut 8 bits de données, plus 3 bits de contrôle, plus 2 bits de pause, soit <strong>13 temps de bit</strong>. À 104 µs le temps de bit, un caractère dure 1,35 ms.</p>
-<p>Un télégramme d’un bit compte 9 caractères, soit 115 temps de bit une fois retirée la pause finale, à quoi s’ajoutent 50 temps de bit de bus libre avant l’émission, 15 de silence et 11 pour l’acquittement. Le cycle complet fait <strong>191 temps de bit</strong>, soit <strong>19,9 ms</strong>, d’où <strong>50 télégrammes par seconde</strong> au plus.</p>
-<p>Deux enseignements en découlent. D’abord, un télégramme qui transporte deux octets, une température, dure 22,6 ms, et un texte de quatorze octets 38,9 ms : plus la charge utile est grosse, moins il en passe. Ensuite, <strong>l’attente et l’acquittement pèsent 76 temps de bit sur 191, soit 40 %</strong> du cycle : le débit utile est bien inférieur aux 9 600 bit/s bruts.</p></div></details>
-</div><figure>
-<img src="img/COURS10-PROJET-KNX/c10-chronogramme-telegramme.png" alt="Le cycle complet d’un télégramme d’un bit, à l’échelle du temps : bus libre, neuf caractères, silence, acquittement." />
-<figcaption aria-hidden="true">Le cycle complet d’un télégramme d’un bit, à l’échelle du temps : bus libre, neuf caractères, silence, acquittement.</figcaption>
-</figure>
-<p>C’est ce plafond de cinquante télégrammes par seconde qui rend le <strong>filtrage</strong> vital. Chaque coupleur tient une <strong>table de filtrage</strong>, construite par le logiciel à partir des associations d’adresses de groupe, et ne laisse passer que les télégrammes destinés à l’autre côté. Sans lui, le trafic de toutes les lignes se retrouverait sur chacune, et la dorsale saturerait.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi une dorsale IP, et non une dorsale TP1, dans une tour</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une dorsale TP1 partage le même débit qu’une ligne. Si les 34 étages devaient échanger leur trafic et remonter 30 000 points de supervision par une dorsale TP1, celle-ci deviendrait le goulet d’étranglement du bâtiment : le rapport des débits entre l’Ethernet à 100 Mbit/s et le bus à 9 600 bit/s est d’environ <strong>10 000</strong>.</p>
-<p>Une dorsale IP supprime cette limite. Elle franchit les distances par l’Ethernet et la fibre, isole galvaniquement les étages, ce qui compte sur 130 m de hauteur, et raccorde directement la supervision. Les coupleurs de zone deviennent des routeurs IP, qui portent les mêmes adresses <code>zone.0.0</code> que les coupleurs qu’ils remplacent.</p>
-<p>La supervision de la tour repose d’ailleurs sur une passerelle vers le monde du génie climatique : les 30 000 points remontent dans un système qui parle aussi BACnet, exactement la passerelle point à point du cours 3.</p></div></details>
-</div><div class="cle">
-<p>Une ligne se dimensionne sur deux limites, et sur la plus contraignante des deux : le nombre de participants, 64 au plus, et le courant, 640 mA. Avec une réserve de 20 %, on s’arrête à <strong>51 participants</strong> par ligne. La tour, à 1 987 participants, demande donc au moins 39 lignes, et 39 lignes demandent au moins 3 zones, puisqu’une zone n’en porte que 15.</p>
-</div>
-<p><strong>En classe.</strong> Ce cas donne l’échelle qui manque aux maquettes d’atelier. On peut faire retrouver aux étudiants le nombre minimal de lignes et de zones de la tour à partir des 1 987 participants, comme au bloc 3 de DOMA5, puis leur faire estimer le nombre de télégrammes qu’un scénario général engendre. Le fil B de la semaine 12 crée un projet à cette échelle réduite, mais la logique est la même.</p>
-<h2 id="l-ordre-des-adresses-knx-association-et-deux-batiments-primes-2024">L’ordre des adresses, KNX Association et deux bâtiments primés, 2024</h2>
-<p><em>La KNX Association recommande une structure d’adresses de groupe à trois niveaux et promeut une organisation par fonction, exposée notamment dans un article de juillet 2021. Deux lauréats des KNX Awards 2024 en donnent l’échelle : l’usine Biohort en Autriche, avec 129 lignes DALI sur 80 000 m², et un programme de casernement du ministère de la défense britannique, conçu pour environ 16 500 lits sur dix ans, conforme à la classe A de l’automatisation et noté au-dessus de 95 % à l’indice de préparation au numérique.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Choisir la structure <strong>avant</strong> de programmer : la changer ensuite oblige à réadresser.</li>
-<li>Ranger le principal par fonction, le médian par local ou sous-fonction, le sous-groupe par point.</li>
-<li>Nommer chaque adresse en clair, et non par son seul numéro.</li>
-<li>Réserver des plages pour les fonctions à venir, plutôt que de combler au fur et à mesure.</li>
-</ol>
-</div>
-<p>Le piège de la structure à trois niveaux est le médian, borné à huit valeurs. Une convention qui range les locaux dans le médian ne tient pas au-delà de huit locaux, et un grand bâtiment en compte des dizaines. C’est le point que le logiciel ne signale pas et que le concepteur doit anticiper.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les trois structures, et celle que la KNX Association promeut</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Trois organisations coexistent. La structure <strong>par fonction</strong> met la fonction au principal, la sous-fonction au médian, le point au sous-groupe. La structure <strong>par bâtiment</strong> met la partie de bâtiment au principal, la fonction au médian. La structure <strong>par appareil</strong> part du type d’appareil. La KNX Association promeut la première, mais un intégrateur expérimenté le dira autrement : la meilleure structure est celle que l’on connaît assez pour la tenir sans faute.</p>
-<p>Quand les locaux dépassent huit, deux issues sont recevables, et ce sont celles de DOMA11 : <strong>inverser les rôles</strong>, en mettant le local au principal, qui en accepte 32, et la fonction au médian ; ou <strong>dédoubler les principaux</strong>, un pour l’éclairage des locaux 1 à 7, un autre pour les suivants.</p>
-<p>Ce qui ne se néglige jamais : nommer. Une adresse <code>1/2/5</code> ne dit rien ; « Salle 2, éclairage, commande » dit tout. Sur un projet de 30 000 points, le nom est ce qui rend le dépannage possible, et le logiciel de mise en service peut exporter la liste complète pour la documentation.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Où l&#39;organisation vit dans le logiciel : quatre vues du même projet</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le logiciel de mise en service range les mêmes participants sous plusieurs vues, et chacune répond à une question différente. La vue <strong>bâtiment</strong> répond à « où l’appareil est-il posé ? ». La vue <strong>topologie</strong> répond à « sur quelle ligne est-il branché ? », et c’est là que vivent les adresses physiques et les coupleurs. La vue <strong>adresses de groupe</strong> répond à « quelle fonction est commandée ? ». Une vue <strong>métiers</strong>, ou fonctions, réunit les appareils d’un même lot, le chauffage par exemple, quelle que soit leur place.</p>
-<p>Un appareil figure dans les vues bâtiment et topologie. Une adresse de groupe n’appartient à aucun appareil : elle est une fonction, et les appareils qui la partagent y sont associés. Tenir ces vues à jour est ce qui distingue un projet qu’un autre intégrateur peut reprendre d’un projet dont l’auteur est le seul détenteur.</p></div></details>
-</div><p><strong>En classe.</strong> L’organisation des adresses est le cœur du livrable de DOMA11, le tableau d’adressage que le fil B consomme. On peut confronter les étudiants à un bâtiment de plus de huit locaux pour leur faire buter sur la limite du médian, et leur faire choisir une convention, puis la défendre. Le point à leur faire dire : la convention se choisit une fois, et se change au prix d’un réadressage complet.</p>
-<h2 id="la-ou-la-methode-change">Là où la méthode change</h2>
-<p>Le raisonnement ordinaire d’un projet KNX suppose une ligne unique, isolée, dont le seul risque est de manquer de tension ou de participants. Deux situations le mettent en défaut, et elles changent la nature du problème.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th></th>
-<th>Une ligne isolée</th>
-<th>Un bâtiment communicant et exposé</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Le risque principal</td>
-<td>manquer de tension au bout</td>
-<td>être atteint par le réseau</td>
-</tr>
-<tr>
-<td>Ce qui dimensionne</td>
-<td>21 V, 640 mA, 64 participants</td>
-<td>la charge du bus et la sécurité</td>
-</tr>
-<tr>
-<td>Le rôle du coupleur</td>
-<td>séparer et alimenter</td>
-<td><strong>filtrer</strong> le trafic entre lignes</td>
-</tr>
-<tr>
-<td>Ce qui protège</td>
-<td>rien à protéger</td>
-<td>clé BCU, KNX Secure, VPN, isolement IP</td>
-</tr>
-<tr>
-<td>La fin du projet</td>
-<td>ça fonctionne</td>
-<td>le projet et les clés sont remis</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Le filtrage n’est pas une protection de sécurité, et c’est le contresens à prévenir.</strong> Un coupleur limite le trafic pour tenir la charge du bus, il ne protège de personne : un attaquant sur le bus contourne le filtrage, qui n’a jamais été fait pour lui. Confondre les deux conduit à croire une installation sûre parce qu’elle est segmentée, alors que la segmentation ne fait que la rendre tenable en trafic.</p>
-<figure>
-<img src="img/COURS10-PROJET-KNX/c10-chaine-attaque.png" alt="Le chemin de l’attaque de 2021, maillon par maillon, et la parade recommandée à chacun : une seule en place suffisait à l’arrêter." />
-<figcaption aria-hidden="true">Le chemin de l’attaque de 2021, maillon par maillon, et la parade recommandée à chacun : une seule en place suffisait à l’arrêter.</figcaption>
-</figure>
-<p><strong>L’attaque logicielle inverse aussi la hiérarchie des dangers.</strong> Sur une installation isolée, le pire est une panne d’alimentation. Sur une installation jointe à Internet sans VPN, le pire est un tiers qui pose une clé BCU à distance, et aucun calcul de chute de tension ne le prévoit. La méthode change parce que le péril a changé de nature : il n’est plus physique, il est réseau.</p>
-<h2 id="le-calcul-retourne">Le calcul retourné</h2>
-<p>La séance vérifie qu’une topologie donnée fonctionne ; le bureau d’études fait l’inverse : il <strong>choisit</strong> le nombre de lignes et de zones à partir d’un nombre de participants et d’une réserve, puis vérifie que le bus tiendra une fonction générale.</p>
-<p>On fixe la réserve à 20 %, soit <strong>51 participants utiles</strong> par ligne, et l’on se donne un immeuble de bureaux de <strong>900 participants</strong>, sur 6 niveaux de 150.</p>
-<div class="formule">
-<p><strong>N_lignes = ⌈P / 51⌉ puis N_zones = ⌈N_lignes / 15⌉</strong></p>
-<ul>
-<li><strong>P</strong><span>nombre de participants du bâtiment</span></li>
-<li><strong>51</strong><span>participants utiles par ligne, réserve de 20 % sur 64</span></li>
-<li><strong>15</strong><span>lignes au plus par zone</span></li>
-<li><strong>⌈ ⌉</strong><span>arrondi à l’entier supérieur, toujours</span></li>
-</ul>
-<blockquote>
-<p>Le nombre de lignes s’arrondit vers le haut : 150 participants sur un niveau, c’est 3 lignes, jamais 2.</p>
-</blockquote>
-</div>
-<p>Pour 900 participants, il faut ⌈900 / 51⌉ = <strong>18 lignes</strong>, donc ⌈18 / 15⌉ = <strong>2 zones</strong>, reliées par une dorsale IP. Le découpage par niveau est plus lisible que le découpage au plus juste : 3 lignes de 50 par niveau donnent aussi 18 lignes, et chaque ligne garde 14 participants de réserve.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La charge du bus d&#39;une fonction centrale, et l&#39;erreur qui la fait exploser</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>On veut un scénario « tout éteindre le soir » qui agit sur les 24 groupes d’éclairage d’un niveau. Deux manières de l’écrire, et elles n’ont pas le même coût.</p>
-<p>La mauvaise : un télégramme de commande par groupe, soit 24 télégrammes. À 19,9 ms l’unité, la scène met <strong>0,48 s</strong> à partir, et le retour d’état de 24 sorties en ajoute autant.</p>
-<p>La bonne : <strong>une seule adresse de groupe</strong> écoutée par les 24 sorties. La commande part en un télégramme, 19,9 ms. Ne restent que les 24 états, que les pré-actionneurs renvoient pour les voyants et la supervision. Le coût d’une fonction centrale n’est donc pas dans la commande, il est dans <strong>le retour d’état</strong> : c’est lui qu’on dimensionne, et c’est pourquoi on réfléchit à qui a vraiment besoin de l’état.</p></div></details>
-</div><p>La règle qui dispense de tout recalculer tient en une phrase. <strong>Une ligne porte au plus cinquante télégrammes par seconde</strong> ; une fonction qui en engendre davantage doit être répartie, retardée, ou allégée de ses retours d’état inutiles. C’est le même arbitrage partout : ce qui doit être vu en temps réel, et ce qui peut attendre.</p>
-<h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : la charge de quarante sondes</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une ligne porte 40 sondes de température, chacune émettant sa valeur, un télégramme de 2 octets, toutes les 2 minutes. Quelle part de la capacité de la ligne cela représente-t-il ? Et si la supervision interroge chaque sonde toutes les 5 secondes ?</p>
-<p><strong>Résolution.</strong> Un télégramme de 2 octets dure 22,6 ms. En émission spontanée : 40 sondes × 2 par minute = 80 télégrammes par minute, soit 1,33 par seconde, pour un plafond de 50. La charge vaut 1,33 × 22,6 ms = <strong>3 %</strong>. En interrogation toutes les 5 secondes : 8 requêtes par seconde, chacune suivie d’une réponse, soit 8 × (19,9 + 22,6) ms = <strong>34 %</strong>.</p>
-<p><strong>Vérification de plausibilité.</strong> L’émission spontanée est négligeable, la scrutation rapprochée mange le tiers de la ligne : c’est l’ordre de grandeur attendu, et l’argument pour préférer l’émission sur changement à la scrutation.</p>
-<p><strong>Ce que l’étudiant doit rédiger.</strong> La durée d’un télégramme de 2 octets et son origine, puis les deux charges avec leur unité. Une charge sans le rappel du plafond de 50 télégrammes par seconde ne veut rien dire.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : un hôtel</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un hôtel compte 120 chambres, à 6 participants chacune, plus 60 participants de parties communes. Combien de lignes et de zones, à 51 participants utiles par ligne ? La structure d’adresses à trois niveaux, avec le local au médian, suffit-elle ?</p>
-<p><strong>Résolution.</strong> 120 × 6 + 60 = <strong>780 participants</strong>. Lignes : ⌈780 / 51⌉ = <strong>16 lignes</strong>. Zones : ⌈16 / 15⌉ = <strong>2 zones</strong>. Pour les adresses : 120 chambres dépassent de loin les 8 valeurs du médian, donc <strong>la convention par local au médian ne tient pas</strong>.</p>
-<p><strong>Choisir la structure avant de conclure.</strong> On met le local au principal, qui en accepte 32, insuffisant encore pour 120 chambres : il faut dédoubler, un principal par étage par exemple. Par étage de 20 chambres, on retombe sur 20 × 12 = 240 adresses, sous les 256 du sous-groupe.</p>
-<p><strong>L’erreur attendue</strong> est de valider la structure d’origine parce qu’elle « marche » sur une chambre. Elle ne se révèle fausse qu’à la treizième chambre, et la changer alors coûte un réadressage complet.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : ajouter une fonction générale à une ligne pleine</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une ligne porte déjà 60 participants, à 10 mA. On veut y ajouter un bouton « tout éteindre » qui agit sur les 30 sorties d’éclairage de l’étage, et un écran qui affiche l’état de ces 30 sorties. Est-ce possible, et à quel coût pour le bus ?</p>
-<p><strong>Choisir la méthode avant de calculer.</strong> Deux limites, la ligne et le bus. La ligne : 60 participants, plus 2 pour le bouton et l’écran, soit 62, sous les 64 ; 620 mA, sous les 640 : <strong>cela passe, mais la réserve est nulle</strong>. Le bus : la commande générale est un télégramme, les 30 retours d’état en sont 30.</p>
-<p><strong>Résolution.</strong> L’appui envoie 1 télégramme sur une adresse générale écoutée par les 30 sorties, 19,9 ms. Les 30 pré-actionneurs renvoient leur état pour l’écran, soit 30 × 19,9 ms = <strong>0,6 s</strong> de bus, à condition qu’ils soient sur la même ligne. La fonction est donc possible et brève, mais elle laisse la ligne à sa limite de participants.</p>
-<p><strong>Ce que l’étudiant doit rédiger.</strong> Les deux vérifications de ligne avec leur marge, puis le coût en télégrammes en distinguant la commande unique des retours d’état. La conclusion tient en une phrase : la fonction passe, mais la ligne est saturée en participants et devra être scindée à la prochaine extension.</p></div></details>
-</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Ordre de grandeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Tension du bus KNX TP1</td>
-<td><strong>30 V</strong> continu, TBTS</td>
-</tr>
-<tr>
-<td>Tension minimale chez le dernier participant</td>
-<td><strong>21 V</strong></td>
-</tr>
-<tr>
-<td>Courant d’une alimentation de ligne</td>
-<td><strong>640 mA</strong> pour 64 participants</td>
-</tr>
-<tr>
-<td>Consommation retenue par participant</td>
-<td><strong>10 mA</strong></td>
-</tr>
-<tr>
-<td>Participants par ligne, sans répéteur</td>
-<td><strong>64</strong> au plus</td>
-</tr>
-<tr>
-<td>Participants utiles avec réserve de 20 %</td>
-<td><strong>51</strong> par ligne</td>
-</tr>
-<tr>
-<td>Participants sans répéteur, installation entière</td>
-<td>15 × 15 × 64 = <strong>14 400</strong></td>
-</tr>
-<tr>
-<td>Adresses de groupe à trois niveaux</td>
-<td>32 × 8 × 256 = <strong>65 536</strong>, dont <code>0/0/0</code> réservée</td>
-</tr>
-<tr>
-<td>Débit d’une ligne TP1</td>
-<td><strong>9 600 bit/s</strong></td>
-</tr>
-<tr>
-<td>Durée d’un temps de bit</td>
-<td><strong>104 µs</strong></td>
-</tr>
-<tr>
-<td>Durée d’un télégramme d’un bit, cycle complet</td>
-<td><strong>19,9 ms</strong></td>
-</tr>
-<tr>
-<td>Télégrammes par seconde sur une ligne</td>
-<td><strong>50</strong> au plus</td>
-</tr>
-<tr>
-<td>Part d’attente et d’acquittement dans un cycle</td>
-<td><strong>40 %</strong></td>
-</tr>
-<tr>
-<td>Longueur d’une clé BCU</td>
-<td><strong>4 octets</strong>, soit 4,29 milliards de valeurs</td>
-</tr>
-<tr>
-<td>Rapport de débit Ethernet / bus TP1</td>
-<td>environ <strong>10 000</strong></td>
-</tr>
-<tr>
-<td>Gravité CVSS de la faille CVE-2023-4346</td>
-<td><strong>7,5</strong></td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Deux réflexes trient l’essentiel. <strong>Une ligne ne dépasse ni 64 participants ni une cinquantaine de télégrammes par seconde</strong> : au-delà, on scinde. <strong>Une clé BCU se pose, elle ne se devine pas</strong> : c’est la seule protection qui vaille contre un accès local, et elle se remet au client.</p>
-</div>
-<h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Si KNX n&#39;a pas de centrale, comment une attaque peut-elle tout arrêter ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Justement parce qu’il n’y en a pas. Comme chaque participant garde sa propre programmation, effacer les participants efface l’installation entière : il n’y a pas de centrale à restaurer, mais des centaines de mémoires à reprogrammer, une à une, et chacune verrouillée par la clé de l’attaquant.</p>
-<p>La réponse chiffrée qui porte : dans le cas de 2021, environ 75 % de plusieurs centaines de participants étaient à reprendre. L’absence de centrale est une force en fonctionnement, la panne d’un poste de supervision n’arrête rien, et une faiblesse en cas d’attaque, car il n’y a aucun point unique à rétablir.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Un attaquant peut-il vraiment deviner une clé BCU ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Non, et c’est le sens de sa taille. Quatre octets font 4,29 milliards de combinaisons ; une recherche exhaustive sur le bus, à quelques dizaines de millisecondes par essai, demanderait des années. C’est pourquoi une clé BCU posée par l’installateur protège réellement.</p>
-<p>Le paradoxe est que cette même solidité se retourne contre l’exploitant quand c’est l’attaquant qui pose la clé. La reprise a alors exigé, en 2021, de lire la mémoire des processeurs pour en extraire la clé, et elle n’a réussi que parce que l’attaquant avait posé la même clé partout et que les processeurs ne protégeaient pas leur mémoire en lecture.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi ne pas mettre toute une tour sur une seule dorsale TP1 ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que le débit d’une dorsale TP1 est celui d’une ligne, une cinquantaine de télégrammes par seconde. Faire remonter le trafic inter-étages et 30 000 points de supervision par ce goulet est impossible : le rapport de débit avec l’Ethernet est d’environ 10 000.</p>
-<p>Une dorsale IP lève la contrainte de débit et de distance, et isole galvaniquement les étages, ce qui compte sur 130 m. Le prix à payer est que la dorsale IP est, elle, exposée au monde réseau : c’est là que KNX IP Secure et le VPN reprennent tout leur sens, alors qu’ils étaient sans objet sur une ligne TP1 isolée.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Combien de télégrammes une belle scène engendre-t-elle vraiment ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Plus qu’on ne croit, si on l’écrit mal. Une scène « tout éteindre » sur 24 groupes écrite en 24 commandes met près d’une demi-seconde à partir, et autant en retours d’état. Écrite en une seule adresse de groupe, la commande part en 20 ms ; ne restent que les retours d’état.</p>
-<p>Le bon réflexe, pour la classe : une fonction centrale s’écrit avec <strong>une</strong> adresse de groupe écoutée par tous, jamais un télégramme par appareil. C’est exactement la raison pour laquelle KNX sépare la fonction de l’appareil, et un projet qui l’ignore fait ramer un bus qui n’a pourtant rien de saturé.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Le filtrage des coupleurs protège-t-il l&#39;installation ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Non, et c’est un contresens fréquent. Un coupleur filtre pour <strong>tenir la charge du bus</strong> : il ne laisse passer d’une ligne à l’autre que les télégrammes destinés à l’autre côté, d’après sa table de filtrage. Un attaquant présent sur le bus n’est pas gêné par cette table, qui n’a jamais été conçue contre lui.</p>
-<p>La protection contre l’accès local, c’est la clé BCU et KNX Data Secure ; contre l’accès réseau, c’est l’isolement IP, le VPN et KNX IP Secure. Le filtrage est une affaire de trafic, la sécurité une affaire d’accès : les confondre fait croire sûre une installation qui n’est que segmentée.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Les sources de cette page</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>KNX Association, <em>KNX IP Secure becomes ISO 22510</em> (novembre 2019), <a href="https://www.knx.org/news/new-iso-standard-knx-ip-secure-becomes-worlds-first-vendor-independent-security-standard" class="uri">https://www.knx.org/news/new-iso-standard-knx-ip-secure-becomes-worlds-first-vendor-independent-security-standard</a> : KNX Secure créé en 2015, chiffrement AES 128 CCM conforme à ISO 18033-3, Data Secure et IP Secure.</p>
-<p>KNX Association, <em>Maximum data protection for smart buildings</em> (1er février 2018), <a href="https://www.installation-international.com/ise-daily/knx-maximum-data-protection-smart-buildings" class="uri">https://www.installation-international.com/ise-daily/knx-maximum-data-protection-smart-buildings</a> : normalisation EN 50090-4-3 annoncée le 24 octobre 2017, principe des deux mécanismes.</p>
-<p>KNX Association, <em>Security: configuring KNX Secure systems in ETS</em>, Mark Warburton (22 novembre 2021), <a href="https://www.knx.org/news/security-configuring-knx-secure-systems-ets" class="uri">https://www.knx.org/news/security-configuring-knx-secure-systems-ets</a> : mot de passe de projet, clé d’usine FDSK, cohabitation avec des participants non sécurisés.</p>
-<p>KNX Association, <em>What makes KNX a secure solution</em> (20 octobre 2024), <a href="https://www.knx.org/news/what-makes-knx-secure-solution-your-smart-building" class="uri">https://www.knx.org/news/what-makes-knx-secure-solution-your-smart-building</a> : plus de mille participants sécurisés certifiés, certification VDE de 2022, liste de contrôle, VPN et VLAN.</p>
-<p>KNX Association, <em>Security: the pitfalls of being hacked</em>, Andy Ellis et Julio Díaz García (21 janvier 2022), <a href="https://www.knx.org/news/security-pitfalls-being-hacked-and-how-avoid-them-using-basic-it-skills" class="uri">https://www.knx.org/news/security-pitfalls-being-hacked-and-how-avoid-them-using-basic-it-skills</a> : port 3671 comme « tapis rouge », clé BCU et ses 4,29 milliards de valeurs.</p>
-<p>KNX Association, <em>Best Practice: how to beat the hackers</em> (22 novembre 2021), <a href="https://www.knx.org/news/best-practice-how-beat-hackers" class="uri">https://www.knx.org/news/best-practice-how-beat-hackers</a> : port 3671 et adresse multicast, VPN, Data Secure et IP Secure, changement des ports par défaut.</p>
-<p>KNX Association, <em>Tricks of the Trade: best practices for KNX group address structures</em>, Michael Bendtsen (28 juillet 2021), <a href="https://www.knx.org/news/tricks-trade-best-practices-knx-group-address-structures" class="uri">https://www.knx.org/news/tricks-trade-best-practices-knx-group-address-structures</a> : les trois structures d’adresses, la structure par fonction promue par l’organisme.</p>
-<p>KNX Association, <em>ETS6 Tip and Tricks: KNX topology</em>, Michael Critchfield (14 octobre 2024), <a href="https://www.knx.org/news/ets6-tip-and-tricks-knx-topology" class="uri">https://www.knx.org/news/ets6-tip-and-tricks-knx-topology</a> : coupleurs, coupleurs de segment, tables de filtrage, proxy de sécurité.</p>
-<p>KNX Association, <em>KNX Awards 2024</em> (26 septembre 2024), <a href="https://www.knx.org/news/knx-awards-2024-15th-edition-spotlights-best-smart-home-and-building-automation" class="uri">https://www.knx.org/news/knx-awards-2024-15th-edition-spotlights-best-smart-home-and-building-automation</a> : la tour TBM, l’usine Biohort et le programme du ministère de la défense britannique, avec leurs chiffres.</p>
-<p>KNX Projects, <em>TBM Office Building</em>, fiche PRJ004045, <a href="https://projects.knx.org/en/detail/PRJ004045" class="uri">https://projects.knx.org/en/detail/PRJ004045</a> : 1 987 participants, 6 800 luminaires DALI intérieurs et 415 extérieurs, César Pelli, supervision SCADA, intégrateur THI s.a.i.c.</p>
-<p>Limes Security, <em>KNXlock — an attack campaign against KNX-based building automation systems</em>, Markus Maier (25 août 2023), <a href="https://limessecurity.com/en/knxlock/" class="uri">https://limessecurity.com/en/knxlock/</a> : le déroulé de l’attaque d’octobre 2021, 75 % de plusieurs centaines de participants, exploitation manuelle du bâtiment, plus de 16 000 systèmes exposés dans les pays germanophones.</p>
-<p>Dark Reading, <em>Lights Out: Cyberattacks Shut Down Building Automation Systems</em> (décembre 2021), reprise sur <a href="https://seclists.org/dataloss/2021/q4/161" class="uri">https://seclists.org/dataloss/2021/q4/161</a> : port UDP 3671 exposé, clé de 4 octets retrouvée en 45 minutes, recommandations VPN, VLAN et pare-feu.</p>
-<p>CISA, avis <em>ICSA-23-236-01, KNX Protocol</em> (24 août 2023), <a href="https://www.cisa.gov/news-events/ics-advisories/icsa-23-236-01" class="uri">https://www.cisa.gov/news-events/ics-advisories/icsa-23-236-01</a> : CVE-2023-4346, gravité CVSS 7,5, CWE-645, autorisation de connexion Option 1, poser la clé BCU et la remettre au propriétaire.</p>
-<p>CISA, <em>Adds Two Known Exploited Vulnerabilities to Catalog</em> (15 juillet 2026), <a href="https://www.cisa.gov/news-events/alerts/2026/07/15/cisa-adds-two-known-exploited-vulnerabilities-catalog" class="uri">https://www.cisa.gov/news-events/alerts/2026/07/15/cisa-adds-two-known-exploited-vulnerabilities-catalog</a> : ajout de CVE-2023-4346 au catalogue des vulnérabilités activement exploitées, directive BOD 26-04.</p>
-<p>KONNEKTING, <em>Wie schnell ist der KNX Bus?</em> (27 avril 2017), <a href="https://www.konnekting.de/en/2017/04/27/wie-schnell-ist-der-knx-bus/" class="uri">https://www.konnekting.de/en/2017/04/27/wie-schnell-ist-der-knx-bus/</a> : temps de bit de 104 µs, caractère de 13 temps de bit, attente de 50 bits, durées des télégrammes.</p>
-<p>knx-blogger.de, <em>Die KNX Telegramm Interna</em>, Damian (10 mai 2022), <a href="https://knx-blogger.de/die-knx-telegramm-interna/" class="uri">https://knx-blogger.de/die-knx-telegramm-interna/</a> : champs du télégramme, silence de 15 bits, acquittement d’un caractère, une cinquantaine de télégrammes par seconde.</p>
-<p>Sources consultées le 13 septembre 2026.</p></div></details>
+<h2 id="cinq-cas-et-ce-qu-ils-ont-en-commun">Cinq cas, et ce qu’ils ont en commun</h2>
+
+<p>Un projet KNX n’est pas une somme d’appareils, c’est une somme d’adresses. Les cinq cas de cette page le montrent chacun par un bout : une attaque abuse de la manière dont on adresse les participants, une faille tient à un mécanisme de protection posé lors de l’adressage, une tour se tient grâce à une topologie choisie avant le premier téléversement, et une norme de sécurité chiffre ce que transportent les adresses de groupe.</p>
+
+<p>Le fil commun tient en une phrase, et elle est déjà celle de la séance d’adressage. <strong>L’adresse physique désigne un appareil, l’adresse de groupe désigne une fonction.</strong> Tout le reste, la programmation, le filtrage, la charge du bus, la sécurité, découle de cette séparation. Un projet bien construit est celui où elle est tenue partout.</p>
+
+<div class="cle">
+
+<p>On ne programme pas des liaisons entre appareils : on écrit dans chaque appareil sa table d’adresses de groupe, puis on laisse chacun décider seul. C’est ce qui rend un ajout gratuit, un filtrage possible, et une attaque logicielle dévastatrice quand l’installation est jointe à Internet sans protection.</p>
+
+</div>
+
+<p>Deux réglages de la ligne TP1 servent tout au long de la page, et ils sont ceux de la documentation KNX : <strong>30 V</strong> à l’alimentation, <strong>21 V</strong> au minimum chez le dernier participant, <strong>640 mA</strong> et <strong>64 participants</strong> par ligne, <strong>10 mA</strong> par participant. Les trois longueurs, 350, 700 et 1 000 m, ne sont pas refaites ici : elles se calculent dans la leçon d’atelier, et le cours de base de la KNX Association les justifie.</p>
+
+<h2 id="un-immeuble-tertiaire-rendu-inutilisable-allemagne-2021">Un immeuble tertiaire rendu inutilisable, Allemagne, 2021</h2>
+
+<p><em>En octobre 2021, un bureau d’ingénierie allemand demande de l’aide à la société de sécurité Limes Security : quelqu’un a pris la main sur la gestion technique d’un immeuble de bureaux par Internet. Selon le rapport de Limes Security, environ 75 % de plusieurs centaines de participants KNX ne fonctionnent plus, et l’exploitant fait tourner le bâtiment à la main, certains organes recâblés derrière des disjoncteurs.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>L’attaquant atteint l’installation par un port UDP laissé ouvert sur l’Internet public, selon Dark Reading.</li>
+
+<li>Il <strong>décharge</strong> les participants : il efface leur application et leur table d’adresses de groupe.</li>
+
+<li>Il pose sur chacun une <strong>clé BCU</strong>, le mot de passe qui interdit toute reprogrammation.</li>
+
+<li>Le bâtiment garde le courant, mais plus une seule fonction : c’est l’équivalent d’un disque effacé, puis verrouillé par un mot de passe.</li>
+
+</ol>
+
+</div>
+
+<p>Pour comprendre pourquoi l’attaque porte, il faut savoir ce que « décharger » suppose. Le logiciel de mise en service ne dialogue avec un participant que par son <strong>adresse physique</strong>, <code>zone.ligne.participant</code>. Cette adresse voyage en clair dans le champ source de chaque télégramme, et le mode de programmation la rend lisible à qui écoute le bus. Un attaquant présent sur le bus dispose donc de tout ce qu’il faut pour écrire dans chaque appareil.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Adresse physique, adresse de groupe : deux plans qui ne se recouvrent jamais</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’<strong>adresse physique</strong> est un numéro d’inventaire dans la topologie. Elle tient sur trois nombres, une zone de 0 à 15, une ligne de 0 à 15, un participant de 0 à 255, et le participant 0 d’une ligne est toujours son coupleur. Elle sert à programmer et à diagnostiquer, jamais à commander en fonctionnement normal.</p>
+
+<p>L’<strong>adresse de groupe</strong> est une fonction. En fonctionnement, un poussoir écrit une valeur sur une adresse de groupe, et tous les appareils dont la table la contient réagissent. La structure à trois niveaux offre 32 × 8 × 256 = <strong>65 536</strong> combinaisons, dont <code>0/0/0</code>, réservée.</p>
+
+<p>La conséquence, essentielle pour ce cas : <strong>l’attaque ne vise pas les fonctions, elle vise les appareils.</strong> Effacer les tables d’adresses de groupe suffit à ce que plus aucune fonction n’existe, sans qu’aucune adresse de groupe n’ait été touchée. On efface le carnet d’adresses, pas les correspondants.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">La clé BCU, et pourquoi elle se retourne contre l&#39;exploitant</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La clé BCU est une protection prévue par le standard : une fois posée sur un participant, elle interdit tout téléversement à qui ne la connaît pas. Elle tient sur <strong>quatre octets</strong>, huit caractères hexadécimaux, soit 2³² = <strong>4,29 milliards</strong> de valeurs.</p>
+
+<p>Cette taille est la bonne nouvelle et la mauvaise. Contre un attaquant qui voudrait <em>deviner</em> une clé posée par l’installateur, 4,29 milliards de valeurs sont une muraille. Mais quand l’attaquant <em>pose</em> la clé, c’est l’exploitant qui doit la deviner pour reprendre la main, et une recherche exhaustive sur le bus, à quelques dizaines de millisecondes par essai, demanderait des années.</p>
+
+<p>Limes Security n’a pas attendu : ses spécialistes ont lu la mémoire des processeurs, là où la protection en lecture manquait, pour en extraire la clé. Selon le récit de Dark Reading, l’attaquant ayant posé <strong>la même clé sur tous les participants</strong>, l’équipe l’a retrouvée en 45 minutes et l’installation a été rétablie ensuite en une demi-heure. Une clé différente par appareil aurait rendu la reprise bien plus longue.</p></div></details>
+
+</div><div class="piege">
+
+<p>Un télégramme ne s’adresse jamais à un appareil en fonctionnement, mais la <strong>programmation</strong>, elle, se fait par l’adresse physique. C’est cette voie que l’attaque emprunte. Séparer information et énergie, comme au cours 1, ne protège donc de rien ici : l’attaque reste dans la seule chaîne d’information, et c’est elle qui commande tout.</p>
+
+</div>
+
+<p><strong>En classe.</strong> Ce cas est la meilleure entrée en matière de la séance DOMA11 : il rend concret le fait qu’un participant garde tout dans sa propre mémoire, et qu’aucune centrale ne le sauve. On peut demander aux étudiants, avant tout cours, pourquoi couper le courant ne répare rien, et pourquoi rebrancher un appareil neuf à la place ne suffit pas non plus tant qu’on n’a pas le projet.</p>
+
+<h2 id="la-meme-faille-classee-activement-exploitee-cisa-juillet-2026">La même faille classée « activement exploitée », CISA, juillet 2026</h2>
+
+<p><em>Le 15 juillet 2026, l’agence américaine de cybersécurité, la CISA, ajoute la faille CVE-2023-4346 à son catalogue des vulnérabilités activement exploitées, et impose aux administrations fédérales de la traiter avant le 29 juillet au titre de la directive BOD 26-04. La faille avait fait l’objet de l’avis ICSA-23-236-01 dès le 24 août 2023, sur signalement de Felix Eberstaller, de Limes Security.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Un participant utilise l’autorisation de connexion « Option 1 » sans clé BCU posée.</li>
+
+<li>Un attaquant sur le réseau, ou avec un accès physique au bus, s’y connecte sans obstacle.</li>
+
+<li>Il pose une clé BCU que l’exploitant ne connaît pas.</li>
+
+<li>Le participant est verrouillé, et le plus souvent irrécupérable : le standard ne prévoit pas de remise à zéro.</li>
+
+</ol>
+
+</div>
+
+<p>La faille n’est pas un défaut de mise en œuvre d’un fabricant, mais une propriété du mécanisme lui-même, ce que traduit son classement : <strong>CWE-645</strong>, mécanisme de verrouillage trop restrictif, et une gravité <strong>CVSS de 7,5</strong>. Aucun correctif logiciel ne peut donc la fermer ; seule la manière de livrer les projets le peut.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que « Option 1 » veut dire, et pourquoi une clé posée ferme la porte</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un participant KNX accorde une autorisation de connexion à qui veut le programmer. Dans la variante la plus simple, l’« Option 1 », cette autorisation est ouverte tant qu’aucune clé BCU n’a été posée : n’importe quel outil peut se connecter et écrire, y compris poser une clé.</p>
+
+<p>La parade est donc d’une simplicité qui déroute : <strong>poser soi-même la clé BCU sur tous les participants d’un projet terminé.</strong> Une porte que l’installateur a fermée ne peut plus être fermée par un attaquant. La recommandation de la CISA tient en une ligne, et elle est la même que celle de la KNX Association : poser la clé, et la remettre au propriétaire dans la documentation du projet.</p>
+
+<p>L’ampleur du problème tient à ce qu’il reste ouvert. Selon les relevés d’Alpha Strike Labs cités par Limes Security, <strong>plus de 16 000</strong> installations potentiellement vulnérables étaient encore exposées sur Internet dans les pays germanophones en 2023, et les signalements se poursuivaient au-delà.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">La remise du projet au client, la pièce qu&#39;on oublie</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La faille de 2023 a fait entrer dans les recommandations officielles une exigence que les intégrateurs négligeaient : ce qu’on remet, et à qui. La CISA écrit de remettre la clé BCU au propriétaire du bâtiment dans la documentation du projet. La KNX Association renvoie à sa liste de contrôle de sécurité.</p>
+
+<p>Concrètement, la fin d’un projet KNX n’est pas le dernier téléversement, c’est la remise d’un ensemble : le fichier de projet du logiciel de mise en service, les clés, dont la clé BCU et, sur une installation sécurisée, le trousseau de clés, et un plan de récolement à jour. Sans le fichier de projet, une évolution ultérieure oblige à tout relire sur le bus ; sans les clés, elle est impossible ; sans le plan de récolement, elle est un dépannage à l’aveugle.</p>
+
+<p>C’est la même exigence que celle du cours 1 sur la GTB : un dispositif technique n’est livré que lorsque celui qui l’exploite sait s’en servir et le reprendre.</p></div></details>
+
+</div><p><strong>En classe.</strong> Ce cas prépare la remise du dossier d’installation de la fin de première année. On peut le poser en question ouverte : que faut-il remettre au client pour qu’il ne soit pas prisonnier de son installateur ? La réponse, le fichier de projet et les clés, est aussi ce qui protège l’installation d’une reprise sauvage. Le fil B de la semaine 12 fait vivre l’autre versant, le téléversement, où l’on voit que sans le projet on ne peut rien.</p>
+
+<h2 id="la-reponse-du-standard-knx-secure-normalise-2017-a-2019">La réponse du standard : KNX Secure normalisé, 2017 à 2019</h2>
+
+<p><em>Après une première vague d’attaques, la KNX Association a mis en avant son architecture KNX Secure, dont elle a annoncé la normalisation selon la norme EN 50090-4-3 le 24 octobre 2017, puis la reconnaissance internationale comme norme ISO 22510 en novembre 2019. Selon la KNX Association, KNX Secure existe depuis 2015 et repose sur un chiffrement AES 128 CCM conforme à la norme ISO 18033-3.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>KNX Data Secure</strong> chiffre et authentifie les données au niveau des objets de communication, sur n’importe quel média.</li>
+
+<li><strong>KNX IP Secure</strong> chiffre le trafic entre installations sur le réseau IP, en enveloppant les télégrammes KNXnet/IP.</li>
+
+<li>Le logiciel de mise en service devient l’administrateur : il exige un mot de passe de projet avant le premier participant sécurisé.</li>
+
+<li>Chaque participant sécurisé apporte sa clé d’usine, la FDSK, imprimée sur l’appareil et lisible par code QR.</li>
+
+</ol>
+
+</div>
+
+<p>Ce cas oblige à savoir ce que transportent réellement les adresses de groupe, car c’est cela que Data Secure protège. Une adresse de groupe ne relie pas des appareils : elle relie des <strong>objets de communication</strong>. Chaque objet porte une taille, un <strong>type de point de données</strong>, le DPT, et des <strong>drapeaux</strong> qui disent ce qu’il a le droit de faire.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>DPT</th>
+
+<th>Ce qu’il transporte</th>
+
+<th>Taille</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>1.001</td>
+
+<td>commutation : marche ou arrêt</td>
+
+<td>1 bit</td>
+
+</tr>
+
+<tr>
+
+<td>1.008</td>
+
+<td>montée ou descente</td>
+
+<td>1 bit</td>
+
+</tr>
+
+<tr>
+
+<td>3.007</td>
+
+<td>variation relative</td>
+
+<td>4 bits</td>
+
+</tr>
+
+<tr>
+
+<td>5.001</td>
+
+<td>pourcentage, de 0 à 100 %</td>
+
+<td>1 octet</td>
+
+</tr>
+
+<tr>
+
+<td>9.001</td>
+
+<td>température en degrés Celsius</td>
+
+<td>2 octets</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les cinq drapeaux, et la règle qui les fixe sans hésiter</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Chaque objet porte cinq drapeaux : <strong>C</strong> communication, <strong>L</strong> lecture, <strong>E</strong> écriture, <strong>T</strong> transmission, <strong>A</strong> actualisation. La logique se formule en une règle, et elle vaut à chaque fois : C partout ; T sur ce qui <strong>émet</strong> ; E sur ce qui <strong>reçoit</strong> ; L sur ce qu’un autre appareil doit pouvoir <strong>interroger</strong>, c’est-à-dire les états et les mesures.</p>
+
+<p>L’erreur qui révèle une incompréhension est d’inverser T et E. Un poussoir qui commande émet, donc porte T ; le pré-actionneur qui exécute reçoit, donc porte E ; et sur l’adresse d’<strong>état</strong>, les rôles s’inversent, car c’est le pré-actionneur qui émet ce qu’il sait de sa sortie.</p>
+
+<p>Une adresse de groupe ne réunit que des objets de <strong>même taille</strong>, et en pratique de même type. Associer un objet de 1 bit et un objet de 2 octets est refusé par le logiciel : le récepteur recevrait deux octets là où il en attend un seul bit.</p></div></details>
+
+</div><div class="piege">
+
+<p>La commande et l’état sont <strong>deux adresses de groupe distinctes</strong>. L’état d’une sortie peut changer sans passer par la commande : par un détecteur, par l’écran, par la GTB, par la façade du pré-actionneur, au retour du secteur. <strong>Seul le pré-actionneur connaît la position réelle de sa sortie</strong> : l’adresse d’état qu’il émet est l’unique source de vérité, et tout voyant qui affiche un état l’écoute, jamais l’adresse de commande.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce que la mise en service sécurisée change au projet</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le premier logiciel de mise en service à intégrer les deux mécanismes est ETS 5.5, en avril 2016. Depuis, une installation sécurisée impose un ordre : un mot de passe de projet d’abord, car le logiciel devient l’administrateur ; puis, pour chaque participant, la saisie de sa clé d’usine FDSK, par code QR ou à la main. Le logiciel remplace ensuite cette clé d’usine par une clé de travail que lui seul et l’appareil connaissent.</p>
+
+<p>L’adoption progresse : la KNX Association annonçait plus de mille participants sécurisés certifiés fin 2024, et une certification VDE « sécurité de l’information testée » obtenue en 2022. La cohabitation avec l’existant est prévue : un « proxy de sécurité » permet à des participants non sécurisés de dialoguer avec des participants sécurisés pendant une rénovation.</p>
+
+<p>Pour la classe, la limite est utile à connaître : Data Secure protège le contenu des télégrammes, il ne masque pas qui parle à qui. Et il ne dispense pas de la clé BCU ni du VPN : ce sont trois protections de nature différente.</p></div></details>
+
+</div><p><strong>En classe.</strong> Ce cas se traite en prolongement de DOMA11, une fois les objets et les drapeaux installés. La bonne question à poser : puisque Data Secure chiffre les objets de groupe, qu’est-ce qui reste à protéger par ailleurs ? La réponse, l’accès physique au bus et l’exposition IP, ramène aux deux premiers cas et donne la mesure de ce qu’une seule protection ne couvre jamais.</p>
+
+<h2 id="une-tour-de-34-etages-entierement-sur-knx-buenos-aires-2024">Une tour de 34 étages entièrement sur KNX, Buenos Aires, 2024</h2>
+
+<p><em>Lauréate d’un KNX Award en 2024, la tour TBM du quartier d’affaires de Buenos Aires, conçue par l’architecte César Pelli et achevée en 2022, est le siège d’une banque. Selon la fiche publiée par la KNX Association, elle réunit 1 987 participants KNX sur 130 m de haut et 52 000 m², avec plus de 6 800 luminaires DALI intérieurs et 415 luminaires extérieurs, le tout remonté dans une supervision qui compte plus de 30 000 points.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Répartir 1 987 participants sur des lignes, avec une réserve, sans jamais dépasser 64 par ligne.</li>
+
+<li>Grouper les lignes en zones, sans dépasser 15 lignes par zone.</li>
+
+<li>Relier les zones par une <strong>dorsale IP</strong>, seule capable de franchir 34 étages sans goulet d’étranglement.</li>
+
+<li>Régler les <strong>tables de filtrage</strong> des coupleurs pour que chaque ligne ne porte que son trafic.</li>
+
+</ol>
+
+</div>
+
+<p>Un tel bâtiment oblige à savoir ce qu’une ligne peut porter, et une ligne ne se mesure pas seulement en participants. Elle se mesure aussi en <strong>télégrammes par seconde</strong>, et ce nombre est petit. À 9 600 bit/s, un télégramme d’un bit occupe le bus environ 20 ms : une ligne n’en transporte qu’une cinquantaine par seconde.</p>
+
+<figure class="schema"><div class="dessin" data-schema="topologies-bus"></div><figcaption>Les topologies admises sur une ligne, ligne, étoile, arbre, et les trois longueurs à vérifier. La tour combine les trois formes selon les étages ; c’est la dorsale IP, et non le bus, qui relie les zones.</figcaption></figure>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La charge du bus, calculée sur un télégramme</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un caractère KNX vaut 8 bits de données, plus 3 bits de contrôle, plus 2 bits de pause, soit <strong>13 temps de bit</strong>. À 104 µs le temps de bit, un caractère dure 1,35 ms.</p>
+
+<p>Un télégramme d’un bit compte 9 caractères, soit 115 temps de bit une fois retirée la pause finale, à quoi s’ajoutent 50 temps de bit de bus libre avant l’émission, 15 de silence et 11 pour l’acquittement. Le cycle complet fait <strong>191 temps de bit</strong>, soit <strong>19,9 ms</strong>, d’où <strong>50 télégrammes par seconde</strong> au plus.</p>
+
+<p>Deux enseignements en découlent. D’abord, un télégramme qui transporte deux octets, une température, dure 22,6 ms, et un texte de quatorze octets 38,9 ms : plus la charge utile est grosse, moins il en passe. Ensuite, <strong>l’attente et l’acquittement pèsent 76 temps de bit sur 191, soit 40 %</strong> du cycle : le débit utile est bien inférieur aux 9 600 bit/s bruts.</p></div></details>
+
+</div><figure>
+
+<img src="img/COURS10-PROJET-KNX/c10-chronogramme-telegramme.png" alt="Le cycle complet d’un télégramme d’un bit, à l’échelle du temps : bus libre, neuf caractères, silence, acquittement." />
+
+<figcaption aria-hidden="true">Le cycle complet d’un télégramme d’un bit, à l’échelle du temps : bus libre, neuf caractères, silence, acquittement.</figcaption>
+
+</figure>
+
+<p>C’est ce plafond de cinquante télégrammes par seconde qui rend le <strong>filtrage</strong> vital. Chaque coupleur tient une <strong>table de filtrage</strong>, construite par le logiciel à partir des associations d’adresses de groupe, et ne laisse passer que les télégrammes destinés à l’autre côté. Sans lui, le trafic de toutes les lignes se retrouverait sur chacune, et la dorsale saturerait.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi une dorsale IP, et non une dorsale TP1, dans une tour</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une dorsale TP1 partage le même débit qu’une ligne. Si les 34 étages devaient échanger leur trafic et remonter 30 000 points de supervision par une dorsale TP1, celle-ci deviendrait le goulet d’étranglement du bâtiment : le rapport des débits entre l’Ethernet à 100 Mbit/s et le bus à 9 600 bit/s est d’environ <strong>10 000</strong>.</p>
+
+<p>Une dorsale IP supprime cette limite. Elle franchit les distances par l’Ethernet et la fibre, isole galvaniquement les étages, ce qui compte sur 130 m de hauteur, et raccorde directement la supervision. Les coupleurs de zone deviennent des routeurs IP, qui portent les mêmes adresses <code>zone.0.0</code> que les coupleurs qu’ils remplacent.</p>
+
+<p>La supervision de la tour repose d’ailleurs sur une passerelle vers le monde du génie climatique : les 30 000 points remontent dans un système qui parle aussi BACnet, exactement la passerelle point à point du cours 3.</p></div></details>
+
+</div><div class="cle">
+
+<p>Une ligne se dimensionne sur deux limites, et sur la plus contraignante des deux : le nombre de participants, 64 au plus, et le courant, 640 mA. Avec une réserve de 20 %, on s’arrête à <strong>51 participants</strong> par ligne. La tour, à 1 987 participants, demande donc au moins 39 lignes, et 39 lignes demandent au moins 3 zones, puisqu’une zone n’en porte que 15.</p>
+
+</div>
+
+<p><strong>En classe.</strong> Ce cas donne l’échelle qui manque aux maquettes d’atelier. On peut faire retrouver aux étudiants le nombre minimal de lignes et de zones de la tour à partir des 1 987 participants, comme au bloc 3 de DOMA5, puis leur faire estimer le nombre de télégrammes qu’un scénario général engendre. Le fil B de la semaine 12 crée un projet à cette échelle réduite, mais la logique est la même.</p>
+
+<h2 id="l-ordre-des-adresses-knx-association-et-deux-batiments-primes-2024">L’ordre des adresses, KNX Association et deux bâtiments primés, 2024</h2>
+
+<p><em>La KNX Association recommande une structure d’adresses de groupe à trois niveaux et promeut une organisation par fonction, exposée notamment dans un article de juillet 2021. Deux lauréats des KNX Awards 2024 en donnent l’échelle : l’usine Biohort en Autriche, avec 129 lignes DALI sur 80 000 m², et un programme de casernement du ministère de la défense britannique, conçu pour environ 16 500 lits sur dix ans, conforme à la classe A de l’automatisation et noté au-dessus de 95 % à l’indice de préparation au numérique.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Choisir la structure <strong>avant</strong> de programmer : la changer ensuite oblige à réadresser.</li>
+
+<li>Ranger le principal par fonction, le médian par local ou sous-fonction, le sous-groupe par point.</li>
+
+<li>Nommer chaque adresse en clair, et non par son seul numéro.</li>
+
+<li>Réserver des plages pour les fonctions à venir, plutôt que de combler au fur et à mesure.</li>
+
+</ol>
+
+</div>
+
+<p>Le piège de la structure à trois niveaux est le médian, borné à huit valeurs. Une convention qui range les locaux dans le médian ne tient pas au-delà de huit locaux, et un grand bâtiment en compte des dizaines. C’est le point que le logiciel ne signale pas et que le concepteur doit anticiper.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les trois structures, et celle que la KNX Association promeut</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Trois organisations coexistent. La structure <strong>par fonction</strong> met la fonction au principal, la sous-fonction au médian, le point au sous-groupe. La structure <strong>par bâtiment</strong> met la partie de bâtiment au principal, la fonction au médian. La structure <strong>par appareil</strong> part du type d’appareil. La KNX Association promeut la première, mais un intégrateur expérimenté le dira autrement : la meilleure structure est celle que l’on connaît assez pour la tenir sans faute.</p>
+
+<p>Quand les locaux dépassent huit, deux issues sont recevables, et ce sont celles de DOMA11 : <strong>inverser les rôles</strong>, en mettant le local au principal, qui en accepte 32, et la fonction au médian ; ou <strong>dédoubler les principaux</strong>, un pour l’éclairage des locaux 1 à 7, un autre pour les suivants.</p>
+
+<p>Ce qui ne se néglige jamais : nommer. Une adresse <code>1/2/5</code> ne dit rien ; « Salle 2, éclairage, commande » dit tout. Sur un projet de 30 000 points, le nom est ce qui rend le dépannage possible, et le logiciel de mise en service peut exporter la liste complète pour la documentation.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Où l&#39;organisation vit dans le logiciel : quatre vues du même projet</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le logiciel de mise en service range les mêmes participants sous plusieurs vues, et chacune répond à une question différente. La vue <strong>bâtiment</strong> répond à « où l’appareil est-il posé ? ». La vue <strong>topologie</strong> répond à « sur quelle ligne est-il branché ? », et c’est là que vivent les adresses physiques et les coupleurs. La vue <strong>adresses de groupe</strong> répond à « quelle fonction est commandée ? ». Une vue <strong>métiers</strong>, ou fonctions, réunit les appareils d’un même lot, le chauffage par exemple, quelle que soit leur place.</p>
+
+<p>Un appareil figure dans les vues bâtiment et topologie. Une adresse de groupe n’appartient à aucun appareil : elle est une fonction, et les appareils qui la partagent y sont associés. Tenir ces vues à jour est ce qui distingue un projet qu’un autre intégrateur peut reprendre d’un projet dont l’auteur est le seul détenteur.</p></div></details>
+
+</div><p><strong>En classe.</strong> L’organisation des adresses est le cœur du livrable de DOMA11, le tableau d’adressage que le fil B consomme. On peut confronter les étudiants à un bâtiment de plus de huit locaux pour leur faire buter sur la limite du médian, et leur faire choisir une convention, puis la défendre. Le point à leur faire dire : la convention se choisit une fois, et se change au prix d’un réadressage complet.</p>
+
+<h2 id="la-ou-la-methode-change">Là où la méthode change</h2>
+
+<p>Le raisonnement ordinaire d’un projet KNX suppose une ligne unique, isolée, dont le seul risque est de manquer de tension ou de participants. Deux situations le mettent en défaut, et elles changent la nature du problème.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th></th>
+
+<th>Une ligne isolée</th>
+
+<th>Un bâtiment communicant et exposé</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Le risque principal</td>
+
+<td>manquer de tension au bout</td>
+
+<td>être atteint par le réseau</td>
+
+</tr>
+
+<tr>
+
+<td>Ce qui dimensionne</td>
+
+<td>21 V, 640 mA, 64 participants</td>
+
+<td>la charge du bus et la sécurité</td>
+
+</tr>
+
+<tr>
+
+<td>Le rôle du coupleur</td>
+
+<td>séparer et alimenter</td>
+
+<td><strong>filtrer</strong> le trafic entre lignes</td>
+
+</tr>
+
+<tr>
+
+<td>Ce qui protège</td>
+
+<td>rien à protéger</td>
+
+<td>clé BCU, KNX Secure, VPN, isolement IP</td>
+
+</tr>
+
+<tr>
+
+<td>La fin du projet</td>
+
+<td>ça fonctionne</td>
+
+<td>le projet et les clés sont remis</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>Le filtrage n’est pas une protection de sécurité, et c’est le contresens à prévenir.</strong> Un coupleur limite le trafic pour tenir la charge du bus, il ne protège de personne : un attaquant sur le bus contourne le filtrage, qui n’a jamais été fait pour lui. Confondre les deux conduit à croire une installation sûre parce qu’elle est segmentée, alors que la segmentation ne fait que la rendre tenable en trafic.</p>
+
+<figure>
+
+<img src="img/COURS10-PROJET-KNX/c10-chaine-attaque.png" alt="Le chemin de l’attaque de 2021, maillon par maillon, et la parade recommandée à chacun : une seule en place suffisait à l’arrêter." />
+
+<figcaption aria-hidden="true">Le chemin de l’attaque de 2021, maillon par maillon, et la parade recommandée à chacun : une seule en place suffisait à l’arrêter.</figcaption>
+
+</figure>
+
+<p><strong>L’attaque logicielle inverse aussi la hiérarchie des dangers.</strong> Sur une installation isolée, le pire est une panne d’alimentation. Sur une installation jointe à Internet sans VPN, le pire est un tiers qui pose une clé BCU à distance, et aucun calcul de chute de tension ne le prévoit. La méthode change parce que le péril a changé de nature : il n’est plus physique, il est réseau.</p>
+
+<h2 id="le-calcul-retourne">Le calcul retourné</h2>
+
+<p>La séance vérifie qu’une topologie donnée fonctionne ; le bureau d’études fait l’inverse : il <strong>choisit</strong> le nombre de lignes et de zones à partir d’un nombre de participants et d’une réserve, puis vérifie que le bus tiendra une fonction générale.</p>
+
+<p>On fixe la réserve à 20 %, soit <strong>51 participants utiles</strong> par ligne, et l’on se donne un immeuble de bureaux de <strong>900 participants</strong>, sur 6 niveaux de 150.</p>
+
+<div class="formule">
+
+<p><strong>N_lignes = ⌈P / 51⌉ puis N_zones = ⌈N_lignes / 15⌉</strong></p>
+
+<ul>
+
+<li><strong>P</strong><span>nombre de participants du bâtiment</span></li>
+
+<li><strong>51</strong><span>participants utiles par ligne, réserve de 20 % sur 64</span></li>
+
+<li><strong>15</strong><span>lignes au plus par zone</span></li>
+
+<li><strong>⌈ ⌉</strong><span>arrondi à l’entier supérieur, toujours</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>Le nombre de lignes s’arrondit vers le haut : 150 participants sur un niveau, c’est 3 lignes, jamais 2.</p>
+
+</blockquote>
+
+</div>
+
+<p>Pour 900 participants, il faut ⌈900 / 51⌉ = <strong>18 lignes</strong>, donc ⌈18 / 15⌉ = <strong>2 zones</strong>, reliées par une dorsale IP. Le découpage par niveau est plus lisible que le découpage au plus juste : 3 lignes de 50 par niveau donnent aussi 18 lignes, et chaque ligne garde 14 participants de réserve.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La charge du bus d&#39;une fonction centrale, et l&#39;erreur qui la fait exploser</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>On veut un scénario « tout éteindre le soir » qui agit sur les 24 groupes d’éclairage d’un niveau. Deux manières de l’écrire, et elles n’ont pas le même coût.</p>
+
+<p>La mauvaise : un télégramme de commande par groupe, soit 24 télégrammes. À 19,9 ms l’unité, la scène met <strong>0,48 s</strong> à partir, et le retour d’état de 24 sorties en ajoute autant.</p>
+
+<p>La bonne : <strong>une seule adresse de groupe</strong> écoutée par les 24 sorties. La commande part en un télégramme, 19,9 ms. Ne restent que les 24 états, que les pré-actionneurs renvoient pour les voyants et la supervision. Le coût d’une fonction centrale n’est donc pas dans la commande, il est dans <strong>le retour d’état</strong> : c’est lui qu’on dimensionne, et c’est pourquoi on réfléchit à qui a vraiment besoin de l’état.</p></div></details>
+
+</div><p>La règle qui dispense de tout recalculer tient en une phrase. <strong>Une ligne porte au plus cinquante télégrammes par seconde</strong> ; une fonction qui en engendre davantage doit être répartie, retardée, ou allégée de ses retours d’état inutiles. C’est le même arbitrage partout : ce qui doit être vu en temps réel, et ce qui peut attendre.</p>
+
+<h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : la charge de quarante sondes</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une ligne porte 40 sondes de température, chacune émettant sa valeur, un télégramme de 2 octets, toutes les 2 minutes. Quelle part de la capacité de la ligne cela représente-t-il ? Et si la supervision interroge chaque sonde toutes les 5 secondes ?</p>
+
+<p><strong>Résolution.</strong> Un télégramme de 2 octets dure 22,6 ms. En émission spontanée : 40 sondes × 2 par minute = 80 télégrammes par minute, soit 1,33 par seconde, pour un plafond de 50. La charge vaut 1,33 × 22,6 ms = <strong>3 %</strong>. En interrogation toutes les 5 secondes : 8 requêtes par seconde, chacune suivie d’une réponse, soit 8 × (19,9 + 22,6) ms = <strong>34 %</strong>.</p>
+
+<p><strong>Vérification de plausibilité.</strong> L’émission spontanée est négligeable, la scrutation rapprochée mange le tiers de la ligne : c’est l’ordre de grandeur attendu, et l’argument pour préférer l’émission sur changement à la scrutation.</p>
+
+<p><strong>Ce que l’étudiant doit rédiger.</strong> La durée d’un télégramme de 2 octets et son origine, puis les deux charges avec leur unité. Une charge sans le rappel du plafond de 50 télégrammes par seconde ne veut rien dire.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : un hôtel</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un hôtel compte 120 chambres, à 6 participants chacune, plus 60 participants de parties communes. Combien de lignes et de zones, à 51 participants utiles par ligne ? La structure d’adresses à trois niveaux, avec le local au médian, suffit-elle ?</p>
+
+<p><strong>Résolution.</strong> 120 × 6 + 60 = <strong>780 participants</strong>. Lignes : ⌈780 / 51⌉ = <strong>16 lignes</strong>. Zones : ⌈16 / 15⌉ = <strong>2 zones</strong>. Pour les adresses : 120 chambres dépassent de loin les 8 valeurs du médian, donc <strong>la convention par local au médian ne tient pas</strong>.</p>
+
+<p><strong>Choisir la structure avant de conclure.</strong> On met le local au principal, qui en accepte 32, insuffisant encore pour 120 chambres : il faut dédoubler, un principal par étage par exemple. Par étage de 20 chambres, on retombe sur 20 × 12 = 240 adresses, sous les 256 du sous-groupe.</p>
+
+<p><strong>L’erreur attendue</strong> est de valider la structure d’origine parce qu’elle « marche » sur une chambre. Elle ne se révèle fausse qu’à la treizième chambre, et la changer alors coûte un réadressage complet.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : ajouter une fonction générale à une ligne pleine</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une ligne porte déjà 60 participants, à 10 mA. On veut y ajouter un bouton « tout éteindre » qui agit sur les 30 sorties d’éclairage de l’étage, et un écran qui affiche l’état de ces 30 sorties. Est-ce possible, et à quel coût pour le bus ?</p>
+
+<p><strong>Choisir la méthode avant de calculer.</strong> Deux limites, la ligne et le bus. La ligne : 60 participants, plus 2 pour le bouton et l’écran, soit 62, sous les 64 ; 620 mA, sous les 640 : <strong>cela passe, mais la réserve est nulle</strong>. Le bus : la commande générale est un télégramme, les 30 retours d’état en sont 30.</p>
+
+<p><strong>Résolution.</strong> L’appui envoie 1 télégramme sur une adresse générale écoutée par les 30 sorties, 19,9 ms. Les 30 pré-actionneurs renvoient leur état pour l’écran, soit 30 × 19,9 ms = <strong>0,6 s</strong> de bus, à condition qu’ils soient sur la même ligne. La fonction est donc possible et brève, mais elle laisse la ligne à sa limite de participants.</p>
+
+<p><strong>Ce que l’étudiant doit rédiger.</strong> Les deux vérifications de ligne avec leur marge, puis le coût en télégrammes en distinguant la commande unique des retours d’état. La conclusion tient en une phrase : la fonction passe, mais la ligne est saturée en participants et devra être scindée à la prochaine extension.</p></div></details>
+
+</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 50%" />
+
+<col style="width: 50%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Ordre de grandeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Tension du bus KNX TP1</td>
+
+<td><strong>30 V</strong> continu, TBTS</td>
+
+</tr>
+
+<tr>
+
+<td>Tension minimale chez le dernier participant</td>
+
+<td><strong>21 V</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Courant d’une alimentation de ligne</td>
+
+<td><strong>640 mA</strong> pour 64 participants</td>
+
+</tr>
+
+<tr>
+
+<td>Consommation retenue par participant</td>
+
+<td><strong>10 mA</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Participants par ligne, sans répéteur</td>
+
+<td><strong>64</strong> au plus</td>
+
+</tr>
+
+<tr>
+
+<td>Participants utiles avec réserve de 20 %</td>
+
+<td><strong>51</strong> par ligne</td>
+
+</tr>
+
+<tr>
+
+<td>Participants sans répéteur, installation entière</td>
+
+<td>15 × 15 × 64 = <strong>14 400</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Adresses de groupe à trois niveaux</td>
+
+<td>32 × 8 × 256 = <strong>65 536</strong>, dont <code>0/0/0</code> réservée</td>
+
+</tr>
+
+<tr>
+
+<td>Débit d’une ligne TP1</td>
+
+<td><strong>9 600 bit/s</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Durée d’un temps de bit</td>
+
+<td><strong>104 µs</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Durée d’un télégramme d’un bit, cycle complet</td>
+
+<td><strong>19,9 ms</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Télégrammes par seconde sur une ligne</td>
+
+<td><strong>50</strong> au plus</td>
+
+</tr>
+
+<tr>
+
+<td>Part d’attente et d’acquittement dans un cycle</td>
+
+<td><strong>40 %</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Longueur d’une clé BCU</td>
+
+<td><strong>4 octets</strong>, soit 4,29 milliards de valeurs</td>
+
+</tr>
+
+<tr>
+
+<td>Rapport de débit Ethernet / bus TP1</td>
+
+<td>environ <strong>10 000</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Gravité CVSS de la faille CVE-2023-4346</td>
+
+<td><strong>7,5</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Deux réflexes trient l’essentiel. <strong>Une ligne ne dépasse ni 64 participants ni une cinquantaine de télégrammes par seconde</strong> : au-delà, on scinde. <strong>Une clé BCU se pose, elle ne se devine pas</strong> : c’est la seule protection qui vaille contre un accès local, et elle se remet au client.</p>
+
+</div>
+
+<h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Si KNX n&#39;a pas de centrale, comment une attaque peut-elle tout arrêter ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Justement parce qu’il n’y en a pas. Comme chaque participant garde sa propre programmation, effacer les participants efface l’installation entière : il n’y a pas de centrale à restaurer, mais des centaines de mémoires à reprogrammer, une à une, et chacune verrouillée par la clé de l’attaquant.</p>
+
+<p>La réponse chiffrée qui porte : dans le cas de 2021, environ 75 % de plusieurs centaines de participants étaient à reprendre. L’absence de centrale est une force en fonctionnement, la panne d’un poste de supervision n’arrête rien, et une faiblesse en cas d’attaque, car il n’y a aucun point unique à rétablir.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Un attaquant peut-il vraiment deviner une clé BCU ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Non, et c’est le sens de sa taille. Quatre octets font 4,29 milliards de combinaisons ; une recherche exhaustive sur le bus, à quelques dizaines de millisecondes par essai, demanderait des années. C’est pourquoi une clé BCU posée par l’installateur protège réellement.</p>
+
+<p>Le paradoxe est que cette même solidité se retourne contre l’exploitant quand c’est l’attaquant qui pose la clé. La reprise a alors exigé, en 2021, de lire la mémoire des processeurs pour en extraire la clé, et elle n’a réussi que parce que l’attaquant avait posé la même clé partout et que les processeurs ne protégeaient pas leur mémoire en lecture.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi ne pas mettre toute une tour sur une seule dorsale TP1 ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que le débit d’une dorsale TP1 est celui d’une ligne, une cinquantaine de télégrammes par seconde. Faire remonter le trafic inter-étages et 30 000 points de supervision par ce goulet est impossible : le rapport de débit avec l’Ethernet est d’environ 10 000.</p>
+
+<p>Une dorsale IP lève la contrainte de débit et de distance, et isole galvaniquement les étages, ce qui compte sur 130 m. Le prix à payer est que la dorsale IP est, elle, exposée au monde réseau : c’est là que KNX IP Secure et le VPN reprennent tout leur sens, alors qu’ils étaient sans objet sur une ligne TP1 isolée.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Combien de télégrammes une belle scène engendre-t-elle vraiment ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Plus qu’on ne croit, si on l’écrit mal. Une scène « tout éteindre » sur 24 groupes écrite en 24 commandes met près d’une demi-seconde à partir, et autant en retours d’état. Écrite en une seule adresse de groupe, la commande part en 20 ms ; ne restent que les retours d’état.</p>
+
+<p>Le bon réflexe, pour la classe : une fonction centrale s’écrit avec <strong>une</strong> adresse de groupe écoutée par tous, jamais un télégramme par appareil. C’est exactement la raison pour laquelle KNX sépare la fonction de l’appareil, et un projet qui l’ignore fait ramer un bus qui n’a pourtant rien de saturé.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Le filtrage des coupleurs protège-t-il l&#39;installation ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Non, et c’est un contresens fréquent. Un coupleur filtre pour <strong>tenir la charge du bus</strong> : il ne laisse passer d’une ligne à l’autre que les télégrammes destinés à l’autre côté, d’après sa table de filtrage. Un attaquant présent sur le bus n’est pas gêné par cette table, qui n’a jamais été conçue contre lui.</p>
+
+<p>La protection contre l’accès local, c’est la clé BCU et KNX Data Secure ; contre l’accès réseau, c’est l’isolement IP, le VPN et KNX IP Secure. Le filtrage est une affaire de trafic, la sécurité une affaire d’accès : les confondre fait croire sûre une installation qui n’est que segmentée.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Les sources de cette page</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>KNX Association, <em>KNX IP Secure becomes ISO 22510</em> (novembre 2019), <a href="https://www.knx.org/news/new-iso-standard-knx-ip-secure-becomes-worlds-first-vendor-independent-security-standard" class="uri">https://www.knx.org/news/new-iso-standard-knx-ip-secure-becomes-worlds-first-vendor-independent-security-standard</a> : KNX Secure créé en 2015, chiffrement AES 128 CCM conforme à ISO 18033-3, Data Secure et IP Secure.</p>
+
+<p>KNX Association, <em>Maximum data protection for smart buildings</em> (1er février 2018), <a href="https://www.installation-international.com/ise-daily/knx-maximum-data-protection-smart-buildings" class="uri">https://www.installation-international.com/ise-daily/knx-maximum-data-protection-smart-buildings</a> : normalisation EN 50090-4-3 annoncée le 24 octobre 2017, principe des deux mécanismes.</p>
+
+<p>KNX Association, <em>Security: configuring KNX Secure systems in ETS</em>, Mark Warburton (22 novembre 2021), <a href="https://www.knx.org/news/security-configuring-knx-secure-systems-ets" class="uri">https://www.knx.org/news/security-configuring-knx-secure-systems-ets</a> : mot de passe de projet, clé d’usine FDSK, cohabitation avec des participants non sécurisés.</p>
+
+<p>KNX Association, <em>What makes KNX a secure solution</em> (20 octobre 2024), <a href="https://www.knx.org/news/what-makes-knx-secure-solution-your-smart-building" class="uri">https://www.knx.org/news/what-makes-knx-secure-solution-your-smart-building</a> : plus de mille participants sécurisés certifiés, certification VDE de 2022, liste de contrôle, VPN et VLAN.</p>
+
+<p>KNX Association, <em>Security: the pitfalls of being hacked</em>, Andy Ellis et Julio Díaz García (21 janvier 2022), <a href="https://www.knx.org/news/security-pitfalls-being-hacked-and-how-avoid-them-using-basic-it-skills" class="uri">https://www.knx.org/news/security-pitfalls-being-hacked-and-how-avoid-them-using-basic-it-skills</a> : port 3671 comme « tapis rouge », clé BCU et ses 4,29 milliards de valeurs.</p>
+
+<p>KNX Association, <em>Best Practice: how to beat the hackers</em> (22 novembre 2021), <a href="https://www.knx.org/news/best-practice-how-beat-hackers" class="uri">https://www.knx.org/news/best-practice-how-beat-hackers</a> : port 3671 et adresse multicast, VPN, Data Secure et IP Secure, changement des ports par défaut.</p>
+
+<p>KNX Association, <em>Tricks of the Trade: best practices for KNX group address structures</em>, Michael Bendtsen (28 juillet 2021), <a href="https://www.knx.org/news/tricks-trade-best-practices-knx-group-address-structures" class="uri">https://www.knx.org/news/tricks-trade-best-practices-knx-group-address-structures</a> : les trois structures d’adresses, la structure par fonction promue par l’organisme.</p>
+
+<p>KNX Association, <em>ETS6 Tip and Tricks: KNX topology</em>, Michael Critchfield (14 octobre 2024), <a href="https://www.knx.org/news/ets6-tip-and-tricks-knx-topology" class="uri">https://www.knx.org/news/ets6-tip-and-tricks-knx-topology</a> : coupleurs, coupleurs de segment, tables de filtrage, proxy de sécurité.</p>
+
+<p>KNX Association, <em>KNX Awards 2024</em> (26 septembre 2024), <a href="https://www.knx.org/news/knx-awards-2024-15th-edition-spotlights-best-smart-home-and-building-automation" class="uri">https://www.knx.org/news/knx-awards-2024-15th-edition-spotlights-best-smart-home-and-building-automation</a> : la tour TBM, l’usine Biohort et le programme du ministère de la défense britannique, avec leurs chiffres.</p>
+
+<p>KNX Projects, <em>TBM Office Building</em>, fiche PRJ004045, <a href="https://projects.knx.org/en/detail/PRJ004045" class="uri">https://projects.knx.org/en/detail/PRJ004045</a> : 1 987 participants, 6 800 luminaires DALI intérieurs et 415 extérieurs, César Pelli, supervision SCADA, intégrateur THI s.a.i.c.</p>
+
+<p>Limes Security, <em>KNXlock — an attack campaign against KNX-based building automation systems</em>, Markus Maier (25 août 2023), <a href="https://limessecurity.com/en/knxlock/" class="uri">https://limessecurity.com/en/knxlock/</a> : le déroulé de l’attaque d’octobre 2021, 75 % de plusieurs centaines de participants, exploitation manuelle du bâtiment, plus de 16 000 systèmes exposés dans les pays germanophones.</p>
+
+<p>Dark Reading, <em>Lights Out: Cyberattacks Shut Down Building Automation Systems</em> (décembre 2021), reprise sur <a href="https://seclists.org/dataloss/2021/q4/161" class="uri">https://seclists.org/dataloss/2021/q4/161</a> : port UDP 3671 exposé, clé de 4 octets retrouvée en 45 minutes, recommandations VPN, VLAN et pare-feu.</p>
+
+<p>CISA, avis <em>ICSA-23-236-01, KNX Protocol</em> (24 août 2023), <a href="https://www.cisa.gov/news-events/ics-advisories/icsa-23-236-01" class="uri">https://www.cisa.gov/news-events/ics-advisories/icsa-23-236-01</a> : CVE-2023-4346, gravité CVSS 7,5, CWE-645, autorisation de connexion Option 1, poser la clé BCU et la remettre au propriétaire.</p>
+
+<p>CISA, <em>Adds Two Known Exploited Vulnerabilities to Catalog</em> (15 juillet 2026), <a href="https://www.cisa.gov/news-events/alerts/2026/07/15/cisa-adds-two-known-exploited-vulnerabilities-catalog" class="uri">https://www.cisa.gov/news-events/alerts/2026/07/15/cisa-adds-two-known-exploited-vulnerabilities-catalog</a> : ajout de CVE-2023-4346 au catalogue des vulnérabilités activement exploitées, directive BOD 26-04.</p>
+
+<p>KONNEKTING, <em>Wie schnell ist der KNX Bus?</em> (27 avril 2017), <a href="https://www.konnekting.de/en/2017/04/27/wie-schnell-ist-der-knx-bus/" class="uri">https://www.konnekting.de/en/2017/04/27/wie-schnell-ist-der-knx-bus/</a> : temps de bit de 104 µs, caractère de 13 temps de bit, attente de 50 bits, durées des télégrammes.</p>
+
+<p>knx-blogger.de, <em>Die KNX Telegramm Interna</em>, Damian (10 mai 2022), <a href="https://knx-blogger.de/die-knx-telegramm-interna/" class="uri">https://knx-blogger.de/die-knx-telegramm-interna/</a> : champs du télégramme, silence de 15 bits, acquittement d’un caractère, une cinquantaine de télégrammes par seconde.</p>
+
+<p>Sources consultées le 13 septembre 2026.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="COURS9-MOTEURS-VOLETS-VARIATION.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Domotique, cours 9 — moteurs, volets, variation</span></a><a class="ap" href="PROF1-COURANT-FAIBLE.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Prof 1 — le courant faible</span></a></div></nav>
 <p class="pied">Page de formation, réservée au professeur. Elle s'appuie sur des cas réels documentés ; les sources sont données en fin de page. Les chiffres de topologie et de temps sont ceux de la documentation KNX, recalculés à chaque emploi.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

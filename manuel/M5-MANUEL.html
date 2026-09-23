@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Manuel · chapitre 5</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="manuel/M5-MANUEL">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M4-MANUEL.html" rel="prev" title="Manuel · chapitre 4" aria-label="Manuel · chapitre 4">&lsaquo;</a><a class="fleche" href="M6-MANUEL.html" rel="next" title="Manuel · chapitre 6" aria-label="Manuel · chapitre 6">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M5-MANUEL">Marquer comme lu</button></div>
@@ -23,368 +31,721 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M1-MANUEL.html">Le bilan et le besoin</a></b><span class="ou">Manuel · chapitre 1</span><span class="car">le générateur se dimensionne sur les déperditions du chapitre 1, et la section 5.6 le fait.</span></li><li><b>L'équation de combustion du méthane</b><span class="car">brûler c'est fabriquer de l'eau, et la section 5.1 la compte en litres ; il faut savoir lire CH₄ + 2 O₂ → CO₂ + 2 H₂O.</span></li><li><b>Les pourcentages et les points</b><span class="car">PCI, PCS, et un rendement de 109 % qui n'est pas une erreur.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#5-1-bruler-c-est-fabriquer-de-l-eau">5.1 Brûler, c’est fabriquer de l’eau</a><a href="#5-2-pci-et-pcs">5.2 PCI et PCS</a><a href="#5-3-le-rendement-et-les-109">5.3 Le rendement, et les 109 %</a><a href="#5-4-ou-passe-ce-qui-est-perdu">5.4 Où passe ce qui est perdu</a><a href="#5-5-condenser-ou-ne-pas-condenser">5.5 Condenser, ou ne pas condenser</a><a href="#5-6-le-calcul-retourne-dimensionner-un-generateur">5.6 Le calcul retourné : dimensionner un générateur</a><a href="#5-7-les-autres-facons-de-produire">5.7 Les autres façons de produire</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
-<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
-<div class="etapes">
-<ol type="1">
-<li><strong>Distinguer</strong> PCI et PCS, et dire d’où vient l’écart de 11 %.</li>
-<li><strong>Calculer</strong> les pertes par les fumées à partir d’une analyse de combustion.</li>
-<li><strong>Expliquer</strong> un rendement supérieur à 100 % sans invoquer aucun miracle.</li>
-<li><strong>Dire</strong> à quelle condition une chaudière à condensation condense vraiment.</li>
-<li><strong>Dimensionner</strong> un générateur, et justifier une cascade plutôt qu’un appareil unique.</li>
-</ol>
-</div>
-<p><strong>B1-1 est au niveau 3.</strong> C’est le savoir le plus chargé de la partie production, et il tombe à l’épreuve sous une forme presque constante : une analyse de combustion à exploiter, puis une justification à rédiger.</p>
-<h2 id="5-1-bruler-c-est-fabriquer-de-l-eau">5.1 Brûler, c’est fabriquer de l’eau</h2>
-<p>Allumez une gazinière et posez au-dessus une assiette froide. Elle se couvre de buée. Cette eau ne vient de nulle part ailleurs que <strong>de la flamme</strong> : la combustion du méthane produit du gaz carbonique <strong>et de l’eau</strong>.</p>
-<div class="formule">
-<p><strong>CH₄ + 2 O₂ → CO₂ + 2 H₂O</strong></p>
-<p>Un kilogramme de méthane produit <strong>2,25 kg d’eau</strong>, sous forme de vapeur.</p>
-</div>
-<p>Cette vapeur emporte avec elle sa <strong>chaleur latente</strong>. Tant qu’elle sort par la cheminée, cette chaleur est perdue. Toute la technique de la condensation consiste à la récupérer, et rien d’autre.</p>
-<div class="cle">
-<p>Retenez la chaîne : <strong>on brûle, donc on fabrique de la vapeur, donc on a le choix de la laisser partir ou de la condenser.</strong> Les deux pouvoirs calorifiques du 5.2 ne sont que la mise en nombres de ce choix.</p>
-</div>
-<h2 id="5-2-pci-et-pcs">5.2 PCI et PCS</h2>
-<div class="formule">
-<p><strong>PCI.</strong> Pouvoir calorifique <strong>inférieur</strong> : la chaleur dégagée, <strong>l’eau restant vapeur</strong>.</p>
-<p><strong>PCS.</strong> Pouvoir calorifique <strong>supérieur</strong> : la même chaleur, <strong>l’eau étant condensée</strong>.</p>
-<p><strong>PCS − PCI = chaleur latente de l’eau formée.</strong></p>
-</div>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Combustible</th>
-<th style="text-align: right;">PCI</th>
-<th style="text-align: right;">PCS</th>
-<th style="text-align: right;">PCS/PCI</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Gaz naturel</td>
-<td style="text-align: right;"><strong>9,97 kWh/m³</strong></td>
-<td style="text-align: right;">11,06 kWh/m³</td>
-<td style="text-align: right;"><strong>1,11</strong></td>
-</tr>
-<tr>
-<td>Propane</td>
-<td style="text-align: right;">12,8 kWh/kg</td>
-<td style="text-align: right;">13,9 kWh/kg</td>
-<td style="text-align: right;">1,09</td>
-</tr>
-<tr>
-<td>Fioul domestique</td>
-<td style="text-align: right;">11,9 kWh/kg</td>
-<td style="text-align: right;">12,7 kWh/kg</td>
-<td style="text-align: right;">1,07</td>
-</tr>
-<tr>
-<td>Granulés de bois</td>
-<td style="text-align: right;">4,8 kWh/kg</td>
-<td style="text-align: right;">5,2 kWh/kg</td>
-<td style="text-align: right;">1,08</td>
-</tr>
-<tr>
-<td>Bûches, 20 % d’humidité</td>
-<td style="text-align: right;">3,9 kWh/kg</td>
-<td style="text-align: right;">—</td>
-<td style="text-align: right;">—</td>
-</tr>
-</tbody>
-</table></div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : d&#39;où sortent exactement les 11 %</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Prenons <strong>1 kg de méthane</strong>, dont le PCI vaut 50 000 kJ/kg.</p>
-<p><strong>L’eau formée.</strong> L’équation CH₄ + 2 O₂ → CO₂ + 2 H₂O donne, en masses molaires : 16 g de méthane produisent 2 × 18 = 36 g d’eau. Donc <strong>1 kg de méthane produit 2,25 kg d’eau</strong>.</p>
-<p><strong>La chaleur latente récupérable.</strong> À la température des fumées, la chaleur latente de condensation de l’eau vaut environ <strong>2 450 kJ/kg</strong>. Pour 2,25 kg :</p>
-<p>2,25 × 2 450 = <strong>5 512 kJ</strong></p>
-<p><strong>L’écart relatif.</strong> 5 512 / 50 000 = <strong>11,0 %</strong>.</p>
-<p>C’est très exactement le rapport PCS/PCI du tableau, et il n’y a rien d’autre dedans.</p>
-<p><strong>Les trois hypothèses.</strong></p>
-<ol type="1">
-<li><strong>Combustion complète.</strong> Tout le carbone finit en CO₂, rien en CO ni en imbrûlés. Un brûleur mal réglé produit du CO, et le calcul surestime alors la chaleur disponible.</li>
-<li><strong>Condensation totale.</strong> On suppose que <strong>toute</strong> la vapeur se condense. En pratique une chaudière à condensation n’en récupère que la moitié à deux tiers, selon la température de retour : le gain réel est de 5 à 8 %, pas 11 %.</li>
-<li><strong>Le combustible est du méthane pur.</strong> Le gaz de réseau contient aussi de l’éthane et de l’azote, ce qui déplace le rapport de quelques dixièmes.</li>
-</ol>
-<p><strong>Pourquoi le fioul gagne moins.</strong> Sa molécule est plus riche en carbone et plus pauvre en hydrogène : elle forme moins d’eau par unité d’énergie. D’où PCS/PCI = 1,07 seulement, et un intérêt bien plus faible de la condensation. Le gain de la condensation est <strong>une propriété du combustible</strong>, pas de la chaudière.</p></div></details>
-</div><h2 id="5-3-le-rendement-et-les-109">5.3 Le rendement, et les 109 %</h2>
-<div class="formule">
-<p><strong>η = puissance utile / puissance consommée</strong></p>
-<p>La puissance consommée s’exprime <strong>au choix</strong> sur le PCI ou sur le PCS. <strong>Il faut dire lequel</strong>, sinon le nombre ne veut rien dire.</p>
-</div>
-<div class="cle">
-<p>Une chaudière à condensation annonce <strong>109 % sur PCI</strong>. Ce n’est pas une tricherie : elle récupère une chaleur que le PCI, par définition, ne comptait pas. Rapporté au <strong>PCS</strong>, le même appareil affiche <strong>98 %</strong>, et l’on n’a jamais dépassé 100 %.</p>
-</div>
-<div class="piege">
-<p>En France, les catalogues donnent le rendement <strong>sur PCI</strong> et les factures de gaz comptent en <strong>kWh PCS</strong>. Comparer directement un rendement de catalogue à une facture introduit une erreur de 11 %. C’est une question classique d’entretien d’embauche, et elle tombe aussi à l’épreuve.</p>
-</div>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Générateur</th>
-<th style="text-align: right;">Rendement sur PCI</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Chaudière fonte ancienne, brûleur atmosphérique</td>
-<td style="text-align: right;">70 à 80 %</td>
-</tr>
-<tr>
-<td>Chaudière standard récente</td>
-<td style="text-align: right;">88 à 92 %</td>
-</tr>
-<tr>
-<td>Chaudière basse température</td>
-<td style="text-align: right;">92 à 95 %</td>
-</tr>
-<tr>
-<td><strong>Chaudière à condensation, retour à 30 °C</strong></td>
-<td style="text-align: right;"><strong>105 à 109 %</strong></td>
-</tr>
-<tr>
-<td>La même, retour à 60 °C</td>
-<td style="text-align: right;">96 à 98 %</td>
-</tr>
-<tr>
-<td>Chaudière granulés</td>
-<td style="text-align: right;">88 à 94 %</td>
-</tr>
-<tr>
-<td>Convecteur électrique</td>
-<td style="text-align: right;">100 %, par construction</td>
-</tr>
-</tbody>
-</table></div>
-<h2 id="5-4-ou-passe-ce-qui-est-perdu">5.4 Où passe ce qui est perdu</h2>
-<figure class="schema"><div class="dessin" data-schema="pertes-chaudiere"></div><figcaption>Cent unités de combustible entrent ; ce qui n’arrive pas à l’eau part par la cheminée, par les parois, ou ne brûle pas.</figcaption></figure>
-<p>Trois pertes, très inégales :</p>
-<p><strong>Les fumées</strong>, 5 à 15 %. Elles sortent chaudes, et elles emportent la vapeur d’eau. C’est la perte principale, et <strong>la seule qui se mesure facilement</strong>.</p>
-<p><strong>Les parois</strong>, 0,5 à 3 %. Le corps de chauffe rayonne dans le local technique. Sur une chaudière ancienne mal isolée, cela monte à 5 %.</p>
-<p><strong>Les imbrûlés</strong>, moins de 0,5 % sur une installation réglée. Du CO, des suies : un réglage à refaire, pas une fatalité.</p>
-<div class="formule">
-<p><strong>Formule de Siegert : qA = (θ fumées − θ air) × ( A₂ / CO₂ + B )</strong></p>
-<ul>
-<li><strong>qA</strong><span>: pertes par les fumées, en % du PCI</span></li>
-<li><strong>CO₂</strong><span>: teneur des fumées, en %, lue à l’analyseur</span></li>
-<li>Gaz naturel : <strong>A₂ = 0,66 · B = 0,009</strong> · Fioul : A₂ = 0,68 et B = 0,007</li>
-</ul>
-</div>
-<h3 id="exemple-résolu-1.-lire-une-analyse-de-combustion">Exemple résolu 1. Lire une analyse de combustion</h3>
-<p>Un analyseur donne, sur une chaudière gaz : <strong>fumées 180 °C</strong>, <strong>air 20 °C</strong>, <strong>CO₂ 10,0 %</strong>.</p>
-<p><strong>Les pertes.</strong> qA = (180 − 20) × (0,66 / 10,0 + 0,009) = 160 × (0,066 + 0,009) = 160 × 0,075 = <strong>12,0 %</strong>.</p>
-<p><strong>Le rendement de combustion.</strong> 100 − 12,0 = <strong>88,0 % sur PCI</strong>.</p>
-<p><strong>Ce que dit le résultat.</strong> 88 %, c’est correct pour une chaudière standard, et c’est mauvais pour une chaudière à condensation : à 180 °C, ses fumées ne condensent pas. On chercherait alors pourquoi le retour est trop chaud.</p>
-<div class="cle">
-<p>Dans la formule de Siegert, <strong>deux leviers seulement</strong> : baisser la température des fumées, ou monter le taux de CO₂, c’est-à-dire réduire l’excès d’air. Un brûleur réglé à 6 % de CO₂ au lieu de 10 perd <strong>66 % de pertes en plus</strong>, à température de fumées identique.</p>
-</div>
-<h3 id="exemple-résolu-2.-la-même-chaudière-en-condensation">Exemple résolu 2. La même chaudière, en condensation</h3>
-<p>Fumées <strong>45 °C</strong>, air 20 °C, CO₂ <strong>9,5 %</strong>.</p>
-<p>qA = (45 − 20) × (0,66 / 9,5 + 0,009) = 25 × 0,0785 = <strong>2,0 %</strong>.</p>
-<p><strong>Rendement de combustion : 98 % sur PCI</strong>, avant même de compter la condensation. En y ajoutant la chaleur latente récupérée, le rendement utile dépasse 100 % : c’est le 5.3, vu par le bas.</p>
-<h2 id="5-5-condenser-ou-ne-pas-condenser">5.5 Condenser, ou ne pas condenser</h2>
-<p>Une chaudière à condensation ne condense pas parce qu’elle en a le titre. Elle condense <strong>si ses fumées descendent sous leur point de rosée</strong>, et rien d’autre ne compte.</p>
-<div class="formule">
-<p><strong>Point de rosée des fumées :</strong></p>
-<ul>
-<li>gaz naturel, excès d’air normal : <strong>55 à 58 °C</strong></li>
-<li>propane : 51 à 53 °C</li>
-<li>fioul domestique : <strong>45 à 47 °C</strong></li>
-</ul>
-</div>
-<div class="cle">
-<p>Ce sont <strong>les fumées</strong> qui doivent descendre sous ce point, et elles se refroidissent contre <strong>l’eau de retour</strong>. Donc : <strong>la condensation est commandée par la température de retour</strong>, jamais par la température de départ.</p>
-</div>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Température de retour</th>
-<th>Ce qui se passe</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>30 °C</td>
-<td>Condensation forte, rendement 108 à 109 %</td>
-</tr>
-<tr>
-<td>40 °C</td>
-<td>Condensation correcte, 105 à 106 %</td>
-</tr>
-<tr>
-<td>50 °C</td>
-<td>Condensation partielle, 101 à 103 %</td>
-</tr>
-<tr>
-<td><strong>60 °C</strong></td>
-<td><strong>Plus de condensation</strong>, 96 à 98 %</td>
-</tr>
-</tbody>
-</table></div>
-<div class="piege">
-<p>Une chaudière à condensation posée sur une installation en <strong>80/60</strong> fonctionne comme une chaudière standard chère. Le gain se paie à l’installation et ne se récupère jamais. Le couple qui a du sens est <strong>condensation + basse température</strong>, ou condensation + radiateurs surdimensionnés.</p>
-</div>
-<p>Trois choses tuent la condensation en pratique, et l’épreuve aime les faire repérer : une <strong>vanne mélangeuse</strong> qui renvoie du départ chaud au retour, une <strong>bouteille de découplage</strong> mal dimensionnée qui fait la même chose, et une <strong>pompe surdimensionnée</strong> qui écrase le Δθ, comme au chapitre 3.</p>
-<h2 id="5-6-le-calcul-retourne-dimensionner-un-generateur">5.6 Le calcul retourné : dimensionner un générateur</h2>
-<div class="etapes">
-<ol type="1">
-<li><strong>La puissance de chauffage</strong> vient du GV du chapitre 1 : Φ = GV × Δθ base.</li>
-<li><strong>La puissance d’ECS</strong> vient du chapitre 4, soit elle s’ajoute, soit elle passe en priorité.</li>
-<li><strong>On ajoute une surpuissance de relance</strong>, 10 à 20 % en intermittence.</li>
-<li><strong>On ne majore pas au-delà.</strong> Une chaudière trop grosse coûte plus cher à l’achat <strong>et</strong> à l’usage.</li>
-<li><strong>On vérifie le taux de charge moyen</strong>, et on envisage une cascade.</li>
-</ol>
-</div>
-<h3 id="exemple-résolu-3.-le-générateur-dun-collège">Exemple résolu 3. Le générateur d’un collège</h3>
-<p>Déperditions <strong>210 kW</strong>, ECS en accumulation <strong>25 kW</strong>, occupation intermittente avec relance du lundi matin.</p>
-<p><strong>1. Sans priorité ECS.</strong> 210 + 25 = 235 kW.</p>
-<p><strong>2. Avec priorité ECS.</strong> L’ECS coupe le chauffage pendant sa charge, ce qui est la règle en tertiaire : on retient <strong>le plus grand des deux</strong>, soit 210 kW.</p>
-<p><strong>3. La relance.</strong> 210 × 1,15 = <strong>242 kW</strong>.</p>
-<p><strong>4. Le choix.</strong> Deux chaudières de <strong>125 kW en cascade</strong>, soit 250 kW installés.</p>
-<p><strong>5. La justification de la cascade.</strong> La moitié de la saison se passe sous <strong>40 % de charge</strong>. Une seule chaudière de 250 kW y ferait des cycles de trois minutes ; deux chaudières permettent d’en arrêter une et de faire travailler l’autre à 65 %, dans sa plage de bon rendement. <strong>Et une panne ne laisse pas le collège sans chauffage.</strong></p>
-<div class="cle">
-<p>Le taux de charge moyen d’une chaudière sur une saison est de l’ordre de <strong>25 à 35 %</strong> : la puissance de dimensionnement ne sert que quelques dizaines d’heures par an. C’est la raison technique de la cascade, et l’argument à écrire en épreuve.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : le court-cycle, et pourquoi il coûte</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une chaudière trop grosse ne « consomme pas plus par sécurité » : elle consomme plus <strong>parce qu’elle s’arrête tout le temps</strong>.</p>
-<p><strong>Le mécanisme.</strong> À chaque arrêt, le corps de chauffe reste chaud et se refroidit dans le local ; au démarrage suivant, il faut le réchauffer, et le brûleur passe par une phase de préventilation qui balaie de l’air froid dans le foyer. Chaque cycle coûte donc une petite quantité d’énergie, <strong>indépendante de la durée du cycle</strong>.</p>
-<p><strong>L’ordre de grandeur.</strong> Une perte d’arrêt-démarrage de 0,3 % du PCI par cycle, avec six cycles par heure au lieu d’un, représente <strong>1,5 point de rendement saisonnier</strong> perdu. Sur une chaudière annoncée à 92 %, le rendement réellement constaté descend vers 87 %.</p>
-<p><strong>La limite du calcul de dimensionnement.</strong> Tout le chapitre 1 dimensionne à la <strong>température de base</strong>, atteinte quelques heures par an. Le rendement, lui, se joue à <strong>charge partielle</strong>, c’est-à-dire pendant toute la saison. Deux grandeurs, deux régimes, et c’est pourquoi le rendement affiché sur la plaque ne prédit pas la facture.</p>
-<p><strong>Ce qui remplace la méthode.</strong> Les directives européennes ont introduit le rendement <strong>saisonnier</strong> : ETAS pour les chaudières, SCOP pour les pompes à chaleur, mesurés sur un profil de charge conventionnel. C’est ce nombre-là qu’il faut comparer entre deux appareils, jamais le rendement à pleine charge.</p></div></details>
-</div><h2 id="5-7-les-autres-facons-de-produire">5.7 Les autres façons de produire</h2>
-<p><strong>Le bois.</strong> PCI très sensible à l’humidité : 3,9 kWh/kg à 20 % d’humidité, <strong>2,3 kWh/kg à 50 %</strong>. Un silo, une vis d’alimentation, un décendrage. Sa grande inertie impose presque toujours un <strong>ballon tampon</strong>, faute de quoi il fait des cycles courts.</p>
-<p><strong>L’effet Joule.</strong> Rendement 100 % au point d’usage, et c’est ce qui trompe : en <strong>énergie primaire</strong>, la production et le transport de l’électricité ramènent ce rendement à 40 ou 50 %. Un convecteur reste la solution la moins chère à installer et la plus chère à faire fonctionner.</p>
-<p><strong>Le réseau urbain.</strong> Le bâtiment n’a pas de générateur : il a une <strong>sous-station</strong> , un échangeur, un comptage, une régulation. Le primaire arrive à 90 ou 110 °C et repart le plus froid possible.</p>
-<figure class="schema"><div class="dessin" data-schema="sous-station"></div><figcaption>Une sous-station de réseau urbain : le primaire ne pénètre pas dans le bâtiment, seul l’échangeur les relie.</figcaption></figure>
-<div class="cle">
-<p>Sur un réseau urbain, <strong>le Δθ primaire est facturé indirectement</strong> : plus le retour est froid, plus le réseau transporte de puissance dans le même tube, et la plupart des contrats pénalisent un retour trop chaud. C’est l’inverse du réflexe « il faut du chaud partout ».</p>
-</div>
-<div class="outil" data-outil="sous-station">
-
-</div>
-<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Valeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PCI du gaz naturel</td>
-<td><strong>9,97 ≈ 10 kWh/m³</strong></td>
-</tr>
-<tr>
-<td>PCS du gaz naturel</td>
-<td>11,06 kWh/m³</td>
-</tr>
-<tr>
-<td>Rapport PCS/PCI, gaz · fioul</td>
-<td>1,11 · 1,07</td>
-</tr>
-<tr>
-<td>PCI du fioul · du propane</td>
-<td>11,9 · 12,8 kWh/kg</td>
-</tr>
-<tr>
-<td>PCI des granulés · des bûches à 20 %</td>
-<td>4,8 · 3,9 kWh/kg</td>
-</tr>
-<tr>
-<td>Eau formée par 1 kg de méthane</td>
-<td>2,25 kg</td>
-</tr>
-<tr>
-<td>Chaleur latente de l’eau</td>
-<td>≈ 2 450 kJ/kg</td>
-</tr>
-<tr>
-<td>Siegert, gaz naturel</td>
-<td>A₂ = 0,66 · B = 0,009</td>
-</tr>
-<tr>
-<td>CO₂ des fumées, brûleur bien réglé, gaz</td>
-<td>9 à 11 %</td>
-</tr>
-<tr>
-<td>Température de fumées, chaudière standard</td>
-<td>140 à 200 °C</td>
-</tr>
-<tr>
-<td>Température de fumées, condensation</td>
-<td>40 à 60 °C</td>
-</tr>
-<tr>
-<td><strong>Point de rosée des fumées, gaz</strong></td>
-<td><strong>55 à 58 °C</strong></td>
-</tr>
-<tr>
-<td>Rendement condensation, retour à 30 °C</td>
-<td>105 à 109 % PCI</td>
-</tr>
-<tr>
-<td>Pertes par les parois</td>
-<td>0,5 à 3 %</td>
-</tr>
-<tr>
-<td>Taux de charge moyen sur une saison</td>
-<td>25 à 35 %</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le contrôle immédiat d’une analyse de combustion : <strong>des fumées à moins de 60 °C signalent une condensation en marche</strong> ; au-dessus de 120 °C, il n’y en a aucune. Entre les deux, c’est un fonctionnement partiel, et la question suivante sera toujours « pourquoi ».</p>
-</div>
-<h2 id="s-entrainer">S’entraîner</h2>
-<section class="exo" id="M5-MANUEL-e1" data-exo="M5-MANUEL-e1" data-type="calcul" data-savoir="B1-1" data-a="IXgueGB4OTs2OS82eHZ4LHhga2t0Y3Z4LjU2eGBvdGp2eC94YHh/eCc="><p class="k">Exercice · B1-1</p><h4>Les pertes par les fumées</h4><div class="enonce">
-
-<p>Une chaudière gaz : fumées à <strong>165 °C</strong>, air comburant à <strong>18 °C</strong>, <strong>CO₂ à 9,2 %</strong>. Calculez les pertes par les fumées, en pourcentage.</p>
-</div><div class="indice" hidden>qA = (θ fumées − θ air) × (0,66 / CO₂ + 0,009). Le CO₂ s’écrit en pourcentage, donc 9,2 et non 0,092.</div></section>
-<section class="exo" id="M5-MANUEL-e2" data-exo="M5-MANUEL-e2" data-type="calcul" data-savoir="B1-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgaGpqbGp0anZ4LjU2eGBudGp2eC94YHg3Bi9qajhpeCc="><p class="k">Exercice · B1-1</p><h4>La consommation de gaz</h4><div class="enonce">
-
-<p>Un bâtiment consomme <strong>180 000 kWh</strong> de chaleur utile par an. Sa chaudière a un rendement de <strong>90 % sur PCI</strong>. Quel volume de gaz naturel cela représente-t-il, au PCI de 9,97 kWh/m³ ?</p>
-</div><div class="indice" hidden>Remontez d’abord de la chaleur utile à l’énergie consommée en divisant par le rendement, puis convertissez en mètres cubes en divisant par le PCI.</div></section>
-<section class="exo" id="M5-MANUEL-e3" data-exo="M5-MANUEL-e3" data-type="calcul" data-savoir="A2-1" data-a="IXgueGB4OTs2OS82eHZ4LHhga2trbWt0anZ4LjU2eGBpdGp2eC94YHgxDTJ4Jw=="><p class="k">Exercice · A2-1</p><h4>PCI et PCS</h4><div class="enonce">
-
-<p>Une facture indique <strong>12 400 kWh PCS</strong> consommés. À combien de kWh PCI cela correspond-il, pour du gaz naturel ?</p>
-</div><div class="indice" hidden>Le PCS est supérieur au PCI de 11 % : pour redescendre du PCS au PCI, on divise par 1,11.</div></section>
-<section class="exo" id="M5-MANUEL-e4" data-exo="M5-MANUEL-e4" data-type="justification" data-savoir="B1-1" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B1-1</p><h4>Une condensation qui ne condense pas</h4><div class="enonce">
-
-<p>Sur un collège équipé d’une chaudière à condensation neuve, vous relevez des fumées à <strong>135 °C</strong> et un retour à <strong>62 °C</strong>. Le gestionnaire s’étonne de ne voir aucune économie. Rédigez votre diagnostic en quatre lignes.</p>
-</div><div class="indice" hidden>Les fumées se refroidissent contre l’eau de retour, jamais contre l’eau de départ. Comparez le retour relevé au point de rosée des fumées et concluez sur ce que la chaudière peut ou ne peut pas faire.</div><ul class="verifier" hidden><li>J’ai constaté que le retour est trop chaud et j’ai cité le point de rosée des fumées, 55 à 58 °C.</li><li>J’ai dit que la condensation n’a pas lieu, donc que la chaudière travaille comme une chaudière standard.</li><li>J’ai cherché une cause : régime 80/60, vanne mélangeuse, bouteille de découplage, ou débit trop grand.</li><li>J’ai proposé une action : baisser la loi d’eau, revoir l’hydraulique, ou surdimensionner les émetteurs.</li></ul></section>
-<h2 id="vous-verifier">Vous vérifier</h2>
-<div class="quiz">
-<ul>
-<li>La combustion du méthane produit du CO₂ et : <strong>de l’eau</strong> | de l’azote</li>
-<li>Le PCS diffère du PCI par : <strong>la chaleur latente de l’eau formée</strong> | les pertes de la chaudière</li>
-<li>Pour le gaz naturel, PCS/PCI vaut : <strong>1,11</strong> | 1,25</li>
-<li>Un rendement de 109 % s’entend forcément : <strong>sur PCI</strong> | sur PCS</li>
-<li>La condensation est commandée par la température : <strong>de retour</strong> | de départ</li>
-<li>Le point de rosée des fumées de gaz naturel vaut : <strong>56 °C environ</strong> | 100 °C</li>
-<li>Dans Siegert, monter le taux de CO₂ : <strong>réduit les pertes</strong> | les augmente</li>
-<li>Un excès d’air trop grand se voit à : <strong>un CO₂ faible</strong> | un CO₂ élevé</li>
-<li>Le PCI du gaz naturel vaut environ : <strong>10 kWh/m³</strong> | 10 kWh/kg</li>
-<li>Du bois à 50 % d’humidité rend, par kilo : <strong>environ 2,3 kWh</strong> | autant que sec</li>
-<li>Une chaudière surdimensionnée : <strong>fait des cycles courts</strong> | chauffe mieux</li>
-<li>Le taux de charge moyen d’une saison est de : <strong>30 % environ</strong> | 80 %</li>
-<li>Sur un réseau urbain, un retour froid est : <strong>recherché</strong> | pénalisant</li>
-</ul>
-</div>
-<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">L&#39;excès d&#39;air : pourquoi on ne brûle jamais au strict nécessaire</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La combustion stœchiométrique est celle où l’air apporte <strong>exactement</strong> l’oxygène nécessaire. Elle donne le CO₂ maximal, <strong>11,7 %</strong> pour le gaz naturel, et la température de flamme la plus haute.</p>
-<p>Personne ne travaille là. Le mélange n’est jamais parfait : une molécule de méthane qui ne rencontre pas assez d’oxygène produit du <strong>monoxyde de carbone</strong>, qui est à la fois une perte d’énergie et un poison. On introduit donc un <strong>excès d’air</strong>, de l’ordre de 15 à 25 % en brûleur à air soufflé.</p>
-<p><strong>Ce que l’excès coûte.</strong> Tout l’air introduit est chauffé de la température ambiante à celle des fumées, puis rejeté. Chaque point de CO₂ perdu se paie en pertes : c’est le rapport A₂/CO₂ de Siegert.</p>
-<p><strong>Le réglage optimal</strong> est donc un compromis, et il se lit sur deux nombres à l’analyseur : <strong>CO₂ entre 9 et 11 %</strong> pour le gaz, <strong>CO sous 100 ppm</strong>. En dessous de 9 % de CO₂, on chauffe l’atmosphère ; au-dessus de 11, on prend le risque du CO.</p>
-<p><strong>Ce que cela change sur le terrain.</strong> Un brûleur atmosphérique ancien tourne à 6 ou 7 % de CO₂, sans réglage possible. C’est une raison suffisante de le remplacer, avant même de parler de condensation.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Le rendement saisonnier, et ce que la réglementation impose</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le rendement de plaque est mesuré <strong>à pleine charge, en régime établi</strong>. Il ne décrit aucune situation réelle : une chaudière passe sa vie entre 20 et 50 % de charge.</p>
-<p>Le <strong>rendement saisonnier ETAS</strong>, imposé par le règlement européen dit « écoconception », est calculé sur un profil conventionnel de charges : 100 %, puis une pondération dominée par la charge partielle à 30 %. Un appareil doit aujourd’hui atteindre <strong>86 % d’ETAS</strong> pour être vendu en chauffage, ce qui a de fait interdit les chaudières non condensation.</p>
-<p>Trois conséquences pratiques. D’abord, <strong>le rendement affiché sur les documentations n’est plus le même nombre qu’il y a quinze ans</strong> : comparer un catalogue de 2010 et un de 2024 sans le savoir donne des écarts absurdes. Ensuite, <strong>la modulation devient un critère de choix</strong> : une chaudière modulant de 100 à 20 % évite le court-cycle qu’une chaudière tout-ou-rien subit. Enfin, la <strong>régulation compte dans l’ETAS</strong> : une sonde extérieure et une régulation par loi d’eau apportent des points de bonus, ce qui fait du chapitre 13 un sujet économique, pas seulement technique.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« Cette chaudière fait 109 %, elle crée de l’énergie. »</strong> Elle n’en crée aucune : elle en récupère une que la convention du PCI avait décidé de ne pas compter. Sur PCS, elle est à 98 %. La bonne phrase mentionne toujours <strong>la référence</strong>.</p>
-<p><strong>« Il faut monter la température de la chaudière pour mieux condenser. »</strong> L’inverse exactement. La condensation dépend du <strong>retour froid</strong> ; monter le départ ne fait que monter le retour, et fait sortir de la condensation.</p>
-<p><strong>« Le bois est neutre en carbone. »</strong> L’affirmation est une convention comptable, pas un fait physique : la combustion émet bien du CO₂, et la neutralité suppose une forêt effectivement replantée et une dette carbone remboursée sur plusieurs décennies. En épreuve, on parle de <strong>combustible renouvelable</strong>, ce qui est exact, et non de combustible sans émission.</p></div></details>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Distinguer</strong> PCI et PCS, et dire d’où vient l’écart de 11 %.</li>
+
+<li><strong>Calculer</strong> les pertes par les fumées à partir d’une analyse de combustion.</li>
+
+<li><strong>Expliquer</strong> un rendement supérieur à 100 % sans invoquer aucun miracle.</li>
+
+<li><strong>Dire</strong> à quelle condition une chaudière à condensation condense vraiment.</li>
+
+<li><strong>Dimensionner</strong> un générateur, et justifier une cascade plutôt qu’un appareil unique.</li>
+
+</ol>
+
+</div>
+
+<p><strong>B1-1 est au niveau 3.</strong> C’est le savoir le plus chargé de la partie production, et il tombe à l’épreuve sous une forme presque constante : une analyse de combustion à exploiter, puis une justification à rédiger.</p>
+
+<h2 id="5-1-bruler-c-est-fabriquer-de-l-eau">5.1 Brûler, c’est fabriquer de l’eau</h2>
+
+<p>Allumez une gazinière et posez au-dessus une assiette froide. Elle se couvre de buée. Cette eau ne vient de nulle part ailleurs que <strong>de la flamme</strong> : la combustion du méthane produit du gaz carbonique <strong>et de l’eau</strong>.</p>
+
+<div class="formule">
+
+<p><strong>CH₄ + 2 O₂ → CO₂ + 2 H₂O</strong></p>
+
+<p>Un kilogramme de méthane produit <strong>2,25 kg d’eau</strong>, sous forme de vapeur.</p>
+
+</div>
+
+<p>Cette vapeur emporte avec elle sa <strong>chaleur latente</strong>. Tant qu’elle sort par la cheminée, cette chaleur est perdue. Toute la technique de la condensation consiste à la récupérer, et rien d’autre.</p>
+
+<div class="cle">
+
+<p>Retenez la chaîne : <strong>on brûle, donc on fabrique de la vapeur, donc on a le choix de la laisser partir ou de la condenser.</strong> Les deux pouvoirs calorifiques du 5.2 ne sont que la mise en nombres de ce choix.</p>
+
+</div>
+
+<h2 id="5-2-pci-et-pcs">5.2 PCI et PCS</h2>
+
+<div class="formule">
+
+<p><strong>PCI.</strong> Pouvoir calorifique <strong>inférieur</strong> : la chaleur dégagée, <strong>l’eau restant vapeur</strong>.</p>
+
+<p><strong>PCS.</strong> Pouvoir calorifique <strong>supérieur</strong> : la même chaleur, <strong>l’eau étant condensée</strong>.</p>
+
+<p><strong>PCS − PCI = chaleur latente de l’eau formée.</strong></p>
+
+</div>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Combustible</th>
+
+<th style="text-align: right;">PCI</th>
+
+<th style="text-align: right;">PCS</th>
+
+<th style="text-align: right;">PCS/PCI</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Gaz naturel</td>
+
+<td style="text-align: right;"><strong>9,97 kWh/m³</strong></td>
+
+<td style="text-align: right;">11,06 kWh/m³</td>
+
+<td style="text-align: right;"><strong>1,11</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Propane</td>
+
+<td style="text-align: right;">12,8 kWh/kg</td>
+
+<td style="text-align: right;">13,9 kWh/kg</td>
+
+<td style="text-align: right;">1,09</td>
+
+</tr>
+
+<tr>
+
+<td>Fioul domestique</td>
+
+<td style="text-align: right;">11,9 kWh/kg</td>
+
+<td style="text-align: right;">12,7 kWh/kg</td>
+
+<td style="text-align: right;">1,07</td>
+
+</tr>
+
+<tr>
+
+<td>Granulés de bois</td>
+
+<td style="text-align: right;">4,8 kWh/kg</td>
+
+<td style="text-align: right;">5,2 kWh/kg</td>
+
+<td style="text-align: right;">1,08</td>
+
+</tr>
+
+<tr>
+
+<td>Bûches, 20 % d’humidité</td>
+
+<td style="text-align: right;">3,9 kWh/kg</td>
+
+<td style="text-align: right;">—</td>
+
+<td style="text-align: right;">—</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : d&#39;où sortent exactement les 11 %</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Prenons <strong>1 kg de méthane</strong>, dont le PCI vaut 50 000 kJ/kg.</p>
+
+<p><strong>L’eau formée.</strong> L’équation CH₄ + 2 O₂ → CO₂ + 2 H₂O donne, en masses molaires : 16 g de méthane produisent 2 × 18 = 36 g d’eau. Donc <strong>1 kg de méthane produit 2,25 kg d’eau</strong>.</p>
+
+<p><strong>La chaleur latente récupérable.</strong> À la température des fumées, la chaleur latente de condensation de l’eau vaut environ <strong>2 450 kJ/kg</strong>. Pour 2,25 kg :</p>
+
+<p>2,25 × 2 450 = <strong>5 512 kJ</strong></p>
+
+<p><strong>L’écart relatif.</strong> 5 512 / 50 000 = <strong>11,0 %</strong>.</p>
+
+<p>C’est très exactement le rapport PCS/PCI du tableau, et il n’y a rien d’autre dedans.</p>
+
+<p><strong>Les trois hypothèses.</strong></p>
+
+<ol type="1">
+
+<li><strong>Combustion complète.</strong> Tout le carbone finit en CO₂, rien en CO ni en imbrûlés. Un brûleur mal réglé produit du CO, et le calcul surestime alors la chaleur disponible.</li>
+
+<li><strong>Condensation totale.</strong> On suppose que <strong>toute</strong> la vapeur se condense. En pratique une chaudière à condensation n’en récupère que la moitié à deux tiers, selon la température de retour : le gain réel est de 5 à 8 %, pas 11 %.</li>
+
+<li><strong>Le combustible est du méthane pur.</strong> Le gaz de réseau contient aussi de l’éthane et de l’azote, ce qui déplace le rapport de quelques dixièmes.</li>
+
+</ol>
+
+<p><strong>Pourquoi le fioul gagne moins.</strong> Sa molécule est plus riche en carbone et plus pauvre en hydrogène : elle forme moins d’eau par unité d’énergie. D’où PCS/PCI = 1,07 seulement, et un intérêt bien plus faible de la condensation. Le gain de la condensation est <strong>une propriété du combustible</strong>, pas de la chaudière.</p></div></details>
+
+</div><h2 id="5-3-le-rendement-et-les-109">5.3 Le rendement, et les 109 %</h2>
+
+<div class="formule">
+
+<p><strong>η = puissance utile / puissance consommée</strong></p>
+
+<p>La puissance consommée s’exprime <strong>au choix</strong> sur le PCI ou sur le PCS. <strong>Il faut dire lequel</strong>, sinon le nombre ne veut rien dire.</p>
+
+</div>
+
+<div class="cle">
+
+<p>Une chaudière à condensation annonce <strong>109 % sur PCI</strong>. Ce n’est pas une tricherie : elle récupère une chaleur que le PCI, par définition, ne comptait pas. Rapporté au <strong>PCS</strong>, le même appareil affiche <strong>98 %</strong>, et l’on n’a jamais dépassé 100 %.</p>
+
+</div>
+
+<div class="piege">
+
+<p>En France, les catalogues donnent le rendement <strong>sur PCI</strong> et les factures de gaz comptent en <strong>kWh PCS</strong>. Comparer directement un rendement de catalogue à une facture introduit une erreur de 11 %. C’est une question classique d’entretien d’embauche, et elle tombe aussi à l’épreuve.</p>
+
+</div>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Générateur</th>
+
+<th style="text-align: right;">Rendement sur PCI</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Chaudière fonte ancienne, brûleur atmosphérique</td>
+
+<td style="text-align: right;">70 à 80 %</td>
+
+</tr>
+
+<tr>
+
+<td>Chaudière standard récente</td>
+
+<td style="text-align: right;">88 à 92 %</td>
+
+</tr>
+
+<tr>
+
+<td>Chaudière basse température</td>
+
+<td style="text-align: right;">92 à 95 %</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Chaudière à condensation, retour à 30 °C</strong></td>
+
+<td style="text-align: right;"><strong>105 à 109 %</strong></td>
+
+</tr>
+
+<tr>
+
+<td>La même, retour à 60 °C</td>
+
+<td style="text-align: right;">96 à 98 %</td>
+
+</tr>
+
+<tr>
+
+<td>Chaudière granulés</td>
+
+<td style="text-align: right;">88 à 94 %</td>
+
+</tr>
+
+<tr>
+
+<td>Convecteur électrique</td>
+
+<td style="text-align: right;">100 %, par construction</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<h2 id="5-4-ou-passe-ce-qui-est-perdu">5.4 Où passe ce qui est perdu</h2>
+
+<figure class="schema"><div class="dessin" data-schema="pertes-chaudiere"></div><figcaption>Cent unités de combustible entrent ; ce qui n’arrive pas à l’eau part par la cheminée, par les parois, ou ne brûle pas.</figcaption></figure>
+
+<p>Trois pertes, très inégales :</p>
+
+<p><strong>Les fumées</strong>, 5 à 15 %. Elles sortent chaudes, et elles emportent la vapeur d’eau. C’est la perte principale, et <strong>la seule qui se mesure facilement</strong>.</p>
+
+<p><strong>Les parois</strong>, 0,5 à 3 %. Le corps de chauffe rayonne dans le local technique. Sur une chaudière ancienne mal isolée, cela monte à 5 %.</p>
+
+<p><strong>Les imbrûlés</strong>, moins de 0,5 % sur une installation réglée. Du CO, des suies : un réglage à refaire, pas une fatalité.</p>
+
+<div class="formule">
+
+<p><strong>Formule de Siegert : qA = (θ fumées − θ air) × ( A₂ / CO₂ + B )</strong></p>
+
+<ul>
+
+<li><strong>qA</strong><span>: pertes par les fumées, en % du PCI</span></li>
+
+<li><strong>CO₂</strong><span>: teneur des fumées, en %, lue à l’analyseur</span></li>
+
+<li>Gaz naturel : <strong>A₂ = 0,66 · B = 0,009</strong> · Fioul : A₂ = 0,68 et B = 0,007</li>
+
+</ul>
+
+</div>
+
+<h3 id="exemple-résolu-1.-lire-une-analyse-de-combustion">Exemple résolu 1. Lire une analyse de combustion</h3>
+
+<p>Un analyseur donne, sur une chaudière gaz : <strong>fumées 180 °C</strong>, <strong>air 20 °C</strong>, <strong>CO₂ 10,0 %</strong>.</p>
+
+<p><strong>Les pertes.</strong> qA = (180 − 20) × (0,66 / 10,0 + 0,009) = 160 × (0,066 + 0,009) = 160 × 0,075 = <strong>12,0 %</strong>.</p>
+
+<p><strong>Le rendement de combustion.</strong> 100 − 12,0 = <strong>88,0 % sur PCI</strong>.</p>
+
+<p><strong>Ce que dit le résultat.</strong> 88 %, c’est correct pour une chaudière standard, et c’est mauvais pour une chaudière à condensation : à 180 °C, ses fumées ne condensent pas. On chercherait alors pourquoi le retour est trop chaud.</p>
+
+<div class="cle">
+
+<p>Dans la formule de Siegert, <strong>deux leviers seulement</strong> : baisser la température des fumées, ou monter le taux de CO₂, c’est-à-dire réduire l’excès d’air. Un brûleur réglé à 6 % de CO₂ au lieu de 10 perd <strong>66 % de pertes en plus</strong>, à température de fumées identique.</p>
+
+</div>
+
+<h3 id="exemple-résolu-2.-la-même-chaudière-en-condensation">Exemple résolu 2. La même chaudière, en condensation</h3>
+
+<p>Fumées <strong>45 °C</strong>, air 20 °C, CO₂ <strong>9,5 %</strong>.</p>
+
+<p>qA = (45 − 20) × (0,66 / 9,5 + 0,009) = 25 × 0,0785 = <strong>2,0 %</strong>.</p>
+
+<p><strong>Rendement de combustion : 98 % sur PCI</strong>, avant même de compter la condensation. En y ajoutant la chaleur latente récupérée, le rendement utile dépasse 100 % : c’est le 5.3, vu par le bas.</p>
+
+<h2 id="5-5-condenser-ou-ne-pas-condenser">5.5 Condenser, ou ne pas condenser</h2>
+
+<p>Une chaudière à condensation ne condense pas parce qu’elle en a le titre. Elle condense <strong>si ses fumées descendent sous leur point de rosée</strong>, et rien d’autre ne compte.</p>
+
+<div class="formule">
+
+<p><strong>Point de rosée des fumées :</strong></p>
+
+<ul>
+
+<li>gaz naturel, excès d’air normal : <strong>55 à 58 °C</strong></li>
+
+<li>propane : 51 à 53 °C</li>
+
+<li>fioul domestique : <strong>45 à 47 °C</strong></li>
+
+</ul>
+
+</div>
+
+<div class="cle">
+
+<p>Ce sont <strong>les fumées</strong> qui doivent descendre sous ce point, et elles se refroidissent contre <strong>l’eau de retour</strong>. Donc : <strong>la condensation est commandée par la température de retour</strong>, jamais par la température de départ.</p>
+
+</div>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Température de retour</th>
+
+<th>Ce qui se passe</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>30 °C</td>
+
+<td>Condensation forte, rendement 108 à 109 %</td>
+
+</tr>
+
+<tr>
+
+<td>40 °C</td>
+
+<td>Condensation correcte, 105 à 106 %</td>
+
+</tr>
+
+<tr>
+
+<td>50 °C</td>
+
+<td>Condensation partielle, 101 à 103 %</td>
+
+</tr>
+
+<tr>
+
+<td><strong>60 °C</strong></td>
+
+<td><strong>Plus de condensation</strong>, 96 à 98 %</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="piege">
+
+<p>Une chaudière à condensation posée sur une installation en <strong>80/60</strong> fonctionne comme une chaudière standard chère. Le gain se paie à l’installation et ne se récupère jamais. Le couple qui a du sens est <strong>condensation + basse température</strong>, ou condensation + radiateurs surdimensionnés.</p>
+
+</div>
+
+<p>Trois choses tuent la condensation en pratique, et l’épreuve aime les faire repérer : une <strong>vanne mélangeuse</strong> qui renvoie du départ chaud au retour, une <strong>bouteille de découplage</strong> mal dimensionnée qui fait la même chose, et une <strong>pompe surdimensionnée</strong> qui écrase le Δθ, comme au chapitre 3.</p>
+
+<h2 id="5-6-le-calcul-retourne-dimensionner-un-generateur">5.6 Le calcul retourné : dimensionner un générateur</h2>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>La puissance de chauffage</strong> vient du GV du chapitre 1 : Φ = GV × Δθ base.</li>
+
+<li><strong>La puissance d’ECS</strong> vient du chapitre 4, soit elle s’ajoute, soit elle passe en priorité.</li>
+
+<li><strong>On ajoute une surpuissance de relance</strong>, 10 à 20 % en intermittence.</li>
+
+<li><strong>On ne majore pas au-delà.</strong> Une chaudière trop grosse coûte plus cher à l’achat <strong>et</strong> à l’usage.</li>
+
+<li><strong>On vérifie le taux de charge moyen</strong>, et on envisage une cascade.</li>
+
+</ol>
+
+</div>
+
+<h3 id="exemple-résolu-3.-le-générateur-dun-collège">Exemple résolu 3. Le générateur d’un collège</h3>
+
+<p>Déperditions <strong>210 kW</strong>, ECS en accumulation <strong>25 kW</strong>, occupation intermittente avec relance du lundi matin.</p>
+
+<p><strong>1. Sans priorité ECS.</strong> 210 + 25 = 235 kW.</p>
+
+<p><strong>2. Avec priorité ECS.</strong> L’ECS coupe le chauffage pendant sa charge, ce qui est la règle en tertiaire : on retient <strong>le plus grand des deux</strong>, soit 210 kW.</p>
+
+<p><strong>3. La relance.</strong> 210 × 1,15 = <strong>242 kW</strong>.</p>
+
+<p><strong>4. Le choix.</strong> Deux chaudières de <strong>125 kW en cascade</strong>, soit 250 kW installés.</p>
+
+<p><strong>5. La justification de la cascade.</strong> La moitié de la saison se passe sous <strong>40 % de charge</strong>. Une seule chaudière de 250 kW y ferait des cycles de trois minutes ; deux chaudières permettent d’en arrêter une et de faire travailler l’autre à 65 %, dans sa plage de bon rendement. <strong>Et une panne ne laisse pas le collège sans chauffage.</strong></p>
+
+<div class="cle">
+
+<p>Le taux de charge moyen d’une chaudière sur une saison est de l’ordre de <strong>25 à 35 %</strong> : la puissance de dimensionnement ne sert que quelques dizaines d’heures par an. C’est la raison technique de la cascade, et l’argument à écrire en épreuve.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : le court-cycle, et pourquoi il coûte</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une chaudière trop grosse ne « consomme pas plus par sécurité » : elle consomme plus <strong>parce qu’elle s’arrête tout le temps</strong>.</p>
+
+<p><strong>Le mécanisme.</strong> À chaque arrêt, le corps de chauffe reste chaud et se refroidit dans le local ; au démarrage suivant, il faut le réchauffer, et le brûleur passe par une phase de préventilation qui balaie de l’air froid dans le foyer. Chaque cycle coûte donc une petite quantité d’énergie, <strong>indépendante de la durée du cycle</strong>.</p>
+
+<p><strong>L’ordre de grandeur.</strong> Une perte d’arrêt-démarrage de 0,3 % du PCI par cycle, avec six cycles par heure au lieu d’un, représente <strong>1,5 point de rendement saisonnier</strong> perdu. Sur une chaudière annoncée à 92 %, le rendement réellement constaté descend vers 87 %.</p>
+
+<p><strong>La limite du calcul de dimensionnement.</strong> Tout le chapitre 1 dimensionne à la <strong>température de base</strong>, atteinte quelques heures par an. Le rendement, lui, se joue à <strong>charge partielle</strong>, c’est-à-dire pendant toute la saison. Deux grandeurs, deux régimes, et c’est pourquoi le rendement affiché sur la plaque ne prédit pas la facture.</p>
+
+<p><strong>Ce qui remplace la méthode.</strong> Les directives européennes ont introduit le rendement <strong>saisonnier</strong> : ETAS pour les chaudières, SCOP pour les pompes à chaleur, mesurés sur un profil de charge conventionnel. C’est ce nombre-là qu’il faut comparer entre deux appareils, jamais le rendement à pleine charge.</p></div></details>
+
+</div><h2 id="5-7-les-autres-facons-de-produire">5.7 Les autres façons de produire</h2>
+
+<p><strong>Le bois.</strong> PCI très sensible à l’humidité : 3,9 kWh/kg à 20 % d’humidité, <strong>2,3 kWh/kg à 50 %</strong>. Un silo, une vis d’alimentation, un décendrage. Sa grande inertie impose presque toujours un <strong>ballon tampon</strong>, faute de quoi il fait des cycles courts.</p>
+
+<p><strong>L’effet Joule.</strong> Rendement 100 % au point d’usage, et c’est ce qui trompe : en <strong>énergie primaire</strong>, la production et le transport de l’électricité ramènent ce rendement à 40 ou 50 %. Un convecteur reste la solution la moins chère à installer et la plus chère à faire fonctionner.</p>
+
+<p><strong>Le réseau urbain.</strong> Le bâtiment n’a pas de générateur : il a une <strong>sous-station</strong> , un échangeur, un comptage, une régulation. Le primaire arrive à 90 ou 110 °C et repart le plus froid possible.</p>
+
+<figure class="schema"><div class="dessin" data-schema="sous-station"></div><figcaption>Une sous-station de réseau urbain : le primaire ne pénètre pas dans le bâtiment, seul l’échangeur les relie.</figcaption></figure>
+
+<div class="cle">
+
+<p>Sur un réseau urbain, <strong>le Δθ primaire est facturé indirectement</strong> : plus le retour est froid, plus le réseau transporte de puissance dans le même tube, et la plupart des contrats pénalisent un retour trop chaud. C’est l’inverse du réflexe « il faut du chaud partout ».</p>
+
+</div>
+
+<div class="outil" data-outil="sous-station">
+
+
+
+</div>
+
+<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Valeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>PCI du gaz naturel</td>
+
+<td><strong>9,97 ≈ 10 kWh/m³</strong></td>
+
+</tr>
+
+<tr>
+
+<td>PCS du gaz naturel</td>
+
+<td>11,06 kWh/m³</td>
+
+</tr>
+
+<tr>
+
+<td>Rapport PCS/PCI, gaz · fioul</td>
+
+<td>1,11 · 1,07</td>
+
+</tr>
+
+<tr>
+
+<td>PCI du fioul · du propane</td>
+
+<td>11,9 · 12,8 kWh/kg</td>
+
+</tr>
+
+<tr>
+
+<td>PCI des granulés · des bûches à 20 %</td>
+
+<td>4,8 · 3,9 kWh/kg</td>
+
+</tr>
+
+<tr>
+
+<td>Eau formée par 1 kg de méthane</td>
+
+<td>2,25 kg</td>
+
+</tr>
+
+<tr>
+
+<td>Chaleur latente de l’eau</td>
+
+<td>≈ 2 450 kJ/kg</td>
+
+</tr>
+
+<tr>
+
+<td>Siegert, gaz naturel</td>
+
+<td>A₂ = 0,66 · B = 0,009</td>
+
+</tr>
+
+<tr>
+
+<td>CO₂ des fumées, brûleur bien réglé, gaz</td>
+
+<td>9 à 11 %</td>
+
+</tr>
+
+<tr>
+
+<td>Température de fumées, chaudière standard</td>
+
+<td>140 à 200 °C</td>
+
+</tr>
+
+<tr>
+
+<td>Température de fumées, condensation</td>
+
+<td>40 à 60 °C</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Point de rosée des fumées, gaz</strong></td>
+
+<td><strong>55 à 58 °C</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Rendement condensation, retour à 30 °C</td>
+
+<td>105 à 109 % PCI</td>
+
+</tr>
+
+<tr>
+
+<td>Pertes par les parois</td>
+
+<td>0,5 à 3 %</td>
+
+</tr>
+
+<tr>
+
+<td>Taux de charge moyen sur une saison</td>
+
+<td>25 à 35 %</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le contrôle immédiat d’une analyse de combustion : <strong>des fumées à moins de 60 °C signalent une condensation en marche</strong> ; au-dessus de 120 °C, il n’y en a aucune. Entre les deux, c’est un fonctionnement partiel, et la question suivante sera toujours « pourquoi ».</p>
+
+</div>
+
+<h2 id="s-entrainer">S’entraîner</h2>
+
+<section class="exo" id="M5-MANUEL-e1" data-exo="M5-MANUEL-e1" data-type="calcul" data-savoir="B1-1" data-a="IXgueGB4OTs2OS82eHZ4LHhga2t0Y3Z4LjU2eGBvdGp2eC94YHh/eCc="><p class="k">Exercice · B1-1</p><h4>Les pertes par les fumées</h4><div class="enonce">
+
+
+
+<p>Une chaudière gaz : fumées à <strong>165 °C</strong>, air comburant à <strong>18 °C</strong>, <strong>CO₂ à 9,2 %</strong>. Calculez les pertes par les fumées, en pourcentage.</p>
+
+</div><div class="indice" hidden>qA = (θ fumées − θ air) × (0,66 / CO₂ + 0,009). Le CO₂ s’écrit en pourcentage, donc 9,2 et non 0,092.</div></section>
+
+<section class="exo" id="M5-MANUEL-e2" data-exo="M5-MANUEL-e2" data-type="calcul" data-savoir="B1-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgaGpqbGp0anZ4LjU2eGBudGp2eC94YHg3Bi9qajhpeCc="><p class="k">Exercice · B1-1</p><h4>La consommation de gaz</h4><div class="enonce">
+
+
+
+<p>Un bâtiment consomme <strong>180 000 kWh</strong> de chaleur utile par an. Sa chaudière a un rendement de <strong>90 % sur PCI</strong>. Quel volume de gaz naturel cela représente-t-il, au PCI de 9,97 kWh/m³ ?</p>
+
+</div><div class="indice" hidden>Remontez d’abord de la chaleur utile à l’énergie consommée en divisant par le rendement, puis convertissez en mètres cubes en divisant par le PCI.</div></section>
+
+<section class="exo" id="M5-MANUEL-e3" data-exo="M5-MANUEL-e3" data-type="calcul" data-savoir="A2-1" data-a="IXgueGB4OTs2OS82eHZ4LHhga2trbWt0anZ4LjU2eGBpdGp2eC94YHgxDTJ4Jw=="><p class="k">Exercice · A2-1</p><h4>PCI et PCS</h4><div class="enonce">
+
+
+
+<p>Une facture indique <strong>12 400 kWh PCS</strong> consommés. À combien de kWh PCI cela correspond-il, pour du gaz naturel ?</p>
+
+</div><div class="indice" hidden>Le PCS est supérieur au PCI de 11 % : pour redescendre du PCS au PCI, on divise par 1,11.</div></section>
+
+<section class="exo" id="M5-MANUEL-e4" data-exo="M5-MANUEL-e4" data-type="justification" data-savoir="B1-1" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B1-1</p><h4>Une condensation qui ne condense pas</h4><div class="enonce">
+
+
+
+<p>Sur un collège équipé d’une chaudière à condensation neuve, vous relevez des fumées à <strong>135 °C</strong> et un retour à <strong>62 °C</strong>. Le gestionnaire s’étonne de ne voir aucune économie. Rédigez votre diagnostic en quatre lignes.</p>
+
+</div><div class="indice" hidden>Les fumées se refroidissent contre l’eau de retour, jamais contre l’eau de départ. Comparez le retour relevé au point de rosée des fumées et concluez sur ce que la chaudière peut ou ne peut pas faire.</div><ul class="verifier" hidden><li>J’ai constaté que le retour est trop chaud et j’ai cité le point de rosée des fumées, 55 à 58 °C.</li><li>J’ai dit que la condensation n’a pas lieu, donc que la chaudière travaille comme une chaudière standard.</li><li>J’ai cherché une cause : régime 80/60, vanne mélangeuse, bouteille de découplage, ou débit trop grand.</li><li>J’ai proposé une action : baisser la loi d’eau, revoir l’hydraulique, ou surdimensionner les émetteurs.</li></ul></section>
+
+<h2 id="vous-verifier">Vous vérifier</h2>
+
+<div class="quiz">
+
+<ul>
+
+<li>La combustion du méthane produit du CO₂ et : <strong>de l’eau</strong> | de l’azote</li>
+
+<li>Le PCS diffère du PCI par : <strong>la chaleur latente de l’eau formée</strong> | les pertes de la chaudière</li>
+
+<li>Pour le gaz naturel, PCS/PCI vaut : <strong>1,11</strong> | 1,25</li>
+
+<li>Un rendement de 109 % s’entend forcément : <strong>sur PCI</strong> | sur PCS</li>
+
+<li>La condensation est commandée par la température : <strong>de retour</strong> | de départ</li>
+
+<li>Le point de rosée des fumées de gaz naturel vaut : <strong>56 °C environ</strong> | 100 °C</li>
+
+<li>Dans Siegert, monter le taux de CO₂ : <strong>réduit les pertes</strong> | les augmente</li>
+
+<li>Un excès d’air trop grand se voit à : <strong>un CO₂ faible</strong> | un CO₂ élevé</li>
+
+<li>Le PCI du gaz naturel vaut environ : <strong>10 kWh/m³</strong> | 10 kWh/kg</li>
+
+<li>Du bois à 50 % d’humidité rend, par kilo : <strong>environ 2,3 kWh</strong> | autant que sec</li>
+
+<li>Une chaudière surdimensionnée : <strong>fait des cycles courts</strong> | chauffe mieux</li>
+
+<li>Le taux de charge moyen d’une saison est de : <strong>30 % environ</strong> | 80 %</li>
+
+<li>Sur un réseau urbain, un retour froid est : <strong>recherché</strong> | pénalisant</li>
+
+</ul>
+
+</div>
+
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">L&#39;excès d&#39;air : pourquoi on ne brûle jamais au strict nécessaire</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La combustion stœchiométrique est celle où l’air apporte <strong>exactement</strong> l’oxygène nécessaire. Elle donne le CO₂ maximal, <strong>11,7 %</strong> pour le gaz naturel, et la température de flamme la plus haute.</p>
+
+<p>Personne ne travaille là. Le mélange n’est jamais parfait : une molécule de méthane qui ne rencontre pas assez d’oxygène produit du <strong>monoxyde de carbone</strong>, qui est à la fois une perte d’énergie et un poison. On introduit donc un <strong>excès d’air</strong>, de l’ordre de 15 à 25 % en brûleur à air soufflé.</p>
+
+<p><strong>Ce que l’excès coûte.</strong> Tout l’air introduit est chauffé de la température ambiante à celle des fumées, puis rejeté. Chaque point de CO₂ perdu se paie en pertes : c’est le rapport A₂/CO₂ de Siegert.</p>
+
+<p><strong>Le réglage optimal</strong> est donc un compromis, et il se lit sur deux nombres à l’analyseur : <strong>CO₂ entre 9 et 11 %</strong> pour le gaz, <strong>CO sous 100 ppm</strong>. En dessous de 9 % de CO₂, on chauffe l’atmosphère ; au-dessus de 11, on prend le risque du CO.</p>
+
+<p><strong>Ce que cela change sur le terrain.</strong> Un brûleur atmosphérique ancien tourne à 6 ou 7 % de CO₂, sans réglage possible. C’est une raison suffisante de le remplacer, avant même de parler de condensation.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Le rendement saisonnier, et ce que la réglementation impose</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le rendement de plaque est mesuré <strong>à pleine charge, en régime établi</strong>. Il ne décrit aucune situation réelle : une chaudière passe sa vie entre 20 et 50 % de charge.</p>
+
+<p>Le <strong>rendement saisonnier ETAS</strong>, imposé par le règlement européen dit « écoconception », est calculé sur un profil conventionnel de charges : 100 %, puis une pondération dominée par la charge partielle à 30 %. Un appareil doit aujourd’hui atteindre <strong>86 % d’ETAS</strong> pour être vendu en chauffage, ce qui a de fait interdit les chaudières non condensation.</p>
+
+<p>Trois conséquences pratiques. D’abord, <strong>le rendement affiché sur les documentations n’est plus le même nombre qu’il y a quinze ans</strong> : comparer un catalogue de 2010 et un de 2024 sans le savoir donne des écarts absurdes. Ensuite, <strong>la modulation devient un critère de choix</strong> : une chaudière modulant de 100 à 20 % évite le court-cycle qu’une chaudière tout-ou-rien subit. Enfin, la <strong>régulation compte dans l’ETAS</strong> : une sonde extérieure et une régulation par loi d’eau apportent des points de bonus, ce qui fait du chapitre 13 un sujet économique, pas seulement technique.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« Cette chaudière fait 109 %, elle crée de l’énergie. »</strong> Elle n’en crée aucune : elle en récupère une que la convention du PCI avait décidé de ne pas compter. Sur PCS, elle est à 98 %. La bonne phrase mentionne toujours <strong>la référence</strong>.</p>
+
+<p><strong>« Il faut monter la température de la chaudière pour mieux condenser. »</strong> L’inverse exactement. La condensation dépend du <strong>retour froid</strong> ; monter le départ ne fait que monter le retour, et fait sortir de la condensation.</p>
+
+<p><strong>« Le bois est neutre en carbone. »</strong> L’affirmation est une convention comptable, pas un fait physique : la combustion émet bien du CO₂, et la neutralité suppose une forêt effectivement replantée et une dette carbone remboursée sur plusieurs décennies. En épreuve, on parle de <strong>combustible renouvelable</strong>, ce qui est exact, et non de combustible sans émission.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M4-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 4</span></a><a class="ap" href="M6-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 6</span></a></div></nav>
 <p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

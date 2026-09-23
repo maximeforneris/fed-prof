@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Manuel · chapitre 10</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="manuel/M10-MANUEL">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M9-MANUEL.html" rel="prev" title="Manuel · chapitre 9" aria-label="Manuel · chapitre 9">&lsaquo;</a><a class="fleche" href="M11-MANUEL.html" rel="next" title="Manuel · chapitre 11" aria-label="Manuel · chapitre 11">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M10-MANUEL">Marquer comme lu</button></div>
@@ -23,329 +31,643 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M9-MANUEL.html">Les six grandeurs d'un point</a></b><span class="ou">Manuel · chapitre 9</span><span class="car">chaque évolution est un segment entre deux points connus, et le chapitre 9 apprend à les placer.</span></li><li><b><a href="M1-MANUEL.html">Puissance égale débit fois écart</a></b><span class="ou">Manuel · chapitre 1</span><span class="car">Φ = qm × Δh est la formule du chapitre 1 avec l'enthalpie à la place de c × Δθ.</span></li><li><b>Le barycentre de deux points</b><span class="car">le mélange de deux airs est un barycentre pondéré par les débits, et la section 10.4 le suppose connu.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#10-1-chauffer-le-segment-horizontal">10.1 Chauffer : le segment horizontal</a><a href="#10-2-refroidir-deux-cas-et-il-faut-savoir-lequel">10.2 Refroidir : deux cas, et il faut savoir lequel</a><a href="#10-3-humidifier-deux-machines-deux-traces">10.3 Humidifier : deux machines, deux tracés</a><a href="#10-4-melanger-le-barycentre">10.4 Mélanger : le barycentre</a><a href="#10-5-le-bilan-d-un-local">10.5 Le bilan d’un local</a><a href="#10-6-le-calcul-retourne-trouver-les-conditions-de-soufflage">10.6 Le calcul retourné : trouver les conditions de soufflage</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
-<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
-<div class="etapes">
-<ol type="1">
-<li><strong>Tracer</strong> un chauffage, un refroidissement, une humidification et un mélange.</li>
-<li><strong>Séparer</strong> une puissance sensible d’une puissance latente, et dire à quoi sert la distinction.</li>
-<li><strong>Calculer</strong> un point de mélange par barycentre, et le vérifier sur le tracé.</li>
-<li><strong>Traiter</strong> une batterie froide avec condensation, ADP et facteur de by-pass compris.</li>
-<li><strong>Trouver</strong> les conditions de soufflage à partir des apports d’un local.</li>
-</ol>
-</div>
-<p><strong>A4-2 est au niveau 3</strong>, l’un des deux seuls savoirs fluides que le référentiel n’allège pas pour l’option C. C’est aussi le chapitre le plus rentable du manuel : <strong>19 % de l’épreuve, à chaque session</strong>.</p>
-<h2 id="10-1-chauffer-le-segment-horizontal">10.1 Chauffer : le segment horizontal</h2>
-<p>Un radiateur électrique dans une chambre ne fabrique pas d’eau. L’air se réchauffe, sa capacité à porter de l’eau augmente, donc <strong>son humidité relative tombe</strong> alors qu’il contient exactement la même quantité d’eau.</p>
-<div class="cle">
-<p>C’est pourquoi l’air d’un logement paraît sec en hiver. On n’a rien retiré : on a chauffé un air extérieur froid, qui contenait déjà peu d’eau, et le pourcentage s’est effondré. <strong>La sécheresse d’hiver est un effet du chauffage.</strong></p>
-</div>
-<div class="formule">
-<p><strong>Chauffage ou refroidissement sec : r constant, segment horizontal.</strong></p>
-<p><strong>Φ = qm × ( h₂ − h₁ )</strong> (Φ en kW, qm en kg d’air sec par seconde, h en kJ/kg)</p>
-<p>Forme approchée, très employée : <strong>Φ = qm × 1,02 × Δθ</strong></p>
-</div>
-<h3 id="exemple-résolu-1.-la-batterie-de-préchauffage">Exemple résolu 1. La batterie de préchauffage</h3>
-<p>Un air extérieur à <strong>0 °C et 80 %</strong> est porté à <strong>25 °C</strong>, débit <strong>2,0 kg/s</strong> d’air sec.</p>
-<p><strong>1. L’état de départ.</strong> p vs(0) = 611 Pa, donc p v = 489 Pa et r = 622 × 489 / 100 836 = <strong>3,02 g/kg</strong>. h₁ = 0 + 0,003 02 × 2 501 = <strong>7,6 kJ/kg</strong>.</p>
-<p><strong>2. L’état d’arrivée.</strong> r ne change pas. h₂ = 1,006 × 25 + 0,003 02 × (2 501 + 45,8) = 25,15 + 7,69 = <strong>32,8 kJ/kg</strong>.</p>
-<p><strong>3. La puissance.</strong> Φ = 2,0 × (32,8 − 7,6) = <strong>50,4 kW</strong>.</p>
-<p><strong>4. Le contrôle par la forme approchée.</strong> 2,0 × 1,02 × 25 = <strong>51 kW</strong>. Les deux concordent à 1 %.</p>
-<p><strong>5. L’humidité relative à l’arrivée.</strong> p v = 101 325 × 3,02 / 625 = 490 Pa, p vs(25) = 3 169 Pa, donc <strong>φ = 15 %</strong>. L’air est devenu très sec sans qu’on lui ait retiré un gramme d’eau.</p>
-<h2 id="10-2-refroidir-deux-cas-et-il-faut-savoir-lequel">10.2 Refroidir : deux cas, et il faut savoir lequel</h2>
-<figure class="schema"><div class="dessin" data-schema="bipasse-batterie"></div><figcaption>Une batterie froide ne traite pas tout l’air : une part le contourne. Le point de sortie est le mélange de l’air traité et de l’air resté intact.</figcaption></figure>
-<p><strong>Tant que la surface de la batterie reste au-dessus de la rosée</strong>, rien ne se condense : le tracé est <strong>horizontal vers la gauche</strong>, comme un chauffage à l’envers.</p>
-<p><strong>Dès que la surface passe sous la rosée de l’air</strong>, une partie de l’eau se dépose sur les ailettes. Le tracé <strong>descend</strong> vers la courbe de saturation, et la batterie <strong>déshumidifie</strong>.</p>
-<div class="formule">
-<p><strong>Le point de rosée de la batterie, ou ADP</strong> : le point de la courbe de saturation vers lequel tend l’air si la batterie est infiniment grande.</p>
-<p><strong>Facteur de by-pass : BF = ( θ sortie − ADP ) / ( θ entrée − ADP )</strong></p>
-<ul>
-<li>4 rangs : BF ≈ 0,10 à 0,15</li>
-<li>6 rangs : BF ≈ 0,05 à 0,08</li>
-<li>8 rangs : BF &lt; 0,05</li>
-</ul>
-</div>
-<div class="cle">
-<p>La batterie ne mélange pas volontairement : <strong>une partie de l’air passe entre les ailettes sans toucher de surface froide</strong>, et ressort inchangée. Le point de sortie est donc toujours <strong>sur le segment</strong> qui joint l’entrée à l’ADP, jamais sur la courbe de saturation.</p>
-</div>
-<div class="formule">
-<p><strong>Les deux puissances d’une batterie froide :</strong></p>
-<p><strong>Φ totale = qm × ( h entrée − h sortie )</strong></p>
-<p><strong>Φ sensible = qm × 1,02 × ( θ entrée − θ sortie )</strong></p>
-<p><strong>Φ latente = Φ totale − Φ sensible</strong>, c’est-à-dire l’eau condensée.</p>
-</div>
-<div class="piege">
-<p>Sur une batterie froide, calculer la puissance avec les seules <strong>températures</strong> oublie toute la part latente, qui vaut couramment <strong>30 à 40 % du total</strong> en été. C’est l’erreur la plus coûteuse du chapitre : on dimensionne alors un groupe froid deux tiers trop petit.</p>
-</div>
-<h2 id="10-3-humidifier-deux-machines-deux-traces">10.3 Humidifier : deux machines, deux tracés</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th></th>
-<th>Humidificateur <strong>à vapeur</strong></th>
-<th>Humidificateur <strong>adiabatique</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Ce qu’on injecte</td>
-<td>de la vapeur, déjà chaude</td>
-<td>de l’eau liquide, froide</td>
-</tr>
-<tr>
-<td>Tracé</td>
-<td><strong>vertical</strong>, θ quasi constante</td>
-<td><strong>oblique</strong>, à h constante</td>
-</tr>
-<tr>
-<td>Ce qui se passe</td>
-<td>on ajoute de l’eau et de l’énergie</td>
-<td>l’évaporation prend sa chaleur à l’air</td>
-</tr>
-<tr>
-<td>Effet sur θ</td>
-<td>+ 0,5 à 1 K</td>
-<td><strong>refroidit de 5 à 12 K</strong></td>
-</tr>
-<tr>
-<td>Énergie</td>
-<td>0,75 kWh par litre</td>
-<td>quasi nulle, sauf la pompe</td>
-</tr>
-<tr>
-<td>Risque sanitaire</td>
-<td>faible, l’eau est bouillie</td>
-<td><strong>légionelle</strong>, entretien strict</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>L’humidificateur adiabatique est le <strong>rafraîchisseur évaporatif</strong> du chapitre 9 : il refroidit gratuitement, en descendant le long d’une ligne d’enthalpie constante, et sa limite est la <strong>température humide</strong> de l’air. En climat sec, c’est de la climatisation sans machine frigorifique.</p>
-</div>
-<div class="formule">
-<p><strong>Débit d’eau à injecter : m eau = qm × ( r₂ − r₁ )</strong> (en g/s si r est en g/kg)</p>
-<p><strong>Puissance d’un humidificateur à vapeur : Φ ≈ 0,75 kWh par litre</strong>, soit 2 700 kJ par kilogramme.</p>
-</div>
-<h2 id="10-4-melanger-le-barycentre">10.4 Mélanger : le barycentre</h2>
-<p>Deux airs se rejoignent dans un caisson. Le point résultant est <strong>sur le segment qui les joint</strong>, et sa position dépend des débits.</p>
-<div class="formule">
-<p><strong>θ mélange = ( qm₁ θ₁ + qm₂ θ₂ ) / ( qm₁ + qm₂ )</strong></p>
-<p><strong>r mélange = ( qm₁ r₁ + qm₂ r₂ ) / ( qm₁ + qm₂ )</strong></p>
-<p><strong>h mélange = ( qm₁ h₁ + qm₂ h₂ ) / ( qm₁ + qm₂ )</strong></p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : pourquoi c&#39;est un barycentre, et pourquoi θ marche aussi</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Les deux bilans exacts.</strong> Le mélange conserve la masse d’air sec, la masse d’eau et l’énergie :</p>
-<p>qm₁ + qm₂ = qm · qm₁ r₁ + qm₂ r₂ = qm r · qm₁ h₁ + qm₂ h₂ = qm h</p>
-<p>Les deux dernières donnent directement r et h comme <strong>moyennes pondérées par les débits massiques</strong>. Sur un diagramme dont les axes sont r et h, cela place le point exactement au barycentre du segment.</p>
-<p><strong>Le point sur la température, qui n’est pas évident.</strong> La température n’est pas une grandeur conservative : rien n’impose a priori qu’elle se moyenne. Elle le fait pourtant, et voici pourquoi.</p>
-<p>En reportant h = 1,006 θ + r(2 501 + 1,83 θ) dans le bilan d’enthalpie, et en utilisant déjà le résultat sur r, tous les termes en r se simplifient. Il reste :</p>
-<p>qm₁ (1,006 + 1,83 r₁) θ₁ + qm₂ (1,006 + 1,83 r₂) θ₂ = qm (1,006 + 1,83 r) θ</p>
-<p><strong>L’approximation.</strong> Les coefficients (1,006 + 1,83 r) valent 1,019 pour un air à 7 g/kg et 1,024 pour un air à 10 g/kg : ils diffèrent de <strong>0,5 %</strong>. En les traitant comme égaux, ils se simplifient et il reste la moyenne pondérée des températures.</p>
-<p><strong>Quand elle tombe.</strong> L’écart devient sensible si les deux airs ont des humidités très différentes, par exemple un air extérieur d’hiver à 2 g/kg mélangé à un air de piscine à 18 g/kg : les coefficients valent alors 1,010 et 1,039, soit 3 % d’écart. Dans ces cas, <strong>on passe par les enthalpies</strong>, qui restent exactes.</p>
-<p><strong>Ce que le barycentre donne aussi</strong>, et qui sert à l’épreuve : la position du point sur le segment est <strong>inversement proportionnelle aux débits</strong>. Un mélange à 30 % d’air neuf place le point aux <strong>trois dixièmes</strong> du chemin depuis l’air recyclé vers l’air neuf. C’est vérifiable à la règle sur un tracé, et c’est le contrôle attendu.</p></div></details>
-</div><h3 id="exemple-résolu-2.-le-caisson-de-mélange-dune-cta">Exemple résolu 2. Le caisson de mélange d’une CTA</h3>
-<p><strong>1,0 kg/s</strong> d’air neuf à <strong>0 °C</strong> et <strong>3,0 g/kg</strong>, mélangé à <strong>3,0 kg/s</strong> d’air recyclé à <strong>22 °C</strong> et <strong>8,0 g/kg</strong>.</p>
-<p><strong>Le taux d’air neuf.</strong> 1,0 / 4,0 = <strong>25 %</strong>.</p>
-<p><strong>La température.</strong> (1,0 × 0 + 3,0 × 22) / 4,0 = <strong>16,5 °C</strong>.</p>
-<p><strong>L’humidité absolue.</strong> (1,0 × 3,0 + 3,0 × 8,0) / 4,0 = <strong>6,75 g/kg</strong>.</p>
-<p><strong>Le contrôle graphique.</strong> Le point est au quart du chemin depuis l’air recyclé vers l’air neuf. Sur le tracé, mesurer le segment et vérifier ce quart est la façon la plus rapide de valider le calcul.</p>
-<h2 id="10-5-le-bilan-d-un-local">10.5 Le bilan d’un local</h2>
-<p>Un local reçoit des apports, et l’air soufflé doit les compenser. Ces apports sont de deux natures, et elles ne se combattent pas de la même façon.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Origine</th>
-<th style="text-align: right;">Sensible</th>
-<th style="text-align: right;">Latente</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Occupant assis</td>
-<td style="text-align: right;">70 W</td>
-<td style="text-align: right;"><strong>45 W</strong></td>
-</tr>
-<tr>
-<td>Éclairage LED, par m²</td>
-<td style="text-align: right;">6 W</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr>
-<td>Poste informatique</td>
-<td style="text-align: right;">120 W</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr>
-<td>Ensoleillement, baie sud en été</td>
-<td style="text-align: right;">300 à 500 W/m²</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr>
-<td>Air neuf en été, par m³/h</td>
-<td style="text-align: right;">8 W</td>
-<td style="text-align: right;"><strong>6 W</strong></td>
-</tr>
-</tbody>
-</table></div>
-<div class="formule">
-<p><strong>Φ sensible = qm × 1,02 × ( θ local − θ soufflage )</strong></p>
-<p><strong>Φ latente = qm × 2 501 × ( r local − r soufflage ) / 1 000</strong></p>
-<p><strong>Facteur de chaleur sensible : SHF = Φ sensible / ( Φ sensible + Φ latente )</strong></p>
-</div>
-<div class="cle">
-<p>Le SHF est <strong>la pente de la droite de soufflage</strong> sur le diagramme. Un SHF de 1 donne un segment horizontal : que du sensible. Un SHF de 0,7, courant en salle occupée, donne un segment nettement incliné, et c’est lui qui impose l’humidité du point de soufflage.</p>
-</div>
-<h2 id="10-6-le-calcul-retourne-trouver-les-conditions-de-soufflage">10.6 Le calcul retourné : trouver les conditions de soufflage</h2>
-<p>C’est <strong>la</strong> question de projet, et la formulation d’épreuve la plus fréquente du chapitre : on connaît le local et ses apports, on cherche l’air à souffler.</p>
-<div class="etapes">
-<ol type="1">
-<li><strong>Fixer l’écart de soufflage.</strong> En confort, 8 à 12 K sous l’ambiance en refroidissement ; jamais plus de 15 K, sous peine de courant d’air froid.</li>
-<li><strong>Le débit vient du sensible</strong> : qm = Φ sensible / (1,02 × Δθ).</li>
-<li><strong>L’humidité de soufflage vient du latent</strong> : r soufflage = r local − Φ latente × 1 000 / (qm × 2 501).</li>
-<li><strong>Vérifier que le point obtenu est réalisable</strong> : son humidité relative doit rester sous 95 %, sinon la batterie ne peut pas l’atteindre.</li>
-<li><strong>Tracer la droite de soufflage</strong> et vérifier que sa pente correspond au SHF.</li>
-</ol>
-</div>
-<h3 id="exemple-résolu-3.-une-salle-de-réunion-en-été">Exemple résolu 3. Une salle de réunion en été</h3>
-<p>Local à <strong>26 °C et 50 %</strong>, apports <strong>sensibles 12 kW</strong> et <strong>latents 3 kW</strong>, soufflage à <strong>16 °C</strong>.</p>
-<p><strong>1. Le SHF.</strong> 12 / 15 = <strong>0,80</strong>.</p>
-<p><strong>2. Le débit.</strong> qm = 12 / (1,02 × 10) = <strong>1,18 kg/s</strong>, soit environ 1,18 × 3 000 = <strong>3 540 m³/h</strong>.</p>
-<p><strong>3. L’humidité du local.</strong> À 26 °C et 50 % : p vs = 3 361 Pa, p v = 1 680 Pa, r = <strong>10,5 g/kg</strong>.</p>
-<p><strong>4. L’humidité de soufflage.</strong> Δr = 3 × 1 000 / (1,18 × 2 501) = <strong>1,02 g/kg</strong>, donc r soufflage = 10,5 − 1,0 = <strong>9,5 g/kg</strong>.</p>
-<p><strong>5. La vérification.</strong> À 16 °C avec 9,5 g/kg : p v = 1 522 Pa, p vs(16) = 1 818 Pa, donc <strong>φ = 84 %</strong>. C’est réalisable par une batterie froide, dont la sortie se situe couramment entre 85 et 95 %.</p>
-<div class="cle">
-<p>Notez l’enchaînement, il est toujours le même : <strong>le sensible donne le débit, le latent donne l’humidité.</strong> Les deux sont indépendants, et c’est ce qui rend le calcul mécanique une fois l’écart de soufflage choisi.</p>
-</div>
-<div class="outil" data-outil="evolution">
-
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : quand le point de soufflage est impossible</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’étape 4 du calcul retourné n’est pas une formalité. Trois situations donnent un point irréalisable, et chacune a sa parade.</p>
-<p><strong>Le point tombe au-dessus de la saturation.</strong> Le SHF est trop bas : les apports latents dominent, et aucun air à cette température ne peut être aussi sec. Salle de sport, cuisine, piscine, vestiaire. <strong>La parade</strong> : refroidir davantage pour déshumidifier, puis <strong>réchauffer</strong> l’air avant de le souffler. Cette post-chauffe consomme du chaud et du froid en même temps, ce qui est coûteux mais parfois inévitable.</p>
-<p><strong>L’écart de soufflage devient trop grand.</strong> Le débit calculé est faible, donc l’air doit être très froid. En dessous de 14 °C soufflé en plafond, on crée des chutes d’air froid. <strong>La parade</strong> : augmenter le débit et réduire l’écart, ou changer de bouches pour un diffuseur à effet Coandă.</p>
-<p><strong>Le débit calculé est inférieur au débit hygiénique.</strong> Le sensible est faible mais il y a du monde. Le débit d’air neuf du chapitre 8 devient alors la contrainte dominante, et l’écart de soufflage se réduit d’autant. <strong>La parade</strong> : souffler à l’air neuf seul, sans recyclage, et traiter le résiduel par un émetteur d’eau.</p>
-<p><strong>Ce que ces trois cas ont en commun.</strong> Ils signalent qu’un système tout air n’est pas le bon choix. Un système <strong>mixte</strong>, air pour l’hygiène et eau pour la puissance, résout les trois à la fois : ventilo-convecteurs, poutres froides, plafonds rayonnants. C’est le raisonnement qu’un jury attend derrière la question « justifier le choix du système ».</p></div></details>
-</div><h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Valeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Chaleur massique de l’air humide, en pratique</td>
-<td><strong>1,02 kJ/(kg·K)</strong></td>
-</tr>
-<tr>
-<td>Chaleur latente employée dans les bilans</td>
-<td><strong>2 501 kJ/kg</strong></td>
-</tr>
-<tr>
-<td>Écart de soufflage en refroidissement</td>
-<td>8 à 12 K</td>
-</tr>
-<tr>
-<td>Écart de soufflage maximal admissible</td>
-<td>15 K</td>
-</tr>
-<tr>
-<td>Température de soufflage minimale en plafond</td>
-<td>14 °C</td>
-</tr>
-<tr>
-<td>Humidité relative en sortie de batterie froide</td>
-<td>85 à 95 %</td>
-</tr>
-<tr>
-<td>Facteur de by-pass, batterie 4 · 6 rangs</td>
-<td>0,10-0,15 · 0,05-0,08</td>
-</tr>
-<tr>
-<td>Part latente d’une batterie froide en été</td>
-<td><strong>30 à 40 %</strong></td>
-</tr>
-<tr>
-<td>SHF d’un bureau · d’une salle occupée</td>
-<td>0,90 · 0,70</td>
-</tr>
-<tr>
-<td>Apports d’un occupant, sensible et latent</td>
-<td>70 et 45 W</td>
-</tr>
-<tr>
-<td>Énergie d’un humidificateur à vapeur</td>
-<td>0,75 kWh par litre</td>
-</tr>
-<tr>
-<td>Refroidissement d’un adiabatique</td>
-<td>5 à 12 K</td>
-</tr>
-<tr>
-<td>Taux d’air neuf courant en tertiaire</td>
-<td>20 à 40 %</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le contrôle qui sauve : <strong>un point de mélange se situe toujours entre les deux airs mélangés</strong>, en température comme en humidité. Un résultat en dehors du segment est faux, sans qu’il soit besoin de refaire le calcul.</p>
-</div>
-<h2 id="s-entrainer">S’entraîner</h2>
-<section class="exo" id="M10-MANUEL-e1" data-exo="M10-MANUEL-e1" data-type="calcul" data-savoir="A4-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgbmJ0Y2x2eC41NnhgbnRqdngveGB4MQ14Jw=="><p class="k">Exercice · A4-2</p><h4>La puissance d’une batterie chaude</h4><div class="enonce">
-
-<p>Une batterie chauffe <strong>2,4 kg/s</strong> d’air de <strong>12 °C</strong> à <strong>32 °C</strong>, sans changer son humidité absolue. Quelle est sa puissance ?</p>
-</div><div class="indice" hidden>Un chauffage sans humidification est purement sensible : Φ = qm × 1,02 × Δθ, avec qm en kilogrammes d’air sec par seconde.</div></section>
-<section class="exo" id="M10-MANUEL-e2" data-exo="M10-MANUEL-e2" data-type="calcul" data-savoir="A4-2" data-a="IXgueGB4OTs2OS82eHZ4LHhga210bnZ4LjU2eGBpdGp2eC94YHgGL2pqOGoZeCc="><p class="k">Exercice · A4-2</p><h4>Le point de mélange</h4><div class="enonce">
-
-<p>On mélange <strong>0,9 kg/s</strong> d’air neuf à <strong>2 °C</strong> et <strong>3,5 g/kg</strong> avec <strong>2,1 kg/s</strong> d’air repris à <strong>24 °C</strong> et <strong>9,0 g/kg</strong>. Quelle est la température du mélange ?</p>
-</div><div class="indice" hidden>La température du mélange est la moyenne des deux températures, pondérée par les débits massiques. Divisez par le débit total, pas par deux.</div></section>
-<section class="exo" id="M10-MANUEL-e3" data-exo="M10-MANUEL-e3" data-type="calcul" data-savoir="A4-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgaW10YnZ4LjU2eGBpdGp2eC94YHgxPXUyeCc="><p class="k">Exercice · A4-2</p><h4>L’eau condensée</h4><div class="enonce">
-
-<p>Une batterie froide traite <strong>3,0 kg/s</strong> d’air et fait passer son humidité absolue de <strong>12,5</strong> à <strong>9,0 g/kg</strong>. Quelle masse d’eau condense-t-elle par heure ?</p>
-</div><div class="indice" hidden>L’eau retirée vaut le débit massique multiplié par la différence d’humidité absolue. Le résultat est en grammes par seconde : convertissez en kilogrammes par heure.</div></section>
-<section class="exo" id="M10-MANUEL-e4" data-exo="M10-MANUEL-e4" data-type="justification" data-savoir="A4-2" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · A4-2</p><h4>Une batterie froide qui ne déshumidifie pas</h4><div class="enonce">
-
-<p>En été, un local reste moite malgré une température tenue à 24 °C. Vous relevez en sortie de batterie froide un air à <strong>18 °C et 65 %</strong>. Expliquez ce qui se passe et ce que vous proposez.</p>
-</div><div class="indice" hidden>Une batterie qui déshumidifie fait sortir un air entre 85 et 95 % d’humidité relative. Comparez cette fourchette au relevé et demandez-vous si la surface de la batterie est passée sous la température de rosée de l’air entrant.</div><ul class="verifier" hidden><li>J’ai remarqué que l’air de sortie n’est pas proche de la saturation, donc que la batterie ne condense pas ou peu.</li><li>J’ai relié cela à une température de surface trop haute, donc à une eau glacée trop chaude ou à un débit d’eau insuffisant.</li><li>J’ai dit que la puissance est alors presque toute sensible, et que le latent n’est pas traité.</li><li>J’ai proposé une action : abaisser le régime d’eau glacée, vérifier le débit, ou augmenter le nombre de rangs.</li></ul></section>
-<h2 id="vous-verifier">Vous vérifier</h2>
-<div class="quiz">
-<ul>
-<li>Un chauffage sans humidification se trace : <strong>horizontalement</strong> | verticalement</li>
-<li>En chauffant, l’humidité relative : <strong>baisse</strong> | monte</li>
-<li>Une batterie froide déshumidifie si sa surface est : <strong>sous la rosée de l’air</strong> | sous 0 °C</li>
-<li>Le point de sortie d’une batterie est : <strong>entre l’entrée et l’ADP</strong> | sur la saturation</li>
-<li>Un facteur de by-pass de 0,10 signifie : <strong>10 % de l’air n’est pas traité</strong> | 10 % de perte</li>
-<li>Un humidificateur à vapeur se trace : <strong>verticalement</strong> | à enthalpie constante</li>
-<li>Un humidificateur adiabatique : <strong>refroidit l’air</strong> | le réchauffe</li>
-<li>Sa limite basse est : <strong>la température humide</strong> | la température de rosée</li>
-<li>Le point de mélange se place : <strong>sur le segment, au barycentre</strong> | au milieu</li>
-<li>La position sur le segment dépend : <strong>des débits massiques</strong> | des enthalpies</li>
-<li>Le SHF est : <strong>la pente de la droite de soufflage</strong> | un rendement</li>
-<li>Dans le calcul retourné, le débit vient : <strong>du sensible</strong> | du latent</li>
-<li>Un écart de soufflage de 20 K en refroidissement : <strong>crée des courants d’air froid</strong> | est recommandé</li>
-</ul>
-</div>
-<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi une batterie froide sort toujours vers 90 % et jamais à 100 %</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Sur tous les tracés de sujets, la sortie de batterie froide est placée entre 85 et 95 % d’humidité relative, jamais sur la courbe de saturation. Ce n’est pas une convention de dessin : c’est le facteur de by-pass du 10.2.</p>
-<p><strong>Le mécanisme, en détail.</strong> Une batterie est une forêt d’ailettes. L’air qui frôle une ailette est refroidi jusqu’à la température de surface, à peu près, et en ressort saturé. L’air qui passe <strong>au milieu du canal</strong>, entre deux ailettes, n’échange presque rien. À la sortie, ces deux airs se mélangent, et ce mélange est exactement le barycentre du 10.4.</p>
-<p><strong>Ce que cela donne en nombres.</strong> Avec un ADP de 10 °C, un air entrant à 26 °C et un BF de 0,10 : θ sortie = 10 + 0,10 × (26 − 10) = <strong>11,6 °C</strong>. Le point est à 90 % de la distance vers l’ADP, ce qui le place très près de la saturation, sans l’atteindre.</p>
-<p><strong>Pourquoi on ne cherche pas à l’atteindre.</strong> Descendre le BF à 0,02 demanderait une batterie deux fois plus profonde, donc deux fois plus de perte de charge d’air, donc un ventilateur plus gros qui consomme en permanence. <strong>Le point d’optimum économique est autour de 6 rangs</strong>, et c’est pourquoi presque toutes les CTA en ont entre 4 et 8.</p>
-<p><strong>La conséquence à retenir pour l’épreuve.</strong> Quand un sujet donne l’ADP et le facteur de by-pass, il attend le calcul ci-dessus. Quand il donne directement la sortie, il attend qu’on vérifie qu’elle est plausible, c’est-à-dire proche de la saturation sans y être.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un bureau d&#39;études calcule en plus : le bilan heure par heure</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le calcul de ce chapitre est un calcul <strong>au point de dimensionnement</strong> : la journée la plus chaude, l’occupation maximale, tous les apports en même temps. Il donne la puissance de la machine, et il la donne bien.</p>
-<p>Ce qu’il ne donne pas, c’est la <strong>consommation</strong>. Une salle de réunion occupée trois heures par jour n’a ses 15 kW d’apports que trois heures ; le reste du temps, la machine travaille à charge partielle, et c’est là que se joue la facture. Un logiciel de simulation dynamique reprend donc le même bilan <strong>8 760 fois</strong>, avec un fichier météo horaire, un scénario d’occupation et un modèle d’inertie du bâtiment.</p>
-<p><strong>Trois choses n’apparaissent que dans ce calcul-là.</strong> Le <strong>déphasage</strong> : les apports solaires du matin ressortent en charge l’après-midi, à travers l’inertie des planchers. La <strong>simultanéité</strong> : deux salles ne sont pas pleines au même moment, et le groupe froid central se dimensionne sur le maximum du total, pas sur le total des maximums, ce qui fait couramment gagner 20 %. Et le <strong>surdimensionnement en cascade</strong> : chaque étape du calcul manuel prend une marge, et les marges se multiplient.</p>
-<p><strong>Ce qui n’a pas changé.</strong> La simulation applique, heure après heure, exactement les formules de ce chapitre. Savoir les poser à la main reste la seule façon de détecter qu’un résultat de logiciel est faux, et c’est très précisément ce que l’épreuve vérifie.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La batterie froide assèche l’air. »</strong> Elle le refroidit sous sa température de rosée, et <strong>l’eau se dépose sur les ailettes</strong>. L’assèchement est une conséquence, pas une action : une batterie froide dont la surface reste au-dessus de la rosée ne retire pas un gramme d’eau, quelle que soit sa puissance.</p>
-<p><strong>« On souffle de l’air froid pour refroidir. »</strong> On souffle un air dont <strong>l’enthalpie</strong> est inférieure à celle du local, et c’est cet écart qui compte. Un air à 16 °C très humide peut rafraîchir moins qu’un air à 18 °C sec, alors que le thermomètre annonce le contraire.</p>
-<p><strong>« Le taux d’air neuf, c’est le débit d’air neuf. »</strong> C’est un <strong>rapport</strong> : débit d’air neuf sur débit soufflé total. La confusion coûte des points à chaque session, notamment quand l’énoncé donne des débits volumiques à des températures différentes : le taux se calcule sur les <strong>débits massiques d’air sec</strong>.</p></div></details>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Tracer</strong> un chauffage, un refroidissement, une humidification et un mélange.</li>
+
+<li><strong>Séparer</strong> une puissance sensible d’une puissance latente, et dire à quoi sert la distinction.</li>
+
+<li><strong>Calculer</strong> un point de mélange par barycentre, et le vérifier sur le tracé.</li>
+
+<li><strong>Traiter</strong> une batterie froide avec condensation, ADP et facteur de by-pass compris.</li>
+
+<li><strong>Trouver</strong> les conditions de soufflage à partir des apports d’un local.</li>
+
+</ol>
+
+</div>
+
+<p><strong>A4-2 est au niveau 3</strong>, l’un des deux seuls savoirs fluides que le référentiel n’allège pas pour l’option C. C’est aussi le chapitre le plus rentable du manuel : <strong>19 % de l’épreuve, à chaque session</strong>.</p>
+
+<h2 id="10-1-chauffer-le-segment-horizontal">10.1 Chauffer : le segment horizontal</h2>
+
+<p>Un radiateur électrique dans une chambre ne fabrique pas d’eau. L’air se réchauffe, sa capacité à porter de l’eau augmente, donc <strong>son humidité relative tombe</strong> alors qu’il contient exactement la même quantité d’eau.</p>
+
+<div class="cle">
+
+<p>C’est pourquoi l’air d’un logement paraît sec en hiver. On n’a rien retiré : on a chauffé un air extérieur froid, qui contenait déjà peu d’eau, et le pourcentage s’est effondré. <strong>La sécheresse d’hiver est un effet du chauffage.</strong></p>
+
+</div>
+
+<div class="formule">
+
+<p><strong>Chauffage ou refroidissement sec : r constant, segment horizontal.</strong></p>
+
+<p><strong>Φ = qm × ( h₂ − h₁ )</strong> (Φ en kW, qm en kg d’air sec par seconde, h en kJ/kg)</p>
+
+<p>Forme approchée, très employée : <strong>Φ = qm × 1,02 × Δθ</strong></p>
+
+</div>
+
+<h3 id="exemple-résolu-1.-la-batterie-de-préchauffage">Exemple résolu 1. La batterie de préchauffage</h3>
+
+<p>Un air extérieur à <strong>0 °C et 80 %</strong> est porté à <strong>25 °C</strong>, débit <strong>2,0 kg/s</strong> d’air sec.</p>
+
+<p><strong>1. L’état de départ.</strong> p vs(0) = 611 Pa, donc p v = 489 Pa et r = 622 × 489 / 100 836 = <strong>3,02 g/kg</strong>. h₁ = 0 + 0,003 02 × 2 501 = <strong>7,6 kJ/kg</strong>.</p>
+
+<p><strong>2. L’état d’arrivée.</strong> r ne change pas. h₂ = 1,006 × 25 + 0,003 02 × (2 501 + 45,8) = 25,15 + 7,69 = <strong>32,8 kJ/kg</strong>.</p>
+
+<p><strong>3. La puissance.</strong> Φ = 2,0 × (32,8 − 7,6) = <strong>50,4 kW</strong>.</p>
+
+<p><strong>4. Le contrôle par la forme approchée.</strong> 2,0 × 1,02 × 25 = <strong>51 kW</strong>. Les deux concordent à 1 %.</p>
+
+<p><strong>5. L’humidité relative à l’arrivée.</strong> p v = 101 325 × 3,02 / 625 = 490 Pa, p vs(25) = 3 169 Pa, donc <strong>φ = 15 %</strong>. L’air est devenu très sec sans qu’on lui ait retiré un gramme d’eau.</p>
+
+<h2 id="10-2-refroidir-deux-cas-et-il-faut-savoir-lequel">10.2 Refroidir : deux cas, et il faut savoir lequel</h2>
+
+<figure class="schema"><div class="dessin" data-schema="bipasse-batterie"></div><figcaption>Une batterie froide ne traite pas tout l’air : une part le contourne. Le point de sortie est le mélange de l’air traité et de l’air resté intact.</figcaption></figure>
+
+<p><strong>Tant que la surface de la batterie reste au-dessus de la rosée</strong>, rien ne se condense : le tracé est <strong>horizontal vers la gauche</strong>, comme un chauffage à l’envers.</p>
+
+<p><strong>Dès que la surface passe sous la rosée de l’air</strong>, une partie de l’eau se dépose sur les ailettes. Le tracé <strong>descend</strong> vers la courbe de saturation, et la batterie <strong>déshumidifie</strong>.</p>
+
+<div class="formule">
+
+<p><strong>Le point de rosée de la batterie, ou ADP</strong> : le point de la courbe de saturation vers lequel tend l’air si la batterie est infiniment grande.</p>
+
+<p><strong>Facteur de by-pass : BF = ( θ sortie − ADP ) / ( θ entrée − ADP )</strong></p>
+
+<ul>
+
+<li>4 rangs : BF ≈ 0,10 à 0,15</li>
+
+<li>6 rangs : BF ≈ 0,05 à 0,08</li>
+
+<li>8 rangs : BF &lt; 0,05</li>
+
+</ul>
+
+</div>
+
+<div class="cle">
+
+<p>La batterie ne mélange pas volontairement : <strong>une partie de l’air passe entre les ailettes sans toucher de surface froide</strong>, et ressort inchangée. Le point de sortie est donc toujours <strong>sur le segment</strong> qui joint l’entrée à l’ADP, jamais sur la courbe de saturation.</p>
+
+</div>
+
+<div class="formule">
+
+<p><strong>Les deux puissances d’une batterie froide :</strong></p>
+
+<p><strong>Φ totale = qm × ( h entrée − h sortie )</strong></p>
+
+<p><strong>Φ sensible = qm × 1,02 × ( θ entrée − θ sortie )</strong></p>
+
+<p><strong>Φ latente = Φ totale − Φ sensible</strong>, c’est-à-dire l’eau condensée.</p>
+
+</div>
+
+<div class="piege">
+
+<p>Sur une batterie froide, calculer la puissance avec les seules <strong>températures</strong> oublie toute la part latente, qui vaut couramment <strong>30 à 40 % du total</strong> en été. C’est l’erreur la plus coûteuse du chapitre : on dimensionne alors un groupe froid deux tiers trop petit.</p>
+
+</div>
+
+<h2 id="10-3-humidifier-deux-machines-deux-traces">10.3 Humidifier : deux machines, deux tracés</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th></th>
+
+<th>Humidificateur <strong>à vapeur</strong></th>
+
+<th>Humidificateur <strong>adiabatique</strong></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Ce qu’on injecte</td>
+
+<td>de la vapeur, déjà chaude</td>
+
+<td>de l’eau liquide, froide</td>
+
+</tr>
+
+<tr>
+
+<td>Tracé</td>
+
+<td><strong>vertical</strong>, θ quasi constante</td>
+
+<td><strong>oblique</strong>, à h constante</td>
+
+</tr>
+
+<tr>
+
+<td>Ce qui se passe</td>
+
+<td>on ajoute de l’eau et de l’énergie</td>
+
+<td>l’évaporation prend sa chaleur à l’air</td>
+
+</tr>
+
+<tr>
+
+<td>Effet sur θ</td>
+
+<td>+ 0,5 à 1 K</td>
+
+<td><strong>refroidit de 5 à 12 K</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Énergie</td>
+
+<td>0,75 kWh par litre</td>
+
+<td>quasi nulle, sauf la pompe</td>
+
+</tr>
+
+<tr>
+
+<td>Risque sanitaire</td>
+
+<td>faible, l’eau est bouillie</td>
+
+<td><strong>légionelle</strong>, entretien strict</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>L’humidificateur adiabatique est le <strong>rafraîchisseur évaporatif</strong> du chapitre 9 : il refroidit gratuitement, en descendant le long d’une ligne d’enthalpie constante, et sa limite est la <strong>température humide</strong> de l’air. En climat sec, c’est de la climatisation sans machine frigorifique.</p>
+
+</div>
+
+<div class="formule">
+
+<p><strong>Débit d’eau à injecter : m eau = qm × ( r₂ − r₁ )</strong> (en g/s si r est en g/kg)</p>
+
+<p><strong>Puissance d’un humidificateur à vapeur : Φ ≈ 0,75 kWh par litre</strong>, soit 2 700 kJ par kilogramme.</p>
+
+</div>
+
+<h2 id="10-4-melanger-le-barycentre">10.4 Mélanger : le barycentre</h2>
+
+<p>Deux airs se rejoignent dans un caisson. Le point résultant est <strong>sur le segment qui les joint</strong>, et sa position dépend des débits.</p>
+
+<div class="formule">
+
+<p><strong>θ mélange = ( qm₁ θ₁ + qm₂ θ₂ ) / ( qm₁ + qm₂ )</strong></p>
+
+<p><strong>r mélange = ( qm₁ r₁ + qm₂ r₂ ) / ( qm₁ + qm₂ )</strong></p>
+
+<p><strong>h mélange = ( qm₁ h₁ + qm₂ h₂ ) / ( qm₁ + qm₂ )</strong></p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : pourquoi c&#39;est un barycentre, et pourquoi θ marche aussi</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Les deux bilans exacts.</strong> Le mélange conserve la masse d’air sec, la masse d’eau et l’énergie :</p>
+
+<p>qm₁ + qm₂ = qm · qm₁ r₁ + qm₂ r₂ = qm r · qm₁ h₁ + qm₂ h₂ = qm h</p>
+
+<p>Les deux dernières donnent directement r et h comme <strong>moyennes pondérées par les débits massiques</strong>. Sur un diagramme dont les axes sont r et h, cela place le point exactement au barycentre du segment.</p>
+
+<p><strong>Le point sur la température, qui n’est pas évident.</strong> La température n’est pas une grandeur conservative : rien n’impose a priori qu’elle se moyenne. Elle le fait pourtant, et voici pourquoi.</p>
+
+<p>En reportant h = 1,006 θ + r(2 501 + 1,83 θ) dans le bilan d’enthalpie, et en utilisant déjà le résultat sur r, tous les termes en r se simplifient. Il reste :</p>
+
+<p>qm₁ (1,006 + 1,83 r₁) θ₁ + qm₂ (1,006 + 1,83 r₂) θ₂ = qm (1,006 + 1,83 r) θ</p>
+
+<p><strong>L’approximation.</strong> Les coefficients (1,006 + 1,83 r) valent 1,019 pour un air à 7 g/kg et 1,024 pour un air à 10 g/kg : ils diffèrent de <strong>0,5 %</strong>. En les traitant comme égaux, ils se simplifient et il reste la moyenne pondérée des températures.</p>
+
+<p><strong>Quand elle tombe.</strong> L’écart devient sensible si les deux airs ont des humidités très différentes, par exemple un air extérieur d’hiver à 2 g/kg mélangé à un air de piscine à 18 g/kg : les coefficients valent alors 1,010 et 1,039, soit 3 % d’écart. Dans ces cas, <strong>on passe par les enthalpies</strong>, qui restent exactes.</p>
+
+<p><strong>Ce que le barycentre donne aussi</strong>, et qui sert à l’épreuve : la position du point sur le segment est <strong>inversement proportionnelle aux débits</strong>. Un mélange à 30 % d’air neuf place le point aux <strong>trois dixièmes</strong> du chemin depuis l’air recyclé vers l’air neuf. C’est vérifiable à la règle sur un tracé, et c’est le contrôle attendu.</p></div></details>
+
+</div><h3 id="exemple-résolu-2.-le-caisson-de-mélange-dune-cta">Exemple résolu 2. Le caisson de mélange d’une CTA</h3>
+
+<p><strong>1,0 kg/s</strong> d’air neuf à <strong>0 °C</strong> et <strong>3,0 g/kg</strong>, mélangé à <strong>3,0 kg/s</strong> d’air recyclé à <strong>22 °C</strong> et <strong>8,0 g/kg</strong>.</p>
+
+<p><strong>Le taux d’air neuf.</strong> 1,0 / 4,0 = <strong>25 %</strong>.</p>
+
+<p><strong>La température.</strong> (1,0 × 0 + 3,0 × 22) / 4,0 = <strong>16,5 °C</strong>.</p>
+
+<p><strong>L’humidité absolue.</strong> (1,0 × 3,0 + 3,0 × 8,0) / 4,0 = <strong>6,75 g/kg</strong>.</p>
+
+<p><strong>Le contrôle graphique.</strong> Le point est au quart du chemin depuis l’air recyclé vers l’air neuf. Sur le tracé, mesurer le segment et vérifier ce quart est la façon la plus rapide de valider le calcul.</p>
+
+<h2 id="10-5-le-bilan-d-un-local">10.5 Le bilan d’un local</h2>
+
+<p>Un local reçoit des apports, et l’air soufflé doit les compenser. Ces apports sont de deux natures, et elles ne se combattent pas de la même façon.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Origine</th>
+
+<th style="text-align: right;">Sensible</th>
+
+<th style="text-align: right;">Latente</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Occupant assis</td>
+
+<td style="text-align: right;">70 W</td>
+
+<td style="text-align: right;"><strong>45 W</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Éclairage LED, par m²</td>
+
+<td style="text-align: right;">6 W</td>
+
+<td style="text-align: right;">0</td>
+
+</tr>
+
+<tr>
+
+<td>Poste informatique</td>
+
+<td style="text-align: right;">120 W</td>
+
+<td style="text-align: right;">0</td>
+
+</tr>
+
+<tr>
+
+<td>Ensoleillement, baie sud en été</td>
+
+<td style="text-align: right;">300 à 500 W/m²</td>
+
+<td style="text-align: right;">0</td>
+
+</tr>
+
+<tr>
+
+<td>Air neuf en été, par m³/h</td>
+
+<td style="text-align: right;">8 W</td>
+
+<td style="text-align: right;"><strong>6 W</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="formule">
+
+<p><strong>Φ sensible = qm × 1,02 × ( θ local − θ soufflage )</strong></p>
+
+<p><strong>Φ latente = qm × 2 501 × ( r local − r soufflage ) / 1 000</strong></p>
+
+<p><strong>Facteur de chaleur sensible : SHF = Φ sensible / ( Φ sensible + Φ latente )</strong></p>
+
+</div>
+
+<div class="cle">
+
+<p>Le SHF est <strong>la pente de la droite de soufflage</strong> sur le diagramme. Un SHF de 1 donne un segment horizontal : que du sensible. Un SHF de 0,7, courant en salle occupée, donne un segment nettement incliné, et c’est lui qui impose l’humidité du point de soufflage.</p>
+
+</div>
+
+<h2 id="10-6-le-calcul-retourne-trouver-les-conditions-de-soufflage">10.6 Le calcul retourné : trouver les conditions de soufflage</h2>
+
+<p>C’est <strong>la</strong> question de projet, et la formulation d’épreuve la plus fréquente du chapitre : on connaît le local et ses apports, on cherche l’air à souffler.</p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Fixer l’écart de soufflage.</strong> En confort, 8 à 12 K sous l’ambiance en refroidissement ; jamais plus de 15 K, sous peine de courant d’air froid.</li>
+
+<li><strong>Le débit vient du sensible</strong> : qm = Φ sensible / (1,02 × Δθ).</li>
+
+<li><strong>L’humidité de soufflage vient du latent</strong> : r soufflage = r local − Φ latente × 1 000 / (qm × 2 501).</li>
+
+<li><strong>Vérifier que le point obtenu est réalisable</strong> : son humidité relative doit rester sous 95 %, sinon la batterie ne peut pas l’atteindre.</li>
+
+<li><strong>Tracer la droite de soufflage</strong> et vérifier que sa pente correspond au SHF.</li>
+
+</ol>
+
+</div>
+
+<h3 id="exemple-résolu-3.-une-salle-de-réunion-en-été">Exemple résolu 3. Une salle de réunion en été</h3>
+
+<p>Local à <strong>26 °C et 50 %</strong>, apports <strong>sensibles 12 kW</strong> et <strong>latents 3 kW</strong>, soufflage à <strong>16 °C</strong>.</p>
+
+<p><strong>1. Le SHF.</strong> 12 / 15 = <strong>0,80</strong>.</p>
+
+<p><strong>2. Le débit.</strong> qm = 12 / (1,02 × 10) = <strong>1,18 kg/s</strong>, soit environ 1,18 × 3 000 = <strong>3 540 m³/h</strong>.</p>
+
+<p><strong>3. L’humidité du local.</strong> À 26 °C et 50 % : p vs = 3 361 Pa, p v = 1 680 Pa, r = <strong>10,5 g/kg</strong>.</p>
+
+<p><strong>4. L’humidité de soufflage.</strong> Δr = 3 × 1 000 / (1,18 × 2 501) = <strong>1,02 g/kg</strong>, donc r soufflage = 10,5 − 1,0 = <strong>9,5 g/kg</strong>.</p>
+
+<p><strong>5. La vérification.</strong> À 16 °C avec 9,5 g/kg : p v = 1 522 Pa, p vs(16) = 1 818 Pa, donc <strong>φ = 84 %</strong>. C’est réalisable par une batterie froide, dont la sortie se situe couramment entre 85 et 95 %.</p>
+
+<div class="cle">
+
+<p>Notez l’enchaînement, il est toujours le même : <strong>le sensible donne le débit, le latent donne l’humidité.</strong> Les deux sont indépendants, et c’est ce qui rend le calcul mécanique une fois l’écart de soufflage choisi.</p>
+
+</div>
+
+<div class="outil" data-outil="evolution">
+
+
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : quand le point de soufflage est impossible</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’étape 4 du calcul retourné n’est pas une formalité. Trois situations donnent un point irréalisable, et chacune a sa parade.</p>
+
+<p><strong>Le point tombe au-dessus de la saturation.</strong> Le SHF est trop bas : les apports latents dominent, et aucun air à cette température ne peut être aussi sec. Salle de sport, cuisine, piscine, vestiaire. <strong>La parade</strong> : refroidir davantage pour déshumidifier, puis <strong>réchauffer</strong> l’air avant de le souffler. Cette post-chauffe consomme du chaud et du froid en même temps, ce qui est coûteux mais parfois inévitable.</p>
+
+<p><strong>L’écart de soufflage devient trop grand.</strong> Le débit calculé est faible, donc l’air doit être très froid. En dessous de 14 °C soufflé en plafond, on crée des chutes d’air froid. <strong>La parade</strong> : augmenter le débit et réduire l’écart, ou changer de bouches pour un diffuseur à effet Coandă.</p>
+
+<p><strong>Le débit calculé est inférieur au débit hygiénique.</strong> Le sensible est faible mais il y a du monde. Le débit d’air neuf du chapitre 8 devient alors la contrainte dominante, et l’écart de soufflage se réduit d’autant. <strong>La parade</strong> : souffler à l’air neuf seul, sans recyclage, et traiter le résiduel par un émetteur d’eau.</p>
+
+<p><strong>Ce que ces trois cas ont en commun.</strong> Ils signalent qu’un système tout air n’est pas le bon choix. Un système <strong>mixte</strong>, air pour l’hygiène et eau pour la puissance, résout les trois à la fois : ventilo-convecteurs, poutres froides, plafonds rayonnants. C’est le raisonnement qu’un jury attend derrière la question « justifier le choix du système ».</p></div></details>
+
+</div><h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Valeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Chaleur massique de l’air humide, en pratique</td>
+
+<td><strong>1,02 kJ/(kg·K)</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Chaleur latente employée dans les bilans</td>
+
+<td><strong>2 501 kJ/kg</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Écart de soufflage en refroidissement</td>
+
+<td>8 à 12 K</td>
+
+</tr>
+
+<tr>
+
+<td>Écart de soufflage maximal admissible</td>
+
+<td>15 K</td>
+
+</tr>
+
+<tr>
+
+<td>Température de soufflage minimale en plafond</td>
+
+<td>14 °C</td>
+
+</tr>
+
+<tr>
+
+<td>Humidité relative en sortie de batterie froide</td>
+
+<td>85 à 95 %</td>
+
+</tr>
+
+<tr>
+
+<td>Facteur de by-pass, batterie 4 · 6 rangs</td>
+
+<td>0,10-0,15 · 0,05-0,08</td>
+
+</tr>
+
+<tr>
+
+<td>Part latente d’une batterie froide en été</td>
+
+<td><strong>30 à 40 %</strong></td>
+
+</tr>
+
+<tr>
+
+<td>SHF d’un bureau · d’une salle occupée</td>
+
+<td>0,90 · 0,70</td>
+
+</tr>
+
+<tr>
+
+<td>Apports d’un occupant, sensible et latent</td>
+
+<td>70 et 45 W</td>
+
+</tr>
+
+<tr>
+
+<td>Énergie d’un humidificateur à vapeur</td>
+
+<td>0,75 kWh par litre</td>
+
+</tr>
+
+<tr>
+
+<td>Refroidissement d’un adiabatique</td>
+
+<td>5 à 12 K</td>
+
+</tr>
+
+<tr>
+
+<td>Taux d’air neuf courant en tertiaire</td>
+
+<td>20 à 40 %</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le contrôle qui sauve : <strong>un point de mélange se situe toujours entre les deux airs mélangés</strong>, en température comme en humidité. Un résultat en dehors du segment est faux, sans qu’il soit besoin de refaire le calcul.</p>
+
+</div>
+
+<h2 id="s-entrainer">S’entraîner</h2>
+
+<section class="exo" id="M10-MANUEL-e1" data-exo="M10-MANUEL-e1" data-type="calcul" data-savoir="A4-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgbmJ0Y2x2eC41NnhgbnRqdngveGB4MQ14Jw=="><p class="k">Exercice · A4-2</p><h4>La puissance d’une batterie chaude</h4><div class="enonce">
+
+
+
+<p>Une batterie chauffe <strong>2,4 kg/s</strong> d’air de <strong>12 °C</strong> à <strong>32 °C</strong>, sans changer son humidité absolue. Quelle est sa puissance ?</p>
+
+</div><div class="indice" hidden>Un chauffage sans humidification est purement sensible : Φ = qm × 1,02 × Δθ, avec qm en kilogrammes d’air sec par seconde.</div></section>
+
+<section class="exo" id="M10-MANUEL-e2" data-exo="M10-MANUEL-e2" data-type="calcul" data-savoir="A4-2" data-a="IXgueGB4OTs2OS82eHZ4LHhga210bnZ4LjU2eGBpdGp2eC94YHgGL2pqOGoZeCc="><p class="k">Exercice · A4-2</p><h4>Le point de mélange</h4><div class="enonce">
+
+
+
+<p>On mélange <strong>0,9 kg/s</strong> d’air neuf à <strong>2 °C</strong> et <strong>3,5 g/kg</strong> avec <strong>2,1 kg/s</strong> d’air repris à <strong>24 °C</strong> et <strong>9,0 g/kg</strong>. Quelle est la température du mélange ?</p>
+
+</div><div class="indice" hidden>La température du mélange est la moyenne des deux températures, pondérée par les débits massiques. Divisez par le débit total, pas par deux.</div></section>
+
+<section class="exo" id="M10-MANUEL-e3" data-exo="M10-MANUEL-e3" data-type="calcul" data-savoir="A4-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgaW10YnZ4LjU2eGBpdGp2eC94YHgxPXUyeCc="><p class="k">Exercice · A4-2</p><h4>L’eau condensée</h4><div class="enonce">
+
+
+
+<p>Une batterie froide traite <strong>3,0 kg/s</strong> d’air et fait passer son humidité absolue de <strong>12,5</strong> à <strong>9,0 g/kg</strong>. Quelle masse d’eau condense-t-elle par heure ?</p>
+
+</div><div class="indice" hidden>L’eau retirée vaut le débit massique multiplié par la différence d’humidité absolue. Le résultat est en grammes par seconde : convertissez en kilogrammes par heure.</div></section>
+
+<section class="exo" id="M10-MANUEL-e4" data-exo="M10-MANUEL-e4" data-type="justification" data-savoir="A4-2" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · A4-2</p><h4>Une batterie froide qui ne déshumidifie pas</h4><div class="enonce">
+
+
+
+<p>En été, un local reste moite malgré une température tenue à 24 °C. Vous relevez en sortie de batterie froide un air à <strong>18 °C et 65 %</strong>. Expliquez ce qui se passe et ce que vous proposez.</p>
+
+</div><div class="indice" hidden>Une batterie qui déshumidifie fait sortir un air entre 85 et 95 % d’humidité relative. Comparez cette fourchette au relevé et demandez-vous si la surface de la batterie est passée sous la température de rosée de l’air entrant.</div><ul class="verifier" hidden><li>J’ai remarqué que l’air de sortie n’est pas proche de la saturation, donc que la batterie ne condense pas ou peu.</li><li>J’ai relié cela à une température de surface trop haute, donc à une eau glacée trop chaude ou à un débit d’eau insuffisant.</li><li>J’ai dit que la puissance est alors presque toute sensible, et que le latent n’est pas traité.</li><li>J’ai proposé une action : abaisser le régime d’eau glacée, vérifier le débit, ou augmenter le nombre de rangs.</li></ul></section>
+
+<h2 id="vous-verifier">Vous vérifier</h2>
+
+<div class="quiz">
+
+<ul>
+
+<li>Un chauffage sans humidification se trace : <strong>horizontalement</strong> | verticalement</li>
+
+<li>En chauffant, l’humidité relative : <strong>baisse</strong> | monte</li>
+
+<li>Une batterie froide déshumidifie si sa surface est : <strong>sous la rosée de l’air</strong> | sous 0 °C</li>
+
+<li>Le point de sortie d’une batterie est : <strong>entre l’entrée et l’ADP</strong> | sur la saturation</li>
+
+<li>Un facteur de by-pass de 0,10 signifie : <strong>10 % de l’air n’est pas traité</strong> | 10 % de perte</li>
+
+<li>Un humidificateur à vapeur se trace : <strong>verticalement</strong> | à enthalpie constante</li>
+
+<li>Un humidificateur adiabatique : <strong>refroidit l’air</strong> | le réchauffe</li>
+
+<li>Sa limite basse est : <strong>la température humide</strong> | la température de rosée</li>
+
+<li>Le point de mélange se place : <strong>sur le segment, au barycentre</strong> | au milieu</li>
+
+<li>La position sur le segment dépend : <strong>des débits massiques</strong> | des enthalpies</li>
+
+<li>Le SHF est : <strong>la pente de la droite de soufflage</strong> | un rendement</li>
+
+<li>Dans le calcul retourné, le débit vient : <strong>du sensible</strong> | du latent</li>
+
+<li>Un écart de soufflage de 20 K en refroidissement : <strong>crée des courants d’air froid</strong> | est recommandé</li>
+
+</ul>
+
+</div>
+
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi une batterie froide sort toujours vers 90 % et jamais à 100 %</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Sur tous les tracés de sujets, la sortie de batterie froide est placée entre 85 et 95 % d’humidité relative, jamais sur la courbe de saturation. Ce n’est pas une convention de dessin : c’est le facteur de by-pass du 10.2.</p>
+
+<p><strong>Le mécanisme, en détail.</strong> Une batterie est une forêt d’ailettes. L’air qui frôle une ailette est refroidi jusqu’à la température de surface, à peu près, et en ressort saturé. L’air qui passe <strong>au milieu du canal</strong>, entre deux ailettes, n’échange presque rien. À la sortie, ces deux airs se mélangent, et ce mélange est exactement le barycentre du 10.4.</p>
+
+<p><strong>Ce que cela donne en nombres.</strong> Avec un ADP de 10 °C, un air entrant à 26 °C et un BF de 0,10 : θ sortie = 10 + 0,10 × (26 − 10) = <strong>11,6 °C</strong>. Le point est à 90 % de la distance vers l’ADP, ce qui le place très près de la saturation, sans l’atteindre.</p>
+
+<p><strong>Pourquoi on ne cherche pas à l’atteindre.</strong> Descendre le BF à 0,02 demanderait une batterie deux fois plus profonde, donc deux fois plus de perte de charge d’air, donc un ventilateur plus gros qui consomme en permanence. <strong>Le point d’optimum économique est autour de 6 rangs</strong>, et c’est pourquoi presque toutes les CTA en ont entre 4 et 8.</p>
+
+<p><strong>La conséquence à retenir pour l’épreuve.</strong> Quand un sujet donne l’ADP et le facteur de by-pass, il attend le calcul ci-dessus. Quand il donne directement la sortie, il attend qu’on vérifie qu’elle est plausible, c’est-à-dire proche de la saturation sans y être.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un bureau d&#39;études calcule en plus : le bilan heure par heure</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le calcul de ce chapitre est un calcul <strong>au point de dimensionnement</strong> : la journée la plus chaude, l’occupation maximale, tous les apports en même temps. Il donne la puissance de la machine, et il la donne bien.</p>
+
+<p>Ce qu’il ne donne pas, c’est la <strong>consommation</strong>. Une salle de réunion occupée trois heures par jour n’a ses 15 kW d’apports que trois heures ; le reste du temps, la machine travaille à charge partielle, et c’est là que se joue la facture. Un logiciel de simulation dynamique reprend donc le même bilan <strong>8 760 fois</strong>, avec un fichier météo horaire, un scénario d’occupation et un modèle d’inertie du bâtiment.</p>
+
+<p><strong>Trois choses n’apparaissent que dans ce calcul-là.</strong> Le <strong>déphasage</strong> : les apports solaires du matin ressortent en charge l’après-midi, à travers l’inertie des planchers. La <strong>simultanéité</strong> : deux salles ne sont pas pleines au même moment, et le groupe froid central se dimensionne sur le maximum du total, pas sur le total des maximums, ce qui fait couramment gagner 20 %. Et le <strong>surdimensionnement en cascade</strong> : chaque étape du calcul manuel prend une marge, et les marges se multiplient.</p>
+
+<p><strong>Ce qui n’a pas changé.</strong> La simulation applique, heure après heure, exactement les formules de ce chapitre. Savoir les poser à la main reste la seule façon de détecter qu’un résultat de logiciel est faux, et c’est très précisément ce que l’épreuve vérifie.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La batterie froide assèche l’air. »</strong> Elle le refroidit sous sa température de rosée, et <strong>l’eau se dépose sur les ailettes</strong>. L’assèchement est une conséquence, pas une action : une batterie froide dont la surface reste au-dessus de la rosée ne retire pas un gramme d’eau, quelle que soit sa puissance.</p>
+
+<p><strong>« On souffle de l’air froid pour refroidir. »</strong> On souffle un air dont <strong>l’enthalpie</strong> est inférieure à celle du local, et c’est cet écart qui compte. Un air à 16 °C très humide peut rafraîchir moins qu’un air à 18 °C sec, alors que le thermomètre annonce le contraire.</p>
+
+<p><strong>« Le taux d’air neuf, c’est le débit d’air neuf. »</strong> C’est un <strong>rapport</strong> : débit d’air neuf sur débit soufflé total. La confusion coûte des points à chaque session, notamment quand l’énoncé donne des débits volumiques à des températures différentes : le taux se calcule sur les <strong>débits massiques d’air sec</strong>.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M9-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 9</span></a><a class="ap" href="M11-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 11</span></a></div></nav>
 <p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

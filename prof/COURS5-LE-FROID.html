@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Cours 5 — le froid, option B</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="prof/COURS5-LE-FROID" data-public="prof">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS4-PRODUIRE-REGULER.html" rel="prev" title="Cours 4 — produire et réguler" aria-label="Cours 4 — produire et réguler">&lsaquo;</a><a class="fleche" href="HABPROF1-CONDUIRE.html" rel="next" title="Hab prof — conduire" aria-label="Hab prof — conduire">&rsaquo;</a></span><button type="button" class="lu" data-lu="prof/COURS5-LE-FROID">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
@@ -23,277 +31,539 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="COURS4-PRODUIRE-REGULER.html">La pompe à chaleur et son cycle</a></b><span class="ou">Cours 4 — produire et réguler</span><span class="car">le froid est le même cycle regardé de l'autre côté ; le cours 5 ne le redémontre pas.</span></li><li><b><a href="COURS3-AIR-HUMIDE.html">L'air humide et le givre</a></b><span class="ou">Cours 3 — l'air humide</span><span class="car">un évaporateur qui travaille sous 0 °C givre, et le dégivrage se chiffre avec la teneur en eau de l'air du cours 3.</span></li><li><b><a href="COURS1-CHALEUR.html">Chaleur latente et constante de temps</a></b><span class="ou">Cours 1 — la chaleur</span><span class="car">le poulet qui refroidit par paliers traverse une chaleur latente de congélation, et son temps de refroidissement est une constante de temps.</span></li><li><b>Le référentiel des trois options, colonne A5</b><span class="car">le cours dit ce que l'option B exige et que l'option C ne demande pas ; la comparaison vient du référentiel, pas d'une opinion.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#l-ecart-releve-dans-le-referentiel">L’écart, relevé dans le référentiel</a><a href="#la-chambre-froide-en-sept-postes">La chambre froide, en sept postes</a><a href="#le-poulet-qui-refroidit-par-paliers">Le poulet qui refroidit par paliers</a><a href="#le-compresseur-qui-refoule-a-cent-quarante-degres">Le compresseur qui refoule à cent quarante degrés</a><a href="#l-huile-qui-reste-au-fond-de-l-evaporateur">L’huile qui reste au fond de l’évaporateur</a><a href="#le-tewi-et-le-parametre-qui-retourne-la-conclusion">Le TEWI, et le paramètre qui retourne la conclusion</a><a href="#trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#les-questions-d-etudiants-qui-destabilisent">Les questions d’étudiants qui déstabilisent</a></div></nav>
-<h2 id="l-ecart-releve-dans-le-referentiel">L’écart, relevé dans le référentiel</h2>
-<p>Voici la colonne A5 « Thermodynamique appliquée » du référentiel de mars 2014, pages 63 à 80, sans retouche. Trois colonnes : GCF pour l’option A, FCA pour l’option B, DBC pour la nôtre.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr>
-<th>Savoir A5</th>
-<th style="text-align: center;">GCF</th>
-<th style="text-align: center;">FCA</th>
-<th style="text-align: center;">DBC</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Descriptif fonctionnel : schéma, rôles des composants, niveaux de température, débits, puissances, COP et EER</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;"><strong>2</strong></td>
-</tr>
-<tr>
-<td>Impact environnemental : TEWI, bilan carbone</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;"><strong>3</strong></td>
-<td style="text-align: center;">2</td>
-</tr>
-<tr>
-<td>Les fluides frigorigènes : définition, propriétés, choix, domaine d’utilisation, GWP, ODP</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;"><strong>3</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
-</tr>
-<tr>
-<td>Les cycles frigorifiques : tracé et exploitation du diagramme enthalpique</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;"><strong>3</strong></td>
-<td style="text-align: center;">2</td>
-</tr>
-<tr>
-<td>Denrées : conservation, parasitologie, bactériologie, protocoles, bilan frigorifique en régime permanent</td>
-<td style="text-align: center;"><strong>0</strong></td>
-<td style="text-align: center;"><strong>3</strong></td>
-<td style="text-align: center;"><strong>0</strong></td>
-</tr>
-<tr>
-<td>Huiles frigorifiques : types, caractéristiques, domaine d’emploi</td>
-<td style="text-align: center;"><strong>0</strong></td>
-<td style="text-align: center;"><strong>3</strong></td>
-<td style="text-align: center;"><strong>0</strong></td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p><strong>L’option A n’est pas une option froid.</strong> Sur les cycles et sur les fluides elle est au niveau 2, comme nous ; elle ne gagne un cran que sur le descriptif fonctionnel. Les deux lignes qui font vraiment le frigoriste, les denrées et les huiles, valent <strong>zéro pour A comme pour C</strong> et <strong>trois pour B</strong>. Si l’on vous demande un jour « un cours de frigoriste option A », la réponse honnête est qu’il n’existe pas : c’est notre fiche, avec le fonctionnel poussé d’un cran.</p>
-</div>
-<div class="piege">
-<p><strong>Le sujet d’U41 est commun aux trois options</strong> — vérifié sur les sessions 2018 à 2026, c’est consigné dans <code>01-referentiel/bts-fed-c-u41.yml</code>. L’écart de niveau ne se joue donc pas sur cette épreuve : il se joue dans les unités professionnelles et dans le métier visé. Rien de cette page n’est exigible de vos étudiants, et il vaut mieux le leur dire d’emblée plutôt que de leur laisser croire qu’ils doivent l’apprendre.</p>
-</div>
-<h2 id="la-chambre-froide-en-sept-postes">La chambre froide, en sept postes</h2>
-<p>Une chambre froide est le seul objet du génie climatique dont le bilan ne se réduit pas à deux termes. On y compte sept apports, et leur hiérarchie se retourne selon l’usage — c’est ce retournement qui fait le savoir-faire.</p>
-<figure class="schema"><div class="dessin" data-schema="chambre-froide"></div><figcaption>Les sept apports, et l’évaporateur qui retire leur somme.</figcaption></figure>
-<div class="formule">
-<p><strong>1. Parois</strong> : Φ = U × S × Δθ, avec U = 1 / (Rsi + e/λ + Rse), λ du polyuréthane 0,023 W/(m·K)</p>
-<p><strong>2. Renouvellement d’air</strong> : Φ = n × V × ρ × Δh / 86 400, avec n en renouvellements par 24 h et <strong>Δh une différence d’enthalpies</strong>, pas de températures</p>
-<p><strong>3. Denrées</strong> : le sensible, le latent et le sensible sous zéro, divisés par 86 400</p>
-<p><strong>4. Respiration</strong> : 30 à 60 W par tonne à 5 °C, fruits et légumes seulement</p>
-<p><strong>5. Personnel</strong> : 250 à 400 W par personne, selon la température</p>
-<p><strong>6. Éclairage</strong> : 6 W par m² de sol, pendant la durée d’occupation</p>
-<p><strong>7. Ventilateurs et dégivrage</strong> : 5 à 8 % de la somme des six autres</p>
-</div>
-<div class="outil" data-outil="bilan-chambre-froide">
-
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : d&#39;où sort le 70 sur racine de V</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le renouvellement d’air d’un bâtiment se compte <strong>par occupant</strong> : c’est la respiration humaine qui commande, et le débit est proportionnel au nombre de personnes. Dans une chambre froide, personne ne séjourne. L’air entre par la <strong>porte qu’on ouvre</strong>, et la question devient : combien de fois par jour, et quelle fraction du volume est échangée à chaque fois ?</p>
-<p><strong>Le raisonnement dimensionnel.</strong> À chaque ouverture, l’échange se fait par une section de porte à peu près constante, sous l’effet d’un tirage lié à la hauteur de la porte, elle aussi à peu près constante. Le volume échangé par ouverture varie donc peu avec la taille de la chambre : appelons-le V₀. Le nombre d’ouvertures quotidiennes, lui, croît avec l’activité, donc grossièrement avec la <strong>surface au sol</strong>, donc avec V^(2/3).</p>
-<p>Le nombre de renouvellements, rapport du volume échangé au volume de la chambre, vaut alors n ≈ V₀ × V^(2/3) / V = V₀ × V^(−1/3). L’exposant théorique est donc −1/3, et les tables professionnelles retiennent −1/2, soit 70/√V. L’écart vient de ce que les grandes chambres sont mieux équipées — sas, portes rapides, rideaux — et pas seulement plus grandes.</p>
-<p><strong>Ce qu’il faut en retenir, et qui est vrai dans les deux formulations : le petit local est proportionnellement bien plus pénalisé.</strong> Une chambre de 25 m³ prend 14 volumes par jour, une de 400 m³ n’en prend que 3,5. À volume égal de marchandise, mieux vaut une grande chambre que quatre petites, et c’est un argument de conception qui se chiffre.</p>
-<p><strong>Et le poste est latent autant que sensible.</strong> L’air extérieur entre chaud et humide ; sa vapeur givre sur l’évaporateur. Sur une chambre négative, la part latente dépasse couramment la part sensible, et c’est elle qui fixe la fréquence des dégivrages. Un calcul mené en températures seules, sans passer par les enthalpies, sous-estime ce poste d’un facteur deux.</p></div></details>
-</div><div class="cle">
-<p><strong>Le calcul retourné.</strong> On ne cherche pas la puissance du besoin, on cherche celle du groupe : Φ installée = Φ bilan × 1,10 × 24 / heures de marche. Avec 16 heures en positif et 18 en négatif, le facteur vaut 1,65 ou 1,47. Un technicien qui dimensionne sur 24 heures installe une machine 40 % trop petite, et elle ne rattrapera jamais ses dégivrages.</p>
-</div>
-<h2 id="le-poulet-qui-refroidit-par-paliers">Le poulet qui refroidit par paliers</h2>
-<p>Sortez un poulet du four et posez-le au réfrigérateur avec une sonde à cœur. La température descend, puis s’arrête net autour de −2 °C, pendant des heures, avant de repartir. Rien n’est cassé : l’eau gèle.</p>
-<div class="formule">
-<p><strong>E = m·cp₁·(θ départ − θ congélation) + m·Lf + m·cp₂·(θ congélation − θ finale)</strong></p>
-<ul>
-<li><strong>cp₁</strong><span>: 3,2 à 4,1 kJ/(kg·K) au-dessus du point de congélation</span></li>
-<li><strong>cp₂</strong><span>: 1,7 à 2,0 kJ/(kg·K) en dessous, la glace conduisant autrement</span></li>
-<li><strong>Lf</strong><span>: 250 à 300 kJ/kg</span></li>
-</ul>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : pourquoi Lf vaut 280 et pas 334</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La chaleur latente de fusion de l’eau pure vaut <strong>334 kJ/kg</strong>. Une denrée n’est pas de l’eau pure : elle en contient une fraction, et cette fraction ne gèle même pas entièrement.</p>
-<p><strong>Premier facteur, la teneur en eau.</strong> Une viande maigre contient 75 % d’eau, un fruit 85 à 90 %, un fromage 40 %. La chaleur latente apparente vaut donc, en première approximation, 334 × teneur : 250 kJ/kg pour la viande, 290 pour le fruit, 134 pour le fromage.</p>
-<p><strong>Second facteur, l’abaissement cryoscopique.</strong> L’eau d’une denrée est une solution : sels, sucres, protéines. Elle ne gèle pas à 0 °C mais à −1 à −2 °C, et surtout elle <strong>ne gèle pas d’un coup</strong>. À mesure que la glace se forme, la solution restante se concentre et son point de congélation descend encore. À −18 °C, il reste couramment <strong>5 à 10 % d’eau non gelée</strong>.</p>
-<p><strong>Conséquence pratique, et elle est contre-intuitive.</strong> Le « palier » n’est pas un vrai palier : c’est une pente très faible, de −1 à −5 °C environ, où l’essentiel du latent est retiré. Les tables professionnelles donnent la chaleur à retirer <strong>entre deux températures</strong>, latent inclus, plutôt qu’un Lf isolé — c’est plus honnête et cela évite l’erreur de vouloir tout retirer à température constante.</p>
-<p><strong>Ce qui en découle pour le protocole.</strong> On ne pilote jamais un refroidissement au chronomètre : on le pilote à la <strong>sonde à cœur</strong>, parce que la surface peut être à −18 °C pendant que le cœur est encore à 0. C’est la raison technique de la règle sanitaire du refroidissement rapide, +63 à +10 °C en moins de deux heures, qui vise le cœur et non la surface.</p></div></details>
-</div><div class="outil" data-outil="temps-refroidissement">
-
-</div>
-<h2 id="le-compresseur-qui-refoule-a-cent-quarante-degres">Le compresseur qui refoule à cent quarante degrés</h2>
-<p>En froid négatif, le taux de compression dépasse 15. Ce n’est pas le COP qui devient inacceptable : c’est la température de refoulement.</p>
-<div class="formule">
-<p><strong>θ refoulement ≈ T aspiration × τ^((γ−1)/γ) − 273, corrigée du rendement isentropique</strong></p>
-<p>Au-delà de <strong>110 à 120 °C</strong>, l’huile se craque, se carbonise sur les clapets et perd sa viscosité. C’est la limite physique du mono-étage, et elle arrive bien avant que le COP ne devienne ridicule.</p>
-</div>
-<div class="outil" data-outil="cycle-bietage">
-
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : pourquoi la pression intermédiaire est la moyenne géométrique</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Deux étages, avec refroidissement complet entre les deux : la vapeur qui entre dans le second étage est ramenée à la saturation par la bouteille intermédiaire, donc <strong>les deux étages aspirent à la même température</strong>, à peu de chose près. C’est cette hypothèse qui rend le calcul faisable, et c’est elle qu’il faut énoncer.</p>
-<p><strong>Le travail total</strong>, en gaz parfait, s’écrit alors :</p>
-<p>w = cp·T·[ (pi/p0)^k − 1 ] + cp·T·[ (pk/pi)^k − 1 ], avec k = (γ−1)/γ</p>
-<p><strong>On dérive par rapport à pi</strong> et on annule :</p>
-<p>dw/dpi = cp·T·k·[ pi<sup>(k−1)/p0</sup>k − pk<sup>k·pi</sup>(−k−1) ] = 0</p>
-<p>d’où pi^(2k) = (p0·pk)^k, et donc :</p>
-<p><strong>pi = √(p0 × pk)</strong></p>
-<p><strong>Les deux étages ont alors le même taux</strong>, √(pk/p0) chacun : c’est le partage qui minimise le travail, et accessoirement celui qui égalise les températures de refoulement des deux machines.</p>
-<p><strong>Où l’hypothèse tombe.</strong> Si le refroidissement intermédiaire est <strong>partiel</strong> — injection partielle, échangeur au lieu d’une bouteille — le second étage aspire plus chaud, et l’optimum se déplace vers une pression intermédiaire <strong>plus basse</strong>, pour raccourcir le second étage. En pratique on retient pi = √(p0·pk) majorée de 5 à 10 %, et l’on vérifie les deux températures de refoulement.</p>
-<p><strong>Ce que la démonstration ne dit pas</strong>, et qui décide souvent : le choix entre deux compresseurs monoétagés en série, un compresseur bi-étagé, ou une <strong>cascade</strong> avec deux fluides différents. En dessous de −45 °C, aucun fluide unique ne tient les deux pressions ; on passe alors en cascade, un circuit CO₂ en bas et un circuit à fluide classique en haut.</p></div></details>
-</div><h2 id="l-huile-qui-reste-au-fond-de-l-evaporateur">L’huile qui reste au fond de l’évaporateur</h2>
-<p>Un compresseur perd de l’huile en permanence, en gouttelettes entraînées par la vapeur. Rien ne la ramène sinon cette vapeur. C’est un problème de vitesse, et il ne se voit sur aucun relevé de température ou de pression.</p>
-<div class="outil" data-outil="retour-huile">
-
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : la vitesse d&#39;entraînement, et pourquoi 6 m/s</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une gouttelette d’huile accrochée à la paroi d’une colonne montante subit son poids vers le bas et la traînée de la vapeur vers le haut. Elle remonte quand la traînée l’emporte.</p>
-<p><strong>Le bilan des deux forces.</strong> Le poids vaut ρ_huile·g·d³ à un coefficient près ; la traînée vaut C·ρ_vapeur·v²·d² au même titre. L’équilibre donne :</p>
-<p>v² ∝ (ρ_huile / ρ_vapeur) · g · d</p>
-<p><strong>Ce que cela enseigne, et c’est le point.</strong> La vitesse nécessaire varie comme <strong>l’inverse de la racine de la masse volumique de la vapeur</strong>. Or cette masse volumique s’effondre quand la pression baisse : 14 kg/m³ pour du R134a à 0 °C, mais 4,5 kg/m³ à −30 °C. <strong>C’est en froid négatif que le retour d’huile est le plus difficile</strong>, exactement là où le taux de compression est déjà le pire.</p>
-<p><strong>Les valeurs retenues par la profession</strong>, tirées d’essais et non du calcul : 6 m/s en colonne montante, 3 m/s en horizontale ou en descente, et 15 m/s en plafond pour le bruit et la perte de charge. Elles supposent une huile de viscosité courante et un tube propre.</p>
-<p><strong>Le piège de la modulation.</strong> Une machine à vitesse variable qui descend à 30 % voit sa vitesse de vapeur tomber à 30 %, soit 1,8 m/s : l’huile reste en bas et s’accumule dans l’évaporateur, où elle dégrade l’échange <strong>avant</strong> de manquer au compresseur. On y répond par une <strong>colonne double</strong> : une petite colonne, seule active à charge réduite, et un piège qui la met en service quand le débit tombe.</p>
-<p><strong>Le geste qui trompe.</strong> Ajouter de l’huile quand le carter est bas règle le symptôme pour une semaine et aggrave tout : l’huile ajoutée finit au même endroit, et l’évaporateur perd un peu plus d’échange à chaque fois.</p></div></details>
-</div><h2 id="le-tewi-et-le-parametre-qui-retourne-la-conclusion">Le TEWI, et le paramètre qui retourne la conclusion</h2>
-<div class="formule">
-<p><strong>TEWI = GWP·m·τ·n + GWP·m·(1 − α) + n·E·β</strong></p>
-<ul>
-<li><strong>τ</strong><span>: taux de fuite annuel · <strong>n</strong> : durée de vie · <strong>α</strong> : taux de récupération en fin de vie</span></li>
-<li><strong>E</strong><span>: consommation annuelle en kWh · <strong>β</strong> : contenu carbone du kWh</span></li>
-</ul>
-</div>
-<div class="outil" data-outil="tewi">
-
-</div>
-<div class="cle">
-<p>Le paramètre qui décide est <strong>β</strong>. À 60 g/kWh, valeur française, la part directe domine dès qu’il y a un peu de fuite : changer de fluide rapporte plus que tout gain de rendement. À 400 g/kWh, valeur d’un réseau charbonnier, c’est l’inverse, et un point de COP vaut mieux qu’une étanchéité parfaite. <strong>La bonne réponse dépend du pays</strong>, et c’est ce qui rend la question intéressante à poser en classe.</p>
-</div>
-<h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
-<h3 id="exercice-1.-le-bilan-dune-chambre-de-conservation">Exercice 1. Le bilan d’une chambre de conservation</h3>
-<p>Chambre de <strong>125 m³</strong>, consigne <strong>+2 °C</strong>, local à <strong>25 °C</strong>, panneaux de <strong>100 mm</strong>. Entrées : <strong>0,5 t/jour</strong> de produits laitiers à 8 °C. Marche 16 h/j.</p>
-<p><strong>1. Les parois.</strong> a = 125^(1/3) = 5,00 m, donc S = 6 × 25 = <strong>150 m²</strong>. U = 1/(0,13 + 0,100/0,023 + 0,04) = 1/4,52 = <strong>0,221 W/(m²·K)</strong>. Φ₁ = 0,221 × 150 × 23 = <strong>763 W</strong>.</p>
-<p><strong>2. Le renouvellement.</strong> n = 70/√125 = <strong>6,3 /jour</strong>. ρ = 353/275 = 1,28 kg/m³. Δh entre 25 °C à 60 % et 2 °C à 90 % = 55,4 − 11,8 = <strong>43,6 kJ/kg</strong>. Φ₂ = 6,3 × 125 × 1,28 × 43 600 / 86 400 = <strong>507 W</strong>.</p>
-<p><strong>3. Les denrées.</strong> 500 × 3,3 × (8 − 2) = 9 900 kJ/jour, soit <strong>115 W</strong>.</p>
-<p><strong>4. La respiration.</strong> Produits laitiers : <strong>0 W</strong>.</p>
-<p><strong>5. Le personnel.</strong> 2 × (270 − 12) × 2/24 = <strong>43 W</strong>.</p>
-<p><strong>6. L’éclairage.</strong> 6 × 25 × 4/24 = <strong>25 W</strong>.</p>
-<p><strong>7. Ventilateurs.</strong> 5 % de 1 453 = <strong>73 W</strong>.</p>
-<p><strong>Total : 1 526 W</strong>, majoré à <strong>1 679 W</strong>, à installer sur 16 h : 1 679 × 24/16 = <strong>2,52 kW</strong>.</p>
-<p><strong>La lecture.</strong> Les parois pèsent 50 %, le renouvellement 33 %. C’est une chambre de <strong>conservation</strong> : l’enveloppe commande, et passer à 140 mm d’isolant ferait gagner 212 W. Un technicien qui aurait dimensionné sur 24 h aurait installé 1,7 kW, et la chambre ne tiendrait pas sa consigne l’été.</p>
-<h3 id="exercice-2.-la-même-chambre-en-refroidissement">Exercice 2. La même chambre, en refroidissement</h3>
-<p>Tout est identique, mais on y fait entrer <strong>2,5 t/jour</strong> de viande à <strong>25 °C</strong>.</p>
-<p><strong>Les denrées.</strong> 2 500 × 3,2 × (25 − 2) = 184 000 kJ/jour = <strong>2 130 W</strong>.</p>
-<p><strong>Le total</strong> devient 763 + 507 + 2 130 + 0 + 43 + 25 = 3 468, plus 5 % = <strong>3 641 W</strong>, majoré <strong>4 005 W</strong>, soit <strong>6,01 kW</strong> à installer.</p>
-<p><strong>La lecture, et c’est le point de l’exercice.</strong> Les denrées pèsent maintenant <strong>58 %</strong> et les parois <strong>21 %</strong>. La même enveloppe, la même consigne, et la hiérarchie s’est inversée. <strong>Épaissir l’isolant ne rapporterait plus que 6 % du bilan</strong> : le levier est ailleurs, dans le prérefroidissement de la marchandise ou dans l’étalement des entrées.</p>
-<h3 id="exercice-3.-un-froid-négatif-et-la-décision-du-bi-étage">Exercice 3. Un froid négatif, et la décision du bi-étage</h3>
-<p>Chambre négative à <strong>−25 °C</strong>, condensation à <strong>40 °C</strong>, fluide <strong>R134a</strong>, puissance frigorifique <strong>8 kW</strong>.</p>
-<p><strong>1. Le taux de compression.</strong> p₀ = psat(−25) = <strong>1,06 bar</strong>, pk = psat(40) = <strong>10,17 bar</strong>, donc <strong>τ = 9,6</strong>.</p>
-<p><strong>2. La température de refoulement, en mono-étage.</strong> Avec γ = 1,12, k = 0,107 et une aspiration à −20 °C : T₂ isentropique = 253 × 9,6^0,107 = 322 K, soit 49 °C ; corrigée du rendement de 0,70, le refoulement réel atteint <strong>79 °C</strong>. C’est confortable.</p>
-<p><strong>3. La pression intermédiaire.</strong> pi = √(1,06 × 10,17) = <strong>3,29 bar</strong>, soit <strong>θi ≈ 3 °C</strong>. Chaque étage travaillerait alors à τ = 3,1.</p>
-<p><strong>4. La décision, et elle ne vient pas d’où l’on croit.</strong> À −35 °C, τ monte à <strong>15,4</strong> et le refoulement à <strong>88 °C seulement</strong> : avec le R134a, la température ne casse rien. Ce qui casse, c’est le <strong>rendement volumétrique</strong>. Pour un compresseur à piston à 5 % d’espace mort, ηv ≈ 1 − 0,05 (τ − 1) : il vaut <strong>0,57 à −25 °C</strong> et <strong>0,28 à −35 °C</strong>. Le compresseur aspire encore, mais ne refoule presque plus : il faudrait une cylindrée quatre fois plus grosse pour la même puissance frigorifique.</p>
-<div class="piege">
-<p><strong>Le fluide décide de quelle contrainte arrive la première.</strong> Le R134a a un γ faible, 1,12 : il s’échauffe peu, et c’est le rendement volumétrique qui le limite. L’<strong>ammoniac</strong>, avec γ = 1,31, s’échauffe beaucoup : en froid négatif c’est la température de refoulement qui borne, et c’est la raison historique du bi-étagé en froid industriel. La même installation, deux fluides, deux raisons opposées de passer à deux étages.</p>
-</div>
-<h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Valeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>λ du polyuréthane · U d’un panneau 100 mm</td>
-<td>0,023 W/(m·K) · <strong>0,22 W/(m²·K)</strong></td>
-</tr>
-<tr>
-<td>Renouvellements d’air</td>
-<td>≈ 70/√V par jour</td>
-</tr>
-<tr>
-<td>cp d’une denrée, avant · après congélation</td>
-<td>3,2-4,1 · 1,7-2,0 kJ/(kg·K)</td>
-</tr>
-<tr>
-<td>Chaleur latente de congélation</td>
-<td><strong>250 à 300 kJ/kg</strong></td>
-</tr>
-<tr>
-<td>Eau non gelée à −18 °C</td>
-<td>5 à 10 %</td>
-</tr>
-<tr>
-<td>Respiration, fruits et légumes à 5 °C</td>
-<td>30 à 60 W/t</td>
-</tr>
-<tr>
-<td>Personnel en chambre froide</td>
-<td>250 à 400 W</td>
-</tr>
-<tr>
-<td>Éclairage</td>
-<td>6 W/m²</td>
-</tr>
-<tr>
-<td>Ventilateurs et dégivrage</td>
-<td>5 à 8 % du bilan</td>
-</tr>
-<tr>
-<td>Marge, puis marche</td>
-<td>10 %, puis 16 ou 18 h/j</td>
-</tr>
-<tr>
-<td><strong>Chambre positive · négative</strong></td>
-<td><strong>30-70 · 50-120 W/m³</strong></td>
-</tr>
-<tr>
-<td>Refoulement maximal</td>
-<td>110 à 120 °C</td>
-</tr>
-<tr>
-<td>Frontière pratique du mono-étage</td>
-<td>≈ −30 °C d’évaporation</td>
-</tr>
-<tr>
-<td>Vitesse en colonne montante · horizontale</td>
-<td><strong>6 m/s</strong> · 3 m/s</td>
-</tr>
-<tr>
-<td>ρ vapeur R134a, 0 °C · −30 °C</td>
-<td>14 · 4,5 kg/m³</td>
-</tr>
-<tr>
-<td>Contenu carbone du kWh, France · charbon</td>
-<td>60 · 900 g</td>
-</tr>
-</tbody>
-</table></div>
-<h2 id="les-questions-d-etudiants-qui-destabilisent">Les questions d’étudiants qui déstabilisent</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi on ne met pas simplement plus d&#39;isolant ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que le poste des parois n’est dominant que dans un cas sur deux, et que l’isolant obéit à un rendement décroissant.</p>
-<p><strong>Le chiffrage, sur l’exercice 1.</strong> Passer de 100 à 140 mm fait tomber U de 0,221 à 0,160 W/(m²·K) : on gagne 210 W sur 1 554, soit <strong>13 % du bilan</strong>. Passer de 140 à 200 mm ne gagne plus que 130 W de plus. Chaque tranche coûte autant et rapporte moins : c’est la même courbe qu’au chapitre 1 du manuel.</p>
-<p><strong>Sur l’exercice 2</strong>, la même opération ne gagne plus que <strong>5 %</strong> du bilan, parce que ce sont les denrées qui commandent. La réponse à donner est donc : « montrez-moi d’abord la répartition des sept postes, et je vous dirai si l’isolant est le bon levier ».</p>
-<p><strong>Et il existe une limite physique</strong>, qu’on oublie souvent : au-delà de 200 mm, le pont thermique des fixations et des jonctions de panneaux pèse plus que l’épaisseur ajoutée. L’isolant continu cesse d’être le facteur limitant.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Le froid, c&#39;est bien de la chaleur en négatif ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Non, et c’est une confusion qui coûte cher dès qu’on écrit un bilan.</p>
-<p><strong>Il n’existe qu’une grandeur, la chaleur</strong>, et un sens de transfert. « Produire du froid » signifie extraire de la chaleur d’un endroit et la déposer ailleurs. Il n’y a pas de flux de froid, pas de « fuite de froid », et une chambre froide ne perd pas son froid : elle <strong>reçoit de la chaleur</strong> par ses parois.</p>
-<p><strong>Pourquoi la nuance compte.</strong> Un étudiant qui pense en « froid » écrit des bilans où les signes s’inversent au hasard, et il ne comprend pas pourquoi l’évaporateur, qui est le point le plus froid du circuit, est aussi celui qui <strong>reçoit</strong> de l’énergie. Le jour où il abordera le condenseur d’une pompe à chaleur, la même confusion lui fera écrire une puissance négative.</p>
-<p><strong>La formulation à installer tôt</strong> : on ne produit pas de froid, on <strong>déplace de la chaleur</strong>, et l’on paie ce déplacement. Elle rend le COP évident et le bilan de la machine — condenseur = évaporateur + compresseur — presque inutile à démontrer.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi mon congélateur domestique n&#39;a pas deux étages ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce qu’il évapore à −25 °C et condense à 35 °C, pas à 50, et parce que sa puissance est dérisoire.</p>
-<p><strong>Le taux de compression</strong> y vaut environ 8, pas 19 : le mono-étage tient. Le refoulement plafonne vers 90 °C, sous la limite de l’huile. Et surtout le compresseur est <strong>hermétique et refroidi par la vapeur aspirée</strong>, ce qui écrête la température.</p>
-<p><strong>Ce qui change en froid commercial</strong>, c’est la conjonction : évaporation à −35, condensation à 45 par temps chaud, et une puissance qui rend le surcoût du second étage négligeable devant la facture d’électricité. Le domestique n’a aucune de ces trois raisons.</p>
-<p><strong>La vraie réponse pédagogique</strong> est de faire déplacer le curseur : le même outil qui déclare « un seul étage suffit » à −25 °C bascule à −35 °C, et l’étudiant voit la frontière au lieu de la retenir.</p></div></details>
+<h2 id="l-ecart-releve-dans-le-referentiel">L’écart, relevé dans le référentiel</h2>
+
+<p>Voici la colonne A5 « Thermodynamique appliquée » du référentiel de mars 2014, pages 63 à 80, sans retouche. Trois colonnes : GCF pour l’option A, FCA pour l’option B, DBC pour la nôtre.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Savoir A5</th>
+
+<th style="text-align: center;">GCF</th>
+
+<th style="text-align: center;">FCA</th>
+
+<th style="text-align: center;">DBC</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Descriptif fonctionnel : schéma, rôles des composants, niveaux de température, débits, puissances, COP et EER</td>
+
+<td style="text-align: center;">3</td>
+
+<td style="text-align: center;">3</td>
+
+<td style="text-align: center;"><strong>2</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Impact environnemental : TEWI, bilan carbone</td>
+
+<td style="text-align: center;">2</td>
+
+<td style="text-align: center;"><strong>3</strong></td>
+
+<td style="text-align: center;">2</td>
+
+</tr>
+
+<tr>
+
+<td>Les fluides frigorigènes : définition, propriétés, choix, domaine d’utilisation, GWP, ODP</td>
+
+<td style="text-align: center;">2</td>
+
+<td style="text-align: center;"><strong>3</strong></td>
+
+<td style="text-align: center;"><strong>1</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Les cycles frigorifiques : tracé et exploitation du diagramme enthalpique</td>
+
+<td style="text-align: center;">2</td>
+
+<td style="text-align: center;"><strong>3</strong></td>
+
+<td style="text-align: center;">2</td>
+
+</tr>
+
+<tr>
+
+<td>Denrées : conservation, parasitologie, bactériologie, protocoles, bilan frigorifique en régime permanent</td>
+
+<td style="text-align: center;"><strong>0</strong></td>
+
+<td style="text-align: center;"><strong>3</strong></td>
+
+<td style="text-align: center;"><strong>0</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Huiles frigorifiques : types, caractéristiques, domaine d’emploi</td>
+
+<td style="text-align: center;"><strong>0</strong></td>
+
+<td style="text-align: center;"><strong>3</strong></td>
+
+<td style="text-align: center;"><strong>0</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p><strong>L’option A n’est pas une option froid.</strong> Sur les cycles et sur les fluides elle est au niveau 2, comme nous ; elle ne gagne un cran que sur le descriptif fonctionnel. Les deux lignes qui font vraiment le frigoriste, les denrées et les huiles, valent <strong>zéro pour A comme pour C</strong> et <strong>trois pour B</strong>. Si l’on vous demande un jour « un cours de frigoriste option A », la réponse honnête est qu’il n’existe pas : c’est notre fiche, avec le fonctionnel poussé d’un cran.</p>
+
+</div>
+
+<div class="piege">
+
+<p><strong>Le sujet d’U41 est commun aux trois options</strong> — vérifié sur les sessions 2018 à 2026, c’est consigné dans <code>01-referentiel/bts-fed-c-u41.yml</code>. L’écart de niveau ne se joue donc pas sur cette épreuve : il se joue dans les unités professionnelles et dans le métier visé. Rien de cette page n’est exigible de vos étudiants, et il vaut mieux le leur dire d’emblée plutôt que de leur laisser croire qu’ils doivent l’apprendre.</p>
+
+</div>
+
+<h2 id="la-chambre-froide-en-sept-postes">La chambre froide, en sept postes</h2>
+
+<p>Une chambre froide est le seul objet du génie climatique dont le bilan ne se réduit pas à deux termes. On y compte sept apports, et leur hiérarchie se retourne selon l’usage — c’est ce retournement qui fait le savoir-faire.</p>
+
+<figure class="schema"><div class="dessin" data-schema="chambre-froide"></div><figcaption>Les sept apports, et l’évaporateur qui retire leur somme.</figcaption></figure>
+
+<div class="formule">
+
+<p><strong>1. Parois</strong> : Φ = U × S × Δθ, avec U = 1 / (Rsi + e/λ + Rse), λ du polyuréthane 0,023 W/(m·K)</p>
+
+<p><strong>2. Renouvellement d’air</strong> : Φ = n × V × ρ × Δh / 86 400, avec n en renouvellements par 24 h et <strong>Δh une différence d’enthalpies</strong>, pas de températures</p>
+
+<p><strong>3. Denrées</strong> : le sensible, le latent et le sensible sous zéro, divisés par 86 400</p>
+
+<p><strong>4. Respiration</strong> : 30 à 60 W par tonne à 5 °C, fruits et légumes seulement</p>
+
+<p><strong>5. Personnel</strong> : 250 à 400 W par personne, selon la température</p>
+
+<p><strong>6. Éclairage</strong> : 6 W par m² de sol, pendant la durée d’occupation</p>
+
+<p><strong>7. Ventilateurs et dégivrage</strong> : 5 à 8 % de la somme des six autres</p>
+
+</div>
+
+<div class="outil" data-outil="bilan-chambre-froide">
+
+
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : d&#39;où sort le 70 sur racine de V</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le renouvellement d’air d’un bâtiment se compte <strong>par occupant</strong> : c’est la respiration humaine qui commande, et le débit est proportionnel au nombre de personnes. Dans une chambre froide, personne ne séjourne. L’air entre par la <strong>porte qu’on ouvre</strong>, et la question devient : combien de fois par jour, et quelle fraction du volume est échangée à chaque fois ?</p>
+
+<p><strong>Le raisonnement dimensionnel.</strong> À chaque ouverture, l’échange se fait par une section de porte à peu près constante, sous l’effet d’un tirage lié à la hauteur de la porte, elle aussi à peu près constante. Le volume échangé par ouverture varie donc peu avec la taille de la chambre : appelons-le V₀. Le nombre d’ouvertures quotidiennes, lui, croît avec l’activité, donc grossièrement avec la <strong>surface au sol</strong>, donc avec V^(2/3).</p>
+
+<p>Le nombre de renouvellements, rapport du volume échangé au volume de la chambre, vaut alors n ≈ V₀ × V^(2/3) / V = V₀ × V^(−1/3). L’exposant théorique est donc −1/3, et les tables professionnelles retiennent −1/2, soit 70/√V. L’écart vient de ce que les grandes chambres sont mieux équipées — sas, portes rapides, rideaux — et pas seulement plus grandes.</p>
+
+<p><strong>Ce qu’il faut en retenir, et qui est vrai dans les deux formulations : le petit local est proportionnellement bien plus pénalisé.</strong> Une chambre de 25 m³ prend 14 volumes par jour, une de 400 m³ n’en prend que 3,5. À volume égal de marchandise, mieux vaut une grande chambre que quatre petites, et c’est un argument de conception qui se chiffre.</p>
+
+<p><strong>Et le poste est latent autant que sensible.</strong> L’air extérieur entre chaud et humide ; sa vapeur givre sur l’évaporateur. Sur une chambre négative, la part latente dépasse couramment la part sensible, et c’est elle qui fixe la fréquence des dégivrages. Un calcul mené en températures seules, sans passer par les enthalpies, sous-estime ce poste d’un facteur deux.</p></div></details>
+
+</div><div class="cle">
+
+<p><strong>Le calcul retourné.</strong> On ne cherche pas la puissance du besoin, on cherche celle du groupe : Φ installée = Φ bilan × 1,10 × 24 / heures de marche. Avec 16 heures en positif et 18 en négatif, le facteur vaut 1,65 ou 1,47. Un technicien qui dimensionne sur 24 heures installe une machine 40 % trop petite, et elle ne rattrapera jamais ses dégivrages.</p>
+
+</div>
+
+<h2 id="le-poulet-qui-refroidit-par-paliers">Le poulet qui refroidit par paliers</h2>
+
+<p>Sortez un poulet du four et posez-le au réfrigérateur avec une sonde à cœur. La température descend, puis s’arrête net autour de −2 °C, pendant des heures, avant de repartir. Rien n’est cassé : l’eau gèle.</p>
+
+<div class="formule">
+
+<p><strong>E = m·cp₁·(θ départ − θ congélation) + m·Lf + m·cp₂·(θ congélation − θ finale)</strong></p>
+
+<ul>
+
+<li><strong>cp₁</strong><span>: 3,2 à 4,1 kJ/(kg·K) au-dessus du point de congélation</span></li>
+
+<li><strong>cp₂</strong><span>: 1,7 à 2,0 kJ/(kg·K) en dessous, la glace conduisant autrement</span></li>
+
+<li><strong>Lf</strong><span>: 250 à 300 kJ/kg</span></li>
+
+</ul>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : pourquoi Lf vaut 280 et pas 334</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La chaleur latente de fusion de l’eau pure vaut <strong>334 kJ/kg</strong>. Une denrée n’est pas de l’eau pure : elle en contient une fraction, et cette fraction ne gèle même pas entièrement.</p>
+
+<p><strong>Premier facteur, la teneur en eau.</strong> Une viande maigre contient 75 % d’eau, un fruit 85 à 90 %, un fromage 40 %. La chaleur latente apparente vaut donc, en première approximation, 334 × teneur : 250 kJ/kg pour la viande, 290 pour le fruit, 134 pour le fromage.</p>
+
+<p><strong>Second facteur, l’abaissement cryoscopique.</strong> L’eau d’une denrée est une solution : sels, sucres, protéines. Elle ne gèle pas à 0 °C mais à −1 à −2 °C, et surtout elle <strong>ne gèle pas d’un coup</strong>. À mesure que la glace se forme, la solution restante se concentre et son point de congélation descend encore. À −18 °C, il reste couramment <strong>5 à 10 % d’eau non gelée</strong>.</p>
+
+<p><strong>Conséquence pratique, et elle est contre-intuitive.</strong> Le « palier » n’est pas un vrai palier : c’est une pente très faible, de −1 à −5 °C environ, où l’essentiel du latent est retiré. Les tables professionnelles donnent la chaleur à retirer <strong>entre deux températures</strong>, latent inclus, plutôt qu’un Lf isolé — c’est plus honnête et cela évite l’erreur de vouloir tout retirer à température constante.</p>
+
+<p><strong>Ce qui en découle pour le protocole.</strong> On ne pilote jamais un refroidissement au chronomètre : on le pilote à la <strong>sonde à cœur</strong>, parce que la surface peut être à −18 °C pendant que le cœur est encore à 0. C’est la raison technique de la règle sanitaire du refroidissement rapide, +63 à +10 °C en moins de deux heures, qui vise le cœur et non la surface.</p></div></details>
+
+</div><div class="outil" data-outil="temps-refroidissement">
+
+
+
+</div>
+
+<h2 id="le-compresseur-qui-refoule-a-cent-quarante-degres">Le compresseur qui refoule à cent quarante degrés</h2>
+
+<p>En froid négatif, le taux de compression dépasse 15. Ce n’est pas le COP qui devient inacceptable : c’est la température de refoulement.</p>
+
+<div class="formule">
+
+<p><strong>θ refoulement ≈ T aspiration × τ^((γ−1)/γ) − 273, corrigée du rendement isentropique</strong></p>
+
+<p>Au-delà de <strong>110 à 120 °C</strong>, l’huile se craque, se carbonise sur les clapets et perd sa viscosité. C’est la limite physique du mono-étage, et elle arrive bien avant que le COP ne devienne ridicule.</p>
+
+</div>
+
+<div class="outil" data-outil="cycle-bietage">
+
+
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : pourquoi la pression intermédiaire est la moyenne géométrique</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Deux étages, avec refroidissement complet entre les deux : la vapeur qui entre dans le second étage est ramenée à la saturation par la bouteille intermédiaire, donc <strong>les deux étages aspirent à la même température</strong>, à peu de chose près. C’est cette hypothèse qui rend le calcul faisable, et c’est elle qu’il faut énoncer.</p>
+
+<p><strong>Le travail total</strong>, en gaz parfait, s’écrit alors :</p>
+
+<p>w = cp·T·[ (pi/p0)^k − 1 ] + cp·T·[ (pk/pi)^k − 1 ], avec k = (γ−1)/γ</p>
+
+<p><strong>On dérive par rapport à pi</strong> et on annule :</p>
+
+<p>dw/dpi = cp·T·k·[ pi<sup>(k−1)/p0</sup>k − pk<sup>k·pi</sup>(−k−1) ] = 0</p>
+
+<p>d’où pi^(2k) = (p0·pk)^k, et donc :</p>
+
+<p><strong>pi = √(p0 × pk)</strong></p>
+
+<p><strong>Les deux étages ont alors le même taux</strong>, √(pk/p0) chacun : c’est le partage qui minimise le travail, et accessoirement celui qui égalise les températures de refoulement des deux machines.</p>
+
+<p><strong>Où l’hypothèse tombe.</strong> Si le refroidissement intermédiaire est <strong>partiel</strong> — injection partielle, échangeur au lieu d’une bouteille — le second étage aspire plus chaud, et l’optimum se déplace vers une pression intermédiaire <strong>plus basse</strong>, pour raccourcir le second étage. En pratique on retient pi = √(p0·pk) majorée de 5 à 10 %, et l’on vérifie les deux températures de refoulement.</p>
+
+<p><strong>Ce que la démonstration ne dit pas</strong>, et qui décide souvent : le choix entre deux compresseurs monoétagés en série, un compresseur bi-étagé, ou une <strong>cascade</strong> avec deux fluides différents. En dessous de −45 °C, aucun fluide unique ne tient les deux pressions ; on passe alors en cascade, un circuit CO₂ en bas et un circuit à fluide classique en haut.</p></div></details>
+
+</div><h2 id="l-huile-qui-reste-au-fond-de-l-evaporateur">L’huile qui reste au fond de l’évaporateur</h2>
+
+<p>Un compresseur perd de l’huile en permanence, en gouttelettes entraînées par la vapeur. Rien ne la ramène sinon cette vapeur. C’est un problème de vitesse, et il ne se voit sur aucun relevé de température ou de pression.</p>
+
+<div class="outil" data-outil="retour-huile">
+
+
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : la vitesse d&#39;entraînement, et pourquoi 6 m/s</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une gouttelette d’huile accrochée à la paroi d’une colonne montante subit son poids vers le bas et la traînée de la vapeur vers le haut. Elle remonte quand la traînée l’emporte.</p>
+
+<p><strong>Le bilan des deux forces.</strong> Le poids vaut ρ_huile·g·d³ à un coefficient près ; la traînée vaut C·ρ_vapeur·v²·d² au même titre. L’équilibre donne :</p>
+
+<p>v² ∝ (ρ_huile / ρ_vapeur) · g · d</p>
+
+<p><strong>Ce que cela enseigne, et c’est le point.</strong> La vitesse nécessaire varie comme <strong>l’inverse de la racine de la masse volumique de la vapeur</strong>. Or cette masse volumique s’effondre quand la pression baisse : 14 kg/m³ pour du R134a à 0 °C, mais 4,5 kg/m³ à −30 °C. <strong>C’est en froid négatif que le retour d’huile est le plus difficile</strong>, exactement là où le taux de compression est déjà le pire.</p>
+
+<p><strong>Les valeurs retenues par la profession</strong>, tirées d’essais et non du calcul : 6 m/s en colonne montante, 3 m/s en horizontale ou en descente, et 15 m/s en plafond pour le bruit et la perte de charge. Elles supposent une huile de viscosité courante et un tube propre.</p>
+
+<p><strong>Le piège de la modulation.</strong> Une machine à vitesse variable qui descend à 30 % voit sa vitesse de vapeur tomber à 30 %, soit 1,8 m/s : l’huile reste en bas et s’accumule dans l’évaporateur, où elle dégrade l’échange <strong>avant</strong> de manquer au compresseur. On y répond par une <strong>colonne double</strong> : une petite colonne, seule active à charge réduite, et un piège qui la met en service quand le débit tombe.</p>
+
+<p><strong>Le geste qui trompe.</strong> Ajouter de l’huile quand le carter est bas règle le symptôme pour une semaine et aggrave tout : l’huile ajoutée finit au même endroit, et l’évaporateur perd un peu plus d’échange à chaque fois.</p></div></details>
+
+</div><h2 id="le-tewi-et-le-parametre-qui-retourne-la-conclusion">Le TEWI, et le paramètre qui retourne la conclusion</h2>
+
+<div class="formule">
+
+<p><strong>TEWI = GWP·m·τ·n + GWP·m·(1 − α) + n·E·β</strong></p>
+
+<ul>
+
+<li><strong>τ</strong><span>: taux de fuite annuel · <strong>n</strong> : durée de vie · <strong>α</strong> : taux de récupération en fin de vie</span></li>
+
+<li><strong>E</strong><span>: consommation annuelle en kWh · <strong>β</strong> : contenu carbone du kWh</span></li>
+
+</ul>
+
+</div>
+
+<div class="outil" data-outil="tewi">
+
+
+
+</div>
+
+<div class="cle">
+
+<p>Le paramètre qui décide est <strong>β</strong>. À 60 g/kWh, valeur française, la part directe domine dès qu’il y a un peu de fuite : changer de fluide rapporte plus que tout gain de rendement. À 400 g/kWh, valeur d’un réseau charbonnier, c’est l’inverse, et un point de COP vaut mieux qu’une étanchéité parfaite. <strong>La bonne réponse dépend du pays</strong>, et c’est ce qui rend la question intéressante à poser en classe.</p>
+
+</div>
+
+<h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
+
+<h3 id="exercice-1.-le-bilan-dune-chambre-de-conservation">Exercice 1. Le bilan d’une chambre de conservation</h3>
+
+<p>Chambre de <strong>125 m³</strong>, consigne <strong>+2 °C</strong>, local à <strong>25 °C</strong>, panneaux de <strong>100 mm</strong>. Entrées : <strong>0,5 t/jour</strong> de produits laitiers à 8 °C. Marche 16 h/j.</p>
+
+<p><strong>1. Les parois.</strong> a = 125^(1/3) = 5,00 m, donc S = 6 × 25 = <strong>150 m²</strong>. U = 1/(0,13 + 0,100/0,023 + 0,04) = 1/4,52 = <strong>0,221 W/(m²·K)</strong>. Φ₁ = 0,221 × 150 × 23 = <strong>763 W</strong>.</p>
+
+<p><strong>2. Le renouvellement.</strong> n = 70/√125 = <strong>6,3 /jour</strong>. ρ = 353/275 = 1,28 kg/m³. Δh entre 25 °C à 60 % et 2 °C à 90 % = 55,4 − 11,8 = <strong>43,6 kJ/kg</strong>. Φ₂ = 6,3 × 125 × 1,28 × 43 600 / 86 400 = <strong>507 W</strong>.</p>
+
+<p><strong>3. Les denrées.</strong> 500 × 3,3 × (8 − 2) = 9 900 kJ/jour, soit <strong>115 W</strong>.</p>
+
+<p><strong>4. La respiration.</strong> Produits laitiers : <strong>0 W</strong>.</p>
+
+<p><strong>5. Le personnel.</strong> 2 × (270 − 12) × 2/24 = <strong>43 W</strong>.</p>
+
+<p><strong>6. L’éclairage.</strong> 6 × 25 × 4/24 = <strong>25 W</strong>.</p>
+
+<p><strong>7. Ventilateurs.</strong> 5 % de 1 453 = <strong>73 W</strong>.</p>
+
+<p><strong>Total : 1 526 W</strong>, majoré à <strong>1 679 W</strong>, à installer sur 16 h : 1 679 × 24/16 = <strong>2,52 kW</strong>.</p>
+
+<p><strong>La lecture.</strong> Les parois pèsent 50 %, le renouvellement 33 %. C’est une chambre de <strong>conservation</strong> : l’enveloppe commande, et passer à 140 mm d’isolant ferait gagner 212 W. Un technicien qui aurait dimensionné sur 24 h aurait installé 1,7 kW, et la chambre ne tiendrait pas sa consigne l’été.</p>
+
+<h3 id="exercice-2.-la-même-chambre-en-refroidissement">Exercice 2. La même chambre, en refroidissement</h3>
+
+<p>Tout est identique, mais on y fait entrer <strong>2,5 t/jour</strong> de viande à <strong>25 °C</strong>.</p>
+
+<p><strong>Les denrées.</strong> 2 500 × 3,2 × (25 − 2) = 184 000 kJ/jour = <strong>2 130 W</strong>.</p>
+
+<p><strong>Le total</strong> devient 763 + 507 + 2 130 + 0 + 43 + 25 = 3 468, plus 5 % = <strong>3 641 W</strong>, majoré <strong>4 005 W</strong>, soit <strong>6,01 kW</strong> à installer.</p>
+
+<p><strong>La lecture, et c’est le point de l’exercice.</strong> Les denrées pèsent maintenant <strong>58 %</strong> et les parois <strong>21 %</strong>. La même enveloppe, la même consigne, et la hiérarchie s’est inversée. <strong>Épaissir l’isolant ne rapporterait plus que 6 % du bilan</strong> : le levier est ailleurs, dans le prérefroidissement de la marchandise ou dans l’étalement des entrées.</p>
+
+<h3 id="exercice-3.-un-froid-négatif-et-la-décision-du-bi-étage">Exercice 3. Un froid négatif, et la décision du bi-étage</h3>
+
+<p>Chambre négative à <strong>−25 °C</strong>, condensation à <strong>40 °C</strong>, fluide <strong>R134a</strong>, puissance frigorifique <strong>8 kW</strong>.</p>
+
+<p><strong>1. Le taux de compression.</strong> p₀ = psat(−25) = <strong>1,06 bar</strong>, pk = psat(40) = <strong>10,17 bar</strong>, donc <strong>τ = 9,6</strong>.</p>
+
+<p><strong>2. La température de refoulement, en mono-étage.</strong> Avec γ = 1,12, k = 0,107 et une aspiration à −20 °C : T₂ isentropique = 253 × 9,6^0,107 = 322 K, soit 49 °C ; corrigée du rendement de 0,70, le refoulement réel atteint <strong>79 °C</strong>. C’est confortable.</p>
+
+<p><strong>3. La pression intermédiaire.</strong> pi = √(1,06 × 10,17) = <strong>3,29 bar</strong>, soit <strong>θi ≈ 3 °C</strong>. Chaque étage travaillerait alors à τ = 3,1.</p>
+
+<p><strong>4. La décision, et elle ne vient pas d’où l’on croit.</strong> À −35 °C, τ monte à <strong>15,4</strong> et le refoulement à <strong>88 °C seulement</strong> : avec le R134a, la température ne casse rien. Ce qui casse, c’est le <strong>rendement volumétrique</strong>. Pour un compresseur à piston à 5 % d’espace mort, ηv ≈ 1 − 0,05 (τ − 1) : il vaut <strong>0,57 à −25 °C</strong> et <strong>0,28 à −35 °C</strong>. Le compresseur aspire encore, mais ne refoule presque plus : il faudrait une cylindrée quatre fois plus grosse pour la même puissance frigorifique.</p>
+
+<div class="piege">
+
+<p><strong>Le fluide décide de quelle contrainte arrive la première.</strong> Le R134a a un γ faible, 1,12 : il s’échauffe peu, et c’est le rendement volumétrique qui le limite. L’<strong>ammoniac</strong>, avec γ = 1,31, s’échauffe beaucoup : en froid négatif c’est la température de refoulement qui borne, et c’est la raison historique du bi-étagé en froid industriel. La même installation, deux fluides, deux raisons opposées de passer à deux étages.</p>
+
+</div>
+
+<h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 50%" />
+
+<col style="width: 50%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Valeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>λ du polyuréthane · U d’un panneau 100 mm</td>
+
+<td>0,023 W/(m·K) · <strong>0,22 W/(m²·K)</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Renouvellements d’air</td>
+
+<td>≈ 70/√V par jour</td>
+
+</tr>
+
+<tr>
+
+<td>cp d’une denrée, avant · après congélation</td>
+
+<td>3,2-4,1 · 1,7-2,0 kJ/(kg·K)</td>
+
+</tr>
+
+<tr>
+
+<td>Chaleur latente de congélation</td>
+
+<td><strong>250 à 300 kJ/kg</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Eau non gelée à −18 °C</td>
+
+<td>5 à 10 %</td>
+
+</tr>
+
+<tr>
+
+<td>Respiration, fruits et légumes à 5 °C</td>
+
+<td>30 à 60 W/t</td>
+
+</tr>
+
+<tr>
+
+<td>Personnel en chambre froide</td>
+
+<td>250 à 400 W</td>
+
+</tr>
+
+<tr>
+
+<td>Éclairage</td>
+
+<td>6 W/m²</td>
+
+</tr>
+
+<tr>
+
+<td>Ventilateurs et dégivrage</td>
+
+<td>5 à 8 % du bilan</td>
+
+</tr>
+
+<tr>
+
+<td>Marge, puis marche</td>
+
+<td>10 %, puis 16 ou 18 h/j</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Chambre positive · négative</strong></td>
+
+<td><strong>30-70 · 50-120 W/m³</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Refoulement maximal</td>
+
+<td>110 à 120 °C</td>
+
+</tr>
+
+<tr>
+
+<td>Frontière pratique du mono-étage</td>
+
+<td>≈ −30 °C d’évaporation</td>
+
+</tr>
+
+<tr>
+
+<td>Vitesse en colonne montante · horizontale</td>
+
+<td><strong>6 m/s</strong> · 3 m/s</td>
+
+</tr>
+
+<tr>
+
+<td>ρ vapeur R134a, 0 °C · −30 °C</td>
+
+<td>14 · 4,5 kg/m³</td>
+
+</tr>
+
+<tr>
+
+<td>Contenu carbone du kWh, France · charbon</td>
+
+<td>60 · 900 g</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<h2 id="les-questions-d-etudiants-qui-destabilisent">Les questions d’étudiants qui déstabilisent</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi on ne met pas simplement plus d&#39;isolant ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que le poste des parois n’est dominant que dans un cas sur deux, et que l’isolant obéit à un rendement décroissant.</p>
+
+<p><strong>Le chiffrage, sur l’exercice 1.</strong> Passer de 100 à 140 mm fait tomber U de 0,221 à 0,160 W/(m²·K) : on gagne 210 W sur 1 554, soit <strong>13 % du bilan</strong>. Passer de 140 à 200 mm ne gagne plus que 130 W de plus. Chaque tranche coûte autant et rapporte moins : c’est la même courbe qu’au chapitre 1 du manuel.</p>
+
+<p><strong>Sur l’exercice 2</strong>, la même opération ne gagne plus que <strong>5 %</strong> du bilan, parce que ce sont les denrées qui commandent. La réponse à donner est donc : « montrez-moi d’abord la répartition des sept postes, et je vous dirai si l’isolant est le bon levier ».</p>
+
+<p><strong>Et il existe une limite physique</strong>, qu’on oublie souvent : au-delà de 200 mm, le pont thermique des fixations et des jonctions de panneaux pèse plus que l’épaisseur ajoutée. L’isolant continu cesse d’être le facteur limitant.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Le froid, c&#39;est bien de la chaleur en négatif ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Non, et c’est une confusion qui coûte cher dès qu’on écrit un bilan.</p>
+
+<p><strong>Il n’existe qu’une grandeur, la chaleur</strong>, et un sens de transfert. « Produire du froid » signifie extraire de la chaleur d’un endroit et la déposer ailleurs. Il n’y a pas de flux de froid, pas de « fuite de froid », et une chambre froide ne perd pas son froid : elle <strong>reçoit de la chaleur</strong> par ses parois.</p>
+
+<p><strong>Pourquoi la nuance compte.</strong> Un étudiant qui pense en « froid » écrit des bilans où les signes s’inversent au hasard, et il ne comprend pas pourquoi l’évaporateur, qui est le point le plus froid du circuit, est aussi celui qui <strong>reçoit</strong> de l’énergie. Le jour où il abordera le condenseur d’une pompe à chaleur, la même confusion lui fera écrire une puissance négative.</p>
+
+<p><strong>La formulation à installer tôt</strong> : on ne produit pas de froid, on <strong>déplace de la chaleur</strong>, et l’on paie ce déplacement. Elle rend le COP évident et le bilan de la machine — condenseur = évaporateur + compresseur — presque inutile à démontrer.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi mon congélateur domestique n&#39;a pas deux étages ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce qu’il évapore à −25 °C et condense à 35 °C, pas à 50, et parce que sa puissance est dérisoire.</p>
+
+<p><strong>Le taux de compression</strong> y vaut environ 8, pas 19 : le mono-étage tient. Le refoulement plafonne vers 90 °C, sous la limite de l’huile. Et surtout le compresseur est <strong>hermétique et refroidi par la vapeur aspirée</strong>, ce qui écrête la température.</p>
+
+<p><strong>Ce qui change en froid commercial</strong>, c’est la conjonction : évaporation à −35, condensation à 45 par temps chaud, et une puissance qui rend le surcoût du second étage négligeable devant la facture d’électricité. Le domestique n’a aucune de ces trois raisons.</p>
+
+<p><strong>La vraie réponse pédagogique</strong> est de faire déplacer le curseur : le même outil qui déclare « un seul étage suffit » à −25 °C bascule à −35 °C, et l’étudiant voit la frontière au lieu de la retenir.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="COURS4-PRODUIRE-REGULER.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Cours 4 — produire et réguler</span></a><a class="ap" href="HABPROF1-CONDUIRE.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Hab prof — conduire</span></a></div></nav>
 <p class="pied">Page de formation. Elle contient des réponses, des démonstrations et des corrigés, c'est ce qui la distingue des pages étudiantes.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

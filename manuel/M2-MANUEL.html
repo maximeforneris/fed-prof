@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Manuel · chapitre 2</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="manuel/M2-MANUEL">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M1-MANUEL.html" rel="prev" title="Manuel · chapitre 1" aria-label="Manuel · chapitre 1">&lsaquo;</a><a class="fleche" href="M3-MANUEL.html" rel="next" title="Manuel · chapitre 3" aria-label="Manuel · chapitre 3">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M2-MANUEL">Marquer comme lu</button></div>
@@ -23,381 +31,747 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M1-MANUEL.html">Le bilan thermique d'un bâtiment</a></b><span class="ou">Manuel · chapitre 1</span><span class="car">un réseau transporte la puissance que le bilan du chapitre 1 a calculée.</span></li><li><b>Masse volumique et capacité thermique de l'eau</b><span class="car">le nombre 1 163 en sort, et la section 2.2 le démontre à partir de ces deux constantes.</span></li><li><b>Aires et débits</b><span class="car">section d'un tube en m², débit en m³/h et en L/s ; la vitesse est un débit divisé par une section.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#2-1-un-reseau-ne-transporte-pas-de-la-chaleur">2.1 Un réseau ne transporte pas de la chaleur</a><a href="#2-2-d-ou-sort-le-nombre-1-163">2.2 D’où sort le nombre 1 163</a><a href="#2-3-le-regime-de-temperature-decide-de-tout">2.3 Le régime de température décide de tout</a><a href="#2-4-les-trois-architectures">2.4 Les trois architectures</a><a href="#2-5-la-vitesse-le-diametre-et-le-bruit">2.5 La vitesse, le diamètre et le bruit</a><a href="#2-6-le-calcul-retourne-choisir-le-diametre">2.6 Le calcul retourné : choisir le diamètre</a><a href="#2-7-le-vase-d-expansion">2.7 Le vase d’expansion</a><a href="#2-8-ce-que-le-reseau-perd-en-route">2.8 Ce que le réseau perd en route</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
-<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
-<div class="etapes">
-<ol type="1">
-<li><strong>Passer</strong> d’une puissance à un débit, dans les deux sens, sans hésiter.</li>
-<li><strong>Démontrer</strong> d’où vient la constante 1 163, et dire quand elle cesse d’être vraie.</li>
-<li><strong>Reconnaître</strong> un bitube, un monotube et une pieuvre sur un plan.</li>
-<li><strong>Choisir</strong> un diamètre à partir d’une puissance et d’une vitesse admissible.</li>
-<li><strong>Expliquer</strong> à quoi sert un vase d’expansion, et ce qui arrive s’il manque.</li>
-</ol>
-</div>
-<p>Le chapitre 1 s’est arrêté à une puissance. Celui-ci commence exactement là, et finit sur un diamètre de tube : c’est le premier calcul de dimensionnement du métier.</p>
-<h2 id="2-1-un-reseau-ne-transporte-pas-de-la-chaleur">2.1 Un réseau ne transporte pas de la chaleur</h2>
-<p>Ouvrez un robinet d’eau chaude et laissez couler dans un seau. Vous n’avez pas déplacé de la chaleur : vous avez déplacé <strong>de l’eau qui en contient</strong>. Le seau est chaud parce qu’il est plein, pas parce qu’un flux thermique l’a traversé.</p>
-<p>Un réseau de chauffage fait la même chose en boucle. Il envoie de l’eau chaude, la fait passer dans les radiateurs, et récupère la même eau <strong>refroidie</strong>. La chaleur livrée est la différence entre ce qui part et ce qui revient.</p>
-<div class="cle">
-<p>Ce sont donc <strong>deux nombres</strong> qui décident de la puissance transportée : combien d’eau circule, et de combien elle se refroidit en route. Ni l’un ni l’autre pris seul ne dit quoi que ce soit.</p>
-</div>
-<div class="formule">
-<p><strong>Φ = qm × c × Δθ</strong></p>
-<ul>
-<li><strong>qm</strong><span>: débit massique, en kg/s</span></li>
-<li><strong>c</strong><span>: chaleur massique de l’eau, <strong>4 185 J/(kg·K)</strong></span></li>
-<li><strong>Δθ</strong><span>: refroidissement de l’eau entre le départ et le retour, en K</span></li>
-<li><strong>Φ</strong><span>: puissance transportée, en W</span></li>
-</ul>
-</div>
-<p>C’est la même équation que le chapitre 1, écrite autrement. Là, une paroi laissait passer un flux ; ici, un fluide l’emporte avec lui.</p>
-<h2 id="2-2-d-ou-sort-le-nombre-1-163">2.2 D’où sort le nombre 1 163</h2>
-<p>Personne, sur un chantier, n’écrit des kilogrammes par seconde. On écrit des <strong>litres par heure</strong>, et on utilise une constante toute faite. La voici, construite.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : de 4 185 J/(kg·K) à 1,163 Wh/(L·K)</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Partons de Φ = qm × c × Δθ, avec qm en kg/s.</p>
-<p><strong>Première substitution, la masse.</strong> L’eau a une masse volumique de 1 000 kg/m³, soit <strong>1 kg par litre</strong>. Un débit de Q litres par heure est donc un débit de Q kilogrammes par heure.</p>
-<p><strong>Deuxième substitution, le temps.</strong> Q kg par heure font Q/3 600 kg par seconde.</p>
-<p>En remplaçant :</p>
-<p>Φ = (Q / 3 600) × 4 185 × Δθ = Q × (4 185 / 3 600) × Δθ = <strong>Q × 1,1625 × Δθ</strong></p>
-<p>Arrondi à <strong>1,163</strong>, et le résultat est en watts quand Q est en litres par heure.</p>
-<p><strong>Autre lecture, plus parlante.</strong> 4 185 J, c’est 4 185 / 3 600 = 1,163 wattheure. Élever un litre d’eau d’un degré coûte donc <strong>1,163 Wh</strong>. La constante n’est pas une formule : c’est une conversion de joules en wattheures.</p>
-<p><strong>Les trois hypothèses qui la portent.</strong></p>
-<ol type="1">
-<li><strong>ρ = 1 000 kg/m³.</strong> Vraie à 4 °C. À 80 °C l’eau ne pèse plus que 972 kg/m³, soit <strong>2,8 % de moins</strong>. La constante devrait valoir 1,130.</li>
-<li><strong>c = 4 185 J/(kg·K).</strong> À 80 °C, c vaut plutôt 4 196, soit <strong>0,3 % de plus</strong>.</li>
-<li><strong>Régime permanent, pas de perte en ligne.</strong> Toute la chaleur perdue par l’eau est supposée arriver aux émetteurs.</li>
-</ol>
-<p>Les deux premières erreurs jouent <strong>en sens contraire</strong> et se compensent partiellement : l’écart réel sur un circuit à 80 °C est de l’ordre de 2,5 %, toujours dans le sens d’une constante surestimée. Pour un dimensionnement, où l’on majore de toute façon, c’est sans effet. Pour un <strong>comptage d’énergie</strong>, ce n’est plus vrai : un compteur d’énergie thermique mesure la température et corrige la masse volumique, sans quoi il facturerait 2 à 3 % de trop.</p></div></details>
-</div><div class="formule">
-<p><strong>Φ = Q × 1,163 × Δθ</strong> (Q en L/h, Δθ en K, Φ en W)</p>
-<p>Retournée, c’est elle qu’on utilise le plus souvent :</p>
-<p><strong>Q = Φ / (1,163 × Δθ)</strong></p>
-</div>
-<div class="piege">
-<p>Δθ n’est <strong>jamais</strong> l’écart entre l’eau et l’air du local. C’est l’écart entre <strong>le départ et le retour</strong> du circuit. Confondre les deux est l’erreur numéro un du chapitre, et elle donne des débits faux d’un facteur 3 à 5.</p>
-</div>
-<div class="outil" data-outil="reseau">
-
-</div>
-<h2 id="2-3-le-regime-de-temperature-decide-de-tout">2.3 Le régime de température décide de tout</h2>
-<p>Un régime s’écrit <strong>80/60</strong> : l’eau part à 80 °C et revient à 60 °C. Le Δθ vaut donc 20 K. Il y a trois régimes courants, et le tableau qui suit est le plus utile du chapitre.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 21%" />
-<col style="width: 28%" />
-<col style="width: 28%" />
-<col style="width: 21%" />
-</colgroup>
-<thead>
-<tr>
-<th>Régime</th>
-<th style="text-align: right;">Δθ</th>
-<th style="text-align: right;">Débit pour 20 kW</th>
-<th>Où on le rencontre</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>90/70</td>
-<td style="text-align: right;">20 K</td>
-<td style="text-align: right;">860 L/h</td>
-<td>Installations anciennes, fonte</td>
-</tr>
-<tr>
-<td>80/60</td>
-<td style="text-align: right;">20 K</td>
-<td style="text-align: right;">860 L/h</td>
-<td>Le régime de référence des radiateurs</td>
-</tr>
-<tr>
-<td>70/50</td>
-<td style="text-align: right;">20 K</td>
-<td style="text-align: right;">860 L/h</td>
-<td>Chaudière condensation, radiateurs surdimensionnés</td>
-</tr>
-<tr>
-<td>45/35</td>
-<td style="text-align: right;">10 K</td>
-<td style="text-align: right;"><strong>1 720 L/h</strong></td>
-<td>Plancher chauffant, pompe à chaleur</td>
-</tr>
-<tr>
-<td>15/10</td>
-<td style="text-align: right;">5 K</td>
-<td style="text-align: right;"><strong>3 440 L/h</strong></td>
-<td>Eau glacée, ventilo-convecteurs</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>À puissance égale, <strong>diviser le Δθ par deux double le débit</strong>. Un plancher chauffant en 45/35 demande deux fois plus de tuyau, deux fois plus de pompe et quatre fois plus de perte de charge qu’un radiateur en 80/60. C’est le prix du basse température, et il se paie en hydraulique.</p>
-</div>
-<p>Pourquoi accepter ce prix ? Parce qu’une chaudière à condensation ne condense qu’avec un retour froid, et parce qu’une pompe à chaleur perd 2,5 % de COP par degré de départ en plus. Le chapitre 5 et le chapitre 7 y reviennent.</p>
-<h3 id="exemple-résolu-1.-le-débit-dun-radiateur">Exemple résolu 1. Le débit d’un radiateur</h3>
-<p>Un radiateur de <strong>1 500 W</strong> sur un circuit <strong>80/60</strong>.</p>
-<p>Δθ = 80 − 60 = 20 K, donc <strong>Q = 1 500 / (1,163 × 20) = 64,5 L/h.</strong></p>
-<p>Soit à peu près <strong>un litre par minute</strong>. Retenez cet ordre de grandeur : un radiateur domestique, c’est un filet d’eau, pas un torrent.</p>
-<h2 id="2-4-les-trois-architectures">2.4 Les trois architectures</h2>
-<p>Sur un plan, vous ne verrez jamais écrit « bitube ». Vous verrez des tuyaux, et c’est à vous de nommer ce que vous voyez.</p>
-<figure class="schema"><div class="dessin" data-schema="topologies-hydro"></div><figcaption>Bitube, monotube et pieuvre : trois façons de desservir les mêmes émetteurs.</figcaption></figure>
-<p><strong>Le bitube.</strong> Une colonne de départ, une colonne de retour, et chaque émetteur branché en dérivation entre les deux. Tous reçoivent <strong>la même température de départ</strong>. C’est l’architecture normale, et c’est celle de 90 % des installations.</p>
-<p><strong>Le monotube.</strong> Une seule boucle qui passe d’émetteur en émetteur. Le second reçoit l’eau déjà refroidie par le premier. Il faut donc <strong>surdimensionner</strong> les derniers, ou n’en dériver qu’une partie du débit.</p>
-<p><strong>La pieuvre.</strong> Un collecteur central, et une liaison indépendante par émetteur, sans raccord noyé. C’est le standard du plancher chauffant et du neuf en logement.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr>
-<th></th>
-<th>Bitube</th>
-<th>Monotube</th>
-<th>Pieuvre</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Température reçue</td>
-<td>identique pour tous</td>
-<td>décroissante</td>
-<td>identique</td>
-</tr>
-<tr>
-<td>Équilibrage</td>
-<td>par vanne, obligatoire</td>
-<td>par répartiteur</td>
-<td>au collecteur, facile</td>
-</tr>
-<tr>
-<td>Longueur de tube</td>
-<td>moyenne</td>
-<td><strong>la plus courte</strong></td>
-<td>la plus longue</td>
-</tr>
-<tr>
-<td>Raccords noyés</td>
-<td>oui</td>
-<td>oui</td>
-<td><strong>aucun</strong></td>
-</tr>
-</tbody>
-</table></div>
-<div class="piege">
-<p>Un monotube mal repéré se lit comme un bitube dont il manquerait des tuyaux. Le signe qui ne trompe pas : <strong>le retour d’un émetteur repart vers l’émetteur suivant</strong>, pas vers la colonne. Cherchez cela d’abord.</p>
-</div>
-<h2 id="2-5-la-vitesse-le-diametre-et-le-bruit">2.5 La vitesse, le diamètre et le bruit</h2>
-<p>L’eau qui traverse un tube va d’autant plus vite que le tube est étroit. C’est la même chose que le pouce sur le tuyau d’arrosage : même débit, section réduite, vitesse multipliée.</p>
-<div class="formule">
-<p><strong>Q = v × S</strong> et <strong>S = π × D² / 4</strong></p>
-<ul>
-<li><strong>Q</strong><span>: débit <strong>volumique</strong>, en m³/s</span></li>
-<li><strong>v</strong><span>: vitesse moyenne, en m/s</span></li>
-<li><strong>S</strong><span>: section intérieure du tube, en m²</span></li>
-<li><strong>D</strong><span>: diamètre <strong>intérieur</strong>, en m</span></li>
-</ul>
-</div>
-<div class="cle">
-<p>La section varie comme <strong>le carré</strong> du diamètre. Passer d’un DN 20 à un DN 25, soit 25 % de diamètre en plus, donne <strong>56 % de section en plus</strong>. C’est pourquoi un seul saut de diamètre suffit presque toujours à résoudre un problème de vitesse.</p>
-</div>
-<p>La vitesse admissible n’est pas une question de physique mais <strong>de bruit et d’usure</strong> :</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Situation</th>
-<th>Vitesse admise</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Tuyauterie en logement, près des chambres</td>
-<td>0,3 à 0,6 m/s</td>
-</tr>
-<tr>
-<td>Distribution courante en tertiaire</td>
-<td><strong>0,6 à 1,2 m/s</strong></td>
-</tr>
-<tr>
-<td>Colonnes et nourrices en local technique</td>
-<td>jusqu’à 1,5 m/s</td>
-</tr>
-<tr>
-<td>Au-delà de 2 m/s</td>
-<td>sifflement, érosion du cuivre</td>
-</tr>
-</tbody>
-</table></div>
-<div class="piege">
-<p>Le diamètre nominal <strong>n’est pas</strong> le diamètre intérieur. Un « DN 20 » cuivre mesure 20 mm dehors et <strong>18 mm dedans</strong> ; en acier, un DN 20 mesure 26,9 mm dehors. Utiliser le diamètre extérieur dans S = πD²/4 surestime la section de 23 %, donc sous-estime la vitesse d’autant.</p>
-</div>
-<h3 id="exemple-résolu-2.-la-vitesse-dans-une-colonne">Exemple résolu 2. La vitesse dans une colonne</h3>
-<p>Une colonne alimente <strong>20 kW</strong> en régime 80/60, dans un tube cuivre 22 × 1 (intérieur <strong>20 mm</strong>).</p>
-<p><strong>Débit.</strong> Q = 20 000 / (1,163 × 20) = <strong>860 L/h</strong>, soit 0,860 m³/h = 0,860 / 3 600 = <strong>2,39 × 10⁻⁴ m³/s</strong>.</p>
-<p><strong>Section.</strong> S = π × 0,020² / 4 = <strong>3,14 × 10⁻⁴ m²</strong>.</p>
-<p><strong>Vitesse.</strong> v = 2,39 × 10⁻⁴ / 3,14 × 10⁻⁴ = <strong>0,76 m/s.</strong></p>
-<p>C’est dans la fourchette tertiaire. En logement, contre une chambre, on descendrait d’un cran de puissance ou on monterait d’un diamètre.</p>
-<h2 id="2-6-le-calcul-retourne-choisir-le-diametre">2.6 Le calcul retourné : choisir le diamètre</h2>
-<p>Jusqu’ici on vérifiait. Un bureau d’études fait l’inverse : il connaît la puissance et la vitesse qu’il s’autorise, et il <strong>cherche le diamètre</strong>.</p>
-<div class="formule">
-<p><strong>D = √( 4 × Q / (π × v) )</strong> (Q en m³/s, v en m/s, D en m)</p>
-<p>Obtenue en isolant D dans Q = v × πD²/4. Le résultat est <strong>le diamètre minimal</strong> : on prend ensuite le tube normalisé <strong>immédiatement supérieur</strong>.</p>
-</div>
-<h3 id="exemple-résolu-3.-dimensionner-un-tronçon-de-45-kw">Exemple résolu 3. Dimensionner un tronçon de 45 kW</h3>
-<p>Un tronçon de sous-station transporte <strong>45 kW</strong> en <strong>80/60</strong>, vitesse maximale admise <strong>1,0 m/s</strong>.</p>
-<p><strong>1. Le débit.</strong> Q = 45 000 / (1,163 × 20) = <strong>1 935 L/h</strong> = 5,37 × 10⁻⁴ m³/s.</p>
-<p><strong>2. Le diamètre minimal.</strong> D = √(4 × 5,37 × 10⁻⁴ / (π × 1,0)) = √(6,84 × 10⁻⁴) = <strong>0,0261 m</strong>, soit <strong>26,1 mm intérieur</strong>.</p>
-<p><strong>3. Le choix.</strong> Le cuivre 28 × 1 a 26 mm intérieur : <strong>c’est trop juste</strong>, la vitesse y serait de 1,01 m/s. On prend le <strong>cuivre 32 × 1</strong>, intérieur 30 mm.</p>
-<p><strong>4. La vérification.</strong> S = π × 0,030²/4 = 7,07 × 10⁻⁴ m². v = 5,37 × 10⁻⁴ / 7,07 × 10⁻⁴ = <strong>0,76 m/s</strong>. Retenu.</p>
-<div class="cle">
-<p>On arrondit <strong>toujours vers le haut</strong>. Un tube trop petit est un tube qui siffle, qui s’érode et dont la perte de charge explose : le chapitre 3 montre qu’elle varie comme <strong>D⁻⁵</strong>. Un tube trop grand ne coûte que son prix.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : les grands Δθ et l&#39;eau glycolée</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Quand le Δθ dépasse 30 K</strong>, la masse volumique et la chaleur massique ne peuvent plus être prises à une valeur moyenne unique : l’écart de ρ entre le départ et le retour dépasse 3 %. On calcule alors avec les <strong>enthalpies</strong> lues en table, Φ = qm × (h départ − h retour), qui n’est pas une approximation. C’est le cas des réseaux urbains à 110/50.</p>
-<p><strong>Quand le fluide est de l’eau glycolée</strong>, tout change de sens. Un mélange à 30 % de monopropylène glycol a une chaleur massique de <strong>3 750 J/(kg·K)</strong> au lieu de 4 185, et une masse volumique de 1 030 kg/m³. La constante devient 1 030 × 3 750 / (3 600 × 1 000) = <strong>1,073</strong> au lieu de 1,163, soit <strong>8 % de débit en plus</strong> à puissance égale. Et sa viscosité, deux fois celle de l’eau à 0 °C, augmente la perte de charge de 30 à 50 %.</p>
-<p>Conséquence pratique, et elle tombe régulièrement à l’épreuve : <strong>une boucle glycolée demande une pompe plus grosse qu’une boucle d’eau</strong>, à puissance identique. Un capteur solaire ou une PAC à saumure sont dans ce cas.</p>
-<p><strong>Quand le fluide change d’état</strong>, la formule ne s’applique plus du tout : il n’y a plus de Δθ. C’est le cas de la vapeur, et c’est le cas du fluide frigorigène au condenseur. On y remplace c × Δθ par la <strong>chaleur latente</strong>, voir le chapitre 7.</p></div></details>
-</div><h2 id="2-7-le-vase-d-expansion">2.7 Le vase d’expansion</h2>
-<p>Remplissez une bouteille d’eau froide à ras bord, fermez-la, mettez-la au soleil. Elle se déforme. L’eau chauffée <strong>prend de la place</strong> et ne peut pas être comprimée.</p>
-<p>Un circuit de chauffage a exactement ce problème : de 10 °C au remplissage à 80 °C en marche, l’eau gagne <strong>environ 2,9 % de volume</strong>.</p>
-<div class="formule">
-<p><strong>V vase = V circuit × (coefficient de dilatation) / (coefficient d’utilisation)</strong></p>
-<ul>
-<li>coefficient de dilatation : <strong>0,029</strong> entre 10 et 80 °C</li>
-<li>coefficient d’utilisation : de l’ordre de <strong>0,5</strong> pour un vase à membrane</li>
-</ul>
-</div>
-<div class="cle">
-<p>Un circuit contenant 300 litres d’eau doit donc absorber <strong>8,7 litres</strong> de dilatation, et demande un vase d’environ <strong>18 litres</strong>. Sans lui, la soupape de sécurité crache à chaque montée en température, le circuit se vide, et on le remplit d’eau neuve : <strong>c’est ainsi qu’on corrode une installation en trois ans</strong>, chaque litre d’eau neuve apportant son oxygène.</p>
-</div>
-<div class="piege">
-<p>Un vase d’expansion trop petit ne se voit pas en hiver : il se voit sur le <strong>compteur d’eau d’appoint</strong>. Un circuit sain ne consomme rien. Une installation qui demande 200 litres d’appoint par an a une fuite ou un vase mort.</p>
-</div>
-<h2 id="2-8-ce-que-le-reseau-perd-en-route">2.8 Ce que le réseau perd en route</h2>
-<p>Un tube nu de 25 mm à 70 °C dans un local à 15 °C perd environ <strong>35 W par mètre</strong>. Calorifugé de 30 mm de laine, il en perd <strong>9</strong>.</p>
-<div class="cle">
-<p>Sur 60 m de distribution en sous-sol non chauffé, l’écart est de <strong>1,6 kW en permanence</strong>, soit près de <strong>10 000 kWh sur une saison de chauffe</strong>. C’est plus que le chauffage annuel d’un logement récent, et cela se joue sur une pose d’une journée.</p>
-</div>
-<p>Dans un local <strong>chauffé</strong>, ces pertes ne sont pas perdues : elles chauffent le local, et le radiateur en fait d’autant moins. Le calorifuge y sert au confort et à la régulation, pas à l’économie.</p>
-<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Valeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Constante de l’eau</td>
-<td><strong>1,163 Wh/(L·K)</strong></td>
-</tr>
-<tr>
-<td>Constante de l’air</td>
-<td>0,34 Wh/(m³·K)</td>
-</tr>
-<tr>
-<td>Rapport des deux</td>
-<td><strong>≈ 3 400</strong></td>
-</tr>
-<tr>
-<td>Masse volumique de l’eau, 10 °C · 80 °C</td>
-<td>1 000 · 972 kg/m³</td>
-</tr>
-<tr>
-<td>Chaleur massique de l’eau</td>
-<td>4 185 J/(kg·K)</td>
-</tr>
-<tr>
-<td>Chaleur massique d’un glycol 30 %</td>
-<td>3 750 J/(kg·K)</td>
-</tr>
-<tr>
-<td>Débit d’un radiateur de 1 500 W en 80/60</td>
-<td>≈ 65 L/h</td>
-</tr>
-<tr>
-<td>Débit pour 20 kW en 80/60 · en 45/35</td>
-<td>860 · 1 720 L/h</td>
-</tr>
-<tr>
-<td>Vitesse en distribution tertiaire</td>
-<td>0,6 à 1,2 m/s</td>
-</tr>
-<tr>
-<td>Vitesse à ne pas dépasser</td>
-<td>2 m/s</td>
-</tr>
-<tr>
-<td>Intérieur d’un cuivre 22 × 1 · 28 × 1</td>
-<td>20 · 26 mm</td>
-</tr>
-<tr>
-<td>Dilatation de l’eau, 10 → 80 °C</td>
-<td>2,9 %</td>
-</tr>
-<tr>
-<td>Perte d’un tube nu DN 25 à 70 °C</td>
-<td>30 à 40 W/m</td>
-</tr>
-<tr>
-<td>Perte du même tube calorifugé 30 mm</td>
-<td>8 à 10 W/m</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le test qui sauve une copie : <strong>un débit en litres par heure vaut à peu près la puissance en watts divisée par 23</strong>, quand le régime est en 80/60. 20 kW donnent 860 L/h ; 20 000/23 = 870. Si votre résultat n’est pas dans cet ordre, quelque chose est faux avant d’aller plus loin.</p>
-</div>
-<h2 id="s-entrainer">S’entraîner</h2>
-<section class="exo" id="M2-MANUEL-e1" data-exo="M2-MANUEL-e1" data-type="calcul" data-savoir="B4-1" data-a="IXgueGB4OTs2OS82eHZ4LHhga2ltbHRqdnguNTZ4YGl0anZ4L3hgeBZ1Mngn"><p class="k">Exercice · B4-1</p><h4>Le débit d’un circuit</h4><div class="enonce">
-
-<p>Un circuit de radiateurs délivre <strong>32 kW</strong> en régime <strong>80/60</strong>. Quel débit d’eau la pompe doit-elle assurer ?</p>
-</div><div class="indice" hidden>Q = Φ / (1,163 × Δθ). Le Δθ est l’écart entre le départ et le retour, pas l’écart avec le local.</div></section>
-<section class="exo" id="M2-MANUEL-e2" data-exo="M2-MANUEL-e2" data-type="calcul" data-savoir="B4-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgaG1vaHRqdnguNTZ4YGl0anZ4L3hgeBZ1Mngn"><p class="k">Exercice · B4-1</p><h4>Le même circuit en basse température</h4><div class="enonce">
-
-<p>Le même besoin de <strong>32 kW</strong> est repris par un plancher chauffant en <strong>45/35</strong>. Quel est le nouveau débit ?</p>
-</div><div class="indice" hidden>Rien ne change dans la formule, seulement le Δθ, qui passe de 20 à 10 K. Le résultat doit être exactement le double du précédent.</div></section>
-<section class="exo" id="M2-MANUEL-e3" data-exo="M2-MANUEL-e3" data-type="calcul" data-savoir="A3-1" data-a="IXgueGB4OTs2OS82eHZ4LHhga3RpaXZ4LjU2eGBvdGp2eC94YHg3dSl4Jw=="><p class="k">Exercice · A3-1</p><h4>La vitesse dans un tube</h4><div class="enonce">
-
-<p>Un débit de <strong>1 500 L/h</strong> circule dans un tube de <strong>20 mm de diamètre intérieur</strong>. Quelle est la vitesse de l’eau ?</p>
-</div><div class="indice" hidden>Convertissez d’abord le débit en m³ par seconde en divisant par 3 600 puis par 1 000. La section vaut π × D² / 4, avec D en mètres.</div></section>
-<section class="exo" id="M2-MANUEL-e4" data-exo="M2-MANUEL-e4" data-type="justification" data-savoir="B4-1" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B4-1</p><h4>Le dernier radiateur du couloir</h4><div class="enonce">
-
-<p>Dans un bâtiment scolaire en bitube, le dernier radiateur d’un long couloir chauffe mal, alors que sa surface est correcte et que la chaudière est à 80 °C. Proposez trois causes possibles et dites laquelle vous vérifieriez en premier.</p>
-</div><div class="indice" hidden>Un radiateur qui reçoit de l’eau à 80 °C au départ mais rend un retour à 78 °C ne manque pas de température : il manque de temps de séjour, donc son débit est trop grand. Un retour à 40 °C dit l’inverse.</div><ul class="verifier" hidden><li>J’ai cité le défaut d’équilibrage : l’eau prend le chemin le plus court.</li><li>J’ai cité une cause hydraulique : diamètre insuffisant, vanne fermée, ou air dans l’émetteur.</li><li>J’ai dit par quoi je commence, et pourquoi c’est le moins cher à vérifier.</li><li>J’ai nommé une mesure qui trancherait : température de retour, ou Δθ au radiateur.</li></ul></section>
-<h2 id="vous-verifier">Vous vérifier</h2>
-<div class="quiz">
-<ul>
-<li>La constante 1,163 s’exprime en : <strong>Wh/(L·K)</strong> | W/(L·K)</li>
-<li>Elle vient de : <strong>4 185 / 3 600</strong> | 4 185 × 3 600</li>
-<li>Dans Φ = Q × 1,163 × Δθ, le Δθ est : <strong>départ moins retour</strong> | eau moins air</li>
-<li>À puissance égale, passer de 80/60 à 45/35 : <strong>double le débit</strong> | le divise par deux</li>
-<li>La section d’un tube varie comme : <strong>le carré du diamètre</strong> | le diamètre</li>
-<li>Un DN 20 en cuivre a un intérieur de : <strong>18 mm</strong> | 20 mm</li>
-<li>La vitesse courante en distribution tertiaire est de : <strong>0,6 à 1,2 m/s</strong> | 2 à 3 m/s</li>
-<li>En monotube, le dernier émetteur reçoit une eau : <strong>plus froide</strong> | identique</li>
-<li>La pieuvre se reconnaît à : <strong>un collecteur et aucun raccord noyé</strong> | deux colonnes</li>
-<li>Un vase d’expansion absorbe : <strong>la dilatation de l’eau</strong> | les coups de bélier</li>
-<li>L’eau se dilate, de 10 à 80 °C, d’environ : <strong>3 %</strong> | 30 %</li>
-<li>Avec de l’eau glycolée, à puissance égale, le débit : <strong>augmente</strong> | diminue</li>
-<li>Un tube nu de DN 25 à 70 °C perd environ : <strong>35 W/m</strong> | 3,5 W/m</li>
-</ul>
-</div>
-<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi on chauffe à l&#39;eau et pas à l&#39;air</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Reprenez les deux constantes du chapitre 1 : 1,163 pour l’eau en Wh/(L·K), 0,34 pour l’air en Wh/(m³·K). Le rapport vaut 3 421.</p>
-<p>Concrètement : transporter 20 kW sous 20 K demande <strong>860 litres d’eau par heure</strong>, ou <strong>2 940 m³ d’air par heure</strong>. Le premier passe dans un tube de 20 mm intérieur. Le second demande une gaine de <strong>400 mm</strong>, à 6 m/s.</p>
-<p>Comparez les sections : 3,1 cm² contre 1 250 cm², soit un facteur <strong>400</strong>. Voilà pourquoi les tuyaux passent dans les cloisons et les gaines dans les faux plafonds, et pourquoi une CTA occupe un local entier quand une sous-station tient dans un placard.</p>
-<p><strong>La conséquence est architecturale avant d’être thermique.</strong> Un bâtiment climatisé tout air perd 40 à 60 cm de hauteur sous plafond à chaque niveau. C’est la raison pour laquelle les systèmes mixtes, ventilation par l’air pour l’air neuf, chaleur par l’eau pour la puissance, dominent le tertiaire.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un bureau d&#39;études fait vraiment sur un réseau</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La méthode de ce chapitre (un débit, une vitesse, un diamètre) est celle du prédimensionnement. Elle donne le bon tube neuf fois sur dix, et elle est celle que l’épreuve U41 demande.</p>
-<p>Le calcul complet ajoute trois choses. D’abord une <strong>note de calcul par tronçon</strong> : le réseau est découpé en segments à débit constant, du plus éloigné vers la chaudière, et les débits s’additionnent en remontant. Ensuite un <strong>critère de perte de charge linéique</strong>, en général 10 à 20 mm CE par mètre, qui prime sur le critère de vitesse dans les longues distributions. Enfin l’<strong>équilibrage</strong> : on identifie le circuit le plus défavorisé, on calcule sa perte de charge totale, et toutes les autres branches sont freinées pour y correspondre.</p>
-<p>Un logiciel de calcul de réseau (Clima-Win, AutoFluid, Revit MEP) fait cela en boucle sur plusieurs centaines de tronçons. Ce qu’il ne fait pas, et que personne d’autre ne fera : décider du <strong>régime de température</strong>. C’est un choix humain, il précède tout le reste, et il conditionne le générateur, les émetteurs, les diamètres et la pompe.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La pompe pousse la chaleur. »</strong> Une pompe ne fournit que de la pression, et la pression ne transporte aucune chaleur. Elle met l’eau en mouvement ; c’est l’eau qui porte l’énergie. La distinction paraît scolaire, jusqu’au jour où l’on vous demandera pourquoi augmenter la vitesse de la pompe ne réchauffe pas un local.</p>
-<p><strong>« Il faut du 80/60 pour bien chauffer. »</strong> Le régime ne décide pas de la puissance émise mais du <strong>débit</strong> nécessaire pour la transporter. Un plancher en 45/35 chauffe exactement autant, avec deux fois plus de débit et dix fois plus de surface d’échange.</p>
-<p><strong>« Le retour doit être froid. »</strong> Il doit être <strong>au régime</strong>. Un retour trop froid signale un débit insuffisant ou un émetteur surdimensionné ; un retour trop chaud, un débit excessif ou un émetteur sous-dimensionné. Ce qui compte est l’écart, et il se compare à la valeur de projet, pas à une intuition.</p></div></details>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Passer</strong> d’une puissance à un débit, dans les deux sens, sans hésiter.</li>
+
+<li><strong>Démontrer</strong> d’où vient la constante 1 163, et dire quand elle cesse d’être vraie.</li>
+
+<li><strong>Reconnaître</strong> un bitube, un monotube et une pieuvre sur un plan.</li>
+
+<li><strong>Choisir</strong> un diamètre à partir d’une puissance et d’une vitesse admissible.</li>
+
+<li><strong>Expliquer</strong> à quoi sert un vase d’expansion, et ce qui arrive s’il manque.</li>
+
+</ol>
+
+</div>
+
+<p>Le chapitre 1 s’est arrêté à une puissance. Celui-ci commence exactement là, et finit sur un diamètre de tube : c’est le premier calcul de dimensionnement du métier.</p>
+
+<h2 id="2-1-un-reseau-ne-transporte-pas-de-la-chaleur">2.1 Un réseau ne transporte pas de la chaleur</h2>
+
+<p>Ouvrez un robinet d’eau chaude et laissez couler dans un seau. Vous n’avez pas déplacé de la chaleur : vous avez déplacé <strong>de l’eau qui en contient</strong>. Le seau est chaud parce qu’il est plein, pas parce qu’un flux thermique l’a traversé.</p>
+
+<p>Un réseau de chauffage fait la même chose en boucle. Il envoie de l’eau chaude, la fait passer dans les radiateurs, et récupère la même eau <strong>refroidie</strong>. La chaleur livrée est la différence entre ce qui part et ce qui revient.</p>
+
+<div class="cle">
+
+<p>Ce sont donc <strong>deux nombres</strong> qui décident de la puissance transportée : combien d’eau circule, et de combien elle se refroidit en route. Ni l’un ni l’autre pris seul ne dit quoi que ce soit.</p>
+
+</div>
+
+<div class="formule">
+
+<p><strong>Φ = qm × c × Δθ</strong></p>
+
+<ul>
+
+<li><strong>qm</strong><span>: débit massique, en kg/s</span></li>
+
+<li><strong>c</strong><span>: chaleur massique de l’eau, <strong>4 185 J/(kg·K)</strong></span></li>
+
+<li><strong>Δθ</strong><span>: refroidissement de l’eau entre le départ et le retour, en K</span></li>
+
+<li><strong>Φ</strong><span>: puissance transportée, en W</span></li>
+
+</ul>
+
+</div>
+
+<p>C’est la même équation que le chapitre 1, écrite autrement. Là, une paroi laissait passer un flux ; ici, un fluide l’emporte avec lui.</p>
+
+<h2 id="2-2-d-ou-sort-le-nombre-1-163">2.2 D’où sort le nombre 1 163</h2>
+
+<p>Personne, sur un chantier, n’écrit des kilogrammes par seconde. On écrit des <strong>litres par heure</strong>, et on utilise une constante toute faite. La voici, construite.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : de 4 185 J/(kg·K) à 1,163 Wh/(L·K)</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Partons de Φ = qm × c × Δθ, avec qm en kg/s.</p>
+
+<p><strong>Première substitution, la masse.</strong> L’eau a une masse volumique de 1 000 kg/m³, soit <strong>1 kg par litre</strong>. Un débit de Q litres par heure est donc un débit de Q kilogrammes par heure.</p>
+
+<p><strong>Deuxième substitution, le temps.</strong> Q kg par heure font Q/3 600 kg par seconde.</p>
+
+<p>En remplaçant :</p>
+
+<p>Φ = (Q / 3 600) × 4 185 × Δθ = Q × (4 185 / 3 600) × Δθ = <strong>Q × 1,1625 × Δθ</strong></p>
+
+<p>Arrondi à <strong>1,163</strong>, et le résultat est en watts quand Q est en litres par heure.</p>
+
+<p><strong>Autre lecture, plus parlante.</strong> 4 185 J, c’est 4 185 / 3 600 = 1,163 wattheure. Élever un litre d’eau d’un degré coûte donc <strong>1,163 Wh</strong>. La constante n’est pas une formule : c’est une conversion de joules en wattheures.</p>
+
+<p><strong>Les trois hypothèses qui la portent.</strong></p>
+
+<ol type="1">
+
+<li><strong>ρ = 1 000 kg/m³.</strong> Vraie à 4 °C. À 80 °C l’eau ne pèse plus que 972 kg/m³, soit <strong>2,8 % de moins</strong>. La constante devrait valoir 1,130.</li>
+
+<li><strong>c = 4 185 J/(kg·K).</strong> À 80 °C, c vaut plutôt 4 196, soit <strong>0,3 % de plus</strong>.</li>
+
+<li><strong>Régime permanent, pas de perte en ligne.</strong> Toute la chaleur perdue par l’eau est supposée arriver aux émetteurs.</li>
+
+</ol>
+
+<p>Les deux premières erreurs jouent <strong>en sens contraire</strong> et se compensent partiellement : l’écart réel sur un circuit à 80 °C est de l’ordre de 2,5 %, toujours dans le sens d’une constante surestimée. Pour un dimensionnement, où l’on majore de toute façon, c’est sans effet. Pour un <strong>comptage d’énergie</strong>, ce n’est plus vrai : un compteur d’énergie thermique mesure la température et corrige la masse volumique, sans quoi il facturerait 2 à 3 % de trop.</p></div></details>
+
+</div><div class="formule">
+
+<p><strong>Φ = Q × 1,163 × Δθ</strong> (Q en L/h, Δθ en K, Φ en W)</p>
+
+<p>Retournée, c’est elle qu’on utilise le plus souvent :</p>
+
+<p><strong>Q = Φ / (1,163 × Δθ)</strong></p>
+
+</div>
+
+<div class="piege">
+
+<p>Δθ n’est <strong>jamais</strong> l’écart entre l’eau et l’air du local. C’est l’écart entre <strong>le départ et le retour</strong> du circuit. Confondre les deux est l’erreur numéro un du chapitre, et elle donne des débits faux d’un facteur 3 à 5.</p>
+
+</div>
+
+<div class="outil" data-outil="reseau">
+
+
+
+</div>
+
+<h2 id="2-3-le-regime-de-temperature-decide-de-tout">2.3 Le régime de température décide de tout</h2>
+
+<p>Un régime s’écrit <strong>80/60</strong> : l’eau part à 80 °C et revient à 60 °C. Le Δθ vaut donc 20 K. Il y a trois régimes courants, et le tableau qui suit est le plus utile du chapitre.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 21%" />
+
+<col style="width: 28%" />
+
+<col style="width: 28%" />
+
+<col style="width: 21%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Régime</th>
+
+<th style="text-align: right;">Δθ</th>
+
+<th style="text-align: right;">Débit pour 20 kW</th>
+
+<th>Où on le rencontre</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>90/70</td>
+
+<td style="text-align: right;">20 K</td>
+
+<td style="text-align: right;">860 L/h</td>
+
+<td>Installations anciennes, fonte</td>
+
+</tr>
+
+<tr>
+
+<td>80/60</td>
+
+<td style="text-align: right;">20 K</td>
+
+<td style="text-align: right;">860 L/h</td>
+
+<td>Le régime de référence des radiateurs</td>
+
+</tr>
+
+<tr>
+
+<td>70/50</td>
+
+<td style="text-align: right;">20 K</td>
+
+<td style="text-align: right;">860 L/h</td>
+
+<td>Chaudière condensation, radiateurs surdimensionnés</td>
+
+</tr>
+
+<tr>
+
+<td>45/35</td>
+
+<td style="text-align: right;">10 K</td>
+
+<td style="text-align: right;"><strong>1 720 L/h</strong></td>
+
+<td>Plancher chauffant, pompe à chaleur</td>
+
+</tr>
+
+<tr>
+
+<td>15/10</td>
+
+<td style="text-align: right;">5 K</td>
+
+<td style="text-align: right;"><strong>3 440 L/h</strong></td>
+
+<td>Eau glacée, ventilo-convecteurs</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>À puissance égale, <strong>diviser le Δθ par deux double le débit</strong>. Un plancher chauffant en 45/35 demande deux fois plus de tuyau, deux fois plus de pompe et quatre fois plus de perte de charge qu’un radiateur en 80/60. C’est le prix du basse température, et il se paie en hydraulique.</p>
+
+</div>
+
+<p>Pourquoi accepter ce prix ? Parce qu’une chaudière à condensation ne condense qu’avec un retour froid, et parce qu’une pompe à chaleur perd 2,5 % de COP par degré de départ en plus. Le chapitre 5 et le chapitre 7 y reviennent.</p>
+
+<h3 id="exemple-résolu-1.-le-débit-dun-radiateur">Exemple résolu 1. Le débit d’un radiateur</h3>
+
+<p>Un radiateur de <strong>1 500 W</strong> sur un circuit <strong>80/60</strong>.</p>
+
+<p>Δθ = 80 − 60 = 20 K, donc <strong>Q = 1 500 / (1,163 × 20) = 64,5 L/h.</strong></p>
+
+<p>Soit à peu près <strong>un litre par minute</strong>. Retenez cet ordre de grandeur : un radiateur domestique, c’est un filet d’eau, pas un torrent.</p>
+
+<h2 id="2-4-les-trois-architectures">2.4 Les trois architectures</h2>
+
+<p>Sur un plan, vous ne verrez jamais écrit « bitube ». Vous verrez des tuyaux, et c’est à vous de nommer ce que vous voyez.</p>
+
+<figure class="schema"><div class="dessin" data-schema="topologies-hydro"></div><figcaption>Bitube, monotube et pieuvre : trois façons de desservir les mêmes émetteurs.</figcaption></figure>
+
+<p><strong>Le bitube.</strong> Une colonne de départ, une colonne de retour, et chaque émetteur branché en dérivation entre les deux. Tous reçoivent <strong>la même température de départ</strong>. C’est l’architecture normale, et c’est celle de 90 % des installations.</p>
+
+<p><strong>Le monotube.</strong> Une seule boucle qui passe d’émetteur en émetteur. Le second reçoit l’eau déjà refroidie par le premier. Il faut donc <strong>surdimensionner</strong> les derniers, ou n’en dériver qu’une partie du débit.</p>
+
+<p><strong>La pieuvre.</strong> Un collecteur central, et une liaison indépendante par émetteur, sans raccord noyé. C’est le standard du plancher chauffant et du neuf en logement.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th></th>
+
+<th>Bitube</th>
+
+<th>Monotube</th>
+
+<th>Pieuvre</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Température reçue</td>
+
+<td>identique pour tous</td>
+
+<td>décroissante</td>
+
+<td>identique</td>
+
+</tr>
+
+<tr>
+
+<td>Équilibrage</td>
+
+<td>par vanne, obligatoire</td>
+
+<td>par répartiteur</td>
+
+<td>au collecteur, facile</td>
+
+</tr>
+
+<tr>
+
+<td>Longueur de tube</td>
+
+<td>moyenne</td>
+
+<td><strong>la plus courte</strong></td>
+
+<td>la plus longue</td>
+
+</tr>
+
+<tr>
+
+<td>Raccords noyés</td>
+
+<td>oui</td>
+
+<td>oui</td>
+
+<td><strong>aucun</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="piege">
+
+<p>Un monotube mal repéré se lit comme un bitube dont il manquerait des tuyaux. Le signe qui ne trompe pas : <strong>le retour d’un émetteur repart vers l’émetteur suivant</strong>, pas vers la colonne. Cherchez cela d’abord.</p>
+
+</div>
+
+<h2 id="2-5-la-vitesse-le-diametre-et-le-bruit">2.5 La vitesse, le diamètre et le bruit</h2>
+
+<p>L’eau qui traverse un tube va d’autant plus vite que le tube est étroit. C’est la même chose que le pouce sur le tuyau d’arrosage : même débit, section réduite, vitesse multipliée.</p>
+
+<div class="formule">
+
+<p><strong>Q = v × S</strong> et <strong>S = π × D² / 4</strong></p>
+
+<ul>
+
+<li><strong>Q</strong><span>: débit <strong>volumique</strong>, en m³/s</span></li>
+
+<li><strong>v</strong><span>: vitesse moyenne, en m/s</span></li>
+
+<li><strong>S</strong><span>: section intérieure du tube, en m²</span></li>
+
+<li><strong>D</strong><span>: diamètre <strong>intérieur</strong>, en m</span></li>
+
+</ul>
+
+</div>
+
+<div class="cle">
+
+<p>La section varie comme <strong>le carré</strong> du diamètre. Passer d’un DN 20 à un DN 25, soit 25 % de diamètre en plus, donne <strong>56 % de section en plus</strong>. C’est pourquoi un seul saut de diamètre suffit presque toujours à résoudre un problème de vitesse.</p>
+
+</div>
+
+<p>La vitesse admissible n’est pas une question de physique mais <strong>de bruit et d’usure</strong> :</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Situation</th>
+
+<th>Vitesse admise</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Tuyauterie en logement, près des chambres</td>
+
+<td>0,3 à 0,6 m/s</td>
+
+</tr>
+
+<tr>
+
+<td>Distribution courante en tertiaire</td>
+
+<td><strong>0,6 à 1,2 m/s</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Colonnes et nourrices en local technique</td>
+
+<td>jusqu’à 1,5 m/s</td>
+
+</tr>
+
+<tr>
+
+<td>Au-delà de 2 m/s</td>
+
+<td>sifflement, érosion du cuivre</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="piege">
+
+<p>Le diamètre nominal <strong>n’est pas</strong> le diamètre intérieur. Un « DN 20 » cuivre mesure 20 mm dehors et <strong>18 mm dedans</strong> ; en acier, un DN 20 mesure 26,9 mm dehors. Utiliser le diamètre extérieur dans S = πD²/4 surestime la section de 23 %, donc sous-estime la vitesse d’autant.</p>
+
+</div>
+
+<h3 id="exemple-résolu-2.-la-vitesse-dans-une-colonne">Exemple résolu 2. La vitesse dans une colonne</h3>
+
+<p>Une colonne alimente <strong>20 kW</strong> en régime 80/60, dans un tube cuivre 22 × 1 (intérieur <strong>20 mm</strong>).</p>
+
+<p><strong>Débit.</strong> Q = 20 000 / (1,163 × 20) = <strong>860 L/h</strong>, soit 0,860 m³/h = 0,860 / 3 600 = <strong>2,39 × 10⁻⁴ m³/s</strong>.</p>
+
+<p><strong>Section.</strong> S = π × 0,020² / 4 = <strong>3,14 × 10⁻⁴ m²</strong>.</p>
+
+<p><strong>Vitesse.</strong> v = 2,39 × 10⁻⁴ / 3,14 × 10⁻⁴ = <strong>0,76 m/s.</strong></p>
+
+<p>C’est dans la fourchette tertiaire. En logement, contre une chambre, on descendrait d’un cran de puissance ou on monterait d’un diamètre.</p>
+
+<h2 id="2-6-le-calcul-retourne-choisir-le-diametre">2.6 Le calcul retourné : choisir le diamètre</h2>
+
+<p>Jusqu’ici on vérifiait. Un bureau d’études fait l’inverse : il connaît la puissance et la vitesse qu’il s’autorise, et il <strong>cherche le diamètre</strong>.</p>
+
+<div class="formule">
+
+<p><strong>D = √( 4 × Q / (π × v) )</strong> (Q en m³/s, v en m/s, D en m)</p>
+
+<p>Obtenue en isolant D dans Q = v × πD²/4. Le résultat est <strong>le diamètre minimal</strong> : on prend ensuite le tube normalisé <strong>immédiatement supérieur</strong>.</p>
+
+</div>
+
+<h3 id="exemple-résolu-3.-dimensionner-un-tronçon-de-45-kw">Exemple résolu 3. Dimensionner un tronçon de 45 kW</h3>
+
+<p>Un tronçon de sous-station transporte <strong>45 kW</strong> en <strong>80/60</strong>, vitesse maximale admise <strong>1,0 m/s</strong>.</p>
+
+<p><strong>1. Le débit.</strong> Q = 45 000 / (1,163 × 20) = <strong>1 935 L/h</strong> = 5,37 × 10⁻⁴ m³/s.</p>
+
+<p><strong>2. Le diamètre minimal.</strong> D = √(4 × 5,37 × 10⁻⁴ / (π × 1,0)) = √(6,84 × 10⁻⁴) = <strong>0,0261 m</strong>, soit <strong>26,1 mm intérieur</strong>.</p>
+
+<p><strong>3. Le choix.</strong> Le cuivre 28 × 1 a 26 mm intérieur : <strong>c’est trop juste</strong>, la vitesse y serait de 1,01 m/s. On prend le <strong>cuivre 32 × 1</strong>, intérieur 30 mm.</p>
+
+<p><strong>4. La vérification.</strong> S = π × 0,030²/4 = 7,07 × 10⁻⁴ m². v = 5,37 × 10⁻⁴ / 7,07 × 10⁻⁴ = <strong>0,76 m/s</strong>. Retenu.</p>
+
+<div class="cle">
+
+<p>On arrondit <strong>toujours vers le haut</strong>. Un tube trop petit est un tube qui siffle, qui s’érode et dont la perte de charge explose : le chapitre 3 montre qu’elle varie comme <strong>D⁻⁵</strong>. Un tube trop grand ne coûte que son prix.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : les grands Δθ et l&#39;eau glycolée</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Quand le Δθ dépasse 30 K</strong>, la masse volumique et la chaleur massique ne peuvent plus être prises à une valeur moyenne unique : l’écart de ρ entre le départ et le retour dépasse 3 %. On calcule alors avec les <strong>enthalpies</strong> lues en table, Φ = qm × (h départ − h retour), qui n’est pas une approximation. C’est le cas des réseaux urbains à 110/50.</p>
+
+<p><strong>Quand le fluide est de l’eau glycolée</strong>, tout change de sens. Un mélange à 30 % de monopropylène glycol a une chaleur massique de <strong>3 750 J/(kg·K)</strong> au lieu de 4 185, et une masse volumique de 1 030 kg/m³. La constante devient 1 030 × 3 750 / (3 600 × 1 000) = <strong>1,073</strong> au lieu de 1,163, soit <strong>8 % de débit en plus</strong> à puissance égale. Et sa viscosité, deux fois celle de l’eau à 0 °C, augmente la perte de charge de 30 à 50 %.</p>
+
+<p>Conséquence pratique, et elle tombe régulièrement à l’épreuve : <strong>une boucle glycolée demande une pompe plus grosse qu’une boucle d’eau</strong>, à puissance identique. Un capteur solaire ou une PAC à saumure sont dans ce cas.</p>
+
+<p><strong>Quand le fluide change d’état</strong>, la formule ne s’applique plus du tout : il n’y a plus de Δθ. C’est le cas de la vapeur, et c’est le cas du fluide frigorigène au condenseur. On y remplace c × Δθ par la <strong>chaleur latente</strong>, voir le chapitre 7.</p></div></details>
+
+</div><h2 id="2-7-le-vase-d-expansion">2.7 Le vase d’expansion</h2>
+
+<p>Remplissez une bouteille d’eau froide à ras bord, fermez-la, mettez-la au soleil. Elle se déforme. L’eau chauffée <strong>prend de la place</strong> et ne peut pas être comprimée.</p>
+
+<p>Un circuit de chauffage a exactement ce problème : de 10 °C au remplissage à 80 °C en marche, l’eau gagne <strong>environ 2,9 % de volume</strong>.</p>
+
+<div class="formule">
+
+<p><strong>V vase = V circuit × (coefficient de dilatation) / (coefficient d’utilisation)</strong></p>
+
+<ul>
+
+<li>coefficient de dilatation : <strong>0,029</strong> entre 10 et 80 °C</li>
+
+<li>coefficient d’utilisation : de l’ordre de <strong>0,5</strong> pour un vase à membrane</li>
+
+</ul>
+
+</div>
+
+<div class="cle">
+
+<p>Un circuit contenant 300 litres d’eau doit donc absorber <strong>8,7 litres</strong> de dilatation, et demande un vase d’environ <strong>18 litres</strong>. Sans lui, la soupape de sécurité crache à chaque montée en température, le circuit se vide, et on le remplit d’eau neuve : <strong>c’est ainsi qu’on corrode une installation en trois ans</strong>, chaque litre d’eau neuve apportant son oxygène.</p>
+
+</div>
+
+<div class="piege">
+
+<p>Un vase d’expansion trop petit ne se voit pas en hiver : il se voit sur le <strong>compteur d’eau d’appoint</strong>. Un circuit sain ne consomme rien. Une installation qui demande 200 litres d’appoint par an a une fuite ou un vase mort.</p>
+
+</div>
+
+<h2 id="2-8-ce-que-le-reseau-perd-en-route">2.8 Ce que le réseau perd en route</h2>
+
+<p>Un tube nu de 25 mm à 70 °C dans un local à 15 °C perd environ <strong>35 W par mètre</strong>. Calorifugé de 30 mm de laine, il en perd <strong>9</strong>.</p>
+
+<div class="cle">
+
+<p>Sur 60 m de distribution en sous-sol non chauffé, l’écart est de <strong>1,6 kW en permanence</strong>, soit près de <strong>10 000 kWh sur une saison de chauffe</strong>. C’est plus que le chauffage annuel d’un logement récent, et cela se joue sur une pose d’une journée.</p>
+
+</div>
+
+<p>Dans un local <strong>chauffé</strong>, ces pertes ne sont pas perdues : elles chauffent le local, et le radiateur en fait d’autant moins. Le calorifuge y sert au confort et à la régulation, pas à l’économie.</p>
+
+<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Valeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Constante de l’eau</td>
+
+<td><strong>1,163 Wh/(L·K)</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Constante de l’air</td>
+
+<td>0,34 Wh/(m³·K)</td>
+
+</tr>
+
+<tr>
+
+<td>Rapport des deux</td>
+
+<td><strong>≈ 3 400</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Masse volumique de l’eau, 10 °C · 80 °C</td>
+
+<td>1 000 · 972 kg/m³</td>
+
+</tr>
+
+<tr>
+
+<td>Chaleur massique de l’eau</td>
+
+<td>4 185 J/(kg·K)</td>
+
+</tr>
+
+<tr>
+
+<td>Chaleur massique d’un glycol 30 %</td>
+
+<td>3 750 J/(kg·K)</td>
+
+</tr>
+
+<tr>
+
+<td>Débit d’un radiateur de 1 500 W en 80/60</td>
+
+<td>≈ 65 L/h</td>
+
+</tr>
+
+<tr>
+
+<td>Débit pour 20 kW en 80/60 · en 45/35</td>
+
+<td>860 · 1 720 L/h</td>
+
+</tr>
+
+<tr>
+
+<td>Vitesse en distribution tertiaire</td>
+
+<td>0,6 à 1,2 m/s</td>
+
+</tr>
+
+<tr>
+
+<td>Vitesse à ne pas dépasser</td>
+
+<td>2 m/s</td>
+
+</tr>
+
+<tr>
+
+<td>Intérieur d’un cuivre 22 × 1 · 28 × 1</td>
+
+<td>20 · 26 mm</td>
+
+</tr>
+
+<tr>
+
+<td>Dilatation de l’eau, 10 → 80 °C</td>
+
+<td>2,9 %</td>
+
+</tr>
+
+<tr>
+
+<td>Perte d’un tube nu DN 25 à 70 °C</td>
+
+<td>30 à 40 W/m</td>
+
+</tr>
+
+<tr>
+
+<td>Perte du même tube calorifugé 30 mm</td>
+
+<td>8 à 10 W/m</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le test qui sauve une copie : <strong>un débit en litres par heure vaut à peu près la puissance en watts divisée par 23</strong>, quand le régime est en 80/60. 20 kW donnent 860 L/h ; 20 000/23 = 870. Si votre résultat n’est pas dans cet ordre, quelque chose est faux avant d’aller plus loin.</p>
+
+</div>
+
+<h2 id="s-entrainer">S’entraîner</h2>
+
+<section class="exo" id="M2-MANUEL-e1" data-exo="M2-MANUEL-e1" data-type="calcul" data-savoir="B4-1" data-a="IXgueGB4OTs2OS82eHZ4LHhga2ltbHRqdnguNTZ4YGl0anZ4L3hgeBZ1Mngn"><p class="k">Exercice · B4-1</p><h4>Le débit d’un circuit</h4><div class="enonce">
+
+
+
+<p>Un circuit de radiateurs délivre <strong>32 kW</strong> en régime <strong>80/60</strong>. Quel débit d’eau la pompe doit-elle assurer ?</p>
+
+</div><div class="indice" hidden>Q = Φ / (1,163 × Δθ). Le Δθ est l’écart entre le départ et le retour, pas l’écart avec le local.</div></section>
+
+<section class="exo" id="M2-MANUEL-e2" data-exo="M2-MANUEL-e2" data-type="calcul" data-savoir="B4-1" data-a="IXgueGB4OTs2OS82eHZ4LHhgaG1vaHRqdnguNTZ4YGl0anZ4L3hgeBZ1Mngn"><p class="k">Exercice · B4-1</p><h4>Le même circuit en basse température</h4><div class="enonce">
+
+
+
+<p>Le même besoin de <strong>32 kW</strong> est repris par un plancher chauffant en <strong>45/35</strong>. Quel est le nouveau débit ?</p>
+
+</div><div class="indice" hidden>Rien ne change dans la formule, seulement le Δθ, qui passe de 20 à 10 K. Le résultat doit être exactement le double du précédent.</div></section>
+
+<section class="exo" id="M2-MANUEL-e3" data-exo="M2-MANUEL-e3" data-type="calcul" data-savoir="A3-1" data-a="IXgueGB4OTs2OS82eHZ4LHhga3RpaXZ4LjU2eGBvdGp2eC94YHg3dSl4Jw=="><p class="k">Exercice · A3-1</p><h4>La vitesse dans un tube</h4><div class="enonce">
+
+
+
+<p>Un débit de <strong>1 500 L/h</strong> circule dans un tube de <strong>20 mm de diamètre intérieur</strong>. Quelle est la vitesse de l’eau ?</p>
+
+</div><div class="indice" hidden>Convertissez d’abord le débit en m³ par seconde en divisant par 3 600 puis par 1 000. La section vaut π × D² / 4, avec D en mètres.</div></section>
+
+<section class="exo" id="M2-MANUEL-e4" data-exo="M2-MANUEL-e4" data-type="justification" data-savoir="B4-1" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B4-1</p><h4>Le dernier radiateur du couloir</h4><div class="enonce">
+
+
+
+<p>Dans un bâtiment scolaire en bitube, le dernier radiateur d’un long couloir chauffe mal, alors que sa surface est correcte et que la chaudière est à 80 °C. Proposez trois causes possibles et dites laquelle vous vérifieriez en premier.</p>
+
+</div><div class="indice" hidden>Un radiateur qui reçoit de l’eau à 80 °C au départ mais rend un retour à 78 °C ne manque pas de température : il manque de temps de séjour, donc son débit est trop grand. Un retour à 40 °C dit l’inverse.</div><ul class="verifier" hidden><li>J’ai cité le défaut d’équilibrage : l’eau prend le chemin le plus court.</li><li>J’ai cité une cause hydraulique : diamètre insuffisant, vanne fermée, ou air dans l’émetteur.</li><li>J’ai dit par quoi je commence, et pourquoi c’est le moins cher à vérifier.</li><li>J’ai nommé une mesure qui trancherait : température de retour, ou Δθ au radiateur.</li></ul></section>
+
+<h2 id="vous-verifier">Vous vérifier</h2>
+
+<div class="quiz">
+
+<ul>
+
+<li>La constante 1,163 s’exprime en : <strong>Wh/(L·K)</strong> | W/(L·K)</li>
+
+<li>Elle vient de : <strong>4 185 / 3 600</strong> | 4 185 × 3 600</li>
+
+<li>Dans Φ = Q × 1,163 × Δθ, le Δθ est : <strong>départ moins retour</strong> | eau moins air</li>
+
+<li>À puissance égale, passer de 80/60 à 45/35 : <strong>double le débit</strong> | le divise par deux</li>
+
+<li>La section d’un tube varie comme : <strong>le carré du diamètre</strong> | le diamètre</li>
+
+<li>Un DN 20 en cuivre a un intérieur de : <strong>18 mm</strong> | 20 mm</li>
+
+<li>La vitesse courante en distribution tertiaire est de : <strong>0,6 à 1,2 m/s</strong> | 2 à 3 m/s</li>
+
+<li>En monotube, le dernier émetteur reçoit une eau : <strong>plus froide</strong> | identique</li>
+
+<li>La pieuvre se reconnaît à : <strong>un collecteur et aucun raccord noyé</strong> | deux colonnes</li>
+
+<li>Un vase d’expansion absorbe : <strong>la dilatation de l’eau</strong> | les coups de bélier</li>
+
+<li>L’eau se dilate, de 10 à 80 °C, d’environ : <strong>3 %</strong> | 30 %</li>
+
+<li>Avec de l’eau glycolée, à puissance égale, le débit : <strong>augmente</strong> | diminue</li>
+
+<li>Un tube nu de DN 25 à 70 °C perd environ : <strong>35 W/m</strong> | 3,5 W/m</li>
+
+</ul>
+
+</div>
+
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi on chauffe à l&#39;eau et pas à l&#39;air</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Reprenez les deux constantes du chapitre 1 : 1,163 pour l’eau en Wh/(L·K), 0,34 pour l’air en Wh/(m³·K). Le rapport vaut 3 421.</p>
+
+<p>Concrètement : transporter 20 kW sous 20 K demande <strong>860 litres d’eau par heure</strong>, ou <strong>2 940 m³ d’air par heure</strong>. Le premier passe dans un tube de 20 mm intérieur. Le second demande une gaine de <strong>400 mm</strong>, à 6 m/s.</p>
+
+<p>Comparez les sections : 3,1 cm² contre 1 250 cm², soit un facteur <strong>400</strong>. Voilà pourquoi les tuyaux passent dans les cloisons et les gaines dans les faux plafonds, et pourquoi une CTA occupe un local entier quand une sous-station tient dans un placard.</p>
+
+<p><strong>La conséquence est architecturale avant d’être thermique.</strong> Un bâtiment climatisé tout air perd 40 à 60 cm de hauteur sous plafond à chaque niveau. C’est la raison pour laquelle les systèmes mixtes, ventilation par l’air pour l’air neuf, chaleur par l’eau pour la puissance, dominent le tertiaire.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un bureau d&#39;études fait vraiment sur un réseau</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La méthode de ce chapitre (un débit, une vitesse, un diamètre) est celle du prédimensionnement. Elle donne le bon tube neuf fois sur dix, et elle est celle que l’épreuve U41 demande.</p>
+
+<p>Le calcul complet ajoute trois choses. D’abord une <strong>note de calcul par tronçon</strong> : le réseau est découpé en segments à débit constant, du plus éloigné vers la chaudière, et les débits s’additionnent en remontant. Ensuite un <strong>critère de perte de charge linéique</strong>, en général 10 à 20 mm CE par mètre, qui prime sur le critère de vitesse dans les longues distributions. Enfin l’<strong>équilibrage</strong> : on identifie le circuit le plus défavorisé, on calcule sa perte de charge totale, et toutes les autres branches sont freinées pour y correspondre.</p>
+
+<p>Un logiciel de calcul de réseau (Clima-Win, AutoFluid, Revit MEP) fait cela en boucle sur plusieurs centaines de tronçons. Ce qu’il ne fait pas, et que personne d’autre ne fera : décider du <strong>régime de température</strong>. C’est un choix humain, il précède tout le reste, et il conditionne le générateur, les émetteurs, les diamètres et la pompe.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La pompe pousse la chaleur. »</strong> Une pompe ne fournit que de la pression, et la pression ne transporte aucune chaleur. Elle met l’eau en mouvement ; c’est l’eau qui porte l’énergie. La distinction paraît scolaire, jusqu’au jour où l’on vous demandera pourquoi augmenter la vitesse de la pompe ne réchauffe pas un local.</p>
+
+<p><strong>« Il faut du 80/60 pour bien chauffer. »</strong> Le régime ne décide pas de la puissance émise mais du <strong>débit</strong> nécessaire pour la transporter. Un plancher en 45/35 chauffe exactement autant, avec deux fois plus de débit et dix fois plus de surface d’échange.</p>
+
+<p><strong>« Le retour doit être froid. »</strong> Il doit être <strong>au régime</strong>. Un retour trop froid signale un débit insuffisant ou un émetteur surdimensionné ; un retour trop chaud, un débit excessif ou un émetteur sous-dimensionné. Ce qui compte est l’écart, et il se compare à la valeur de projet, pas à une intuition.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M1-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 1</span></a><a class="ap" href="M3-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 3</span></a></div></nav>
 <p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

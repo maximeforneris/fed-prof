@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Cours 1 — la chaleur</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="prof/COURS1-CHALEUR" data-public="prof">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS2-HYDRAULIQUE.html" rel="next" title="Cours 2 — l'eau" aria-label="Cours 2 — l'eau">&rsaquo;</a></span><button type="button" class="lu" data-lu="prof/COURS1-CHALEUR">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
@@ -23,685 +31,1355 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b>Les trois modes de transfert, au niveau du lycée</b><span class="car">conduction, convection, rayonnement ; le cours les reprend depuis un thermos, mais il suppose qu'on sait les nommer et les distinguer.</span></li><li><b>La dérivée et l'exponentielle</b><span class="car">la démonstration de l'inertie passe par une équation différentielle du premier ordre ; sans elle, on lit la section sur le four éteint sans pouvoir la vérifier.</span></li><li><b>Le référentiel, savoirs A1 et A2</b><span class="car">le cours dit à chaque étape le niveau exigé ; l'avoir sous la main évite d'enseigner ce qui ne tombe pas à l'épreuve.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#un-thermos-et-les-trois-facons-de-perdre-de-la-chaleur">Un thermos, et les trois façons de perdre de la chaleur</a><a href="#une-couette-un-pull-un-double-vitrage-ce-qu-est-vraiment-un-isolant">Une couette, un pull, un double vitrage : ce qu’est vraiment un isolant</a><a href="#compter-les-couches-de-r-e-a-un-mur-complet">Compter les couches : de R = e/λ à un mur complet</a><a href="#la-ou-l-addition-cesse-d-etre-vraie">Là où l’addition cesse d’être vraie</a><a href="#du-mur-au-batiment-entier">Du mur au bâtiment entier</a><a href="#les-deux-constantes-du-metier-avec-une-bouilloire">Les deux constantes du métier, avec une bouilloire</a><a href="#une-saison-entiere-les-degres-jours">Une saison entière : les degrés-jours</a><a href="#l-inertie-la-maison-de-pierre-et-le-four-eteint">L’inertie : la maison de pierre et le four éteint</a><a href="#demontrer-plutot-qu-affirmer">Démontrer, plutôt qu’affirmer</a><a href="#le-calcul-inverse-dimensionner-au-lieu-de-verifier">Le calcul inverse : dimensionner au lieu de vérifier</a><a href="#trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#les-analogies-qui-marchent-et-celles-qui-trompent">Les analogies qui marchent, et celles qui trompent</a></div></nav>
-<h2 id="un-thermos-et-les-trois-facons-de-perdre-de-la-chaleur">Un thermos, et les trois façons de perdre de la chaleur</h2>
-<p>Un thermos garde le café chaud six heures. Pour comprendre comment, il suffit de regarder ce que son fabricant a dû combattre, et il y a exactement trois choses.</p>
-<figure class="schema"><div class="dessin" data-schema="trois-modes"></div><figcaption>Conduction, convection, rayonnement : trois mécanismes, trois parades.</figcaption></figure>
-<div class="etapes">
-<ol type="1">
-<li><strong>La conduction</strong>, la chaleur remonte par la paroi. Parade : deux parois séparées, qui ne se touchent qu’au col.</li>
-<li><strong>La convection</strong>, l’air entre les parois transporterait la chaleur en bloc. Parade : on fait le <strong>vide</strong> entre les deux.</li>
-<li><strong>Le rayonnement</strong>, la paroi chaude rayonne vers la paroi froide, même à travers le vide. Parade : on <strong>argente</strong> les surfaces, qui renvoient au lieu d’absorber.</li>
-</ol>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que chaque mode demande comme physique, et pourquoi une seule se calcule</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>La conduction</strong> obéit à la loi de Fourier, <strong>φ = −λ · dT/dx</strong>. Elle est linéaire, locale, et ne dépend que du matériau. En régime permanent, à une dimension et sans source interne, le flux est identique dans toutes les sections : l’intégration est immédiate et donne <strong>ΔT = φ · e / λ</strong>. C’est la seule des trois qu’on calcule à la main, et c’est pour cette raison.</p>
-<p><strong>La convection</strong> s’écrit φ = h · (Tp − Tf), ce qui a l’air simple, jusqu’à ce qu’on demande h. Ce n’est pas une propriété du fluide mais de l’<strong>écoulement</strong> : vitesse, géométrie, orientation, écart de température. On le tire de corrélations expérimentales en nombres sans dimension, Nusselt, Rayleigh, Prandtl. Un h de convection naturelle sur un mur vaut 2 à 5 W/(m²·K) ; sous un vent de 4 m/s, il monte à 25.</p>
-<p><strong>Le rayonnement</strong> est en <strong>T⁴</strong> : φ = ε·σ·(T₁⁴ − T₂⁴), avec σ = 5,67 × 10⁻⁸. Non linéaire, donc incompatible avec une addition de résistances. On le linéarise autour de la température d’usage pour obtenir un h_r équivalent, valable dans une plage étroite, typiquement 4 à 6 W/(m²·K) autour de 20 °C.</p>
-<p>D’où la convention de la norme, qui règle le problème une fois pour toutes : convection et rayonnement sont <strong>regroupés</strong> dans des coefficients superficiels h_i ≈ 7,7 et h_e ≈ 25 W/(m²·K), dont les inverses sont <strong>Rsi = 0,13</strong> et <strong>Rse = 0,04</strong> m²·K/W.</p></div></details>
-</div><div class="cle">
-<p>Le thermos explique aussi <strong>pourquoi Rse est cinq fois plus petit que Rsi</strong>. Dehors, l’air est brassé par le vent : la couche d’air collée à la paroi est mince, donc elle freine peu. Dedans, l’air est calme, la couche est épaisse, elle freine davantage. C’est la même raison qui fait qu’on a plus froid par vent fort à température égale.</p>
-</div>
-<h2 id="une-couette-un-pull-un-double-vitrage-ce-qu-est-vraiment-un-isolant">Une couette, un pull, un double vitrage : ce qu’est vraiment un isolant</h2>
-<p>Trois objets, une seule idée. <strong>Aucun d’eux n’isole par sa matière : ils isolent par l’air qu’ils immobilisent.</strong></p>
-<figure class="schema"><div class="dessin" data-schema="lambda-echelle"></div><figcaption>Les matériaux sur l’échelle des conductivités, et l’air, tout en bas.</figcaption></figure>
-<p>L’air immobile conduit <strong>0,025 W/(m·K)</strong>, mieux que n’importe quel isolant solide. La laine de verre est à 0,035, le polystyrène à 0,032. Aucun ne fait aussi bien que l’air pur, et pour cause : ils sont faits d’air, plus des fibres qui le tiennent en place.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Alors pourquoi ne pas se contenter d&#39;une lame d&#39;air ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce qu’une lame d’air épaisse <strong>ne reste pas immobile</strong>. Dès qu’un écart de température s’installe entre ses deux faces, l’air chaud monte d’un côté et redescend de l’autre : la convection naturelle démarre et court-circuite la conduction.</p>
-<p>Le seuil se situe autour de <strong>20 mm</strong>. En dessous, la viscosité l’emporte et l’air reste sage ; au-dessus, la boucle se met en place et la résistance cesse d’augmenter avec l’épaisseur. C’est un résultat classique, gouverné par le nombre de Rayleigh.</p>
-<p>Trois conséquences qu’on peut montrer le même jour :</p>
-<p><strong>Le double vitrage</strong> a une lame de 16 mm, pas de 10 cm. Et on la remplit d’<strong>argon</strong>, plus lourd, plus visqueux, il démarre sa convection plus tard et conduit un peu moins. Gain typique : 0,2 à 0,3 W/(m²·K) sur le U.</p>
-<p><strong>Le pull</strong> fonctionne par ses alvéoles, trop petites pour convecter. Et <strong>deux pulls fins isolent mieux qu’un pull épais</strong>, parce qu’ils ajoutent une lame d’air supplémentaire entre eux.</p>
-<p><strong>L’isolant fibreux</strong> a une densité optimale : trop peu de fibres et l’air circule, trop de fibres et la fibre conduit. C’est pour cela qu’un isolant tassé isole moins, et qu’un isolant mouillé n’isole plus du tout, l’eau conduit 0,6 W/(m·K), vingt-quatre fois plus que l’air.</p></div></details>
-</div><div class="piege">
-<p>La couette suggère une idée fausse qu’il faut désamorcer tout de suite : <strong>l’isolant ne « produit » rien et ne « garde » rien</strong>. Il ralentit un flux. Une couette sur un cadavre ne le réchauffe pas ; une couette sur un vivant ralentit ses pertes, et c’est son propre métabolisme qui fait le reste. Le bâtiment, c’est le chauffage.</p>
-</div>
-<h2 id="compter-les-couches-de-r-e-a-un-mur-complet">Compter les couches : de R = e/λ à un mur complet</h2>
-<div class="formule">
-<p><strong>R = e / λ</strong> · <strong>R totale = Rsi + ΣR + Rse</strong> · <strong>U = 1 / R totale</strong></p>
-<ul>
-<li><strong>e</strong><span>: épaisseur de la couche, <strong>en mètres</strong></span></li>
-<li><strong>λ</strong><span>: conductivité, en W/(m·K), donnée du matériau</span></li>
-<li><strong>R</strong><span>: résistance de la couche, en m²·K/W</span></li>
-<li><strong>U</strong><span>: coefficient de transmission, en W/(m²·K)</span></li>
-</ul>
-<blockquote>
-<p>Les résistances s’additionnent parce que les couches sont <strong>en série</strong> : le même flux les traverse toutes, et les écarts de température s’ajoutent. C’est la loi des mailles, transposée mot pour mot.</p>
-</blockquote>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Un mur complet, calculé en entier</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Prenons un mur de rénovation courant, de l’intérieur vers l’extérieur : plaque de plâtre 13 mm, laine de verre 100 mm, parpaing creux 200 mm, enduit 15 mm.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Couche</th>
-<th style="text-align: right;">e (m)</th>
-<th style="text-align: right;">λ</th>
-<th style="text-align: right;">R = e/λ</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Rsi</td>
-<td style="text-align: right;">sans objet</td>
-<td style="text-align: right;">,</td>
-<td style="text-align: right;">0,13</td>
-</tr>
-<tr>
-<td>Plâtre</td>
-<td style="text-align: right;">0,013</td>
-<td style="text-align: right;">0,25</td>
-<td style="text-align: right;">0,052</td>
-</tr>
-<tr>
-<td>Laine de verre</td>
-<td style="text-align: right;">0,100</td>
-<td style="text-align: right;">0,035</td>
-<td style="text-align: right;"><strong>2,857</strong></td>
-</tr>
-<tr>
-<td>Parpaing creux</td>
-<td style="text-align: right;">0,200</td>
-<td style="text-align: right;">1,05</td>
-<td style="text-align: right;">0,190</td>
-</tr>
-<tr>
-<td>Enduit</td>
-<td style="text-align: right;">0,015</td>
-<td style="text-align: right;">1,15</td>
-<td style="text-align: right;">0,013</td>
-</tr>
-<tr>
-<td>Rse</td>
-<td style="text-align: right;">sans objet</td>
-<td style="text-align: right;">,</td>
-<td style="text-align: right;">0,04</td>
-</tr>
-<tr>
-<td><strong>Total</strong></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"><strong>3,282</strong></td>
-</tr>
-</tbody>
-</table></div>
-<p>D’où <strong>U = 1 / 3,282 = 0,305 W/(m²·K)</strong>.</p>
-<p>Le résultat à faire lire aux étudiants n’est pas le U, c’est la <strong>colonne des R</strong>. La laine seule pèse 2,857 sur 3,282, soit <strong>87 % de la résistance pour 100 mm sur 328</strong>. Le parpaing, quatre fois plus épais, apporte 6 %.</p>
-<p>Le prolongement qui frappe : remplacer le parpaing par du béton plein (λ = 1,75) ferait passer sa résistance de 0,190 à 0,114, et le U de 0,305 à 0,312. <strong>Deux pour cent.</strong> Alors qu’ajouter 40 mm de laine ferait passer U à 0,226, soit 26 % de mieux.</p>
-<p>C’est le calcul qui règle définitivement la question « le béton, ça isole non ? », et il vaut mieux le faire faire que l’affirmer.</p></div></details>
-</div><div class="outil" data-outil="paroi">
-
-</div>
-<h2 id="la-ou-l-addition-cesse-d-etre-vraie">Là où l’addition cesse d’être vraie</h2>
-<p>L’addition des résistances suppose trois choses : <strong>régime permanent, une seule dimension, couches homogènes</strong>. Le bâtiment réel viole les trois, et chaque violation a son nom.</p>
-<div class="etapes">
-<ol type="1">
-<li><strong>Le régime n’est jamais permanent</strong>, la température extérieure change sans arrêt. C’est l’inertie, traitée plus bas.</li>
-<li><strong>Le flux n’est pas unidimensionnel aux liaisons</strong>, il contourne l’isolant. Ce sont les ponts thermiques.</li>
-<li><strong>Les couches ne sont pas homogènes</strong>, un montant d’ossature, un rail métallique, une fixation traversent l’isolant.</li>
-</ol>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les ponts thermiques : la trace noire dans l&#39;angle du mur</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Tout le monde a vu, dans un logement mal isolé, une <strong>trace noire à la jonction du mur et du plafond</strong>, ou derrière une armoire contre un mur froid. C’est un pont thermique, révélé par la moisissure.</p>
-<p>Le mécanisme s’enchaîne proprement, et il fait le lien avec la page Cours 3 : le flux contourne l’isolant par la liaison, la surface intérieure y est <strong>plus froide</strong> que sur la paroi courante, et si elle descend sous le point de rosée de l’air ambiant, la vapeur y condense. L’humidité permanente fait le reste.</p>
-<p>Le calcul 1D est faux à cet endroit : on ne le corrige pas, on <strong>ajoute un terme séparé</strong>, mesuré ou calculé par éléments finis, exprimé en watts par mètre linéaire et par kelvin, le coefficient <strong>ψ</strong>. Une liaison plancher-mur isolé par l’intérieur vaut typiquement <strong>0,6 à 0,9 W/(m·K)</strong>.</p>
-<p>Le renversement mérite d’être raconté : <strong>plus on isole les parois, plus les ponts pèsent en proportion.</strong> Sur un bâtiment de 1975 non isolé, ils sont un détail. Sur un bâtiment récent, ils représentent <strong>20 à 40 %</strong> des déperditions par transmission. C’est ce qui a fait basculer la construction vers l’isolation par l’extérieur, qui les supprime presque tous, et vers les rupteurs de ponts thermiques pour les balcons.</p>
-<p>Ce que l’épreuve demande : reconnaître une liaison sur une coupe, lire un ψ dans un tableau, multiplier par le linéaire. Jamais calculer un ψ.</p></div></details>
-</div><h2 id="du-mur-au-batiment-entier">Du mur au bâtiment entier</h2>
-<div class="formule">
-<p><strong>Φ = ΣU·S·Δθ + Σψ·L·Δθ + 0,34·Qv·Δθ</strong></p>
-<ul>
-<li>le premier terme : les <strong>parois</strong>, chacune avec sa surface</li>
-<li>le deuxième : les <strong>liaisons</strong>, chacune avec son linéaire</li>
-<li>le troisième : le <strong>renouvellement d’air</strong>, traité au Cours 3</li>
-</ul>
-<blockquote>
-<p>La somme des trois, divisée par Δθ, s’appelle le <strong>GV</strong> : les déperditions du bâtiment par kelvin d’écart, en W/K. C’est la signature thermique du bâtiment.</p>
-</blockquote>
-</div>
-<figure class="schema"><div class="dessin" data-schema="batiment-ecorche"></div><figcaption>Où passe la chaleur : parois, liaisons, air neuf, chacun à sa place.</figcaption></figure>
-<div class="outil" data-outil="bilan">
-
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Un bilan complet, sur une maison, avec les nombres</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Maison de 100 m² au sol, un étage, 200 m² habitables. Murs 150 m² à U = 0,30 ; toiture 100 m² à U = 0,20 ; plancher bas 100 m² à U = 0,25 ; fenêtres 25 m² à U = 1,40. Liaisons : 120 m de linéaire à ψ moyen 0,5. Ventilation 150 m³/h. Température de base −7 °C, consigne 19 °C, donc <strong>Δθ = 26 K</strong>.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Poste</th>
-<th>Calcul</th>
-<th style="text-align: right;">W/K</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Murs</td>
-<td>150 × 0,30</td>
-<td style="text-align: right;">45,0</td>
-</tr>
-<tr>
-<td>Toiture</td>
-<td>100 × 0,20</td>
-<td style="text-align: right;">20,0</td>
-</tr>
-<tr>
-<td>Plancher</td>
-<td>100 × 0,25</td>
-<td style="text-align: right;">25,0</td>
-</tr>
-<tr>
-<td>Fenêtres</td>
-<td>25 × 1,40</td>
-<td style="text-align: right;">35,0</td>
-</tr>
-<tr>
-<td>Ponts thermiques</td>
-<td>120 × 0,5</td>
-<td style="text-align: right;">60,0</td>
-</tr>
-<tr>
-<td>Ventilation</td>
-<td>0,34 × 150</td>
-<td style="text-align: right;">51,0</td>
-</tr>
-<tr>
-<td><strong>GV</strong></td>
-<td></td>
-<td style="text-align: right;"><strong>236,0</strong></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Φ = 236 × 26 = 6 136 W</strong>, soit environ <strong>6,1 kW</strong>, ou 31 W par mètre carré habitable.</p>
-<p>Trois lectures à faire tirer, et aucune n’est le nombre final. <strong>Les fenêtres</strong> font 15 % des pertes pour 7 % de la surface déperditive. <strong>Les ponts thermiques</strong> sont le premier poste, devant les murs, c’est le cas général dès qu’on isole. Et <strong>l’air neuf</strong> pèse autant que les murs : c’est ce qui justifie tout le Cours 3 et l’existence même du double flux.</p>
-<p>Le test de cohérence : 31 W/m², dans la fourchette 25-35 d’un bâti isolé correctement. Un résultat à 8 ou à 90 W/m² serait à reprendre avant d’aller plus loin.</p></div></details>
-</div><h2 id="les-deux-constantes-du-metier-avec-une-bouilloire">Les deux constantes du métier, avec une bouilloire</h2>
-<p>Elles ne contiennent aucune physique nouvelle. <strong>Ce sont des conversions d’unités</strong>, et le montrer une fois désamorce définitivement la question.</p>
-<div class="formule">
-<p><strong>Eau : Φ = Q × 1,163 × Δθ</strong>, Q en L/h, Φ en W</p>
-<ul>
-<li>l’eau pèse <strong>1 kg par litre</strong>, sa chaleur massique vaut <strong>4 185 J/(kg·K)</strong></li>
-<li>4 185 J = 4 185 / 3 600 Wh = <strong>1,163 Wh</strong> par litre et par kelvin</li>
-</ul>
-<blockquote>
-<p>Élever un litre d’eau d’un degré coûte 1,163 wattheure. C’est tout ce que dit ce nombre.</p>
-</blockquote>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La bouilloire, et pourquoi elle met deux minutes</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une bouilloire de <strong>2 000 W</strong> contient <strong>1,5 L</strong> d’eau à 15 °C. Combien de temps pour atteindre 100 °C ?</p>
-<p>Énergie nécessaire : 1,5 × 1,163 × 85 = <strong>148 Wh</strong>. Durée : 148 / 2 000 = 0,074 h = <strong>4 minutes 27</strong>.</p>
-<p>En pratique elle met environ cinq minutes : les pertes vers l’air et le corps de l’appareil expliquent l’écart, soit un rendement de l’ordre de 90 %.</p>
-<p>L’exercice se prolonge naturellement vers le métier. <strong>Une douche de 8 minutes à 10 L/min, de 12 à 40 °C</strong> : 80 L, donc 80 × 1,163 × 28 = <strong>2 605 Wh</strong>, soit 2,6 kWh. À 0,25 € le kWh, <strong>65 centimes</strong> la douche.</p>
-<p>Ce calcul a deux vertus. Il fait manipuler la relation dans le sens du métier, un volume, un écart, une énergie. Et il donne un ordre de grandeur que les étudiants vérifient chez eux, ce qui ancre le nombre bien mieux qu’un exercice abstrait.</p></div></details>
-</div><div class="formule">
-<p><strong>Air : Φ = Qv × 0,34 × Δθ</strong>, Qv en m³/h, Φ en W</p>
-<ul>
-<li>l’air pèse <strong>1,2 kg/m³</strong>, sa chaleur massique vaut <strong>1 006 J/(kg·K)</strong></li>
-<li>1,2 × 1 006 = 1 207 J/(m³·K) = 1 207 / 3 600 = <strong>0,335 Wh/(m³·K)</strong></li>
-</ul>
-<blockquote>
-<p>Le 0,34 est un 0,335 arrondi. Il vaut pour la chaleur <strong>sensible</strong> seule, le Cours 3 ajoutera la latente.</p>
-</blockquote>
-</div>
-<div class="cle">
-<p>Le rapport des deux constantes est le nombre le plus utile de la page : <strong>1,163 / 0,34 ≈ 3 400</strong>. À écart égal, il faut <strong>3 400 fois plus de mètres cubes d’air que de litres d’eau</strong> pour transporter la même chaleur. C’est toute la raison d’être des réseaux d’eau, et de la taille des gaines de ventilation, que les étudiants trouvent toujours démesurées avant d’avoir vu ce rapport.</p>
-</div>
-<h2 id="une-saison-entiere-les-degres-jours">Une saison entière : les degrés-jours</h2>
-<div class="outil" data-outil="energie">
-
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un degré-jour mesure, et pourquoi la base est 18</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le degré-jour unifié est une <strong>intégrale</strong> : la somme, sur la saison, des écarts positifs entre une température de base et la température moyenne extérieure du jour.</p>
-<p>Pourquoi 18 et non 19 ? Parce que les <strong>apports gratuits</strong>, occupants, éclairage, appareils, soleil, chauffent en permanence de deux à trois kelvins. Un local tenu à 19 °C n’a besoin de chauffage qu’en dessous d’environ 18 °C dehors. La base <strong>encapsule donc une hypothèse d’apports</strong>, et c’est pour cela qu’elle est conventionnelle : sur un bâtiment très performant et très occupé, la vraie base descend vers 15 °C.</p>
-<p><strong>Le calcul de la maison précédente</strong>, sur une saison à 2 400 DJU :</p>
-<p>E = GV × DJU × 24 / 1 000 = 236 × 2 400 × 24 / 1 000 = <strong>13 594 kWh</strong>.</p>
-<p>À 0,10 € le kWh de gaz, avec un rendement de 0,95 : <strong>1 430 € par an</strong>.</p>
-<p>Et l’usage honnête de ce résultat : il sert à <strong>comparer deux années sur un même bâtiment</strong>, ou deux variantes d’un même projet. Il ne prédit pas une facture, le DJU ignore le vent, l’ensoleillement réel et l’occupation. L’écart entre calcul et facture réelle atteint couramment un facteur 1,5, dans les deux sens.</p></div></details>
-</div><h2 id="l-inertie-la-maison-de-pierre-et-le-four-eteint">L’inertie : la maison de pierre et le four éteint</h2>
-<p>Ouvrez la porte d’un four éteint depuis une heure : il est encore tiède. Entrez dans une maison de pierre en août : elle est fraîche alors qu’il fait 35 °C dehors. C’est la même grandeur, et elle ne figure dans aucune des relations précédentes.</p>
-<div class="formule">
-<p><strong>τ = C / GV</strong>, la constante de temps du bâtiment</p>
-<ul>
-<li><strong>C</strong><span>: capacité thermique des matériaux accessibles, en Wh/K</span></li>
-<li><strong>GV</strong><span>: déperditions par kelvin, en W/K</span></li>
-<li><strong>τ</strong><span>: en heures : le temps au bout duquel l’écart avec l’extérieur est retombé à <strong>37 %</strong> de sa valeur initiale</span></li>
-</ul>
-<blockquote>
-<p>Ordres de grandeur : <strong>20 à 40 h</strong> pour une construction légère, <strong>80 à 150 h</strong> pour du lourd.</p>
-</blockquote>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois conséquences qu&#39;on voit toutes en régulation</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le réduit de nuit ne rapporte que sur du léger.</strong> Sur un bâtiment lourd, huit heures de coupure ne font perdre que quelques dixièmes de degré : il n’y a presque rien à récupérer, et la relance coûte ce qu’on a économisé. L’objection à anticiper (« couper le chauffage fait toujours économiser ») se réfute par là : on n’économise pas parce qu’on a coupé, on économise parce qu’il fait plus froid dedans. Si l’inertie l’empêche, il n’y a pas d’économie.</p>
-<p><strong>La relance doit être anticipée</strong>, d’autant plus que le bâtiment est lourd. Une relance optimisée apprend la durée réelle et la corrige selon la température extérieure. C’est la séance 19.</p>
-<p><strong>Une boucle de chauffage ne se règle pas comme une boucle d’air.</strong> Les inerties sont de trois ordres de grandeur différents : secondes pour une gaine, minutes pour un circuit d’eau, heures pour un local. Un régulateur trop nerveux sur une grandeur lente pompe ; trop mou sur une grandeur rapide, il dérive.</p>
-<p>Et le cas de la maison de pierre en été mérite d’être nommé : ce n’est pas de l’isolation, c’est du <strong>déphasage</strong>. La chaleur de l’après-midi met dix à douze heures à traverser le mur et ressort la nuit, quand on peut ventiler. Un mur léger très isolé ne fait pas cela, d’où le confort d’été des constructions contemporaines, qui est un vrai sujet et pas une nostalgie.</p></div></details>
-</div><h2 id="demontrer-plutot-qu-affirmer">Démontrer, plutôt qu’affirmer</h2>
-<p>Trois relations de ce cours sont admises partout et démontrées nulle part. Chacune se démontre en cinq lignes, et la démonstration change le statut du résultat : de formule à retenir, il devient conséquence à comprendre. C’est le seul moyen de répondre à « pourquoi ? » autrement que par « c’est comme ça ».</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi les résistances s&#39;additionnent, la démonstration</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>On admet partout que R totale = ΣR, en invoquant l’analogie électrique. Mais l’analogie n’est pas une preuve : elle indique où chercher. Voici la preuve, et elle tient dans une hypothèse et deux lignes.</p>
-<p><strong>L’hypothèse : le régime est permanent.</strong> Rien ne s’accumule dans la paroi ; tout ce qui entre par une face ressort par l’autre. Le flux surfacique φ est donc <strong>le même dans chaque couche</strong>, c’est là tout le travail, et c’est la seule chose à faire admettre.</p>
-<p>Dans une couche i, la loi de Fourier intégrée donne l’écart de température aux bornes de cette couche :</p>
-<p>Δθᵢ = φ × eᵢ / λᵢ = φ × Rᵢ</p>
-<p>L’écart total entre les deux ambiances est la somme des écarts partiels, c’est une identité, pas une hypothèse : θᵢ − θₑ = Σ Δθᵢ. En remplaçant :</p>
-<p>θᵢ − θₑ = Σ (φ × Rᵢ) = φ × Σ Rᵢ</p>
-<p>d’où <strong>φ = (θᵢ − θₑ) / ΣRᵢ</strong>, c’est-à-dire R totale = ΣRᵢ. ∎</p>
-<div class="cle">
-<p><strong>Tout repose sur « le même flux traverse toutes les couches ».</strong> C’est vrai en série, faux en parallèle, et c’est exactement pourquoi une ossature qui traverse l’isolant ne se traite pas par une addition, comme on le verra plus bas. Un étudiant qui a compris d’où vient l’addition sait aussi quand elle tombe.</p>
-</div>
-<p><strong>Le contre-exemple à montrer</strong>, parce qu’il ancre l’hypothèse : en régime variable, l’addition est fausse. Une paroi qui se réchauffe absorbe une partie du flux entrant ; ce qui ressort est plus faible que ce qui entre, et il n’y a plus de φ unique. C’est le domaine de l’inertie, traité plus loin, et la raison pour laquelle on dimensionne le chauffage au petit matin d’un jour froid : à ce moment-là, le bâtiment est à l’équilibre depuis des heures, et le régime permanent est enfin une bonne approximation.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">D&#39;où sort τ = C / GV, et pourquoi 37 %</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La constante de temps est donnée sans justification dans presque tous les cours, avec ce « 37 % » qui tombe du ciel. Il vient d’un calcul d’une ligne, et le faire une fois vaut mieux que le répéter dix fois.</p>
-<p><strong>Le bilan d’un bâtiment qui refroidit</strong>, chauffage coupé. Pendant un temps dt, la chaleur perdue vers l’extérieur est prélevée sur la chaleur stockée dans les matériaux :</p>
-<p>C × dθ/dt = − GV × (θ − θₑ)</p>
-<p>Posons l’écart x = θ − θₑ, en supposant θₑ constant. L’équation devient C·dx/dt = −GV·x, soit dx/x = −(GV/C)·dt. En intégrant :</p>
-<p><strong>x(t) = x₀ × e^(−t/τ)</strong>, avec <strong>τ = C / GV</strong></p>
-<p>Le rapport d’une capacité à une conductance est un temps : c’est vrai ici comme pour un condensateur qui se décharge dans une résistance, τ = RC. L’analogie électrique tient donc jusqu’au régime variable, ce qui est un argument pour l’utiliser, et pas seulement une commodité.</p>
-<p><strong>Le 37 % est simplement e⁻¹ = 0,368.</strong> Au bout d’une constante de temps, l’écart est retombé à 37 % de sa valeur initiale ; au bout de trois, à 5 %. Aucune mémoire à faire, c’est une propriété de l’exponentielle.</p>
-<p><strong>Le calcul sur la maison du bilan précédent</strong>, GV = 236 W/K, 200 m² habitables :</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Inertie</th>
-<th style="text-align: right;">C (Wh/K)</th>
-<th style="text-align: right;">τ</th>
-<th style="text-align: right;">Après 8 h par 0 °C dehors</th>
-<th style="text-align: right;">Après 24 h</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Légère</td>
-<td style="text-align: right;">10 000</td>
-<td style="text-align: right;">42 h</td>
-<td style="text-align: right;">15,7 °C</td>
-<td style="text-align: right;">10,8 °C</td>
-</tr>
-<tr>
-<td>Moyenne</td>
-<td style="text-align: right;">14 400</td>
-<td style="text-align: right;">61 h</td>
-<td style="text-align: right;">16,7 °C</td>
-<td style="text-align: right;">12,8 °C</td>
-</tr>
-<tr>
-<td>Lourde</td>
-<td style="text-align: right;">22 200</td>
-<td style="text-align: right;">94 h</td>
-<td style="text-align: right;">17,5 °C</td>
-<td style="text-align: right;">14,7 °C</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Voilà le réduit de nuit chiffré, et l’écart est décisif : huit heures de coupure font perdre <strong>4,4 K sur du léger et 1,5 K sur du lourd</strong>. L’économie est proportionnelle à cette chute, c’est elle qui mesure combien de temps le bâtiment a été plus froid. Sur du lourd, il n’y a presque rien à récupérer, et la relance rend ce qu’on a pris.</p>
-</div>
-<p><strong>Le prolongement qui intéresse les étudiants de l’option C</strong> : cette exponentielle est exactement celle qu’un régulateur doit anticiper. Un optimiseur de relance ne fait rien d’autre qu’estimer τ sur les jours précédents et résoudre l’équation à l’envers, combien d’avance pour remonter de 2 K sachant qu’il fait −3 °C dehors. La séance 19 le montre à l’œuvre.</p></div></details>
-</div><h2 id="le-calcul-inverse-dimensionner-au-lieu-de-verifier">Le calcul inverse : dimensionner au lieu de vérifier</h2>
-<p>En séance, on donne une paroi et on cherche son U. En bureau d’études, on donne un U et on cherche la paroi. C’est le même calcul retourné, et le retourner est une compétence à part entière : elle demande de savoir ce qui est fixé et ce qui est libre.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Combien d&#39;isolant pour atteindre un U ? La méthode, puis les rendements</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Reprenons le mur de rénovation (plâtre 13, parpaing 200, enduit 15) et cherchons l’épaisseur de laine à poser pour un U visé.</p>
-<p><strong>La méthode tient en trois lignes</strong>, et la deuxième est celle qu’on oublie.</p>
-<ol type="1">
-<li>Le U visé donne la résistance totale nécessaire : <strong>R = 1 / U</strong> ;</li>
-<li>on retire tout ce qui n’est pas l’isolant, les autres couches <strong>et les deux résistances superficielles</strong> : Rsi + plâtre + parpaing + enduit + Rse = <strong>0,426 m²·K/W</strong> ;</li>
-<li>ce qui reste est la résistance que l’isolant doit apporter, et son épaisseur en découle : <strong>e = R isolant × λ</strong>.</li>
-</ol>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th style="text-align: right;">U visé</th>
-<th style="text-align: right;">R totale</th>
-<th style="text-align: right;">Isolant nécessaire</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">0,30</td>
-<td style="text-align: right;">3,33</td>
-<td style="text-align: right;">102 mm</td>
-</tr>
-<tr>
-<td style="text-align: right;">0,25</td>
-<td style="text-align: right;">4,00</td>
-<td style="text-align: right;">125 mm</td>
-</tr>
-<tr>
-<td style="text-align: right;"><strong>0,20</strong></td>
-<td style="text-align: right;">5,00</td>
-<td style="text-align: right;"><strong>160 mm</strong></td>
-</tr>
-<tr>
-<td style="text-align: right;">0,15</td>
-<td style="text-align: right;">6,67</td>
-<td style="text-align: right;">218 mm</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Le piège de l’étape 2</strong> : oublier Rsi et Rse. L’erreur est faible ici, 0,17 sur 5, mais elle se voit sur les parois performantes, et surtout elle révèle qu’on a appliqué une formule sans savoir ce qu’elle contient.</p>
-<p><strong>Puis vient la question que le maître d’ouvrage pose toujours</strong> : pourquoi s’arrêter là, puisque l’isolant n’est pas cher ? La réponse est dans la troisième colonne.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th style="text-align: right;">Épaisseur</th>
-<th style="text-align: right;">R totale</th>
-<th style="text-align: right;">U</th>
-<th style="text-align: right;">Gain sur les 40 mm précédents</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">60 mm</td>
-<td style="text-align: right;">2,14</td>
-<td style="text-align: right;">0,467</td>
-<td style="text-align: right;">sans objet</td>
-</tr>
-<tr>
-<td style="text-align: right;">100 mm</td>
-<td style="text-align: right;">3,28</td>
-<td style="text-align: right;">0,305</td>
-<td style="text-align: right;"><strong>0,163</strong></td>
-</tr>
-<tr>
-<td style="text-align: right;">140 mm</td>
-<td style="text-align: right;">4,43</td>
-<td style="text-align: right;">0,226</td>
-<td style="text-align: right;">0,079</td>
-</tr>
-<tr>
-<td style="text-align: right;">180 mm</td>
-<td style="text-align: right;">5,57</td>
-<td style="text-align: right;">0,180</td>
-<td style="text-align: right;">0,046</td>
-</tr>
-<tr>
-<td style="text-align: right;">220 mm</td>
-<td style="text-align: right;">6,71</td>
-<td style="text-align: right;">0,149</td>
-<td style="text-align: right;">0,031</td>
-</tr>
-<tr>
-<td style="text-align: right;">300 mm</td>
-<td style="text-align: right;">9,00</td>
-<td style="text-align: right;">0,111</td>
-<td style="text-align: right;">0,016</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p><strong>Chaque tranche de 40 mm rapporte à peu près moitié moins que la précédente.</strong> C’est mécanique : U = 1/R, et ajouter une constante à un R déjà grand change peu son inverse. Les 40 premiers millimètres au-dessus de 60 valent dix fois les 40 derniers au-dessus de 260.</p>
-</div>
-<p><strong>Ce que cette table permet de faire dire aux étudiants</strong>, et qui vaut mieux qu’un discours : la règle « on isole d’abord ce qui n’est pas isolé » n’est pas un principe d’économie, c’est une conséquence de la forme de la fonction inverse. Traiter une paroi nue, c’est se placer en haut de la courbe ; doubler un isolant existant, c’est se placer en bas.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">La paroi à ossature : quand l&#39;addition ne suffit plus</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une ossature bois, un rail métallique, un montant : tout ce qui <strong>traverse</strong> l’isolant crée un chemin parallèle. Le flux ne traverse plus les mêmes couches partout, l’hypothèse du flux unique tombe, et l’addition des résistances cesse de valoir pour la paroi entière.</p>
-<p><strong>La méthode devient : calculer chaque zone séparément, puis pondérer les U par les surfaces.</strong> On additionne des conductances, jamais des résistances, c’est exactement la règle des résistances en parallèle, transposée.</p>
-<p>Sur notre mur, avec des montants de 45 mm tous les 600 mm, donc <strong>7,5 % de la surface</strong>, et l’isolant remplacé par du bois dans ces bandes :</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Zone</th>
-<th>Composition</th>
-<th style="text-align: right;">R</th>
-<th style="text-align: right;">U</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Courante : 92,5 %</td>
-<td>laine 100 mm</td>
-<td style="text-align: right;">3,283</td>
-<td style="text-align: right;">0,305</td>
-</tr>
-<tr>
-<td>Montant : 7,5 %</td>
-<td>bois 100 mm, λ = 0,13</td>
-<td style="text-align: right;">1,195</td>
-<td style="text-align: right;">0,837</td>
-</tr>
-</tbody>
-</table></div>
-<p>U moyen = 0,925 × 0,305 + 0,075 × 0,837 = <strong>0,345 W/(m²·K)</strong></p>
-<div class="piege">
-<p><strong>Sept virgule cinq pour cent de la surface dégrade le U de treize pour cent.</strong> C’est le rapport à retenir : une petite part de surface très conductrice pèse beaucoup plus que sa part. Calculer la paroi courante et l’annoncer comme le U du mur est une erreur de méthode courante, et elle va toujours dans le sens optimiste.</p>
-</div>
-<p><strong>Le prolongement métier</strong>, qui explique une pratique de chantier : c’est précisément pour effacer ces ponts intégrés qu’on pose une <strong>contre-isolation croisée</strong>, une seconde couche d’isolant, perpendiculaire, qui recouvre les montants. Elle ajoute peu de résistance en zone courante et beaucoup en zone montant, donc elle resserre l’écart entre les deux zones. Le même raisonnement vaut pour l’isolation par l’extérieur, qui traite tous les ponts d’un coup.</p>
-<p><strong>Le cas de l’acier mérite une phrase</strong>, parce que l’ordre de grandeur surprend : un rail métallique a un λ de l’ordre de 50, soit <strong>quatre cents fois</strong> celui de l’isolant. Une ossature métallique non traitée peut à elle seule doubler le U d’une paroi. D’où les rails à âme perforée, dont le trajet du flux est allongé.</p></div></details>
-</div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
-<p>Un manuel se juge à ses exercices corrigés autant qu’à son cours. Ceux-ci sont gradués : le premier applique une relation, le deuxième la retourne, le troisième demande de choisir la méthode avant de calculer. <strong>La rédaction du corrigé est aussi importante que le résultat</strong>, c’est elle qu’on attend d’un étudiant à l’épreuve.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : le U d&#39;une paroi</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un mur est composé, de l’intérieur vers l’extérieur, de 15 mm d’enduit plâtre (λ = 0,35), 200 mm de béton plein (λ = 1,75) et 120 mm de polystyrène expansé (λ = 0,038) sous bardage ventilé. Calculer son coefficient de transmission surfacique.</p>
-<p><strong>Ce qu’il faut repérer avant de calculer.</strong> Le bardage est <strong>ventilé</strong> : la lame d’air derrière lui communique avec l’extérieur, donc elle ne compte pas comme résistance, et la paroi s’arrête à l’isolant. Dans ce cas, la convention veut qu’on prenne <strong>Rse = Rsi = 0,13</strong> au lieu de 0,04, la face extérieure de l’isolant n’est plus balayée par le vent.</p>
-<p><strong>Résolution.</strong></p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Couche</th>
-<th style="text-align: right;">e (m)</th>
-<th style="text-align: right;">λ</th>
-<th style="text-align: right;">R</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Rsi</td>
-<td style="text-align: right;">sans objet</td>
-<td style="text-align: right;">,</td>
-<td style="text-align: right;">0,130</td>
-</tr>
-<tr>
-<td>Enduit plâtre</td>
-<td style="text-align: right;">0,015</td>
-<td style="text-align: right;">0,35</td>
-<td style="text-align: right;">0,043</td>
-</tr>
-<tr>
-<td>Béton plein</td>
-<td style="text-align: right;">0,200</td>
-<td style="text-align: right;">1,75</td>
-<td style="text-align: right;">0,114</td>
-</tr>
-<tr>
-<td>Polystyrène</td>
-<td style="text-align: right;">0,120</td>
-<td style="text-align: right;">0,038</td>
-<td style="text-align: right;"><strong>3,158</strong></td>
-</tr>
-<tr>
-<td>Rse (lame ventilée)</td>
-<td style="text-align: right;">sans objet</td>
-<td style="text-align: right;">,</td>
-<td style="text-align: right;">0,130</td>
-</tr>
-<tr>
-<td><strong>Total</strong></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"><strong>3,575</strong></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>U = 1 / 3,575 = 0,280 W/(m²·K)</strong></p>
-<p><strong>Vérification de plausibilité.</strong> On attend 0,22 à 0,30 pour un mur isolé contemporain : le résultat est dans la fourchette. Et la colonne des R redit ce que le cours a établi, l’isolant apporte 88 % de la résistance, le béton 3 %.</p>
-<p><strong>L’erreur à ne pas commettre</strong> : prendre Rse = 0,04. Le U tomberait à 0,287, un écart de 2,6 %, faible, mais il révèle qu’on n’a pas vu que la lame était ventilée. À l’épreuve, c’est la lecture du dossier qui est évaluée là, pas l’arithmétique.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : quelle épaisseur ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> On rénove une maison dont les murs sont en pierre de 500 mm (λ = 2,2), enduits intérieurement de 20 mm de plâtre (λ = 0,25). La réglementation impose U ≤ 0,23 W/(m²·K). Quelle épaisseur de laine de bois (λ = 0,040) poser à l’intérieur ?</p>
-<p><strong>Résolution, en suivant les trois étapes.</strong></p>
-<p><em>Étape 1, la résistance visée.</em> R = 1 / 0,23 = <strong>4,348 m²·K/W</strong></p>
-<p><em>Étape 2, ce qui existe déjà.</em></p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Couche</th>
-<th style="text-align: right;">R</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Rsi</td>
-<td style="text-align: right;">0,130</td>
-</tr>
-<tr>
-<td>Plâtre 20 mm</td>
-<td style="text-align: right;">0,080</td>
-</tr>
-<tr>
-<td>Pierre 500 mm</td>
-<td style="text-align: right;">0,227</td>
-</tr>
-<tr>
-<td>Rse</td>
-<td style="text-align: right;">0,040</td>
-</tr>
-<tr>
-<td><strong>Existant</strong></td>
-<td style="text-align: right;"><strong>0,477</strong></td>
-</tr>
-</tbody>
-</table></div>
-<p><em>Étape 3, l’isolant.</em> R isolant = 4,348 − 0,477 = 3,871 e = 3,871 × 0,040 = 0,155 m, soit <strong>155 mm</strong></p>
-<p><strong>On retient l’épaisseur commerciale immédiatement supérieure : 160 mm</strong>, qui donne U = 0,223. Arrondir vers le bas ferait manquer l’exigence, c’est un réflexe à installer, un dimensionnement se conclut toujours par le choix d’un produit réel.</p>
-<div class="cle">
-<p><strong>Un mur de pierre de cinquante centimètres apporte 0,227 m²·K/W.</strong> À peine plus que neuf millimètres de laine. C’est le calcul qui répond à « les vieux murs sont épais, donc ils isolent ». Ils ont de l’inertie, pas de la résistance : deux propriétés différentes, et la confusion entre les deux est la plus tenace de tout le chapitre.</p>
-</div>
-<p><strong>Le prolongement à ne pas manquer.</strong> Isoler par l’intérieur un mur de pierre place la masse du côté froid : on perd le déphasage estival dont ces bâtiments tiraient leur confort. C’est un arbitrage réel, pas une objection de principe, et il se traite en nommant les deux propriétés séparément.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : choisir la méthode avant de calculer</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un pignon de 60 m² est réalisé en ossature bois : montants de 45 × 145 mm espacés de 600 mm d’axe en axe, remplissage laine de verre (λ = 0,035), OSB 12 mm à l’intérieur (λ = 0,13), pare-pluie et bardage ventilé à l’extérieur. Le bureau d’études annonce U = 0,24. Vérifier, et conclure.</p>
-<p><strong>La difficulté est de reconnaître qu’il n’y a pas une paroi mais deux.</strong> Une addition simple donnerait le U de la zone courante et manquerait l’ossature.</p>
-<p><em>Part de surface des montants</em> : 45 / 600 = <strong>7,5 %</strong>.</p>
-<p><em>Zone courante, 92,5 %</em></p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Couche</th>
-<th style="text-align: right;">R</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Rsi</td>
-<td style="text-align: right;">0,130</td>
-</tr>
-<tr>
-<td>OSB 12 mm</td>
-<td style="text-align: right;">0,092</td>
-</tr>
-<tr>
-<td>Laine 145 mm</td>
-<td style="text-align: right;">4,143</td>
-</tr>
-<tr>
-<td>Rse ventilé</td>
-<td style="text-align: right;">0,130</td>
-</tr>
-<tr>
-<td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>4,495</strong> → U = 0,222</td>
-</tr>
-</tbody>
-</table></div>
-<p><em>Zone montant, 7,5 %</em>, la laine remplacée par du bois (λ = 0,13)</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Couche</th>
-<th style="text-align: right;">R</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Rsi</td>
-<td style="text-align: right;">0,130</td>
-</tr>
-<tr>
-<td>OSB 12 mm</td>
-<td style="text-align: right;">0,092</td>
-</tr>
-<tr>
-<td>Bois 145 mm</td>
-<td style="text-align: right;">1,115</td>
-</tr>
-<tr>
-<td>Rse ventilé</td>
-<td style="text-align: right;">0,130</td>
-</tr>
-<tr>
-<td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>1,468</strong> → U = 0,681</td>
-</tr>
-</tbody>
-</table></div>
-<p><em>Pondération des conductances</em> U = 0,925 × 0,222 + 0,075 × 0,681 = 0,205 + 0,051 = <strong>0,257 W/(m²·K)</strong></p>
-<p><strong>Conclusion.</strong> Le U réel est de 0,257, et non 0,24 : le bureau d’études a vraisemblablement retenu la zone courante seule, ou négligé l’ossature. L’écart est de <strong>7 %</strong>, et il porte sur 60 m², soit 1,0 W/K de plus au bilan, à comparer aux 236 W/K de l’exemple du cours.</p>
-<p><strong>Ce que l’étudiant doit rédiger</strong>, et qui vaut la moitié des points : non pas « U = 0,257 » mais « le calcul en parois parallèles donne 0,257 contre 0,24 annoncé ; l’écart provient de l’ossature, qui occupe 7,5 % de la surface avec un U trois fois supérieur ». Un résultat sans son explication ne montre pas qu’on a compris pourquoi la méthode changeait.</p>
-<p><strong>Le prolongement</strong>, s’il reste du temps : quelle contre-isolation croisée faudrait-il pour atteindre réellement 0,24 ? On refait les deux zones avec une couche supplémentaire commune, et l’on constate que quelques dizaines de millimètres suffisent, parce qu’ils profitent surtout à la zone la plus mauvaise.</p></div></details>
-</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Ordre de grandeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>λ de l’air immobile</td>
-<td>0,025 W/(m·K) : meilleur que tout isolant</td>
-</tr>
-<tr>
-<td>λ des isolants courants</td>
-<td>0,032 à 0,040</td>
-</tr>
-<tr>
-<td>λ du bois 0,13 · béton 1,7 · acier 50 · eau 0,6</td>
-<td></td>
-</tr>
-<tr>
-<td>Épaisseur maximale d’une lame d’air utile</td>
-<td>20 mm</td>
-</tr>
-<tr>
-<td>R d’un mur RT2012</td>
-<td>3,5 à 4,5 m²·K/W</td>
-</tr>
-<tr>
-<td>U d’un mur isolé</td>
-<td>0,22 à 0,30 W/(m²·K)</td>
-</tr>
-<tr>
-<td>U d’un double vitrage argon 1,1-1,4 · simple 5,8</td>
-<td></td>
-</tr>
-<tr>
-<td>ψ liaison plancher-mur, isolation intérieure</td>
-<td>0,6 à 0,9 W/(m·K)</td>
-</tr>
-<tr>
-<td>Part des ponts thermiques, bâti récent</td>
-<td>20 à 40 %</td>
-</tr>
-<tr>
-<td>Déperditions surfaciques, bâti 1980</td>
-<td>25 à 35 W/m²</td>
-</tr>
-<tr>
-<td>Déperditions surfaciques, RT2012</td>
-<td>12 à 20 W/m²</td>
-</tr>
-<tr>
-<td>Apports internes, tertiaire occupé</td>
-<td>20 à 40 W/m²</td>
-</tr>
-<tr>
-<td>Chaleur d’un occupant assis</td>
-<td>100 W dont 70 sensibles</td>
-</tr>
-<tr>
-<td>Constante de temps, léger · lourd</td>
-<td>20-40 h · 80-150 h</td>
-</tr>
-<tr>
-<td>DJU base 18 : sud 1 200 · Paris 2 400 · est 2 900</td>
-<td></td>
-</tr>
-</tbody>
-</table></div>
-<h2 id="les-analogies-qui-marchent-et-celles-qui-trompent">Les analogies qui marchent, et celles qui trompent</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les trois qui marchent</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>L’analogie électrique.</strong> R comme résistance, Δθ comme tension, Φ comme courant. Les couches en série additionnent leurs résistances, exactement comme des résistances électriques. Elle tient tout le long du cours, et elle a un immense avantage : les étudiants de l’option C la connaissent déjà par la domotique.</p>
-<p><strong>Le tuyau percé.</strong> Le bâtiment est un seau percé : le chauffage remplit, les parois fuient. La hauteur d’eau est la température. Un seau plus percé demande plus de débit pour tenir le même niveau, et si l’on arrête de remplir, le niveau baisse d’autant plus vite que les trous sont gros. C’est la constante de temps, sans une équation.</p>
-<p><strong>La couette et le pull.</strong> Elle installe qu’un isolant <strong>ralentit</strong> au lieu de produire, et que c’est <strong>l’air immobile</strong> qui isole. Deux idées difficiles réglées par un objet que personne n’a besoin de se faire décrire.</p></div></details>
-</div><div class="piege">
-<p><strong>Les trois analogies à ne pas employer.</strong></p>
-<p><strong>« Le froid entre. »</strong> Le froid n’existe pas comme grandeur : il n’y a que de la chaleur qui sort. La formulation paraît anodine et elle bloque durablement la lecture des signes dans les bilans, un étudiant qui croit que le froid entre n’écrira jamais correctement un bilan de batterie froide.</p>
-<p><strong>« L’isolant garde le froid en été. »</strong> Il ralentit une entrée de chaleur, ce qui n’est pas la même chose. Et en été, ce qui fait le confort d’une maison de pierre, c’est l’<strong>inertie et le déphasage</strong>, pas la résistance thermique. Confondre les deux mène à conseiller de l’isolant là où il faudrait de la masse et de la ventilation nocturne.</p>
-<p><strong>« La chaleur monte. »</strong> C’est l’<strong>air chaud</strong> qui monte, par différence de masse volumique. La chaleur, elle, va dans toutes les directions, un plancher chauffant chauffe vers le bas aussi, et c’est pour cela qu’on l’isole en sous-face. Cette confusion coûte des points chaque année sur les questions de plancher.</p>
-</div>
+<h2 id="un-thermos-et-les-trois-facons-de-perdre-de-la-chaleur">Un thermos, et les trois façons de perdre de la chaleur</h2>
+
+<p>Un thermos garde le café chaud six heures. Pour comprendre comment, il suffit de regarder ce que son fabricant a dû combattre, et il y a exactement trois choses.</p>
+
+<figure class="schema"><div class="dessin" data-schema="trois-modes"></div><figcaption>Conduction, convection, rayonnement : trois mécanismes, trois parades.</figcaption></figure>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>La conduction</strong>, la chaleur remonte par la paroi. Parade : deux parois séparées, qui ne se touchent qu’au col.</li>
+
+<li><strong>La convection</strong>, l’air entre les parois transporterait la chaleur en bloc. Parade : on fait le <strong>vide</strong> entre les deux.</li>
+
+<li><strong>Le rayonnement</strong>, la paroi chaude rayonne vers la paroi froide, même à travers le vide. Parade : on <strong>argente</strong> les surfaces, qui renvoient au lieu d’absorber.</li>
+
+</ol>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que chaque mode demande comme physique, et pourquoi une seule se calcule</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>La conduction</strong> obéit à la loi de Fourier, <strong>φ = −λ · dT/dx</strong>. Elle est linéaire, locale, et ne dépend que du matériau. En régime permanent, à une dimension et sans source interne, le flux est identique dans toutes les sections : l’intégration est immédiate et donne <strong>ΔT = φ · e / λ</strong>. C’est la seule des trois qu’on calcule à la main, et c’est pour cette raison.</p>
+
+<p><strong>La convection</strong> s’écrit φ = h · (Tp − Tf), ce qui a l’air simple, jusqu’à ce qu’on demande h. Ce n’est pas une propriété du fluide mais de l’<strong>écoulement</strong> : vitesse, géométrie, orientation, écart de température. On le tire de corrélations expérimentales en nombres sans dimension, Nusselt, Rayleigh, Prandtl. Un h de convection naturelle sur un mur vaut 2 à 5 W/(m²·K) ; sous un vent de 4 m/s, il monte à 25.</p>
+
+<p><strong>Le rayonnement</strong> est en <strong>T⁴</strong> : φ = ε·σ·(T₁⁴ − T₂⁴), avec σ = 5,67 × 10⁻⁸. Non linéaire, donc incompatible avec une addition de résistances. On le linéarise autour de la température d’usage pour obtenir un h_r équivalent, valable dans une plage étroite, typiquement 4 à 6 W/(m²·K) autour de 20 °C.</p>
+
+<p>D’où la convention de la norme, qui règle le problème une fois pour toutes : convection et rayonnement sont <strong>regroupés</strong> dans des coefficients superficiels h_i ≈ 7,7 et h_e ≈ 25 W/(m²·K), dont les inverses sont <strong>Rsi = 0,13</strong> et <strong>Rse = 0,04</strong> m²·K/W.</p></div></details>
+
+</div><div class="cle">
+
+<p>Le thermos explique aussi <strong>pourquoi Rse est cinq fois plus petit que Rsi</strong>. Dehors, l’air est brassé par le vent : la couche d’air collée à la paroi est mince, donc elle freine peu. Dedans, l’air est calme, la couche est épaisse, elle freine davantage. C’est la même raison qui fait qu’on a plus froid par vent fort à température égale.</p>
+
+</div>
+
+<h2 id="une-couette-un-pull-un-double-vitrage-ce-qu-est-vraiment-un-isolant">Une couette, un pull, un double vitrage : ce qu’est vraiment un isolant</h2>
+
+<p>Trois objets, une seule idée. <strong>Aucun d’eux n’isole par sa matière : ils isolent par l’air qu’ils immobilisent.</strong></p>
+
+<figure class="schema"><div class="dessin" data-schema="lambda-echelle"></div><figcaption>Les matériaux sur l’échelle des conductivités, et l’air, tout en bas.</figcaption></figure>
+
+<p>L’air immobile conduit <strong>0,025 W/(m·K)</strong>, mieux que n’importe quel isolant solide. La laine de verre est à 0,035, le polystyrène à 0,032. Aucun ne fait aussi bien que l’air pur, et pour cause : ils sont faits d’air, plus des fibres qui le tiennent en place.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Alors pourquoi ne pas se contenter d&#39;une lame d&#39;air ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce qu’une lame d’air épaisse <strong>ne reste pas immobile</strong>. Dès qu’un écart de température s’installe entre ses deux faces, l’air chaud monte d’un côté et redescend de l’autre : la convection naturelle démarre et court-circuite la conduction.</p>
+
+<p>Le seuil se situe autour de <strong>20 mm</strong>. En dessous, la viscosité l’emporte et l’air reste sage ; au-dessus, la boucle se met en place et la résistance cesse d’augmenter avec l’épaisseur. C’est un résultat classique, gouverné par le nombre de Rayleigh.</p>
+
+<p>Trois conséquences qu’on peut montrer le même jour :</p>
+
+<p><strong>Le double vitrage</strong> a une lame de 16 mm, pas de 10 cm. Et on la remplit d’<strong>argon</strong>, plus lourd, plus visqueux, il démarre sa convection plus tard et conduit un peu moins. Gain typique : 0,2 à 0,3 W/(m²·K) sur le U.</p>
+
+<p><strong>Le pull</strong> fonctionne par ses alvéoles, trop petites pour convecter. Et <strong>deux pulls fins isolent mieux qu’un pull épais</strong>, parce qu’ils ajoutent une lame d’air supplémentaire entre eux.</p>
+
+<p><strong>L’isolant fibreux</strong> a une densité optimale : trop peu de fibres et l’air circule, trop de fibres et la fibre conduit. C’est pour cela qu’un isolant tassé isole moins, et qu’un isolant mouillé n’isole plus du tout, l’eau conduit 0,6 W/(m·K), vingt-quatre fois plus que l’air.</p></div></details>
+
+</div><div class="piege">
+
+<p>La couette suggère une idée fausse qu’il faut désamorcer tout de suite : <strong>l’isolant ne « produit » rien et ne « garde » rien</strong>. Il ralentit un flux. Une couette sur un cadavre ne le réchauffe pas ; une couette sur un vivant ralentit ses pertes, et c’est son propre métabolisme qui fait le reste. Le bâtiment, c’est le chauffage.</p>
+
+</div>
+
+<h2 id="compter-les-couches-de-r-e-a-un-mur-complet">Compter les couches : de R = e/λ à un mur complet</h2>
+
+<div class="formule">
+
+<p><strong>R = e / λ</strong> · <strong>R totale = Rsi + ΣR + Rse</strong> · <strong>U = 1 / R totale</strong></p>
+
+<ul>
+
+<li><strong>e</strong><span>: épaisseur de la couche, <strong>en mètres</strong></span></li>
+
+<li><strong>λ</strong><span>: conductivité, en W/(m·K), donnée du matériau</span></li>
+
+<li><strong>R</strong><span>: résistance de la couche, en m²·K/W</span></li>
+
+<li><strong>U</strong><span>: coefficient de transmission, en W/(m²·K)</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>Les résistances s’additionnent parce que les couches sont <strong>en série</strong> : le même flux les traverse toutes, et les écarts de température s’ajoutent. C’est la loi des mailles, transposée mot pour mot.</p>
+
+</blockquote>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Un mur complet, calculé en entier</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Prenons un mur de rénovation courant, de l’intérieur vers l’extérieur : plaque de plâtre 13 mm, laine de verre 100 mm, parpaing creux 200 mm, enduit 15 mm.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Couche</th>
+
+<th style="text-align: right;">e (m)</th>
+
+<th style="text-align: right;">λ</th>
+
+<th style="text-align: right;">R = e/λ</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Rsi</td>
+
+<td style="text-align: right;">sans objet</td>
+
+<td style="text-align: right;">,</td>
+
+<td style="text-align: right;">0,13</td>
+
+</tr>
+
+<tr>
+
+<td>Plâtre</td>
+
+<td style="text-align: right;">0,013</td>
+
+<td style="text-align: right;">0,25</td>
+
+<td style="text-align: right;">0,052</td>
+
+</tr>
+
+<tr>
+
+<td>Laine de verre</td>
+
+<td style="text-align: right;">0,100</td>
+
+<td style="text-align: right;">0,035</td>
+
+<td style="text-align: right;"><strong>2,857</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Parpaing creux</td>
+
+<td style="text-align: right;">0,200</td>
+
+<td style="text-align: right;">1,05</td>
+
+<td style="text-align: right;">0,190</td>
+
+</tr>
+
+<tr>
+
+<td>Enduit</td>
+
+<td style="text-align: right;">0,015</td>
+
+<td style="text-align: right;">1,15</td>
+
+<td style="text-align: right;">0,013</td>
+
+</tr>
+
+<tr>
+
+<td>Rse</td>
+
+<td style="text-align: right;">sans objet</td>
+
+<td style="text-align: right;">,</td>
+
+<td style="text-align: right;">0,04</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Total</strong></td>
+
+<td style="text-align: right;"></td>
+
+<td style="text-align: right;"></td>
+
+<td style="text-align: right;"><strong>3,282</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p>D’où <strong>U = 1 / 3,282 = 0,305 W/(m²·K)</strong>.</p>
+
+<p>Le résultat à faire lire aux étudiants n’est pas le U, c’est la <strong>colonne des R</strong>. La laine seule pèse 2,857 sur 3,282, soit <strong>87 % de la résistance pour 100 mm sur 328</strong>. Le parpaing, quatre fois plus épais, apporte 6 %.</p>
+
+<p>Le prolongement qui frappe : remplacer le parpaing par du béton plein (λ = 1,75) ferait passer sa résistance de 0,190 à 0,114, et le U de 0,305 à 0,312. <strong>Deux pour cent.</strong> Alors qu’ajouter 40 mm de laine ferait passer U à 0,226, soit 26 % de mieux.</p>
+
+<p>C’est le calcul qui règle définitivement la question « le béton, ça isole non ? », et il vaut mieux le faire faire que l’affirmer.</p></div></details>
+
+</div><div class="outil" data-outil="paroi">
+
+
+
+</div>
+
+<h2 id="la-ou-l-addition-cesse-d-etre-vraie">Là où l’addition cesse d’être vraie</h2>
+
+<p>L’addition des résistances suppose trois choses : <strong>régime permanent, une seule dimension, couches homogènes</strong>. Le bâtiment réel viole les trois, et chaque violation a son nom.</p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Le régime n’est jamais permanent</strong>, la température extérieure change sans arrêt. C’est l’inertie, traitée plus bas.</li>
+
+<li><strong>Le flux n’est pas unidimensionnel aux liaisons</strong>, il contourne l’isolant. Ce sont les ponts thermiques.</li>
+
+<li><strong>Les couches ne sont pas homogènes</strong>, un montant d’ossature, un rail métallique, une fixation traversent l’isolant.</li>
+
+</ol>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les ponts thermiques : la trace noire dans l&#39;angle du mur</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Tout le monde a vu, dans un logement mal isolé, une <strong>trace noire à la jonction du mur et du plafond</strong>, ou derrière une armoire contre un mur froid. C’est un pont thermique, révélé par la moisissure.</p>
+
+<p>Le mécanisme s’enchaîne proprement, et il fait le lien avec la page Cours 3 : le flux contourne l’isolant par la liaison, la surface intérieure y est <strong>plus froide</strong> que sur la paroi courante, et si elle descend sous le point de rosée de l’air ambiant, la vapeur y condense. L’humidité permanente fait le reste.</p>
+
+<p>Le calcul 1D est faux à cet endroit : on ne le corrige pas, on <strong>ajoute un terme séparé</strong>, mesuré ou calculé par éléments finis, exprimé en watts par mètre linéaire et par kelvin, le coefficient <strong>ψ</strong>. Une liaison plancher-mur isolé par l’intérieur vaut typiquement <strong>0,6 à 0,9 W/(m·K)</strong>.</p>
+
+<p>Le renversement mérite d’être raconté : <strong>plus on isole les parois, plus les ponts pèsent en proportion.</strong> Sur un bâtiment de 1975 non isolé, ils sont un détail. Sur un bâtiment récent, ils représentent <strong>20 à 40 %</strong> des déperditions par transmission. C’est ce qui a fait basculer la construction vers l’isolation par l’extérieur, qui les supprime presque tous, et vers les rupteurs de ponts thermiques pour les balcons.</p>
+
+<p>Ce que l’épreuve demande : reconnaître une liaison sur une coupe, lire un ψ dans un tableau, multiplier par le linéaire. Jamais calculer un ψ.</p></div></details>
+
+</div><h2 id="du-mur-au-batiment-entier">Du mur au bâtiment entier</h2>
+
+<div class="formule">
+
+<p><strong>Φ = ΣU·S·Δθ + Σψ·L·Δθ + 0,34·Qv·Δθ</strong></p>
+
+<ul>
+
+<li>le premier terme : les <strong>parois</strong>, chacune avec sa surface</li>
+
+<li>le deuxième : les <strong>liaisons</strong>, chacune avec son linéaire</li>
+
+<li>le troisième : le <strong>renouvellement d’air</strong>, traité au Cours 3</li>
+
+</ul>
+
+<blockquote>
+
+<p>La somme des trois, divisée par Δθ, s’appelle le <strong>GV</strong> : les déperditions du bâtiment par kelvin d’écart, en W/K. C’est la signature thermique du bâtiment.</p>
+
+</blockquote>
+
+</div>
+
+<figure class="schema"><div class="dessin" data-schema="batiment-ecorche"></div><figcaption>Où passe la chaleur : parois, liaisons, air neuf, chacun à sa place.</figcaption></figure>
+
+<div class="outil" data-outil="bilan">
+
+
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Un bilan complet, sur une maison, avec les nombres</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Maison de 100 m² au sol, un étage, 200 m² habitables. Murs 150 m² à U = 0,30 ; toiture 100 m² à U = 0,20 ; plancher bas 100 m² à U = 0,25 ; fenêtres 25 m² à U = 1,40. Liaisons : 120 m de linéaire à ψ moyen 0,5. Ventilation 150 m³/h. Température de base −7 °C, consigne 19 °C, donc <strong>Δθ = 26 K</strong>.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Poste</th>
+
+<th>Calcul</th>
+
+<th style="text-align: right;">W/K</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Murs</td>
+
+<td>150 × 0,30</td>
+
+<td style="text-align: right;">45,0</td>
+
+</tr>
+
+<tr>
+
+<td>Toiture</td>
+
+<td>100 × 0,20</td>
+
+<td style="text-align: right;">20,0</td>
+
+</tr>
+
+<tr>
+
+<td>Plancher</td>
+
+<td>100 × 0,25</td>
+
+<td style="text-align: right;">25,0</td>
+
+</tr>
+
+<tr>
+
+<td>Fenêtres</td>
+
+<td>25 × 1,40</td>
+
+<td style="text-align: right;">35,0</td>
+
+</tr>
+
+<tr>
+
+<td>Ponts thermiques</td>
+
+<td>120 × 0,5</td>
+
+<td style="text-align: right;">60,0</td>
+
+</tr>
+
+<tr>
+
+<td>Ventilation</td>
+
+<td>0,34 × 150</td>
+
+<td style="text-align: right;">51,0</td>
+
+</tr>
+
+<tr>
+
+<td><strong>GV</strong></td>
+
+<td></td>
+
+<td style="text-align: right;"><strong>236,0</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>Φ = 236 × 26 = 6 136 W</strong>, soit environ <strong>6,1 kW</strong>, ou 31 W par mètre carré habitable.</p>
+
+<p>Trois lectures à faire tirer, et aucune n’est le nombre final. <strong>Les fenêtres</strong> font 15 % des pertes pour 7 % de la surface déperditive. <strong>Les ponts thermiques</strong> sont le premier poste, devant les murs, c’est le cas général dès qu’on isole. Et <strong>l’air neuf</strong> pèse autant que les murs : c’est ce qui justifie tout le Cours 3 et l’existence même du double flux.</p>
+
+<p>Le test de cohérence : 31 W/m², dans la fourchette 25-35 d’un bâti isolé correctement. Un résultat à 8 ou à 90 W/m² serait à reprendre avant d’aller plus loin.</p></div></details>
+
+</div><h2 id="les-deux-constantes-du-metier-avec-une-bouilloire">Les deux constantes du métier, avec une bouilloire</h2>
+
+<p>Elles ne contiennent aucune physique nouvelle. <strong>Ce sont des conversions d’unités</strong>, et le montrer une fois désamorce définitivement la question.</p>
+
+<div class="formule">
+
+<p><strong>Eau : Φ = Q × 1,163 × Δθ</strong>, Q en L/h, Φ en W</p>
+
+<ul>
+
+<li>l’eau pèse <strong>1 kg par litre</strong>, sa chaleur massique vaut <strong>4 185 J/(kg·K)</strong></li>
+
+<li>4 185 J = 4 185 / 3 600 Wh = <strong>1,163 Wh</strong> par litre et par kelvin</li>
+
+</ul>
+
+<blockquote>
+
+<p>Élever un litre d’eau d’un degré coûte 1,163 wattheure. C’est tout ce que dit ce nombre.</p>
+
+</blockquote>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La bouilloire, et pourquoi elle met deux minutes</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une bouilloire de <strong>2 000 W</strong> contient <strong>1,5 L</strong> d’eau à 15 °C. Combien de temps pour atteindre 100 °C ?</p>
+
+<p>Énergie nécessaire : 1,5 × 1,163 × 85 = <strong>148 Wh</strong>. Durée : 148 / 2 000 = 0,074 h = <strong>4 minutes 27</strong>.</p>
+
+<p>En pratique elle met environ cinq minutes : les pertes vers l’air et le corps de l’appareil expliquent l’écart, soit un rendement de l’ordre de 90 %.</p>
+
+<p>L’exercice se prolonge naturellement vers le métier. <strong>Une douche de 8 minutes à 10 L/min, de 12 à 40 °C</strong> : 80 L, donc 80 × 1,163 × 28 = <strong>2 605 Wh</strong>, soit 2,6 kWh. À 0,25 € le kWh, <strong>65 centimes</strong> la douche.</p>
+
+<p>Ce calcul a deux vertus. Il fait manipuler la relation dans le sens du métier, un volume, un écart, une énergie. Et il donne un ordre de grandeur que les étudiants vérifient chez eux, ce qui ancre le nombre bien mieux qu’un exercice abstrait.</p></div></details>
+
+</div><div class="formule">
+
+<p><strong>Air : Φ = Qv × 0,34 × Δθ</strong>, Qv en m³/h, Φ en W</p>
+
+<ul>
+
+<li>l’air pèse <strong>1,2 kg/m³</strong>, sa chaleur massique vaut <strong>1 006 J/(kg·K)</strong></li>
+
+<li>1,2 × 1 006 = 1 207 J/(m³·K) = 1 207 / 3 600 = <strong>0,335 Wh/(m³·K)</strong></li>
+
+</ul>
+
+<blockquote>
+
+<p>Le 0,34 est un 0,335 arrondi. Il vaut pour la chaleur <strong>sensible</strong> seule, le Cours 3 ajoutera la latente.</p>
+
+</blockquote>
+
+</div>
+
+<div class="cle">
+
+<p>Le rapport des deux constantes est le nombre le plus utile de la page : <strong>1,163 / 0,34 ≈ 3 400</strong>. À écart égal, il faut <strong>3 400 fois plus de mètres cubes d’air que de litres d’eau</strong> pour transporter la même chaleur. C’est toute la raison d’être des réseaux d’eau, et de la taille des gaines de ventilation, que les étudiants trouvent toujours démesurées avant d’avoir vu ce rapport.</p>
+
+</div>
+
+<h2 id="une-saison-entiere-les-degres-jours">Une saison entière : les degrés-jours</h2>
+
+<div class="outil" data-outil="energie">
+
+
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un degré-jour mesure, et pourquoi la base est 18</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le degré-jour unifié est une <strong>intégrale</strong> : la somme, sur la saison, des écarts positifs entre une température de base et la température moyenne extérieure du jour.</p>
+
+<p>Pourquoi 18 et non 19 ? Parce que les <strong>apports gratuits</strong>, occupants, éclairage, appareils, soleil, chauffent en permanence de deux à trois kelvins. Un local tenu à 19 °C n’a besoin de chauffage qu’en dessous d’environ 18 °C dehors. La base <strong>encapsule donc une hypothèse d’apports</strong>, et c’est pour cela qu’elle est conventionnelle : sur un bâtiment très performant et très occupé, la vraie base descend vers 15 °C.</p>
+
+<p><strong>Le calcul de la maison précédente</strong>, sur une saison à 2 400 DJU :</p>
+
+<p>E = GV × DJU × 24 / 1 000 = 236 × 2 400 × 24 / 1 000 = <strong>13 594 kWh</strong>.</p>
+
+<p>À 0,10 € le kWh de gaz, avec un rendement de 0,95 : <strong>1 430 € par an</strong>.</p>
+
+<p>Et l’usage honnête de ce résultat : il sert à <strong>comparer deux années sur un même bâtiment</strong>, ou deux variantes d’un même projet. Il ne prédit pas une facture, le DJU ignore le vent, l’ensoleillement réel et l’occupation. L’écart entre calcul et facture réelle atteint couramment un facteur 1,5, dans les deux sens.</p></div></details>
+
+</div><h2 id="l-inertie-la-maison-de-pierre-et-le-four-eteint">L’inertie : la maison de pierre et le four éteint</h2>
+
+<p>Ouvrez la porte d’un four éteint depuis une heure : il est encore tiède. Entrez dans une maison de pierre en août : elle est fraîche alors qu’il fait 35 °C dehors. C’est la même grandeur, et elle ne figure dans aucune des relations précédentes.</p>
+
+<div class="formule">
+
+<p><strong>τ = C / GV</strong>, la constante de temps du bâtiment</p>
+
+<ul>
+
+<li><strong>C</strong><span>: capacité thermique des matériaux accessibles, en Wh/K</span></li>
+
+<li><strong>GV</strong><span>: déperditions par kelvin, en W/K</span></li>
+
+<li><strong>τ</strong><span>: en heures : le temps au bout duquel l’écart avec l’extérieur est retombé à <strong>37 %</strong> de sa valeur initiale</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>Ordres de grandeur : <strong>20 à 40 h</strong> pour une construction légère, <strong>80 à 150 h</strong> pour du lourd.</p>
+
+</blockquote>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois conséquences qu&#39;on voit toutes en régulation</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le réduit de nuit ne rapporte que sur du léger.</strong> Sur un bâtiment lourd, huit heures de coupure ne font perdre que quelques dixièmes de degré : il n’y a presque rien à récupérer, et la relance coûte ce qu’on a économisé. L’objection à anticiper (« couper le chauffage fait toujours économiser ») se réfute par là : on n’économise pas parce qu’on a coupé, on économise parce qu’il fait plus froid dedans. Si l’inertie l’empêche, il n’y a pas d’économie.</p>
+
+<p><strong>La relance doit être anticipée</strong>, d’autant plus que le bâtiment est lourd. Une relance optimisée apprend la durée réelle et la corrige selon la température extérieure. C’est la séance 19.</p>
+
+<p><strong>Une boucle de chauffage ne se règle pas comme une boucle d’air.</strong> Les inerties sont de trois ordres de grandeur différents : secondes pour une gaine, minutes pour un circuit d’eau, heures pour un local. Un régulateur trop nerveux sur une grandeur lente pompe ; trop mou sur une grandeur rapide, il dérive.</p>
+
+<p>Et le cas de la maison de pierre en été mérite d’être nommé : ce n’est pas de l’isolation, c’est du <strong>déphasage</strong>. La chaleur de l’après-midi met dix à douze heures à traverser le mur et ressort la nuit, quand on peut ventiler. Un mur léger très isolé ne fait pas cela, d’où le confort d’été des constructions contemporaines, qui est un vrai sujet et pas une nostalgie.</p></div></details>
+
+</div><h2 id="demontrer-plutot-qu-affirmer">Démontrer, plutôt qu’affirmer</h2>
+
+<p>Trois relations de ce cours sont admises partout et démontrées nulle part. Chacune se démontre en cinq lignes, et la démonstration change le statut du résultat : de formule à retenir, il devient conséquence à comprendre. C’est le seul moyen de répondre à « pourquoi ? » autrement que par « c’est comme ça ».</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi les résistances s&#39;additionnent, la démonstration</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>On admet partout que R totale = ΣR, en invoquant l’analogie électrique. Mais l’analogie n’est pas une preuve : elle indique où chercher. Voici la preuve, et elle tient dans une hypothèse et deux lignes.</p>
+
+<p><strong>L’hypothèse : le régime est permanent.</strong> Rien ne s’accumule dans la paroi ; tout ce qui entre par une face ressort par l’autre. Le flux surfacique φ est donc <strong>le même dans chaque couche</strong>, c’est là tout le travail, et c’est la seule chose à faire admettre.</p>
+
+<p>Dans une couche i, la loi de Fourier intégrée donne l’écart de température aux bornes de cette couche :</p>
+
+<p>Δθᵢ = φ × eᵢ / λᵢ = φ × Rᵢ</p>
+
+<p>L’écart total entre les deux ambiances est la somme des écarts partiels, c’est une identité, pas une hypothèse : θᵢ − θₑ = Σ Δθᵢ. En remplaçant :</p>
+
+<p>θᵢ − θₑ = Σ (φ × Rᵢ) = φ × Σ Rᵢ</p>
+
+<p>d’où <strong>φ = (θᵢ − θₑ) / ΣRᵢ</strong>, c’est-à-dire R totale = ΣRᵢ. ∎</p>
+
+<div class="cle">
+
+<p><strong>Tout repose sur « le même flux traverse toutes les couches ».</strong> C’est vrai en série, faux en parallèle, et c’est exactement pourquoi une ossature qui traverse l’isolant ne se traite pas par une addition, comme on le verra plus bas. Un étudiant qui a compris d’où vient l’addition sait aussi quand elle tombe.</p>
+
+</div>
+
+<p><strong>Le contre-exemple à montrer</strong>, parce qu’il ancre l’hypothèse : en régime variable, l’addition est fausse. Une paroi qui se réchauffe absorbe une partie du flux entrant ; ce qui ressort est plus faible que ce qui entre, et il n’y a plus de φ unique. C’est le domaine de l’inertie, traité plus loin, et la raison pour laquelle on dimensionne le chauffage au petit matin d’un jour froid : à ce moment-là, le bâtiment est à l’équilibre depuis des heures, et le régime permanent est enfin une bonne approximation.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">D&#39;où sort τ = C / GV, et pourquoi 37 %</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La constante de temps est donnée sans justification dans presque tous les cours, avec ce « 37 % » qui tombe du ciel. Il vient d’un calcul d’une ligne, et le faire une fois vaut mieux que le répéter dix fois.</p>
+
+<p><strong>Le bilan d’un bâtiment qui refroidit</strong>, chauffage coupé. Pendant un temps dt, la chaleur perdue vers l’extérieur est prélevée sur la chaleur stockée dans les matériaux :</p>
+
+<p>C × dθ/dt = − GV × (θ − θₑ)</p>
+
+<p>Posons l’écart x = θ − θₑ, en supposant θₑ constant. L’équation devient C·dx/dt = −GV·x, soit dx/x = −(GV/C)·dt. En intégrant :</p>
+
+<p><strong>x(t) = x₀ × e^(−t/τ)</strong>, avec <strong>τ = C / GV</strong></p>
+
+<p>Le rapport d’une capacité à une conductance est un temps : c’est vrai ici comme pour un condensateur qui se décharge dans une résistance, τ = RC. L’analogie électrique tient donc jusqu’au régime variable, ce qui est un argument pour l’utiliser, et pas seulement une commodité.</p>
+
+<p><strong>Le 37 % est simplement e⁻¹ = 0,368.</strong> Au bout d’une constante de temps, l’écart est retombé à 37 % de sa valeur initiale ; au bout de trois, à 5 %. Aucune mémoire à faire, c’est une propriété de l’exponentielle.</p>
+
+<p><strong>Le calcul sur la maison du bilan précédent</strong>, GV = 236 W/K, 200 m² habitables :</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Inertie</th>
+
+<th style="text-align: right;">C (Wh/K)</th>
+
+<th style="text-align: right;">τ</th>
+
+<th style="text-align: right;">Après 8 h par 0 °C dehors</th>
+
+<th style="text-align: right;">Après 24 h</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Légère</td>
+
+<td style="text-align: right;">10 000</td>
+
+<td style="text-align: right;">42 h</td>
+
+<td style="text-align: right;">15,7 °C</td>
+
+<td style="text-align: right;">10,8 °C</td>
+
+</tr>
+
+<tr>
+
+<td>Moyenne</td>
+
+<td style="text-align: right;">14 400</td>
+
+<td style="text-align: right;">61 h</td>
+
+<td style="text-align: right;">16,7 °C</td>
+
+<td style="text-align: right;">12,8 °C</td>
+
+</tr>
+
+<tr>
+
+<td>Lourde</td>
+
+<td style="text-align: right;">22 200</td>
+
+<td style="text-align: right;">94 h</td>
+
+<td style="text-align: right;">17,5 °C</td>
+
+<td style="text-align: right;">14,7 °C</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Voilà le réduit de nuit chiffré, et l’écart est décisif : huit heures de coupure font perdre <strong>4,4 K sur du léger et 1,5 K sur du lourd</strong>. L’économie est proportionnelle à cette chute, c’est elle qui mesure combien de temps le bâtiment a été plus froid. Sur du lourd, il n’y a presque rien à récupérer, et la relance rend ce qu’on a pris.</p>
+
+</div>
+
+<p><strong>Le prolongement qui intéresse les étudiants de l’option C</strong> : cette exponentielle est exactement celle qu’un régulateur doit anticiper. Un optimiseur de relance ne fait rien d’autre qu’estimer τ sur les jours précédents et résoudre l’équation à l’envers, combien d’avance pour remonter de 2 K sachant qu’il fait −3 °C dehors. La séance 19 le montre à l’œuvre.</p></div></details>
+
+</div><h2 id="le-calcul-inverse-dimensionner-au-lieu-de-verifier">Le calcul inverse : dimensionner au lieu de vérifier</h2>
+
+<p>En séance, on donne une paroi et on cherche son U. En bureau d’études, on donne un U et on cherche la paroi. C’est le même calcul retourné, et le retourner est une compétence à part entière : elle demande de savoir ce qui est fixé et ce qui est libre.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Combien d&#39;isolant pour atteindre un U ? La méthode, puis les rendements</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Reprenons le mur de rénovation (plâtre 13, parpaing 200, enduit 15) et cherchons l’épaisseur de laine à poser pour un U visé.</p>
+
+<p><strong>La méthode tient en trois lignes</strong>, et la deuxième est celle qu’on oublie.</p>
+
+<ol type="1">
+
+<li>Le U visé donne la résistance totale nécessaire : <strong>R = 1 / U</strong> ;</li>
+
+<li>on retire tout ce qui n’est pas l’isolant, les autres couches <strong>et les deux résistances superficielles</strong> : Rsi + plâtre + parpaing + enduit + Rse = <strong>0,426 m²·K/W</strong> ;</li>
+
+<li>ce qui reste est la résistance que l’isolant doit apporter, et son épaisseur en découle : <strong>e = R isolant × λ</strong>.</li>
+
+</ol>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th style="text-align: right;">U visé</th>
+
+<th style="text-align: right;">R totale</th>
+
+<th style="text-align: right;">Isolant nécessaire</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align: right;">0,30</td>
+
+<td style="text-align: right;">3,33</td>
+
+<td style="text-align: right;">102 mm</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">0,25</td>
+
+<td style="text-align: right;">4,00</td>
+
+<td style="text-align: right;">125 mm</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;"><strong>0,20</strong></td>
+
+<td style="text-align: right;">5,00</td>
+
+<td style="text-align: right;"><strong>160 mm</strong></td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">0,15</td>
+
+<td style="text-align: right;">6,67</td>
+
+<td style="text-align: right;">218 mm</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>Le piège de l’étape 2</strong> : oublier Rsi et Rse. L’erreur est faible ici, 0,17 sur 5, mais elle se voit sur les parois performantes, et surtout elle révèle qu’on a appliqué une formule sans savoir ce qu’elle contient.</p>
+
+<p><strong>Puis vient la question que le maître d’ouvrage pose toujours</strong> : pourquoi s’arrêter là, puisque l’isolant n’est pas cher ? La réponse est dans la troisième colonne.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th style="text-align: right;">Épaisseur</th>
+
+<th style="text-align: right;">R totale</th>
+
+<th style="text-align: right;">U</th>
+
+<th style="text-align: right;">Gain sur les 40 mm précédents</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align: right;">60 mm</td>
+
+<td style="text-align: right;">2,14</td>
+
+<td style="text-align: right;">0,467</td>
+
+<td style="text-align: right;">sans objet</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">100 mm</td>
+
+<td style="text-align: right;">3,28</td>
+
+<td style="text-align: right;">0,305</td>
+
+<td style="text-align: right;"><strong>0,163</strong></td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">140 mm</td>
+
+<td style="text-align: right;">4,43</td>
+
+<td style="text-align: right;">0,226</td>
+
+<td style="text-align: right;">0,079</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">180 mm</td>
+
+<td style="text-align: right;">5,57</td>
+
+<td style="text-align: right;">0,180</td>
+
+<td style="text-align: right;">0,046</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">220 mm</td>
+
+<td style="text-align: right;">6,71</td>
+
+<td style="text-align: right;">0,149</td>
+
+<td style="text-align: right;">0,031</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">300 mm</td>
+
+<td style="text-align: right;">9,00</td>
+
+<td style="text-align: right;">0,111</td>
+
+<td style="text-align: right;">0,016</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p><strong>Chaque tranche de 40 mm rapporte à peu près moitié moins que la précédente.</strong> C’est mécanique : U = 1/R, et ajouter une constante à un R déjà grand change peu son inverse. Les 40 premiers millimètres au-dessus de 60 valent dix fois les 40 derniers au-dessus de 260.</p>
+
+</div>
+
+<p><strong>Ce que cette table permet de faire dire aux étudiants</strong>, et qui vaut mieux qu’un discours : la règle « on isole d’abord ce qui n’est pas isolé » n’est pas un principe d’économie, c’est une conséquence de la forme de la fonction inverse. Traiter une paroi nue, c’est se placer en haut de la courbe ; doubler un isolant existant, c’est se placer en bas.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">La paroi à ossature : quand l&#39;addition ne suffit plus</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une ossature bois, un rail métallique, un montant : tout ce qui <strong>traverse</strong> l’isolant crée un chemin parallèle. Le flux ne traverse plus les mêmes couches partout, l’hypothèse du flux unique tombe, et l’addition des résistances cesse de valoir pour la paroi entière.</p>
+
+<p><strong>La méthode devient : calculer chaque zone séparément, puis pondérer les U par les surfaces.</strong> On additionne des conductances, jamais des résistances, c’est exactement la règle des résistances en parallèle, transposée.</p>
+
+<p>Sur notre mur, avec des montants de 45 mm tous les 600 mm, donc <strong>7,5 % de la surface</strong>, et l’isolant remplacé par du bois dans ces bandes :</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Zone</th>
+
+<th>Composition</th>
+
+<th style="text-align: right;">R</th>
+
+<th style="text-align: right;">U</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Courante : 92,5 %</td>
+
+<td>laine 100 mm</td>
+
+<td style="text-align: right;">3,283</td>
+
+<td style="text-align: right;">0,305</td>
+
+</tr>
+
+<tr>
+
+<td>Montant : 7,5 %</td>
+
+<td>bois 100 mm, λ = 0,13</td>
+
+<td style="text-align: right;">1,195</td>
+
+<td style="text-align: right;">0,837</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p>U moyen = 0,925 × 0,305 + 0,075 × 0,837 = <strong>0,345 W/(m²·K)</strong></p>
+
+<div class="piege">
+
+<p><strong>Sept virgule cinq pour cent de la surface dégrade le U de treize pour cent.</strong> C’est le rapport à retenir : une petite part de surface très conductrice pèse beaucoup plus que sa part. Calculer la paroi courante et l’annoncer comme le U du mur est une erreur de méthode courante, et elle va toujours dans le sens optimiste.</p>
+
+</div>
+
+<p><strong>Le prolongement métier</strong>, qui explique une pratique de chantier : c’est précisément pour effacer ces ponts intégrés qu’on pose une <strong>contre-isolation croisée</strong>, une seconde couche d’isolant, perpendiculaire, qui recouvre les montants. Elle ajoute peu de résistance en zone courante et beaucoup en zone montant, donc elle resserre l’écart entre les deux zones. Le même raisonnement vaut pour l’isolation par l’extérieur, qui traite tous les ponts d’un coup.</p>
+
+<p><strong>Le cas de l’acier mérite une phrase</strong>, parce que l’ordre de grandeur surprend : un rail métallique a un λ de l’ordre de 50, soit <strong>quatre cents fois</strong> celui de l’isolant. Une ossature métallique non traitée peut à elle seule doubler le U d’une paroi. D’où les rails à âme perforée, dont le trajet du flux est allongé.</p></div></details>
+
+</div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
+
+<p>Un manuel se juge à ses exercices corrigés autant qu’à son cours. Ceux-ci sont gradués : le premier applique une relation, le deuxième la retourne, le troisième demande de choisir la méthode avant de calculer. <strong>La rédaction du corrigé est aussi importante que le résultat</strong>, c’est elle qu’on attend d’un étudiant à l’épreuve.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : le U d&#39;une paroi</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un mur est composé, de l’intérieur vers l’extérieur, de 15 mm d’enduit plâtre (λ = 0,35), 200 mm de béton plein (λ = 1,75) et 120 mm de polystyrène expansé (λ = 0,038) sous bardage ventilé. Calculer son coefficient de transmission surfacique.</p>
+
+<p><strong>Ce qu’il faut repérer avant de calculer.</strong> Le bardage est <strong>ventilé</strong> : la lame d’air derrière lui communique avec l’extérieur, donc elle ne compte pas comme résistance, et la paroi s’arrête à l’isolant. Dans ce cas, la convention veut qu’on prenne <strong>Rse = Rsi = 0,13</strong> au lieu de 0,04, la face extérieure de l’isolant n’est plus balayée par le vent.</p>
+
+<p><strong>Résolution.</strong></p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Couche</th>
+
+<th style="text-align: right;">e (m)</th>
+
+<th style="text-align: right;">λ</th>
+
+<th style="text-align: right;">R</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Rsi</td>
+
+<td style="text-align: right;">sans objet</td>
+
+<td style="text-align: right;">,</td>
+
+<td style="text-align: right;">0,130</td>
+
+</tr>
+
+<tr>
+
+<td>Enduit plâtre</td>
+
+<td style="text-align: right;">0,015</td>
+
+<td style="text-align: right;">0,35</td>
+
+<td style="text-align: right;">0,043</td>
+
+</tr>
+
+<tr>
+
+<td>Béton plein</td>
+
+<td style="text-align: right;">0,200</td>
+
+<td style="text-align: right;">1,75</td>
+
+<td style="text-align: right;">0,114</td>
+
+</tr>
+
+<tr>
+
+<td>Polystyrène</td>
+
+<td style="text-align: right;">0,120</td>
+
+<td style="text-align: right;">0,038</td>
+
+<td style="text-align: right;"><strong>3,158</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Rse (lame ventilée)</td>
+
+<td style="text-align: right;">sans objet</td>
+
+<td style="text-align: right;">,</td>
+
+<td style="text-align: right;">0,130</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Total</strong></td>
+
+<td style="text-align: right;"></td>
+
+<td style="text-align: right;"></td>
+
+<td style="text-align: right;"><strong>3,575</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>U = 1 / 3,575 = 0,280 W/(m²·K)</strong></p>
+
+<p><strong>Vérification de plausibilité.</strong> On attend 0,22 à 0,30 pour un mur isolé contemporain : le résultat est dans la fourchette. Et la colonne des R redit ce que le cours a établi, l’isolant apporte 88 % de la résistance, le béton 3 %.</p>
+
+<p><strong>L’erreur à ne pas commettre</strong> : prendre Rse = 0,04. Le U tomberait à 0,287, un écart de 2,6 %, faible, mais il révèle qu’on n’a pas vu que la lame était ventilée. À l’épreuve, c’est la lecture du dossier qui est évaluée là, pas l’arithmétique.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : quelle épaisseur ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> On rénove une maison dont les murs sont en pierre de 500 mm (λ = 2,2), enduits intérieurement de 20 mm de plâtre (λ = 0,25). La réglementation impose U ≤ 0,23 W/(m²·K). Quelle épaisseur de laine de bois (λ = 0,040) poser à l’intérieur ?</p>
+
+<p><strong>Résolution, en suivant les trois étapes.</strong></p>
+
+<p><em>Étape 1, la résistance visée.</em> R = 1 / 0,23 = <strong>4,348 m²·K/W</strong></p>
+
+<p><em>Étape 2, ce qui existe déjà.</em></p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Couche</th>
+
+<th style="text-align: right;">R</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Rsi</td>
+
+<td style="text-align: right;">0,130</td>
+
+</tr>
+
+<tr>
+
+<td>Plâtre 20 mm</td>
+
+<td style="text-align: right;">0,080</td>
+
+</tr>
+
+<tr>
+
+<td>Pierre 500 mm</td>
+
+<td style="text-align: right;">0,227</td>
+
+</tr>
+
+<tr>
+
+<td>Rse</td>
+
+<td style="text-align: right;">0,040</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Existant</strong></td>
+
+<td style="text-align: right;"><strong>0,477</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><em>Étape 3, l’isolant.</em> R isolant = 4,348 − 0,477 = 3,871 e = 3,871 × 0,040 = 0,155 m, soit <strong>155 mm</strong></p>
+
+<p><strong>On retient l’épaisseur commerciale immédiatement supérieure : 160 mm</strong>, qui donne U = 0,223. Arrondir vers le bas ferait manquer l’exigence, c’est un réflexe à installer, un dimensionnement se conclut toujours par le choix d’un produit réel.</p>
+
+<div class="cle">
+
+<p><strong>Un mur de pierre de cinquante centimètres apporte 0,227 m²·K/W.</strong> À peine plus que neuf millimètres de laine. C’est le calcul qui répond à « les vieux murs sont épais, donc ils isolent ». Ils ont de l’inertie, pas de la résistance : deux propriétés différentes, et la confusion entre les deux est la plus tenace de tout le chapitre.</p>
+
+</div>
+
+<p><strong>Le prolongement à ne pas manquer.</strong> Isoler par l’intérieur un mur de pierre place la masse du côté froid : on perd le déphasage estival dont ces bâtiments tiraient leur confort. C’est un arbitrage réel, pas une objection de principe, et il se traite en nommant les deux propriétés séparément.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : choisir la méthode avant de calculer</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un pignon de 60 m² est réalisé en ossature bois : montants de 45 × 145 mm espacés de 600 mm d’axe en axe, remplissage laine de verre (λ = 0,035), OSB 12 mm à l’intérieur (λ = 0,13), pare-pluie et bardage ventilé à l’extérieur. Le bureau d’études annonce U = 0,24. Vérifier, et conclure.</p>
+
+<p><strong>La difficulté est de reconnaître qu’il n’y a pas une paroi mais deux.</strong> Une addition simple donnerait le U de la zone courante et manquerait l’ossature.</p>
+
+<p><em>Part de surface des montants</em> : 45 / 600 = <strong>7,5 %</strong>.</p>
+
+<p><em>Zone courante, 92,5 %</em></p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Couche</th>
+
+<th style="text-align: right;">R</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Rsi</td>
+
+<td style="text-align: right;">0,130</td>
+
+</tr>
+
+<tr>
+
+<td>OSB 12 mm</td>
+
+<td style="text-align: right;">0,092</td>
+
+</tr>
+
+<tr>
+
+<td>Laine 145 mm</td>
+
+<td style="text-align: right;">4,143</td>
+
+</tr>
+
+<tr>
+
+<td>Rse ventilé</td>
+
+<td style="text-align: right;">0,130</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Total</strong></td>
+
+<td style="text-align: right;"><strong>4,495</strong> → U = 0,222</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><em>Zone montant, 7,5 %</em>, la laine remplacée par du bois (λ = 0,13)</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Couche</th>
+
+<th style="text-align: right;">R</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Rsi</td>
+
+<td style="text-align: right;">0,130</td>
+
+</tr>
+
+<tr>
+
+<td>OSB 12 mm</td>
+
+<td style="text-align: right;">0,092</td>
+
+</tr>
+
+<tr>
+
+<td>Bois 145 mm</td>
+
+<td style="text-align: right;">1,115</td>
+
+</tr>
+
+<tr>
+
+<td>Rse ventilé</td>
+
+<td style="text-align: right;">0,130</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Total</strong></td>
+
+<td style="text-align: right;"><strong>1,468</strong> → U = 0,681</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><em>Pondération des conductances</em> U = 0,925 × 0,222 + 0,075 × 0,681 = 0,205 + 0,051 = <strong>0,257 W/(m²·K)</strong></p>
+
+<p><strong>Conclusion.</strong> Le U réel est de 0,257, et non 0,24 : le bureau d’études a vraisemblablement retenu la zone courante seule, ou négligé l’ossature. L’écart est de <strong>7 %</strong>, et il porte sur 60 m², soit 1,0 W/K de plus au bilan, à comparer aux 236 W/K de l’exemple du cours.</p>
+
+<p><strong>Ce que l’étudiant doit rédiger</strong>, et qui vaut la moitié des points : non pas « U = 0,257 » mais « le calcul en parois parallèles donne 0,257 contre 0,24 annoncé ; l’écart provient de l’ossature, qui occupe 7,5 % de la surface avec un U trois fois supérieur ». Un résultat sans son explication ne montre pas qu’on a compris pourquoi la méthode changeait.</p>
+
+<p><strong>Le prolongement</strong>, s’il reste du temps : quelle contre-isolation croisée faudrait-il pour atteindre réellement 0,24 ? On refait les deux zones avec une couche supplémentaire commune, et l’on constate que quelques dizaines de millimètres suffisent, parce qu’ils profitent surtout à la zone la plus mauvaise.</p></div></details>
+
+</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Ordre de grandeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>λ de l’air immobile</td>
+
+<td>0,025 W/(m·K) : meilleur que tout isolant</td>
+
+</tr>
+
+<tr>
+
+<td>λ des isolants courants</td>
+
+<td>0,032 à 0,040</td>
+
+</tr>
+
+<tr>
+
+<td>λ du bois 0,13 · béton 1,7 · acier 50 · eau 0,6</td>
+
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>Épaisseur maximale d’une lame d’air utile</td>
+
+<td>20 mm</td>
+
+</tr>
+
+<tr>
+
+<td>R d’un mur RT2012</td>
+
+<td>3,5 à 4,5 m²·K/W</td>
+
+</tr>
+
+<tr>
+
+<td>U d’un mur isolé</td>
+
+<td>0,22 à 0,30 W/(m²·K)</td>
+
+</tr>
+
+<tr>
+
+<td>U d’un double vitrage argon 1,1-1,4 · simple 5,8</td>
+
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>ψ liaison plancher-mur, isolation intérieure</td>
+
+<td>0,6 à 0,9 W/(m·K)</td>
+
+</tr>
+
+<tr>
+
+<td>Part des ponts thermiques, bâti récent</td>
+
+<td>20 à 40 %</td>
+
+</tr>
+
+<tr>
+
+<td>Déperditions surfaciques, bâti 1980</td>
+
+<td>25 à 35 W/m²</td>
+
+</tr>
+
+<tr>
+
+<td>Déperditions surfaciques, RT2012</td>
+
+<td>12 à 20 W/m²</td>
+
+</tr>
+
+<tr>
+
+<td>Apports internes, tertiaire occupé</td>
+
+<td>20 à 40 W/m²</td>
+
+</tr>
+
+<tr>
+
+<td>Chaleur d’un occupant assis</td>
+
+<td>100 W dont 70 sensibles</td>
+
+</tr>
+
+<tr>
+
+<td>Constante de temps, léger · lourd</td>
+
+<td>20-40 h · 80-150 h</td>
+
+</tr>
+
+<tr>
+
+<td>DJU base 18 : sud 1 200 · Paris 2 400 · est 2 900</td>
+
+<td></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<h2 id="les-analogies-qui-marchent-et-celles-qui-trompent">Les analogies qui marchent, et celles qui trompent</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les trois qui marchent</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>L’analogie électrique.</strong> R comme résistance, Δθ comme tension, Φ comme courant. Les couches en série additionnent leurs résistances, exactement comme des résistances électriques. Elle tient tout le long du cours, et elle a un immense avantage : les étudiants de l’option C la connaissent déjà par la domotique.</p>
+
+<p><strong>Le tuyau percé.</strong> Le bâtiment est un seau percé : le chauffage remplit, les parois fuient. La hauteur d’eau est la température. Un seau plus percé demande plus de débit pour tenir le même niveau, et si l’on arrête de remplir, le niveau baisse d’autant plus vite que les trous sont gros. C’est la constante de temps, sans une équation.</p>
+
+<p><strong>La couette et le pull.</strong> Elle installe qu’un isolant <strong>ralentit</strong> au lieu de produire, et que c’est <strong>l’air immobile</strong> qui isole. Deux idées difficiles réglées par un objet que personne n’a besoin de se faire décrire.</p></div></details>
+
+</div><div class="piege">
+
+<p><strong>Les trois analogies à ne pas employer.</strong></p>
+
+<p><strong>« Le froid entre. »</strong> Le froid n’existe pas comme grandeur : il n’y a que de la chaleur qui sort. La formulation paraît anodine et elle bloque durablement la lecture des signes dans les bilans, un étudiant qui croit que le froid entre n’écrira jamais correctement un bilan de batterie froide.</p>
+
+<p><strong>« L’isolant garde le froid en été. »</strong> Il ralentit une entrée de chaleur, ce qui n’est pas la même chose. Et en été, ce qui fait le confort d’une maison de pierre, c’est l’<strong>inertie et le déphasage</strong>, pas la résistance thermique. Confondre les deux mène à conseiller de l’isolant là où il faudrait de la masse et de la ventilation nocturne.</p>
+
+<p><strong>« La chaleur monte. »</strong> C’est l’<strong>air chaud</strong> qui monte, par différence de masse volumique. La chaleur, elle, va dans toutes les directions, un plancher chauffant chauffe vers le bas aussi, et c’est pour cela qu’on l’isole en sous-face. Cette confusion coûte des points chaque année sur les questions de plancher.</p>
+
+</div>
+
 <nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="ap" href="COURS2-HYDRAULIQUE.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Cours 2 — l'eau</span></a></div></nav>
 <p class="pied">Page de formation. Elle contient des réponses, des démonstrations et des corrigés, c'est ce qui la distingue des pages étudiantes.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

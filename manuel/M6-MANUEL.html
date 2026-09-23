@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Manuel · chapitre 6</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="manuel/M6-MANUEL">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M5-MANUEL.html" rel="prev" title="Manuel · chapitre 5" aria-label="Manuel · chapitre 5">&lsaquo;</a><a class="fleche" href="M7-MANUEL.html" rel="next" title="Manuel · chapitre 7" aria-label="Manuel · chapitre 7">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M6-MANUEL">Marquer comme lu</button></div>
@@ -23,335 +31,655 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M1-MANUEL.html">Convection et rayonnement</a></b><span class="ou">Manuel · chapitre 1</span><span class="car">un radiateur émet surtout par convection, et la section 6.1 le montre avec les modes du chapitre 1.</span></li><li><b><a href="M2-MANUEL.html">Le régime de température</a></b><span class="ou">Manuel · chapitre 2</span><span class="car">80/60, 55/45, 35/28 ; l'émetteur reçoit le régime que le réseau du chapitre 2 lui apporte.</span></li><li><b>La fonction puissance à la calculatrice</b><span class="car">la loi d'émission élève un rapport à la puissance 1,3, et il faut savoir taper x^y puis vérifier l'ordre de grandeur.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#6-1-un-radiateur-ne-rayonne-presque-pas">6.1 Un radiateur ne rayonne presque pas</a><a href="#6-2-l-ecart-qui-compte">6.2 L’écart qui compte</a><a href="#6-3-la-loi-d-emission">6.3 La loi d’émission</a><a href="#6-4-le-calcul-retourne-choisir-au-catalogue">6.4 Le calcul retourné : choisir au catalogue</a><a href="#6-5-le-plancher-chauffant">6.5 Le plancher chauffant</a><a href="#6-6-ventilo-convecteur-aerotherme-et-le-cas-particulier-du-lineaire">6.6 Ventilo-convecteur, aérotherme, et le cas particulier du linéaire</a><a href="#6-7-ce-que-l-inertie-change-a-la-regulation">6.7 Ce que l’inertie change à la régulation</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
-<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
-<div class="etapes">
-<ol type="1">
-<li><strong>Calculer</strong> la puissance d’un radiateur à un régime différent du régime catalogue.</li>
-<li><strong>Justifier</strong> l’exposant 1,3, et dire pourquoi il vaut 1,0 pour un ventilo-convecteur.</li>
-<li><strong>Choisir</strong> un émetteur au catalogue à partir d’un besoin et d’un régime.</li>
-<li><strong>Dimensionner</strong> un plancher chauffant, et dire ce qui le limite.</li>
-<li><strong>Expliquer</strong> ce que le passage en 45/35 impose aux surfaces d’émission.</li>
-</ol>
-</div>
-<p><strong>B1-2 est au niveau 3.</strong> L’émetteur est la pièce que l’étudiant croit connaître et qu’il calcule mal : sa puissance n’est <strong>pas</strong> celle inscrite sur le catalogue, sauf coïncidence.</p>
-<h2 id="6-1-un-radiateur-ne-rayonne-presque-pas">6.1 Un radiateur ne rayonne presque pas</h2>
-<p>Approchez la main du côté d’un radiateur en fonte : c’est tiède. Passez-la au-dessus : c’est chaud, et le courant d’air est net. Le nom est trompeur, <strong>un « radiateur » chauffe surtout par convection</strong>.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Émetteur</th>
-<th style="text-align: right;">Rayonnement</th>
-<th style="text-align: right;">Convection</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Radiateur acier à panneaux</td>
-<td style="text-align: right;">30 %</td>
-<td style="text-align: right;"><strong>70 %</strong></td>
-</tr>
-<tr>
-<td>Radiateur fonte</td>
-<td style="text-align: right;">40 %</td>
-<td style="text-align: right;">60 %</td>
-</tr>
-<tr>
-<td>Plancher chauffant</td>
-<td style="text-align: right;"><strong>55 %</strong></td>
-<td style="text-align: right;">45 %</td>
-</tr>
-<tr>
-<td>Ventilo-convecteur</td>
-<td style="text-align: right;">5 %</td>
-<td style="text-align: right;"><strong>95 %</strong></td>
-</tr>
-<tr>
-<td>Panneau rayonnant plafond</td>
-<td style="text-align: right;">75 %</td>
-<td style="text-align: right;">25 %</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Cette répartition n’est pas une curiosité : c’est elle qui décide de l’exposant du 6.3. <strong>Ce qui convecte naturellement suit une loi en puissance 1,25 ; ce qu’on souffle est linéaire.</strong> Tout le chapitre en découle.</p>
-</div>
-<h2 id="6-2-l-ecart-qui-compte">6.2 L’écart qui compte</h2>
-<p>Un émetteur échange avec l’air du local. La grandeur qui commande cet échange est <strong>l’écart entre l’eau et l’air</strong>, pas la température de départ.</p>
-<div class="formule">
-<p><strong>Δθ = (θ départ + θ retour) / 2 − θ ambiante</strong></p>
-<p>C’est l’<strong>écart moyen arithmétique</strong>. Le régime de référence des catalogues, norme EN 442, est <strong>Δθ = 50 K</strong>.</p>
-</div>
-<div class="cle">
-<p>Deux régimes très différents donnent le même Δθ de référence : <strong>75/65</strong> avec 20 °C d’ambiance donne 70 − 20 = 50 ; <strong>80/60</strong> aussi. C’est pourquoi les catalogues français passent de l’un à l’autre sans changer de tableau.</p>
-</div>
-<div class="piege">
-<p>Certains constructeurs utilisent l’écart <strong>logarithmique</strong>, plus exact, à la place de la moyenne arithmétique. L’écart entre les deux méthodes reste sous 2 % tant que le Δθ du circuit est petit devant l’écart à l’ambiance. En épreuve, <strong>on prend toujours la moyenne arithmétique</strong>, sauf mention contraire.</p>
-</div>
-<h2 id="6-3-la-loi-d-emission">6.3 La loi d’émission</h2>
-<div class="formule">
-<p><strong>Φ = Φ nominal × ( Δθ / 50 )ⁿ</strong></p>
-<ul>
-<li><strong>n = 1,30</strong><span>: radiateurs à panneaux, fonte, acier</span></li>
-<li><strong>n = 1,10</strong><span>: plancher chauffant</span></li>
-<li><strong>n = 1,00</strong><span>: ventilo-convecteur, aérotherme : <strong>tout ce qui a un ventilateur</strong></span></li>
-</ul>
-</div>
-<figure class="schema"><div class="dessin" data-schema="loi-emission"></div><figcaption>La puissance émise selon l’écart moyen : la courbe réelle, en puissance 1,3, et la droite qu’on croit souvent suivre.</figcaption></figure>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : d&#39;où vient l&#39;exposant 1,3</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La puissance émise est la somme de deux termes, et chacun a sa propre loi.</p>
-<p><strong>Le terme de convection naturelle.</strong> Le long d’une paroi verticale chaude, l’air monte par différence de densité. La mécanique des fluides donne, pour ce régime, un nombre de Nusselt proportionnel à la racine quatrième du nombre de Rayleigh :</p>
-<p>Nu ∝ Ra^0,25 et Ra ∝ Δθ</p>
-<p>Le coefficient d’échange h = Nu × λ / L varie donc comme <strong>Δθ^0,25</strong>, et la puissance convective, qui vaut h × S × Δθ :</p>
-<p><strong>Φ convection ∝ Δθ^1,25</strong></p>
-<p><strong>Le terme de rayonnement.</strong> Il obéit à la loi en quatrième puissance des températures absolues :</p>
-<p>Φ rayonnement ∝ T émetteur⁴ − T ambiante⁴</p>
-<p>Autour de 300 K, en factorisant, cela se linéarise en un terme proportionnel à Δθ dont le coefficient croît lentement : on l’écrit <strong>Δθ^1,0 à Δθ^1,1</strong> sur la plage d’usage.</p>
-<p><strong>La combinaison.</strong> Un radiateur à panneaux convecte à 70 % et rayonne à 30 % :</p>
-<p>0,70 × 1,25 + 0,30 × 1,05 ≈ <strong>1,19</strong></p>
-<p>La valeur normalisée est un peu plus haute, <strong>1,30</strong>, parce que la surface d’échange réelle d’un panneau à ailettes croît elle aussi avec l’écart : les ailettes situées au cœur du panneau ne participent pleinement qu’aux forts écarts. <strong>L’exposant est mesuré, pas calculé</strong> : la norme EN 442 impose un essai sur banc, et le constructeur publie son n, qui varie de 1,24 à 1,35 selon le modèle.</p>
-<p><strong>Pourquoi n = 1 dès qu’il y a un ventilateur.</strong> Le coefficient h ne dépend plus de l’écart de température mais <strong>de la vitesse de l’air</strong>, imposée par le ventilateur. h devient constant, et Φ = h × S × Δθ est alors strictement proportionnel à Δθ. C’est le seul cas où la règle de trois naïve est juste.</p>
-<p><strong>La limite de validité.</strong> La loi suppose un émetteur <strong>libre</strong>. Un radiateur sous une tablette, encastré dans une niche ou masqué par un rideau perd 10 à 20 % : la convection y est étranglée, et c’est le terme dominant.</p></div></details>
-</div><div class="outil" data-outil="emetteur">
-
-</div>
-<h3 id="exemple-résolu-1.-le-même-radiateur-deux-régimes">Exemple résolu 1. Le même radiateur, deux régimes</h3>
-<p>Un radiateur de <strong>1 500 W</strong> au catalogue, donc à Δθ = 50 K. On l’installe sur un circuit <strong>60/50</strong>, dans un local à <strong>20 °C</strong>.</p>
-<p><strong>L’écart réel.</strong> Δθ = (60 + 50)/2 − 20 = <strong>35 K</strong>.</p>
-<p><strong>La puissance.</strong> Φ = 1 500 × (35/50)^1,30 = 1 500 × 0,70^1,30.</p>
-<p>0,70^1,30 = <strong>0,629</strong>, donc <strong>Φ = 943 W</strong>.</p>
-<p><strong>La lecture.</strong> Le radiateur a perdu <strong>37 %</strong> de sa puissance pour un écart réduit de 30 %. Une règle de trois aurait donné 1 050 W : <strong>11 % de trop</strong>, et un local sous-chauffé.</p>
-<h2 id="6-4-le-calcul-retourne-choisir-au-catalogue">6.4 Le calcul retourné : choisir au catalogue</h2>
-<p>C’est le calcul de chantier, et il est l’inverse du précédent.</p>
-<div class="formule">
-<p><strong>Φ catalogue = Φ besoin / ( Δθ / 50 )ⁿ</strong></p>
-<p>On cherche ensuite le modèle dont la puissance nominale est <strong>immédiatement supérieure</strong>.</p>
-</div>
-<h3 id="exemple-résolu-2.-le-radiateur-dune-salle-de-classe-en-basse-température">Exemple résolu 2. Le radiateur d’une salle de classe en basse température</h3>
-<p>Une salle demande <strong>1 800 W</strong>. Le circuit est en <strong>45/35</strong>, l’ambiance à <strong>20 °C</strong>.</p>
-<p><strong>1. L’écart.</strong> Δθ = (45 + 35)/2 − 20 = <strong>20 K</strong>.</p>
-<p><strong>2. Le facteur.</strong> (20/50)^1,30 = 0,40^1,30 = <strong>0,304</strong>.</p>
-<p><strong>3. La puissance à chercher au catalogue.</strong> 1 800 / 0,304 = <strong>5 920 W à Δθ = 50 K</strong>.</p>
-<p><strong>4. Le choix.</strong> Un panneau de 5 920 W nominal, c’est un <strong>type 22 de 3 mètres de long</strong>, ou deux panneaux de 1,5 m.</p>
-<div class="cle">
-<p>Retenez ce facteur : <strong>passer de 80/60 à 45/35 divise l’émission par 3,3</strong>. Ce n’est pas un détail de calcul, c’est une contrainte de projet : les murs doivent pouvoir recevoir des émetteurs trois fois plus grands, ou l’on change de technologie.</p>
-</div>
-<div class="piege">
-<p>On lit parfois qu’il « suffit d’augmenter le débit » pour compenser un régime plus bas. C’est faux : augmenter le débit rapproche le retour du départ, ce qui fait monter l’écart moyen <strong>de quelques kelvins seulement</strong>, pour un débit doublé. La surface, elle, manque toujours.</p>
-</div>
-<h2 id="6-5-le-plancher-chauffant">6.5 Le plancher chauffant</h2>
-<p>Il est le seul émetteur dont la limite ne soit pas thermique mais <strong>physiologique</strong> : au-delà d’une certaine température de sol, on ne le supporte plus.</p>
-<div class="formule">
-<p><strong>Densité de flux : q ≈ 8,9 × ( θ sol − θ ambiante )^1,1</strong> (en W/m²)</p>
-<p><strong>Limites de température de surface :</strong></p>
-<ul>
-<li><strong>29 °C</strong><span>en zone d’occupation</span></li>
-<li><strong>33 °C</strong><span>en zone périphérique et en salle de bains</span></li>
-</ul>
-</div>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th style="text-align: right;">Température de sol</th>
-<th style="text-align: right;">Ambiance</th>
-<th style="text-align: right;">Densité de flux</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">24 °C</td>
-<td style="text-align: right;">20 °C</td>
-<td style="text-align: right;">40 W/m²</td>
-</tr>
-<tr>
-<td style="text-align: right;">26 °C</td>
-<td style="text-align: right;">20 °C</td>
-<td style="text-align: right;">64 W/m²</td>
-</tr>
-<tr>
-<td style="text-align: right;"><strong>29 °C</strong></td>
-<td style="text-align: right;">20 °C</td>
-<td style="text-align: right;"><strong>100 W/m²</strong></td>
-</tr>
-<tr>
-<td style="text-align: right;">33 °C</td>
-<td style="text-align: right;">20 °C</td>
-<td style="text-align: right;">148 W/m², <strong>zone périphérique seulement</strong></td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p><strong>Un plancher chauffant plafonne à environ 100 W/m² en zone de vie.</strong> Un local qui demande plus, une véranda par exemple, ne peut pas être chauffé par le seul plancher : il faut un émetteur d’appoint. C’est une question fréquente en épreuve, et la réponse est un nombre, pas une opinion.</p>
-</div>
-<h3 id="exemple-résolu-3.-un-plancher-suffit-il">Exemple résolu 3. Un plancher suffit-il ?</h3>
-<p>Un séjour de <strong>32 m²</strong> perd <strong>2 900 W</strong>. La surface réellement disponible, meubles et cuisine déduits, est de <strong>26 m²</strong>.</p>
-<p><strong>Le flux nécessaire.</strong> 2 900 / 26 = <strong>112 W/m²</strong>.</p>
-<p><strong>La comparaison.</strong> 112 &gt; 100 : <strong>le plancher seul ne suffit pas</strong>.</p>
-<p><strong>Les trois issues possibles.</strong> Isoler davantage pour descendre sous 2 600 W ; ajouter un sèche-serviettes ou un radiateur d’appoint ; ou passer une partie de la surface en zone périphérique à pas resserré, ce qui n’apporte que quelques dizaines de watts.</p>
-<div class="piege">
-<p>La surface qui compte est la <strong>surface réellement chauffante</strong>, pas la surface du local. Un plancher ne passe ni sous une cuisine équipée, ni sous une baignoire, ni à moins de 10 cm des murs. Compter la surface au sol du plan conduit à sous-dimensionner de 15 à 25 %.</p>
-</div>
-<h2 id="6-6-ventilo-convecteur-aerotherme-et-le-cas-particulier-du-lineaire">6.6 Ventilo-convecteur, aérotherme, et le cas particulier du linéaire</h2>
-<p>Dès qu’un ventilateur impose la vitesse de l’air, l’exposant tombe à 1 et le calcul se simplifie. Trois autres choses changent en même temps.</p>
-<p><strong>Le débit d’air compte autant que le régime d’eau.</strong> Un ventilo-convecteur a trois vitesses, et sa puissance catalogue est donnée pour la grande vitesse, celle qu’on n’utilise jamais en occupation : la vitesse moyenne rend <strong>20 à 30 % de moins</strong>.</p>
-<p><strong>Il peut refroidir.</strong> C’est le seul émetteur du chapitre à travailler en eau glacée, et sa puissance froide s’y ajoute d’une part <strong>latente</strong>, il déshumidifie. Un bac à condensats et son évacuation deviennent obligatoires.</p>
-<p><strong>Il fait du bruit.</strong> 30 à 45 dB(A) selon la vitesse. En salle de classe, c’est le critère qui élimine la grande vitesse, donc celui qui commande le dimensionnement.</p>
-<div class="cle">
-<p>L’aérotherme est le même appareil, en plus gros et sans finesse : un échangeur, un ventilateur hélicoïde, 5 à 60 kW. Il chauffe des volumes où personne ne s’assoit (atelier, entrepôt, hall) et sa faiblesse est la <strong>stratification</strong>, qui empile l’air chaud sous le toit.</p>
-</div>
-<h2 id="6-7-ce-que-l-inertie-change-a-la-regulation">6.7 Ce que l’inertie change à la régulation</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Émetteur</th>
-<th style="text-align: right;">Contenu en eau</th>
-<th style="text-align: right;">Temps de réponse</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Radiateur acier à panneaux</td>
-<td style="text-align: right;">3 à 8 L</td>
-<td style="text-align: right;"><strong>10 à 20 min</strong></td>
-</tr>
-<tr>
-<td>Radiateur fonte</td>
-<td style="text-align: right;">15 à 30 L</td>
-<td style="text-align: right;">45 à 90 min</td>
-</tr>
-<tr>
-<td>Plancher chauffant</td>
-<td style="text-align: right;">15 L/m² de chape</td>
-<td style="text-align: right;"><strong>4 à 8 heures</strong></td>
-</tr>
-<tr>
-<td>Ventilo-convecteur</td>
-<td style="text-align: right;">1 à 2 L</td>
-<td style="text-align: right;"><strong>2 à 5 min</strong></td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Un plancher chauffant ne se régule pas comme un radiateur : sa réponse dure des heures, donc <strong>toute correction rapide arrive trop tard</strong>. C’est la raison physique pour laquelle il se pilote par une <strong>loi d’eau bien réglée</strong> plutôt que par une consigne d’ambiance, voir le chapitre 13.</p>
-</div>
-<p>Le <strong>robinet thermostatique</strong>, lui, est une régulation locale sans électricité : un bulbe se dilate et ferme le passage quand la pièce se réchauffe. Il ne sert qu’à récupérer les <strong>apports gratuits</strong> (soleil, occupants, cuisine) et il ne remplace jamais la régulation générale.</p>
-<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Valeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Écart de référence des catalogues, EN 442</td>
-<td><strong>Δθ = 50 K</strong></td>
-</tr>
-<tr>
-<td>Exposant, radiateur · plancher · ventilo</td>
-<td><strong>1,30</strong> · 1,10 · 1,00</td>
-</tr>
-<tr>
-<td>Régimes donnant Δθ = 50 K, ambiance 20 °C</td>
-<td>75/65 et 80/60</td>
-</tr>
-<tr>
-<td>Facteur d’émission en 45/35</td>
-<td><strong>0,30</strong> : surface × 3,3</td>
-</tr>
-<tr>
-<td>Facteur d’émission en 55/45</td>
-<td>0,52 : surface × 1,9</td>
-</tr>
-<tr>
-<td>Part convective d’un radiateur à panneaux</td>
-<td>70 %</td>
-</tr>
-<tr>
-<td>Densité de flux d’un plancher, 29 °C de sol</td>
-<td><strong>100 W/m²</strong></td>
-</tr>
-<tr>
-<td>Température de sol, zone d’occupation</td>
-<td>29 °C maximum</td>
-</tr>
-<tr>
-<td>Température de sol, zone périphérique</td>
-<td>33 °C maximum</td>
-</tr>
-<tr>
-<td>Contenu en eau d’une chape</td>
-<td>≈ 15 L/m²</td>
-</tr>
-<tr>
-<td>Temps de réponse d’un plancher</td>
-<td>4 à 8 h</td>
-</tr>
-<tr>
-<td>Puissance d’un aérotherme</td>
-<td>5 à 60 kW</td>
-</tr>
-<tr>
-<td>Perte d’un radiateur encastré ou masqué</td>
-<td>10 à 20 %</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>La vérification qui prend trois secondes : <strong>un radiateur en basse température émet le tiers de son catalogue</strong>. Si un calcul de basse température donne une puissance proche du nominal, l’exposant a été oublié.</p>
-</div>
-<h2 id="s-entrainer">S’entraîner</h2>
-<section class="exo" id="M6-MANUEL-e1" data-exo="M6-MANUEL-e1" data-type="calcul" data-savoir="B1-2" data-a="IXgueGB4OTs2OS82eHZ4LHhga2xrY3RqdnguNTZ4YG90anZ4L3hgeA14Jw=="><p class="k">Exercice · B1-2</p><h4>L’émission à un autre régime</h4><div class="enonce">
-
-<p>Un radiateur donné pour <strong>2 000 W</strong> à Δθ = 50 K fonctionne en <strong>70/55</strong>, dans un local à <strong>20 °C</strong>. Quelle puissance émet-il réellement ?</p>
-</div><div class="indice" hidden>Calculez d’abord l’écart moyen : moyenne du départ et du retour, moins l’ambiance. Puis élevez le rapport des écarts à la puissance 1,3.</div></section>
-<section class="exo" id="M6-MANUEL-e2" data-exo="M6-MANUEL-e2" data-type="calcul" data-savoir="B1-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgaGJqbXRqdnguNTZ4YG90anZ4L3hgeA14Jw=="><p class="k">Exercice · B1-2</p><h4>Le choix au catalogue</h4><div class="enonce">
-
-<p>Un local demande <strong>1 200 W</strong>. Le circuit est en <strong>50/40</strong>, l’ambiance à <strong>19 °C</strong>. Quelle puissance nominale, à Δθ = 50 K, faut-il chercher au catalogue ?</p>
-</div><div class="indice" hidden>L’écart réel vaut 45 − 19. Divisez le besoin par le facteur (Δθ/50) élevé à la puissance 1,3 : on remonte au nominal, donc on divise.</div></section>
-<section class="exo" id="M6-MANUEL-e3" data-exo="M6-MANUEL-e3" data-type="calcul" data-savoir="B1-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgYm10b3Z4LjU2eGBpdGp2eC94YHgNdTcGL2pqOGh4Jw=="><p class="k">Exercice · B1-2</p><h4>La surface de plancher</h4><div class="enonce">
-
-<p>Un local perd <strong>2 100 W</strong> et sa surface réellement chauffante est de <strong>24 m²</strong>. Quelle densité de flux le plancher doit-il fournir ?</p>
-</div><div class="indice" hidden>Divisez la puissance par la surface chauffante, pas par la surface du local. Comparez ensuite le résultat à la limite de 100 W/m².</div></section>
-<section class="exo" id="M6-MANUEL-e4" data-exo="M6-MANUEL-e4" data-type="justification" data-savoir="B1-2" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B1-2</p><h4>Le remplacement de la chaudière</h4><div class="enonce">
-
-<p>Un bâtiment en <strong>80/60</strong> doit passer à une pompe à chaleur en <strong>45/35</strong>, sans changer les radiateurs. Expliquez ce qui va se produire et ce que vous proposez.</p>
-</div><div class="indice" hidden>La puissance émise suit une loi en puissance 1,3 de l’écart moyen. Comparez l’écart en 80/60 et l’écart en 45/35 pour la même ambiance, puis faites le rapport des deux puissances.</div><ul class="verifier" hidden><li>J’ai calculé ou cité le facteur d’émission, environ 0,30 à Δθ = 20 K.</li><li>J’ai dit que les radiateurs n’émettront plus que le tiers de leur puissance actuelle.</li><li>J’ai relié cela à un sous-chauffage par grand froid, pas à une panne.</li><li>J’ai proposé une solution chiffrable : remplacer les émetteurs, réduire les déperditions, ou prévoir un appoint.</li></ul></section>
-<h2 id="vous-verifier">Vous vérifier</h2>
-<div class="quiz">
-<ul>
-<li>Un radiateur à panneaux chauffe surtout par : <strong>convection</strong> | rayonnement</li>
-<li>L’écart de référence des catalogues vaut : <strong>50 K</strong> | 60 K</li>
-<li>Il se calcule à partir de : <strong>la moyenne départ-retour moins l’ambiance</strong> | la seule température de départ</li>
-<li>L’exposant d’un radiateur vaut : <strong>1,3</strong> | 1,0</li>
-<li>Celui d’un ventilo-convecteur vaut : <strong>1,0</strong> | 1,3</li>
-<li>Cette différence vient de : <strong>le ventilateur impose la vitesse d’air</strong> | la taille de l’appareil</li>
-<li>Passer de 80/60 à 45/35 divise l’émission par : <strong>3,3</strong> | 1,8</li>
-<li>Augmenter le débit pour compenser un régime bas : <strong>ne suffit pas</strong> | résout le problème</li>
-<li>Un plancher chauffant plafonne, en zone de vie, à : <strong>100 W/m²</strong> | 200 W/m²</li>
-<li>La limite vient de : <strong>la température de surface supportable</strong> | la puissance de la pompe</li>
-<li>Un radiateur masqué par un coffre perd : <strong>10 à 20 %</strong> | rien</li>
-<li>Le temps de réponse d’un plancher est de : <strong>plusieurs heures</strong> | quelques minutes</li>
-<li>Un robinet thermostatique sert à récupérer : <strong>les apports gratuits</strong> | la chaleur des voisins</li>
-</ul>
-</div>
-<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi on place un radiateur sous une fenêtre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’habitude est ancienne et souvent moquée : chauffer là où l’on isole le moins. Elle a pourtant trois justifications, et deux tiennent encore.</p>
-<p><strong>Contrer la chute d’air froid.</strong> Une vitre, même performante, reste la surface la plus froide de la pièce. L’air qui la touche se refroidit, devient plus dense et <strong>tombe</strong> le long du mur, puis balaie le sol : c’est cette nappe qu’on ressent aux pieds. Un émetteur placé dessous crée un courant ascendant qui l’annule.</p>
-<p><strong>Homogénéiser la température.</strong> Le point le plus froid et le point le plus chaud du local se retrouvent au même endroit, et se compensent. Placé sur le mur opposé, l’émetteur laisse s’installer un gradient horizontal de 2 à 3 K.</p>
-<p><strong>La justification qui ne tient plus.</strong> À l’époque du simple vitrage, la température de surface descendait à 8 ou 10 °C, et le rayonnement froid de la vitre était insupportable à deux mètres. Avec un double vitrage argon à 17 °C de surface, l’inconfort radiatif a presque disparu, d’où les projets récents qui placent les émetteurs ailleurs, en particulier avec un plancher chauffant, dont la répartition rend la question sans objet.</p>
-<p><strong>Ce que cela coûte.</strong> Un radiateur sous fenêtre chauffe un peu le mur derrière lui, donc dehors. On y colle un <strong>isolant mince réfléchissant</strong>, qui récupère 1 à 2 % : peu, mais gratuit.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un bureau d&#39;études vérifie en plus</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La méthode du chapitre (un besoin, un régime, un exposant, un catalogue) donne l’émetteur. Trois vérifications s’y ajoutent en projet.</p>
-<p><strong>L’autorité de la vanne</strong>, déjà rencontrée au chapitre 3 : le robinet thermostatique ou la vanne deux voies doit représenter au moins 30 % de la perte de charge de la boucle qu’il commande, sinon il ne régule rien.</p>
-<p><strong>La compatibilité des matériaux.</strong> Acier, cuivre, aluminium et laiton dans le même circuit forment des couples galvaniques ; un plancher en polyéthylène non barrière laisse diffuser l’oxygène et corrode les corps de chauffe en acier en quelques années. C’est un point de CCTP, et il fait des sinistres.</p>
-<p><strong>La cohérence des exposants dans un circuit mixte.</strong> Radiateurs et plancher sur le même départ n’ont pas le même n : à mesure que la loi d’eau baisse, ils ne perdent pas leur puissance au même rythme. Le plancher, avec n = 1,1, résiste mieux que les radiateurs, avec n = 1,3. Un circuit mixte demande donc <strong>deux régulations</strong>, ou un découplage par vanne, et non un simple piquage.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« Ce radiateur fait 1 500 W. »</strong> Il fait 1 500 W <strong>à Δθ = 50 K</strong>. Sans le régime, le nombre ne veut rien dire, et c’est exactement l’erreur que l’épreuve cherche à débusquer. La bonne phrase porte toujours l’écart de référence.</p>
-<p><strong>« Le plancher chauffe par rayonnement, donc il chauffe mieux. »</strong> Il rayonne à 55 %, davantage qu’un radiateur, sans être un émetteur radiatif pur. Ce qu’il apporte n’est pas un rendement supérieur mais <strong>une répartition</strong> : pas de point chaud, pas de chute d’air froid, et un confort à température d’air plus basse d’environ 1 K.</p>
-<p><strong>« On monte le thermostatique à 5 pour chauffer plus vite. »</strong> Un robinet thermostatique n’est pas un accélérateur : il est déjà grand ouvert tant que la pièce est froide. Le mettre à 5 ne change rien à la montée en température, et fait seulement dépasser la consigne à l’arrivée.</p></div></details>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Calculer</strong> la puissance d’un radiateur à un régime différent du régime catalogue.</li>
+
+<li><strong>Justifier</strong> l’exposant 1,3, et dire pourquoi il vaut 1,0 pour un ventilo-convecteur.</li>
+
+<li><strong>Choisir</strong> un émetteur au catalogue à partir d’un besoin et d’un régime.</li>
+
+<li><strong>Dimensionner</strong> un plancher chauffant, et dire ce qui le limite.</li>
+
+<li><strong>Expliquer</strong> ce que le passage en 45/35 impose aux surfaces d’émission.</li>
+
+</ol>
+
+</div>
+
+<p><strong>B1-2 est au niveau 3.</strong> L’émetteur est la pièce que l’étudiant croit connaître et qu’il calcule mal : sa puissance n’est <strong>pas</strong> celle inscrite sur le catalogue, sauf coïncidence.</p>
+
+<h2 id="6-1-un-radiateur-ne-rayonne-presque-pas">6.1 Un radiateur ne rayonne presque pas</h2>
+
+<p>Approchez la main du côté d’un radiateur en fonte : c’est tiède. Passez-la au-dessus : c’est chaud, et le courant d’air est net. Le nom est trompeur, <strong>un « radiateur » chauffe surtout par convection</strong>.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Émetteur</th>
+
+<th style="text-align: right;">Rayonnement</th>
+
+<th style="text-align: right;">Convection</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Radiateur acier à panneaux</td>
+
+<td style="text-align: right;">30 %</td>
+
+<td style="text-align: right;"><strong>70 %</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Radiateur fonte</td>
+
+<td style="text-align: right;">40 %</td>
+
+<td style="text-align: right;">60 %</td>
+
+</tr>
+
+<tr>
+
+<td>Plancher chauffant</td>
+
+<td style="text-align: right;"><strong>55 %</strong></td>
+
+<td style="text-align: right;">45 %</td>
+
+</tr>
+
+<tr>
+
+<td>Ventilo-convecteur</td>
+
+<td style="text-align: right;">5 %</td>
+
+<td style="text-align: right;"><strong>95 %</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Panneau rayonnant plafond</td>
+
+<td style="text-align: right;">75 %</td>
+
+<td style="text-align: right;">25 %</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Cette répartition n’est pas une curiosité : c’est elle qui décide de l’exposant du 6.3. <strong>Ce qui convecte naturellement suit une loi en puissance 1,25 ; ce qu’on souffle est linéaire.</strong> Tout le chapitre en découle.</p>
+
+</div>
+
+<h2 id="6-2-l-ecart-qui-compte">6.2 L’écart qui compte</h2>
+
+<p>Un émetteur échange avec l’air du local. La grandeur qui commande cet échange est <strong>l’écart entre l’eau et l’air</strong>, pas la température de départ.</p>
+
+<div class="formule">
+
+<p><strong>Δθ = (θ départ + θ retour) / 2 − θ ambiante</strong></p>
+
+<p>C’est l’<strong>écart moyen arithmétique</strong>. Le régime de référence des catalogues, norme EN 442, est <strong>Δθ = 50 K</strong>.</p>
+
+</div>
+
+<div class="cle">
+
+<p>Deux régimes très différents donnent le même Δθ de référence : <strong>75/65</strong> avec 20 °C d’ambiance donne 70 − 20 = 50 ; <strong>80/60</strong> aussi. C’est pourquoi les catalogues français passent de l’un à l’autre sans changer de tableau.</p>
+
+</div>
+
+<div class="piege">
+
+<p>Certains constructeurs utilisent l’écart <strong>logarithmique</strong>, plus exact, à la place de la moyenne arithmétique. L’écart entre les deux méthodes reste sous 2 % tant que le Δθ du circuit est petit devant l’écart à l’ambiance. En épreuve, <strong>on prend toujours la moyenne arithmétique</strong>, sauf mention contraire.</p>
+
+</div>
+
+<h2 id="6-3-la-loi-d-emission">6.3 La loi d’émission</h2>
+
+<div class="formule">
+
+<p><strong>Φ = Φ nominal × ( Δθ / 50 )ⁿ</strong></p>
+
+<ul>
+
+<li><strong>n = 1,30</strong><span>: radiateurs à panneaux, fonte, acier</span></li>
+
+<li><strong>n = 1,10</strong><span>: plancher chauffant</span></li>
+
+<li><strong>n = 1,00</strong><span>: ventilo-convecteur, aérotherme : <strong>tout ce qui a un ventilateur</strong></span></li>
+
+</ul>
+
+</div>
+
+<figure class="schema"><div class="dessin" data-schema="loi-emission"></div><figcaption>La puissance émise selon l’écart moyen : la courbe réelle, en puissance 1,3, et la droite qu’on croit souvent suivre.</figcaption></figure>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : d&#39;où vient l&#39;exposant 1,3</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La puissance émise est la somme de deux termes, et chacun a sa propre loi.</p>
+
+<p><strong>Le terme de convection naturelle.</strong> Le long d’une paroi verticale chaude, l’air monte par différence de densité. La mécanique des fluides donne, pour ce régime, un nombre de Nusselt proportionnel à la racine quatrième du nombre de Rayleigh :</p>
+
+<p>Nu ∝ Ra^0,25 et Ra ∝ Δθ</p>
+
+<p>Le coefficient d’échange h = Nu × λ / L varie donc comme <strong>Δθ^0,25</strong>, et la puissance convective, qui vaut h × S × Δθ :</p>
+
+<p><strong>Φ convection ∝ Δθ^1,25</strong></p>
+
+<p><strong>Le terme de rayonnement.</strong> Il obéit à la loi en quatrième puissance des températures absolues :</p>
+
+<p>Φ rayonnement ∝ T émetteur⁴ − T ambiante⁴</p>
+
+<p>Autour de 300 K, en factorisant, cela se linéarise en un terme proportionnel à Δθ dont le coefficient croît lentement : on l’écrit <strong>Δθ^1,0 à Δθ^1,1</strong> sur la plage d’usage.</p>
+
+<p><strong>La combinaison.</strong> Un radiateur à panneaux convecte à 70 % et rayonne à 30 % :</p>
+
+<p>0,70 × 1,25 + 0,30 × 1,05 ≈ <strong>1,19</strong></p>
+
+<p>La valeur normalisée est un peu plus haute, <strong>1,30</strong>, parce que la surface d’échange réelle d’un panneau à ailettes croît elle aussi avec l’écart : les ailettes situées au cœur du panneau ne participent pleinement qu’aux forts écarts. <strong>L’exposant est mesuré, pas calculé</strong> : la norme EN 442 impose un essai sur banc, et le constructeur publie son n, qui varie de 1,24 à 1,35 selon le modèle.</p>
+
+<p><strong>Pourquoi n = 1 dès qu’il y a un ventilateur.</strong> Le coefficient h ne dépend plus de l’écart de température mais <strong>de la vitesse de l’air</strong>, imposée par le ventilateur. h devient constant, et Φ = h × S × Δθ est alors strictement proportionnel à Δθ. C’est le seul cas où la règle de trois naïve est juste.</p>
+
+<p><strong>La limite de validité.</strong> La loi suppose un émetteur <strong>libre</strong>. Un radiateur sous une tablette, encastré dans une niche ou masqué par un rideau perd 10 à 20 % : la convection y est étranglée, et c’est le terme dominant.</p></div></details>
+
+</div><div class="outil" data-outil="emetteur">
+
+
+
+</div>
+
+<h3 id="exemple-résolu-1.-le-même-radiateur-deux-régimes">Exemple résolu 1. Le même radiateur, deux régimes</h3>
+
+<p>Un radiateur de <strong>1 500 W</strong> au catalogue, donc à Δθ = 50 K. On l’installe sur un circuit <strong>60/50</strong>, dans un local à <strong>20 °C</strong>.</p>
+
+<p><strong>L’écart réel.</strong> Δθ = (60 + 50)/2 − 20 = <strong>35 K</strong>.</p>
+
+<p><strong>La puissance.</strong> Φ = 1 500 × (35/50)^1,30 = 1 500 × 0,70^1,30.</p>
+
+<p>0,70^1,30 = <strong>0,629</strong>, donc <strong>Φ = 943 W</strong>.</p>
+
+<p><strong>La lecture.</strong> Le radiateur a perdu <strong>37 %</strong> de sa puissance pour un écart réduit de 30 %. Une règle de trois aurait donné 1 050 W : <strong>11 % de trop</strong>, et un local sous-chauffé.</p>
+
+<h2 id="6-4-le-calcul-retourne-choisir-au-catalogue">6.4 Le calcul retourné : choisir au catalogue</h2>
+
+<p>C’est le calcul de chantier, et il est l’inverse du précédent.</p>
+
+<div class="formule">
+
+<p><strong>Φ catalogue = Φ besoin / ( Δθ / 50 )ⁿ</strong></p>
+
+<p>On cherche ensuite le modèle dont la puissance nominale est <strong>immédiatement supérieure</strong>.</p>
+
+</div>
+
+<h3 id="exemple-résolu-2.-le-radiateur-dune-salle-de-classe-en-basse-température">Exemple résolu 2. Le radiateur d’une salle de classe en basse température</h3>
+
+<p>Une salle demande <strong>1 800 W</strong>. Le circuit est en <strong>45/35</strong>, l’ambiance à <strong>20 °C</strong>.</p>
+
+<p><strong>1. L’écart.</strong> Δθ = (45 + 35)/2 − 20 = <strong>20 K</strong>.</p>
+
+<p><strong>2. Le facteur.</strong> (20/50)^1,30 = 0,40^1,30 = <strong>0,304</strong>.</p>
+
+<p><strong>3. La puissance à chercher au catalogue.</strong> 1 800 / 0,304 = <strong>5 920 W à Δθ = 50 K</strong>.</p>
+
+<p><strong>4. Le choix.</strong> Un panneau de 5 920 W nominal, c’est un <strong>type 22 de 3 mètres de long</strong>, ou deux panneaux de 1,5 m.</p>
+
+<div class="cle">
+
+<p>Retenez ce facteur : <strong>passer de 80/60 à 45/35 divise l’émission par 3,3</strong>. Ce n’est pas un détail de calcul, c’est une contrainte de projet : les murs doivent pouvoir recevoir des émetteurs trois fois plus grands, ou l’on change de technologie.</p>
+
+</div>
+
+<div class="piege">
+
+<p>On lit parfois qu’il « suffit d’augmenter le débit » pour compenser un régime plus bas. C’est faux : augmenter le débit rapproche le retour du départ, ce qui fait monter l’écart moyen <strong>de quelques kelvins seulement</strong>, pour un débit doublé. La surface, elle, manque toujours.</p>
+
+</div>
+
+<h2 id="6-5-le-plancher-chauffant">6.5 Le plancher chauffant</h2>
+
+<p>Il est le seul émetteur dont la limite ne soit pas thermique mais <strong>physiologique</strong> : au-delà d’une certaine température de sol, on ne le supporte plus.</p>
+
+<div class="formule">
+
+<p><strong>Densité de flux : q ≈ 8,9 × ( θ sol − θ ambiante )^1,1</strong> (en W/m²)</p>
+
+<p><strong>Limites de température de surface :</strong></p>
+
+<ul>
+
+<li><strong>29 °C</strong><span>en zone d’occupation</span></li>
+
+<li><strong>33 °C</strong><span>en zone périphérique et en salle de bains</span></li>
+
+</ul>
+
+</div>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th style="text-align: right;">Température de sol</th>
+
+<th style="text-align: right;">Ambiance</th>
+
+<th style="text-align: right;">Densité de flux</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align: right;">24 °C</td>
+
+<td style="text-align: right;">20 °C</td>
+
+<td style="text-align: right;">40 W/m²</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">26 °C</td>
+
+<td style="text-align: right;">20 °C</td>
+
+<td style="text-align: right;">64 W/m²</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;"><strong>29 °C</strong></td>
+
+<td style="text-align: right;">20 °C</td>
+
+<td style="text-align: right;"><strong>100 W/m²</strong></td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">33 °C</td>
+
+<td style="text-align: right;">20 °C</td>
+
+<td style="text-align: right;">148 W/m², <strong>zone périphérique seulement</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p><strong>Un plancher chauffant plafonne à environ 100 W/m² en zone de vie.</strong> Un local qui demande plus, une véranda par exemple, ne peut pas être chauffé par le seul plancher : il faut un émetteur d’appoint. C’est une question fréquente en épreuve, et la réponse est un nombre, pas une opinion.</p>
+
+</div>
+
+<h3 id="exemple-résolu-3.-un-plancher-suffit-il">Exemple résolu 3. Un plancher suffit-il ?</h3>
+
+<p>Un séjour de <strong>32 m²</strong> perd <strong>2 900 W</strong>. La surface réellement disponible, meubles et cuisine déduits, est de <strong>26 m²</strong>.</p>
+
+<p><strong>Le flux nécessaire.</strong> 2 900 / 26 = <strong>112 W/m²</strong>.</p>
+
+<p><strong>La comparaison.</strong> 112 &gt; 100 : <strong>le plancher seul ne suffit pas</strong>.</p>
+
+<p><strong>Les trois issues possibles.</strong> Isoler davantage pour descendre sous 2 600 W ; ajouter un sèche-serviettes ou un radiateur d’appoint ; ou passer une partie de la surface en zone périphérique à pas resserré, ce qui n’apporte que quelques dizaines de watts.</p>
+
+<div class="piege">
+
+<p>La surface qui compte est la <strong>surface réellement chauffante</strong>, pas la surface du local. Un plancher ne passe ni sous une cuisine équipée, ni sous une baignoire, ni à moins de 10 cm des murs. Compter la surface au sol du plan conduit à sous-dimensionner de 15 à 25 %.</p>
+
+</div>
+
+<h2 id="6-6-ventilo-convecteur-aerotherme-et-le-cas-particulier-du-lineaire">6.6 Ventilo-convecteur, aérotherme, et le cas particulier du linéaire</h2>
+
+<p>Dès qu’un ventilateur impose la vitesse de l’air, l’exposant tombe à 1 et le calcul se simplifie. Trois autres choses changent en même temps.</p>
+
+<p><strong>Le débit d’air compte autant que le régime d’eau.</strong> Un ventilo-convecteur a trois vitesses, et sa puissance catalogue est donnée pour la grande vitesse, celle qu’on n’utilise jamais en occupation : la vitesse moyenne rend <strong>20 à 30 % de moins</strong>.</p>
+
+<p><strong>Il peut refroidir.</strong> C’est le seul émetteur du chapitre à travailler en eau glacée, et sa puissance froide s’y ajoute d’une part <strong>latente</strong>, il déshumidifie. Un bac à condensats et son évacuation deviennent obligatoires.</p>
+
+<p><strong>Il fait du bruit.</strong> 30 à 45 dB(A) selon la vitesse. En salle de classe, c’est le critère qui élimine la grande vitesse, donc celui qui commande le dimensionnement.</p>
+
+<div class="cle">
+
+<p>L’aérotherme est le même appareil, en plus gros et sans finesse : un échangeur, un ventilateur hélicoïde, 5 à 60 kW. Il chauffe des volumes où personne ne s’assoit (atelier, entrepôt, hall) et sa faiblesse est la <strong>stratification</strong>, qui empile l’air chaud sous le toit.</p>
+
+</div>
+
+<h2 id="6-7-ce-que-l-inertie-change-a-la-regulation">6.7 Ce que l’inertie change à la régulation</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Émetteur</th>
+
+<th style="text-align: right;">Contenu en eau</th>
+
+<th style="text-align: right;">Temps de réponse</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Radiateur acier à panneaux</td>
+
+<td style="text-align: right;">3 à 8 L</td>
+
+<td style="text-align: right;"><strong>10 à 20 min</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Radiateur fonte</td>
+
+<td style="text-align: right;">15 à 30 L</td>
+
+<td style="text-align: right;">45 à 90 min</td>
+
+</tr>
+
+<tr>
+
+<td>Plancher chauffant</td>
+
+<td style="text-align: right;">15 L/m² de chape</td>
+
+<td style="text-align: right;"><strong>4 à 8 heures</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Ventilo-convecteur</td>
+
+<td style="text-align: right;">1 à 2 L</td>
+
+<td style="text-align: right;"><strong>2 à 5 min</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Un plancher chauffant ne se régule pas comme un radiateur : sa réponse dure des heures, donc <strong>toute correction rapide arrive trop tard</strong>. C’est la raison physique pour laquelle il se pilote par une <strong>loi d’eau bien réglée</strong> plutôt que par une consigne d’ambiance, voir le chapitre 13.</p>
+
+</div>
+
+<p>Le <strong>robinet thermostatique</strong>, lui, est une régulation locale sans électricité : un bulbe se dilate et ferme le passage quand la pièce se réchauffe. Il ne sert qu’à récupérer les <strong>apports gratuits</strong> (soleil, occupants, cuisine) et il ne remplace jamais la régulation générale.</p>
+
+<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Valeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Écart de référence des catalogues, EN 442</td>
+
+<td><strong>Δθ = 50 K</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Exposant, radiateur · plancher · ventilo</td>
+
+<td><strong>1,30</strong> · 1,10 · 1,00</td>
+
+</tr>
+
+<tr>
+
+<td>Régimes donnant Δθ = 50 K, ambiance 20 °C</td>
+
+<td>75/65 et 80/60</td>
+
+</tr>
+
+<tr>
+
+<td>Facteur d’émission en 45/35</td>
+
+<td><strong>0,30</strong> : surface × 3,3</td>
+
+</tr>
+
+<tr>
+
+<td>Facteur d’émission en 55/45</td>
+
+<td>0,52 : surface × 1,9</td>
+
+</tr>
+
+<tr>
+
+<td>Part convective d’un radiateur à panneaux</td>
+
+<td>70 %</td>
+
+</tr>
+
+<tr>
+
+<td>Densité de flux d’un plancher, 29 °C de sol</td>
+
+<td><strong>100 W/m²</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Température de sol, zone d’occupation</td>
+
+<td>29 °C maximum</td>
+
+</tr>
+
+<tr>
+
+<td>Température de sol, zone périphérique</td>
+
+<td>33 °C maximum</td>
+
+</tr>
+
+<tr>
+
+<td>Contenu en eau d’une chape</td>
+
+<td>≈ 15 L/m²</td>
+
+</tr>
+
+<tr>
+
+<td>Temps de réponse d’un plancher</td>
+
+<td>4 à 8 h</td>
+
+</tr>
+
+<tr>
+
+<td>Puissance d’un aérotherme</td>
+
+<td>5 à 60 kW</td>
+
+</tr>
+
+<tr>
+
+<td>Perte d’un radiateur encastré ou masqué</td>
+
+<td>10 à 20 %</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>La vérification qui prend trois secondes : <strong>un radiateur en basse température émet le tiers de son catalogue</strong>. Si un calcul de basse température donne une puissance proche du nominal, l’exposant a été oublié.</p>
+
+</div>
+
+<h2 id="s-entrainer">S’entraîner</h2>
+
+<section class="exo" id="M6-MANUEL-e1" data-exo="M6-MANUEL-e1" data-type="calcul" data-savoir="B1-2" data-a="IXgueGB4OTs2OS82eHZ4LHhga2xrY3RqdnguNTZ4YG90anZ4L3hgeA14Jw=="><p class="k">Exercice · B1-2</p><h4>L’émission à un autre régime</h4><div class="enonce">
+
+
+
+<p>Un radiateur donné pour <strong>2 000 W</strong> à Δθ = 50 K fonctionne en <strong>70/55</strong>, dans un local à <strong>20 °C</strong>. Quelle puissance émet-il réellement ?</p>
+
+</div><div class="indice" hidden>Calculez d’abord l’écart moyen : moyenne du départ et du retour, moins l’ambiance. Puis élevez le rapport des écarts à la puissance 1,3.</div></section>
+
+<section class="exo" id="M6-MANUEL-e2" data-exo="M6-MANUEL-e2" data-type="calcul" data-savoir="B1-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgaGJqbXRqdnguNTZ4YG90anZ4L3hgeA14Jw=="><p class="k">Exercice · B1-2</p><h4>Le choix au catalogue</h4><div class="enonce">
+
+
+
+<p>Un local demande <strong>1 200 W</strong>. Le circuit est en <strong>50/40</strong>, l’ambiance à <strong>19 °C</strong>. Quelle puissance nominale, à Δθ = 50 K, faut-il chercher au catalogue ?</p>
+
+</div><div class="indice" hidden>L’écart réel vaut 45 − 19. Divisez le besoin par le facteur (Δθ/50) élevé à la puissance 1,3 : on remonte au nominal, donc on divise.</div></section>
+
+<section class="exo" id="M6-MANUEL-e3" data-exo="M6-MANUEL-e3" data-type="calcul" data-savoir="B1-2" data-a="IXgueGB4OTs2OS82eHZ4LHhgYm10b3Z4LjU2eGBpdGp2eC94YHgNdTcGL2pqOGh4Jw=="><p class="k">Exercice · B1-2</p><h4>La surface de plancher</h4><div class="enonce">
+
+
+
+<p>Un local perd <strong>2 100 W</strong> et sa surface réellement chauffante est de <strong>24 m²</strong>. Quelle densité de flux le plancher doit-il fournir ?</p>
+
+</div><div class="indice" hidden>Divisez la puissance par la surface chauffante, pas par la surface du local. Comparez ensuite le résultat à la limite de 100 W/m².</div></section>
+
+<section class="exo" id="M6-MANUEL-e4" data-exo="M6-MANUEL-e4" data-type="justification" data-savoir="B1-2" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B1-2</p><h4>Le remplacement de la chaudière</h4><div class="enonce">
+
+
+
+<p>Un bâtiment en <strong>80/60</strong> doit passer à une pompe à chaleur en <strong>45/35</strong>, sans changer les radiateurs. Expliquez ce qui va se produire et ce que vous proposez.</p>
+
+</div><div class="indice" hidden>La puissance émise suit une loi en puissance 1,3 de l’écart moyen. Comparez l’écart en 80/60 et l’écart en 45/35 pour la même ambiance, puis faites le rapport des deux puissances.</div><ul class="verifier" hidden><li>J’ai calculé ou cité le facteur d’émission, environ 0,30 à Δθ = 20 K.</li><li>J’ai dit que les radiateurs n’émettront plus que le tiers de leur puissance actuelle.</li><li>J’ai relié cela à un sous-chauffage par grand froid, pas à une panne.</li><li>J’ai proposé une solution chiffrable : remplacer les émetteurs, réduire les déperditions, ou prévoir un appoint.</li></ul></section>
+
+<h2 id="vous-verifier">Vous vérifier</h2>
+
+<div class="quiz">
+
+<ul>
+
+<li>Un radiateur à panneaux chauffe surtout par : <strong>convection</strong> | rayonnement</li>
+
+<li>L’écart de référence des catalogues vaut : <strong>50 K</strong> | 60 K</li>
+
+<li>Il se calcule à partir de : <strong>la moyenne départ-retour moins l’ambiance</strong> | la seule température de départ</li>
+
+<li>L’exposant d’un radiateur vaut : <strong>1,3</strong> | 1,0</li>
+
+<li>Celui d’un ventilo-convecteur vaut : <strong>1,0</strong> | 1,3</li>
+
+<li>Cette différence vient de : <strong>le ventilateur impose la vitesse d’air</strong> | la taille de l’appareil</li>
+
+<li>Passer de 80/60 à 45/35 divise l’émission par : <strong>3,3</strong> | 1,8</li>
+
+<li>Augmenter le débit pour compenser un régime bas : <strong>ne suffit pas</strong> | résout le problème</li>
+
+<li>Un plancher chauffant plafonne, en zone de vie, à : <strong>100 W/m²</strong> | 200 W/m²</li>
+
+<li>La limite vient de : <strong>la température de surface supportable</strong> | la puissance de la pompe</li>
+
+<li>Un radiateur masqué par un coffre perd : <strong>10 à 20 %</strong> | rien</li>
+
+<li>Le temps de réponse d’un plancher est de : <strong>plusieurs heures</strong> | quelques minutes</li>
+
+<li>Un robinet thermostatique sert à récupérer : <strong>les apports gratuits</strong> | la chaleur des voisins</li>
+
+</ul>
+
+</div>
+
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi on place un radiateur sous une fenêtre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’habitude est ancienne et souvent moquée : chauffer là où l’on isole le moins. Elle a pourtant trois justifications, et deux tiennent encore.</p>
+
+<p><strong>Contrer la chute d’air froid.</strong> Une vitre, même performante, reste la surface la plus froide de la pièce. L’air qui la touche se refroidit, devient plus dense et <strong>tombe</strong> le long du mur, puis balaie le sol : c’est cette nappe qu’on ressent aux pieds. Un émetteur placé dessous crée un courant ascendant qui l’annule.</p>
+
+<p><strong>Homogénéiser la température.</strong> Le point le plus froid et le point le plus chaud du local se retrouvent au même endroit, et se compensent. Placé sur le mur opposé, l’émetteur laisse s’installer un gradient horizontal de 2 à 3 K.</p>
+
+<p><strong>La justification qui ne tient plus.</strong> À l’époque du simple vitrage, la température de surface descendait à 8 ou 10 °C, et le rayonnement froid de la vitre était insupportable à deux mètres. Avec un double vitrage argon à 17 °C de surface, l’inconfort radiatif a presque disparu, d’où les projets récents qui placent les émetteurs ailleurs, en particulier avec un plancher chauffant, dont la répartition rend la question sans objet.</p>
+
+<p><strong>Ce que cela coûte.</strong> Un radiateur sous fenêtre chauffe un peu le mur derrière lui, donc dehors. On y colle un <strong>isolant mince réfléchissant</strong>, qui récupère 1 à 2 % : peu, mais gratuit.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce qu&#39;un bureau d&#39;études vérifie en plus</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La méthode du chapitre (un besoin, un régime, un exposant, un catalogue) donne l’émetteur. Trois vérifications s’y ajoutent en projet.</p>
+
+<p><strong>L’autorité de la vanne</strong>, déjà rencontrée au chapitre 3 : le robinet thermostatique ou la vanne deux voies doit représenter au moins 30 % de la perte de charge de la boucle qu’il commande, sinon il ne régule rien.</p>
+
+<p><strong>La compatibilité des matériaux.</strong> Acier, cuivre, aluminium et laiton dans le même circuit forment des couples galvaniques ; un plancher en polyéthylène non barrière laisse diffuser l’oxygène et corrode les corps de chauffe en acier en quelques années. C’est un point de CCTP, et il fait des sinistres.</p>
+
+<p><strong>La cohérence des exposants dans un circuit mixte.</strong> Radiateurs et plancher sur le même départ n’ont pas le même n : à mesure que la loi d’eau baisse, ils ne perdent pas leur puissance au même rythme. Le plancher, avec n = 1,1, résiste mieux que les radiateurs, avec n = 1,3. Un circuit mixte demande donc <strong>deux régulations</strong>, ou un découplage par vanne, et non un simple piquage.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« Ce radiateur fait 1 500 W. »</strong> Il fait 1 500 W <strong>à Δθ = 50 K</strong>. Sans le régime, le nombre ne veut rien dire, et c’est exactement l’erreur que l’épreuve cherche à débusquer. La bonne phrase porte toujours l’écart de référence.</p>
+
+<p><strong>« Le plancher chauffe par rayonnement, donc il chauffe mieux. »</strong> Il rayonne à 55 %, davantage qu’un radiateur, sans être un émetteur radiatif pur. Ce qu’il apporte n’est pas un rendement supérieur mais <strong>une répartition</strong> : pas de point chaud, pas de chute d’air froid, et un confort à température d’air plus basse d’environ 1 K.</p>
+
+<p><strong>« On monte le thermostatique à 5 pour chauffer plus vite. »</strong> Un robinet thermostatique n’est pas un accélérateur : il est déjà grand ouvert tant que la pièce est froide. Le mettre à 5 ne change rien à la montée en température, et fait seulement dépasser la consigne à l’arrivée.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M5-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 5</span></a><a class="ap" href="M7-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 7</span></a></div></nav>
 <p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

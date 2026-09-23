@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Manuel · chapitre 13</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="manuel/M13-MANUEL">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="M12-MANUEL.html" rel="prev" title="Manuel · chapitre 12" aria-label="Manuel · chapitre 12">&lsaquo;</a><a class="fleche" href="M14-MANUEL.html" rel="next" title="Manuel · chapitre 14" aria-label="Manuel · chapitre 14">&rsaquo;</a></span><button type="button" class="lu" data-lu="manuel/M13-MANUEL">Marquer comme lu</button></div>
@@ -23,334 +31,653 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="M1-MANUEL.html">Des déperditions proportionnelles à l'écart</a></b><span class="ou">Manuel · chapitre 1</span><span class="car">la loi d'eau est une droite parce que les déperditions le sont.</span></li><li><b><a href="M6-MANUEL.html">La loi d'émission</a></b><span class="ou">Manuel · chapitre 6</span><span class="car">la pente se déduit de ce que les radiateurs émettent à chaque température d'eau ; c'est la section 6.3.</span></li><li><b><a href="M12-MANUEL.html">Boucle ouverte et boucle fermée</a></b><span class="ou">Manuel · chapitre 12</span><span class="car">la loi d'eau est une boucle ouverte, et la section 13.6 dit ce qu'elle ne sait pas.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</a><a href="#13-1-anticiper-au-lieu-de-reagir">13.1 Anticiper au lieu de réagir</a><a href="#13-2-la-forme-de-la-courbe">13.2 La forme de la courbe</a><a href="#13-3-les-deux-reglages">13.3 Les deux réglages</a><a href="#13-4-le-calcul-retourne-corriger-un-reglage">13.4 Le calcul retourné : corriger un réglage</a><a href="#13-5-le-reduit-de-nuit">13.5 Le réduit de nuit</a><a href="#13-6-ce-que-la-loi-d-eau-ne-sait-pas">13.6 Ce que la loi d’eau ne sait pas</a><a href="#les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</a><a href="#s-entrainer">S’entraîner</a><a href="#vous-verifier">Vous vérifier</a><a href="#pour-aller-plus-loin">Pour aller plus loin</a></div></nav>
-<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
-<div class="etapes">
-<ol type="1">
-<li><strong>Expliquer</strong> pourquoi on régule sur la météo et non sur l’ambiance.</li>
-<li><strong>Démontrer</strong> que la loi d’eau est une courbe, et non une droite.</li>
-<li><strong>Lire</strong> une courbe de chauffe, et en tirer une température de départ.</li>
-<li><strong>Corriger</strong> une pente et une parallèle à partir de deux plaintes d’occupants.</li>
-<li><strong>Chiffrer</strong> ce que rapporte un réduit de nuit, et ce qu’il coûte à la relance.</li>
-</ol>
-</div>
-<p>C’est le chapitre le plus directement utile de tout le manuel : <strong>un réglage de loi d’eau se fait en cinq minutes et vaut 5 à 15 % de la facture de chauffage</strong>.</p>
-<h2 id="13-1-anticiper-au-lieu-de-reagir">13.1 Anticiper au lieu de réagir</h2>
-<p>Un thermostat d’ambiance attend que le local ait froid pour demander de la chaleur. Comme un bâtiment met des heures à réagir, il est toujours en retard : trop froid le matin, trop chaud à midi.</p>
-<div class="cle">
-<p>La loi d’eau prend le problème à l’envers. Elle ne mesure pas le local : elle mesure <strong>le dehors</strong>, et en déduit la température d’eau qu’il faut envoyer pour compenser exactement les déperditions. C’est la <strong>boucle ouverte</strong> du chapitre 12, et c’est ce qui la rend rapide et stable.</p>
-</div>
-<p>Elle ne peut évidemment pas savoir ce qui se passe dedans : une salle pleine, un soleil de février, une fenêtre ouverte lui échappent. C’est le rôle des <strong>robinets thermostatiques</strong> de rattraper ces apports locaux, et celui d’une éventuelle sonde d’ambiance de corriger la moyenne.</p>
-<h2 id="13-2-la-forme-de-la-courbe">13.2 La forme de la courbe</h2>
-<div class="formule">
-<p><strong>La condition d’équilibre : ce que l’émetteur donne = ce que le local perd.</strong></p>
-<p>Émission : <strong>Φn × ( Δθm / 50 )^1,3</strong> · Déperdition : <strong>GV × ( θi − θe )</strong></p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : pourquoi la loi d&#39;eau est une courbe</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Appelons <strong>τ le taux de charge</strong> : la fraction des déperditions de base que le bâtiment subit à l’instant considéré.</p>
-<p>τ = ( θi − θe ) / ( θi − θe base )</p>
-<p><strong>L’équilibre.</strong> À chaque température extérieure, l’émetteur doit fournir exactement τ fois sa puissance de base :</p>
-<p>( Δθm / Δθm base )^1,3 = τ</p>
-<p><strong>On isole l’écart moyen</strong> en élevant les deux membres à la puissance 1/1,3 :</p>
-<p><strong>Δθm = Δθm base × τ^0,77</strong></p>
-<p><strong>La température moyenne d’eau</strong> s’en déduit : θm = θi + Δθm base × τ^0,77.</p>
-<p><strong>L’exposant 0,77 est ce qui courbe la loi.</strong> Si l’exposant valait 1, la loi serait une droite. Il vaut 0,77, donc la courbe est <strong>au-dessus de la droite</strong> partout entre les deux extrémités : il faut de l’eau plus chaude que ne le laisserait croire une interpolation linéaire.</p>
-<p><strong>Le départ, et non la moyenne.</strong> L’émetteur voit une moyenne, mais le régulateur pilote un départ. Avec un débit constant, l’écart départ-retour est proportionnel à la puissance, donc à τ :</p>
-<p><strong>θ départ = θi + Δθm base × τ^0,77 + ( Δθ circuit base / 2 ) × τ</strong></p>
-<p><strong>Application, régime 80/60, ambiance 20 °C, base −7 °C.</strong> Δθm base = 50 K, Δθ circuit base = 20 K.</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th style="text-align: right;">θ extérieure</th>
-<th style="text-align: right;">τ</th>
-<th style="text-align: right;">τ^0,77</th>
-<th style="text-align: right;">θ moyenne</th>
-<th style="text-align: right;">θ départ</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">−7 °C</td>
-<td style="text-align: right;">1,00</td>
-<td style="text-align: right;">1,000</td>
-<td style="text-align: right;">70,0</td>
-<td style="text-align: right;"><strong>80,0</strong></td>
-</tr>
-<tr>
-<td style="text-align: right;">0 °C</td>
-<td style="text-align: right;">0,74</td>
-<td style="text-align: right;">0,795</td>
-<td style="text-align: right;">59,8</td>
-<td style="text-align: right;">67,2</td>
-</tr>
-<tr>
-<td style="text-align: right;">5 °C</td>
-<td style="text-align: right;">0,56</td>
-<td style="text-align: right;">0,636</td>
-<td style="text-align: right;">51,8</td>
-<td style="text-align: right;"><strong>57,4</strong></td>
-</tr>
-<tr>
-<td style="text-align: right;">10 °C</td>
-<td style="text-align: right;">0,37</td>
-<td style="text-align: right;">0,470</td>
-<td style="text-align: right;">43,5</td>
-<td style="text-align: right;">47,2</td>
-</tr>
-<tr>
-<td style="text-align: right;">15 °C</td>
-<td style="text-align: right;">0,19</td>
-<td style="text-align: right;">0,273</td>
-<td style="text-align: right;">33,7</td>
-<td style="text-align: right;">35,5</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Ce que le tableau montre.</strong> Entre −7 et +15 °C, la température extérieure gagne 22 K et le départ perd 44,5 K : <strong>le rapport n’est pas constant</strong>, il vaut 2,4 par grand froid et 1,7 par temps doux. Une droite tracée entre les deux extrêmes sous-estimerait le départ de 3 à 4 K en mi-saison, ce qui suffit à sous-chauffer.</p>
-<p><strong>Les hypothèses, et elles se voient toutes en pratique.</strong></p>
-<ol type="1">
-<li><strong>Débit constant.</strong> Vrai en bitube équilibré, faux dès que les robinets thermostatiques ferment : le débit chute et la loi doit être relevée.</li>
-<li><strong>Aucun apport gratuit.</strong> Ils valent 2 à 3 K de température intérieure équivalente, ce qui décale le point de non-chauffage.</li>
-<li><strong>Régime établi.</strong> La loi ne dit rien de la relance du matin, qui demande une surpuissance temporaire.</li>
-<li><strong>Un seul exposant pour tout le circuit.</strong> Faux sur un circuit mixte radiateurs et plancher, dont les exposants diffèrent, comme au chapitre 6.</li>
-</ol></div></details>
-</div><div class="outil" data-outil="loi-eau">
-
-</div>
-<h2 id="13-3-les-deux-reglages">13.3 Les deux réglages</h2>
-<p>Un régulateur n’offre presque jamais l’équation : il offre <strong>deux boutons</strong>.</p>
-<div class="formule">
-<p><strong>La pente</strong> : de combien le départ monte quand l’extérieur descend d’un degré.</p>
-<p>pente = ( θ départ base − θ ambiante ) / ( θ ambiante − θ extérieure base )</p>
-<p><strong>La parallèle</strong> : un décalage vertical de toute la courbe, en kelvins.</p>
-</div>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Émetteur</th>
-<th>Régime</th>
-<th style="text-align: right;">Pente typique</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Radiateurs anciens, fonte</td>
-<td>90/70</td>
-<td style="text-align: right;">2,0 à 2,5</td>
-</tr>
-<tr>
-<td>Radiateurs, régime standard</td>
-<td>80/60</td>
-<td style="text-align: right;"><strong>1,8 à 2,2</strong></td>
-</tr>
-<tr>
-<td>Radiateurs surdimensionnés</td>
-<td>70/50</td>
-<td style="text-align: right;">1,4 à 1,7</td>
-</tr>
-<tr>
-<td>Plancher chauffant</td>
-<td>45/35</td>
-<td style="text-align: right;"><strong>0,6 à 0,9</strong></td>
-</tr>
-<tr>
-<td>Ventilo-convecteurs</td>
-<td>45/40</td>
-<td style="text-align: right;">0,5 à 0,8</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le geste à retenir : <strong>la pente corrige ce qui dépend du froid, la parallèle corrige ce qui ne dépend de rien.</strong> Une plainte qui n’existe que par grand froid appelle la pente. Une plainte permanente appelle la parallèle.</p>
-</div>
-<h2 id="13-4-le-calcul-retourne-corriger-un-reglage">13.4 Le calcul retourné : corriger un réglage</h2>
-<h3 id="exemple-résolu-1.-deux-plaintes-deux-corrections">Exemple résolu 1. Deux plaintes, deux corrections</h3>
-<p><strong>Situation A.</strong> Il fait bon en mi-saison, mais <strong>trop froid en dessous de 0 °C</strong>.</p>
-<p>La courbe est correcte à droite et insuffisante à gauche : <strong>on augmente la pente</strong>, de 1,8 à 2,0 par exemple, sans toucher à la parallèle. À −7 °C, le départ passe de 68,6 à 74 °C ; à +10 °C, il ne bouge que de 2 K.</p>
-<p><strong>Situation B.</strong> Il fait <strong>trop chaud toute la saison</strong>, quelle que soit la météo, et les robinets thermostatiques sont fermés partout.</p>
-<p>La courbe a la bonne forme mais elle est trop haute : <strong>on baisse la parallèle</strong> de 3 à 5 K, sans toucher à la pente. Les thermostatiques se rouvrent, et le confort ne bouge pas.</p>
-<p><strong>Situation C, la plus fréquente.</strong> Il fait <strong>trop chaud en mi-saison et trop froid par grand froid</strong>.</p>
-<p>Les deux réglages sont en cause : la courbe est trop plate et trop haute. <strong>On augmente la pente et on baisse la parallèle</strong> du même mouvement. C’est le réglage typique d’une installation dont on a changé la chaudière sans reprendre la régulation.</p>
-<div class="piege">
-<p>Ne modifiez <strong>qu’un seul réglage à la fois</strong>, et attendez <strong>au moins 24 heures</strong> avant de juger. Un bâtiment de 100 tonnes de béton a une constante de temps de plusieurs dizaines d’heures, comme au chapitre 1 : ce qu’on observe deux heures après une correction est le passé, pas le résultat.</p>
-</div>
-<h3 id="exemple-résolu-2.-vérifier-une-pente-sur-deux-relevés">Exemple résolu 2. Vérifier une pente sur deux relevés</h3>
-<p>Sur une installation, on relève <strong>57 °C</strong> de départ pour <strong>+5 °C</strong> dehors, et <strong>67 °C</strong> pour <strong>0 °C</strong> dehors. Consigne d’ambiance <strong>20 °C</strong>.</p>
-<p><strong>La pente locale.</strong> (67 − 57) / (5 − 0) = <strong>2,0</strong>.</p>
-<p><strong>L’extrapolation à la base.</strong> À −7 °C : 67 + 2,0 × 7 = <strong>81 °C</strong>.</p>
-<p><strong>La lecture.</strong> Le régime est donc bien un 80/60, et la pente réglée à 2,0 correspond à la fourchette du tableau. Si le bâtiment était en plancher chauffant, cette même pente <strong>le détruirait</strong> : 81 °C dans une chape en font éclater le carrelage.</p>
-<div class="cle">
-<p>Ce contrôle croisé est celui qu’un technicien fait en arrivant sur une installation qu’il ne connaît pas : <strong>deux relevés, une pente, une extrapolation, et l’on sait si la loi correspond aux émetteurs.</strong></p>
-</div>
-<h2 id="13-5-le-reduit-de-nuit">13.5 Le réduit de nuit</h2>
-<p>La nuit et le week-end, on abaisse la consigne. Ce n’est pas une coupure : c’est un <strong>abaissement</strong>, et sa valeur ne se choisit pas au hasard.</p>
-<div class="formule">
-<p><strong>Réduit usuel : 3 à 5 K</strong> en bâtiment inertiel, jusqu’à <strong>8 K</strong> en bâtiment léger.</p>
-<p><strong>Économie : 5 à 10 %</strong> de la consommation de chauffage pour un réduit nocturne, <strong>jusqu’à 15 %</strong> avec les week-ends et les vacances.</p>
-</div>
-<div class="piege">
-<p>Un réduit <strong>trop profond</strong> ne rapporte plus rien : la relance du matin demande une surpuissance qui annule l’économie, et le local n’est pas à température à l’heure d’occupation. Sur un bâtiment lourd à faible surpuissance, un réduit de plus de 4 K est souvent contre-productif.</p>
-</div>
-<p><strong>L’optimiseur</strong> est la réponse à ce problème : au lieu de relancer à heure fixe, le régulateur <strong>apprend</strong> combien de temps il faut à ce bâtiment pour remonter de tant de kelvins par telle température extérieure, et déclenche la relance juste à temps. Sur un bâtiment scolaire, il économise 2 à 4 % de plus, sans aucun matériel.</p>
-<div class="cle">
-<p>En vacances scolaires, ce n’est plus un réduit qu’il faut : c’est un <strong>abaissement long</strong>, jusqu’à 12 ou 14 °C, avec seulement une protection contre le gel. Deux semaines à 14 °C au lieu de 19 sur un collège représentent couramment <strong>6 à 8 % de la consommation annuelle</strong>, et c’est le réglage le plus rentable qu’un gestionnaire puisse faire.</p>
-</div>
-<h2 id="13-6-ce-que-la-loi-d-eau-ne-sait-pas">13.6 Ce que la loi d’eau ne sait pas</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th>Ce qu’elle ignore</th>
-<th>Ce qui le rattrape</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Le soleil sur la façade sud</td>
-<td>robinets thermostatiques, sonde d’ambiance</td>
-</tr>
-<tr>
-<td>Une salle pleine ou vide</td>
-<td>robinets thermostatiques</td>
-</tr>
-<tr>
-<td>Le vent, qui augmente les déperditions</td>
-<td>rien, en général</td>
-</tr>
-<tr>
-<td>L’humidité, sans effet ici</td>
-<td>sans objet</td>
-</tr>
-<tr>
-<td>L’inertie, lors des transitoires</td>
-<td>l’optimiseur de relance</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p><strong>Le vent est le grand oublié.</strong> Il augmente les infiltrations et le coefficient d’échange extérieur, donc les déperditions réelles, sans qu’aucune sonde de température ne s’en aperçoive. C’est pourquoi certaines régulations emploient une <strong>température extérieure composée</strong>, moyenne pondérée de la mesure instantanée et d’une moyenne glissante, qui traduit indirectement l’effet du vent et de l’inertie.</p>
-</div>
-<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Valeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Exposant de la courbe de chauffe</td>
-<td><strong>0,77</strong>, soit 1 / 1,3</td>
-</tr>
-<tr>
-<td>Pente, radiateurs 80/60</td>
-<td><strong>1,8 à 2,2</strong></td>
-</tr>
-<tr>
-<td>Pente, plancher chauffant</td>
-<td>0,6 à 0,9</td>
-</tr>
-<tr>
-<td>Parallèle, pas de réglage usuel</td>
-<td>1 à 3 K</td>
-</tr>
-<tr>
-<td>Réduit de nuit, bâtiment inertiel</td>
-<td><strong>3 à 5 K</strong></td>
-</tr>
-<tr>
-<td>Réduit de nuit, bâtiment léger</td>
-<td>jusqu’à 8 K</td>
-</tr>
-<tr>
-<td>Économie d’un réduit nocturne</td>
-<td>5 à 10 %</td>
-</tr>
-<tr>
-<td>Économie avec week-ends et vacances</td>
-<td>jusqu’à 15 %</td>
-</tr>
-<tr>
-<td>Abaissement long de vacances</td>
-<td>12 à 14 °C</td>
-</tr>
-<tr>
-<td>Gain d’un optimiseur de relance</td>
-<td>2 à 4 %</td>
-</tr>
-<tr>
-<td>Apports gratuits, en température équivalente</td>
-<td>2 à 3 K</td>
-</tr>
-<tr>
-<td>Délai avant de juger une correction</td>
-<td><strong>24 heures</strong></td>
-</tr>
-<tr>
-<td>Température de non-chauffage</td>
-<td>15 à 18 °C</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le contrôle qui refuse un réglage : <strong>une pente de plancher chauffant ne dépasse jamais 1,0, une pente de radiateurs descend rarement sous 1,4.</strong> Une pente de 2 sur un plancher est une erreur de paramétrage, pas un choix.</p>
-</div>
-<h2 id="s-entrainer">S’entraîner</h2>
-<section class="exo" id="M13-MANUEL-e1" data-exo="M13-MANUEL-e1" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhga3RjdnguNTZ4YG50anZ4L3hgeCk7NCl6LzQzLgYvamo/Y3gn"><p class="k">Exercice · B11</p><h4>La pente d’une loi d’eau</h4><div class="enonce">
-
-<p>Une installation doit fournir <strong>75 °C</strong> de départ à la température de base de <strong>−9 °C</strong>, pour une ambiance de <strong>20 °C</strong>. Quelle est la pente de la courbe de chauffe ?</p>
-</div><div class="indice" hidden>La pente est l’écart entre le départ de base et l’ambiance, divisé par l’écart entre l’ambiance et la température extérieure de base.</div></section>
-<section class="exo" id="M13-MANUEL-e2" data-exo="M13-MANUEL-e2" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhgb2p0bnZ4LjU2eGBpdGp2eC94YHgGL2pqOGoZeCc="><p class="k">Exercice · B11</p><h4>Le départ à une autre température</h4><div class="enonce">
-
-<p>La même installation, de pente <strong>1,9</strong> et d’ambiance <strong>20 °C</strong>, fonctionne par <strong>+4 °C</strong> extérieurs. Quelle température de départ la loi donne-t-elle, en approximation linéaire ?</p>
-</div><div class="indice" hidden>Le départ vaut l’ambiance plus la pente multipliée par l’écart entre l’ambiance et l’extérieur. Cette forme linéaire est celle des régulateurs, et elle sous-estime légèrement en mi-saison.</div></section>
-<section class="exo" id="M13-MANUEL-e3" data-exo="M13-MANUEL-e3" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhgb2p0anZ4LjU2eGBpdGp2eC94YHh/eCc="><p class="k">Exercice · B11</p><h4>Le taux de charge</h4><div class="enonce">
-
-<p>Un bâtiment est tenu à <strong>19 °C</strong>, sa température de base est <strong>−5 °C</strong>. Quel est son taux de charge lorsqu’il fait <strong>7 °C</strong> dehors ?</p>
-</div><div class="indice" hidden>Le taux de charge est le rapport de l’écart du moment à l’écart de base. Les deux écarts se comptent depuis la température intérieure.</div></section>
-<section class="exo" id="M13-MANUEL-e4" data-exo="M13-MANUEL-e4" data-type="justification" data-savoir="B11" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B11</p><h4>Trop chaud en octobre, trop froid en janvier</h4><div class="enonce">
-
-<p>Les occupants d’un collège se plaignent d’avoir trop chaud à l’automne et trop froid en plein hiver. La chaudière n’est jamais en défaut. Rédigez votre diagnostic et votre réglage.</p>
-</div><div class="indice" hidden>Une plainte qui change de sens entre l’automne et l’hiver ne peut pas venir d’un décalage constant. Demandez-vous lequel des deux boutons agit davantage par grand froid que par temps doux.</div><ul class="verifier" hidden><li>J’ai identifié que la courbe est trop plate, donc que la pente est trop faible.</li><li>J’ai dit qu’elle est en même temps trop haute en mi-saison, donc que la parallèle est trop élevée.</li><li>J’ai proposé d’augmenter la pente et de baisser la parallèle, avec des ordres de grandeur.</li><li>J’ai rappelé qu’on modifie un réglage à la fois, et qu’on attend au moins 24 heures.</li></ul></section>
-<h2 id="vous-verifier">Vous vérifier</h2>
-<div class="quiz">
-<ul>
-<li>La loi d’eau régule d’après : <strong>la température extérieure</strong> | l’ambiance</li>
-<li>C’est donc une régulation : <strong>en boucle ouverte</strong> | en boucle fermée</li>
-<li>La courbe de chauffe est : <strong>une courbe</strong> | une droite exacte</li>
-<li>Son exposant vaut : <strong>0,77</strong> | 1,3</li>
-<li>La pente d’un circuit de radiateurs 80/60 vaut : <strong>environ 2</strong> | environ 0,7</li>
-<li>Celle d’un plancher chauffant vaut : <strong>environ 0,8</strong> | environ 2</li>
-<li>Une plainte qui n’existe que par grand froid appelle : <strong>la pente</strong> | la parallèle</li>
-<li>Une plainte permanente appelle : <strong>la parallèle</strong> | la pente</li>
-<li>Après une correction, on attend : <strong>24 heures</strong> | dix minutes</li>
-<li>Un réduit de nuit usuel vaut : <strong>3 à 5 K</strong> | 12 K</li>
-<li>Un réduit trop profond : <strong>coûte à la relance</strong> | rapporte davantage</li>
-<li>Un optimiseur de relance : <strong>calcule l’heure de démarrage</strong> | augmente la puissance</li>
-<li>Le vent, pour la loi d’eau, est : <strong>invisible</strong> | mesuré par la sonde extérieure</li>
-</ul>
-</div>
-<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Où poser la sonde extérieure, et pourquoi ce n&#39;est pas un détail</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Toute la loi d’eau repose sur une seule mesure. Si elle est fausse, tout l’est.</p>
-<p><strong>La règle.</strong> Façade <strong>nord ou nord-ouest</strong>, à mi-hauteur du bâtiment, à 2,5 mètres au moins du sol, jamais au-dessus d’une fenêtre, d’une bouche de rejet, d’un conduit de fumée ou d’un groupe extérieur.</p>
-<p><strong>Ce que coûtent les erreurs, en degrés d’eau.</strong> Une sonde au soleil du sud lit jusqu’à <strong>8 K de trop</strong> un matin de février : la loi baisse le départ, et le bâtiment se refroidit précisément quand il commence à chauffer. Une sonde au-dessus d’une bouche de rejet de CTA lit 3 à 5 K de trop en permanence. Une sonde encastrée dans un mur mesure le mur, donc une moyenne des jours passés, avec plusieurs heures de retard.</p>
-<p><strong>Le test qui tranche en cinq minutes.</strong> Comparer, un matin clair, la valeur lue en supervision à un thermomètre posé à l’ombre. Un écart de plus de 1,5 K condamne l’emplacement, et il vaut mieux déplacer la sonde que retoucher la loi pour compenser : compenser fige l’erreur du printemps dans le réglage d’hiver.</p>
-<p><strong>Le cas des grands sites.</strong> Sur un campus, une seule sonde pour six bâtiments d’orientations différentes n’a pas de sens. On en pose une par sous-station, ou l’on emploie une <strong>température extérieure diffusée</strong> par la GTB, corrigée bâtiment par bâtiment par une parallèle propre. C’est un des rares endroits où la GTB du chapitre 14 apporte une économie directement chiffrable.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce que fait une régulation moderne en plus de la loi d&#39;eau</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La courbe de chauffe reste le socle. Quatre fonctions s’y ajoutent aujourd’hui, et un sujet d’épreuve peut demander de les identifier sur un synoptique.</p>
-<p><strong>La compensation d’ambiance.</strong> Une sonde de local corrige la loi d’une fraction de son écart, typiquement 30 à 50 %, sans jamais prendre la main complètement. On garde la stabilité de la boucle ouverte et on rattrape les apports.</p>
-<p><strong>La limitation de retour.</strong> Sur une chaudière à condensation ou un réseau urbain, le régulateur <strong>plafonne la température de retour</strong> en réduisant le débit primaire. Le chapitre 5 en donne la raison, et le chapitre 2 en donne l’effet sur le débit.</p>
-<p><strong>L’autoadaptation.</strong> Le régulateur enregistre l’écart moyen entre la consigne et la mesure d’ambiance sur plusieurs jours, et corrige lui-même la parallèle. C’est une intégrale à très long terme, et elle fait exactement ce que le technicien ferait à la main.</p>
-<p><strong>L’arrêt sur non-chauffage.</strong> Au-dessus d’une température extérieure moyenne glissante, souvent 16 à 18 °C sur 24 heures, la chaudière et les circulateurs s’arrêtent. C’est la fonction la plus rentable de la liste, et <strong>la plus souvent mal réglée</strong> : une chaudière qui tourne en juin pour un seul circuit d’ECS mal découplé consomme autant qu’un mois d’hiver.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« On monte la loi d’eau pour chauffer plus vite. »</strong> La loi d’eau règle un <strong>régime établi</strong>. La monter accélère marginalement la relance, et surchauffe tout le reste du temps. Ce qui accélère une relance, c’est une <strong>surpuissance temporaire</strong> commandée par l’optimiseur, puis un retour à la courbe.</p>
-<p><strong>« La loi d’eau remplace les thermostatiques. »</strong> Elle règle <strong>la moyenne du bâtiment</strong> ; les thermostatiques règlent <strong>chaque local</strong>. Supprimer les seconds au motif qu’on a la première fait perdre tous les apports gratuits, soit 5 à 10 % de la consommation.</p>
-<p><strong>« Une pente de 1,5, c’est mieux qu’une pente de 2. »</strong> Une pente n’est ni bonne ni mauvaise : elle correspond, ou non, aux émetteurs installés et au niveau d’isolation. La même pente de 1,5 est trop faible sur des radiateurs d’origine et beaucoup trop forte sur un plancher chauffant.</p></div></details>
+<h2 id="ce-que-vous-saurez-faire-a-la-fin">Ce que vous saurez faire à la fin</h2>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li><strong>Expliquer</strong> pourquoi on régule sur la météo et non sur l’ambiance.</li>
+
+<li><strong>Démontrer</strong> que la loi d’eau est une courbe, et non une droite.</li>
+
+<li><strong>Lire</strong> une courbe de chauffe, et en tirer une température de départ.</li>
+
+<li><strong>Corriger</strong> une pente et une parallèle à partir de deux plaintes d’occupants.</li>
+
+<li><strong>Chiffrer</strong> ce que rapporte un réduit de nuit, et ce qu’il coûte à la relance.</li>
+
+</ol>
+
+</div>
+
+<p>C’est le chapitre le plus directement utile de tout le manuel : <strong>un réglage de loi d’eau se fait en cinq minutes et vaut 5 à 15 % de la facture de chauffage</strong>.</p>
+
+<h2 id="13-1-anticiper-au-lieu-de-reagir">13.1 Anticiper au lieu de réagir</h2>
+
+<p>Un thermostat d’ambiance attend que le local ait froid pour demander de la chaleur. Comme un bâtiment met des heures à réagir, il est toujours en retard : trop froid le matin, trop chaud à midi.</p>
+
+<div class="cle">
+
+<p>La loi d’eau prend le problème à l’envers. Elle ne mesure pas le local : elle mesure <strong>le dehors</strong>, et en déduit la température d’eau qu’il faut envoyer pour compenser exactement les déperditions. C’est la <strong>boucle ouverte</strong> du chapitre 12, et c’est ce qui la rend rapide et stable.</p>
+
+</div>
+
+<p>Elle ne peut évidemment pas savoir ce qui se passe dedans : une salle pleine, un soleil de février, une fenêtre ouverte lui échappent. C’est le rôle des <strong>robinets thermostatiques</strong> de rattraper ces apports locaux, et celui d’une éventuelle sonde d’ambiance de corriger la moyenne.</p>
+
+<h2 id="13-2-la-forme-de-la-courbe">13.2 La forme de la courbe</h2>
+
+<div class="formule">
+
+<p><strong>La condition d’équilibre : ce que l’émetteur donne = ce que le local perd.</strong></p>
+
+<p>Émission : <strong>Φn × ( Δθm / 50 )^1,3</strong> · Déperdition : <strong>GV × ( θi − θe )</strong></p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Démonstration : pourquoi la loi d&#39;eau est une courbe</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Appelons <strong>τ le taux de charge</strong> : la fraction des déperditions de base que le bâtiment subit à l’instant considéré.</p>
+
+<p>τ = ( θi − θe ) / ( θi − θe base )</p>
+
+<p><strong>L’équilibre.</strong> À chaque température extérieure, l’émetteur doit fournir exactement τ fois sa puissance de base :</p>
+
+<p>( Δθm / Δθm base )^1,3 = τ</p>
+
+<p><strong>On isole l’écart moyen</strong> en élevant les deux membres à la puissance 1/1,3 :</p>
+
+<p><strong>Δθm = Δθm base × τ^0,77</strong></p>
+
+<p><strong>La température moyenne d’eau</strong> s’en déduit : θm = θi + Δθm base × τ^0,77.</p>
+
+<p><strong>L’exposant 0,77 est ce qui courbe la loi.</strong> Si l’exposant valait 1, la loi serait une droite. Il vaut 0,77, donc la courbe est <strong>au-dessus de la droite</strong> partout entre les deux extrémités : il faut de l’eau plus chaude que ne le laisserait croire une interpolation linéaire.</p>
+
+<p><strong>Le départ, et non la moyenne.</strong> L’émetteur voit une moyenne, mais le régulateur pilote un départ. Avec un débit constant, l’écart départ-retour est proportionnel à la puissance, donc à τ :</p>
+
+<p><strong>θ départ = θi + Δθm base × τ^0,77 + ( Δθ circuit base / 2 ) × τ</strong></p>
+
+<p><strong>Application, régime 80/60, ambiance 20 °C, base −7 °C.</strong> Δθm base = 50 K, Δθ circuit base = 20 K.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th style="text-align: right;">θ extérieure</th>
+
+<th style="text-align: right;">τ</th>
+
+<th style="text-align: right;">τ^0,77</th>
+
+<th style="text-align: right;">θ moyenne</th>
+
+<th style="text-align: right;">θ départ</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align: right;">−7 °C</td>
+
+<td style="text-align: right;">1,00</td>
+
+<td style="text-align: right;">1,000</td>
+
+<td style="text-align: right;">70,0</td>
+
+<td style="text-align: right;"><strong>80,0</strong></td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">0 °C</td>
+
+<td style="text-align: right;">0,74</td>
+
+<td style="text-align: right;">0,795</td>
+
+<td style="text-align: right;">59,8</td>
+
+<td style="text-align: right;">67,2</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">5 °C</td>
+
+<td style="text-align: right;">0,56</td>
+
+<td style="text-align: right;">0,636</td>
+
+<td style="text-align: right;">51,8</td>
+
+<td style="text-align: right;"><strong>57,4</strong></td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">10 °C</td>
+
+<td style="text-align: right;">0,37</td>
+
+<td style="text-align: right;">0,470</td>
+
+<td style="text-align: right;">43,5</td>
+
+<td style="text-align: right;">47,2</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align: right;">15 °C</td>
+
+<td style="text-align: right;">0,19</td>
+
+<td style="text-align: right;">0,273</td>
+
+<td style="text-align: right;">33,7</td>
+
+<td style="text-align: right;">35,5</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>Ce que le tableau montre.</strong> Entre −7 et +15 °C, la température extérieure gagne 22 K et le départ perd 44,5 K : <strong>le rapport n’est pas constant</strong>, il vaut 2,4 par grand froid et 1,7 par temps doux. Une droite tracée entre les deux extrêmes sous-estimerait le départ de 3 à 4 K en mi-saison, ce qui suffit à sous-chauffer.</p>
+
+<p><strong>Les hypothèses, et elles se voient toutes en pratique.</strong></p>
+
+<ol type="1">
+
+<li><strong>Débit constant.</strong> Vrai en bitube équilibré, faux dès que les robinets thermostatiques ferment : le débit chute et la loi doit être relevée.</li>
+
+<li><strong>Aucun apport gratuit.</strong> Ils valent 2 à 3 K de température intérieure équivalente, ce qui décale le point de non-chauffage.</li>
+
+<li><strong>Régime établi.</strong> La loi ne dit rien de la relance du matin, qui demande une surpuissance temporaire.</li>
+
+<li><strong>Un seul exposant pour tout le circuit.</strong> Faux sur un circuit mixte radiateurs et plancher, dont les exposants diffèrent, comme au chapitre 6.</li>
+
+</ol></div></details>
+
+</div><div class="outil" data-outil="loi-eau">
+
+
+
+</div>
+
+<h2 id="13-3-les-deux-reglages">13.3 Les deux réglages</h2>
+
+<p>Un régulateur n’offre presque jamais l’équation : il offre <strong>deux boutons</strong>.</p>
+
+<div class="formule">
+
+<p><strong>La pente</strong> : de combien le départ monte quand l’extérieur descend d’un degré.</p>
+
+<p>pente = ( θ départ base − θ ambiante ) / ( θ ambiante − θ extérieure base )</p>
+
+<p><strong>La parallèle</strong> : un décalage vertical de toute la courbe, en kelvins.</p>
+
+</div>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Émetteur</th>
+
+<th>Régime</th>
+
+<th style="text-align: right;">Pente typique</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Radiateurs anciens, fonte</td>
+
+<td>90/70</td>
+
+<td style="text-align: right;">2,0 à 2,5</td>
+
+</tr>
+
+<tr>
+
+<td>Radiateurs, régime standard</td>
+
+<td>80/60</td>
+
+<td style="text-align: right;"><strong>1,8 à 2,2</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Radiateurs surdimensionnés</td>
+
+<td>70/50</td>
+
+<td style="text-align: right;">1,4 à 1,7</td>
+
+</tr>
+
+<tr>
+
+<td>Plancher chauffant</td>
+
+<td>45/35</td>
+
+<td style="text-align: right;"><strong>0,6 à 0,9</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Ventilo-convecteurs</td>
+
+<td>45/40</td>
+
+<td style="text-align: right;">0,5 à 0,8</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le geste à retenir : <strong>la pente corrige ce qui dépend du froid, la parallèle corrige ce qui ne dépend de rien.</strong> Une plainte qui n’existe que par grand froid appelle la pente. Une plainte permanente appelle la parallèle.</p>
+
+</div>
+
+<h2 id="13-4-le-calcul-retourne-corriger-un-reglage">13.4 Le calcul retourné : corriger un réglage</h2>
+
+<h3 id="exemple-résolu-1.-deux-plaintes-deux-corrections">Exemple résolu 1. Deux plaintes, deux corrections</h3>
+
+<p><strong>Situation A.</strong> Il fait bon en mi-saison, mais <strong>trop froid en dessous de 0 °C</strong>.</p>
+
+<p>La courbe est correcte à droite et insuffisante à gauche : <strong>on augmente la pente</strong>, de 1,8 à 2,0 par exemple, sans toucher à la parallèle. À −7 °C, le départ passe de 68,6 à 74 °C ; à +10 °C, il ne bouge que de 2 K.</p>
+
+<p><strong>Situation B.</strong> Il fait <strong>trop chaud toute la saison</strong>, quelle que soit la météo, et les robinets thermostatiques sont fermés partout.</p>
+
+<p>La courbe a la bonne forme mais elle est trop haute : <strong>on baisse la parallèle</strong> de 3 à 5 K, sans toucher à la pente. Les thermostatiques se rouvrent, et le confort ne bouge pas.</p>
+
+<p><strong>Situation C, la plus fréquente.</strong> Il fait <strong>trop chaud en mi-saison et trop froid par grand froid</strong>.</p>
+
+<p>Les deux réglages sont en cause : la courbe est trop plate et trop haute. <strong>On augmente la pente et on baisse la parallèle</strong> du même mouvement. C’est le réglage typique d’une installation dont on a changé la chaudière sans reprendre la régulation.</p>
+
+<div class="piege">
+
+<p>Ne modifiez <strong>qu’un seul réglage à la fois</strong>, et attendez <strong>au moins 24 heures</strong> avant de juger. Un bâtiment de 100 tonnes de béton a une constante de temps de plusieurs dizaines d’heures, comme au chapitre 1 : ce qu’on observe deux heures après une correction est le passé, pas le résultat.</p>
+
+</div>
+
+<h3 id="exemple-résolu-2.-vérifier-une-pente-sur-deux-relevés">Exemple résolu 2. Vérifier une pente sur deux relevés</h3>
+
+<p>Sur une installation, on relève <strong>57 °C</strong> de départ pour <strong>+5 °C</strong> dehors, et <strong>67 °C</strong> pour <strong>0 °C</strong> dehors. Consigne d’ambiance <strong>20 °C</strong>.</p>
+
+<p><strong>La pente locale.</strong> (67 − 57) / (5 − 0) = <strong>2,0</strong>.</p>
+
+<p><strong>L’extrapolation à la base.</strong> À −7 °C : 67 + 2,0 × 7 = <strong>81 °C</strong>.</p>
+
+<p><strong>La lecture.</strong> Le régime est donc bien un 80/60, et la pente réglée à 2,0 correspond à la fourchette du tableau. Si le bâtiment était en plancher chauffant, cette même pente <strong>le détruirait</strong> : 81 °C dans une chape en font éclater le carrelage.</p>
+
+<div class="cle">
+
+<p>Ce contrôle croisé est celui qu’un technicien fait en arrivant sur une installation qu’il ne connaît pas : <strong>deux relevés, une pente, une extrapolation, et l’on sait si la loi correspond aux émetteurs.</strong></p>
+
+</div>
+
+<h2 id="13-5-le-reduit-de-nuit">13.5 Le réduit de nuit</h2>
+
+<p>La nuit et le week-end, on abaisse la consigne. Ce n’est pas une coupure : c’est un <strong>abaissement</strong>, et sa valeur ne se choisit pas au hasard.</p>
+
+<div class="formule">
+
+<p><strong>Réduit usuel : 3 à 5 K</strong> en bâtiment inertiel, jusqu’à <strong>8 K</strong> en bâtiment léger.</p>
+
+<p><strong>Économie : 5 à 10 %</strong> de la consommation de chauffage pour un réduit nocturne, <strong>jusqu’à 15 %</strong> avec les week-ends et les vacances.</p>
+
+</div>
+
+<div class="piege">
+
+<p>Un réduit <strong>trop profond</strong> ne rapporte plus rien : la relance du matin demande une surpuissance qui annule l’économie, et le local n’est pas à température à l’heure d’occupation. Sur un bâtiment lourd à faible surpuissance, un réduit de plus de 4 K est souvent contre-productif.</p>
+
+</div>
+
+<p><strong>L’optimiseur</strong> est la réponse à ce problème : au lieu de relancer à heure fixe, le régulateur <strong>apprend</strong> combien de temps il faut à ce bâtiment pour remonter de tant de kelvins par telle température extérieure, et déclenche la relance juste à temps. Sur un bâtiment scolaire, il économise 2 à 4 % de plus, sans aucun matériel.</p>
+
+<div class="cle">
+
+<p>En vacances scolaires, ce n’est plus un réduit qu’il faut : c’est un <strong>abaissement long</strong>, jusqu’à 12 ou 14 °C, avec seulement une protection contre le gel. Deux semaines à 14 °C au lieu de 19 sur un collège représentent couramment <strong>6 à 8 % de la consommation annuelle</strong>, et c’est le réglage le plus rentable qu’un gestionnaire puisse faire.</p>
+
+</div>
+
+<h2 id="13-6-ce-que-la-loi-d-eau-ne-sait-pas">13.6 Ce que la loi d’eau ne sait pas</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 50%" />
+
+<col style="width: 50%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Ce qu’elle ignore</th>
+
+<th>Ce qui le rattrape</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Le soleil sur la façade sud</td>
+
+<td>robinets thermostatiques, sonde d’ambiance</td>
+
+</tr>
+
+<tr>
+
+<td>Une salle pleine ou vide</td>
+
+<td>robinets thermostatiques</td>
+
+</tr>
+
+<tr>
+
+<td>Le vent, qui augmente les déperditions</td>
+
+<td>rien, en général</td>
+
+</tr>
+
+<tr>
+
+<td>L’humidité, sans effet ici</td>
+
+<td>sans objet</td>
+
+</tr>
+
+<tr>
+
+<td>L’inertie, lors des transitoires</td>
+
+<td>l’optimiseur de relance</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p><strong>Le vent est le grand oublié.</strong> Il augmente les infiltrations et le coefficient d’échange extérieur, donc les déperditions réelles, sans qu’aucune sonde de température ne s’en aperçoive. C’est pourquoi certaines régulations emploient une <strong>température extérieure composée</strong>, moyenne pondérée de la mesure instantanée et d’une moyenne glissante, qui traduit indirectement l’effet du vent et de l’inertie.</p>
+
+</div>
+
+<h2 id="les-nombres-a-connaitre-par-c-ur">Les nombres à connaître par cœur</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Valeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Exposant de la courbe de chauffe</td>
+
+<td><strong>0,77</strong>, soit 1 / 1,3</td>
+
+</tr>
+
+<tr>
+
+<td>Pente, radiateurs 80/60</td>
+
+<td><strong>1,8 à 2,2</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Pente, plancher chauffant</td>
+
+<td>0,6 à 0,9</td>
+
+</tr>
+
+<tr>
+
+<td>Parallèle, pas de réglage usuel</td>
+
+<td>1 à 3 K</td>
+
+</tr>
+
+<tr>
+
+<td>Réduit de nuit, bâtiment inertiel</td>
+
+<td><strong>3 à 5 K</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Réduit de nuit, bâtiment léger</td>
+
+<td>jusqu’à 8 K</td>
+
+</tr>
+
+<tr>
+
+<td>Économie d’un réduit nocturne</td>
+
+<td>5 à 10 %</td>
+
+</tr>
+
+<tr>
+
+<td>Économie avec week-ends et vacances</td>
+
+<td>jusqu’à 15 %</td>
+
+</tr>
+
+<tr>
+
+<td>Abaissement long de vacances</td>
+
+<td>12 à 14 °C</td>
+
+</tr>
+
+<tr>
+
+<td>Gain d’un optimiseur de relance</td>
+
+<td>2 à 4 %</td>
+
+</tr>
+
+<tr>
+
+<td>Apports gratuits, en température équivalente</td>
+
+<td>2 à 3 K</td>
+
+</tr>
+
+<tr>
+
+<td>Délai avant de juger une correction</td>
+
+<td><strong>24 heures</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Température de non-chauffage</td>
+
+<td>15 à 18 °C</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le contrôle qui refuse un réglage : <strong>une pente de plancher chauffant ne dépasse jamais 1,0, une pente de radiateurs descend rarement sous 1,4.</strong> Une pente de 2 sur un plancher est une erreur de paramétrage, pas un choix.</p>
+
+</div>
+
+<h2 id="s-entrainer">S’entraîner</h2>
+
+<section class="exo" id="M13-MANUEL-e1" data-exo="M13-MANUEL-e1" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhga3RjdnguNTZ4YG50anZ4L3hgeCk7NCl6LzQzLgYvamo/Y3gn"><p class="k">Exercice · B11</p><h4>La pente d’une loi d’eau</h4><div class="enonce">
+
+
+
+<p>Une installation doit fournir <strong>75 °C</strong> de départ à la température de base de <strong>−9 °C</strong>, pour une ambiance de <strong>20 °C</strong>. Quelle est la pente de la courbe de chauffe ?</p>
+
+</div><div class="indice" hidden>La pente est l’écart entre le départ de base et l’ambiance, divisé par l’écart entre l’ambiance et la température extérieure de base.</div></section>
+
+<section class="exo" id="M13-MANUEL-e2" data-exo="M13-MANUEL-e2" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhgb2p0bnZ4LjU2eGBpdGp2eC94YHgGL2pqOGoZeCc="><p class="k">Exercice · B11</p><h4>Le départ à une autre température</h4><div class="enonce">
+
+
+
+<p>La même installation, de pente <strong>1,9</strong> et d’ambiance <strong>20 °C</strong>, fonctionne par <strong>+4 °C</strong> extérieurs. Quelle température de départ la loi donne-t-elle, en approximation linéaire ?</p>
+
+</div><div class="indice" hidden>Le départ vaut l’ambiance plus la pente multipliée par l’écart entre l’ambiance et l’extérieur. Cette forme linéaire est celle des régulateurs, et elle sous-estime légèrement en mi-saison.</div></section>
+
+<section class="exo" id="M13-MANUEL-e3" data-exo="M13-MANUEL-e3" data-type="calcul" data-savoir="B11" data-a="IXgueGB4OTs2OS82eHZ4LHhgb2p0anZ4LjU2eGBpdGp2eC94YHh/eCc="><p class="k">Exercice · B11</p><h4>Le taux de charge</h4><div class="enonce">
+
+
+
+<p>Un bâtiment est tenu à <strong>19 °C</strong>, sa température de base est <strong>−5 °C</strong>. Quel est son taux de charge lorsqu’il fait <strong>7 °C</strong> dehors ?</p>
+
+</div><div class="indice" hidden>Le taux de charge est le rapport de l’écart du moment à l’écart de base. Les deux écarts se comptent depuis la température intérieure.</div></section>
+
+<section class="exo" id="M13-MANUEL-e4" data-exo="M13-MANUEL-e4" data-type="justification" data-savoir="B11" data-a="IXgueGB4MC8pLjM8Mzk7LjM1NHgn"><p class="k">Exercice · B11</p><h4>Trop chaud en octobre, trop froid en janvier</h4><div class="enonce">
+
+
+
+<p>Les occupants d’un collège se plaignent d’avoir trop chaud à l’automne et trop froid en plein hiver. La chaudière n’est jamais en défaut. Rédigez votre diagnostic et votre réglage.</p>
+
+</div><div class="indice" hidden>Une plainte qui change de sens entre l’automne et l’hiver ne peut pas venir d’un décalage constant. Demandez-vous lequel des deux boutons agit davantage par grand froid que par temps doux.</div><ul class="verifier" hidden><li>J’ai identifié que la courbe est trop plate, donc que la pente est trop faible.</li><li>J’ai dit qu’elle est en même temps trop haute en mi-saison, donc que la parallèle est trop élevée.</li><li>J’ai proposé d’augmenter la pente et de baisser la parallèle, avec des ordres de grandeur.</li><li>J’ai rappelé qu’on modifie un réglage à la fois, et qu’on attend au moins 24 heures.</li></ul></section>
+
+<h2 id="vous-verifier">Vous vérifier</h2>
+
+<div class="quiz">
+
+<ul>
+
+<li>La loi d’eau régule d’après : <strong>la température extérieure</strong> | l’ambiance</li>
+
+<li>C’est donc une régulation : <strong>en boucle ouverte</strong> | en boucle fermée</li>
+
+<li>La courbe de chauffe est : <strong>une courbe</strong> | une droite exacte</li>
+
+<li>Son exposant vaut : <strong>0,77</strong> | 1,3</li>
+
+<li>La pente d’un circuit de radiateurs 80/60 vaut : <strong>environ 2</strong> | environ 0,7</li>
+
+<li>Celle d’un plancher chauffant vaut : <strong>environ 0,8</strong> | environ 2</li>
+
+<li>Une plainte qui n’existe que par grand froid appelle : <strong>la pente</strong> | la parallèle</li>
+
+<li>Une plainte permanente appelle : <strong>la parallèle</strong> | la pente</li>
+
+<li>Après une correction, on attend : <strong>24 heures</strong> | dix minutes</li>
+
+<li>Un réduit de nuit usuel vaut : <strong>3 à 5 K</strong> | 12 K</li>
+
+<li>Un réduit trop profond : <strong>coûte à la relance</strong> | rapporte davantage</li>
+
+<li>Un optimiseur de relance : <strong>calcule l’heure de démarrage</strong> | augmente la puissance</li>
+
+<li>Le vent, pour la loi d’eau, est : <strong>invisible</strong> | mesuré par la sonde extérieure</li>
+
+</ul>
+
+</div>
+
+<h2 id="pour-aller-plus-loin">Pour aller plus loin</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Où poser la sonde extérieure, et pourquoi ce n&#39;est pas un détail</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Toute la loi d’eau repose sur une seule mesure. Si elle est fausse, tout l’est.</p>
+
+<p><strong>La règle.</strong> Façade <strong>nord ou nord-ouest</strong>, à mi-hauteur du bâtiment, à 2,5 mètres au moins du sol, jamais au-dessus d’une fenêtre, d’une bouche de rejet, d’un conduit de fumée ou d’un groupe extérieur.</p>
+
+<p><strong>Ce que coûtent les erreurs, en degrés d’eau.</strong> Une sonde au soleil du sud lit jusqu’à <strong>8 K de trop</strong> un matin de février : la loi baisse le départ, et le bâtiment se refroidit précisément quand il commence à chauffer. Une sonde au-dessus d’une bouche de rejet de CTA lit 3 à 5 K de trop en permanence. Une sonde encastrée dans un mur mesure le mur, donc une moyenne des jours passés, avec plusieurs heures de retard.</p>
+
+<p><strong>Le test qui tranche en cinq minutes.</strong> Comparer, un matin clair, la valeur lue en supervision à un thermomètre posé à l’ombre. Un écart de plus de 1,5 K condamne l’emplacement, et il vaut mieux déplacer la sonde que retoucher la loi pour compenser : compenser fige l’erreur du printemps dans le réglage d’hiver.</p>
+
+<p><strong>Le cas des grands sites.</strong> Sur un campus, une seule sonde pour six bâtiments d’orientations différentes n’a pas de sens. On en pose une par sous-station, ou l’on emploie une <strong>température extérieure diffusée</strong> par la GTB, corrigée bâtiment par bâtiment par une parallèle propre. C’est un des rares endroits où la GTB du chapitre 14 apporte une économie directement chiffrable.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Ce que fait une régulation moderne en plus de la loi d&#39;eau</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La courbe de chauffe reste le socle. Quatre fonctions s’y ajoutent aujourd’hui, et un sujet d’épreuve peut demander de les identifier sur un synoptique.</p>
+
+<p><strong>La compensation d’ambiance.</strong> Une sonde de local corrige la loi d’une fraction de son écart, typiquement 30 à 50 %, sans jamais prendre la main complètement. On garde la stabilité de la boucle ouverte et on rattrape les apports.</p>
+
+<p><strong>La limitation de retour.</strong> Sur une chaudière à condensation ou un réseau urbain, le régulateur <strong>plafonne la température de retour</strong> en réduisant le débit primaire. Le chapitre 5 en donne la raison, et le chapitre 2 en donne l’effet sur le débit.</p>
+
+<p><strong>L’autoadaptation.</strong> Le régulateur enregistre l’écart moyen entre la consigne et la mesure d’ambiance sur plusieurs jours, et corrige lui-même la parallèle. C’est une intégrale à très long terme, et elle fait exactement ce que le technicien ferait à la main.</p>
+
+<p><strong>L’arrêt sur non-chauffage.</strong> Au-dessus d’une température extérieure moyenne glissante, souvent 16 à 18 °C sur 24 heures, la chaudière et les circulateurs s’arrêtent. C’est la fonction la plus rentable de la liste, et <strong>la plus souvent mal réglée</strong> : une chaudière qui tourne en juin pour un seul circuit d’ECS mal découplé consomme autant qu’un mois d’hiver.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Trois formulations à ne pas reprendre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« On monte la loi d’eau pour chauffer plus vite. »</strong> La loi d’eau règle un <strong>régime établi</strong>. La monter accélère marginalement la relance, et surchauffe tout le reste du temps. Ce qui accélère une relance, c’est une <strong>surpuissance temporaire</strong> commandée par l’optimiseur, puis un retour à la courbe.</p>
+
+<p><strong>« La loi d’eau remplace les thermostatiques. »</strong> Elle règle <strong>la moyenne du bâtiment</strong> ; les thermostatiques règlent <strong>chaque local</strong>. Supprimer les seconds au motif qu’on a la première fait perdre tous les apports gratuits, soit 5 à 10 % de la consommation.</p>
+
+<p><strong>« Une pente de 1,5, c’est mieux qu’une pente de 2. »</strong> Une pente n’est ni bonne ni mauvaise : elle correspond, ou non, aux émetteurs installés et au niveau d’isolation. La même pente de 1,5 est trop faible sur des radiateurs d’origine et beaucoup trop forte sur un plancher chauffant.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="M12-MANUEL.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Manuel · chapitre 12</span></a><a class="ap" href="M14-MANUEL.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Manuel · chapitre 14</span></a></div></nav>
 <p class="pied">Manuel du cours. Les exercices se corrigent seuls et ne donnent jamais la valeur attendue, ils disent si c'est juste, et rappellent la méthode. Tous les calculs se font dans votre navigateur ; rien n'est enregistré.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

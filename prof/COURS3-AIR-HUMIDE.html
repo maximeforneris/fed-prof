@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Cours 3 — l'air humide</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="prof/COURS3-AIR-HUMIDE" data-public="prof">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS2-HYDRAULIQUE.html" rel="prev" title="Cours 2 — l'eau" aria-label="Cours 2 — l'eau">&lsaquo;</a><a class="fleche" href="COURS4-PRODUIRE-REGULER.html" rel="next" title="Cours 4 — produire et réguler" aria-label="Cours 4 — produire et réguler">&rsaquo;</a></span><button type="button" class="lu" data-lu="prof/COURS3-AIR-HUMIDE">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
@@ -23,504 +31,993 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="COURS1-CHALEUR.html">Chaleur sensible et chaleur latente</a></b><span class="ou">Cours 1 — la chaleur</span><span class="car">la vapeur d'eau de l'air porte une chaleur latente, et la distinction du cours 1 revient à chaque section.</span></li><li><b><a href="COURS2-HYDRAULIQUE.html">Débit massique et débit volumique</a></b><span class="ou">Cours 2 — l'eau</span><span class="car">l'air se compte en kilogrammes d'air sec par seconde et non en m³/h ; la raison est dans le cours 2, et le piège aussi.</span></li><li><b>La pression partielle et la loi des gaz parfaits</b><span class="car">pression de vapeur, pression saturante, fraction molaire ; les formules du diagramme se démontrent avec p·V = n·R·T et rien d'autre.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#le-seul-savoir-de-niveau-3-de-la-famille-a">Le seul savoir de niveau 3 de la famille A</a><a href="#la-buee-du-miroir-la-saturation">La buée du miroir : la saturation</a><a href="#le-verre-de-soda-et-pourquoi-on-compte-en-air-sec">Le verre de soda, et pourquoi on compte en air sec</a><a href="#le-radiateur-qui-asseche-l-air-le-chauffage-sec">Le radiateur qui « assèche l’air » : le chauffage sec</a><a href="#l-haleine-visible-le-melange-de-deux-airs">L’haleine visible : le mélange de deux airs</a><a href="#le-linge-qui-seche-temperature-humide-et-adiabatique">Le linge qui sèche : température humide et adiabatique</a><a href="#la-cave-humide-en-aout-le-contre-intuitif">La cave humide en août : le contre-intuitif</a><a href="#le-pare-brise-embue-refroidir-pour-secher">Le pare-brise embué : refroidir pour sécher</a><a href="#les-six-evolutions-une-fois-qu-on-a-les-scenes">Les six évolutions, une fois qu’on a les scènes</a><a href="#recuperer-sur-l-air-rejete">Récupérer sur l’air rejeté</a><a href="#d-ou-viennent-les-formules-qu-on-applique-sans-y-penser">D’où viennent les formules qu’on applique sans y penser</a><a href="#du-local-a-la-centrale-le-calcul-retourne">Du local à la centrale : le calcul retourné</a><a href="#trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#les-analogies-qui-marchent-et-celles-qui-trompent">Les analogies qui marchent, et celles qui trompent</a></div></nav>
-<h2 id="le-seul-savoir-de-niveau-3-de-la-famille-a">Le seul savoir de niveau 3 de la famille A</h2>
-<p><strong>A4-2, évolutions de l’air et bilans</strong>, est le seul savoir de la famille A classé au niveau 3 pour l’option C. Il revient à toutes les sessions, et c’est celui où une hésitation se voit immédiatement, les étudiants sentent quand on lit le diagramme sans savoir ce qu’il représente.</p>
-<p>Trois définitions, deux constantes, six évolutions : tout le reste s’en déduit. Et chacune de ces évolutions a son équivalent domestique, que tout le monde a observé sans le nommer.</p>
-<div class="cle">
-<p>La phrase qui règle la moitié des malentendus : <strong>l’humidité relative ne dit rien de la quantité d’eau.</strong> Elle dit à quelle distance on est de la saturation, et cette distance dépend de la température. C’est pourquoi l’air d’hiver à 90 % est bien plus sec que l’air d’été à 40 %.</p>
-</div>
-<h2 id="la-buee-du-miroir-la-saturation">La buée du miroir : la saturation</h2>
-<p>Vous prenez une douche. Le miroir se couvre de buée, la fenêtre aussi, mais le mur carrelé reste sec. Trois surfaces dans la même pièce, trois comportements. Tout l’air humide est là.</p>
-<div class="etapes">
-<ol type="1">
-<li>La douche <strong>ajoute de la vapeur</strong> à l’air : son humidité absolue monte.</li>
-<li>Le miroir et la vitre sont les surfaces <strong>les plus froides</strong> de la pièce.</li>
-<li>Au contact, l’air se refroidit. En dessous d’une certaine température, il <strong>ne peut plus porter</strong> toute son eau : le surplus se dépose.</li>
-<li>Cette température, c’est le <strong>point de rosée</strong>.</li>
-</ol>
-</div>
-<div class="formule">
-<p><strong>φ = pv / pvs(θ)</strong> · <strong>rosée : la température où pvs(θr) = pv</strong></p>
-<ul>
-<li><strong>pv</strong><span>: pression partielle de la vapeur présente, en pascals</span></li>
-<li><strong>pvs(θ)</strong><span>: pression de vapeur <strong>saturante</strong>, qui ne dépend que de la température</span></li>
-<li>refroidir sans sécher ne change pas pv, mais fait chuter pvs</li>
-</ul>
-<blockquote>
-<p>Ordres de grandeur de pvs : <strong>611 Pa à 0 °C</strong>, <strong>1 228 à 10 °C</strong>, <strong>2 339 à 20 °C</strong>, <strong>4 246 à 30 °C</strong>. Elle <strong>double tous les 10 kelvins</strong>, c’est le nombre qui explique presque tout.</p>
-</blockquote>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La salle de bain, calculée en entier</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Salle de bain à 22 °C. Avant la douche, humidité relative 50 %.</p>
-<p>pvs(22) = 2 639 Pa, donc pv = 1 320 Pa. Le point de rosée est la température où pvs vaut 1 320 Pa, soit <strong>11,1 °C</strong>. Le miroir, à 19 °C, reste sec.</p>
-<p>Pendant la douche, l’humidité monte à 85 %. pv = 0,85 × 2 639 = <strong>2 243 Pa</strong>, et la rosée passe à <strong>19,4 °C</strong>. Le miroir, toujours à 19 °C, est maintenant <strong>sous la rosée</strong> : il se couvre.</p>
-<p>Le mur carrelé, lui, est à 21 °C : il reste au-dessus, et il reste sec. La vitre, à 14 °C par temps froid, était déjà condamnée avant même la douche.</p>
-<p>Le prolongement professionnel est immédiat, et c’est le lien avec le Cours 1 : un <strong>pont thermique</strong> est une surface plus froide que la paroi courante. Si sa température descend sous la rosée ambiante, il condense, et la moisissure suit. La trace noire dans l’angle du mur, c’est le miroir de la salle de bain, en permanence.</p>
-<p>Deuxième prolongement, celui du métier : un réseau d’<strong>eau glacée</strong> circule à 7 °C, très en dessous de la rosée de n’importe quel local. Son calorifuge doit donc porter un <strong>pare-vapeur continu</strong>, sinon la vapeur diffuse à travers l’isolant, condense sur le tube, et personne ne le voit avant la corrosion.</p></div></details>
-</div><h2 id="le-verre-de-soda-et-pourquoi-on-compte-en-air-sec">Le verre de soda, et pourquoi on compte en air sec</h2>
-<p>Un verre glacé « transpire » : de l’eau apparaît sur sa paroi extérieure. Elle ne vient pas du verre, elle vient de <strong>l’air de la pièce</strong>. C’est la même condensation que le miroir, sur un objet froid.</p>
-<p>Cette scène pose la question qui structure tout le sujet : <strong>quand de l’eau apparaît ou disparaît, la masse d’air humide change.</strong> Sur quoi rapporte-t-on alors les grandeurs ?</p>
-<div class="cle">
-<p>La masse d’<strong>air sec</strong> traverse toute l’installation sans jamais changer : on peut lui ajouter ou lui retirer de l’eau, elle reste la même. C’est le seul invariant disponible. Toutes les unités en <strong>« par kilogramme d’air sec »</strong> viennent de là, et c’est la réponse à « pourquoi on complique ? ».</p>
-</div>
-<div class="formule">
-<p><strong>r = 0,622 × pv / (P − pv)</strong>, l’humidité absolue</p>
-<ul>
-<li><strong>r</strong><span>: masse d’eau par kg d’air sec, en kg/kg (× 1 000 pour des g/kg)</span></li>
-<li><strong>P</strong><span>: pression atmosphérique, 101 325 Pa au niveau de la mer</span></li>
-<li><strong>0,622</strong><span>: rapport des masses molaires, <strong>18,0 / 29,0</strong></span></li>
-</ul>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La démonstration du 0,622, en cinq lignes</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’air humide est un <strong>mélange de deux gaz</strong> : de l’air sec et de la vapeur d’eau. Chacun occupe tout le volume et exerce sa propre pression partielle ; leur somme fait la pression atmosphérique. C’est la loi de Dalton.</p>
-<p>Pour chaque gaz, dans le même volume V et à la même température T :</p>
-<ul>
-<li>vapeur : <strong>pv · V = m_v · (R / M_v) · T</strong></li>
-<li>air sec : <strong>pa · V = m_a · (R / M_a) · T</strong></li>
-</ul>
-<p>Le rapport élimine V, T et R :</p>
-<p><strong>m_v / m_a = (pv / pa) × (M_v / M_a) = (pv / pa) × 18,0 / 29,0</strong></p>
-<p>Et comme pa = P − pv, on obtient <strong>r = 0,622 × pv / (P − pv)</strong>.</p>
-<p>Deux enseignements à en tirer. D’abord, <strong>r dépend de la pression atmosphérique</strong> : à 1 500 m, P vaut environ 84 000 Pa et le même pv donne un r supérieur de 20 %. C’est pourquoi les logiciels demandent l’altitude, et pourquoi un diagramme porte toujours sa pression.</p>
-<p>Ensuite, le dénominateur <strong>P − pv</strong> justifie l’approximation r ≈ 0,622 pv/P : la vapeur ne dépasse jamais quelques milliers de pascals contre 101 325, soit moins de 4 %. Acceptable en ordre de grandeur, pas pour un calcul de batterie.</p></div></details>
-</div><div class="formule">
-<p><strong>h = 1,006 × θ + r × (2 501 + 1,83 × θ)</strong>, l’enthalpie, en kJ/kg as</p>
-<ul>
-<li><strong>1,006</strong><span>: chaleur massique de l’air sec, en kJ/(kg·K)</span></li>
-<li><strong>2 501</strong><span>: chaleur latente de vaporisation de l’eau <strong>à 0 °C</strong>, en kJ/kg</span></li>
-<li><strong>1,83</strong><span>: chaleur massique de la vapeur, en kJ/(kg·K)</span></li>
-<li><strong>r en kg/kg</strong><span>dans cette écriture : l’erreur du facteur 1 000 est la plus fréquente</span></li>
-</ul>
-<blockquote>
-<p>Lecture : chauffer l’air sec, plus vaporiser l’eau à 0 °C, plus chauffer cette vapeur. La référence à 0 °C est conventionnelle : seules les <strong>différences</strong> d’enthalpie ont un sens.</p>
-</blockquote>
-</div>
-<div class="cle">
-<p>Le poids relatif des deux termes fonde tout le traitement d’air, et il surprend toujours. À 20 °C et 10 g/kg : le terme sensible vaut <strong>20 kJ</strong>, le terme latent <strong>25 kJ</strong>. <strong>L’eau portée par l’air pèse plus lourd que l’air lui-même.</strong></p>
-</div>
-<figure class="schema"><div class="dessin" data-schema="air-humide"></div><figcaption>Le diagramme réduit à sa structure, avec la construction du point de rosée.</figcaption></figure>
-<h2 id="le-radiateur-qui-asseche-l-air-le-chauffage-sec">Le radiateur qui « assèche l’air » : le chauffage sec</h2>
-<p>Tout le monde a entendu qu’un radiateur assèche l’air. C’est faux et vrai en même temps, et démêler les deux règle définitivement le piège le plus fréquent de l’épreuve.</p>
-<div class="piege">
-<p>Chauffer un air <strong>ne lui retire pas une molécule d’eau</strong>. Son humidité absolue r ne bouge pas ; seule son humidité relative s’effondre, parce que pvs a augmenté. Sur le diagramme, l’évolution est une <strong>horizontale</strong>.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">L&#39;air d&#39;hiver, du dehors au salon, le calcul qui convainc</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Air extérieur à <strong>0 °C et 80 %</strong>. pvs(0) = 611 Pa, donc pv = 489 Pa et <strong>r = 3,0 g/kg</strong>.</p>
-<p>On le fait entrer et on le chauffe à 20 °C, sans rien ajouter. r reste à <strong>3,0 g/kg</strong>. Mais pvs(20) = 2 339 Pa, et pv est toujours à 489 :</p>
-<p><strong>φ = 489 / 2 339 = 21 %.</strong></p>
-<p>L’air est passé de 80 % à 21 % <strong>sans qu’on lui retire quoi que ce soit</strong>. Voilà pourquoi les logements sont secs en hiver, pourquoi la peau tire et pourquoi les plantes souffrent, et voilà aussi pourquoi la formulation « le radiateur assèche » est trompeuse : c’est le <strong>renouvellement d’air</strong> qui assèche, en apportant de l’air extérieur pauvre en eau, et le chauffage ne fait que rendre le phénomène visible sur l’hygromètre.</p>
-<p>L’expérience à faire faire, si vous avez une sonde : relever l’humidité relative dehors par temps froid (souvent 90 %) puis dedans après chauffage, sans occupants. <strong>Même air, même eau, deux nombres qui n’ont rien à voir.</strong></p>
-<p>Et le calcul inverse, pour la culture professionnelle : remonter ce salon à 45 % d’humidité relative demanderait r = 6,5 g/kg, soit <strong>3,5 g d’eau par kilogramme d’air</strong>. Sur un renouvellement de 150 m³/h, cela fait 0,63 litre par heure à vaporiser en permanence, l’ordre de grandeur d’un humidificateur domestique, et la raison pour laquelle il faut le remplir tous les jours.</p></div></details>
-</div><h2 id="l-haleine-visible-le-melange-de-deux-airs">L’haleine visible : le mélange de deux airs</h2>
-<p>Par temps froid, on voit son souffle. Ce n’est pas de la vapeur, la vapeur est invisible. Ce sont des <strong>gouttelettes</strong> : de l’eau qui a condensé.</p>
-<p>Et c’est le seul phénomène domestique qui illustre le cas particulier du mélange, celui qui tombe régulièrement en question de cours.</p>
-<div class="formule">
-<p><strong>Le mélange est un barycentre</strong></p>
-<ul>
-<li><strong>Air sec :</strong><span>qm = qm₁ + qm₂</span></li>
-<li><strong>Eau :</strong><span>qm × r = qm₁ × r₁ + qm₂ × r₂</span></li>
-<li><strong>Énergie :</strong><span>qm × h = qm₁ × h₁ + qm₂ × h₂</span></li>
-</ul>
-<blockquote>
-<p>r et h sont donc des <strong>moyennes pondérées par les débits massiques</strong>. Le point de mélange se trouve sur le <strong>segment</strong> joignant les deux points, plus près de l’air le plus abondant.</p>
-</blockquote>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi le souffle devient visible, et ce que cela dit du rejet d&#39;une CTA</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’air expiré sort à <strong>34 °C et pratiquement saturé</strong>, donc r ≈ 34 g/kg. L’air extérieur est à <strong>0 °C et 80 %</strong>, donc r = 3,0 g/kg.</p>
-<p>Quand les deux se mélangent, le point de mélange parcourt le <strong>segment</strong> entre ces deux états. Or ce segment, tracé sur le diagramme, <strong>passe au-dessus de la courbe de saturation</strong> : les points intermédiaires demanderaient à l’air de porter plus d’eau qu’il ne peut. Le surplus condense en gouttelettes, le brouillard qu’on voit.</p>
-<p>C’est le cas particulier à connaître : <strong>le mélange de deux airs proches de la saturation et de températures très différentes peut condenser</strong>, alors qu’aucun des deux ne condensait.</p>
-<p>Le même phénomène, en version professionnelle : le <strong>panache blanc</strong> au rejet d’une centrale de traitement d’air ou d’une tour de refroidissement en hiver. Ce n’est ni de la fumée ni un défaut : c’est ce segment qui passe au-dessus de la saturation. La question tombe régulièrement sous la forme « expliquer la présence de brouillard au rejet ».</p>
-<p>Et une conséquence de conception : sur un site sensible, proximité d’une route, d’un aéroport, on impose parfois une tour « sans panache », qui réchauffe l’air rejeté juste assez pour que le segment repasse sous la saturation.</p></div></details>
-</div><h2 id="le-linge-qui-seche-temperature-humide-et-adiabatique">Le linge qui sèche : température humide et adiabatique</h2>
-<p>Un linge sèche vite par temps chaud et sec, mal par temps doux et humide. Et un linge mouillé posé sur la peau donne froid. Ces deux faits sont la même grandeur : la <strong>température humide</strong>.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le mécanisme, et les trois applications qui en découlent</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La température humide est celle que lit un thermomètre dont le bulbe est entouré d’une mèche mouillée ventilée. L’eau s’évapore, prend sa chaleur latente à l’air, et refroidit le bulbe jusqu’à un équilibre.</p>
-<p>Cet équilibre est atteint quand l’air qui quitte la mèche est saturé : l’énergie prise en chaleur <strong>sensible</strong> est exactement rendue en chaleur <strong>latente</strong>. L’évolution se fait donc <strong>à enthalpie quasi constante</strong>, ce qui est la définition de la saturation adiabatique, et la raison pour laquelle l’isotherme humide se confond presque avec l’isenthalpe.</p>
-<p>L’écart entre température sèche et humide mesure directement la <strong>capacité de séchage</strong>. À 30 °C et 30 % d’humidité relative, l’humide est à 18 °C : douze kelvins d’écart, le linge sèche vite. À 20 °C et 90 %, elle est à 19 °C : un kelvin, il ne sèche pas.</p>
-<p><strong>Trois applications, un seul mécanisme.</strong> La <strong>brumisation</strong> de terrasse en été : on pulvérise de l’eau, elle s’évapore, l’air se refroidit de plusieurs kelvins sans dépenser un watt de froid. Le <strong>rafraîchissement adiabatique</strong> d’un data center ou d’un atelier : même principe, en grand. La <strong>tour de refroidissement</strong> d’un groupe froid : l’eau se refroidit en s’évaporant partiellement, ce qui permet de condenser vers 35 °C au lieu de 45, voir le Cours 4.</p>
-<p>Les étudiants croient ces trois choses sans rapport. Les relier en une séance est un des meilleurs moments du programme.</p></div></details>
-</div><h2 id="la-cave-humide-en-aout-le-contre-intuitif">La cave humide en août : le contre-intuitif</h2>
-<p>Une cave est fraîche, disons <strong>14 °C</strong>. En août, il fait <strong>30 °C et 60 %</strong> dehors. Pour l’assécher, on ouvre les soupiraux. <strong>C’est exactement l’inverse qu’il faut faire</strong>, et le calcul le montre en trois lignes.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le calcul, et la règle qui en sort</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Air extérieur à 30 °C et 60 % : pvs(30) = 4 246 Pa, pv = 2 548 Pa, donc <strong>r = 16,0 g/kg</strong>. Son point de rosée est à <strong>21,4 °C</strong>.</p>
-<p>Cet air entre dans la cave et rencontre des murs à 14 °C, <strong>bien en dessous de sa rosée</strong>. Il condense sur les parois. Aérer une cave en été, c’est y <strong>apporter de l’eau</strong>, pas en retirer.</p>
-<p>En janvier, l’air extérieur à 5 °C et 90 % porte <strong>r = 4,9 g/kg</strong>. Réchauffé à 14 °C dans la cave, son humidité relative tombe à 49 % : il est <strong>assoiffé</strong> et absorbe l’humidité des murs. <strong>C’est en hiver qu’on aère une cave.</strong></p>
-<p>La règle générale, qu’on peut faire formuler par les étudiants : <strong>on ventile pour assécher quand l’air entrant a une humidité absolue plus faible que l’air intérieur</strong>, jamais sur la base de l’humidité relative.</p>
-<p>Le prolongement professionnel est direct : c’est le principe de la régulation d’une ventilation de local humide sur <strong>humidité absolue</strong> ou sur un différentiel de rosée, et non sur l’hygrostat seul. C’est aussi ce qui explique les déshumidificateurs de piscine, qui ne sont pas des extracteurs.</p></div></details>
-</div><h2 id="le-pare-brise-embue-refroidir-pour-secher">Le pare-brise embué : refroidir pour sécher</h2>
-<p>Pare-brise embué, on met la climatisation, même en hiver, et même si l’on veut de l’air chaud. Le geste paraît absurde et c’est le meilleur résumé du traitement d’air.</p>
-<div class="etapes">
-<ol type="1">
-<li>L’air est <strong>refroidi sous son point de rosée</strong> par l’évaporateur : il perd son eau, qui coule sous la voiture.</li>
-<li>Il ressort <strong>froid et saturé</strong>, mais avec une humidité absolue bien plus basse.</li>
-<li>Il est <strong>réchauffé</strong> par le circuit de chauffage : son humidité relative s’effondre.</li>
-<li>Cet air très sec absorbe la buée du pare-brise.</li>
-</ol>
-</div>
-<div class="cle">
-<p>Refroidir puis réchauffer est la <strong>seule</strong> façon de sécher de l’air. C’est le <strong>post-chauffage</strong> d’une centrale de traitement d’air, et il consomme du froid et du chaud en même temps, ce qui n’est pas un défaut de conception mais la conséquence de la physique.</p>
-</div>
-<figure class="schema"><div class="dessin" data-schema="bipasse-batterie"></div><figcaption>Une batterie froide ne traite qu’une partie de l’air : la sortie est un mélange.</figcaption></figure>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi l&#39;air ne sort jamais saturé d&#39;une batterie froide</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une batterie ne refroidit pas l’air uniformément. Une partie touche les ailettes et ressort <strong>saturée à la température de surface</strong> ; le reste passe entre les ailettes sans rien changer. L’air de sortie est le <strong>mélange des deux</strong>, et un mélange n’est jamais sur la courbe de saturation.</p>
-<p>La température de surface fictive s’appelle l’<strong>ADP</strong>, <em>apparatus dew point</em> : c’est le point où la droite d’évolution, prolongée, coupe la saturation. La proportion d’air non traité est le <strong>facteur de bipasse</strong>.</p>
-<p>Ordres de grandeur : <strong>0,3 à 0,4</strong> pour une batterie de 3 ou 4 rangs, <strong>0,05 à 0,15</strong> pour 8 rangs à pas serré. Plus la batterie est profonde, plus le bipasse est faible, plus l’air sort proche de la saturation, et plus la perte de charge, donc le ventilateur, augmentent.</p>
-<p>Cela explique la question posée à chaque lecture de point de sortie : <strong>pourquoi 90 % et non 100 %</strong>. Et cela explique aussi qu’une batterie froide <strong>déshumidifie forcément</strong> dès que son ADP passe sous la rosée de l’air entrant, même si ce n’était pas le but recherché.</p>
-<p>Le calcul complet de l’ADP n’est pas au programme. Savoir dire d’où vient la direction de la droite l’est.</p></div></details>
-</div><h2 id="les-six-evolutions-une-fois-qu-on-a-les-scenes">Les six évolutions, une fois qu’on a les scènes</h2>
-<div class="outil" data-outil="evolution">
-
-</div>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Évolution</th>
-<th>Scène du quotidien</th>
-<th>Direction sur le diagramme</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Chauffage sec</td>
-<td>le radiateur en hiver</td>
-<td><strong>horizontale</strong> vers la droite</td>
-</tr>
-<tr>
-<td>Refroidissement sec</td>
-<td>l’air qui longe une vitre froide</td>
-<td>horizontale vers la gauche</td>
-</tr>
-<tr>
-<td>Refroidissement avec déshumidification</td>
-<td>le pare-brise, la buée du miroir</td>
-<td>vers le bas, <strong>pointé vers l’ADP</strong></td>
-</tr>
-<tr>
-<td>Humidification à la vapeur</td>
-<td>la casserole qui bout</td>
-<td><strong>verticale</strong> vers le haut</td>
-</tr>
-<tr>
-<td>Humidification adiabatique</td>
-<td>le linge qui sèche, la brumisation</td>
-<td>le long d’une <strong>isenthalpe</strong></td>
-</tr>
-<tr>
-<td>Mélange</td>
-<td>l’haleine visible en hiver</td>
-<td><strong>barycentre</strong> sur le segment</td>
-</tr>
-</tbody>
-</table></div>
-<h2 id="recuperer-sur-l-air-rejete">Récupérer sur l’air rejeté</h2>
-<div class="outil" data-outil="ventilation">
-
-</div>
-<div class="formule">
-<p><strong>ε = (θ2 − θ1) / (θ4 − θ1)</strong>, efficacité en chaleur sensible</p>
-<ul>
-<li><strong>θ1</strong><span>air neuf entrant · <strong>θ2</strong> air neuf sortant · <strong>θ4</strong> air repris entrant</span></li>
-<li>plaques <strong>50 à 70 %</strong> · roue <strong>70 à 85 %</strong> · double flux de logement <strong>85 à 92 %</strong></li>
-</ul>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le givre du récupérateur, et le paradoxe du climat froid</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Côté rejet, l’air part de l’ambiance, 20 °C et 6 g/kg, donc une rosée vers <strong>7 °C</strong>. En cédant sa chaleur, il descend souvent sous cette rosée : il <strong>condense dans l’échangeur</strong>, côté rejet. Un récupérateur a donc un bac et un siphon, comme une batterie froide, ce qui surprend toujours.</p>
-<p>Quand l’extérieur descend, ce rejet finit sous 0 °C et l’eau <strong>gèle</strong>. Le givre obstrue les canaux, le débit d’extraction s’effondre, l’efficacité chute, et la pression peut déformer les plaques. Le seuil est atteint vers <strong>−5 à −10 °C extérieurs</strong> selon l’humidité intérieure.</p>
-<p>Les parades, par ordre de coût : <strong>bipasse</strong> d’air neuf, <strong>réduction du débit</strong>, <strong>préchauffage</strong> par une batterie antigel, <strong>ralentissement de la roue</strong> sur un rotatif. Toutes dégradent la récupération au moment où l’on en aurait le plus besoin.</p>
-<p>Et le paradoxe à faire énoncer : <strong>plus l’échangeur est efficace, plus il gèle tôt</strong>, puisqu’il refroidit davantage l’air rejeté. Les 92 % d’un très bon échangeur ne sont pas tenus par grand froid. C’est une excellente question ouverte, et il n’y a pas de réponse simple, les fabricants arbitrent différemment.</p></div></details>
-</div><h2 id="d-ou-viennent-les-formules-qu-on-applique-sans-y-penser">D’où viennent les formules qu’on applique sans y penser</h2>
-<p>Trois relations reviennent dans tous les corrigés : le coefficient <strong>0,34</strong>, la position du point de mélange, et la direction de la <strong>droite de soufflage</strong>. Elles s’appliquent très bien sans être comprises, jusqu’au jour où l’énoncé sort du cas ordinaire. Les démontrer prend dix minutes et rend chacune vérifiable.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le fameux 0,34 : ce qu&#39;il cache, et quand il ment</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La formule des bureaux d’études s’écrit <strong>P = 0,34 × qv × Δθ</strong>, avec P en watts, qv en m³/h et Δθ en kelvins. D’où sort ce nombre ?</p>
-<p>De la formule générale, écrite en débit <strong>massique</strong> :</p>
-<p>P = qm · cp · Δθ, avec cp = 1,006 kJ/(kg·K)</p>
-<p>On veut un débit <strong>volumique</strong> en m³/h : qm = qv · ρ / 3 600. Donc</p>
-<p>P = qv · <strong>(cp · ρ / 3,6)</strong> · Δθ, en watts</p>
-<p>Avec ρ = 1,2 kg/m³ : <strong>1,006 × 1,2 / 3,6 = 0,335</strong>, arrondi à <strong>0,34</strong>.</p>
-<div class="cle">
-<p>Le 0,34 n’est pas une constante de la physique : c’est <strong>cp × ρ</strong>, et il embarque une masse volumique de 1,2 kg/m³. Toute la fiabilité de la formule tient à cette hypothèse-là.</p>
-</div>
-<p><strong>Quand elle tient, et quand elle glisse</strong> :</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Air</th>
-<th style="text-align: right;">Masse volumique</th>
-<th style="text-align: right;">Écart sur P</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>20 °C, 8 g/kg (l’hypothèse)</td>
-<td style="text-align: right;">1,189 kg/m³</td>
-<td style="text-align: right;">référence</td>
-</tr>
-<tr>
-<td>15 °C : air soufflé en froid</td>
-<td style="text-align: right;">1,208 kg/m³</td>
-<td style="text-align: right;">+ 1,6 %</td>
-</tr>
-<tr>
-<td>0 °C : air neuf d’hiver</td>
-<td style="text-align: right;">1,286 kg/m³</td>
-<td style="text-align: right;"><strong>+ 8 %</strong></td>
-</tr>
-<tr>
-<td>20 °C à 1 500 m d’altitude</td>
-<td style="text-align: right;">0,986 kg/m³</td>
-<td style="text-align: right;"><strong>− 17 %</strong></td>
-</tr>
-</tbody>
-</table></div>
-<p>Sur une batterie de préchauffage d’air neuf à 0 °C, le 0,34 <strong>sous-estime de 8 %</strong>. En station de montagne, il <strong>surestime de 17 %</strong>. Deux erreurs qu’aucun contrôle de plausibilité ne rattrape, puisque le résultat reste vraisemblable.</p>
-<p><strong>Et surtout, il ne compte que le sensible.</strong> Dès qu’il y a de l’eau qui apparaît ou disparaît, la seule formule juste est <strong>P = qm × Δh</strong>, et il faut passer par l’enthalpie. Le réflexe à installer : <em>y a-t-il un changement de r ?</em> Si oui, le 0,34 est hors sujet.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">La droite de soufflage : sa direction ne dépend pas du débit</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un local reçoit <strong>Ps</strong> en chaleur sensible et <strong>Pl</strong> en chaleur latente. On y souffle un air plus froid et plus sec que l’ambiance, avec un débit qm. Deux bilans, un pour la chaleur, un pour l’eau :</p>
-<ul>
-<li>sensible : <strong>Ps = qm · cp · (θ_amb − θ_s)</strong></li>
-<li>latente : <strong>Pl = qm · Lv · (r_amb − r_s)</strong>, avec Lv ≈ 2 501 kJ/kg</li>
-</ul>
-<p>En divisant l’enthalpie totale par l’eau échangée, <strong>qm disparaît</strong> :</p>
-<p>Δh / Δr = (P_tot / qm) / (Pl / (qm · Lv)) = <strong>Lv / (1 − SHR)</strong></p>
-<p>où <strong>SHR = Ps / P_tot</strong> est le facteur de chaleur sensible.</p>
-<div class="cle">
-<p><strong>La direction de la droite de soufflage ne dépend que du rapport des charges, pas du débit.</strong> Le débit fixe <em>jusqu’où</em> on va sur cette droite ; le SHR fixe <em>dans quelle direction</em>. C’est pour cela que les diagrammes portent un rapporteur de SHR sur leur bord : la pente se lit, elle ne se calcule pas.</p>
-</div>
-<p>Vérification sur un cas réel, 9 kW sensible et 2,5 kW latent, donc SHR = 0,783. La formule annonce Δh/Δr = 2 501 / 0,217 = <strong>11 500 kJ par kg d’eau</strong>. Le calcul complet du même local donne Δh = 11,76 kJ/kg pour Δr = 1,01 g/kg, soit <strong>11 640</strong> : 1 % d’écart, qui vient du terme sensible de la vapeur (1,83 θ) négligé ici.</p>
-<p><strong>La conséquence pratique</strong>, qui tombe régulièrement : si l’on double le débit soufflé sans rien changer aux charges, le point de soufflage <strong>se rapproche de l’ambiance en restant sur la même droite</strong>. Il ne change pas de direction. Un candidat qui redessine une pente différente n’a pas compris ce qu’il trace.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le mélange : la règle du levier, démontrée</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le cours a posé les trois bilans du mélange. En voici la conséquence géométrique, qui vaut d’être sue parce qu’elle <strong>remplace un calcul par une lecture</strong>.</p>
-<p>Du bilan d’eau, qm·r = qm₁·r₁ + qm₂·r₂, avec qm = qm₁ + qm₂ :</p>
-<p>(qm₁ + qm₂) r = qm₁ r₁ + qm₂ r₂ qm₁ (r − r₁) = qm₂ (r₂ − r)</p>
-<p><strong>(r − r₁) / (r₂ − r) = qm₂ / qm₁</strong></p>
-<p>Le point de mélange partage donc le segment <strong>dans le rapport inverse des débits</strong> : il est plus près de l’air le plus abondant, et exactement d’autant. Le même calcul sur les enthalpies donne le même rapport, c’est ce qui garantit que le point est bien sur le segment, et non ailleurs.</p>
-<p><strong>Le cas usuel de l’épreuve</strong> : 30 % d’air neuf, 70 % de repris. Le point de mélange est au <strong>tiers</strong> du chemin depuis le repris vers le neuf. Sur un diagramme, cela se pointe à la règle en trois secondes.</p>
-<div class="piege">
-<p>Cette règle du levier suppose que le segment <strong>reste dans le domaine de l’air non saturé</strong>. S’il coupe la courbe de saturation, souffle visible, panache de rejet, le point réel n’est plus sur le segment : il est sur la saturation, et le reste a condensé. C’est l’hypothèse qui porte la règle, et c’est elle qui dit quand la règle tombe.</p>
-</div></div></details>
-</div><h2 id="du-local-a-la-centrale-le-calcul-retourne">Du local à la centrale : le calcul retourné</h2>
-<p>Le cours a lu des évolutions sur un diagramme. Un bureau d’études fait l’inverse : il part des <strong>apports du local</strong> et en déduit le débit, le point de soufflage et les puissances des batteries. C’est le calcul qui structure toute l’unité U41 côté air, et il se fait dans un ordre qui ne change jamais.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Cinq étapes, de la charge du local au débit de la CTA</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Les données</strong>, celles d’un plateau de bureaux en été : ambiance <strong>25 °C et 50 %</strong>, apports <strong>9 kW sensibles</strong> et <strong>2,5 kW latents</strong>.</p>
-<p><strong>Étape 1, caractériser l’ambiance.</strong> pvs(25) = 3 162 Pa, donc pv = 1 581 Pa et</p>
-<p>r = 0,622 × 1 581 / (101 325 − 1 581) = <strong>9,86 g/kg</strong> h = 1,006 × 25 + 0,00986 × (2 501 + 1,83 × 25) = <strong>50,3 kJ/kg</strong> point de rosée : <strong>13,9 °C</strong></p>
-<p>Ce dernier nombre est déjà un résultat : <strong>on ne pourra pas souffler sous 13,9 °C sans que l’air soufflé soit plus sec que l’ambiance</strong>, ce qui est justement le but, mais aussi ce qui impose une batterie froide.</p>
-<p><strong>Étape 2, choisir l’écart de soufflage.</strong> C’est un <strong>choix</strong>, pas un calcul, et c’est la seule liberté de tout l’exercice. En diffusion de plafond, l’usage retient <strong>8 à 10 K</strong> d’écart : au-delà, le jet froid tombe avant de se mélanger et l’on ressent un courant d’air. On retient <strong>16 °C</strong>, soit 9 K.</p>
-<p><strong>Étape 3, le débit, par le bilan sensible.</strong></p>
-<p>qm = 9 / (1,006 × 9) = <strong>0,994 kg d’air sec par seconde</strong></p>
-<p><strong>Étape 4, l’humidité du soufflage, par le bilan d’eau.</strong></p>
-<p>Δr = 2,5 / (0,994 × 2 501) = 1,01 g/kg → r_s = 9,86 − 1,01 = <strong>8,85 g/kg</strong></p>
-<p>Soit, à 16 °C, une humidité relative de <strong>78 %</strong>, plausible en sortie de centrale, et c’est le contrôle à faire : au-dessus de 95 %, le point serait irréalisable.</p>
-<p><strong>Étape 5, le débit volumique et la puissance totale.</strong> Le volume spécifique de l’air soufflé vaut 0,830 m³/kg :</p>
-<p>qv = 0,994 × 0,830 × 3 600 = <strong>2 970 m³/h</strong> P = qm × Δh = 0,994 × (50,3 − 38,5) = <strong>11,7 kW</strong></p>
-<div class="cle">
-<p><strong>11,7 kW pour 11,5 kW d’apports.</strong> L’écart de 2 % est le contrôle final : le traitement ne fait que reprendre ce que le local a produit, ni plus ni moins. Un résultat de 8 ou de 20 kW signalerait une erreur, et ce contrôle prend cinq secondes.</p>
-</div>
-<p><strong>Ce que l’étape 2 décide vraiment.</strong> Souffler à 15 °C au lieu de 16 donnerait 2 670 m³/h, 10 % de débit en moins, donc des gaines plus petites et un ventilateur moins gourmand, mais un risque de courant d’air. Souffler à 17 °C donnerait 3 360 m³/h. <strong>La puissance totale, elle, ne bouge pas d’un watt</strong> : 11,7 kW dans les trois cas. C’est l’enseignement de l’étape, et il surprend toujours, le débit se choisit, la puissance se subit.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : la batterie qui ne déshumidifie pas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Toute la méthode ci-dessus suppose qu’il y a <strong>du latent à traiter</strong>. Deux cas sortent du cadre, et ils se reconnaissent avant de calculer.</p>
-<p><strong>Premier cas, la batterie reste au-dessus du point de rosée.</strong> Un air à <strong>28 °C et 40 %</strong> a un point de rosée de <strong>13,1 °C</strong>. Refroidi à 18 °C par une batterie dont la température de surface reste supérieure à 13 °C, <strong>il ne condense rien</strong> : r ne bouge pas, l’humidité relative monte de 40 à <strong>73 %</strong>, et l’évolution est une simple horizontale vers la gauche.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th></th>
-<th>Méthode</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Batterie <strong>sèche</strong></td>
-<td>P = qm · cp · Δθ, ou le 0,34 : l’enthalpie est inutile</td>
-</tr>
-<tr>
-<td>Batterie <strong>humide</strong></td>
-<td>P = qm · Δh, obligatoirement</td>
-</tr>
-</tbody>
-</table></div>
-<div class="piege">
-<p>Sur une batterie sèche, <strong>le siphon ne coule pas</strong>. Ce n’est ni une panne ni un bouchon : c’est la physique. Un exploitant qui « débouche » un siphon sec perd sa matinée, et la question tombe sous la forme « expliquer l’absence de condensats ».</p>
-</div>
-<p><strong>Second cas, le SHR est trop bas pour un simple soufflage.</strong> Quand la charge latente devient comparable à la charge sensible, salle de sport, restaurant, piscine, la droite de soufflage plonge si fort qu’elle <strong>exige un air soufflé plus sec que ce qu’une batterie peut produire à cette température</strong>. Il faut alors descendre plus bas que le point voulu, puis <strong>réchauffer</strong>. C’est exactement l’objet du troisième exercice ci-dessous, et c’est le seul moment du programme où l’on paie du chaud et du froid au même instant sans que ce soit une erreur.</p></div></details>
-</div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : une batterie froide</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une centrale traite <strong>5 000 m³/h</strong> d’air pris à <strong>30 °C et 60 %</strong>. La batterie froide l’amène à <strong>12 °C et 95 %</strong>. Calculer la puissance de la batterie, la part sensible, la part latente, et le débit de condensats.</p>
-<p><strong>Résolution.</strong></p>
-<p><em>Les deux points.</em> pvs(30) = 4 237 Pa → pv = 2 542 Pa → <strong>r₁ = 16,0 g/kg</strong>, h₁ = 30,2 + 40,9 = <strong>71,1 kJ/kg</strong>, rosée <strong>21,4 °C</strong>. pvs(12) = 1 400 Pa → pv = 1 330 Pa → <strong>r₂ = 8,27 g/kg</strong>, h₂ = <strong>32,9 kJ/kg</strong>.</p>
-<p><em>Le contrôle préalable, avant tout calcul.</em> La rosée de l’air entrant est de 21,4 °C, la sortie est à 12 °C : <strong>on passe sous la rosée, donc la batterie est humide.</strong> Le 0,34 est hors sujet, il faut l’enthalpie. C’est la première ligne de la copie.</p>
-<p><em>Le débit massique.</em> v₁ = 0,881 m³/kg d’air sec. qm = (5 000 / 3 600) / 0,883 = <strong>1,577 kg/s</strong></p>
-<p><em>Les puissances.</em> P totale = 1,577 × (71,1 − 32,9) = <strong>60,1 kW</strong> P sensible = 1,577 × 1,006 × (30 − 12) = <strong>28,5 kW</strong> P latente = 60,1 − 28,5 = <strong>31,6 kW</strong></p>
-<p><em>Les condensats.</em> 1,577 × (16,0 − 8,27) × 3,6 = <strong>43,9 kg/h</strong>, soit 44 litres par heure.</p>
-<p><strong>Les trois vérifications de plausibilité.</strong></p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 30%" />
-<col style="width: 40%" />
-<col style="width: 30%" />
-</colgroup>
-<thead>
-<tr>
-<th>Contrôle</th>
-<th style="text-align: right;">Valeur</th>
-<th>Verdict</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SHR</td>
-<td style="text-align: right;">0,47</td>
-<td>plausible en été humide : <strong>le latent dépasse le sensible</strong></td>
-</tr>
-<tr>
-<td>Puissance par m³/h</td>
-<td style="text-align: right;">12 W</td>
-<td>ordre de grandeur d’une CTA d’été</td>
-</tr>
-<tr>
-<td>Condensats</td>
-<td style="text-align: right;">44 L/h</td>
-<td>un seau toutes les dix minutes, cohérent</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>L’erreur classique</strong> : calculer 0,34 × 5 000 × 18 = 30,6 kW et s’arrêter là. Le résultat n’est pas absurde (c’est presque la part sensible) mais il <strong>rate la moitié de la puissance</strong>. Une batterie dimensionnée ainsi ne tiendra jamais le local en été humide, et le défaut ne se verra qu’au premier orage de juillet.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : dimensionner le soufflage</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une salle de réunion de 40 personnes présente en été <strong>12 kW d’apports sensibles</strong> et <strong>4 kW d’apports latents</strong>. La consigne est <strong>25 °C, 50 %</strong>. L’écart de soufflage est limité à <strong>10 K</strong>. Déterminer le débit d’air, le point de soufflage, et vérifier qu’il est réalisable.</p>
-<p><strong>Résolution.</strong></p>
-<p><em>L’ambiance.</em> Comme précédemment : r = <strong>9,86 g/kg</strong>, h = <strong>50,3 kJ/kg</strong>, rosée <strong>13,9 °C</strong>.</p>
-<p><em>Le point de soufflage en température.</em> L’écart maximal est de 10 K, donc <strong>θ_s = 15 °C</strong>. On prend le maximum autorisé : c’est ce qui minimise le débit, donc les gaines et le ventilateur.</p>
-<p><em>Le débit, par le bilan sensible.</em> qm = 12 / (1,006 × 10) = <strong>1,193 kg/s</strong></p>
-<p><em>L’humidité de soufflage, par le bilan d’eau.</em> Δr = 4 / (1,193 × 2 501) = 1,34 g/kg → r_s = 9,86 − 1,34 = <strong>8,52 g/kg</strong></p>
-<p><em>La vérification, qui est le vrai travail.</em> À 15 °C, la saturation vaut 10,6 g/kg. Notre point est à 8,52, soit <strong>φ = 80 %</strong> : réalisable, avec de la marge. Le point de rosée du soufflage est de <strong>11,7 °C</strong>, ce qui demande une batterie dont l’ADP descend vers 10 °C, accessible avec de l’eau glacée 7/12.</p>
-<p><em>Le débit volumique.</em> v = 0,828 m³/kg → qv = 1,193 × 0,828 × 3 600 = <strong>3 550 m³/h</strong>.</p>
-<p><strong>Le contrôle par l’hygiène</strong>, qu’on oublie systématiquement. 40 personnes demandent au minimum 25 m³/h chacune d’air neuf, soit <strong>1 000 m³/h</strong>. Le débit de soufflage étant de 3 550 m³/h, le taux d’air neuf serait de 28 %, compatible. <strong>Si le calcul thermique avait donné 800 m³/h, c’est l’hygiène qui aurait imposé le débit</strong>, et la CTA aurait été dimensionnée sur ce critère-là.</p>
-<div class="cle">
-<p>Un débit de soufflage est toujours le <strong>maximum de trois exigences</strong> : le bilan sensible, l’air neuf réglementaire, et le brassage minimal du local. Ne vérifier que la première est l’erreur de méthode la plus coûteuse du sujet.</p>
-</div></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : quand il faut réchauffer ce qu&#39;on vient de refroidir</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un restaurant présente <strong>6 kW sensibles</strong> et <strong>6 kW latents</strong>, cuisine ouverte, forte occupation. Ambiance <strong>25 °C, 50 %</strong>, soufflage à <strong>16 °C</strong>. Déterminer le traitement complet et ses puissances.</p>
-<p><strong>Ce qu’il faut voir avant de calculer.</strong> SHR = 6 / 12 = <strong>0,50</strong>. La droite de soufflage plonge : il faudra retirer beaucoup d’eau pour peu de froid sensible. C’est le signal qu’un simple refroidissement ne suffira pas, et le dire vaut la moitié des points.</p>
-<p><em>Le débit, par le sensible.</em> qm = 6 / (1,006 × 9) = <strong>0,663 kg/s</strong></p>
-<p><em>L’humidité de soufflage exigée, par le latent.</em> Δr = 6 / (0,663 × 2 501) = 3,62 g/kg → r_s = 9,86 − 3,62 = <strong>6,24 g/kg</strong></p>
-<p><em>Le point est-il atteignable ?</em> À 16 °C, 6,24 g/kg correspond à φ = 55 %, rien d’impossible en soi. Mais <strong>son point de rosée est de 7,1 °C</strong> : pour amener l’air à cette humidité absolue, il faut d’abord le refroidir jusqu’à environ 7 °C.</p>
-<div class="piege">
-<p>Une batterie ne peut pas produire directement « 16 °C et 6,2 g/kg ». Elle amène l’air <strong>froid et presque saturé</strong> ; l’humidité absolue voulue impose la température de sortie, et cette température est bien plus basse que celle du soufflage. <strong>C’est la déshumidification qui commande, pas le refroidissement.</strong></p>
-</div>
-<p><em>Le traitement complet, en deux temps.</em></p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 23%" />
-<col style="width: 23%" />
-<col style="width: 23%" />
-<col style="width: 30%" />
-</colgroup>
-<thead>
-<tr>
-<th>Étape</th>
-<th>De</th>
-<th>Vers</th>
-<th style="text-align: right;">Puissance</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Batterie froide</td>
-<td>25 °C, 9,86 g/kg</td>
-<td>8 °C, 95 % (6,31 g/kg)</td>
-<td style="text-align: right;"><strong>17,5 kW de froid</strong></td>
-</tr>
-<tr>
-<td>Post-chauffage</td>
-<td>8 °C, 6,31 g/kg</td>
-<td>16 °C, 6,31 g/kg</td>
-<td style="text-align: right;"><strong>5,3 kW de chaud</strong></td>
-</tr>
-</tbody>
-</table></div>
-<p><em>Le point soufflé obtenu</em> : 16 °C et 6,31 g/kg, soit φ = 56 %, à comparer aux 6,24 g/kg voulus, <strong>1 % d’écart</strong>, le calcul boucle.</p>
-<p><strong>Le résultat qui frappe, et qu’il faut commenter.</strong> Le local produit 12 kW d’apports, et la centrale consomme <strong>17,5 kW de froid plus 5,3 kW de chaud</strong>. On paie 46 % de froid en trop pour ensuite réchauffer, au même instant, l’air qu’on vient de refroidir.</p>
-<p><strong>Ce que l’étudiant doit rédiger</strong> : « ce n’est pas un défaut de conception, c’est la conséquence du SHR : sécher impose de descendre sous la rosée voulue, et le post-chauffage remonte ensuite à la température de confort. » Puis les parades, car un examinateur les attend : <strong>récupérer</strong> la chaleur de la batterie froide pour le post-chauffage (batterie à eau glycolée en boucle, ou désurchauffe du condenseur), et <strong>traiter l’humidité à part</strong> par une roue dessiccante quand le latent domine à ce point.</p>
-<p><strong>Le contrôle de cohérence global.</strong> Froid retiré 17,5, chaud rendu 5,3, donc 12,2 kW nets, les 12 kW d’apports du local, à 2 % près. Si l’écart dépassait 5 %, une des deux batteries serait mal calculée.</p></div></details>
-</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Ordre de grandeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pvs à 0 · 10 · 20 · 30 °C</td>
-<td>611 · 1 228 · 2 339 · 4 246 Pa</td>
-</tr>
-<tr>
-<td>r d’un air intérieur d’hiver, 20 °C / 45 %</td>
-<td>6,5 g/kg</td>
-</tr>
-<tr>
-<td>r d’un air extérieur à −5 °C, même saturé</td>
-<td>2,5 g/kg</td>
-</tr>
-<tr>
-<td>r d’un air d’été, 30 °C / 50 %</td>
-<td>13,5 g/kg</td>
-</tr>
-<tr>
-<td>r de l’air expiré, 34 °C saturé</td>
-<td>34 g/kg</td>
-</tr>
-<tr>
-<td>Enthalpie d’un air intérieur d’hiver</td>
-<td>35 à 40 kJ/kg as</td>
-</tr>
-<tr>
-<td>Volume spécifique vers 20 °C</td>
-<td>0,84 m³/kg as</td>
-</tr>
-<tr>
-<td>Rosée d’un local à 20 °C et 50 %</td>
-<td>9,3 °C</td>
-</tr>
-<tr>
-<td>Vapeur produite par un occupant</td>
-<td>50 à 100 g/h</td>
-</tr>
-<tr>
-<td>Écart de soufflage en chauffage</td>
-<td>8 à 12 K au-dessus</td>
-</tr>
-<tr>
-<td>Écart de soufflage en froid</td>
-<td>8 à 11 K en dessous, jamais plus</td>
-</tr>
-<tr>
-<td>Efficacité, plaques · roue</td>
-<td>50-70 % · 70-85 %</td>
-</tr>
-<tr>
-<td>Facteur de bipasse, 4 rangs · 8 rangs</td>
-<td>0,3-0,4 · 0,05-0,15</td>
-</tr>
-<tr>
-<td>Humidité relative de confort</td>
-<td>40 à 60 %</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Le test de cohérence le plus rapide : <strong>0,84 m³ par kilogramme d’air sec</strong>, soit environ <strong>1,2 kg par mètre cube</strong>. Tout débit en m³/h se convertit mentalement en kg/s <strong>en divisant par 3 000</strong>. 6 000 m³/h font 2 kg/s.</p>
-</div>
-<h2 id="les-analogies-qui-marchent-et-celles-qui-trompent">Les analogies qui marchent, et celles qui trompent</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les cinq qui marchent</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le miroir de la salle de bain.</strong> Rosée, surface froide, condensation. Elle mène directement au pont thermique et au calorifuge d’eau glacée.</p>
-<p><strong>Le verre de soda.</strong> L’eau vient de l’air, pas du verre. Elle règle l’idée fausse que « le froid fait sortir l’eau du récipient ».</p>
-<p><strong>L’haleine en hiver.</strong> Le mélange qui condense, et le panache blanc au rejet. C’est le seul phénomène courant qui montre un segment passant au-dessus de la saturation.</p>
-<p><strong>Le linge qui sèche.</strong> Température humide, capacité de séchage, et les trois applications adiabatiques d’un coup.</p>
-<p><strong>Le pare-brise et la climatisation en hiver.</strong> Refroidir pour sécher, puis réchauffer. C’est le post-chauffage d’une CTA, en trente secondes.</p></div></details>
-</div><div class="piege">
-<p><strong>Les trois à éviter.</strong></p>
-<p><strong>« L’air chaud contient plus d’eau. »</strong> Formulation courante et fausse dans sa mécanique : ce n’est pas l’air qui « contient », c’est la <strong>pression de vapeur saturante</strong> qui augmente avec la température. La différence paraît byzantine jusqu’au jour où un étudiant écrit que l’eau se dissout dans l’air comme du sucre dans du café, et cherche alors une « solubilité » qui n’existe pas.</p>
-<p><strong>« Le radiateur assèche l’air. »</strong> Il fait baisser l’humidité relative sans retirer une molécule d’eau. Ce qui assèche vraiment, c’est le <strong>renouvellement d’air</strong>. Laisser passer cette phrase, c’est perdre le piège numéro un de l’épreuve.</p>
-<p><strong>« On aère pour assécher. »</strong> Vrai en hiver, faux en été, la cave le prouve. La règle correcte porte sur l’<strong>humidité absolue</strong>, jamais sur l’humidité relative. C’est la même erreur qui fait installer des extracteurs inutiles dans des locaux humides.</p>
-</div>
+<h2 id="le-seul-savoir-de-niveau-3-de-la-famille-a">Le seul savoir de niveau 3 de la famille A</h2>
+
+<p><strong>A4-2, évolutions de l’air et bilans</strong>, est le seul savoir de la famille A classé au niveau 3 pour l’option C. Il revient à toutes les sessions, et c’est celui où une hésitation se voit immédiatement, les étudiants sentent quand on lit le diagramme sans savoir ce qu’il représente.</p>
+
+<p>Trois définitions, deux constantes, six évolutions : tout le reste s’en déduit. Et chacune de ces évolutions a son équivalent domestique, que tout le monde a observé sans le nommer.</p>
+
+<div class="cle">
+
+<p>La phrase qui règle la moitié des malentendus : <strong>l’humidité relative ne dit rien de la quantité d’eau.</strong> Elle dit à quelle distance on est de la saturation, et cette distance dépend de la température. C’est pourquoi l’air d’hiver à 90 % est bien plus sec que l’air d’été à 40 %.</p>
+
+</div>
+
+<h2 id="la-buee-du-miroir-la-saturation">La buée du miroir : la saturation</h2>
+
+<p>Vous prenez une douche. Le miroir se couvre de buée, la fenêtre aussi, mais le mur carrelé reste sec. Trois surfaces dans la même pièce, trois comportements. Tout l’air humide est là.</p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>La douche <strong>ajoute de la vapeur</strong> à l’air : son humidité absolue monte.</li>
+
+<li>Le miroir et la vitre sont les surfaces <strong>les plus froides</strong> de la pièce.</li>
+
+<li>Au contact, l’air se refroidit. En dessous d’une certaine température, il <strong>ne peut plus porter</strong> toute son eau : le surplus se dépose.</li>
+
+<li>Cette température, c’est le <strong>point de rosée</strong>.</li>
+
+</ol>
+
+</div>
+
+<div class="formule">
+
+<p><strong>φ = pv / pvs(θ)</strong> · <strong>rosée : la température où pvs(θr) = pv</strong></p>
+
+<ul>
+
+<li><strong>pv</strong><span>: pression partielle de la vapeur présente, en pascals</span></li>
+
+<li><strong>pvs(θ)</strong><span>: pression de vapeur <strong>saturante</strong>, qui ne dépend que de la température</span></li>
+
+<li>refroidir sans sécher ne change pas pv, mais fait chuter pvs</li>
+
+</ul>
+
+<blockquote>
+
+<p>Ordres de grandeur de pvs : <strong>611 Pa à 0 °C</strong>, <strong>1 228 à 10 °C</strong>, <strong>2 339 à 20 °C</strong>, <strong>4 246 à 30 °C</strong>. Elle <strong>double tous les 10 kelvins</strong>, c’est le nombre qui explique presque tout.</p>
+
+</blockquote>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La salle de bain, calculée en entier</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Salle de bain à 22 °C. Avant la douche, humidité relative 50 %.</p>
+
+<p>pvs(22) = 2 639 Pa, donc pv = 1 320 Pa. Le point de rosée est la température où pvs vaut 1 320 Pa, soit <strong>11,1 °C</strong>. Le miroir, à 19 °C, reste sec.</p>
+
+<p>Pendant la douche, l’humidité monte à 85 %. pv = 0,85 × 2 639 = <strong>2 243 Pa</strong>, et la rosée passe à <strong>19,4 °C</strong>. Le miroir, toujours à 19 °C, est maintenant <strong>sous la rosée</strong> : il se couvre.</p>
+
+<p>Le mur carrelé, lui, est à 21 °C : il reste au-dessus, et il reste sec. La vitre, à 14 °C par temps froid, était déjà condamnée avant même la douche.</p>
+
+<p>Le prolongement professionnel est immédiat, et c’est le lien avec le Cours 1 : un <strong>pont thermique</strong> est une surface plus froide que la paroi courante. Si sa température descend sous la rosée ambiante, il condense, et la moisissure suit. La trace noire dans l’angle du mur, c’est le miroir de la salle de bain, en permanence.</p>
+
+<p>Deuxième prolongement, celui du métier : un réseau d’<strong>eau glacée</strong> circule à 7 °C, très en dessous de la rosée de n’importe quel local. Son calorifuge doit donc porter un <strong>pare-vapeur continu</strong>, sinon la vapeur diffuse à travers l’isolant, condense sur le tube, et personne ne le voit avant la corrosion.</p></div></details>
+
+</div><h2 id="le-verre-de-soda-et-pourquoi-on-compte-en-air-sec">Le verre de soda, et pourquoi on compte en air sec</h2>
+
+<p>Un verre glacé « transpire » : de l’eau apparaît sur sa paroi extérieure. Elle ne vient pas du verre, elle vient de <strong>l’air de la pièce</strong>. C’est la même condensation que le miroir, sur un objet froid.</p>
+
+<p>Cette scène pose la question qui structure tout le sujet : <strong>quand de l’eau apparaît ou disparaît, la masse d’air humide change.</strong> Sur quoi rapporte-t-on alors les grandeurs ?</p>
+
+<div class="cle">
+
+<p>La masse d’<strong>air sec</strong> traverse toute l’installation sans jamais changer : on peut lui ajouter ou lui retirer de l’eau, elle reste la même. C’est le seul invariant disponible. Toutes les unités en <strong>« par kilogramme d’air sec »</strong> viennent de là, et c’est la réponse à « pourquoi on complique ? ».</p>
+
+</div>
+
+<div class="formule">
+
+<p><strong>r = 0,622 × pv / (P − pv)</strong>, l’humidité absolue</p>
+
+<ul>
+
+<li><strong>r</strong><span>: masse d’eau par kg d’air sec, en kg/kg (× 1 000 pour des g/kg)</span></li>
+
+<li><strong>P</strong><span>: pression atmosphérique, 101 325 Pa au niveau de la mer</span></li>
+
+<li><strong>0,622</strong><span>: rapport des masses molaires, <strong>18,0 / 29,0</strong></span></li>
+
+</ul>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La démonstration du 0,622, en cinq lignes</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’air humide est un <strong>mélange de deux gaz</strong> : de l’air sec et de la vapeur d’eau. Chacun occupe tout le volume et exerce sa propre pression partielle ; leur somme fait la pression atmosphérique. C’est la loi de Dalton.</p>
+
+<p>Pour chaque gaz, dans le même volume V et à la même température T :</p>
+
+<ul>
+
+<li>vapeur : <strong>pv · V = m_v · (R / M_v) · T</strong></li>
+
+<li>air sec : <strong>pa · V = m_a · (R / M_a) · T</strong></li>
+
+</ul>
+
+<p>Le rapport élimine V, T et R :</p>
+
+<p><strong>m_v / m_a = (pv / pa) × (M_v / M_a) = (pv / pa) × 18,0 / 29,0</strong></p>
+
+<p>Et comme pa = P − pv, on obtient <strong>r = 0,622 × pv / (P − pv)</strong>.</p>
+
+<p>Deux enseignements à en tirer. D’abord, <strong>r dépend de la pression atmosphérique</strong> : à 1 500 m, P vaut environ 84 000 Pa et le même pv donne un r supérieur de 20 %. C’est pourquoi les logiciels demandent l’altitude, et pourquoi un diagramme porte toujours sa pression.</p>
+
+<p>Ensuite, le dénominateur <strong>P − pv</strong> justifie l’approximation r ≈ 0,622 pv/P : la vapeur ne dépasse jamais quelques milliers de pascals contre 101 325, soit moins de 4 %. Acceptable en ordre de grandeur, pas pour un calcul de batterie.</p></div></details>
+
+</div><div class="formule">
+
+<p><strong>h = 1,006 × θ + r × (2 501 + 1,83 × θ)</strong>, l’enthalpie, en kJ/kg as</p>
+
+<ul>
+
+<li><strong>1,006</strong><span>: chaleur massique de l’air sec, en kJ/(kg·K)</span></li>
+
+<li><strong>2 501</strong><span>: chaleur latente de vaporisation de l’eau <strong>à 0 °C</strong>, en kJ/kg</span></li>
+
+<li><strong>1,83</strong><span>: chaleur massique de la vapeur, en kJ/(kg·K)</span></li>
+
+<li><strong>r en kg/kg</strong><span>dans cette écriture : l’erreur du facteur 1 000 est la plus fréquente</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>Lecture : chauffer l’air sec, plus vaporiser l’eau à 0 °C, plus chauffer cette vapeur. La référence à 0 °C est conventionnelle : seules les <strong>différences</strong> d’enthalpie ont un sens.</p>
+
+</blockquote>
+
+</div>
+
+<div class="cle">
+
+<p>Le poids relatif des deux termes fonde tout le traitement d’air, et il surprend toujours. À 20 °C et 10 g/kg : le terme sensible vaut <strong>20 kJ</strong>, le terme latent <strong>25 kJ</strong>. <strong>L’eau portée par l’air pèse plus lourd que l’air lui-même.</strong></p>
+
+</div>
+
+<figure class="schema"><div class="dessin" data-schema="air-humide"></div><figcaption>Le diagramme réduit à sa structure, avec la construction du point de rosée.</figcaption></figure>
+
+<h2 id="le-radiateur-qui-asseche-l-air-le-chauffage-sec">Le radiateur qui « assèche l’air » : le chauffage sec</h2>
+
+<p>Tout le monde a entendu qu’un radiateur assèche l’air. C’est faux et vrai en même temps, et démêler les deux règle définitivement le piège le plus fréquent de l’épreuve.</p>
+
+<div class="piege">
+
+<p>Chauffer un air <strong>ne lui retire pas une molécule d’eau</strong>. Son humidité absolue r ne bouge pas ; seule son humidité relative s’effondre, parce que pvs a augmenté. Sur le diagramme, l’évolution est une <strong>horizontale</strong>.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">L&#39;air d&#39;hiver, du dehors au salon, le calcul qui convainc</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Air extérieur à <strong>0 °C et 80 %</strong>. pvs(0) = 611 Pa, donc pv = 489 Pa et <strong>r = 3,0 g/kg</strong>.</p>
+
+<p>On le fait entrer et on le chauffe à 20 °C, sans rien ajouter. r reste à <strong>3,0 g/kg</strong>. Mais pvs(20) = 2 339 Pa, et pv est toujours à 489 :</p>
+
+<p><strong>φ = 489 / 2 339 = 21 %.</strong></p>
+
+<p>L’air est passé de 80 % à 21 % <strong>sans qu’on lui retire quoi que ce soit</strong>. Voilà pourquoi les logements sont secs en hiver, pourquoi la peau tire et pourquoi les plantes souffrent, et voilà aussi pourquoi la formulation « le radiateur assèche » est trompeuse : c’est le <strong>renouvellement d’air</strong> qui assèche, en apportant de l’air extérieur pauvre en eau, et le chauffage ne fait que rendre le phénomène visible sur l’hygromètre.</p>
+
+<p>L’expérience à faire faire, si vous avez une sonde : relever l’humidité relative dehors par temps froid (souvent 90 %) puis dedans après chauffage, sans occupants. <strong>Même air, même eau, deux nombres qui n’ont rien à voir.</strong></p>
+
+<p>Et le calcul inverse, pour la culture professionnelle : remonter ce salon à 45 % d’humidité relative demanderait r = 6,5 g/kg, soit <strong>3,5 g d’eau par kilogramme d’air</strong>. Sur un renouvellement de 150 m³/h, cela fait 0,63 litre par heure à vaporiser en permanence, l’ordre de grandeur d’un humidificateur domestique, et la raison pour laquelle il faut le remplir tous les jours.</p></div></details>
+
+</div><h2 id="l-haleine-visible-le-melange-de-deux-airs">L’haleine visible : le mélange de deux airs</h2>
+
+<p>Par temps froid, on voit son souffle. Ce n’est pas de la vapeur, la vapeur est invisible. Ce sont des <strong>gouttelettes</strong> : de l’eau qui a condensé.</p>
+
+<p>Et c’est le seul phénomène domestique qui illustre le cas particulier du mélange, celui qui tombe régulièrement en question de cours.</p>
+
+<div class="formule">
+
+<p><strong>Le mélange est un barycentre</strong></p>
+
+<ul>
+
+<li><strong>Air sec :</strong><span>qm = qm₁ + qm₂</span></li>
+
+<li><strong>Eau :</strong><span>qm × r = qm₁ × r₁ + qm₂ × r₂</span></li>
+
+<li><strong>Énergie :</strong><span>qm × h = qm₁ × h₁ + qm₂ × h₂</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>r et h sont donc des <strong>moyennes pondérées par les débits massiques</strong>. Le point de mélange se trouve sur le <strong>segment</strong> joignant les deux points, plus près de l’air le plus abondant.</p>
+
+</blockquote>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi le souffle devient visible, et ce que cela dit du rejet d&#39;une CTA</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’air expiré sort à <strong>34 °C et pratiquement saturé</strong>, donc r ≈ 34 g/kg. L’air extérieur est à <strong>0 °C et 80 %</strong>, donc r = 3,0 g/kg.</p>
+
+<p>Quand les deux se mélangent, le point de mélange parcourt le <strong>segment</strong> entre ces deux états. Or ce segment, tracé sur le diagramme, <strong>passe au-dessus de la courbe de saturation</strong> : les points intermédiaires demanderaient à l’air de porter plus d’eau qu’il ne peut. Le surplus condense en gouttelettes, le brouillard qu’on voit.</p>
+
+<p>C’est le cas particulier à connaître : <strong>le mélange de deux airs proches de la saturation et de températures très différentes peut condenser</strong>, alors qu’aucun des deux ne condensait.</p>
+
+<p>Le même phénomène, en version professionnelle : le <strong>panache blanc</strong> au rejet d’une centrale de traitement d’air ou d’une tour de refroidissement en hiver. Ce n’est ni de la fumée ni un défaut : c’est ce segment qui passe au-dessus de la saturation. La question tombe régulièrement sous la forme « expliquer la présence de brouillard au rejet ».</p>
+
+<p>Et une conséquence de conception : sur un site sensible, proximité d’une route, d’un aéroport, on impose parfois une tour « sans panache », qui réchauffe l’air rejeté juste assez pour que le segment repasse sous la saturation.</p></div></details>
+
+</div><h2 id="le-linge-qui-seche-temperature-humide-et-adiabatique">Le linge qui sèche : température humide et adiabatique</h2>
+
+<p>Un linge sèche vite par temps chaud et sec, mal par temps doux et humide. Et un linge mouillé posé sur la peau donne froid. Ces deux faits sont la même grandeur : la <strong>température humide</strong>.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le mécanisme, et les trois applications qui en découlent</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La température humide est celle que lit un thermomètre dont le bulbe est entouré d’une mèche mouillée ventilée. L’eau s’évapore, prend sa chaleur latente à l’air, et refroidit le bulbe jusqu’à un équilibre.</p>
+
+<p>Cet équilibre est atteint quand l’air qui quitte la mèche est saturé : l’énergie prise en chaleur <strong>sensible</strong> est exactement rendue en chaleur <strong>latente</strong>. L’évolution se fait donc <strong>à enthalpie quasi constante</strong>, ce qui est la définition de la saturation adiabatique, et la raison pour laquelle l’isotherme humide se confond presque avec l’isenthalpe.</p>
+
+<p>L’écart entre température sèche et humide mesure directement la <strong>capacité de séchage</strong>. À 30 °C et 30 % d’humidité relative, l’humide est à 18 °C : douze kelvins d’écart, le linge sèche vite. À 20 °C et 90 %, elle est à 19 °C : un kelvin, il ne sèche pas.</p>
+
+<p><strong>Trois applications, un seul mécanisme.</strong> La <strong>brumisation</strong> de terrasse en été : on pulvérise de l’eau, elle s’évapore, l’air se refroidit de plusieurs kelvins sans dépenser un watt de froid. Le <strong>rafraîchissement adiabatique</strong> d’un data center ou d’un atelier : même principe, en grand. La <strong>tour de refroidissement</strong> d’un groupe froid : l’eau se refroidit en s’évaporant partiellement, ce qui permet de condenser vers 35 °C au lieu de 45, voir le Cours 4.</p>
+
+<p>Les étudiants croient ces trois choses sans rapport. Les relier en une séance est un des meilleurs moments du programme.</p></div></details>
+
+</div><h2 id="la-cave-humide-en-aout-le-contre-intuitif">La cave humide en août : le contre-intuitif</h2>
+
+<p>Une cave est fraîche, disons <strong>14 °C</strong>. En août, il fait <strong>30 °C et 60 %</strong> dehors. Pour l’assécher, on ouvre les soupiraux. <strong>C’est exactement l’inverse qu’il faut faire</strong>, et le calcul le montre en trois lignes.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le calcul, et la règle qui en sort</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Air extérieur à 30 °C et 60 % : pvs(30) = 4 246 Pa, pv = 2 548 Pa, donc <strong>r = 16,0 g/kg</strong>. Son point de rosée est à <strong>21,4 °C</strong>.</p>
+
+<p>Cet air entre dans la cave et rencontre des murs à 14 °C, <strong>bien en dessous de sa rosée</strong>. Il condense sur les parois. Aérer une cave en été, c’est y <strong>apporter de l’eau</strong>, pas en retirer.</p>
+
+<p>En janvier, l’air extérieur à 5 °C et 90 % porte <strong>r = 4,9 g/kg</strong>. Réchauffé à 14 °C dans la cave, son humidité relative tombe à 49 % : il est <strong>assoiffé</strong> et absorbe l’humidité des murs. <strong>C’est en hiver qu’on aère une cave.</strong></p>
+
+<p>La règle générale, qu’on peut faire formuler par les étudiants : <strong>on ventile pour assécher quand l’air entrant a une humidité absolue plus faible que l’air intérieur</strong>, jamais sur la base de l’humidité relative.</p>
+
+<p>Le prolongement professionnel est direct : c’est le principe de la régulation d’une ventilation de local humide sur <strong>humidité absolue</strong> ou sur un différentiel de rosée, et non sur l’hygrostat seul. C’est aussi ce qui explique les déshumidificateurs de piscine, qui ne sont pas des extracteurs.</p></div></details>
+
+</div><h2 id="le-pare-brise-embue-refroidir-pour-secher">Le pare-brise embué : refroidir pour sécher</h2>
+
+<p>Pare-brise embué, on met la climatisation, même en hiver, et même si l’on veut de l’air chaud. Le geste paraît absurde et c’est le meilleur résumé du traitement d’air.</p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>L’air est <strong>refroidi sous son point de rosée</strong> par l’évaporateur : il perd son eau, qui coule sous la voiture.</li>
+
+<li>Il ressort <strong>froid et saturé</strong>, mais avec une humidité absolue bien plus basse.</li>
+
+<li>Il est <strong>réchauffé</strong> par le circuit de chauffage : son humidité relative s’effondre.</li>
+
+<li>Cet air très sec absorbe la buée du pare-brise.</li>
+
+</ol>
+
+</div>
+
+<div class="cle">
+
+<p>Refroidir puis réchauffer est la <strong>seule</strong> façon de sécher de l’air. C’est le <strong>post-chauffage</strong> d’une centrale de traitement d’air, et il consomme du froid et du chaud en même temps, ce qui n’est pas un défaut de conception mais la conséquence de la physique.</p>
+
+</div>
+
+<figure class="schema"><div class="dessin" data-schema="bipasse-batterie"></div><figcaption>Une batterie froide ne traite qu’une partie de l’air : la sortie est un mélange.</figcaption></figure>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi l&#39;air ne sort jamais saturé d&#39;une batterie froide</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Une batterie ne refroidit pas l’air uniformément. Une partie touche les ailettes et ressort <strong>saturée à la température de surface</strong> ; le reste passe entre les ailettes sans rien changer. L’air de sortie est le <strong>mélange des deux</strong>, et un mélange n’est jamais sur la courbe de saturation.</p>
+
+<p>La température de surface fictive s’appelle l’<strong>ADP</strong>, <em>apparatus dew point</em> : c’est le point où la droite d’évolution, prolongée, coupe la saturation. La proportion d’air non traité est le <strong>facteur de bipasse</strong>.</p>
+
+<p>Ordres de grandeur : <strong>0,3 à 0,4</strong> pour une batterie de 3 ou 4 rangs, <strong>0,05 à 0,15</strong> pour 8 rangs à pas serré. Plus la batterie est profonde, plus le bipasse est faible, plus l’air sort proche de la saturation, et plus la perte de charge, donc le ventilateur, augmentent.</p>
+
+<p>Cela explique la question posée à chaque lecture de point de sortie : <strong>pourquoi 90 % et non 100 %</strong>. Et cela explique aussi qu’une batterie froide <strong>déshumidifie forcément</strong> dès que son ADP passe sous la rosée de l’air entrant, même si ce n’était pas le but recherché.</p>
+
+<p>Le calcul complet de l’ADP n’est pas au programme. Savoir dire d’où vient la direction de la droite l’est.</p></div></details>
+
+</div><h2 id="les-six-evolutions-une-fois-qu-on-a-les-scenes">Les six évolutions, une fois qu’on a les scènes</h2>
+
+<div class="outil" data-outil="evolution">
+
+
+
+</div>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Évolution</th>
+
+<th>Scène du quotidien</th>
+
+<th>Direction sur le diagramme</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Chauffage sec</td>
+
+<td>le radiateur en hiver</td>
+
+<td><strong>horizontale</strong> vers la droite</td>
+
+</tr>
+
+<tr>
+
+<td>Refroidissement sec</td>
+
+<td>l’air qui longe une vitre froide</td>
+
+<td>horizontale vers la gauche</td>
+
+</tr>
+
+<tr>
+
+<td>Refroidissement avec déshumidification</td>
+
+<td>le pare-brise, la buée du miroir</td>
+
+<td>vers le bas, <strong>pointé vers l’ADP</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Humidification à la vapeur</td>
+
+<td>la casserole qui bout</td>
+
+<td><strong>verticale</strong> vers le haut</td>
+
+</tr>
+
+<tr>
+
+<td>Humidification adiabatique</td>
+
+<td>le linge qui sèche, la brumisation</td>
+
+<td>le long d’une <strong>isenthalpe</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Mélange</td>
+
+<td>l’haleine visible en hiver</td>
+
+<td><strong>barycentre</strong> sur le segment</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<h2 id="recuperer-sur-l-air-rejete">Récupérer sur l’air rejeté</h2>
+
+<div class="outil" data-outil="ventilation">
+
+
+
+</div>
+
+<div class="formule">
+
+<p><strong>ε = (θ2 − θ1) / (θ4 − θ1)</strong>, efficacité en chaleur sensible</p>
+
+<ul>
+
+<li><strong>θ1</strong><span>air neuf entrant · <strong>θ2</strong> air neuf sortant · <strong>θ4</strong> air repris entrant</span></li>
+
+<li>plaques <strong>50 à 70 %</strong> · roue <strong>70 à 85 %</strong> · double flux de logement <strong>85 à 92 %</strong></li>
+
+</ul>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le givre du récupérateur, et le paradoxe du climat froid</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Côté rejet, l’air part de l’ambiance, 20 °C et 6 g/kg, donc une rosée vers <strong>7 °C</strong>. En cédant sa chaleur, il descend souvent sous cette rosée : il <strong>condense dans l’échangeur</strong>, côté rejet. Un récupérateur a donc un bac et un siphon, comme une batterie froide, ce qui surprend toujours.</p>
+
+<p>Quand l’extérieur descend, ce rejet finit sous 0 °C et l’eau <strong>gèle</strong>. Le givre obstrue les canaux, le débit d’extraction s’effondre, l’efficacité chute, et la pression peut déformer les plaques. Le seuil est atteint vers <strong>−5 à −10 °C extérieurs</strong> selon l’humidité intérieure.</p>
+
+<p>Les parades, par ordre de coût : <strong>bipasse</strong> d’air neuf, <strong>réduction du débit</strong>, <strong>préchauffage</strong> par une batterie antigel, <strong>ralentissement de la roue</strong> sur un rotatif. Toutes dégradent la récupération au moment où l’on en aurait le plus besoin.</p>
+
+<p>Et le paradoxe à faire énoncer : <strong>plus l’échangeur est efficace, plus il gèle tôt</strong>, puisqu’il refroidit davantage l’air rejeté. Les 92 % d’un très bon échangeur ne sont pas tenus par grand froid. C’est une excellente question ouverte, et il n’y a pas de réponse simple, les fabricants arbitrent différemment.</p></div></details>
+
+</div><h2 id="d-ou-viennent-les-formules-qu-on-applique-sans-y-penser">D’où viennent les formules qu’on applique sans y penser</h2>
+
+<p>Trois relations reviennent dans tous les corrigés : le coefficient <strong>0,34</strong>, la position du point de mélange, et la direction de la <strong>droite de soufflage</strong>. Elles s’appliquent très bien sans être comprises, jusqu’au jour où l’énoncé sort du cas ordinaire. Les démontrer prend dix minutes et rend chacune vérifiable.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le fameux 0,34 : ce qu&#39;il cache, et quand il ment</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La formule des bureaux d’études s’écrit <strong>P = 0,34 × qv × Δθ</strong>, avec P en watts, qv en m³/h et Δθ en kelvins. D’où sort ce nombre ?</p>
+
+<p>De la formule générale, écrite en débit <strong>massique</strong> :</p>
+
+<p>P = qm · cp · Δθ, avec cp = 1,006 kJ/(kg·K)</p>
+
+<p>On veut un débit <strong>volumique</strong> en m³/h : qm = qv · ρ / 3 600. Donc</p>
+
+<p>P = qv · <strong>(cp · ρ / 3,6)</strong> · Δθ, en watts</p>
+
+<p>Avec ρ = 1,2 kg/m³ : <strong>1,006 × 1,2 / 3,6 = 0,335</strong>, arrondi à <strong>0,34</strong>.</p>
+
+<div class="cle">
+
+<p>Le 0,34 n’est pas une constante de la physique : c’est <strong>cp × ρ</strong>, et il embarque une masse volumique de 1,2 kg/m³. Toute la fiabilité de la formule tient à cette hypothèse-là.</p>
+
+</div>
+
+<p><strong>Quand elle tient, et quand elle glisse</strong> :</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Air</th>
+
+<th style="text-align: right;">Masse volumique</th>
+
+<th style="text-align: right;">Écart sur P</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>20 °C, 8 g/kg (l’hypothèse)</td>
+
+<td style="text-align: right;">1,189 kg/m³</td>
+
+<td style="text-align: right;">référence</td>
+
+</tr>
+
+<tr>
+
+<td>15 °C : air soufflé en froid</td>
+
+<td style="text-align: right;">1,208 kg/m³</td>
+
+<td style="text-align: right;">+ 1,6 %</td>
+
+</tr>
+
+<tr>
+
+<td>0 °C : air neuf d’hiver</td>
+
+<td style="text-align: right;">1,286 kg/m³</td>
+
+<td style="text-align: right;"><strong>+ 8 %</strong></td>
+
+</tr>
+
+<tr>
+
+<td>20 °C à 1 500 m d’altitude</td>
+
+<td style="text-align: right;">0,986 kg/m³</td>
+
+<td style="text-align: right;"><strong>− 17 %</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p>Sur une batterie de préchauffage d’air neuf à 0 °C, le 0,34 <strong>sous-estime de 8 %</strong>. En station de montagne, il <strong>surestime de 17 %</strong>. Deux erreurs qu’aucun contrôle de plausibilité ne rattrape, puisque le résultat reste vraisemblable.</p>
+
+<p><strong>Et surtout, il ne compte que le sensible.</strong> Dès qu’il y a de l’eau qui apparaît ou disparaît, la seule formule juste est <strong>P = qm × Δh</strong>, et il faut passer par l’enthalpie. Le réflexe à installer : <em>y a-t-il un changement de r ?</em> Si oui, le 0,34 est hors sujet.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">La droite de soufflage : sa direction ne dépend pas du débit</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un local reçoit <strong>Ps</strong> en chaleur sensible et <strong>Pl</strong> en chaleur latente. On y souffle un air plus froid et plus sec que l’ambiance, avec un débit qm. Deux bilans, un pour la chaleur, un pour l’eau :</p>
+
+<ul>
+
+<li>sensible : <strong>Ps = qm · cp · (θ_amb − θ_s)</strong></li>
+
+<li>latente : <strong>Pl = qm · Lv · (r_amb − r_s)</strong>, avec Lv ≈ 2 501 kJ/kg</li>
+
+</ul>
+
+<p>En divisant l’enthalpie totale par l’eau échangée, <strong>qm disparaît</strong> :</p>
+
+<p>Δh / Δr = (P_tot / qm) / (Pl / (qm · Lv)) = <strong>Lv / (1 − SHR)</strong></p>
+
+<p>où <strong>SHR = Ps / P_tot</strong> est le facteur de chaleur sensible.</p>
+
+<div class="cle">
+
+<p><strong>La direction de la droite de soufflage ne dépend que du rapport des charges, pas du débit.</strong> Le débit fixe <em>jusqu’où</em> on va sur cette droite ; le SHR fixe <em>dans quelle direction</em>. C’est pour cela que les diagrammes portent un rapporteur de SHR sur leur bord : la pente se lit, elle ne se calcule pas.</p>
+
+</div>
+
+<p>Vérification sur un cas réel, 9 kW sensible et 2,5 kW latent, donc SHR = 0,783. La formule annonce Δh/Δr = 2 501 / 0,217 = <strong>11 500 kJ par kg d’eau</strong>. Le calcul complet du même local donne Δh = 11,76 kJ/kg pour Δr = 1,01 g/kg, soit <strong>11 640</strong> : 1 % d’écart, qui vient du terme sensible de la vapeur (1,83 θ) négligé ici.</p>
+
+<p><strong>La conséquence pratique</strong>, qui tombe régulièrement : si l’on double le débit soufflé sans rien changer aux charges, le point de soufflage <strong>se rapproche de l’ambiance en restant sur la même droite</strong>. Il ne change pas de direction. Un candidat qui redessine une pente différente n’a pas compris ce qu’il trace.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le mélange : la règle du levier, démontrée</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le cours a posé les trois bilans du mélange. En voici la conséquence géométrique, qui vaut d’être sue parce qu’elle <strong>remplace un calcul par une lecture</strong>.</p>
+
+<p>Du bilan d’eau, qm·r = qm₁·r₁ + qm₂·r₂, avec qm = qm₁ + qm₂ :</p>
+
+<p>(qm₁ + qm₂) r = qm₁ r₁ + qm₂ r₂ qm₁ (r − r₁) = qm₂ (r₂ − r)</p>
+
+<p><strong>(r − r₁) / (r₂ − r) = qm₂ / qm₁</strong></p>
+
+<p>Le point de mélange partage donc le segment <strong>dans le rapport inverse des débits</strong> : il est plus près de l’air le plus abondant, et exactement d’autant. Le même calcul sur les enthalpies donne le même rapport, c’est ce qui garantit que le point est bien sur le segment, et non ailleurs.</p>
+
+<p><strong>Le cas usuel de l’épreuve</strong> : 30 % d’air neuf, 70 % de repris. Le point de mélange est au <strong>tiers</strong> du chemin depuis le repris vers le neuf. Sur un diagramme, cela se pointe à la règle en trois secondes.</p>
+
+<div class="piege">
+
+<p>Cette règle du levier suppose que le segment <strong>reste dans le domaine de l’air non saturé</strong>. S’il coupe la courbe de saturation, souffle visible, panache de rejet, le point réel n’est plus sur le segment : il est sur la saturation, et le reste a condensé. C’est l’hypothèse qui porte la règle, et c’est elle qui dit quand la règle tombe.</p>
+
+</div></div></details>
+
+</div><h2 id="du-local-a-la-centrale-le-calcul-retourne">Du local à la centrale : le calcul retourné</h2>
+
+<p>Le cours a lu des évolutions sur un diagramme. Un bureau d’études fait l’inverse : il part des <strong>apports du local</strong> et en déduit le débit, le point de soufflage et les puissances des batteries. C’est le calcul qui structure toute l’unité U41 côté air, et il se fait dans un ordre qui ne change jamais.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Cinq étapes, de la charge du local au débit de la CTA</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Les données</strong>, celles d’un plateau de bureaux en été : ambiance <strong>25 °C et 50 %</strong>, apports <strong>9 kW sensibles</strong> et <strong>2,5 kW latents</strong>.</p>
+
+<p><strong>Étape 1, caractériser l’ambiance.</strong> pvs(25) = 3 162 Pa, donc pv = 1 581 Pa et</p>
+
+<p>r = 0,622 × 1 581 / (101 325 − 1 581) = <strong>9,86 g/kg</strong> h = 1,006 × 25 + 0,00986 × (2 501 + 1,83 × 25) = <strong>50,3 kJ/kg</strong> point de rosée : <strong>13,9 °C</strong></p>
+
+<p>Ce dernier nombre est déjà un résultat : <strong>on ne pourra pas souffler sous 13,9 °C sans que l’air soufflé soit plus sec que l’ambiance</strong>, ce qui est justement le but, mais aussi ce qui impose une batterie froide.</p>
+
+<p><strong>Étape 2, choisir l’écart de soufflage.</strong> C’est un <strong>choix</strong>, pas un calcul, et c’est la seule liberté de tout l’exercice. En diffusion de plafond, l’usage retient <strong>8 à 10 K</strong> d’écart : au-delà, le jet froid tombe avant de se mélanger et l’on ressent un courant d’air. On retient <strong>16 °C</strong>, soit 9 K.</p>
+
+<p><strong>Étape 3, le débit, par le bilan sensible.</strong></p>
+
+<p>qm = 9 / (1,006 × 9) = <strong>0,994 kg d’air sec par seconde</strong></p>
+
+<p><strong>Étape 4, l’humidité du soufflage, par le bilan d’eau.</strong></p>
+
+<p>Δr = 2,5 / (0,994 × 2 501) = 1,01 g/kg → r_s = 9,86 − 1,01 = <strong>8,85 g/kg</strong></p>
+
+<p>Soit, à 16 °C, une humidité relative de <strong>78 %</strong>, plausible en sortie de centrale, et c’est le contrôle à faire : au-dessus de 95 %, le point serait irréalisable.</p>
+
+<p><strong>Étape 5, le débit volumique et la puissance totale.</strong> Le volume spécifique de l’air soufflé vaut 0,830 m³/kg :</p>
+
+<p>qv = 0,994 × 0,830 × 3 600 = <strong>2 970 m³/h</strong> P = qm × Δh = 0,994 × (50,3 − 38,5) = <strong>11,7 kW</strong></p>
+
+<div class="cle">
+
+<p><strong>11,7 kW pour 11,5 kW d’apports.</strong> L’écart de 2 % est le contrôle final : le traitement ne fait que reprendre ce que le local a produit, ni plus ni moins. Un résultat de 8 ou de 20 kW signalerait une erreur, et ce contrôle prend cinq secondes.</p>
+
+</div>
+
+<p><strong>Ce que l’étape 2 décide vraiment.</strong> Souffler à 15 °C au lieu de 16 donnerait 2 670 m³/h, 10 % de débit en moins, donc des gaines plus petites et un ventilateur moins gourmand, mais un risque de courant d’air. Souffler à 17 °C donnerait 3 360 m³/h. <strong>La puissance totale, elle, ne bouge pas d’un watt</strong> : 11,7 kW dans les trois cas. C’est l’enseignement de l’étape, et il surprend toujours, le débit se choisit, la puissance se subit.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Là où la méthode change : la batterie qui ne déshumidifie pas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Toute la méthode ci-dessus suppose qu’il y a <strong>du latent à traiter</strong>. Deux cas sortent du cadre, et ils se reconnaissent avant de calculer.</p>
+
+<p><strong>Premier cas, la batterie reste au-dessus du point de rosée.</strong> Un air à <strong>28 °C et 40 %</strong> a un point de rosée de <strong>13,1 °C</strong>. Refroidi à 18 °C par une batterie dont la température de surface reste supérieure à 13 °C, <strong>il ne condense rien</strong> : r ne bouge pas, l’humidité relative monte de 40 à <strong>73 %</strong>, et l’évolution est une simple horizontale vers la gauche.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 50%" />
+
+<col style="width: 50%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th></th>
+
+<th>Méthode</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Batterie <strong>sèche</strong></td>
+
+<td>P = qm · cp · Δθ, ou le 0,34 : l’enthalpie est inutile</td>
+
+</tr>
+
+<tr>
+
+<td>Batterie <strong>humide</strong></td>
+
+<td>P = qm · Δh, obligatoirement</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="piege">
+
+<p>Sur une batterie sèche, <strong>le siphon ne coule pas</strong>. Ce n’est ni une panne ni un bouchon : c’est la physique. Un exploitant qui « débouche » un siphon sec perd sa matinée, et la question tombe sous la forme « expliquer l’absence de condensats ».</p>
+
+</div>
+
+<p><strong>Second cas, le SHR est trop bas pour un simple soufflage.</strong> Quand la charge latente devient comparable à la charge sensible, salle de sport, restaurant, piscine, la droite de soufflage plonge si fort qu’elle <strong>exige un air soufflé plus sec que ce qu’une batterie peut produire à cette température</strong>. Il faut alors descendre plus bas que le point voulu, puis <strong>réchauffer</strong>. C’est exactement l’objet du troisième exercice ci-dessous, et c’est le seul moment du programme où l’on paie du chaud et du froid au même instant sans que ce soit une erreur.</p></div></details>
+
+</div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : une batterie froide</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une centrale traite <strong>5 000 m³/h</strong> d’air pris à <strong>30 °C et 60 %</strong>. La batterie froide l’amène à <strong>12 °C et 95 %</strong>. Calculer la puissance de la batterie, la part sensible, la part latente, et le débit de condensats.</p>
+
+<p><strong>Résolution.</strong></p>
+
+<p><em>Les deux points.</em> pvs(30) = 4 237 Pa → pv = 2 542 Pa → <strong>r₁ = 16,0 g/kg</strong>, h₁ = 30,2 + 40,9 = <strong>71,1 kJ/kg</strong>, rosée <strong>21,4 °C</strong>. pvs(12) = 1 400 Pa → pv = 1 330 Pa → <strong>r₂ = 8,27 g/kg</strong>, h₂ = <strong>32,9 kJ/kg</strong>.</p>
+
+<p><em>Le contrôle préalable, avant tout calcul.</em> La rosée de l’air entrant est de 21,4 °C, la sortie est à 12 °C : <strong>on passe sous la rosée, donc la batterie est humide.</strong> Le 0,34 est hors sujet, il faut l’enthalpie. C’est la première ligne de la copie.</p>
+
+<p><em>Le débit massique.</em> v₁ = 0,881 m³/kg d’air sec. qm = (5 000 / 3 600) / 0,883 = <strong>1,577 kg/s</strong></p>
+
+<p><em>Les puissances.</em> P totale = 1,577 × (71,1 − 32,9) = <strong>60,1 kW</strong> P sensible = 1,577 × 1,006 × (30 − 12) = <strong>28,5 kW</strong> P latente = 60,1 − 28,5 = <strong>31,6 kW</strong></p>
+
+<p><em>Les condensats.</em> 1,577 × (16,0 − 8,27) × 3,6 = <strong>43,9 kg/h</strong>, soit 44 litres par heure.</p>
+
+<p><strong>Les trois vérifications de plausibilité.</strong></p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 30%" />
+
+<col style="width: 40%" />
+
+<col style="width: 30%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Contrôle</th>
+
+<th style="text-align: right;">Valeur</th>
+
+<th>Verdict</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>SHR</td>
+
+<td style="text-align: right;">0,47</td>
+
+<td>plausible en été humide : <strong>le latent dépasse le sensible</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Puissance par m³/h</td>
+
+<td style="text-align: right;">12 W</td>
+
+<td>ordre de grandeur d’une CTA d’été</td>
+
+</tr>
+
+<tr>
+
+<td>Condensats</td>
+
+<td style="text-align: right;">44 L/h</td>
+
+<td>un seau toutes les dix minutes, cohérent</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>L’erreur classique</strong> : calculer 0,34 × 5 000 × 18 = 30,6 kW et s’arrêter là. Le résultat n’est pas absurde (c’est presque la part sensible) mais il <strong>rate la moitié de la puissance</strong>. Une batterie dimensionnée ainsi ne tiendra jamais le local en été humide, et le défaut ne se verra qu’au premier orage de juillet.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : dimensionner le soufflage</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une salle de réunion de 40 personnes présente en été <strong>12 kW d’apports sensibles</strong> et <strong>4 kW d’apports latents</strong>. La consigne est <strong>25 °C, 50 %</strong>. L’écart de soufflage est limité à <strong>10 K</strong>. Déterminer le débit d’air, le point de soufflage, et vérifier qu’il est réalisable.</p>
+
+<p><strong>Résolution.</strong></p>
+
+<p><em>L’ambiance.</em> Comme précédemment : r = <strong>9,86 g/kg</strong>, h = <strong>50,3 kJ/kg</strong>, rosée <strong>13,9 °C</strong>.</p>
+
+<p><em>Le point de soufflage en température.</em> L’écart maximal est de 10 K, donc <strong>θ_s = 15 °C</strong>. On prend le maximum autorisé : c’est ce qui minimise le débit, donc les gaines et le ventilateur.</p>
+
+<p><em>Le débit, par le bilan sensible.</em> qm = 12 / (1,006 × 10) = <strong>1,193 kg/s</strong></p>
+
+<p><em>L’humidité de soufflage, par le bilan d’eau.</em> Δr = 4 / (1,193 × 2 501) = 1,34 g/kg → r_s = 9,86 − 1,34 = <strong>8,52 g/kg</strong></p>
+
+<p><em>La vérification, qui est le vrai travail.</em> À 15 °C, la saturation vaut 10,6 g/kg. Notre point est à 8,52, soit <strong>φ = 80 %</strong> : réalisable, avec de la marge. Le point de rosée du soufflage est de <strong>11,7 °C</strong>, ce qui demande une batterie dont l’ADP descend vers 10 °C, accessible avec de l’eau glacée 7/12.</p>
+
+<p><em>Le débit volumique.</em> v = 0,828 m³/kg → qv = 1,193 × 0,828 × 3 600 = <strong>3 550 m³/h</strong>.</p>
+
+<p><strong>Le contrôle par l’hygiène</strong>, qu’on oublie systématiquement. 40 personnes demandent au minimum 25 m³/h chacune d’air neuf, soit <strong>1 000 m³/h</strong>. Le débit de soufflage étant de 3 550 m³/h, le taux d’air neuf serait de 28 %, compatible. <strong>Si le calcul thermique avait donné 800 m³/h, c’est l’hygiène qui aurait imposé le débit</strong>, et la CTA aurait été dimensionnée sur ce critère-là.</p>
+
+<div class="cle">
+
+<p>Un débit de soufflage est toujours le <strong>maximum de trois exigences</strong> : le bilan sensible, l’air neuf réglementaire, et le brassage minimal du local. Ne vérifier que la première est l’erreur de méthode la plus coûteuse du sujet.</p>
+
+</div></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : quand il faut réchauffer ce qu&#39;on vient de refroidir</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un restaurant présente <strong>6 kW sensibles</strong> et <strong>6 kW latents</strong>, cuisine ouverte, forte occupation. Ambiance <strong>25 °C, 50 %</strong>, soufflage à <strong>16 °C</strong>. Déterminer le traitement complet et ses puissances.</p>
+
+<p><strong>Ce qu’il faut voir avant de calculer.</strong> SHR = 6 / 12 = <strong>0,50</strong>. La droite de soufflage plonge : il faudra retirer beaucoup d’eau pour peu de froid sensible. C’est le signal qu’un simple refroidissement ne suffira pas, et le dire vaut la moitié des points.</p>
+
+<p><em>Le débit, par le sensible.</em> qm = 6 / (1,006 × 9) = <strong>0,663 kg/s</strong></p>
+
+<p><em>L’humidité de soufflage exigée, par le latent.</em> Δr = 6 / (0,663 × 2 501) = 3,62 g/kg → r_s = 9,86 − 3,62 = <strong>6,24 g/kg</strong></p>
+
+<p><em>Le point est-il atteignable ?</em> À 16 °C, 6,24 g/kg correspond à φ = 55 %, rien d’impossible en soi. Mais <strong>son point de rosée est de 7,1 °C</strong> : pour amener l’air à cette humidité absolue, il faut d’abord le refroidir jusqu’à environ 7 °C.</p>
+
+<div class="piege">
+
+<p>Une batterie ne peut pas produire directement « 16 °C et 6,2 g/kg ». Elle amène l’air <strong>froid et presque saturé</strong> ; l’humidité absolue voulue impose la température de sortie, et cette température est bien plus basse que celle du soufflage. <strong>C’est la déshumidification qui commande, pas le refroidissement.</strong></p>
+
+</div>
+
+<p><em>Le traitement complet, en deux temps.</em></p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 23%" />
+
+<col style="width: 23%" />
+
+<col style="width: 23%" />
+
+<col style="width: 30%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Étape</th>
+
+<th>De</th>
+
+<th>Vers</th>
+
+<th style="text-align: right;">Puissance</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Batterie froide</td>
+
+<td>25 °C, 9,86 g/kg</td>
+
+<td>8 °C, 95 % (6,31 g/kg)</td>
+
+<td style="text-align: right;"><strong>17,5 kW de froid</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Post-chauffage</td>
+
+<td>8 °C, 6,31 g/kg</td>
+
+<td>16 °C, 6,31 g/kg</td>
+
+<td style="text-align: right;"><strong>5,3 kW de chaud</strong></td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><em>Le point soufflé obtenu</em> : 16 °C et 6,31 g/kg, soit φ = 56 %, à comparer aux 6,24 g/kg voulus, <strong>1 % d’écart</strong>, le calcul boucle.</p>
+
+<p><strong>Le résultat qui frappe, et qu’il faut commenter.</strong> Le local produit 12 kW d’apports, et la centrale consomme <strong>17,5 kW de froid plus 5,3 kW de chaud</strong>. On paie 46 % de froid en trop pour ensuite réchauffer, au même instant, l’air qu’on vient de refroidir.</p>
+
+<p><strong>Ce que l’étudiant doit rédiger</strong> : « ce n’est pas un défaut de conception, c’est la conséquence du SHR : sécher impose de descendre sous la rosée voulue, et le post-chauffage remonte ensuite à la température de confort. » Puis les parades, car un examinateur les attend : <strong>récupérer</strong> la chaleur de la batterie froide pour le post-chauffage (batterie à eau glycolée en boucle, ou désurchauffe du condenseur), et <strong>traiter l’humidité à part</strong> par une roue dessiccante quand le latent domine à ce point.</p>
+
+<p><strong>Le contrôle de cohérence global.</strong> Froid retiré 17,5, chaud rendu 5,3, donc 12,2 kW nets, les 12 kW d’apports du local, à 2 % près. Si l’écart dépassait 5 %, une des deux batteries serait mal calculée.</p></div></details>
+
+</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Ordre de grandeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>pvs à 0 · 10 · 20 · 30 °C</td>
+
+<td>611 · 1 228 · 2 339 · 4 246 Pa</td>
+
+</tr>
+
+<tr>
+
+<td>r d’un air intérieur d’hiver, 20 °C / 45 %</td>
+
+<td>6,5 g/kg</td>
+
+</tr>
+
+<tr>
+
+<td>r d’un air extérieur à −5 °C, même saturé</td>
+
+<td>2,5 g/kg</td>
+
+</tr>
+
+<tr>
+
+<td>r d’un air d’été, 30 °C / 50 %</td>
+
+<td>13,5 g/kg</td>
+
+</tr>
+
+<tr>
+
+<td>r de l’air expiré, 34 °C saturé</td>
+
+<td>34 g/kg</td>
+
+</tr>
+
+<tr>
+
+<td>Enthalpie d’un air intérieur d’hiver</td>
+
+<td>35 à 40 kJ/kg as</td>
+
+</tr>
+
+<tr>
+
+<td>Volume spécifique vers 20 °C</td>
+
+<td>0,84 m³/kg as</td>
+
+</tr>
+
+<tr>
+
+<td>Rosée d’un local à 20 °C et 50 %</td>
+
+<td>9,3 °C</td>
+
+</tr>
+
+<tr>
+
+<td>Vapeur produite par un occupant</td>
+
+<td>50 à 100 g/h</td>
+
+</tr>
+
+<tr>
+
+<td>Écart de soufflage en chauffage</td>
+
+<td>8 à 12 K au-dessus</td>
+
+</tr>
+
+<tr>
+
+<td>Écart de soufflage en froid</td>
+
+<td>8 à 11 K en dessous, jamais plus</td>
+
+</tr>
+
+<tr>
+
+<td>Efficacité, plaques · roue</td>
+
+<td>50-70 % · 70-85 %</td>
+
+</tr>
+
+<tr>
+
+<td>Facteur de bipasse, 4 rangs · 8 rangs</td>
+
+<td>0,3-0,4 · 0,05-0,15</td>
+
+</tr>
+
+<tr>
+
+<td>Humidité relative de confort</td>
+
+<td>40 à 60 %</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Le test de cohérence le plus rapide : <strong>0,84 m³ par kilogramme d’air sec</strong>, soit environ <strong>1,2 kg par mètre cube</strong>. Tout débit en m³/h se convertit mentalement en kg/s <strong>en divisant par 3 000</strong>. 6 000 m³/h font 2 kg/s.</p>
+
+</div>
+
+<h2 id="les-analogies-qui-marchent-et-celles-qui-trompent">Les analogies qui marchent, et celles qui trompent</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les cinq qui marchent</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Le miroir de la salle de bain.</strong> Rosée, surface froide, condensation. Elle mène directement au pont thermique et au calorifuge d’eau glacée.</p>
+
+<p><strong>Le verre de soda.</strong> L’eau vient de l’air, pas du verre. Elle règle l’idée fausse que « le froid fait sortir l’eau du récipient ».</p>
+
+<p><strong>L’haleine en hiver.</strong> Le mélange qui condense, et le panache blanc au rejet. C’est le seul phénomène courant qui montre un segment passant au-dessus de la saturation.</p>
+
+<p><strong>Le linge qui sèche.</strong> Température humide, capacité de séchage, et les trois applications adiabatiques d’un coup.</p>
+
+<p><strong>Le pare-brise et la climatisation en hiver.</strong> Refroidir pour sécher, puis réchauffer. C’est le post-chauffage d’une CTA, en trente secondes.</p></div></details>
+
+</div><div class="piege">
+
+<p><strong>Les trois à éviter.</strong></p>
+
+<p><strong>« L’air chaud contient plus d’eau. »</strong> Formulation courante et fausse dans sa mécanique : ce n’est pas l’air qui « contient », c’est la <strong>pression de vapeur saturante</strong> qui augmente avec la température. La différence paraît byzantine jusqu’au jour où un étudiant écrit que l’eau se dissout dans l’air comme du sucre dans du café, et cherche alors une « solubilité » qui n’existe pas.</p>
+
+<p><strong>« Le radiateur assèche l’air. »</strong> Il fait baisser l’humidité relative sans retirer une molécule d’eau. Ce qui assèche vraiment, c’est le <strong>renouvellement d’air</strong>. Laisser passer cette phrase, c’est perdre le piège numéro un de l’épreuve.</p>
+
+<p><strong>« On aère pour assécher. »</strong> Vrai en hiver, faux en été, la cave le prouve. La règle correcte porte sur l’<strong>humidité absolue</strong>, jamais sur l’humidité relative. C’est la même erreur qui fait installer des extracteurs inutiles dans des locaux humides.</p>
+
+</div>
+
 <nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="COURS2-HYDRAULIQUE.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Cours 2 — l'eau</span></a><a class="ap" href="COURS4-PRODUIRE-REGULER.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Cours 4 — produire et réguler</span></a></div></nav>
 <p class="pied">Page de formation. Elle contient des réponses, des démonstrations et des corrigés, c'est ce qui la distingue des pages étudiantes.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

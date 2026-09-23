@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Domotique, cours 4 — téléphonie IP et fin du cuivre</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="domotique/COURS4-TELEPHONIE-FIN-DU-CUIVRE" data-public="prof">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS3-VDI-FIBRE-CEM.html" rel="prev" title="Domotique, cours 3 — VDI, fibre et CEM" aria-label="Domotique, cours 3 — VDI, fibre et CEM">&lsaquo;</a><a class="fleche" href="COURS5-ECLAIRAGE.html" rel="next" title="Domotique, cours 5 — l'éclairage" aria-label="Domotique, cours 5 — l'éclairage">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/COURS4-TELEPHONIE-FIN-DU-CUIVRE">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
@@ -23,462 +31,909 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b><a href="PROF3-PROTOCOLES.html">Les couches d'un protocole</a></b><span class="ou">Prof 3 — les protocoles</span><span class="car">SIP, RTP, UDP et IP s'empilent comme les couches d'un protocole du bâtiment, et le débit réel d'un appel se compte couche par couche.</span></li><li><b><a href="PROF4-SURETE.html">L'autonomie d'une alimentation secourue</a></b><span class="ou">Prof 4 — sûreté et sécurité</span><span class="car">l'heure de la téléalarme d'ascenseur et les six heures du règlement ERP se calculent comme la batterie d'une centrale.</span></li><li><b>Une probabilité en régime établi</b><span class="car">la loi d'Erlang se démontre en écrivant qu'il commence autant d'appels qu'il s'en termine, puis en normalisant une somme.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#six-cas-et-ce-qu-ils-ont-en-commun">Six cas, et ce qu’ils ont en commun</a><a href="#la-vente-du-telephone-analogique-s-arrete-orange-2018">La vente du téléphone analogique s’arrête, Orange, 2018</a><a href="#le-reseau-cuivre-ferme-commune-par-commune-orange-et-arcep-2021-2030">Le réseau cuivre ferme commune par commune, Orange et Arcep, 2021-2030</a><a href="#les-telealarmes-d-ascenseur-doivent-quitter-la-2g-et-la-3g-france-2026">Les téléalarmes d’ascenseur doivent quitter la 2G et la 3G, France, 2026</a><a href="#l-alerte-des-secours-doit-tenir-six-heures-sans-secteur-reglement-erp-2023">L’alerte des secours doit tenir six heures sans secteur, règlement ERP, 2023</a><a href="#les-numeros-d-urgence-ne-repondent-plus-orange-2021">Les numéros d’urgence ne répondent plus, Orange, 2021</a><a href="#des-telealarmes-se-taisent-apres-la-bascule-royaume-uni-2023-2025">Des téléalarmes se taisent après la bascule, Royaume-Uni, 2023-2025</a><a href="#la-ou-la-methode-change">Là où la méthode change</a><a href="#le-calcul-retourne">Le calcul retourné</a><a href="#trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#les-questions-qui-destabilisent">Les questions qui déstabilisent</a></div></nav>
-<h2 id="six-cas-et-ce-qu-ils-ont-en-commun">Six cas, et ce qu’ils ont en commun</h2>
-<p>Le 15 novembre 2018, Orange a cessé de vendre des lignes téléphoniques analogiques. Depuis, le réseau cuivre ferme commune par commune jusqu’à la fin de 2030, la 2G s’éteint à l’automne 2026, et un décret du 4 mars 2026 oblige à remplacer les téléalarmes d’ascenseur qui passent encore par le réseau commuté, la 2G ou la 3G. Aucune de ces décisions ne vient du bâtiment ; toutes lui imposent des travaux que le technicien de l’option C doit concevoir et mettre en service.</p>
-<p>La ligne analogique rendait sans qu’on les demande quatre services : l’alimentation du poste par le central, un circuit réservé à chaque appel, des centraux nombreux et indépendants, la transparence à tout signal audible. <strong>La téléphonie sur IP peut rendre les mêmes, à condition que chacun soit dimensionné</strong> ; les six cas montrent ce qui arrive lorsque l’un d’eux ne l’a pas été.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Cas</th>
-<th>Ce que la ligne analogique assurait seule</th>
-<th>Ce qu’il faut désormais dimensionner</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>La fin de vente du RTC, 2018</td>
-<td>un circuit de 64 kbit/s par appel</td>
-<td>le débit réel d’un appel, en-têtes compris</td>
-</tr>
-<tr>
-<td>La fermeture du cuivre, 2021-2030</td>
-<td>les canaux d’un accès Numéris</td>
-<td>le nombre de canaux d’un trunk SIP</td>
-</tr>
-<tr>
-<td>Les téléalarmes d’ascenseur, 2026</td>
-<td>une ligne présente et alimentée</td>
-<td>le réseau de la téléalarme et son autonomie</td>
-</tr>
-<tr>
-<td>L’alerte des secours en ERP, 2023</td>
-<td>un poste alimenté par le central</td>
-<td>l’autonomie de toute la chaîne d’appel</td>
-</tr>
-<tr>
-<td>Les numéros d’urgence, 2021</td>
-<td>des centraux nombreux et indépendants</td>
-<td>la redondance réelle des serveurs d’appels</td>
-</tr>
-<tr>
-<td>La téléassistance, 2023-2025</td>
-<td>la transparence à tout signal audible</td>
-<td>le codec, le protocole et le secours</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Ce qui n’est pas dimensionné n’existe plus. Le RTC fournissait les quatre services par construction ; l’IP ne fournit que ce qui a été prévu, en heures d’autonomie, en canaux et en kilobits par seconde, en redondance réellement indépendante, en choix de codec ou de protocole.</p>
-</div>
-<figure>
-<img src="img/COURS4-TELEPHONIE-FIN-DU-CUIVRE/c4-trois-extinctions.png" alt="Trois extinctions sur un même axe du temps. Les barres du réseau cuivre sont à l’échelle du nombre de locaux fermés : l’essentiel ferme en 2028 et 2029, alors que la 2G s’éteint dès 2026." />
-<figcaption aria-hidden="true">Trois extinctions sur un même axe du temps. Les barres du réseau cuivre sont à l’échelle du nombre de locaux fermés : l’essentiel ferme en 2028 et 2029, alors que la 2G s’éteint dès 2026.</figcaption>
-</figure>
-<h2 id="la-vente-du-telephone-analogique-s-arrete-orange-2018">La vente du téléphone analogique s’arrête, Orange, 2018</h2>
-<p><em>Le 15 novembre 2018, Orange cesse de commercialiser les lignes du réseau téléphonique commuté (RTC) en métropole, puis les accès Numéris le 15 novembre 2019. Selon Maire-Info, les lignes RTC portaient alors 22 % des lignes fixes offrant le service téléphonique ; la Banque des Territoires comptait environ 9 millions de lignes à migrer. Le 15 octobre 2021, selon Univers Freebox, le RTC s’arrête à titre d’essai dans sept communes : Osny, dans le Val-d’Oise, et Concarneau, Elliant, Melgven, Saint-Yvi, Rosporden et Tourc’h, dans le Finistère.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Fin octobre 2018 : Orange annonce sept premières zones d’arrêt, cinq ans à l’avance, puis cesse de vendre des lignes RTC le 15 novembre.</li>
-<li>Juillet 2021 : Orange annonce l’intégration de l’arrêt du RTC au plan de fermeture du cuivre ; selon la Fédération française des télécoms, les arrêts prévus fin 2023 et fin 2024 sont abandonnés pour éviter une double migration.</li>
-<li>15 octobre 2021 : les sept communes d’essai perdent le RTC, quel que soit leur opérateur.</li>
-</ol>
-</div>
-<p>À l’intérieur du réseau, la voix n’était déjà plus analogique : entre les centraux, elle est échantillonnée 8 000 fois par seconde et codée sur 8 bits, soit 64 kbit/s selon la loi G.711, dans un circuit réservé pour toute la durée de l’appel. La voix sur IP transporte les mêmes 64 kbit/s en paquets, et chaque paquet emporte ses en-têtes : c’est ce qui sépare le débit du codec du débit de l’appel.</p>
-<div class="formule">
-<p><strong>D = R + 8 · H / T</strong></p>
-<ul>
-<li><strong>D</strong><span>: débit de l’appel sur le lien, dans un sens, en bit/s</span></li>
-<li><strong>R</strong><span>: débit du codec, en bit/s ; 64 000 en G.711, 8 000 en G.729</span></li>
-<li><strong>H</strong><span>: en-têtes ajoutés à chaque paquet, en octets ; 40 pour RTP, UDP et IPv4, 58 avec la trame Ethernet, 62 avec l’étiquette de VLAN</span></li>
-<li><strong>T</strong><span>: durée de voix par paquet, en secondes ; 0,020 le plus souvent</span></li>
-</ul>
-<blockquote>
-<p>Le second terme ne dépend pas du codec : à 20 ms sur Ethernet, il vaut 23,2 kbit/s, que la voix soit compressée ou non.</p>
-</blockquote>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La démonstration, les quatre débits d&#39;un appel, et le choix de 20 ms</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un paquet porte T secondes de voix, soit R · T / 8 octets, plus H octets d’en-têtes, et il en part 1 / T par seconde. Le débit vaut donc 8 · (R · T / 8 + H) / T = <strong>R + 8 · H / T</strong> : la voix, plus le prix du découpage en paquets. L’en-tête RTP compte 12 octets selon la RFC 3550, UDP 8 et IPv4 20 ; ce que l’on ajoute ensuite dépend de ce que l’on dimensionne.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr>
-<th>Ce que l’on compte, paquets de 20 ms</th>
-<th>H</th>
-<th>G.711</th>
-<th>G.729</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>le paquet IP : RTP, UDP, IPv4</td>
-<td>40 o</td>
-<td>80,0 kbit/s</td>
-<td>24,0 kbit/s</td>
-</tr>
-<tr>
-<td>la trame Ethernet : en-tête 14 o, contrôle 4 o</td>
-<td>58 o</td>
-<td>87,2 kbit/s</td>
-<td>31,2 kbit/s</td>
-</tr>
-<tr>
-<td>la trame étiquetée du VLAN voix</td>
-<td>62 o</td>
-<td>88,8 kbit/s</td>
-<td>32,8 kbit/s</td>
-</tr>
-<tr>
-<td>l’occupation du câble : préambule 8 o, intervalle 12 o</td>
-<td>82 o</td>
-<td>96,8 kbit/s</td>
-<td>40,8 kbit/s</td>
-</tr>
-</tbody>
-</table></div>
-<p>Un port de commutateur se remplit au rythme de la dernière ligne ; l’accès de l’opérateur se dimensionne sur la première, plus sa propre encapsulation. Le G.729 divise le codec par huit, la trame par 2,8 seulement et l’occupation du câble par 2,4 : <strong>compresser la voix n’allège que la plus petite part du paquet</strong>.</p>
-<p>La durée de paquet est un compromis : un paquet de T secondes ajoute T au délai, puisque le premier échantillon attend que le paquet soit plein, mais 8 · H / T croît quand T diminue. En G.711 sur Ethernet, 10 ms coûtent 110,4 kbit/s, 27 % de plus qu’à 20 ms ; 30 ms, 79,5 kbit/s.</p></div></details>
-</div><div class="piege">
-<p>64 kbit/s est le débit du codec et non celui de l’appel, et l’appel occupe son débit <strong>dans chaque sens</strong>. Sur un accès asymétrique, la voie montante fixe le nombre d’appels simultanés : diviser le débit descendant par 87,2 kbit/s surestime l’accès du rapport entre ses deux sens.</p>
-</div>
-<p><strong>En classe.</strong> En DOMA9 (téléphonie numérique et IP, multimédia), après le tableau i, faire ajouter l’étiquette de VLAN, puis le préambule et l’intervalle : le gain du G.729 tombe de 2,8 à 2,4. En DOMB9 (mettre en service une installation téléphonique IP), capturer un appel et compter cinquante paquets par seconde dans chaque sens ; la longueur affichée diffère de celle de la séance, ce qu’explique la première question qui déstabilise.</p>
-<h2 id="le-reseau-cuivre-ferme-commune-par-commune-orange-et-arcep-2021-2030">Le réseau cuivre ferme commune par commune, Orange et Arcep, 2021-2030</h2>
-<p><em>Selon l’Arcep, Orange ferme son réseau cuivre en deux temps. La phase de transition a éprouvé la méthode : Lévis-Saint-Nom, dans les Yvelines, 700 locaux, fermée techniquement en mars 2021 ; six communes et 11 000 locaux en mars 2023 ; le lot 1, 162 communes et 209 000 locaux, fin janvier 2025. La phase industrielle enchaîne des lots annuels croissants : 829 communes et environ un million de locaux, fermées pour l’essentiel le 27 janvier 2026 ; 2 138 communes et 2,5 millions de locaux le 31 janvier 2027 ; puis 6 894 et 10 470 communes, par vagues, en 2028 et 2029.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Orange inscrit la commune dans un lot et l’annonce, par défaut 36 mois avant toute fermeture, selon les décisions de l’Arcep n° 2023-2802 et 2023-2803 du 14 décembre 2023.</li>
-<li>La commune doit être entièrement couverte en fibre, un point de branchement optique étant posé pour chaque local, sauf refus d’un tiers.</li>
-<li>Fermeture commerciale : aucun opérateur n’y vend plus d’offre sur cuivre.</li>
-<li>Au moins 12 mois plus tard, fermeture technique : tout ce qui passait par la paire s’arrête. Le dernier lot doit fermer fin 2030.</li>
-</ol>
-</div>
-<p>La paire ne portait pas que le téléphone : la Banque des Territoires citait dès 2018 l’alarme, la supervision, la télésurveillance, la télérelève, les lignes d’ascenseur et les terminaux de paiement. Le standard, lui, était souvent raccordé par Numéris ; selon Orange, un accès de base offre 2 communications simultanées, un accès primaire de 15 à 30 canaux. Le trunk SIP qui les remplace se vend aussi en canaux, et <strong>leur nombre se calcule par la loi qui dimensionnait les centraux, celle d’Erlang</strong>.</p>
-<p>Le trafic se mesure en erlangs, un erlang étant un canal occupé en permanence : 240 appels de 3 minutes à l’heure la plus chargée font 240 × 3 / 60 = <strong>12 E</strong>. La loi d’Erlang B donne la probabilité qu’un appel trouve tous les canaux pris, si les appels arrivent au hasard et si un appel bloqué est perdu.</p>
-<div class="formule">
-<p><strong>B = (A<sup>N</sup> / N!) / (1 + A + A<sup>2</sup> / 2! + … + A<sup>N</sup> / N!)</strong></p>
-<ul>
-<li><strong>B</strong><span>: taux de blocage, probabilité qu’un appel trouve les N canaux occupés</span></li>
-<li><strong>A</strong><span>: trafic offert à l’heure chargée, en erlangs</span></li>
-<li><strong>N</strong><span>: nombre de canaux du faisceau</span></li>
-</ul>
-<blockquote>
-<p>Sans factorielle : B₀ = 1, puis Bₙ = A · Bₙ₋₁ / (n + A · Bₙ₋₁) pour n allant de 1 à N.</p>
-</blockquote>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La loi d&#39;Erlang, démontrée</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Soit pₖ la probabilité que k canaux soient occupés, k allant de 0 à N. Les appels arrivent au hasard au taux λ, en appels par heure ; une conversation dure en moyenne h heures, donc chacune de celles en cours s’achève au taux 1 / h.</p>
-<p><strong>En régime établi, le faisceau passe aussi souvent de k à k + 1 que de k + 1 à k.</strong> Le premier passage demande une arrivée, le second la fin de l’une des k + 1 conversations : λ · pₖ = (k + 1) / h · pₖ₊₁. Avec A = λ · h, il vient pₖ₊₁ = pₖ · A / (k + 1), puis pₖ = p₀ · A<sup>k</sup> / k!. La somme des pₖ valant 1, p₀ = 1 / (1 + A + … + A<sup>N</sup> / N!). Un appel est bloqué s’il arrive quand k = N, et des arrivées au hasard voient le faisceau dans son état moyen : B = p<sub>N</sub>, c’est la formule.</p>
-<p>La récurrence s’en déduit en écrivant 1 / Bₙ = 1 + (n / A) · 1 / Bₙ₋₁. Pour A = 12 E, elle donne 1,65 % avec 19 canaux et <strong>0,98 % avec 20</strong>.</p>
-<p>Le résultat ne dépend de la durée des appels que par sa moyenne, quelle que soit la loi des durées ; il dépend en revanche entièrement des deux hypothèses d’arrivées au hasard et d’appels perdus.</p></div></details>
-</div><p>À 1 %, un accès primaire de 30 canaux écoulait 20,3 E, environ 400 appels de 3 minutes par heure, et un accès de base de 2 canaux 0,15 E, trois appels : <strong>un grand faisceau fait mieux travailler chacun de ses canaux</strong>, 68 % du temps contre 8 %.</p>
-<figure>
-<img src="img/COURS4-TELEPHONIE-FIN-DU-CUIVRE/c4-erlang-b.png" alt="La loi d’Erlang B pour cinq faisceaux. La ligne rouge est l’objectif courant de 1 % ; le tableau donne le trafic écoulé à ce taux et l’occupation de chaque canal." />
-<figcaption aria-hidden="true">La loi d’Erlang B pour cinq faisceaux. La ligne rouge est l’objectif courant de 1 % ; le tableau donne le trafic écoulé à ce taux et l’occupation de chaque canal.</figcaption>
-</figure>
-<div class="cle">
-<p>Un faisceau se dimensionne en erlangs à l’heure chargée, jamais en nombre de salariés. Une proportion fixe ne peut pas être juste à toutes les tailles : l’effet de taille lui fait sous-dimensionner les petits sites et surdimensionner les grands.</p>
-</div>
-<p><strong>En classe.</strong> En DOMA9, reprendre la question k : 48 salariés, un canal pour quatre, soit 12 canaux. À 0,1 E par salarié, la loi d’Erlang en demande 11 pour 1 % : la règle tombe juste à cette taille, mais pas à 8 salariés, 2 canaux et 15 % de blocage, ni à 150, 38 canaux là où 24 suffisent. En DOMB9, c’est ce nombre que l’étudiant règle sur l’IPBX pour le trunk.</p>
-<h2 id="les-telealarmes-d-ascenseur-doivent-quitter-la-2g-et-la-3g-france-2026">Les téléalarmes d’ascenseur doivent quitter la 2G et la 3G, France, 2026</h2>
-<p><em>Le parc français compte environ 650 000 ascenseurs, dont 230 000 équipés d’une téléalarme en 2G et 60 000 en 3G, selon la Fédération des ascenseurs, citée par le député Bastien Lachaud dans sa question écrite n° 9759 du 16 septembre 2025 ; 60 % desservent des logements. Le ministère du Logement a répondu le 3 mars 2026, et le décret n° 2026-166, visant à garantir la sécurité des ascenseurs face à l’arrêt de certains réseaux téléphoniques, a été signé le lendemain. Le 31 mars, selon l’Arcep, la 2G s’éteignait à Bayonne, Anglet et Biarritz, premières zones d’un arrêt généralisé de la fin septembre à la fin décembre 2026.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>2004 : le décret n° 2004-964 et l’arrêté du 18 novembre 2004 imposent aux ascenseurs existants une téléalarme reliée à un service d’intervention : liaison bidirectionnelle permanente, identification de l’appel, test, éclairage de secours en cabine ; la version en vigueur de l’arrêté fixe l’échéance au 3 juillet 2014.</li>
-<li>1er juillet 2021 : l’article R134-2 du code de la construction fait de ces moyens d’alerte un objectif de sécurité.</li>
-<li>1er avril 2026 : l’article R134-6, modifié par le décret paru au Journal officiel du 6 mars, impose leur vérification toutes les six semaines ; lorsqu’ils passent par le réseau commuté, la 2G ou la 3G, l’entreprise d’entretien en alerte le propriétaire par lettre recommandée, tous les six mois jusqu’aux travaux.</li>
-<li>15 mai 2026 : le remplacement de ces dispositifs devient obligatoire, et le contrôle technique de l’article R134-11 vérifie leur compatibilité avec d’autres réseaux.</li>
-</ol>
-</div>
-<p>Le décret exclut trois technologies sans en imposer une. Restent deux voies : un module mobile en 4G, qui porte sa batterie et ne dépend de rien dans l’immeuble, ou un raccordement IP par le réseau du bâtiment, qui suppose un routeur et un commutateur secourus, faute de quoi la téléalarme se tait pendant la coupure même qui a immobilisé la cabine. <strong>Le choix se fait sur ce qui reste alimenté quand l’ascenseur s’arrête</strong>, avant de se faire sur le prix du module.</p>
-<div class="piege">
-<p>Un module « 4G » ne suffit pas. L’Arcep prévient qu’un terminal compatible avec la 4G peut ne pas l’être avec la voix en 4G, la VoLTE ; un module qui passe ses appels vocaux en se repliant sur la 2G ou la 3G se taira avec elles. La réception exige donc la compatibilité VoLTE et un appel vocal réel vers le service d’intervention.</p>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que la norme EN 81-28 demande à une téléalarme</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Publiée en 2003 et révisée en 2018, la norme a pour édition française la NF EN 81-28, corrigée en janvier 2019 selon l’Afnor. Le texte n’est pas en accès libre ; deux fabricants, Kone et Avire, en publient les exigences chiffrées : ce sont des sources commerciales, mais concordantes.</p>
-<p>Selon eux, la téléalarme passe <strong>un appel de test au moins tous les trois jours</strong>, qui renseigne aussi, précise Avire, sur le haut-parleur, le microphone et la batterie. Son secours tient <strong>une heure en veille, dont au moins quinze minutes de conversation</strong>. L’appel identifie l’ascenseur, et deux pictogrammes indiquent en cabine que l’alarme est enregistrée, puis que la communication est établie.</p>
-<p>Les deux vérifications ne font pas double emploi. Le test automatique prouve que le chemin existait à l’instant du test ; la visite des six semaines contrôle ce qu’il ne voit pas, un bouton bloqué, un pictogramme éteint, un numéro de destination périmé. Quand la 2G s’éteint, les tests échouent en série : le service de réception a intérêt à traiter <strong>l’absence de test comme une alarme</strong>.</p></div></details>
-</div><p><strong>En classe.</strong> En DOMA18 (alarme intrusion, assistance aux personnes), faire lire l’article R134-6 et demander si une téléalarme posée en 2019 avec un module mobile est conforme aujourd’hui : la réponse dépend de la génération du module, à chercher sur la plaque ou dans la notice. En DOMB20 (interphonie : platine de rue, moniteur, commande de gâche), poser la même question pour la platine de l’atelier, puisque l’Arcep range les interphones et visiophones connectés parmi les appareils menacés.</p>
-<h2 id="l-alerte-des-secours-doit-tenir-six-heures-sans-secteur-reglement-erp-2023">L’alerte des secours doit tenir six heures sans secteur, règlement ERP, 2023</h2>
-<p><em>L’arrêté du 11 septembre 2023, publié au Journal officiel du 19 septembre, a réécrit l’article MS 70 du règlement de sécurité contre l’incendie dans les établissements recevant du public. L’alerte des sapeurs-pompiers y est assurée par un dispositif dit de liaison prioritaire, fixe, qui identifie l’établissement et achemine l’appel en priorité, ou par tout autre moyen de communication. Dans les deux cas, le moyen doit assurer une liaison vocale de qualité et rester fiable en cas de coupure de l’alimentation électrique pendant au moins une heure, six heures pour les établissements comportant des locaux à sommeil.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Lire la durée exigée : une heure, ou six heures s’il existe des locaux à sommeil.</li>
-<li>Tracer le chemin de l’appel d’alerte : poste, commutateur, IPBX, routeur, terminaison optique.</li>
-<li>Relever la puissance de chaque maillon, calculer l’énergie sur la durée, et comparer avec un lien d’alerte dédié à batterie intégrée.</li>
-<li>Inscrire le secours dans les vérifications périodiques ; sans essai, l’autonomie calculée n’existe que sur le papier.</li>
-</ol>
-</div>
-<p>Avec la ligne analogique, le poste était alimenté depuis le central et l’établissement appelait les secours pendant une coupure. En téléphonie sur IP, le poste est alimenté par son câble, en PoE, depuis un commutateur raccordé au 230 V, et l’appel traverse l’IPBX, le routeur et la terminaison optique, qui ont chacun besoin du secteur. Le gouvernement l’a admis le 5 mars 2026, en réponse à la sénatrice Karine Daniel : la fibre, plus résistante aux intempéries que le cuivre vieillissant, partage certaines vulnérabilités face aux coupures d’électricité.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Secourir la chaîne, ou doubler le lien : le calcul</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Prenons des puissances plausibles, à remplacer par celles des fiches réelles : terminaison optique 10 W, commutateur 25 W avec le poste qu’il alimente, IPBX 15 W, poste 5 W, soit <strong>55 W</strong> pour la seule chaîne d’alerte, et 330 Wh utiles en six heures.</p>
-<p>Un onduleur ne restitue pas toute l’énergie de sa batterie. Avec un rendement de 0,85 et une décharge limitée à 80 % de la capacité, il faut 330 / (0,85 × 0,8) = <strong>485 Wh</strong>, environ 40 Ah sous 12 V ; avec une décharge limitée à 50 %, 776 Wh.</p>
-<p>Un terminal d’alerte dédié, en 4G avec voix sur LTE, consommant par hypothèse 2 W, demande 12 Wh pour six heures, 15 Wh avec un rendement de 0,8 : <strong>un rapport de l’ordre de trente</strong>. La méthode est celle de la page Prof 4 pour une centrale ; seul change le nombre de maillons.</p></div></details>
-</div><div class="cle">
-<p>Pour tenir six heures, on ne secourt pas la téléphonie de l’établissement : on secourt un lien d’alerte. La « liaison vocale de qualité » que le texte ne chiffre pas se tient, elle, par la priorité donnée à la voix, traitée dans la question sur les 150 ms.</p>
-</div>
-<p><strong>En classe.</strong> En DOMA20 (SSI, balisage et sources secourues), demander s’il faut secourir le commutateur des étages d’un hôtel de quarante chambres passé en téléphonie sur IP pour satisfaire l’article MS 70 : non, seul le chemin de l’appel d’alerte doit tenir six heures, et l’étudiant doit savoir le tracer. En DOMB6 (commutateur, plan d’adressage, PoE), faire relever la puissance réellement consommée par un poste et la comparer aux 7,0 W réservés pour sa classe.</p>
-<h2 id="les-numeros-d-urgence-ne-repondent-plus-orange-2021">Les numéros d’urgence ne répondent plus, Orange, 2021</h2>
-<p><em>Le 2 juin 2021, de 16 h 45 à minuit, des appels vers les numéros d’urgence n’aboutissent pas. Selon les conclusions de l’enquête interne publiées par Orange, l’interconnexion entre la voix mobile, la voix sur IP et le réseau commuté reposait sur une plateforme de serveurs d’appels, redondante entre six sites distincts. Un défaut du logiciel de ces serveurs s’est activé à la suite de commandes usuelles de reconnexion, pendant une opération de modernisation et d’augmentation de capacité commencée début mai. Environ 11 800 appels, soit 11 % du total, n’ont pas été acheminés.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Début mai 2021 : Orange engage la modernisation et l’augmentation de capacité de l’interconnexion.</li>
-<li>2 juin, 16 h 45 : des commandes de reconnexion ordinaires activent le défaut ; la redondance entre six sites ne l’arrête pas.</li>
-<li>Le fournisseur identifie le défaut et livre un correctif ; Orange indique avoir mobilisé une centaine d’experts.</li>
-<li>Minuit : le service est rétabli ; Orange retient d’activer sa cellule de crise en trente minutes au plus lors d’une perturbation nationale des appels d’urgence.</li>
-</ol>
-</div>
-<p>Dans le RTC, la commutation était répartie entre de nombreux centraux, et la panne de l’un restait circonscrite à sa zone. En IP, l’établissement et la libération de chaque appel passent par des <strong>serveurs d’appels</strong> peu nombreux, qui échangent la signalisation SIP ; la voix circule ensuite en RTP entre les extrémités. Un serveur hors service n’interrompt pas nécessairement les conversations en cours ; il empêche d’en établir de nouvelles. Dans un bâtiment, l’IPBX joue ce rôle et en a la fragilité : d’où un second IPBX, un second accès par un autre support, et un chemin d’appel d’urgence qui ne dépend pas de l’IPBX.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Redondant ne veut pas dire indépendant : le mode commun chiffré</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Deux serveurs disponibles chacun 99,9 % du temps sont indisponibles 526 minutes par an chacun. S’ils tombent indépendamment, la paire n’est indisponible que lorsque les deux le sont ensemble : (0,001)² = 10⁻⁶, une demi-minute par an.</p>
-<p>Le modèle usuel en fiabilité attribue une fraction β des défaillances à une <strong>cause commune</strong>, qui frappe les deux à la fois : même logiciel, même procédure, même opération en cours. L’indisponibilité devient β · 0,001 + ((1 − β) · 0,001)² ; avec β = 10 %, 1,0 × 10⁻⁴, soit <strong>53 minutes par an, cent fois plus</strong>. Le terme commun domine dès que β dépasse la probabilité de panne elle-même, ici un millième ; un septième site identique n’y change rien. Seule la diversité réduit β : un autre logiciel, un autre fournisseur, un autre support.</p></div></details>
-</div><div class="piege">
-<p>Six sites ne font pas six chances : des sites qui exécutent le même logiciel et subissent la même opération tombent ensemble. L’étudiant qui propose deux IPBX identiques pour « sécuriser les appels d’urgence » a doublé le matériel, pas la sûreté.</p>
-</div>
-<p><strong>En classe.</strong> En DOMB9, une fois l’installation en service, établir une conversation puis débrancher l’IPBX. Si elle continue, la voix passait de poste à poste ; si elle s’arrête, l’IPBX relayait aussi la voix. Dans les deux cas, plus aucun appel ne s’établit, ce qui démontre la séparation entre signalisation et voix et prépare la question qui compte : par où passe l’appel vers le 18 quand l’IPBX est éteint ?</p>
-<h2 id="des-telealarmes-se-taisent-apres-la-bascule-royaume-uni-2023-2025">Des téléalarmes se taisent après la bascule, Royaume-Uni, 2023-2025</h2>
-<p><em>Le 18 décembre 2023, le gouvernement britannique annonce qu’à la suite d’incidents graves, des téléalarmes ayant cessé de fonctionner après le passage de leur ligne au numérique, les principaux opérateurs, dont BT, Sky, Virgin Media O2 et TalkTalk, signent une charte : aucun utilisateur de téléassistance ne sera basculé sans qu’une solution compatible et en état de marche ait été confirmée. Le plan d’action national du 11 février 2025 estime à 2 millions le nombre d’utilisateurs de téléassistance au Royaume-Uni et fait état, parmi ces incidents, d’un petit nombre de décès. La bascule doit être achevée pour l’essentiel fin janvier 2027.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>La personne appuie sur son médaillon ; le transmetteur appelle la centrale d’écoute.</li>
-<li>Il transmet l’alarme par des signaux situés dans la bande vocale, puis ouvre la conversation.</li>
-<li>Sur une ligne numérique, ces signaux traversent l’adaptateur analogique du routeur, un codec et un réseau de paquets ; selon le plan britannique, la ligne numérique peut corrompre la signalisation de l’alarme.</li>
-<li>Pendant une coupure, un routeur sans batterie s’éteint, et la téléassistance avec lui si le transmetteur n’a pas d’autre voie.</li>
-</ol>
-</div>
-<p>Un transmetteur conçu pour le cuivre suppose une ligne <strong>transparente</strong> : ce qui entre dans la bande de 300 à 3 400 Hz ressort à l’autre bout. Un codec de voix reproduit ce qui ressemble à de la parole, sans rien promettre d’autre. La RFC 4733 le dit pour les tonalités du clavier : un codec à bas débit ne garantit pas de les reproduire assez fidèlement pour une reconnaissance automatique, et c’est pourquoi elle les transporte comme des événements nommés plutôt que comme du son.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi un signal d&#39;alarme ne survit pas au réseau de paquets, même en G.711</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Sans compression même, trois mécanismes abîment un signal de données : la <strong>mémoire tampon de gigue</strong> allonge ou raccourcit les silences quand elle s’adapte, le <strong>masquage des pertes</strong> remplace un paquet perdu par un son plausible, et la <strong>suppression des silences</strong>, si elle est active, coupe ce qu’elle prend pour du bruit.</p>
-<p>Les pertes suffisent à le chiffrer. À 1 %, seuil jugé acceptable pour la voix, et 50 paquets par seconde, un paquet se perd toutes les deux secondes en moyenne ; un message de tonalités de deux secondes, cent paquets, arrive intact avec une probabilité de 0,99<sup>100</sup>, soit <strong>37 %</strong>, et de 90 % à 0,1 % de pertes. <strong>Un seuil conçu pour l’oreille ne vaut rien pour un protocole de données.</strong> Le remède durable est un protocole conçu pour l’IP, avec accusé de réception, que le plan britannique désigne comme BS 8521-2 ou NowIP, ou le réseau mobile.</p></div></details>
-</div><div class="piege">
-<p>Brancher un transmetteur sur le port téléphonique d’un routeur ne vaut pas migration. Selon le plan britannique, la fiabilité dépend du modèle d’alarme, du protocole, du type de ligne, de l’opérateur et de l’équipement de la centrale : seul un appel d’alarme réel, reçu et acquitté par la centrale d’écoute, valide le raccordement.</p>
-</div>
-<p>En France, le financement se répartit entre deux dispositifs à ne pas confondre. L’abonnement de téléassistance peut entrer dans le plan d’aide de l’allocation personnalisée d’autonomie, pour les personnes évaluées en GIR 1 à 4, ou être aidé par les caisses de retraite, les communes et le crédit d’impôt des services à la personne. Les travaux d’adaptation du logement relèvent de <strong>MaPrimeAdapt’</strong>, ouverte le 1er janvier 2024 par l’Agence nationale de l’habitat.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">MaPrimeAdapt&#39; : les conditions vérifiées, et ce qu&#39;elle finance</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Elle s’adresse aux propriétaires occupants et aux locataires du parc privé âgés de 70 ans ou plus, sans condition de perte d’autonomie ; de 60 à 69 ans, sur évaluation de la perte d’autonomie par la grille AGGIR ; et, sans condition d’âge, aux personnes justifiant d’un taux d’incapacité d’au moins 50 % ou éligibles à la prestation de compensation du handicap. Elle finance <strong>70 % des travaux pour les ménages aux ressources très modestes et 50 % pour les ménages modestes, dans un plafond de 22 000 € HT</strong>, soit 15 400 € ou 11 000 € au plus, avec un assistant à maîtrise d’ouvrage habilité par l’Anah.</p>
-<p>Parmi les exemples de travaux que cite Service-Public, l’éclairage à détection de mouvement et les volets roulants relèvent directement de l’option C. L’Anah annonce 36 740 logements adaptés en 2025, un peu plus de la moitié du rythme qu’exigerait son objectif de 680 000 en dix ans ; son guichet a rouvert le 23 février 2026, à la promulgation de la loi de finances.</p></div></details>
-</div><p><strong>En classe.</strong> En DOMA18, faire dessiner le chemin d’une alarme de téléassistance, du médaillon à la centrale d’écoute, avant puis après la fermeture du cuivre : l’étudiant doit y placer l’adaptateur du routeur, le codec et l’alimentation du routeur. En DOMB21 (intrusion : centrale, détecteurs, sirène, transmetteur), demander par quel support et par quel protocole le transmetteur transmet, et ce qu’il deviendrait branché sur le port téléphonique d’un routeur sans batterie.</p>
-<h2 id="la-ou-la-methode-change">Là où la méthode change</h2>
-<p>La loi d’Erlang suppose des appels indépendants, arrivant au hasard, et des appels bloqués perdus. <strong>En situation de crise, les deux hypothèses tombent ensemble</strong> : une panne, une tempête ou un retour du secteur font appeler beaucoup de monde à la même minute, et chaque appelant bloqué recompose aussitôt. Le faisceau reçoit alors la demande gonflée de ses propres rappels.</p>
-<p>Si une fraction r des appels bloqués est aussitôt renouvelée, le trafic offert vérifie A = A₀ / (1 − r · B), où A₀ est la demande réelle et B le taux de blocage, lui-même fonction de A ; on résout par itérations. Le tableau reprend le faisceau de 20 canaux dimensionné pour 12 E à 1 %, avec 90 % d’appelants qui recomposent.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-</colgroup>
-<thead>
-<tr>
-<th>Demande réelle A₀</th>
-<th>Blocage prévu par Erlang</th>
-<th>Trafic offert, rappels compris</th>
-<th>Blocage par tentative</th>
-<th>Tentatives par appelant</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>12 E, l’heure chargée ordinaire</td>
-<td>0,98 %</td>
-<td>12,1 E</td>
-<td>1,06 %</td>
-<td>1,01</td>
-</tr>
-<tr>
-<td>15 E, 25 % de plus</td>
-<td>4,6 %</td>
-<td>15,9 E</td>
-<td>6,2 %</td>
-<td>1,06</td>
-</tr>
-<tr>
-<td>18 E, 50 % de plus</td>
-<td>10,9 %</td>
-<td>22,4 E</td>
-<td>22,0 %</td>
-<td>1,25</td>
-</tr>
-<tr>
-<td>24 E, le double</td>
-<td>25,7 %</td>
-<td>63,9 E</td>
-<td>69,4 %</td>
-<td>2,66</td>
-</tr>
-</tbody>
-</table></div>
-<p>Au double de la demande, le faisceau reçoit 2,7 tentatives par appelant, et sept sur dix échouent. Le rapport d’Orange sur le 2 juin 2021 ne chiffre pas les rappels ; le modèle dit seulement pourquoi les appelants qui recomposent entretiennent une saturation amorcée, et pourquoi les serveurs de signalisation, qui traitent chaque tentative, en portent la charge.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le modèle des rappels, et ce qu&#39;il change au dimensionnement</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Chaque tentative est bloquée avec la probabilité B, et l’appelant recompose avec la probabilité r : le nombre moyen de tentatives par appelant vaut 1 / (1 − r · B), d’où A = A₀ / (1 − r · B). La probabilité de renoncer finalement vaut B · (1 − r) / (1 − r · B) : au double de la demande, 18 %, contre 26 % sans rappel. L’appelant obstiné passe donc un peu plus souvent, pendant que le réseau traite 2,7 fois plus de tentatives.</p>
-<p><strong>La méthode change de grandeur.</strong> En crise, on dimensionne la signalisation en tentatives par seconde plutôt que le faisceau en erlangs ; on étale les rappels automatiques des équipements par une temporisation aléatoire ; et l’on garde une voie d’urgence hors du faisceau commun. Un parc de transmetteurs programmés pour signaler le retour du secteur, s’il appelait tout entier à la même minute, produirait exactement cette avalanche.</p></div></details>
-</div><h2 id="le-calcul-retourne">Le calcul retourné</h2>
-<p>La séance vérifie un blocage pour un nombre de canaux donné ; le bureau d’études <strong>choisit</strong> les canaux, puis le débit, pour un blocage fixé. Sont fixés le trafic à l’heure chargée, lu dans le journal de l’IPBX, et l’objectif ; restent libres les canaux, le codec et l’accès. Soit un site de 150 postes dont le journal montre <strong>240 appels extérieurs de 3 minutes en moyenne à l’heure la plus chargée</strong>, objectif 1 % :</p>
-<div class="etapes">
-<ol type="1">
-<li>Trafic : A = 240 × 3 / 60 = <strong>12 E</strong>.</li>
-<li>Canaux : la récurrence donne 1,65 % avec 19 canaux et 0,98 % avec 20 ; on retient <strong>N = 20</strong>.</li>
-<li>Ce que le faisceau écoule : 12 × (1 − 0,0098) = 11,88 E ; il perd 2,4 appels sur les 240 de l’heure chargée, et chaque canal est occupé 59 % du temps.</li>
-<li>Débit, dans chaque sens : 20 × 80 = <strong>1,6 Mbit/s</strong> au niveau IP en G.711, 480 kbit/s en G.729 ; sur le réseau du bâtiment, 20 × 88,8 = 1,78 Mbit/s en trames étiquetées.</li>
-<li>Accès : 2 Mbit/s garantis par sens pour la voix couvrent le G.711, la signalisation et une marge ; le G.729 ne se justifie que si l’accès ne peut pas offrir ce débit.</li>
-</ol>
-</div>
-<p>La règle d’un canal pour quatre salariés aurait donné 38 canaux, près du double, et chaque canal d’un trunk se paie. <strong>Le dimensionnement ne tolère pas, en revanche, une erreur sur l’heure chargée</strong> : c’est la donnée à vérifier avant tout calcul.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Et si le trafic est mal estimé ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Avec 20 % de trafic en plus, 14,4 E, les 20 canaux bloquent 3,6 % des appels, et il en faudrait 23 pour revenir à 1 %. Le piège classique est la moyenne : un site qui passe 1 200 appels de 3 minutes par jour, sur huit heures, présente 7,5 E en moyenne ; si l’heure la plus chargée porte 20 % des appels du jour, elle vaut 12 E. Dimensionner sur la moyenne donnerait 15 canaux, et <strong>8,6 % de blocage à l’heure de pointe</strong>. On lit donc l’heure la plus chargée des jours les plus chargés, sur plusieurs semaines, avec une marge pour la croissance du site.</p></div></details>
-</div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : un appel G.729 à 30 ms dans le VLAN voix</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un poste est réglé en G.729, par paquets de 30 ms, dans un VLAN voix. Calculer le débit de sa trame et l’occupation du câble, dans un sens.</p>
-<p><strong>Résolution.</strong> Voix par paquet : 8 000 × 0,030 / 8 = 30 octets. Trame étiquetée : 30 + 40 + 18 + 4 = 92 octets ; 112 avec le préambule et l’intervalle. Paquets : 1 / 0,030 = 33,3 par seconde. Débits : 92 × 8 × 33,3 = <strong>24,5 kbit/s</strong> en trame, 112 × 8 × 33,3 = <strong>29,9 kbit/s</strong> sur le câble ; la formule donne 8 + 8 × 82 / 0,030 = 29,9 kbit/s.</p>
-<p><strong>Vérification de plausibilité.</strong> Le résultat dépasse les 8 kbit/s du codec et reste sous les 40,8 kbit/s du même codec à 20 ms, puisqu’un paquet plus long allège les en-têtes.</p>
-<p><strong>Ce que l’étudiant doit rédiger.</strong> La formule avant les nombres, la couche où le débit est compté, et le sens : le résultat vaut pour chacun des deux.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : les lignes d&#39;une centrale d&#39;écoute</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une centrale d’écoute de téléassistance reçoit, à l’heure la plus chargée, 150 appels de 4 minutes en moyenne. Combien de lignes entrantes pour un blocage de 1 %, puis de 0,1 %, objectif plus prudent pour des appels de détresse ?</p>
-<p><strong>Résolution.</strong> A = 150 × 4 / 60 = <strong>10 E</strong>. À 1 % : 1,29 % avec 17 lignes, 0,71 % avec 18, donc <strong>18 lignes</strong>. À 0,1 % : 0,19 % avec 20 lignes, 0,089 % avec 21, donc <strong>21 lignes</strong>. Trois lignes de plus divisent par huit les appels perdus, de 1,1 à 0,13 par heure chargée. En G.711, 21 canaux demandent 1,68 Mbit/s par sens au niveau IP.</p>
-<p><strong>Vérification de plausibilité.</strong> Chaque ligne est occupée 55 % du temps avec 18 lignes, 48 % avec 21 : cohérent avec la figure, où 20 canaux travaillent à 60 % pour 1 %.</p>
-<p><strong>Ce que l’étudiant doit rédiger.</strong> L’objectif de blocage, justifié par la nature des appels, avant le calcul. <strong>L’erreur attendue</strong> est d’appliquer la loi à une vague d’alarmes simultanées, précisément le cas où elle ne vaut plus.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : un hôtel dans une commune du lot 3</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un hôtel de 60 chambres, dans une commune du lot 3 dont la fermeture technique du cuivre est fixée au 31 janvier 2027, a deux lignes analogiques : le standard et la téléalarme de l’ascenseur. À l’heure la plus chargée, il passe 36 appels extérieurs de 2,5 minutes. Proposer l’architecture de remplacement.</p>
-<p><strong>Choisir la méthode avant de calculer.</strong> Trois fonctions, trois règles : le standard relève d’un dimensionnement de faisceau, la téléalarme de l’article R134-6 du code de la construction, l’alerte des secours de l’article MS 70, puisque l’hôtel comporte des locaux à sommeil.</p>
-<p><strong>Résolution.</strong> Standard : A = 36 × 2,5 / 60 = 1,5 E ; le blocage vaut 4,8 % avec 4 canaux, 1,4 % avec 5 et 0,35 % avec 6, donc <strong>6 canaux</strong>, soit 480 kbit/s par sens en G.711 au niveau IP. Téléalarme : elle passe par le réseau commuté, et le propriétaire doit la remplacer depuis le 1er avril 2026, sans attendre 2027, par un module 4G compatible VoLTE secouru une heure, ou par un raccordement IP secouru au moins autant. Alerte : un terminal dédié en 4G à batterie intégrée, de l’ordre de 15 Wh pour six heures.</p>
-<p><strong>Vérification de plausibilité.</strong> Six canaux pour 1,5 E, chacun occupé 25 % du temps : cohérent avec le tableau de la figure, où 5 canaux écoulent 1,36 E à 1 %.</p>
-<p><strong>Ce que l’étudiant doit rédiger.</strong> Les trois textes qui fondent les trois choix. <strong>L’erreur attendue</strong> est un module 2G, moins cher : inutilisable avant la fermeture du cuivre, il relève dès son installation de l’obligation de remplacement.</p></div></details>
-</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Ordre de grandeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Débit du codec</td>
-<td>G.711 : 64 kbit/s · G.729 : 8 kbit/s</td>
-</tr>
-<tr>
-<td>Un appel G.711 par paquets de 20 ms, dans un sens</td>
-<td>80 kbit/s en IP · 87,2 en trame Ethernet · 96,8 sur le câble dans un VLAN</td>
-</tr>
-<tr>
-<td>Un appel G.729 par paquets de 20 ms, dans un sens</td>
-<td>24 · 31,2 · 40,8 kbit/s</td>
-</tr>
-<tr>
-<td>Délai, gigue, pertes</td>
-<td>150 ms, 30 ms, 1 % de confort ; 400 ms, limite de planification de la G.114 (2003)</td>
-</tr>
-<tr>
-<td>Trafic écoulé à 1 % de blocage</td>
-<td>2 canaux : 0,15 E · 10 : 4,46 E · 20 : 12,0 E · 30 : 20,3 E</td>
-</tr>
-<tr>
-<td>Téléalarme d’ascenseur, selon deux fabricants</td>
-<td>test automatique au moins tous les 3 jours · 1 h de veille dont 15 min de conversation</td>
-</tr>
-<tr>
-<td>Vérification des moyens d’alerte d’un ascenseur</td>
-<td>toutes les 6 semaines, depuis le 1er avril 2026</td>
-</tr>
-<tr>
-<td>Ascenseurs en France</td>
-<td>650 000, dont 290 000 avec une téléalarme en 2G ou en 3G</td>
-</tr>
-<tr>
-<td>Remplacer une téléalarme</td>
-<td>800 à 1 500 € ; de 232 à 435 millions d’euros pour les 290 000</td>
-</tr>
-<tr>
-<td>Alerte des secours en ERP, article MS 70</td>
-<td>1 h sans secteur, 6 h avec locaux à sommeil</td>
-</tr>
-<tr>
-<td>Accès aux secours pendant une coupure, Royaume-Uni</td>
-<td>1 h au minimum, exigence de l’Ofcom</td>
-</tr>
-<tr>
-<td>Fermeture du cuivre</td>
-<td>préavis de 36 mois par défaut, au moins 12 mois entre fermeture commerciale et technique</td>
-</tr>
-<tr>
-<td>Lots 4 et 5 du plan cuivre</td>
-<td>84 % des locaux des cinq premiers lots, fermés en 2028 et 2029</td>
-</tr>
-<tr>
-<td>Arrêt de la 2G</td>
-<td>généralisé de la fin septembre à la fin décembre 2026 ; la 3G en 2028 et 2029</td>
-</tr>
-<tr>
-<td>MaPrimeAdapt’</td>
-<td>50 ou 70 % d’un plafond de 22 000 € HT : 11 000 ou 15 400 € au plus</td>
-</tr>
-<tr>
-<td>Poste IP en PoE de classe 2 · marque de la voix</td>
-<td>7,0 W réservés sur le port · EF, valeur 46</td>
-</tr>
-<tr>
-<td>Message de tonalités de 2 s, 1 % de pertes</td>
-<td>37 % de chances d’arriver intact</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Deux réflexes trient la plupart des affirmations. <strong>Un appel G.711 coûte de 80 à 97 kbit/s par sens selon la couche où on le compte</strong>, jamais 64. <strong>Un faisceau de N canaux écoule, à 1 % de blocage, nettement moins de N erlangs</strong>, d’autant moins que N est petit.</p>
-</div>
-<h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« L&#39;analyseur affiche 214 octets, la séance dit 218 : qui a raison ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les deux. Une trame de voix G.711 à 20 ms compte 200 octets de paquet IP, 14 d’en-tête Ethernet et 4 de contrôle final, soit 218 octets sur le câble. La plupart des cartes réseau vérifient puis retirent ces 4 octets avant de remettre la trame au logiciel de capture, qui affiche 214 ; dans le VLAN voix, l’étiquette ajoute 4 octets à chacun de ces nombres. Le câble porte encore 20 octets de préambule et d’intervalle, soit 238. L’appel vaut donc 85,6, 87,2 ou 95,2 kbit/s dans un sens : <strong>un débit n’a de sens qu’avec la couche où il est compté</strong>.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« D&#39;où vient la limite de 150 ms ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>D’une valeur de confort, et non d’un plafond normatif. La recommandation G.114 de l’UIT fixe, dans son édition de 2003, un délai de 400 ms dans un sens à ne pas dépasser pour la planification générale des réseaux, en précisant que les usages très interactifs, dont beaucoup d’appels vocaux, souffrent bien avant. Un réseau d’entreprise en reste loin ; un bond par satellite géostationnaire coûte à lui seul près de 240 ms, le temps de monter à 35 786 km et d’en redescendre à la vitesse de la lumière.</p>
-<p><strong>Dans un bâtiment, le délai pose rarement problème ; la gigue et les pertes, si</strong>, et elles naissent dans les files d’attente. Trois réglages les tiennent : le poste dans un <strong>VLAN voix</strong>, séparé des données ; ses paquets marqués <strong>EF</strong>, valeur 46, que la RFC 3246 réserve depuis 2002 à un service à faibles pertes, faible délai et faible gigue ; cette file servie avant les autres dans chaque commutateur du trajet. Sans le dernier, une sauvegarde qui remplit la file d’un port suffit à perdre des paquets de voix ; sur l’accès, seul un débit réservé à la voix, écrit dans le contrat, garantit la priorité.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Avec dix salariés, la loi d&#39;Erlang s&#39;applique-t-elle encore ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Elle s’applique mal, et dans le bon sens. Elle suppose une population illimitée d’appelants ; avec dix personnes et quatre lignes toutes occupées, il ne reste que six appelants possibles, et le rythme des appels baisse. La loi d’Engset tient compte de cette population finie : pour environ 2 E sur 4 lignes, elle donne 6,7 % de blocage, contre 9,8 % pour Erlang.</p>
-<p><strong>Erlang surestime le blocage d’un site dont chaque salarié pèse dans le trafic</strong> ; à 1 %, il demande un canal de plus qu’Engset, que le site compte dix postes ou deux cents, ce qui est l’erreur la moins grave. Les deux lois ne se rejoignent que pour une population très grande devant le trafic de chacun : pour une centrale d’écoute de 5 000 abonnés, toutes deux donnent 0,70 %.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Peut-on faire passer la vidéo des écrans sur le même réseau que la voix ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Oui, à deux conditions que DOMB10 (distribuer audio et vidéo sur l’infrastructure VDI) doit faire vérifier. Une image 1080p à 60 images par seconde et 24 bits par point pèse 1 920 × 1 080 × 60 × 24 = 2,99 Gbit/s ; compressée, de l’ordre de 15 Mbit/s selon l’hypothèse de la séance A9, soit 155 appels G.711 sur le câble.</p>
-<p>La première condition est la séparation : la vidéo dans son VLAN, la voix dans le sien, avec la priorité à la voix. La seconde est moins connue : un flux destiné à plusieurs écrans part en multidiffusion, et un commutateur sans IGMP snooping, qui ne suit pas les abonnements des écrans, le recopie sur tous les ports du VLAN. Si ce VLAN est celui des ordinateurs, que les postes relaient par leur port intégré, huit flux de 15 Mbit/s font 120 Mbit/s, de quoi saturer le port à 100 Mbit/s d’un poste qui n’a rien demandé.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Les sources de cette page</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><ul>
-<li><strong>Arcep</strong>, « La fermeture du réseau cuivre », 26 janvier 2026, <a href="https://www.arcep.fr/nos-sujets/la-fermeture-du-reseau-cuivre.html" class="uri">https://www.arcep.fr/nos-sujets/la-fermeture-du-reseau-cuivre.html</a> : jalons jusqu’à 2030.</li>
-<li><strong>Arcep</strong>, « L’organisation d’Orange pour la fermeture de son réseau cuivre », 26 janvier 2026, <a href="https://www.arcep.fr/la-regulation/grands-dossiers-reseaux-fixes/la-fermeture-du-reseau-cuivre/organisation-orange-fermeture-reseau-cuivre.html" class="uri">https://www.arcep.fr/la-regulation/grands-dossiers-reseaux-fixes/la-fermeture-du-reseau-cuivre/organisation-orange-fermeture-reseau-cuivre.html</a> : expérimentations et lots.</li>
-<li><strong>Arcep</strong>, « Les obligations d’Orange dans le cadre des différentes phases du plan de fermeture du cuivre », 9 juillet 2026, <a href="https://www.arcep.fr/la-regulation/grands-dossiers-reseaux-fixes/la-fermeture-du-reseau-cuivre/obligations-orange-differentes-phases-plan-fermeture-cuivre.html" class="uri">https://www.arcep.fr/la-regulation/grands-dossiers-reseaux-fixes/la-fermeture-du-reseau-cuivre/obligations-orange-differentes-phases-plan-fermeture-cuivre.html</a> : préavis, critère, décisions de 2023.</li>
-<li><strong>Fédération française des télécoms</strong>, « Intégration du plan d’arrêt du RTC dans le plan de fermeture du cuivre », 24 octobre 2022, <a href="https://www.fftelecoms.org/fin-du-cuivre/integration-du-plan-darret-du-rtc-dans-le-plan-de-fermeture-du-cuivre/" class="uri">https://www.fftelecoms.org/fin-du-cuivre/integration-du-plan-darret-du-rtc-dans-le-plan-de-fermeture-du-cuivre/</a> : arrêts de 2023 et 2024 abandonnés.</li>
-<li><strong>Maire-Info</strong>, « Orange prépare la modernisation du téléphone fixe classique… », 29 octobre 2018, <a href="https://www.maire-info.com/telecommunications/orange-prepare-la-modernisation-du-telephone-fixe-classique-7-zones-migreront-vers-le-tout-ip-fin-2023-article-22369" class="uri">https://www.maire-info.com/telecommunications/orange-prepare-la-modernisation-du-telephone-fixe-classique-7-zones-migreront-vers-le-tout-ip-fin-2023-article-22369</a> : fins de vente, 22 %, sept zones.</li>
-<li><strong>Banque des Territoires</strong>, « Arrêt réseau téléphonique commuté : Orange dévoile les communes concernées… », 5 novembre 2018, <a href="https://www.banquedesterritoires.fr/arret-reseau-telephonique-commute-orange-devoile-les-communes-concernees-et-rassure-sur" class="uri">https://www.banquedesterritoires.fr/arret-reseau-telephonique-commute-orange-devoile-les-communes-concernees-et-rassure-sur</a> : 9 millions de lignes, usages spécifiques.</li>
-<li><strong>Univers Freebox</strong>, « Fin du RTC : Orange passe la seconde… », 7 octobre 2021, <a href="https://www.universfreebox.com/article/502570/fin-du-rtc-orange-passe-la-seconde-et-commence-a-eteindre-son-reseau-historique" class="uri">https://www.universfreebox.com/article/502570/fin-du-rtc-orange-passe-la-seconde-et-commence-a-eteindre-son-reseau-historique</a> : l’essai du 15 octobre 2021.</li>
-<li><strong>Orange Business</strong>, « Fin du service Numéris : démêler le vrai du faux », 13 novembre 2019, <a href="https://www.orange-business.com/fr/blogs/fin-rtc-fermeture-commerciale-service-numeris-demeler-vrai-faux" class="uri">https://www.orange-business.com/fr/blogs/fin-rtc-fermeture-commerciale-service-numeris-demeler-vrai-faux</a> : fin de vente de Numéris.</li>
-<li><strong>Orange Business</strong>, fiche Numéris, non datée, <a href="https://www.orange-business.com/fr/produits/numeris-old2" class="uri">https://www.orange-business.com/fr/produits/numeris-old2</a> : canaux des accès.</li>
-<li><strong>Légifrance</strong>, article R134-2 du code de la construction, 1er juillet 2021, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043818727" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043818727</a> : objectif d’alerte.</li>
-<li><strong>Légifrance</strong>, décret n° 2026-166 du 4 mars 2026, JORF n° 0056 du 6 mars 2026, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053626113" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053626113</a> et <a href="https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000053626120" class="uri">https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000053626120</a> : articles modifiés, dates d’effet.</li>
-<li><strong>Légifrance</strong>, article R134-6 du code de la construction, 1er avril 2026, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043818737" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043818737</a> : vérification, remplacement.</li>
-<li><strong>Légifrance</strong>, arrêté du 18 novembre 2004 relatif aux travaux de sécurité… des ascenseurs, <a href="https://www.legifrance.gouv.fr/loda/id/LEGITEXT000005894844/" class="uri">https://www.legifrance.gouv.fr/loda/id/LEGITEXT000005894844/</a> : téléalarme, échéance de 2014.</li>
-<li><strong>Assemblée nationale</strong>, question écrite n° 9759, 16 septembre 2025, réponse du 3 mars 2026, <a href="https://www.assemblee-nationale.fr/dyn/17/questions/QANR5L17QE9759" class="uri">https://www.assemblee-nationale.fr/dyn/17/questions/QANR5L17QE9759</a> : le parc et ses téléalarmes.</li>
-<li><strong>Maire-Info</strong>, « Fin des réseaux 2G et 3G : un décret fixe un cadre… », 6 mars 2026, <a href="https://www.maire-info.com/am%C3%A9nagement-num%C3%A9rique-du-territoire/fin-des-reseaux-2g-et-3g-un-decret-fixe-un-cadre-pour-maintenir-la-securite-des-ascenseurs-article-30554" class="uri">https://www.maire-info.com/am%C3%A9nagement-num%C3%A9rique-du-territoire/fin-des-reseaux-2g-et-3g-un-decret-fixe-un-cadre-pour-maintenir-la-securite-des-ascenseurs-article-30554</a> : coût par ascenseur.</li>
-<li><strong>Arcep</strong>, « Fermeture des réseaux mobiles 2G et 3G : ce qu’il faut anticiper », 10 septembre 2026, <a href="https://www.arcep.fr/mes-demarches-et-services/entreprises/fiches-pratiques/extinction-reseaux-mobiles-2g-3g.html" class="uri">https://www.arcep.fr/mes-demarches-et-services/entreprises/fiches-pratiques/extinction-reseaux-mobiles-2g-3g.html</a> : calendrier, appareils menacés, VoLTE.</li>
-<li><strong>Arcep</strong>, « Extinction des réseaux mobiles 2G et 3G », 10 juin 2026, <a href="https://www.arcep.fr/actualites/actualites-et-communiques/detail/n/extinction-des-reseaux-mobiles-2g-et-3g-100626.html" class="uri">https://www.arcep.fr/actualites/actualites-et-communiques/detail/n/extinction-des-reseaux-mobiles-2g-et-3g-100626.html</a> : premières zones.</li>
-<li><strong>Afnor</strong>, notice NF EN 81-28, <a href="https://www.boutique.afnor.org/en-gb/standard/nf-en-8128/safety-rules-for-the-construction-and-installation-of-lifts-lifts-for-the-t/fa186749/81821" class="uri">https://www.boutique.afnor.org/en-gb/standard/nf-en-8128/safety-rules-for-the-construction-and-installation-of-lifts-lifts-for-the-t/fa186749/81821</a> : éditions.</li>
-<li><strong>Kone France</strong>, « Norme ascenseurs EN 81-28 », source commerciale, <a href="https://www.kone.fr/outils-supports/normes-reglementations/EN81-28.html" class="uri">https://www.kone.fr/outils-supports/normes-reglementations/EN81-28.html</a> : test, secours.</li>
-<li><strong>Avire</strong>, « Norme EN81-28 expliquée », source commerciale, <a href="https://www.avire-global.com/fr/articles/norme-en81-28-expliquee/" class="uri">https://www.avire-global.com/fr/articles/norme-en81-28-expliquee/</a> : test, secours, contenu du test.</li>
-<li><strong>Légifrance</strong>, arrêté du 11 septembre 2023, NOR IOME2315408A, JORF du 19 septembre 2023, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000048086110" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000048086110</a> : réécriture de MS 70.</li>
-<li><strong>Légifrance</strong>, articles MS 70 et MS 71, version du 20 septembre 2023, <a href="https://www.legifrance.gouv.fr/codes/section_lc/JORFTEXT000000290033/LEGISCTA000020317623/" class="uri">https://www.legifrance.gouv.fr/codes/section_lc/JORFTEXT000000290033/LEGISCTA000020317623/</a> : une heure, six heures.</li>
-<li><strong>Sénat</strong>, question écrite n° 07647, 12 février 2026, réponse du 5 mars 2026, <a href="https://www.senat.fr/questions/base/2026/qSEQ260207647.html" class="uri">https://www.senat.fr/questions/base/2026/qSEQ260207647.html</a> : la fibre et les coupures.</li>
-<li><strong>Orange</strong>, « Orange rend publiques les conclusions de l’enquête interne sur la crise du 2 juin 2021… », page datée du 21 février 2022, <a href="https://newsroom.orange.com/orange-rend-publiques-les-conclusions-de-lenquete-interne-sur-la-crise-du-2-juin-2021-ayant-affecte-les-appels-notamment-vers-les-numeros-durgence/" class="uri">https://newsroom.orange.com/orange-rend-publiques-les-conclusions-de-lenquete-interne-sur-la-crise-du-2-juin-2021-ayant-affecte-les-appels-notamment-vers-les-numeros-durgence/</a> : déroulé et chiffres.</li>
-<li><strong>Gouvernement du Royaume-Uni</strong>, « New measures to better protect vulnerable customers… », 18 décembre 2023, <a href="https://www.gov.uk/government/news/new-measures-to-better-protect-vulnerable-customers-agreed-with-telecoms-firms" class="uri">https://www.gov.uk/government/news/new-measures-to-better-protect-vulnerable-customers-agreed-with-telecoms-firms</a> : la charte.</li>
-<li><strong>Gouvernement du Royaume-Uni</strong>, « Telecare National Action Plan », 11 février 2025, <a href="https://gov.uk/government/publications/telecare-national-action-plan-protecting-telecare-users-throughout-the-digital-phone-switchover/telecare-national-action-plan-protecting-telecare-users-through-the-digital-phone-switchover" class="uri">https://gov.uk/government/publications/telecare-national-action-plan-protecting-telecare-users-throughout-the-digital-phone-switchover/telecare-national-action-plan-protecting-telecare-users-through-the-digital-phone-switchover</a> : utilisateurs, décès, signalisation, protocoles.</li>
-<li><strong>Gouvernement du Royaume-Uni</strong>, « UK transition from analogue to digital landlines », 28 février 2024, <a href="https://www.gov.uk/guidance/uk-transition-from-analogue-to-digital-landlines" class="uri">https://www.gov.uk/guidance/uk-transition-from-analogue-to-digital-landlines</a> : échéance, heure de l’Ofcom.</li>
-<li><strong>Anah</strong>, « MaPrimeAdapt’, la nouvelle aide… », 8 novembre 2023, <a href="https://www.anah.gouv.fr/actualites/maprimeadapt-la-nouvelle-aide-pour-l-adaptation-des-logements-la-perte-d-autonomie" class="uri">https://www.anah.gouv.fr/actualites/maprimeadapt-la-nouvelle-aide-pour-l-adaptation-des-logements-la-perte-d-autonomie</a> : publics, taux, objectif.</li>
-<li><strong>Anah</strong>, « Réouverture du guichet des aides de l’Anah », 20 février 2026, <a href="https://www.anah.gouv.fr/presse/reouverture-du-guichet-des-aides-de-l-anah-priorite-aux-projets-de-renovation-de-qualite" class="uri">https://www.anah.gouv.fr/presse/reouverture-du-guichet-des-aides-de-l-anah-priorite-aux-projets-de-renovation-de-qualite</a> : réouverture, bilan 2025.</li>
-<li><strong>Service-Public</strong>, actualité MaPrimeAdapt’, 19 janvier 2024, <a href="https://www.service-public.gouv.fr/particuliers/actualites/A17052?lang=fr" class="uri">https://www.service-public.gouv.fr/particuliers/actualites/A17052?lang=fr</a> : plafond, travaux.</li>
-<li><strong>Pour les personnes âgées</strong>, « Les aides financières pour adapter son logement », 2 février 2026, <a href="https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/amenager-son-logement-et-s-equiper/les-aides-financieres-pour-adapter-son-logement" class="uri">https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/amenager-son-logement-et-s-equiper/les-aides-financieres-pour-adapter-son-logement</a> : conditions d’âge.</li>
-<li><strong>Pour les personnes âgées</strong>, « Les aides financières pour installer une téléassistance », 4 juin 2025, <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-a-domicile/aides-financieres/les-aides-financieres-pour-installer-une-teleassistance" class="uri">https://www.pour-les-personnes-agees.gouv.fr/vivre-a-domicile/aides-financieres/les-aides-financieres-pour-installer-une-teleassistance</a> : APA, autres aides.</li>
-<li><strong>IETF</strong>, RFC 3550, juillet 2003, <a href="https://www.rfc-editor.org/rfc/rfc3550.html" class="uri">https://www.rfc-editor.org/rfc/rfc3550.html</a> : en-tête RTP.</li>
-<li><strong>IETF</strong>, RFC 3246, mars 2002, <a href="https://www.rfc-editor.org/rfc/rfc3246.html" class="uri">https://www.rfc-editor.org/rfc/rfc3246.html</a> : marque EF.</li>
-<li><strong>IETF</strong>, RFC 4733, décembre 2006, <a href="https://www.rfc-editor.org/rfc/rfc4733.html" class="uri">https://www.rfc-editor.org/rfc/rfc4733.html</a> : tonalités en événements.</li>
-<li><strong>UIT-T</strong>, résumé de la recommandation G.114, mai 2003, <a href="https://www.itu.int/dms_pubrec/itu-t/rec/g/T-REC-G.114-200305-I!!SUM-HTM-E.htm" class="uri">https://www.itu.int/dms_pubrec/itu-t/rec/g/T-REC-G.114-200305-I!!SUM-HTM-E.htm</a> : 400 ms.</li>
-<li><strong>Référentiel du BTS FED</strong>, mars 2014, pages 71 à 74, dans le dépôt : savoirs D2-2, D2-3, B8-2.</li>
-</ul>
-<p>Sources consultées les 13 et 14 septembre 2026.</p></div></details>
+<h2 id="six-cas-et-ce-qu-ils-ont-en-commun">Six cas, et ce qu’ils ont en commun</h2>
+
+<p>Le 15 novembre 2018, Orange a cessé de vendre des lignes téléphoniques analogiques. Depuis, le réseau cuivre ferme commune par commune jusqu’à la fin de 2030, la 2G s’éteint à l’automne 2026, et un décret du 4 mars 2026 oblige à remplacer les téléalarmes d’ascenseur qui passent encore par le réseau commuté, la 2G ou la 3G. Aucune de ces décisions ne vient du bâtiment ; toutes lui imposent des travaux que le technicien de l’option C doit concevoir et mettre en service.</p>
+
+<p>La ligne analogique rendait sans qu’on les demande quatre services : l’alimentation du poste par le central, un circuit réservé à chaque appel, des centraux nombreux et indépendants, la transparence à tout signal audible. <strong>La téléphonie sur IP peut rendre les mêmes, à condition que chacun soit dimensionné</strong> ; les six cas montrent ce qui arrive lorsque l’un d’eux ne l’a pas été.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Cas</th>
+
+<th>Ce que la ligne analogique assurait seule</th>
+
+<th>Ce qu’il faut désormais dimensionner</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>La fin de vente du RTC, 2018</td>
+
+<td>un circuit de 64 kbit/s par appel</td>
+
+<td>le débit réel d’un appel, en-têtes compris</td>
+
+</tr>
+
+<tr>
+
+<td>La fermeture du cuivre, 2021-2030</td>
+
+<td>les canaux d’un accès Numéris</td>
+
+<td>le nombre de canaux d’un trunk SIP</td>
+
+</tr>
+
+<tr>
+
+<td>Les téléalarmes d’ascenseur, 2026</td>
+
+<td>une ligne présente et alimentée</td>
+
+<td>le réseau de la téléalarme et son autonomie</td>
+
+</tr>
+
+<tr>
+
+<td>L’alerte des secours en ERP, 2023</td>
+
+<td>un poste alimenté par le central</td>
+
+<td>l’autonomie de toute la chaîne d’appel</td>
+
+</tr>
+
+<tr>
+
+<td>Les numéros d’urgence, 2021</td>
+
+<td>des centraux nombreux et indépendants</td>
+
+<td>la redondance réelle des serveurs d’appels</td>
+
+</tr>
+
+<tr>
+
+<td>La téléassistance, 2023-2025</td>
+
+<td>la transparence à tout signal audible</td>
+
+<td>le codec, le protocole et le secours</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Ce qui n’est pas dimensionné n’existe plus. Le RTC fournissait les quatre services par construction ; l’IP ne fournit que ce qui a été prévu, en heures d’autonomie, en canaux et en kilobits par seconde, en redondance réellement indépendante, en choix de codec ou de protocole.</p>
+
+</div>
+
+<figure>
+
+<img src="img/COURS4-TELEPHONIE-FIN-DU-CUIVRE/c4-trois-extinctions.png" alt="Trois extinctions sur un même axe du temps. Les barres du réseau cuivre sont à l’échelle du nombre de locaux fermés : l’essentiel ferme en 2028 et 2029, alors que la 2G s’éteint dès 2026." />
+
+<figcaption aria-hidden="true">Trois extinctions sur un même axe du temps. Les barres du réseau cuivre sont à l’échelle du nombre de locaux fermés : l’essentiel ferme en 2028 et 2029, alors que la 2G s’éteint dès 2026.</figcaption>
+
+</figure>
+
+<h2 id="la-vente-du-telephone-analogique-s-arrete-orange-2018">La vente du téléphone analogique s’arrête, Orange, 2018</h2>
+
+<p><em>Le 15 novembre 2018, Orange cesse de commercialiser les lignes du réseau téléphonique commuté (RTC) en métropole, puis les accès Numéris le 15 novembre 2019. Selon Maire-Info, les lignes RTC portaient alors 22 % des lignes fixes offrant le service téléphonique ; la Banque des Territoires comptait environ 9 millions de lignes à migrer. Le 15 octobre 2021, selon Univers Freebox, le RTC s’arrête à titre d’essai dans sept communes : Osny, dans le Val-d’Oise, et Concarneau, Elliant, Melgven, Saint-Yvi, Rosporden et Tourc’h, dans le Finistère.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Fin octobre 2018 : Orange annonce sept premières zones d’arrêt, cinq ans à l’avance, puis cesse de vendre des lignes RTC le 15 novembre.</li>
+
+<li>Juillet 2021 : Orange annonce l’intégration de l’arrêt du RTC au plan de fermeture du cuivre ; selon la Fédération française des télécoms, les arrêts prévus fin 2023 et fin 2024 sont abandonnés pour éviter une double migration.</li>
+
+<li>15 octobre 2021 : les sept communes d’essai perdent le RTC, quel que soit leur opérateur.</li>
+
+</ol>
+
+</div>
+
+<p>À l’intérieur du réseau, la voix n’était déjà plus analogique : entre les centraux, elle est échantillonnée 8 000 fois par seconde et codée sur 8 bits, soit 64 kbit/s selon la loi G.711, dans un circuit réservé pour toute la durée de l’appel. La voix sur IP transporte les mêmes 64 kbit/s en paquets, et chaque paquet emporte ses en-têtes : c’est ce qui sépare le débit du codec du débit de l’appel.</p>
+
+<div class="formule">
+
+<p><strong>D = R + 8 · H / T</strong></p>
+
+<ul>
+
+<li><strong>D</strong><span>: débit de l’appel sur le lien, dans un sens, en bit/s</span></li>
+
+<li><strong>R</strong><span>: débit du codec, en bit/s ; 64 000 en G.711, 8 000 en G.729</span></li>
+
+<li><strong>H</strong><span>: en-têtes ajoutés à chaque paquet, en octets ; 40 pour RTP, UDP et IPv4, 58 avec la trame Ethernet, 62 avec l’étiquette de VLAN</span></li>
+
+<li><strong>T</strong><span>: durée de voix par paquet, en secondes ; 0,020 le plus souvent</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>Le second terme ne dépend pas du codec : à 20 ms sur Ethernet, il vaut 23,2 kbit/s, que la voix soit compressée ou non.</p>
+
+</blockquote>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La démonstration, les quatre débits d&#39;un appel, et le choix de 20 ms</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un paquet porte T secondes de voix, soit R · T / 8 octets, plus H octets d’en-têtes, et il en part 1 / T par seconde. Le débit vaut donc 8 · (R · T / 8 + H) / T = <strong>R + 8 · H / T</strong> : la voix, plus le prix du découpage en paquets. L’en-tête RTP compte 12 octets selon la RFC 3550, UDP 8 et IPv4 20 ; ce que l’on ajoute ensuite dépend de ce que l’on dimensionne.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+<col style="width: 25%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Ce que l’on compte, paquets de 20 ms</th>
+
+<th>H</th>
+
+<th>G.711</th>
+
+<th>G.729</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>le paquet IP : RTP, UDP, IPv4</td>
+
+<td>40 o</td>
+
+<td>80,0 kbit/s</td>
+
+<td>24,0 kbit/s</td>
+
+</tr>
+
+<tr>
+
+<td>la trame Ethernet : en-tête 14 o, contrôle 4 o</td>
+
+<td>58 o</td>
+
+<td>87,2 kbit/s</td>
+
+<td>31,2 kbit/s</td>
+
+</tr>
+
+<tr>
+
+<td>la trame étiquetée du VLAN voix</td>
+
+<td>62 o</td>
+
+<td>88,8 kbit/s</td>
+
+<td>32,8 kbit/s</td>
+
+</tr>
+
+<tr>
+
+<td>l’occupation du câble : préambule 8 o, intervalle 12 o</td>
+
+<td>82 o</td>
+
+<td>96,8 kbit/s</td>
+
+<td>40,8 kbit/s</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p>Un port de commutateur se remplit au rythme de la dernière ligne ; l’accès de l’opérateur se dimensionne sur la première, plus sa propre encapsulation. Le G.729 divise le codec par huit, la trame par 2,8 seulement et l’occupation du câble par 2,4 : <strong>compresser la voix n’allège que la plus petite part du paquet</strong>.</p>
+
+<p>La durée de paquet est un compromis : un paquet de T secondes ajoute T au délai, puisque le premier échantillon attend que le paquet soit plein, mais 8 · H / T croît quand T diminue. En G.711 sur Ethernet, 10 ms coûtent 110,4 kbit/s, 27 % de plus qu’à 20 ms ; 30 ms, 79,5 kbit/s.</p></div></details>
+
+</div><div class="piege">
+
+<p>64 kbit/s est le débit du codec et non celui de l’appel, et l’appel occupe son débit <strong>dans chaque sens</strong>. Sur un accès asymétrique, la voie montante fixe le nombre d’appels simultanés : diviser le débit descendant par 87,2 kbit/s surestime l’accès du rapport entre ses deux sens.</p>
+
+</div>
+
+<p><strong>En classe.</strong> En DOMA9 (téléphonie numérique et IP, multimédia), après le tableau i, faire ajouter l’étiquette de VLAN, puis le préambule et l’intervalle : le gain du G.729 tombe de 2,8 à 2,4. En DOMB9 (mettre en service une installation téléphonique IP), capturer un appel et compter cinquante paquets par seconde dans chaque sens ; la longueur affichée diffère de celle de la séance, ce qu’explique la première question qui déstabilise.</p>
+
+<h2 id="le-reseau-cuivre-ferme-commune-par-commune-orange-et-arcep-2021-2030">Le réseau cuivre ferme commune par commune, Orange et Arcep, 2021-2030</h2>
+
+<p><em>Selon l’Arcep, Orange ferme son réseau cuivre en deux temps. La phase de transition a éprouvé la méthode : Lévis-Saint-Nom, dans les Yvelines, 700 locaux, fermée techniquement en mars 2021 ; six communes et 11 000 locaux en mars 2023 ; le lot 1, 162 communes et 209 000 locaux, fin janvier 2025. La phase industrielle enchaîne des lots annuels croissants : 829 communes et environ un million de locaux, fermées pour l’essentiel le 27 janvier 2026 ; 2 138 communes et 2,5 millions de locaux le 31 janvier 2027 ; puis 6 894 et 10 470 communes, par vagues, en 2028 et 2029.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Orange inscrit la commune dans un lot et l’annonce, par défaut 36 mois avant toute fermeture, selon les décisions de l’Arcep n° 2023-2802 et 2023-2803 du 14 décembre 2023.</li>
+
+<li>La commune doit être entièrement couverte en fibre, un point de branchement optique étant posé pour chaque local, sauf refus d’un tiers.</li>
+
+<li>Fermeture commerciale : aucun opérateur n’y vend plus d’offre sur cuivre.</li>
+
+<li>Au moins 12 mois plus tard, fermeture technique : tout ce qui passait par la paire s’arrête. Le dernier lot doit fermer fin 2030.</li>
+
+</ol>
+
+</div>
+
+<p>La paire ne portait pas que le téléphone : la Banque des Territoires citait dès 2018 l’alarme, la supervision, la télésurveillance, la télérelève, les lignes d’ascenseur et les terminaux de paiement. Le standard, lui, était souvent raccordé par Numéris ; selon Orange, un accès de base offre 2 communications simultanées, un accès primaire de 15 à 30 canaux. Le trunk SIP qui les remplace se vend aussi en canaux, et <strong>leur nombre se calcule par la loi qui dimensionnait les centraux, celle d’Erlang</strong>.</p>
+
+<p>Le trafic se mesure en erlangs, un erlang étant un canal occupé en permanence : 240 appels de 3 minutes à l’heure la plus chargée font 240 × 3 / 60 = <strong>12 E</strong>. La loi d’Erlang B donne la probabilité qu’un appel trouve tous les canaux pris, si les appels arrivent au hasard et si un appel bloqué est perdu.</p>
+
+<div class="formule">
+
+<p><strong>B = (A<sup>N</sup> / N!) / (1 + A + A<sup>2</sup> / 2! + … + A<sup>N</sup> / N!)</strong></p>
+
+<ul>
+
+<li><strong>B</strong><span>: taux de blocage, probabilité qu’un appel trouve les N canaux occupés</span></li>
+
+<li><strong>A</strong><span>: trafic offert à l’heure chargée, en erlangs</span></li>
+
+<li><strong>N</strong><span>: nombre de canaux du faisceau</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>Sans factorielle : B₀ = 1, puis Bₙ = A · Bₙ₋₁ / (n + A · Bₙ₋₁) pour n allant de 1 à N.</p>
+
+</blockquote>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La loi d&#39;Erlang, démontrée</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Soit pₖ la probabilité que k canaux soient occupés, k allant de 0 à N. Les appels arrivent au hasard au taux λ, en appels par heure ; une conversation dure en moyenne h heures, donc chacune de celles en cours s’achève au taux 1 / h.</p>
+
+<p><strong>En régime établi, le faisceau passe aussi souvent de k à k + 1 que de k + 1 à k.</strong> Le premier passage demande une arrivée, le second la fin de l’une des k + 1 conversations : λ · pₖ = (k + 1) / h · pₖ₊₁. Avec A = λ · h, il vient pₖ₊₁ = pₖ · A / (k + 1), puis pₖ = p₀ · A<sup>k</sup> / k!. La somme des pₖ valant 1, p₀ = 1 / (1 + A + … + A<sup>N</sup> / N!). Un appel est bloqué s’il arrive quand k = N, et des arrivées au hasard voient le faisceau dans son état moyen : B = p<sub>N</sub>, c’est la formule.</p>
+
+<p>La récurrence s’en déduit en écrivant 1 / Bₙ = 1 + (n / A) · 1 / Bₙ₋₁. Pour A = 12 E, elle donne 1,65 % avec 19 canaux et <strong>0,98 % avec 20</strong>.</p>
+
+<p>Le résultat ne dépend de la durée des appels que par sa moyenne, quelle que soit la loi des durées ; il dépend en revanche entièrement des deux hypothèses d’arrivées au hasard et d’appels perdus.</p></div></details>
+
+</div><p>À 1 %, un accès primaire de 30 canaux écoulait 20,3 E, environ 400 appels de 3 minutes par heure, et un accès de base de 2 canaux 0,15 E, trois appels : <strong>un grand faisceau fait mieux travailler chacun de ses canaux</strong>, 68 % du temps contre 8 %.</p>
+
+<figure>
+
+<img src="img/COURS4-TELEPHONIE-FIN-DU-CUIVRE/c4-erlang-b.png" alt="La loi d’Erlang B pour cinq faisceaux. La ligne rouge est l’objectif courant de 1 % ; le tableau donne le trafic écoulé à ce taux et l’occupation de chaque canal." />
+
+<figcaption aria-hidden="true">La loi d’Erlang B pour cinq faisceaux. La ligne rouge est l’objectif courant de 1 % ; le tableau donne le trafic écoulé à ce taux et l’occupation de chaque canal.</figcaption>
+
+</figure>
+
+<div class="cle">
+
+<p>Un faisceau se dimensionne en erlangs à l’heure chargée, jamais en nombre de salariés. Une proportion fixe ne peut pas être juste à toutes les tailles : l’effet de taille lui fait sous-dimensionner les petits sites et surdimensionner les grands.</p>
+
+</div>
+
+<p><strong>En classe.</strong> En DOMA9, reprendre la question k : 48 salariés, un canal pour quatre, soit 12 canaux. À 0,1 E par salarié, la loi d’Erlang en demande 11 pour 1 % : la règle tombe juste à cette taille, mais pas à 8 salariés, 2 canaux et 15 % de blocage, ni à 150, 38 canaux là où 24 suffisent. En DOMB9, c’est ce nombre que l’étudiant règle sur l’IPBX pour le trunk.</p>
+
+<h2 id="les-telealarmes-d-ascenseur-doivent-quitter-la-2g-et-la-3g-france-2026">Les téléalarmes d’ascenseur doivent quitter la 2G et la 3G, France, 2026</h2>
+
+<p><em>Le parc français compte environ 650 000 ascenseurs, dont 230 000 équipés d’une téléalarme en 2G et 60 000 en 3G, selon la Fédération des ascenseurs, citée par le député Bastien Lachaud dans sa question écrite n° 9759 du 16 septembre 2025 ; 60 % desservent des logements. Le ministère du Logement a répondu le 3 mars 2026, et le décret n° 2026-166, visant à garantir la sécurité des ascenseurs face à l’arrêt de certains réseaux téléphoniques, a été signé le lendemain. Le 31 mars, selon l’Arcep, la 2G s’éteignait à Bayonne, Anglet et Biarritz, premières zones d’un arrêt généralisé de la fin septembre à la fin décembre 2026.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>2004 : le décret n° 2004-964 et l’arrêté du 18 novembre 2004 imposent aux ascenseurs existants une téléalarme reliée à un service d’intervention : liaison bidirectionnelle permanente, identification de l’appel, test, éclairage de secours en cabine ; la version en vigueur de l’arrêté fixe l’échéance au 3 juillet 2014.</li>
+
+<li>1er juillet 2021 : l’article R134-2 du code de la construction fait de ces moyens d’alerte un objectif de sécurité.</li>
+
+<li>1er avril 2026 : l’article R134-6, modifié par le décret paru au Journal officiel du 6 mars, impose leur vérification toutes les six semaines ; lorsqu’ils passent par le réseau commuté, la 2G ou la 3G, l’entreprise d’entretien en alerte le propriétaire par lettre recommandée, tous les six mois jusqu’aux travaux.</li>
+
+<li>15 mai 2026 : le remplacement de ces dispositifs devient obligatoire, et le contrôle technique de l’article R134-11 vérifie leur compatibilité avec d’autres réseaux.</li>
+
+</ol>
+
+</div>
+
+<p>Le décret exclut trois technologies sans en imposer une. Restent deux voies : un module mobile en 4G, qui porte sa batterie et ne dépend de rien dans l’immeuble, ou un raccordement IP par le réseau du bâtiment, qui suppose un routeur et un commutateur secourus, faute de quoi la téléalarme se tait pendant la coupure même qui a immobilisé la cabine. <strong>Le choix se fait sur ce qui reste alimenté quand l’ascenseur s’arrête</strong>, avant de se faire sur le prix du module.</p>
+
+<div class="piege">
+
+<p>Un module « 4G » ne suffit pas. L’Arcep prévient qu’un terminal compatible avec la 4G peut ne pas l’être avec la voix en 4G, la VoLTE ; un module qui passe ses appels vocaux en se repliant sur la 2G ou la 3G se taira avec elles. La réception exige donc la compatibilité VoLTE et un appel vocal réel vers le service d’intervention.</p>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que la norme EN 81-28 demande à une téléalarme</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Publiée en 2003 et révisée en 2018, la norme a pour édition française la NF EN 81-28, corrigée en janvier 2019 selon l’Afnor. Le texte n’est pas en accès libre ; deux fabricants, Kone et Avire, en publient les exigences chiffrées : ce sont des sources commerciales, mais concordantes.</p>
+
+<p>Selon eux, la téléalarme passe <strong>un appel de test au moins tous les trois jours</strong>, qui renseigne aussi, précise Avire, sur le haut-parleur, le microphone et la batterie. Son secours tient <strong>une heure en veille, dont au moins quinze minutes de conversation</strong>. L’appel identifie l’ascenseur, et deux pictogrammes indiquent en cabine que l’alarme est enregistrée, puis que la communication est établie.</p>
+
+<p>Les deux vérifications ne font pas double emploi. Le test automatique prouve que le chemin existait à l’instant du test ; la visite des six semaines contrôle ce qu’il ne voit pas, un bouton bloqué, un pictogramme éteint, un numéro de destination périmé. Quand la 2G s’éteint, les tests échouent en série : le service de réception a intérêt à traiter <strong>l’absence de test comme une alarme</strong>.</p></div></details>
+
+</div><p><strong>En classe.</strong> En DOMA18 (alarme intrusion, assistance aux personnes), faire lire l’article R134-6 et demander si une téléalarme posée en 2019 avec un module mobile est conforme aujourd’hui : la réponse dépend de la génération du module, à chercher sur la plaque ou dans la notice. En DOMB20 (interphonie : platine de rue, moniteur, commande de gâche), poser la même question pour la platine de l’atelier, puisque l’Arcep range les interphones et visiophones connectés parmi les appareils menacés.</p>
+
+<h2 id="l-alerte-des-secours-doit-tenir-six-heures-sans-secteur-reglement-erp-2023">L’alerte des secours doit tenir six heures sans secteur, règlement ERP, 2023</h2>
+
+<p><em>L’arrêté du 11 septembre 2023, publié au Journal officiel du 19 septembre, a réécrit l’article MS 70 du règlement de sécurité contre l’incendie dans les établissements recevant du public. L’alerte des sapeurs-pompiers y est assurée par un dispositif dit de liaison prioritaire, fixe, qui identifie l’établissement et achemine l’appel en priorité, ou par tout autre moyen de communication. Dans les deux cas, le moyen doit assurer une liaison vocale de qualité et rester fiable en cas de coupure de l’alimentation électrique pendant au moins une heure, six heures pour les établissements comportant des locaux à sommeil.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Lire la durée exigée : une heure, ou six heures s’il existe des locaux à sommeil.</li>
+
+<li>Tracer le chemin de l’appel d’alerte : poste, commutateur, IPBX, routeur, terminaison optique.</li>
+
+<li>Relever la puissance de chaque maillon, calculer l’énergie sur la durée, et comparer avec un lien d’alerte dédié à batterie intégrée.</li>
+
+<li>Inscrire le secours dans les vérifications périodiques ; sans essai, l’autonomie calculée n’existe que sur le papier.</li>
+
+</ol>
+
+</div>
+
+<p>Avec la ligne analogique, le poste était alimenté depuis le central et l’établissement appelait les secours pendant une coupure. En téléphonie sur IP, le poste est alimenté par son câble, en PoE, depuis un commutateur raccordé au 230 V, et l’appel traverse l’IPBX, le routeur et la terminaison optique, qui ont chacun besoin du secteur. Le gouvernement l’a admis le 5 mars 2026, en réponse à la sénatrice Karine Daniel : la fibre, plus résistante aux intempéries que le cuivre vieillissant, partage certaines vulnérabilités face aux coupures d’électricité.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Secourir la chaîne, ou doubler le lien : le calcul</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Prenons des puissances plausibles, à remplacer par celles des fiches réelles : terminaison optique 10 W, commutateur 25 W avec le poste qu’il alimente, IPBX 15 W, poste 5 W, soit <strong>55 W</strong> pour la seule chaîne d’alerte, et 330 Wh utiles en six heures.</p>
+
+<p>Un onduleur ne restitue pas toute l’énergie de sa batterie. Avec un rendement de 0,85 et une décharge limitée à 80 % de la capacité, il faut 330 / (0,85 × 0,8) = <strong>485 Wh</strong>, environ 40 Ah sous 12 V ; avec une décharge limitée à 50 %, 776 Wh.</p>
+
+<p>Un terminal d’alerte dédié, en 4G avec voix sur LTE, consommant par hypothèse 2 W, demande 12 Wh pour six heures, 15 Wh avec un rendement de 0,8 : <strong>un rapport de l’ordre de trente</strong>. La méthode est celle de la page Prof 4 pour une centrale ; seul change le nombre de maillons.</p></div></details>
+
+</div><div class="cle">
+
+<p>Pour tenir six heures, on ne secourt pas la téléphonie de l’établissement : on secourt un lien d’alerte. La « liaison vocale de qualité » que le texte ne chiffre pas se tient, elle, par la priorité donnée à la voix, traitée dans la question sur les 150 ms.</p>
+
+</div>
+
+<p><strong>En classe.</strong> En DOMA20 (SSI, balisage et sources secourues), demander s’il faut secourir le commutateur des étages d’un hôtel de quarante chambres passé en téléphonie sur IP pour satisfaire l’article MS 70 : non, seul le chemin de l’appel d’alerte doit tenir six heures, et l’étudiant doit savoir le tracer. En DOMB6 (commutateur, plan d’adressage, PoE), faire relever la puissance réellement consommée par un poste et la comparer aux 7,0 W réservés pour sa classe.</p>
+
+<h2 id="les-numeros-d-urgence-ne-repondent-plus-orange-2021">Les numéros d’urgence ne répondent plus, Orange, 2021</h2>
+
+<p><em>Le 2 juin 2021, de 16 h 45 à minuit, des appels vers les numéros d’urgence n’aboutissent pas. Selon les conclusions de l’enquête interne publiées par Orange, l’interconnexion entre la voix mobile, la voix sur IP et le réseau commuté reposait sur une plateforme de serveurs d’appels, redondante entre six sites distincts. Un défaut du logiciel de ces serveurs s’est activé à la suite de commandes usuelles de reconnexion, pendant une opération de modernisation et d’augmentation de capacité commencée début mai. Environ 11 800 appels, soit 11 % du total, n’ont pas été acheminés.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Début mai 2021 : Orange engage la modernisation et l’augmentation de capacité de l’interconnexion.</li>
+
+<li>2 juin, 16 h 45 : des commandes de reconnexion ordinaires activent le défaut ; la redondance entre six sites ne l’arrête pas.</li>
+
+<li>Le fournisseur identifie le défaut et livre un correctif ; Orange indique avoir mobilisé une centaine d’experts.</li>
+
+<li>Minuit : le service est rétabli ; Orange retient d’activer sa cellule de crise en trente minutes au plus lors d’une perturbation nationale des appels d’urgence.</li>
+
+</ol>
+
+</div>
+
+<p>Dans le RTC, la commutation était répartie entre de nombreux centraux, et la panne de l’un restait circonscrite à sa zone. En IP, l’établissement et la libération de chaque appel passent par des <strong>serveurs d’appels</strong> peu nombreux, qui échangent la signalisation SIP ; la voix circule ensuite en RTP entre les extrémités. Un serveur hors service n’interrompt pas nécessairement les conversations en cours ; il empêche d’en établir de nouvelles. Dans un bâtiment, l’IPBX joue ce rôle et en a la fragilité : d’où un second IPBX, un second accès par un autre support, et un chemin d’appel d’urgence qui ne dépend pas de l’IPBX.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Redondant ne veut pas dire indépendant : le mode commun chiffré</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Deux serveurs disponibles chacun 99,9 % du temps sont indisponibles 526 minutes par an chacun. S’ils tombent indépendamment, la paire n’est indisponible que lorsque les deux le sont ensemble : (0,001)² = 10⁻⁶, une demi-minute par an.</p>
+
+<p>Le modèle usuel en fiabilité attribue une fraction β des défaillances à une <strong>cause commune</strong>, qui frappe les deux à la fois : même logiciel, même procédure, même opération en cours. L’indisponibilité devient β · 0,001 + ((1 − β) · 0,001)² ; avec β = 10 %, 1,0 × 10⁻⁴, soit <strong>53 minutes par an, cent fois plus</strong>. Le terme commun domine dès que β dépasse la probabilité de panne elle-même, ici un millième ; un septième site identique n’y change rien. Seule la diversité réduit β : un autre logiciel, un autre fournisseur, un autre support.</p></div></details>
+
+</div><div class="piege">
+
+<p>Six sites ne font pas six chances : des sites qui exécutent le même logiciel et subissent la même opération tombent ensemble. L’étudiant qui propose deux IPBX identiques pour « sécuriser les appels d’urgence » a doublé le matériel, pas la sûreté.</p>
+
+</div>
+
+<p><strong>En classe.</strong> En DOMB9, une fois l’installation en service, établir une conversation puis débrancher l’IPBX. Si elle continue, la voix passait de poste à poste ; si elle s’arrête, l’IPBX relayait aussi la voix. Dans les deux cas, plus aucun appel ne s’établit, ce qui démontre la séparation entre signalisation et voix et prépare la question qui compte : par où passe l’appel vers le 18 quand l’IPBX est éteint ?</p>
+
+<h2 id="des-telealarmes-se-taisent-apres-la-bascule-royaume-uni-2023-2025">Des téléalarmes se taisent après la bascule, Royaume-Uni, 2023-2025</h2>
+
+<p><em>Le 18 décembre 2023, le gouvernement britannique annonce qu’à la suite d’incidents graves, des téléalarmes ayant cessé de fonctionner après le passage de leur ligne au numérique, les principaux opérateurs, dont BT, Sky, Virgin Media O2 et TalkTalk, signent une charte : aucun utilisateur de téléassistance ne sera basculé sans qu’une solution compatible et en état de marche ait été confirmée. Le plan d’action national du 11 février 2025 estime à 2 millions le nombre d’utilisateurs de téléassistance au Royaume-Uni et fait état, parmi ces incidents, d’un petit nombre de décès. La bascule doit être achevée pour l’essentiel fin janvier 2027.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>La personne appuie sur son médaillon ; le transmetteur appelle la centrale d’écoute.</li>
+
+<li>Il transmet l’alarme par des signaux situés dans la bande vocale, puis ouvre la conversation.</li>
+
+<li>Sur une ligne numérique, ces signaux traversent l’adaptateur analogique du routeur, un codec et un réseau de paquets ; selon le plan britannique, la ligne numérique peut corrompre la signalisation de l’alarme.</li>
+
+<li>Pendant une coupure, un routeur sans batterie s’éteint, et la téléassistance avec lui si le transmetteur n’a pas d’autre voie.</li>
+
+</ol>
+
+</div>
+
+<p>Un transmetteur conçu pour le cuivre suppose une ligne <strong>transparente</strong> : ce qui entre dans la bande de 300 à 3 400 Hz ressort à l’autre bout. Un codec de voix reproduit ce qui ressemble à de la parole, sans rien promettre d’autre. La RFC 4733 le dit pour les tonalités du clavier : un codec à bas débit ne garantit pas de les reproduire assez fidèlement pour une reconnaissance automatique, et c’est pourquoi elle les transporte comme des événements nommés plutôt que comme du son.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi un signal d&#39;alarme ne survit pas au réseau de paquets, même en G.711</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Sans compression même, trois mécanismes abîment un signal de données : la <strong>mémoire tampon de gigue</strong> allonge ou raccourcit les silences quand elle s’adapte, le <strong>masquage des pertes</strong> remplace un paquet perdu par un son plausible, et la <strong>suppression des silences</strong>, si elle est active, coupe ce qu’elle prend pour du bruit.</p>
+
+<p>Les pertes suffisent à le chiffrer. À 1 %, seuil jugé acceptable pour la voix, et 50 paquets par seconde, un paquet se perd toutes les deux secondes en moyenne ; un message de tonalités de deux secondes, cent paquets, arrive intact avec une probabilité de 0,99<sup>100</sup>, soit <strong>37 %</strong>, et de 90 % à 0,1 % de pertes. <strong>Un seuil conçu pour l’oreille ne vaut rien pour un protocole de données.</strong> Le remède durable est un protocole conçu pour l’IP, avec accusé de réception, que le plan britannique désigne comme BS 8521-2 ou NowIP, ou le réseau mobile.</p></div></details>
+
+</div><div class="piege">
+
+<p>Brancher un transmetteur sur le port téléphonique d’un routeur ne vaut pas migration. Selon le plan britannique, la fiabilité dépend du modèle d’alarme, du protocole, du type de ligne, de l’opérateur et de l’équipement de la centrale : seul un appel d’alarme réel, reçu et acquitté par la centrale d’écoute, valide le raccordement.</p>
+
+</div>
+
+<p>En France, le financement se répartit entre deux dispositifs à ne pas confondre. L’abonnement de téléassistance peut entrer dans le plan d’aide de l’allocation personnalisée d’autonomie, pour les personnes évaluées en GIR 1 à 4, ou être aidé par les caisses de retraite, les communes et le crédit d’impôt des services à la personne. Les travaux d’adaptation du logement relèvent de <strong>MaPrimeAdapt’</strong>, ouverte le 1er janvier 2024 par l’Agence nationale de l’habitat.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">MaPrimeAdapt&#39; : les conditions vérifiées, et ce qu&#39;elle finance</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Elle s’adresse aux propriétaires occupants et aux locataires du parc privé âgés de 70 ans ou plus, sans condition de perte d’autonomie ; de 60 à 69 ans, sur évaluation de la perte d’autonomie par la grille AGGIR ; et, sans condition d’âge, aux personnes justifiant d’un taux d’incapacité d’au moins 50 % ou éligibles à la prestation de compensation du handicap. Elle finance <strong>70 % des travaux pour les ménages aux ressources très modestes et 50 % pour les ménages modestes, dans un plafond de 22 000 € HT</strong>, soit 15 400 € ou 11 000 € au plus, avec un assistant à maîtrise d’ouvrage habilité par l’Anah.</p>
+
+<p>Parmi les exemples de travaux que cite Service-Public, l’éclairage à détection de mouvement et les volets roulants relèvent directement de l’option C. L’Anah annonce 36 740 logements adaptés en 2025, un peu plus de la moitié du rythme qu’exigerait son objectif de 680 000 en dix ans ; son guichet a rouvert le 23 février 2026, à la promulgation de la loi de finances.</p></div></details>
+
+</div><p><strong>En classe.</strong> En DOMA18, faire dessiner le chemin d’une alarme de téléassistance, du médaillon à la centrale d’écoute, avant puis après la fermeture du cuivre : l’étudiant doit y placer l’adaptateur du routeur, le codec et l’alimentation du routeur. En DOMB21 (intrusion : centrale, détecteurs, sirène, transmetteur), demander par quel support et par quel protocole le transmetteur transmet, et ce qu’il deviendrait branché sur le port téléphonique d’un routeur sans batterie.</p>
+
+<h2 id="la-ou-la-methode-change">Là où la méthode change</h2>
+
+<p>La loi d’Erlang suppose des appels indépendants, arrivant au hasard, et des appels bloqués perdus. <strong>En situation de crise, les deux hypothèses tombent ensemble</strong> : une panne, une tempête ou un retour du secteur font appeler beaucoup de monde à la même minute, et chaque appelant bloqué recompose aussitôt. Le faisceau reçoit alors la demande gonflée de ses propres rappels.</p>
+
+<p>Si une fraction r des appels bloqués est aussitôt renouvelée, le trafic offert vérifie A = A₀ / (1 − r · B), où A₀ est la demande réelle et B le taux de blocage, lui-même fonction de A ; on résout par itérations. Le tableau reprend le faisceau de 20 canaux dimensionné pour 12 E à 1 %, avec 90 % d’appelants qui recomposent.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Demande réelle A₀</th>
+
+<th>Blocage prévu par Erlang</th>
+
+<th>Trafic offert, rappels compris</th>
+
+<th>Blocage par tentative</th>
+
+<th>Tentatives par appelant</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>12 E, l’heure chargée ordinaire</td>
+
+<td>0,98 %</td>
+
+<td>12,1 E</td>
+
+<td>1,06 %</td>
+
+<td>1,01</td>
+
+</tr>
+
+<tr>
+
+<td>15 E, 25 % de plus</td>
+
+<td>4,6 %</td>
+
+<td>15,9 E</td>
+
+<td>6,2 %</td>
+
+<td>1,06</td>
+
+</tr>
+
+<tr>
+
+<td>18 E, 50 % de plus</td>
+
+<td>10,9 %</td>
+
+<td>22,4 E</td>
+
+<td>22,0 %</td>
+
+<td>1,25</td>
+
+</tr>
+
+<tr>
+
+<td>24 E, le double</td>
+
+<td>25,7 %</td>
+
+<td>63,9 E</td>
+
+<td>69,4 %</td>
+
+<td>2,66</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p>Au double de la demande, le faisceau reçoit 2,7 tentatives par appelant, et sept sur dix échouent. Le rapport d’Orange sur le 2 juin 2021 ne chiffre pas les rappels ; le modèle dit seulement pourquoi les appelants qui recomposent entretiennent une saturation amorcée, et pourquoi les serveurs de signalisation, qui traitent chaque tentative, en portent la charge.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le modèle des rappels, et ce qu&#39;il change au dimensionnement</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Chaque tentative est bloquée avec la probabilité B, et l’appelant recompose avec la probabilité r : le nombre moyen de tentatives par appelant vaut 1 / (1 − r · B), d’où A = A₀ / (1 − r · B). La probabilité de renoncer finalement vaut B · (1 − r) / (1 − r · B) : au double de la demande, 18 %, contre 26 % sans rappel. L’appelant obstiné passe donc un peu plus souvent, pendant que le réseau traite 2,7 fois plus de tentatives.</p>
+
+<p><strong>La méthode change de grandeur.</strong> En crise, on dimensionne la signalisation en tentatives par seconde plutôt que le faisceau en erlangs ; on étale les rappels automatiques des équipements par une temporisation aléatoire ; et l’on garde une voie d’urgence hors du faisceau commun. Un parc de transmetteurs programmés pour signaler le retour du secteur, s’il appelait tout entier à la même minute, produirait exactement cette avalanche.</p></div></details>
+
+</div><h2 id="le-calcul-retourne">Le calcul retourné</h2>
+
+<p>La séance vérifie un blocage pour un nombre de canaux donné ; le bureau d’études <strong>choisit</strong> les canaux, puis le débit, pour un blocage fixé. Sont fixés le trafic à l’heure chargée, lu dans le journal de l’IPBX, et l’objectif ; restent libres les canaux, le codec et l’accès. Soit un site de 150 postes dont le journal montre <strong>240 appels extérieurs de 3 minutes en moyenne à l’heure la plus chargée</strong>, objectif 1 % :</p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Trafic : A = 240 × 3 / 60 = <strong>12 E</strong>.</li>
+
+<li>Canaux : la récurrence donne 1,65 % avec 19 canaux et 0,98 % avec 20 ; on retient <strong>N = 20</strong>.</li>
+
+<li>Ce que le faisceau écoule : 12 × (1 − 0,0098) = 11,88 E ; il perd 2,4 appels sur les 240 de l’heure chargée, et chaque canal est occupé 59 % du temps.</li>
+
+<li>Débit, dans chaque sens : 20 × 80 = <strong>1,6 Mbit/s</strong> au niveau IP en G.711, 480 kbit/s en G.729 ; sur le réseau du bâtiment, 20 × 88,8 = 1,78 Mbit/s en trames étiquetées.</li>
+
+<li>Accès : 2 Mbit/s garantis par sens pour la voix couvrent le G.711, la signalisation et une marge ; le G.729 ne se justifie que si l’accès ne peut pas offrir ce débit.</li>
+
+</ol>
+
+</div>
+
+<p>La règle d’un canal pour quatre salariés aurait donné 38 canaux, près du double, et chaque canal d’un trunk se paie. <strong>Le dimensionnement ne tolère pas, en revanche, une erreur sur l’heure chargée</strong> : c’est la donnée à vérifier avant tout calcul.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Et si le trafic est mal estimé ?</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Avec 20 % de trafic en plus, 14,4 E, les 20 canaux bloquent 3,6 % des appels, et il en faudrait 23 pour revenir à 1 %. Le piège classique est la moyenne : un site qui passe 1 200 appels de 3 minutes par jour, sur huit heures, présente 7,5 E en moyenne ; si l’heure la plus chargée porte 20 % des appels du jour, elle vaut 12 E. Dimensionner sur la moyenne donnerait 15 canaux, et <strong>8,6 % de blocage à l’heure de pointe</strong>. On lit donc l’heure la plus chargée des jours les plus chargés, sur plusieurs semaines, avec une marge pour la croissance du site.</p></div></details>
+
+</div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : un appel G.729 à 30 ms dans le VLAN voix</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un poste est réglé en G.729, par paquets de 30 ms, dans un VLAN voix. Calculer le débit de sa trame et l’occupation du câble, dans un sens.</p>
+
+<p><strong>Résolution.</strong> Voix par paquet : 8 000 × 0,030 / 8 = 30 octets. Trame étiquetée : 30 + 40 + 18 + 4 = 92 octets ; 112 avec le préambule et l’intervalle. Paquets : 1 / 0,030 = 33,3 par seconde. Débits : 92 × 8 × 33,3 = <strong>24,5 kbit/s</strong> en trame, 112 × 8 × 33,3 = <strong>29,9 kbit/s</strong> sur le câble ; la formule donne 8 + 8 × 82 / 0,030 = 29,9 kbit/s.</p>
+
+<p><strong>Vérification de plausibilité.</strong> Le résultat dépasse les 8 kbit/s du codec et reste sous les 40,8 kbit/s du même codec à 20 ms, puisqu’un paquet plus long allège les en-têtes.</p>
+
+<p><strong>Ce que l’étudiant doit rédiger.</strong> La formule avant les nombres, la couche où le débit est compté, et le sens : le résultat vaut pour chacun des deux.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : les lignes d&#39;une centrale d&#39;écoute</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une centrale d’écoute de téléassistance reçoit, à l’heure la plus chargée, 150 appels de 4 minutes en moyenne. Combien de lignes entrantes pour un blocage de 1 %, puis de 0,1 %, objectif plus prudent pour des appels de détresse ?</p>
+
+<p><strong>Résolution.</strong> A = 150 × 4 / 60 = <strong>10 E</strong>. À 1 % : 1,29 % avec 17 lignes, 0,71 % avec 18, donc <strong>18 lignes</strong>. À 0,1 % : 0,19 % avec 20 lignes, 0,089 % avec 21, donc <strong>21 lignes</strong>. Trois lignes de plus divisent par huit les appels perdus, de 1,1 à 0,13 par heure chargée. En G.711, 21 canaux demandent 1,68 Mbit/s par sens au niveau IP.</p>
+
+<p><strong>Vérification de plausibilité.</strong> Chaque ligne est occupée 55 % du temps avec 18 lignes, 48 % avec 21 : cohérent avec la figure, où 20 canaux travaillent à 60 % pour 1 %.</p>
+
+<p><strong>Ce que l’étudiant doit rédiger.</strong> L’objectif de blocage, justifié par la nature des appels, avant le calcul. <strong>L’erreur attendue</strong> est d’appliquer la loi à une vague d’alarmes simultanées, précisément le cas où elle ne vaut plus.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : un hôtel dans une commune du lot 3</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Un hôtel de 60 chambres, dans une commune du lot 3 dont la fermeture technique du cuivre est fixée au 31 janvier 2027, a deux lignes analogiques : le standard et la téléalarme de l’ascenseur. À l’heure la plus chargée, il passe 36 appels extérieurs de 2,5 minutes. Proposer l’architecture de remplacement.</p>
+
+<p><strong>Choisir la méthode avant de calculer.</strong> Trois fonctions, trois règles : le standard relève d’un dimensionnement de faisceau, la téléalarme de l’article R134-6 du code de la construction, l’alerte des secours de l’article MS 70, puisque l’hôtel comporte des locaux à sommeil.</p>
+
+<p><strong>Résolution.</strong> Standard : A = 36 × 2,5 / 60 = 1,5 E ; le blocage vaut 4,8 % avec 4 canaux, 1,4 % avec 5 et 0,35 % avec 6, donc <strong>6 canaux</strong>, soit 480 kbit/s par sens en G.711 au niveau IP. Téléalarme : elle passe par le réseau commuté, et le propriétaire doit la remplacer depuis le 1er avril 2026, sans attendre 2027, par un module 4G compatible VoLTE secouru une heure, ou par un raccordement IP secouru au moins autant. Alerte : un terminal dédié en 4G à batterie intégrée, de l’ordre de 15 Wh pour six heures.</p>
+
+<p><strong>Vérification de plausibilité.</strong> Six canaux pour 1,5 E, chacun occupé 25 % du temps : cohérent avec le tableau de la figure, où 5 canaux écoulent 1,36 E à 1 %.</p>
+
+<p><strong>Ce que l’étudiant doit rédiger.</strong> Les trois textes qui fondent les trois choix. <strong>L’erreur attendue</strong> est un module 2G, moins cher : inutilisable avant la fermeture du cuivre, il relève dès son installation de l’obligation de remplacement.</p></div></details>
+
+</div><h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 50%" />
+
+<col style="width: 50%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Ordre de grandeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Débit du codec</td>
+
+<td>G.711 : 64 kbit/s · G.729 : 8 kbit/s</td>
+
+</tr>
+
+<tr>
+
+<td>Un appel G.711 par paquets de 20 ms, dans un sens</td>
+
+<td>80 kbit/s en IP · 87,2 en trame Ethernet · 96,8 sur le câble dans un VLAN</td>
+
+</tr>
+
+<tr>
+
+<td>Un appel G.729 par paquets de 20 ms, dans un sens</td>
+
+<td>24 · 31,2 · 40,8 kbit/s</td>
+
+</tr>
+
+<tr>
+
+<td>Délai, gigue, pertes</td>
+
+<td>150 ms, 30 ms, 1 % de confort ; 400 ms, limite de planification de la G.114 (2003)</td>
+
+</tr>
+
+<tr>
+
+<td>Trafic écoulé à 1 % de blocage</td>
+
+<td>2 canaux : 0,15 E · 10 : 4,46 E · 20 : 12,0 E · 30 : 20,3 E</td>
+
+</tr>
+
+<tr>
+
+<td>Téléalarme d’ascenseur, selon deux fabricants</td>
+
+<td>test automatique au moins tous les 3 jours · 1 h de veille dont 15 min de conversation</td>
+
+</tr>
+
+<tr>
+
+<td>Vérification des moyens d’alerte d’un ascenseur</td>
+
+<td>toutes les 6 semaines, depuis le 1er avril 2026</td>
+
+</tr>
+
+<tr>
+
+<td>Ascenseurs en France</td>
+
+<td>650 000, dont 290 000 avec une téléalarme en 2G ou en 3G</td>
+
+</tr>
+
+<tr>
+
+<td>Remplacer une téléalarme</td>
+
+<td>800 à 1 500 € ; de 232 à 435 millions d’euros pour les 290 000</td>
+
+</tr>
+
+<tr>
+
+<td>Alerte des secours en ERP, article MS 70</td>
+
+<td>1 h sans secteur, 6 h avec locaux à sommeil</td>
+
+</tr>
+
+<tr>
+
+<td>Accès aux secours pendant une coupure, Royaume-Uni</td>
+
+<td>1 h au minimum, exigence de l’Ofcom</td>
+
+</tr>
+
+<tr>
+
+<td>Fermeture du cuivre</td>
+
+<td>préavis de 36 mois par défaut, au moins 12 mois entre fermeture commerciale et technique</td>
+
+</tr>
+
+<tr>
+
+<td>Lots 4 et 5 du plan cuivre</td>
+
+<td>84 % des locaux des cinq premiers lots, fermés en 2028 et 2029</td>
+
+</tr>
+
+<tr>
+
+<td>Arrêt de la 2G</td>
+
+<td>généralisé de la fin septembre à la fin décembre 2026 ; la 3G en 2028 et 2029</td>
+
+</tr>
+
+<tr>
+
+<td>MaPrimeAdapt’</td>
+
+<td>50 ou 70 % d’un plafond de 22 000 € HT : 11 000 ou 15 400 € au plus</td>
+
+</tr>
+
+<tr>
+
+<td>Poste IP en PoE de classe 2 · marque de la voix</td>
+
+<td>7,0 W réservés sur le port · EF, valeur 46</td>
+
+</tr>
+
+<tr>
+
+<td>Message de tonalités de 2 s, 1 % de pertes</td>
+
+<td>37 % de chances d’arriver intact</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Deux réflexes trient la plupart des affirmations. <strong>Un appel G.711 coûte de 80 à 97 kbit/s par sens selon la couche où on le compte</strong>, jamais 64. <strong>Un faisceau de N canaux écoule, à 1 % de blocage, nettement moins de N erlangs</strong>, d’autant moins que N est petit.</p>
+
+</div>
+
+<h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« L&#39;analyseur affiche 214 octets, la séance dit 218 : qui a raison ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les deux. Une trame de voix G.711 à 20 ms compte 200 octets de paquet IP, 14 d’en-tête Ethernet et 4 de contrôle final, soit 218 octets sur le câble. La plupart des cartes réseau vérifient puis retirent ces 4 octets avant de remettre la trame au logiciel de capture, qui affiche 214 ; dans le VLAN voix, l’étiquette ajoute 4 octets à chacun de ces nombres. Le câble porte encore 20 octets de préambule et d’intervalle, soit 238. L’appel vaut donc 85,6, 87,2 ou 95,2 kbit/s dans un sens : <strong>un débit n’a de sens qu’avec la couche où il est compté</strong>.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« D&#39;où vient la limite de 150 ms ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>D’une valeur de confort, et non d’un plafond normatif. La recommandation G.114 de l’UIT fixe, dans son édition de 2003, un délai de 400 ms dans un sens à ne pas dépasser pour la planification générale des réseaux, en précisant que les usages très interactifs, dont beaucoup d’appels vocaux, souffrent bien avant. Un réseau d’entreprise en reste loin ; un bond par satellite géostationnaire coûte à lui seul près de 240 ms, le temps de monter à 35 786 km et d’en redescendre à la vitesse de la lumière.</p>
+
+<p><strong>Dans un bâtiment, le délai pose rarement problème ; la gigue et les pertes, si</strong>, et elles naissent dans les files d’attente. Trois réglages les tiennent : le poste dans un <strong>VLAN voix</strong>, séparé des données ; ses paquets marqués <strong>EF</strong>, valeur 46, que la RFC 3246 réserve depuis 2002 à un service à faibles pertes, faible délai et faible gigue ; cette file servie avant les autres dans chaque commutateur du trajet. Sans le dernier, une sauvegarde qui remplit la file d’un port suffit à perdre des paquets de voix ; sur l’accès, seul un débit réservé à la voix, écrit dans le contrat, garantit la priorité.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Avec dix salariés, la loi d&#39;Erlang s&#39;applique-t-elle encore ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Elle s’applique mal, et dans le bon sens. Elle suppose une population illimitée d’appelants ; avec dix personnes et quatre lignes toutes occupées, il ne reste que six appelants possibles, et le rythme des appels baisse. La loi d’Engset tient compte de cette population finie : pour environ 2 E sur 4 lignes, elle donne 6,7 % de blocage, contre 9,8 % pour Erlang.</p>
+
+<p><strong>Erlang surestime le blocage d’un site dont chaque salarié pèse dans le trafic</strong> ; à 1 %, il demande un canal de plus qu’Engset, que le site compte dix postes ou deux cents, ce qui est l’erreur la moins grave. Les deux lois ne se rejoignent que pour une population très grande devant le trafic de chacun : pour une centrale d’écoute de 5 000 abonnés, toutes deux donnent 0,70 %.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Peut-on faire passer la vidéo des écrans sur le même réseau que la voix ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Oui, à deux conditions que DOMB10 (distribuer audio et vidéo sur l’infrastructure VDI) doit faire vérifier. Une image 1080p à 60 images par seconde et 24 bits par point pèse 1 920 × 1 080 × 60 × 24 = 2,99 Gbit/s ; compressée, de l’ordre de 15 Mbit/s selon l’hypothèse de la séance A9, soit 155 appels G.711 sur le câble.</p>
+
+<p>La première condition est la séparation : la vidéo dans son VLAN, la voix dans le sien, avec la priorité à la voix. La seconde est moins connue : un flux destiné à plusieurs écrans part en multidiffusion, et un commutateur sans IGMP snooping, qui ne suit pas les abonnements des écrans, le recopie sur tous les ports du VLAN. Si ce VLAN est celui des ordinateurs, que les postes relaient par leur port intégré, huit flux de 15 Mbit/s font 120 Mbit/s, de quoi saturer le port à 100 Mbit/s d’un poste qui n’a rien demandé.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">Les sources de cette page</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><ul>
+
+<li><strong>Arcep</strong>, « La fermeture du réseau cuivre », 26 janvier 2026, <a href="https://www.arcep.fr/nos-sujets/la-fermeture-du-reseau-cuivre.html" class="uri">https://www.arcep.fr/nos-sujets/la-fermeture-du-reseau-cuivre.html</a> : jalons jusqu’à 2030.</li>
+
+<li><strong>Arcep</strong>, « L’organisation d’Orange pour la fermeture de son réseau cuivre », 26 janvier 2026, <a href="https://www.arcep.fr/la-regulation/grands-dossiers-reseaux-fixes/la-fermeture-du-reseau-cuivre/organisation-orange-fermeture-reseau-cuivre.html" class="uri">https://www.arcep.fr/la-regulation/grands-dossiers-reseaux-fixes/la-fermeture-du-reseau-cuivre/organisation-orange-fermeture-reseau-cuivre.html</a> : expérimentations et lots.</li>
+
+<li><strong>Arcep</strong>, « Les obligations d’Orange dans le cadre des différentes phases du plan de fermeture du cuivre », 9 juillet 2026, <a href="https://www.arcep.fr/la-regulation/grands-dossiers-reseaux-fixes/la-fermeture-du-reseau-cuivre/obligations-orange-differentes-phases-plan-fermeture-cuivre.html" class="uri">https://www.arcep.fr/la-regulation/grands-dossiers-reseaux-fixes/la-fermeture-du-reseau-cuivre/obligations-orange-differentes-phases-plan-fermeture-cuivre.html</a> : préavis, critère, décisions de 2023.</li>
+
+<li><strong>Fédération française des télécoms</strong>, « Intégration du plan d’arrêt du RTC dans le plan de fermeture du cuivre », 24 octobre 2022, <a href="https://www.fftelecoms.org/fin-du-cuivre/integration-du-plan-darret-du-rtc-dans-le-plan-de-fermeture-du-cuivre/" class="uri">https://www.fftelecoms.org/fin-du-cuivre/integration-du-plan-darret-du-rtc-dans-le-plan-de-fermeture-du-cuivre/</a> : arrêts de 2023 et 2024 abandonnés.</li>
+
+<li><strong>Maire-Info</strong>, « Orange prépare la modernisation du téléphone fixe classique… », 29 octobre 2018, <a href="https://www.maire-info.com/telecommunications/orange-prepare-la-modernisation-du-telephone-fixe-classique-7-zones-migreront-vers-le-tout-ip-fin-2023-article-22369" class="uri">https://www.maire-info.com/telecommunications/orange-prepare-la-modernisation-du-telephone-fixe-classique-7-zones-migreront-vers-le-tout-ip-fin-2023-article-22369</a> : fins de vente, 22 %, sept zones.</li>
+
+<li><strong>Banque des Territoires</strong>, « Arrêt réseau téléphonique commuté : Orange dévoile les communes concernées… », 5 novembre 2018, <a href="https://www.banquedesterritoires.fr/arret-reseau-telephonique-commute-orange-devoile-les-communes-concernees-et-rassure-sur" class="uri">https://www.banquedesterritoires.fr/arret-reseau-telephonique-commute-orange-devoile-les-communes-concernees-et-rassure-sur</a> : 9 millions de lignes, usages spécifiques.</li>
+
+<li><strong>Univers Freebox</strong>, « Fin du RTC : Orange passe la seconde… », 7 octobre 2021, <a href="https://www.universfreebox.com/article/502570/fin-du-rtc-orange-passe-la-seconde-et-commence-a-eteindre-son-reseau-historique" class="uri">https://www.universfreebox.com/article/502570/fin-du-rtc-orange-passe-la-seconde-et-commence-a-eteindre-son-reseau-historique</a> : l’essai du 15 octobre 2021.</li>
+
+<li><strong>Orange Business</strong>, « Fin du service Numéris : démêler le vrai du faux », 13 novembre 2019, <a href="https://www.orange-business.com/fr/blogs/fin-rtc-fermeture-commerciale-service-numeris-demeler-vrai-faux" class="uri">https://www.orange-business.com/fr/blogs/fin-rtc-fermeture-commerciale-service-numeris-demeler-vrai-faux</a> : fin de vente de Numéris.</li>
+
+<li><strong>Orange Business</strong>, fiche Numéris, non datée, <a href="https://www.orange-business.com/fr/produits/numeris-old2" class="uri">https://www.orange-business.com/fr/produits/numeris-old2</a> : canaux des accès.</li>
+
+<li><strong>Légifrance</strong>, article R134-2 du code de la construction, 1er juillet 2021, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043818727" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043818727</a> : objectif d’alerte.</li>
+
+<li><strong>Légifrance</strong>, décret n° 2026-166 du 4 mars 2026, JORF n° 0056 du 6 mars 2026, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053626113" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053626113</a> et <a href="https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000053626120" class="uri">https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000053626120</a> : articles modifiés, dates d’effet.</li>
+
+<li><strong>Légifrance</strong>, article R134-6 du code de la construction, 1er avril 2026, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043818737" class="uri">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043818737</a> : vérification, remplacement.</li>
+
+<li><strong>Légifrance</strong>, arrêté du 18 novembre 2004 relatif aux travaux de sécurité… des ascenseurs, <a href="https://www.legifrance.gouv.fr/loda/id/LEGITEXT000005894844/" class="uri">https://www.legifrance.gouv.fr/loda/id/LEGITEXT000005894844/</a> : téléalarme, échéance de 2014.</li>
+
+<li><strong>Assemblée nationale</strong>, question écrite n° 9759, 16 septembre 2025, réponse du 3 mars 2026, <a href="https://www.assemblee-nationale.fr/dyn/17/questions/QANR5L17QE9759" class="uri">https://www.assemblee-nationale.fr/dyn/17/questions/QANR5L17QE9759</a> : le parc et ses téléalarmes.</li>
+
+<li><strong>Maire-Info</strong>, « Fin des réseaux 2G et 3G : un décret fixe un cadre… », 6 mars 2026, <a href="https://www.maire-info.com/am%C3%A9nagement-num%C3%A9rique-du-territoire/fin-des-reseaux-2g-et-3g-un-decret-fixe-un-cadre-pour-maintenir-la-securite-des-ascenseurs-article-30554" class="uri">https://www.maire-info.com/am%C3%A9nagement-num%C3%A9rique-du-territoire/fin-des-reseaux-2g-et-3g-un-decret-fixe-un-cadre-pour-maintenir-la-securite-des-ascenseurs-article-30554</a> : coût par ascenseur.</li>
+
+<li><strong>Arcep</strong>, « Fermeture des réseaux mobiles 2G et 3G : ce qu’il faut anticiper », 10 septembre 2026, <a href="https://www.arcep.fr/mes-demarches-et-services/entreprises/fiches-pratiques/extinction-reseaux-mobiles-2g-3g.html" class="uri">https://www.arcep.fr/mes-demarches-et-services/entreprises/fiches-pratiques/extinction-reseaux-mobiles-2g-3g.html</a> : calendrier, appareils menacés, VoLTE.</li>
+
+<li><strong>Arcep</strong>, « Extinction des réseaux mobiles 2G et 3G », 10 juin 2026, <a href="https://www.arcep.fr/actualites/actualites-et-communiques/detail/n/extinction-des-reseaux-mobiles-2g-et-3g-100626.html" class="uri">https://www.arcep.fr/actualites/actualites-et-communiques/detail/n/extinction-des-reseaux-mobiles-2g-et-3g-100626.html</a> : premières zones.</li>
+
+<li><strong>Afnor</strong>, notice NF EN 81-28, <a href="https://www.boutique.afnor.org/en-gb/standard/nf-en-8128/safety-rules-for-the-construction-and-installation-of-lifts-lifts-for-the-t/fa186749/81821" class="uri">https://www.boutique.afnor.org/en-gb/standard/nf-en-8128/safety-rules-for-the-construction-and-installation-of-lifts-lifts-for-the-t/fa186749/81821</a> : éditions.</li>
+
+<li><strong>Kone France</strong>, « Norme ascenseurs EN 81-28 », source commerciale, <a href="https://www.kone.fr/outils-supports/normes-reglementations/EN81-28.html" class="uri">https://www.kone.fr/outils-supports/normes-reglementations/EN81-28.html</a> : test, secours.</li>
+
+<li><strong>Avire</strong>, « Norme EN81-28 expliquée », source commerciale, <a href="https://www.avire-global.com/fr/articles/norme-en81-28-expliquee/" class="uri">https://www.avire-global.com/fr/articles/norme-en81-28-expliquee/</a> : test, secours, contenu du test.</li>
+
+<li><strong>Légifrance</strong>, arrêté du 11 septembre 2023, NOR IOME2315408A, JORF du 19 septembre 2023, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000048086110" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000048086110</a> : réécriture de MS 70.</li>
+
+<li><strong>Légifrance</strong>, articles MS 70 et MS 71, version du 20 septembre 2023, <a href="https://www.legifrance.gouv.fr/codes/section_lc/JORFTEXT000000290033/LEGISCTA000020317623/" class="uri">https://www.legifrance.gouv.fr/codes/section_lc/JORFTEXT000000290033/LEGISCTA000020317623/</a> : une heure, six heures.</li>
+
+<li><strong>Sénat</strong>, question écrite n° 07647, 12 février 2026, réponse du 5 mars 2026, <a href="https://www.senat.fr/questions/base/2026/qSEQ260207647.html" class="uri">https://www.senat.fr/questions/base/2026/qSEQ260207647.html</a> : la fibre et les coupures.</li>
+
+<li><strong>Orange</strong>, « Orange rend publiques les conclusions de l’enquête interne sur la crise du 2 juin 2021… », page datée du 21 février 2022, <a href="https://newsroom.orange.com/orange-rend-publiques-les-conclusions-de-lenquete-interne-sur-la-crise-du-2-juin-2021-ayant-affecte-les-appels-notamment-vers-les-numeros-durgence/" class="uri">https://newsroom.orange.com/orange-rend-publiques-les-conclusions-de-lenquete-interne-sur-la-crise-du-2-juin-2021-ayant-affecte-les-appels-notamment-vers-les-numeros-durgence/</a> : déroulé et chiffres.</li>
+
+<li><strong>Gouvernement du Royaume-Uni</strong>, « New measures to better protect vulnerable customers… », 18 décembre 2023, <a href="https://www.gov.uk/government/news/new-measures-to-better-protect-vulnerable-customers-agreed-with-telecoms-firms" class="uri">https://www.gov.uk/government/news/new-measures-to-better-protect-vulnerable-customers-agreed-with-telecoms-firms</a> : la charte.</li>
+
+<li><strong>Gouvernement du Royaume-Uni</strong>, « Telecare National Action Plan », 11 février 2025, <a href="https://gov.uk/government/publications/telecare-national-action-plan-protecting-telecare-users-throughout-the-digital-phone-switchover/telecare-national-action-plan-protecting-telecare-users-through-the-digital-phone-switchover" class="uri">https://gov.uk/government/publications/telecare-national-action-plan-protecting-telecare-users-throughout-the-digital-phone-switchover/telecare-national-action-plan-protecting-telecare-users-through-the-digital-phone-switchover</a> : utilisateurs, décès, signalisation, protocoles.</li>
+
+<li><strong>Gouvernement du Royaume-Uni</strong>, « UK transition from analogue to digital landlines », 28 février 2024, <a href="https://www.gov.uk/guidance/uk-transition-from-analogue-to-digital-landlines" class="uri">https://www.gov.uk/guidance/uk-transition-from-analogue-to-digital-landlines</a> : échéance, heure de l’Ofcom.</li>
+
+<li><strong>Anah</strong>, « MaPrimeAdapt’, la nouvelle aide… », 8 novembre 2023, <a href="https://www.anah.gouv.fr/actualites/maprimeadapt-la-nouvelle-aide-pour-l-adaptation-des-logements-la-perte-d-autonomie" class="uri">https://www.anah.gouv.fr/actualites/maprimeadapt-la-nouvelle-aide-pour-l-adaptation-des-logements-la-perte-d-autonomie</a> : publics, taux, objectif.</li>
+
+<li><strong>Anah</strong>, « Réouverture du guichet des aides de l’Anah », 20 février 2026, <a href="https://www.anah.gouv.fr/presse/reouverture-du-guichet-des-aides-de-l-anah-priorite-aux-projets-de-renovation-de-qualite" class="uri">https://www.anah.gouv.fr/presse/reouverture-du-guichet-des-aides-de-l-anah-priorite-aux-projets-de-renovation-de-qualite</a> : réouverture, bilan 2025.</li>
+
+<li><strong>Service-Public</strong>, actualité MaPrimeAdapt’, 19 janvier 2024, <a href="https://www.service-public.gouv.fr/particuliers/actualites/A17052?lang=fr" class="uri">https://www.service-public.gouv.fr/particuliers/actualites/A17052?lang=fr</a> : plafond, travaux.</li>
+
+<li><strong>Pour les personnes âgées</strong>, « Les aides financières pour adapter son logement », 2 février 2026, <a href="https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/amenager-son-logement-et-s-equiper/les-aides-financieres-pour-adapter-son-logement" class="uri">https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/amenager-son-logement-et-s-equiper/les-aides-financieres-pour-adapter-son-logement</a> : conditions d’âge.</li>
+
+<li><strong>Pour les personnes âgées</strong>, « Les aides financières pour installer une téléassistance », 4 juin 2025, <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-a-domicile/aides-financieres/les-aides-financieres-pour-installer-une-teleassistance" class="uri">https://www.pour-les-personnes-agees.gouv.fr/vivre-a-domicile/aides-financieres/les-aides-financieres-pour-installer-une-teleassistance</a> : APA, autres aides.</li>
+
+<li><strong>IETF</strong>, RFC 3550, juillet 2003, <a href="https://www.rfc-editor.org/rfc/rfc3550.html" class="uri">https://www.rfc-editor.org/rfc/rfc3550.html</a> : en-tête RTP.</li>
+
+<li><strong>IETF</strong>, RFC 3246, mars 2002, <a href="https://www.rfc-editor.org/rfc/rfc3246.html" class="uri">https://www.rfc-editor.org/rfc/rfc3246.html</a> : marque EF.</li>
+
+<li><strong>IETF</strong>, RFC 4733, décembre 2006, <a href="https://www.rfc-editor.org/rfc/rfc4733.html" class="uri">https://www.rfc-editor.org/rfc/rfc4733.html</a> : tonalités en événements.</li>
+
+<li><strong>UIT-T</strong>, résumé de la recommandation G.114, mai 2003, <a href="https://www.itu.int/dms_pubrec/itu-t/rec/g/T-REC-G.114-200305-I!!SUM-HTM-E.htm" class="uri">https://www.itu.int/dms_pubrec/itu-t/rec/g/T-REC-G.114-200305-I!!SUM-HTM-E.htm</a> : 400 ms.</li>
+
+<li><strong>Référentiel du BTS FED</strong>, mars 2014, pages 71 à 74, dans le dépôt : savoirs D2-2, D2-3, B8-2.</li>
+
+</ul>
+
+<p>Sources consultées les 13 et 14 septembre 2026.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="av" href="COURS3-VDI-FIBRE-CEM.html" rel="prev"><span class="k">&lsaquo; Précédent</span><span class="t">Domotique, cours 3 — VDI, fibre et CEM</span></a><a class="ap" href="COURS5-ECLAIRAGE.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Domotique, cours 5 — l'éclairage</span></a></div></nav>
 <p class="pied">Page de formation, réservée au professeur. Elle s'appuie sur des cas réels documentés ; les sources sont données en fin de page.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

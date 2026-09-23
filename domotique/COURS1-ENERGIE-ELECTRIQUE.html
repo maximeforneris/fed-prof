@@ -1,13 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Domotique, cours 1 — l'énergie électrique</title>
-<link rel="stylesheet" href="../assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="../assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="../assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="../assets/impression.css?v=9471a56a">
+<script src="../assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="../assets/site.js?v=9471a56a" defer></script>
+<script src="../assets/vivant.js?v=9471a56a" defer></script>
+<script src="../assets/plan.js?v=9471a56a" defer></script>
+<script src="../assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof" data-page="domotique/COURS1-ENERGIE-ELECTRIQUE" data-public="prof">
 <div class="jauge-lecture" id="jauge-lecture"><i></i></div><div class="barre-site"><a class="accueil" href="../index.html">Ressources enseignement fluides énergétiques</a><span class="fleches"><a class="fleche" href="COURS2-RESEAU-IP-CYBERSECURITE.html" rel="next" title="Domotique, cours 2 — réseau IP et sécurité" aria-label="Domotique, cours 2 — réseau IP et sécurité">&rsaquo;</a></span><button type="button" class="lu" data-lu="domotique/COURS1-ENERGIE-ELECTRIQUE">Marquer comme lu</button></div><p class="bandeau-prof">Document de formation du professeur — ne pas diffuser aux étudiants</p>
@@ -23,570 +31,1125 @@
 </header>
 <aside class="prerequis"><p class="chapeau-p">Avant de commencer</p><ul><li><b>Puissance active, puissance apparente</b><span class="car">la page oppose sans cesse les kW facturés en énergie et les kVA qui dimensionnent le réseau ; la distinction doit être sûre avant d'entrer.</span></li><li><b>Le triphasé, au niveau du bac pro</b><span class="car">trois phases à 230 V décalées de 120°, et 400 V entre phases ; le dernier symptôme en dépend.</span></li><li><b><a href="PROF1-COURANT-FAIBLE.html">La frontière entre information et énergie</a></b><span class="ou">Prof 1 — le courant faible</span><span class="car">délester, c'est une information qui coupe une énergie ; la page suppose la chaîne connue.</span></li></ul></aside>
 <nav class="somm"><div class="in"><a href="#huit-plaintes-et-ce-qu-elles-ont-en-commun">Huit plaintes, et ce qu’elles ont en commun</a><a href="#la-facture-a-double-cet-hiver">« La facture a doublé cet hiver »</a><a href="#le-compteur-tourne-la-nuit-et-le-batiment-est-vide">« Le compteur tourne la nuit, et le bâtiment est vide »</a><a href="#on-paie-des-penalites-tous-les-mois">« On paie des pénalités tous les mois »</a><a href="#le-disjoncteur-de-la-maison-saute-a-19-heures">« Le disjoncteur de la maison saute à 19 heures »</a><a href="#on-est-passe-en-heures-creuses-et-rien-n-a-baisse">« On est passé en heures creuses, et rien n’a baissé »</a><a href="#le-compteur-de-l-etage-ne-dit-pas-la-meme-chose-que-le-general">« Le compteur de l’étage ne dit pas la même chose que le général »</a><a href="#le-tgbt-est-communicant-mais-personne-ne-regarde">« Le TGBT est communicant, mais personne ne regarde »</a><a href="#une-phase-chauffe-pas-les-deux-autres">« Une phase chauffe, pas les deux autres »</a><a href="#le-seuil-de-36-kva-la-ou-la-methode-change">Le seuil de 36 kVA : là où la méthode change</a><a href="#de-la-courbe-a-la-souscription-le-calcul-retourne">De la courbe à la souscription : le calcul retourné</a><a href="#trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</a><a href="#trois-cas-reels-et-ce-qu-ils-enseignent">Trois cas réels, et ce qu’ils enseignent</a><a href="#les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</a><a href="#les-diagnostics-qui-trompent">Les diagnostics qui trompent</a><a href="#les-questions-qui-destabilisent">Les questions qui déstabilisent</a></div></nav>
-<h2 id="huit-plaintes-et-ce-qu-elles-ont-en-commun">Huit plaintes, et ce qu’elles ont en commun</h2>
-<p>Personne n’appelle un technicien pour lui parler de tarification. On l’appelle parce que la facture a doublé, parce que le disjoncteur saute, parce que le gestionnaire trouve des pénalités qu’il ne comprend pas. <strong>La théorie arrive toujours par un symptôme</strong> : c’est l’ordre que suit cette page, une plainte par section, puis le diagnostic, puis ce qu’il faut savoir pour conclure.</p>
-<p>Derrière les huit, une seule distinction, et elle suffit à en résoudre la moitié : <strong>l’énergie se compte en kilowattheures, le réseau se dimensionne en kilovoltampères</strong>. Une facture paie les deux, par deux lignes différentes, et presque toutes les incompréhensions viennent de ce qu’on les confond.</p>
-<div class="cle">
-<p>Le kWh paie ce qui a été consommé. Le kVA paie ce que le réseau doit être capable de livrer à l’instant le plus chargé. Réduire l’un ne réduit pas l’autre : un bâtiment peut consommer moins et payer autant, s’il appelle la même pointe.</p>
-</div>
-<p>Deux bâtiments servent tout au long de la page. On y reviendra à chaque symptôme, avec les mêmes chiffres.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th></th>
-<th>Les bureaux</th>
-<th>La maison</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Surface</td>
-<td>2 000 m²</td>
-<td>110 m²</td>
-</tr>
-<tr>
-<td>Raccordement</td>
-<td>BT au-delà de 36 kVA, triphasé</td>
-<td>BT jusqu’à 36 kVA, monophasé</td>
-</tr>
-<tr>
-<td>Contrat</td>
-<td>offre de marché, acheminement <strong>longue utilisation</strong></td>
-<td>tarif réglementé Bleu</td>
-</tr>
-<tr>
-<td>Puissance souscrite</td>
-<td>110 kVA, la même sur les quatre plages</td>
-<td>9 kVA</td>
-</tr>
-<tr>
-<td>Consommation annuelle</td>
-<td>220 000 kWh</td>
-<td>7 000 kWh</td>
-</tr>
-<tr>
-<td>Chauffage</td>
-<td>pompe à chaleur</td>
-<td>convecteurs</td>
-</tr>
-</tbody>
-</table></div>
-<h2 id="la-facture-a-double-cet-hiver">« La facture a doublé cet hiver »</h2>
-<p><em>Le gestionnaire des bureaux, en février : la facture de janvier est à 5 900 € HT, celle d’octobre était à 2 600 €. « On n’a pourtant pas consommé deux fois plus. »</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Relever la consommation des deux mois sur les factures : 15 000 kWh en octobre, 26 000 kWh en janvier — un rapport de 1,73, pas de 2,28.</li>
-<li>Séparer la facture en ses quatre blocs : fourniture, acheminement, taxes, TVA.</li>
-<li>Regarder dans quelle <strong>plage temporelle</strong> tombe chaque mois : octobre en saison basse, janvier en saison haute.</li>
-<li>Chercher une ligne qui n’existe qu’en hiver : les dépassements de puissance.</li>
-</ol>
-</div>
-<p>Il a raison sur la consommation, et tort sur la conclusion. La facture n’est pas proportionnelle aux kWh parce que <strong>le prix du kWh change avec le moment où il est consommé</strong>. Au-delà de 36 kVA, l’acheminement distingue quatre plages : heures pleines et creuses, de saison haute — novembre à mars par défaut — et de saison basse. Le kWh de janvier en heures pleines coûte, en acheminement seul, près de trois fois celui d’octobre.</p>
-<div class="formule">
-<p><strong>CS = b₁ · P₁ + Σ bᵢ · (Pᵢ − Pᵢ₋₁) + Σ cᵢ · Eᵢ</strong></p>
-<ul>
-<li><strong>CS</strong><span>composante annuelle de soutirage de l’acheminement, en €/an</span></li>
-<li><strong>Pᵢ</strong><span>puissance souscrite sur la plage i, en kVA, avec <strong>P₁ ≤ P₂ ≤ P₃ ≤ P₄</strong></span></li>
-<li><strong>bᵢ</strong><span>prix de la puissance, en €/kVA/an ; <strong>cᵢ</strong> — prix de l’énergie, en c€/kWh</span></li>
-<li><strong>Eᵢ</strong><span>énergie soutirée sur la plage i, en kWh</span></li>
-</ul>
-<blockquote>
-<p>Grille TURPE 7 au 1er août 2026, longue utilisation : b = 31,08 · 21,82 · 17,15 · 12,75 ; c = 5,86 · 3,58 · 2,07 · 1,54 pour HPH · HCH · HPB · HCB.</p>
-</blockquote>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les deux mois reconstitués, ligne par ligne</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les parts fixes se paient par douzièmes, quelle que soit la saison : gestion 222,53 €, comptage 291,88 € et puissance 31,08 × 110 = 3 418,80 €, soit <strong>327,77 € par mois</strong>, plus la contribution tarifaire d’acheminement, 15 % de ces parts fixes depuis février 2026 : <strong>49,17 €</strong>.</p>
-<p><strong>Octobre</strong> — 11 250 kWh en heures pleines et 3 750 en heures creuses de saison basse. Fourniture à 11 et 8 c€ : 1 537,50 €. Acheminement énergie à 2,07 et 1,54 c€ : 290,63 €. Accise, 26,35 €/MWh au-delà de 36 kVA depuis août 2026 : 395,25 €. Total <strong>2 600,31 € HT</strong>, soit <strong>17,3 c€/kWh</strong>.</p>
-<p><strong>Janvier</strong> — 19 500 kWh en heures pleines et 6 500 en heures creuses de saison haute. Fourniture à 14 et 10 c€ : 3 380,00 €. Acheminement énergie à 5,86 et 3,58 c€ : 1 375,40 €. Accise : 685,10 €. Et <strong>huit heures de dépassement</strong> à 12,79 € : 102,32 €. Total <strong>5 919,75 € HT</strong>, soit <strong>22,8 c€/kWh</strong>.</p>
-<p>Le rapport des factures vaut 2,28 pour une consommation multipliée par 1,73. La différence tient entière dans le prix moyen du kWh, qui passe de 17,3 à 22,8 c€ : <strong>un hiver ne coûte pas seulement plus de kWh, il coûte des kWh plus chers</strong>.</p></div></details>
-</div><div class="piege">
-<p>La TVA ne compte pas dans ce raisonnement pour un bâtiment tertiaire : une entreprise la récupère. On compare donc des montants <strong>hors taxe</strong>, et c’est une erreur fréquente de raisonner en TTC sur une facture professionnelle — à l’inverse d’une facture de particulier, où seul le TTC a un sens.</p>
-</div>
-<h2 id="le-compteur-tourne-la-nuit-et-le-batiment-est-vide">« Le compteur tourne la nuit, et le bâtiment est vide »</h2>
-<p><em>Le même gestionnaire, qui a ouvert pour la première fois la courbe de charge fournie par le compteur : à 3 heures du matin, un dimanche, le bâtiment appelle 14 kW.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Lire le <strong>talon</strong> : la puissance minimale de la courbe, nuits et week-ends.</li>
-<li>Compter les heures d’inoccupation : douze heures par nuit ouvrée, plus le week-end.</li>
-<li>Multiplier, et rapporter à la consommation annuelle.</li>
-<li>Faire la liste de ce qui ne s’arrête jamais, départ par départ.</li>
-</ol>
-</div>
-<p>Le calcul surprend toujours. Douze heures par nuit sur cinq jours, plus quarante-huit heures de week-end, font <strong>108 heures d’inoccupation par semaine</strong> — plus que les 60 heures où le bâtiment est occupé. Un talon de 14 kW pèse donc 14 × 108 × 52 = <strong>78 624 kWh par an</strong>, soit <strong>36 %</strong> de la consommation d’un bâtiment où il ne se passe rien.</p>
-<p>Ce qui fait un talon est connu : la ventilation qui tourne à débit nominal au lieu d’être réduite, les serveurs et la baie de brassage, l’éclairage des circulations et des parkings, les veilles de centaines d’appareils, l’eau chaude électrique maintenue en température. Aucun de ces postes ne se voit sur une facture ; tous se voient sur une courbe de charge à pas de dix minutes.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que rapporte un talon ramené de 14 à 6 kW</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le gain d’énergie est de (14 − 6) × 108 × 52 = <strong>44 928 kWh par an</strong>.</p>
-<p>Ces kWh sont consommés en heures creuses pour l’essentiel. Leur prix marginal, hors parts fixes, est la somme de la fourniture, de l’acheminement énergie et de l’accise : en moyenne sur les heures creuses des deux saisons, 14,2 c€/kWh HT. Le gain vaut donc de l’ordre de <strong>6 400 € HT par an</strong> — la moitié de la part acheminement de toute la facture.</p>
-<p><strong>C’est l’action la plus rentable d’un bâtiment tertiaire</strong>, et elle ne coûte presque rien : une horloge sur la ventilation, une temporisation sur les circulations, une coupure des départs de confort le vendredi soir. C’est exactement ce que fait une GTB bien paramétrée, et c’est l’argument qui la finance.</p></div></details>
-</div><div class="cle">
-<p>Le talon se lit sur la courbe de charge, jamais sur la facture. Un bâtiment qui n’a pas de courbe ne connaît pas son talon — et c’est souvent le premier investissement à conseiller : un sous-compteur communicant par départ.</p>
-</div>
-<h2 id="on-paie-des-penalites-tous-les-mois">« On paie des pénalités tous les mois »</h2>
-<p><em>Le service comptable des bureaux, cette fois : chaque mois d’hiver porte une ligne « composante mensuelle des dépassements de puissance souscrite », de 80 à 250 €. Personne ne sait ce qui la déclenche.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Relever la puissance souscrite par plage sur le contrat.</li>
-<li>Relever sur la courbe de charge les instants où la puissance l’a dépassée.</li>
-<li>Compter la <strong>durée</strong> des dépassements, plage par plage, mois par mois.</li>
-<li>Comparer au coût d’une souscription plus haute.</li>
-</ol>
-</div>
-<p>Au-delà de 36 kVA, le réseau ne coupe pas quand on dépasse : il <strong>facture</strong>. La règle est d’une simplicité qui trompe, et c’est elle qu’il faut faire lire en entier.</p>
-<div class="formule">
-<p><strong>CMDPS = α · h</strong></p>
-<ul>
-<li><strong>α</strong><span>prix d’une heure de dépassement : <strong>12,79 €/h</strong> au 1er août 2026</span></li>
-<li><strong>h</strong><span>durée pendant laquelle la puissance apparente a dépassé la souscription, en heures, par plage et par mois</span></li>
-</ul>
-<blockquote>
-<p><strong>L’ampleur du dépassement n’apparaît nulle part.</strong> Dépasser d’un kVA ou de trente pendant une heure coûte la même chose.</p>
-</blockquote>
-</div>
-<p>C’est le point qui change tout le raisonnement. Puisque seule la durée se paie, la question n’est jamais « de combien a-t-on dépassé » mais <strong>« combien d’heures par an la puissance passe-t-elle au-dessus de telle valeur »</strong>. Cette fonction porte un nom : la <strong>monotone de puissance</strong>.</p>
-<figure class="schema"><div class="dessin" data-schema="monotone-puissance"></div><figcaption>Les heures d’hiver pendant lesquelles la puissance dépasse chaque valeur. Souscrire 110 kVA laisse 15 heures de dépassement ; le calcul retourné, plus bas, montre que c’est l’optimum.</figcaption></figure>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi les puissances doivent croître d&#39;une plage à l&#39;autre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La règle P₁ ≤ P₂ ≤ P₃ ≤ P₄ surprend : la plage la plus chère, l’heure pleine d’hiver, porte la puissance la plus <strong>faible</strong>. Elle se comprend en lisant la formule à l’envers.</p>
-<p>Le terme b₁ · P₁ facture P₁ au prix fort. Chaque terme suivant, bᵢ · (Pᵢ − Pᵢ₋₁), ne facture que <strong>l’écart</strong> avec la plage précédente, à un prix plus bas. Souscrire davantage en été qu’en hiver ne coûte donc que l’écart, au tarif d’été.</p>
-<p>Pour un bâtiment dont la pointe est en hiver — le cas des bureaux chauffés par pompe à chaleur —, la règle impose la même puissance sur les quatre plages, et la formule se réduit à b₁ · P. Pour un bâtiment climatisé dont la pointe est en été, elle permet de souscrire plus haut en saison basse <strong>sans toucher au prix de l’hiver</strong>. C’est l’exercice 2.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le plafonnement, que personne ne demande et qui existe</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le texte prévoit une soupape : un utilisateur dont les dépassements d’un mois dépassent <strong>à la fois</strong> 30 % de sa facture d’acheminement mensuelle et 25 fois le prix de la puissance qu’il aurait fallu souscrire pour ne pas dépasser peut obtenir, sur demande auprès du gestionnaire de réseau, le plafonnement à la plus élevée des deux limites.</p>
-<p>Ce cas est rare sur un bâtiment de bureaux, mais il survient après un événement ponctuel — une vague de froid, un groupe froid qui démarre avec tout le reste. C’est le genre de clause qui fait gagner quelques centaines d’euros à qui connaît son contrat, et que la plupart des gestionnaires ignorent.</p></div></details>
-</div><h2 id="le-disjoncteur-de-la-maison-saute-a-19-heures">« Le disjoncteur de la maison saute à 19 heures »</h2>
-<p><em>Un client particulier. Tous les soirs d’hiver vers 19 h, tout s’éteint. Il a souscrit 9 kVA et demande s’il doit passer à 12.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Faire la liste de ce qui fonctionne <strong>en même temps</strong> à 19 h, pas de ce qui est installé.</li>
-<li>Additionner les puissances <strong>appelées</strong>, et comparer à la puissance souscrite.</li>
-<li>Chercher l’appareil qui ne devrait pas être là à cette heure-ci.</li>
-<li>Seulement ensuite, comparer les remèdes : souscrire plus, déplacer, délester.</li>
-</ol>
-</div>
-<p>À 19 h, un soir de janvier, la maison appelle : convecteurs 6 kW, plaque à induction 3 kW en usage courant, four 2,5 kW, chauffe-eau 2,4 kW, éclairage et appareils 0,5 kW. <strong>Total : 14,4 kW, pour 9 kVA souscrits.</strong> Le disjoncteur de branchement fait exactement ce pour quoi il est réglé.</p>
-<p>La première anomalie saute aux yeux quand on la cherche : <strong>le chauffe-eau n’a rien à faire à 19 h</strong>. Il devrait être asservi au contact heures creuses et chauffer la nuit. Un contact non câblé, ou shunté lors d’une intervention, suffit à le faire tourner à l’heure de la pointe. Sans lui, la maison appelle 12 kW — encore trop.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Délester ou souscrire plus : le calcul honnête</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un <strong>délesteur</strong> mesure le courant en tête de l’installation et coupe, par ordre de priorité, les circuits qui peuvent attendre — ici deux zones de convecteurs sur trois, soit 4 kW. La maison redescend à 8 kW, sous les 9 kVA, et personne ne sent la coupure de quelques minutes d’un convecteur dans une maison chaude.</p>
-<p>Mais le calcul inverse doit être fait, et il surprend : au tarif Bleu du 1er février 2026, passer de 9 à 12 kVA coûte <strong>45,12 € TTC par an</strong> d’abonnement. Un délesteur posé en coûte plusieurs centaines. Sur une maison déjà en monophasé à 9 kVA, <strong>souscrire plus est souvent la bonne réponse</strong>, et la bonne réponse n’est pas celle qu’on attend d’un technicien en domotique.</p>
-<p>Le délesteur redevient indispensable à une frontière précise : quand on est déjà au plafond du branchement. Au-delà de 12 kVA en monophasé, monter en puissance demande souvent un <strong>branchement triphasé</strong>, donc des travaux. Là, le délestage évite un chantier — c’est l’exercice 3.</p></div></details>
-</div><div class="cle">
-<p><strong>Le foisonnement</strong> est l’écart entre la puissance installée — ici plus de 20 kW en comptant la plaque à pleine puissance — et la puissance appelée en même temps. On dimensionne sur la seconde, jamais sur la première ; la domotique sert précisément à la maîtriser.</p>
-</div>
-<h2 id="on-est-passe-en-heures-creuses-et-rien-n-a-baisse">« On est passé en heures creuses, et rien n’a baissé »</h2>
-<p><em>Le même client, six mois plus tard. Sur le conseil d’un voisin, il a pris l’option heures pleines / heures creuses. Sa facture a légèrement augmenté.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Relever les prix : au tarif Bleu du 1er février 2026, 9 kVA, le kWh est à 0,1927 € en base, 0,2065 € en heures pleines, 0,1579 € en heures creuses, pour le même abonnement.</li>
-<li>Relever la <strong>part de la consommation réellement en heures creuses</strong> sur la facture.</li>
-<li>Comparer à la part d’équilibre.</li>
-</ol>
-</div>
-<p>L’option heures creuses n’est pas une réduction : c’est <strong>un pari sur le moment où l’on consomme</strong>. Elle rend les heures pleines plus chères que la base et les heures creuses moins chères. Elle ne rapporte que si assez de kWh basculent la nuit.</p>
-<div class="formule">
-<p><strong>x = (p_HP − p_base) / (p_HP − p_HC)</strong></p>
-<ul>
-<li><strong>x</strong><span>part minimale de la consommation en heures creuses pour que l’option soit rentable</span></li>
-<li><strong>p</strong><span>prix du kWh dans chaque option, en €/kWh</span></li>
-</ul>
-<blockquote>
-<p>À 9 kVA en février 2026 : x = (0,2065 − 0,1927) / (0,2065 − 0,1579) = <strong>28,4 %</strong>. À 6 kVA, 25,7 %.</p>
-</blockquote>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La démonstration, et les deux factures du client</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>En base, le coût de l’énergie vaut p_base · E. En heures pleines / heures creuses, il vaut p_HP · (1 − x) · E + p_HC · x · E. L’abonnement étant le même, l’option est rentable dès que la seconde expression est inférieure à la première, soit p_HP − x (p_HP − p_HC) &lt; p_base, d’où la formule.</p>
-<p>Pour 7 000 kWh par an, abonnement 234,72 € compris, la base coûte <strong>1 583,62 €</strong>. Avec <strong>20 %</strong> en heures creuses — une maison sans chauffe-eau asservi, où seules les veilles tournent la nuit — l’option coûte <strong>1 612,18 €</strong>, soit 28,56 € de plus. Avec <strong>40 %</strong> — chauffe-eau et lave-linge programmés la nuit — elle coûte <strong>1 544,14 €</strong>, soit 39,48 € de moins.</p>
-<p>Le client est dans le premier cas, et c’est le même contact heures creuses non câblé qui explique ses deux plaintes.</p></div></details>
-</div><div class="piege">
-<p>Les écarts sont de quelques dizaines d’euros par an sur une maison. C’est trop peu pour justifier un équipement, et assez pour qu’un conseil faux se voie. Le seul geste qui paie vraiment est <strong>gratuit</strong> : asservir ce qui peut attendre au contact heures creuses. C’est de la domotique au sens le plus élémentaire, et c’est le premier réflexe à installer chez les étudiants.</p>
-</div>
-<h2 id="le-compteur-de-l-etage-ne-dit-pas-la-meme-chose-que-le-general">« Le compteur de l’étage ne dit pas la même chose que le général »</h2>
-<p><em>Retour aux bureaux. Chaque étage a son sous-compteur, posé l’an dernier. Ce mois-ci, le compteur général a enregistré 18 400 kWh, et la somme des sous-compteurs 16 900 kWh. Le gestionnaire soupçonne un appareil défaillant.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Calculer l’écart, en kWh et en pourcentage : 1 500 kWh, soit 8,2 %.</li>
-<li>Calculer l’incertitude qu’on peut attendre des compteurs eux-mêmes.</li>
-<li>Comparer les deux, et ne conclure qu’ensuite.</li>
-<li>Vérifier que les index ont été relevés <strong>au même instant</strong>.</li>
-</ol>
-</div>
-<p>Un compteur d’énergie a une <strong>classe de précision</strong>. En classe 1, il garantit sa mesure à 1 % près dans les conditions de la norme. Le général est donc connu à ± 184 kWh, et la somme des sous-compteurs à ± 169 kWh au plus. <strong>L’écart de 1 500 kWh vaut quatre fois la somme des deux incertitudes</strong> : aucun défaut de précision ne l’explique.</p>
-<p>Reste l’hypothèse la plus fréquente, et la moins technique : <strong>un usage que personne n’a sous-compté</strong>. Les parties communes, l’ascenseur, la chaufferie, le parking, l’éclairage extérieur passent par le compteur général et par aucun sous-compteur. Un sous-comptage qui ne boucle pas n’est pas un sous-comptage faux : c’est un sous-comptage incomplet.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Index, courbe de charge, et pourquoi on préfère le bus à l&#39;impulsion</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un <strong>index</strong> ne redescend jamais. La consommation d’une période est une <strong>différence d’index</strong>, et elle n’a de sens que si les deux relevés sont faits au même instant. Un sous-compteur relevé le 1er à 8 h et un général relevé le 3 à 14 h ne se comparent pas.</p>
-<p>Un compteur à <strong>sortie impulsions</strong> envoie une impulsion par quantité d’énergie : l’automate compte, et reconstitue. Il perd les impulsions pendant une coupure de son alimentation et ignore l’index de départ. Un compteur relié par <strong>bus</strong> — M-Bus, Modbus — transmet l’index lui-même, horodaté : une coupure fait perdre des points de la courbe, jamais l’index.</p>
-<p>C’est pour cette raison que le comptage à des fins de facturation interne passe par le bus, et que l’impulsion reste réservée au suivi de tendance.</p></div></details>
-</div><div class="cle">
-<p>C’est la démarche de la situation 1 du CCF, appliquée à un compteur : un écart ne se commente qu’<strong>après</strong> l’avoir comparé à l’incertitude. En dessous, on ne peut pas conclure ; au-dessus, il y a une cause à chercher.</p>
-</div>
-<h2 id="le-tgbt-est-communicant-mais-personne-ne-regarde">« Le TGBT est communicant, mais personne ne regarde »</h2>
-<p><em>Le directeur technique des bureaux : le tableau général a été refait avec des disjoncteurs communicants et une centrale de mesure par départ. Tout remonte sur un écran que personne n’ouvre.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Faire l’inventaire de ce qui remonte : courants, puissances, énergies, états des protections.</li>
-<li>Identifier les <strong>trois questions</strong> auxquelles ces données répondent.</li>
-<li>Décider pour chacune qui la regarde, et quand.</li>
-</ol>
-</div>
-<p>Le référentiel place le <strong>TGBT communicant</strong> au niveau 3 pour l’option C, alors qu’il est au niveau 1 pour les deux autres. Architecture, critères de choix, sectionnement et protections, gestion des sources et des départs, comptage, supervision : c’est le point où l’installation électrique devient un système d’information.</p>
-<p>Un TGBT communicant répond à trois questions, et à trois seulement. <strong>Qui fait la pointe ?</strong> — la puissance par départ, au pas de dix minutes, désigne le coupable des dépassements. <strong>Qui consomme la nuit ?</strong> — le talon par départ localise ce que la courbe générale ne fait que constater. <strong>Qu’est-ce qui a déclenché ?</strong> — l’état des protections, horodaté, dit ce qui s’est passé avant que quelqu’un ne descende au tableau.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Du TGBT au délestage automatique</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les données du TGBT permettent de faire mieux que constater les dépassements : <strong>les empêcher</strong>. Le principe est celui du délesteur de la maison, porté à l’échelle du bâtiment.</p>
-<p>On fixe un seuil d’alerte un peu sous la puissance souscrite — par exemple 105 kVA pour 110 souscrits. Quand la puissance totale le franchit, l’automate coupe, par ordre de priorité, les charges qui peuvent attendre : une batterie électrique de CTA, des bornes de recharge, un ballon d’eau chaude, une zone de climatisation. Il les rétablit dans l’ordre inverse quand la puissance redescend.</p>
-<p>Ce que cela suppose est exactement ce que la domotique enseigne : <strong>une mesure qui remonte, une décision dans l’automate, un ordre qui redescend</strong> vers des pré-actionneurs. Le délestage est une chaîne d’information qui commande une chaîne d’énergie.</p></div></details>
-</div><div class="piege">
-<p>Un TGBT communicant <strong>ne réduit rien par lui-même</strong>. Il rend visible. Un écran que personne n’ouvre ne vaut pas mieux qu’un tableau muet — et c’est la situation la plus fréquente sur le terrain. La prescription ne s’arrête donc pas au matériel : elle nomme qui lit quoi, à quelle fréquence, et ce qui déclenche une alarme.</p>
-</div>
-<h2 id="une-phase-chauffe-pas-les-deux-autres">« Une phase chauffe, pas les deux autres »</h2>
-<p><em>Un petit commerce raccordé en triphasé, 36 kVA. Le disjoncteur de branchement saute certains après-midi, alors que la puissance totale relevée n’est que de 28,75 kW. L’électricien a remarqué qu’un câble de phase est plus chaud que les autres.</em></p>
-<div class="etapes">
-<ol type="1">
-<li>Mesurer le courant <strong>dans chaque phase</strong>, pas la puissance totale.</li>
-<li>Comparer chaque courant à ce que la souscription autorise <strong>par phase</strong>.</li>
-<li>Mesurer le courant dans le neutre.</li>
-<li>Relever la répartition des départs monophasés sur les trois phases.</li>
-</ol>
-</div>
-<p>Les pinces donnent 60 A sur L1, 35 A sur L2, 30 A sur L3. Or 36 kVA en triphasé, c’est 36 000 / (√3 × 400) = <strong>52 A par phase</strong> — 12 kVA par phase. <strong>La phase 1 dépasse de 8 A pendant que les deux autres sont loin de leur limite.</strong> Le disjoncteur protège chaque phase : il coupe dès que l’une d’elles dépasse, quelle que soit la puissance totale.</p>
-<p>Tous les départs monophasés chargés — éclairage de la vitrine, vitrine réfrigérée, chauffage de l’arrière-boutique — ont été raccordés sur L1 au fil des travaux. C’est l’erreur la plus banale du triphasé, et elle se corrige en déplaçant des départs, sans rien acheter.</p>
-<figure class="schema"><div class="dessin" data-schema="phaseurs-neutre"></div><figcaption>Trois courants de phase mis bout à bout. Déséquilibrés, ils ne se referment pas, et l’écart revient par le neutre ; équilibrés, le triangle se ferme et le neutre ne porte rien.</figcaption></figure>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le courant de neutre se calcule, et il ne se devine pas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les trois courants, résistifs ici, sont décalés de 120°. Le courant de neutre est leur <strong>somme vectorielle</strong>. En posant les trois phaseurs et en développant le module de leur somme, on obtient :</p>
-<p><strong>I_N² = I₁² + I₂² + I₃² − I₁I₂ − I₂I₃ − I₃I₁</strong></p>
-<p>Avec 60, 35 et 30 A : I_N² = 3 600 + 1 225 + 900 − 2 100 − 1 050 − 1 800 = 775, soit <strong>I_N = 27,8 A</strong>. Réparties en 42, 42 et 41 A, les mêmes charges donnent <strong>I_N = 1,0 A</strong>.</p>
-<p><strong>Le cas qui piège les bons élèves</strong> : cette formule suppose des courants sinusoïdaux à 50 Hz. Les alimentations à découpage — informatique, drivers de LED — produisent un courant riche en <strong>harmonique de rang 3</strong>, et ces harmoniques-là sont <strong>en phase</strong> sur les trois conducteurs. Au lieu de s’annuler dans le neutre, elles s’y additionnent : trois courants de rang 3 de 10 A donnent 30 A dans le neutre, <strong>même avec des phases parfaitement équilibrées</strong>. C’est la raison pour laquelle on ne réduit plus la section du neutre dans un bâtiment de bureaux.</p></div></details>
-</div><h2 id="le-seuil-de-36-kva-la-ou-la-methode-change">Le seuil de 36 kVA : là où la méthode change</h2>
-<p>Les huit symptômes se rangent de part et d’autre d’une frontière, et elle change la nature même du problème.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th></th>
-<th>Jusqu’à 36 kVA</th>
-<th>Au-delà de 36 kVA</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Ce qui arrive au dépassement</td>
-<td><strong>le disjoncteur coupe</strong></td>
-<td><strong>le dépassement se paie</strong>, 12,79 € de l’heure</td>
-</tr>
-<tr>
-<td>La limite est</td>
-<td>physique</td>
-<td>financière</td>
-</tr>
-<tr>
-<td>La question du dimensionnement</td>
-<td>ne jamais l’atteindre</td>
-<td>l’atteindre quand c’est moins cher</td>
-</tr>
-<tr>
-<td>Le rôle du délestage</td>
-<td>éviter la coupure</td>
-<td>éviter la pénalité, s’il coûte moins qu’elle</td>
-</tr>
-<tr>
-<td>Les puissances souscrites</td>
-<td>par paliers : 3, 6, 9, 12… jusqu’à 36 kVA</td>
-<td>au kVA près, une par plage</td>
-</tr>
-<tr>
-<td>L’énergie réactive</td>
-<td>non facturée</td>
-<td><strong>non facturée non plus</strong> depuis août 2025</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Même grandeur, deux raisonnements opposés.</strong> Sous le seuil, dépasser n’est pas une option : on dimensionne pour la pointe, en jouant sur le foisonnement et le délestage. Au-dessus, dépasser est une décision économique : on accepte quelques heures par an si elles coûtent moins cher qu’un abonnement plus haut. Un étudiant qui applique au commerce de 36 kVA le raisonnement des bureaux se fait couper le courant ; celui qui applique aux bureaux le raisonnement de la maison surpaie son abonnement.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi le réseau se paie en kVA et non en kW</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un câble, un transformateur, un disjoncteur ne voient pas la puissance active : ils voient le <strong>courant</strong>, qui les échauffe. Or à tension donnée, le courant est fixé par la puissance <strong>apparente</strong>, S = √3 · U · I en triphasé, et non par la puissance active P = S · cos φ.</p>
-<p>Une installation qui consomme 100 kW avec un cos φ de 0,8 fait circuler le courant de 125 kVA. Le réseau doit être dimensionné pour ces 125 kVA ; il est donc logique qu’il les facture. C’est pour la même raison que la souscription s’exprime en kVA et que l’énergie, elle, se compte en kWh.</p>
-<p>L’énergie réactive, qui explique l’écart entre les deux, n’est plus facturée en basse tension depuis le 1er août 2025. C’est ce qui justifie que le référentiel place sa compensation au <strong>niveau 1</strong> pour l’option C : on la mentionne, on ne la dimensionne pas.</p></div></details>
-</div><h2 id="de-la-courbe-a-la-souscription-le-calcul-retourne">De la courbe à la souscription : le calcul retourné</h2>
-<p>La séance vérifie une facture ; le bureau d’études <strong>choisit la puissance à souscrire</strong>. C’est le même calcul, retourné : au lieu de chiffrer une souscription donnée, on cherche celle qui minimise le coût annuel.</p>
-<p>Pour les bureaux, dont la pointe est en hiver, la souscription est la même sur les quatre plages et la part puissance vaut b₁ · P. Le coût annuel à minimiser est donc <strong>C(P) = 31,08 · P + 12,79 · h(P)</strong>, où h(P) se lit sur la monotone.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-</colgroup>
-<thead>
-<tr>
-<th>P souscrite</th>
-<th>Heures au-dessus</th>
-<th>Abonnement</th>
-<th>Dépassements</th>
-<th>Total</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>120 kVA</td>
-<td>0 h</td>
-<td>3 729,60 €</td>
-<td>0 €</td>
-<td>3 729,60 €</td>
-</tr>
-<tr>
-<td>115 kVA</td>
-<td>6 h</td>
-<td>3 574,20 €</td>
-<td>76,74 €</td>
-<td>3 650,94 €</td>
-</tr>
-<tr>
-<td><strong>110 kVA</strong></td>
-<td><strong>15 h</strong></td>
-<td><strong>3 418,80 €</strong></td>
-<td><strong>191,85 €</strong></td>
-<td><strong>3 610,65 €</strong></td>
-</tr>
-<tr>
-<td>105 kVA</td>
-<td>32 h</td>
-<td>3 263,40 €</td>
-<td>409,28 €</td>
-<td>3 672,68 €</td>
-</tr>
-<tr>
-<td>100 kVA</td>
-<td>60 h</td>
-<td>3 108,00 €</td>
-<td>767,40 €</td>
-<td>3 875,40 €</td>
-</tr>
-</tbody>
-</table></div>
-<p>L’optimum est à <strong>110 kVA</strong>, avec 15 heures de dépassement acceptées chaque hiver. Souscrire 120 kVA pour ne jamais dépasser coûterait 119 € de plus par an.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La règle qui dispense de tout calculer</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Descendre la souscription d’un kVA économise b₁ = 31,08 € par an, et ajoute les heures de dépassement que ce kVA laisse passer, à 12,79 € chacune. L’opération est rentable tant qu’un kVA de moins ajoute <strong>moins de b₁ / α = 2,43 heures</strong> de dépassement.</p>
-<p>Sur la monotone : de 115 à 110 kVA, les dépassements passent de 6 à 15 heures, soit 1,8 heure par kVA — on descend. De 110 à 105, ils passent de 15 à 32 heures, soit 3,4 heures par kVA — on s’arrête. <strong>L’optimum est l’endroit où la pente de la monotone franchit 2,43 heures par kVA.</strong></p>
-<p>C’est la même structure que tout arbitrage entre un coût fixe et un coût à l’usage — l’abonnement de transport contre le ticket, l’assurance contre le risque. La formule tient en une ligne ; ce qui demande du métier, c’est d’avoir une monotone fiable, donc une année de courbe de charge.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Longue ou courte utilisation : ce bâtiment est pile sur la frontière</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’acheminement propose deux options. La <strong>courte utilisation</strong> facture la puissance moins cher — b₁ = 18,15 au lieu de 31,08 — et l’énergie plus cher — 7,12 c€ au lieu de 5,86 en heures pleines d’hiver. Elle convient aux bâtiments qui appellent une forte puissance peu de temps.</p>
-<p>Pour les bureaux, à 110 kVA et 220 000 kWh, les deux options coûtent <strong>11 566,72 €</strong> en longue utilisation et <strong>11 556,82 €</strong> en courte : <strong>9,90 € d’écart par an</strong>. Le bâtiment consomme 220 000 / 110 = 2 000 heures à pleine puissance souscrite ; l’équilibre, pour cette répartition entre plages, est à environ 2 014 heures.</p>
-<p>Ce résultat est à garder pour la classe : <strong>un choix de tarif n’a de sens qu’avec la durée d’utilisation</strong>, et un bâtiment qui est sur la frontière n’a pas à choisir. Tout gain d’efficacité — un talon réduit — le fait basculer vers la longue utilisation ; toute pointe ajoutée, vers la courte.</p></div></details>
-</div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : la facture d&#39;acheminement des bureaux</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Les bureaux souscrivent 110 kVA en longue utilisation sur les quatre plages et consomment 88 000 · 26 400 · 79 200 · 26 400 kWh en HPH · HCH · HPB · HCB. Ils dépassent 15 heures dans l’année. Calculer la facture annuelle d’acheminement.</p>
-<p><strong>Résolution.</strong> Gestion : 222,53 €. Comptage : 291,88 €. Part puissance : 31,08 × 110 = 3 418,80 €. Part énergie : 88 000 × 0,0586 + 26 400 × 0,0358 + 79 200 × 0,0207 + 26 400 × 0,0154 = <strong>8 147,92 €</strong>. Dépassements : 15 × 12,79 = 191,85 €. <strong>Total : 12 272,98 € par an.</strong></p>
-<p><strong>Vérification de plausibilité.</strong> Rapporté aux 220 000 kWh, l’acheminement coûte 5,6 c€/kWh, soit un peu plus du quart d’un prix moyen de l’ordre de 20 c€ HT : c’est l’ordre de grandeur attendu en basse tension.</p>
-<p><strong>Ce que l’étudiant doit rédiger.</strong> Le nom de chaque composante et son unité. Une facture reconstituée sans les noms n’apprend rien au client, et c’est la moitié des points à l’écrit.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : un bâtiment qui pointe en été</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Les mêmes bureaux installent une climatisation. En été, en heures pleines de saison basse, la puissance dépasse 110 kVA pendant 40 heures, 115 kVA pendant 20 heures, 120 kVA pendant 8, 125 kVA pendant 3 et 130 kVA jamais. Quelle puissance P₃ souscrire, P₁ restant à 110 kVA ?</p>
-<p><strong>Choisir le bon prix avant de calculer.</strong> Relever P₃ ne coûte pas b₁ mais seulement <strong>b₃ = 17,15 €/kVA/an</strong> sur l’écart P₃ − P₂, grâce à la formule incrémentale — et P₄, obligée d’être au moins égale à P₃, suit sans rien coûter.</p>
-<p><strong>Résolution.</strong> Coût annuel = 17,15 × (P₃ − 110) + 12,79 × h :</p>
-<div class="enveloppe-tbl"><table>
-<thead>
-<tr>
-<th>P₃</th>
-<th>Surcoût d’abonnement</th>
-<th>Dépassements</th>
-<th>Total</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>110</td>
-<td>0 €</td>
-<td>511,60 €</td>
-<td>511,60 €</td>
-</tr>
-<tr>
-<td>115</td>
-<td>85,75 €</td>
-<td>255,80 €</td>
-<td>341,55 €</td>
-</tr>
-<tr>
-<td><strong>120</strong></td>
-<td><strong>171,50 €</strong></td>
-<td><strong>102,32 €</strong></td>
-<td><strong>273,82 €</strong></td>
-</tr>
-<tr>
-<td>125</td>
-<td>257,25 €</td>
-<td>38,37 €</td>
-<td>295,62 €</td>
-</tr>
-<tr>
-<td>130</td>
-<td>343,00 €</td>
-<td>0 €</td>
-<td>343,00 €</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>P₃ = 120 kVA.</strong> Le seuil vaut ici 17,15 / 12,79 = 1,34 heure par kVA : l’été tolère moins de dépassement que l’hiver, parce que le kVA d’été est moins cher.</p>
-<p><strong>L’erreur attendue</strong> est de prendre b₁ au lieu de b₃ : on trouve alors qu’il vaut mieux ne rien souscrire de plus et payer les 40 heures, ce qui coûte 238 € de trop par an.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : une borne de recharge dans une maison au plafond</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une maison est en monophasé à 12 kVA, soit 52,2 A. À 19 h, une fois le chauffe-eau asservi et les convecteurs délestés, elle appelle 8 kW. Le client veut une borne de recharge de 7,4 kW, soit 32,2 A, pour une voiture qui roule 2 500 kWh par an. Que lui proposer ?</p>
-<p><strong>Choisir la méthode avant de calculer.</strong> On est sous 36 kVA : la limite est <strong>physique</strong>, dépasser signifie être coupé. La question n’est donc pas « combien coûte le dépassement » mais « comment ne jamais l’atteindre ». Trois voies, dans l’ordre de ce qu’elles coûtent :</p>
-<p><strong>1. Déplacer la charge.</strong> Programmer la recharge en heures creuses, la nuit, quand la maison n’appelle presque rien. À 7,4 kW, 40 kWh se rechargent en 5,4 heures. Le coût annuel de l’énergie tombe de 516 € en heures pleines à <strong>395 € en heures creuses</strong>. Ce premier geste est gratuit et fait gagner de l’argent.</p>
-<p><strong>2. Délester la borne.</strong> Un pilotage dynamique réduit la puissance de charge quand la maison approche des 12 kVA. Il sert de sécurité si la recharge démarre un soir imprévu.</p>
-<p><strong>3. Passer en triphasé.</strong> Indispensable seulement si la voiture doit se recharger à pleine puissance aux heures de pointe. C’est le seul des trois qui demande des travaux.</p>
-<p><strong>La réponse</strong> : 1 et 2 ensemble, sans toucher au branchement. <strong>Ce que l’étudiant doit rédiger</strong> : pourquoi la limite est physique ici, et pourquoi c’est elle qui ordonne les solutions. Un étudiant qui propose d’emblée le triphasé a raisonné comme au-delà de 36 kVA.</p></div></details>
-</div><h2 id="trois-cas-reels-et-ce-qu-ils-enseignent">Trois cas réels, et ce qu’ils enseignent</h2>
-<p>Les huit plaintes de cette page se règlent dans un bâtiment. Les trois cas qui suivent portent les mêmes mots, délestage, pointe, tarification, à l’échelle du réseau national, où ils désignent les mêmes mécanismes à une autre maille. Chacun oblige à préciser une notion de la page : ce qu’un délestage peut choisir, ce que vaut un signal, et ce que coûte une heure de pointe.</p>
-<h3 id="un-plan-de-délestage-préparé-et-jamais-appliqué-france-hiver-2022-2023">Un plan de délestage préparé et jamais appliqué, France, hiver 2022-2023</h3>
-<p><em>À l’automne 2022, alors que certains réacteurs nucléaires sont arrêtés pour une maintenance approfondie, l’État prépare des coupures organisées. Selon la circulaire adressée aux préfets, dont Maire-Info rend compte le 2 décembre 2022, jamais plus de 4 millions de clients ne devaient être coupés en même temps, ni plus de deux heures. La préfecture de la Loire-Atlantique précise les plages, de 8 h à 13 h et de 18 h à 20 h en semaine, et la maille : des zones de 2 000 clients en moyenne, alimentées par une même ligne. Aucune coupure n’a eu lieu ; selon RTE, la consommation de l’hiver a été inférieure d’environ 9 % aux normales de saison.</em></p>
-<p>Le délestage du réseau et celui de la maison portent le même nom, mais pas la même maille. Enedis coupe « directement au départ des lignes moyenne tension », et tous les clients de la ligne sont privés de courant, qu’ils disposent ou non d’un compteur Linky. Le délesteur de la maison, lui, choisit circuit par circuit ce qui peut attendre. <strong>Le réseau ne sait couper qu’une ligne entière ; seul le bâtiment sait choisir un circuit.</strong> C’est pourquoi, avant d’en arriver à couper des lignes, le réseau demande aux consommateurs de s’effacer, et cet effacement passe par les automatismes des bâtiments et des usines.</p>
-<p>Les usagers prioritaires obéissent à la même maille. L’arrêté du 5 juillet 1990 protège les hôpitaux, cliniques et laboratoires, la signalisation et l’éclairage routiers indispensables à la sécurité, et les installations qui ne supportent pas d’interruption, notamment de défense ; les préfets y ajoutent des listes, et l’ensemble ne peut dépasser 38 % de la consommation hivernale du département. Selon Maire-Info, le périmètre des sites prioritaires est protégé avec eux. Un patient à haut risque vital, en revanche, est seulement prévenu par Enedis : sa continuité ne peut venir que d’une alimentation secourue à domicile, au sens de la page Prof 4.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">L&#39;ordre des leviers, et ce qu&#39;il enseigne sur la hiérarchie d&#39;un délesteur</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La préfecture de la Loire-Atlantique énumérait, le 13 décembre 2022, les leviers mobilisés avant toute coupure, dans cet ordre : maximiser les importations ; mobiliser toutes les capacités d’effacement, soit 3 900 MW, l’équivalent de quatre réacteurs nucléaires ou de la consommation d’environ 3 millions de personnes ; démarrer les moyens de production de secours ; interrompre de gros consommateurs industriels ; abaisser la tension de 5 % ; enfin, en dernier recours, couper.</p>
-<p>L’ordre est celui du délesteur de la page, porté à l’échelle d’un pays : d’abord ce qui ne se remarque pas, ensuite ce qui se négocie, et la coupure en dernier. La baisse de tension appelle une remarque de physique. Sur une charge résistive, la puissance varie comme le carré de la tension : 0,95² = 0,9025, soit près de 10 % de puissance en moins. Sur une charge régulée, un convecteur à thermostat ou une alimentation à découpage, l’appareil compense, en fonctionnant plus longtemps ou en appelant plus de courant, et l’effet s’efface.</p>
-<p>Les ordres de grandeur se recoupent : 4 millions de clients par zones de 2 000 font 2 000 zones coupées ensemble, chacune pour deux heures, par rotation, sur les sept heures des deux plages. À Paris, selon la même préfecture, la liste des sites prioritaires, du fait de la conception du réseau et de sa densité, ne laissait délestables que 20 % de la consommation.</p>
-<p>Le calendrier dit enfin ce qu’un gestionnaire de bâtiment peut préparer. Selon Maire-Info, RTE alerte trois jours avant ; la veille, les régions concernées sont connues à 15 h, les départements à 17 h et la liste définitive des communes à 21 h 30 ; le jour même, à 6 h, seuls des allègements restent possibles. Les écoles d’une zone coupée le matin ne devaient pas accueillir les élèves, ce que le ministère de l’Éducation nationale a confirmé au Sénat le 6 avril 2023.</p></div></details>
-</div><p><strong>En classe.</strong> En DOMA23, « Tarifer et délester », après le délesteur de la maison, demander : « Enedis coupe 2 000 clients à la fois et ne peut épargner personne en particulier ; le délesteur de la maison choisit ses circuits un par un. Qu’est-ce qui fixe la maille de chacun ? » La réponse attendue désigne l’organe de coupure, placé au départ de la ligne moyenne tension pour l’un et sur chaque circuit du tableau pour l’autre, puis l’information : le réseau ignore ce qui se trouve derrière le compteur, le délesteur le connaît. La question prépare la hiérarchie des charges, qui fait le cœur de la séance.</p>
-<h3 id="un-signal-rouge-pour-une-marge-de-200-mw-rte-8-janvier-2021">Un signal rouge pour une marge de 200 MW, RTE, 8 janvier 2021</h3>
-<p><em>Le 7 janvier 2021, RTE active pour le lendemain, de 7 h à 13 h, le signal rouge de son dispositif Ecowatt, à l’échelle nationale. Il prévoit une consommation de 88 000 MW, par des températures inférieures de 4 à 4,5 °C aux normales, pour 88 200 MW de production disponible, et précise qu’aucune coupure n’est prévue. Les données ouvertes de RTE, qui couvrent le signal depuis le 1er septembre 2022, ne comptent aucune heure orange ni rouge : 1 470 journées jusqu’au 12 septembre 2026, toutes au vert. En décembre 2022, RTE a publié avec le Gimelec et l’Ignes des éco-gestes techniques propres à chaque type de bâtiment, destinés à être automatisés.</em></p>
-<p>La marge du 8 janvier valait 200 MW, soit 0,23 % de la prévision. Selon Techniques de l’Ingénieur, chaque degré sous les normales ajoute environ 2 400 MW à la consommation d’hiver : la marge correspondait à un douzième de degré. Le signal est une information qui commande une énergie, comme le seuil d’alerte du TGBT de cette page, à cette différence près que la mesure vient de l’extérieur du bâtiment. <strong>Un signal de réseau n’efface rien par lui-même : il ne vaut que par les automatismes programmés pour y répondre.</strong></p>
-<p>L’échelle se mesure sur les bureaux de la page. Si chaque bâtiment réduit son appel de 10 kW pendant les heures rouges, hypothèse de calcul qui correspond à une batterie de CTA ou à quelques bornes de recharge, il en faut 20 000 pour effacer 200 MW. Selon RTE, le tertiaire représente 30 % de la consommation hivernale nationale : c’est un gisement diffus, qui ne se mobilise qu’automatiquement, bâtiment par bâtiment. Le guide publié avec le Gimelec et l’Ignes le dit en cinq étapes, dont la troisième consiste à automatiser et à programmer les mesures.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi le signal est resté vert depuis septembre 2022</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Selon le bilan publié par RTE le 16 mars 2023, l’hiver 2022-2023 s’est passé sans aucun signal Ecowatt et sans coupure. La consommation a baissé d’environ 9 % par rapport aux normales, soit de l’ordre de 20 TWh, pour les trois quarts environ sous l’effet de la crise, par le prix et par des efforts volontaires, et les importations ont atteint 15 GW. Sans cette baisse et sans ces importations, les simulations de RTE donnaient jusqu’à 12 signaux rouges et 8 orange dans le scénario le plus défavorable.</p>
-<p>Le jeu de données ouvert décrit le signal tel qu’un automate peut le lire : une valeur par heure, de 0 à 3, sur quatre jours glissants, de J à J+3, la couleur du jour étant la valeur horaire la plus élevée. La valeur 0, créée le 3 novembre 2023, signale une production décarbonée : le signal ne sert plus seulement à demander de réduire, il indique aussi quand consommer. C’est le raisonnement des heures creuses, appliqué au carbone.</p>
-<p>Le premier chiffre du cas reste le plus instructif : le 8 janvier 2021, une marge de 0,23 % a suffi à faire passer le signal au rouge. C’est à cette échelle que l’effacement d’un bâtiment, négligeable pris seul, prend un sens, dès lors qu’il est automatique et multiplié.</p></div></details>
-</div><p><strong>En classe.</strong> En DOMA25, « La GTB : supervision, hypervision, alarmes techniques », présenter le signal du 8 janvier 2021, puis demander : « Le signal passe au rouge demain de 8 h à 13 h. Quels départs des bureaux acceptez-vous de réduire, dans quel ordre, et lesquels ne toucheriez-vous jamais ? » La réponse attendue reprend la hiérarchie du délestage de la page, batterie de CTA, bornes de recharge, ballon d’eau chaude, zone de climatisation, et exclut l’éclairage, l’informatique et la sécurité. Elle aboutit à un scénario de supervision, qui est l’objet de la séance.</p>
-<h3 id="vingt-deux-jours-rouges-à-07060-le-kwh-option-tempo-2026">Vingt-deux jours rouges à 0,7060 € le kWh, option Tempo, 2026</h3>
-<p><em>L’option Tempo du tarif Bleu partage l’année en 300 jours bleus, 43 blancs et 22 rouges. Selon EDF, les jours rouges tombent du 1er novembre au 31 mars, hors week-ends et jours fériés, jamais plus de cinq de suite ; les heures creuses vont de 22 h à 6 h ; RTE détermine les couleurs, et celle du lendemain est annoncée dès 11 h, puis disponible sur le compteur Linky dès 20 h. Au 1er février 2026, selon les grilles publiées, le kWh coûte TTC 0,1325 et 0,1612 € un jour bleu, 0,1499 et 0,1871 € un jour blanc, 0,1575 et 0,7060 € un jour rouge, en heures creuses puis en heures pleines.</em></p>
-<p>Les jours rouges comptent 22 × 16 = 352 heures pleines, 4 % de l’année, et le kWh y coûte 3,4 fois celui des heures pleines de l’option heures creuses à la même date, 0,2065 €. Tempo pousse à l’extrême le pari de la page : l’option ne récompense pas une consommation faible, elle récompense une consommation absente pendant ces 352 heures. Elle appelle exactement les « solutions de délestage en fonction d’une tarification » que le référentiel place au niveau 3, et ces solutions peuvent devenir automatiques parce que la couleur est connue la veille. <strong>Tempo ne paie que si l’installation sait s’effacer pendant les heures pleines des jours rouges.</strong></p>
-<div class="formule">
-<p><strong>y = (p_base − p_m) / (p_R − p_m)</strong></p>
-<ul>
-<li><strong>y</strong><span>: part maximale de la consommation annuelle placée en heures pleines de jour rouge pour que Tempo reste moins cher que la base</span></li>
-<li><strong>p_R</strong><span>: prix du kWh en heure pleine de jour rouge ; <strong>p_m</strong> : prix moyen de tous les autres kWh de l’option ; <strong>p_base</strong> : prix de l’option base, en €/kWh</span></li>
-</ul>
-<blockquote>
-<p>Au 1er février 2026, à 9 kVA, avec p_m = 0,15 € par hypothèse : y = (0,1927 − 0,15) / (0,7060 − 0,15) = <strong>7,7 %</strong>.</p>
-</blockquote>
-</div>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La démonstration, et la maison de la page sous Tempo</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>En base, l’énergie coûte p_base · E. Sous Tempo, elle coûte p_R · y · E + p_m · (1 − y) · E. À abonnement égal, hypothèse du calcul, l’option est moins chère dès que p_m + y · (p_R − p_m) &lt; p_base, d’où la formule.</p>
-<p>Pour les 7 000 kWh de la maison, la base coûte 1 348,90 € d’énergie. Si, hypothèse de calcul, 10 % de la consommation tombe en heures pleines de jour rouge, parce que les convecteurs chauffent au cœur de l’hiver, Tempo coûte 700 × 0,7060 + 6 300 × 0,15 = <strong>1 439,20 €</strong>, soit 90,30 € de plus. Si le délesteur coupe deux zones de convecteurs pendant ces heures et ramène la part à 4 %, l’énergie déplacée étant consommée à d’autres heures, Tempo coûte 280 × 0,7060 + 6 720 × 0,15 = <strong>1 205,68 €</strong>, soit 143,22 € de moins. Les deux comportements diffèrent de 233,52 € par an, sans rien changer au bâtiment.</p>
-<p>L’écart dépasse de loin celui de l’option heures creuses, quelques dizaines d’euros par an sur la même maison : Tempo est l’option où l’automatisme rapporte le plus. Les 22 jours rouges sont choisis parmi les 104 jours ouvrés non fériés de l’hiver 2025-2026, soit environ un sur cinq : le délestage se programme, il ne s’improvise pas.</p>
-<p>Au 1er août 2026, selon EDF, l’option Tempo a augmenté de 2,5 % en moyenne. Les prix de février sont conservés ici, comme les autres prix de la page, et le raisonnement n’en dépend pas.</p></div></details>
-</div><p><strong>En classe.</strong> En DOMB25, « Comptage et délestage : câbler, relever, calculer », une fois le délesteur câblé, demander : « La couleur de demain est connue la veille. Quels circuits de la maison coupez-vous pendant les heures pleines d’un jour rouge, et quelle part de la consommation annuelle peut-on y laisser sans que l’option cesse de payer ? » La réponse attendue désigne les convecteurs par zones, le ballon déjà asservi aux heures creuses et la recharge déplacée, puis applique la formule : 7,7 % avec l’hypothèse de la page. Elle relie la séance de comptage au savoir C3 de niveau 3.</p>
-<h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th>Grandeur</th>
-<th>Ordre de grandeur</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Consommation électrique de bureaux chauffés par PAC</td>
-<td>100 à 150 kWh/m²/an</td>
-</tr>
-<tr>
-<td>Talon d’un bâtiment de bureaux mal géré</td>
-<td>30 à 40 % de la consommation</td>
-</tr>
-<tr>
-<td>Heures d’inoccupation d’un bureau</td>
-<td><strong>108 h par semaine</strong>, contre 60 d’occupation</td>
-</tr>
-<tr>
-<td>Prix moyen HT d’un kWh tertiaire en 2026</td>
-<td>de l’ordre de 20 c€, dont un quart d’acheminement</td>
-</tr>
-<tr>
-<td>Une heure de dépassement au-delà de 36 kVA</td>
-<td><strong>12,79 €</strong> au 1er août 2026</td>
-</tr>
-<tr>
-<td>Un kVA souscrit en HPH, longue utilisation</td>
-<td>31,08 € par an</td>
-</tr>
-<tr>
-<td>Seuil de rentabilité d’un kVA d’hiver</td>
-<td>2,43 heures de dépassement évitées</td>
-</tr>
-<tr>
-<td>Courant par phase à 36 kVA triphasé</td>
-<td><strong>52 A</strong></td>
-</tr>
-<tr>
-<td>Courant de 12 kVA en monophasé</td>
-<td>52 A</td>
-</tr>
-<tr>
-<td>Part d’heures creuses pour que l’option paie</td>
-<td><strong>26 à 28 %</strong> selon la puissance</td>
-</tr>
-<tr>
-<td>Heures pleines de jour rouge, option Tempo</td>
-<td><strong>352 h</strong> par an, à 0,7060 € TTC le kWh en février 2026</td>
-</tr>
-<tr>
-<td>Écart annuel entre options, maison de 7 000 kWh</td>
-<td>quelques dizaines d’euros</td>
-</tr>
-<tr>
-<td>Précision d’un compteur de classe 1</td>
-<td>± 1 %</td>
-</tr>
-<tr>
-<td>Accise sur l’électricité, août 2026</td>
-<td>30,62 €/MWh jusqu’à 36 kVA · 26,35 au-delà</td>
-</tr>
-<tr>
-<td>CTA</td>
-<td>15 % des parts fixes de l’acheminement</td>
-</tr>
-<tr>
-<td>TVA</td>
-<td>20 % sur toute la facture depuis août 2025</td>
-</tr>
-</tbody>
-</table></div>
-<div class="cle">
-<p>Deux réflexes suffisent à trier la plupart des affirmations : <strong>un prix de kWh se situe entre 15 et 25 c€</strong>, tertiaire HT ou particulier TTC ; <strong>un dépassement se paie à l’heure, pas au kVA</strong>. Une valeur qui sort de là mérite qu’on refasse le calcul.</p>
-</div>
-<h2 id="les-diagnostics-qui-trompent">Les diagnostics qui trompent</h2>
-<p>Chaque symptôme appelle d’abord un mauvais diagnostic, toujours le même. Les connaître d’avance fait gagner la moitié du temps en intervention — et c’est exactement ce que les étudiants proposeront en premier.</p>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les cinq premiers diagnostics, et pourquoi ils sont faux</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La facture a doublé, le compteur est déréglé. »</strong> Un compteur déréglé est rarissime ; un changement de saison tarifaire arrive chaque année. On regarde la plage temporelle avant de mettre en cause le matériel.</p>
-<p><strong>« Le disjoncteur saute, il faut souscrire plus. »</strong> Parfois — mais seulement après avoir cherché l’appareil qui n’a rien à faire là à cette heure. Un chauffe-eau non asservi se corrige gratuitement.</p>
-<p><strong>« Il y a des pénalités, on dépasse de beaucoup. »</strong> L’ampleur ne compte pas au-delà de 36 kVA : un dépassement de 1 kVA coûte comme un de 30. On compte des heures, pas des kVA.</p>
-<p><strong>« Le sous-compteur est faux. »</strong> Seulement si l’écart est inférieur à l’incertitude — sinon, c’est un usage que personne n’a compté.</p>
-<p><strong>« Le disjoncteur triphasé saute alors qu’on est loin des 36 kVA : il est défectueux. »</strong> Il protège chaque phase. On mesure les trois courants avant de changer quoi que ce soit.</p></div></details>
-</div><h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
-<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Si on consomme moins, pourquoi la facture ne baisse-t-elle pas autant ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce qu’une partie de la facture ne dépend pas de la consommation. Sur les bureaux, gestion, comptage, part puissance et CTA pèsent <strong>4 523 € par an</strong>, que le bâtiment consomme 220 000 kWh ou 150 000. Réduire les kWh réduit la fourniture, l’acheminement énergie et l’accise, pas le reste.</p>
-<p>La réponse chiffrée qui porte : sur les 44 444 € HT de la facture annuelle, un dixième environ est fixe. Consommer 20 % de moins fait baisser la facture d’un peu moins de 18 %. Pour toucher la part fixe, il faut toucher la <strong>pointe</strong>, pas la consommation — et c’est exactement ce que fait le délestage.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi payer le réseau à part, puisqu&#39;on achète déjà l&#39;électricité ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que ce ne sont pas les mêmes entreprises, et pas le même service. Le fournisseur vend de l’énergie, sur un marché concurrentiel ; le gestionnaire de réseau l’achemine, en monopole régulé. Le prix de l’acheminement est fixé par la Commission de régulation de l’énergie, le même pour tous les fournisseurs : c’est ce qui permet de changer de fournisseur sans changer de câble.</p>
-<p>C’est aussi pourquoi l’acheminement est la partie de la facture sur laquelle le technicien a prise : <strong>on ne négocie pas le TURPE, mais on choisit sa puissance souscrite et son option</strong> — les deux décisions de cette page.</p></div></details>
-<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Un délestage, ce n&#39;est pas priver les gens de chauffage ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>C’est la crainte la plus fréquente, et elle se chiffre. Un bâtiment chauffé a de l’<strong>inertie</strong> : couper une zone de convecteurs pendant cinq minutes fait perdre quelques dixièmes de degré, que personne ne perçoit. Ce qu’on déleste, ce sont les charges qui supportent l’attente — chauffage, eau chaude, recharge — jamais l’éclairage, l’informatique ou la sécurité.</p>
-<p>Le bon argument pour la classe : <strong>un délestage bien réglé ne se remarque pas</strong>. Un délestage qui se remarque est mal hiérarchisé, et c’est un défaut de paramétrage, pas de principe.</p></div></details>
-<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">D&#39;où viennent les chiffres de cette page, et comment les mettre à jour</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>L’acheminement</strong> — structure et coefficients du TURPE 7 en basse tension, délibération de la Commission de régulation de l’énergie n° 2026-105 du 21 mai 2026, grille applicable au 1er août 2026 : composantes de gestion et de comptage, coefficients bᵢ et cᵢ, α = 12,79 €/h, règle P₁ ≤ P₂ ≤ P₃ ≤ P₄ et clause de plafonnement.</p>
-<p><strong>Le tarif réglementé</strong> — tarif Bleu résidentiel au 1er février 2026, TTC.</p>
-<p><strong>Les taxes</strong> — accise au 1er août 2026 ; CTA à 15 % des parts fixes depuis le 1er février 2026 ; TVA unifiée à 20 % depuis le 1er août 2025.</p>
-<p><strong>La fourniture des bureaux</strong> est une <strong>offre de marché illustrative</strong> : 14, 10, 11 et 8 c€/kWh selon la plage. Aucun prix de fourniture professionnelle n’est réglementé.</p>
-<p><strong>Chaque année</strong>, remplacer la grille d’acheminement au 1er août et le tarif Bleu au 1er février. Les raisonnements ne changent pas ; les résultats changent de quelques pour cent, et l’optimum de souscription peut se déplacer d’un palier.</p>
-<p><strong>Les sources des cas réels</strong></p>
-<ul>
-<li>Préfecture de la Loire-Atlantique, « Coupure, délestage… Quelles mesures en cas de pénurie d’électricité ? », 13 décembre 2022, <a href="https://www.loire-atlantique.gouv.fr/Actions-de-l-Etat/Actualites/Coupure-d-electricite-programmee-Delestage/Coupure-delestage-Quelles-mesures-en-cas-de-penurie-d-electricite/(theme)/3" class="uri">https://www.loire-atlantique.gouv.fr/Actions-de-l-Etat/Actualites/Coupure-d-electricite-programmee-Delestage/Coupure-delestage-Quelles-mesures-en-cas-de-penurie-d-electricite/(theme)/3</a> : les réacteurs en maintenance, les coupures de deux heures, les plages de 8 h à 13 h et de 18 h à 20 h, les zones de 2 000 clients, l’ordre des leviers et les 3 900 MW d’effacement, le plafond de 38 %, les 20 % délestables à Paris.</li>
-<li>Maire-Info, « Coupures d’électricité : pourquoi et comment les maires doivent se préparer dès maintenant », 2 décembre 2022, <a href="https://www.maire-info.com/coupures-d&#39;electricite-pourquoi-et-comment-les-maires-doivent-se-preparer-des-maintenant-article2-26979" class="uri">https://www.maire-info.com/coupures-d'electricite-pourquoi-et-comment-les-maires-doivent-se-preparer-des-maintenant-article2-26979</a> : la circulaire aux préfets, 4 millions de clients au plus, deux heures au plus, le calendrier de la veille et du jour même, le périmètre protégé autour des sites prioritaires, les écoles fermées le matin.</li>
-<li>Enedis, « Comment s’organise le choix des zones de délestage ? », sans date, <a href="https://www.enedis.fr/faq/delestage/comment-sorganise-le-choix-des-zones-de-delestage" class="uri">https://www.enedis.fr/faq/delestage/comment-sorganise-le-choix-des-zones-de-delestage</a> : les zones fixées par RTE, la coupure au départ des lignes moyenne tension.</li>
-<li>Enedis, « Peut-il y avoir des délestages ciblant les foyers équipés du compteur Linky ? », sans date, <a href="https://www.enedis.fr/faq/delestage/peut-il-y-avoir-des-delestages-ciblant-linky" class="uri">https://www.enedis.fr/faq/delestage/peut-il-y-avoir-des-delestages-ciblant-linky</a> : tous les clients d’une ligne coupée, compteur Linky ou non.</li>
-<li>Enedis, « Certaines personnes bénéficient-elles d’un traitement privilégié lors des délestages ? », sans date, <a href="https://www.enedis.fr/faq/delestage/certaines-personnes-ont-elles-un-traitement-privilegie-lors-des-delestages" class="uri">https://www.enedis.fr/faq/delestage/certaines-personnes-ont-elles-un-traitement-privilegie-lors-des-delestages</a> : les seuls sites prioritaires de l’arrêté du 5 juillet 1990.</li>
-<li>Enedis, « Comment les Patients à Haut Risque Vital sont-ils avertis d’une coupure d’électricité ? », sans date, <a href="https://www.enedis.fr/faq/coupures-de-courant-hiver-2022-2023/comment-les-patients-haut-risque-vital-sont-ils-avertis" class="uri">https://www.enedis.fr/faq/coupures-de-courant-hiver-2022-2023/comment-les-patients-haut-risque-vital-sont-ils-avertis</a> : les deux catégories de patients, prévenus par Enedis.</li>
-<li>Légifrance, arrêté du 5 juillet 1990 fixant les consignes générales de délestages sur les réseaux électriques, version consolidée, <a href="https://www.legifrance.gouv.fr/loda/id/LEGITEXT000006076272/" class="uri">https://www.legifrance.gouv.fr/loda/id/LEGITEXT000006076272/</a> : les trois catégories d’usagers prioritaires de l’article 2, les listes préfectorales de l’article 4.</li>
-<li>DREAL Pays de la Loire, « Le dispositif de délestage de l’électricité », 2 janvier 2023, mis à jour le 8 juillet 2026, <a href="https://www.pays-de-la-loire.developpement-durable.gouv.fr/le-dispositif-de-delestage-de-l-electricite-a6122.html" class="uri">https://www.pays-de-la-loire.developpement-durable.gouv.fr/le-dispositif-de-delestage-de-l-electricite-a6122.html</a> : le plafond de 38 % de la consommation hivernale du département.</li>
-<li>Sénat, question écrite de C. Brulin, « Fermeture des écoles en cas de coupure d’électricité », 8 décembre 2022, réponse du 6 avril 2023, <a href="https://www.senat.fr/questions/base/2022/qSEQ221204236.html" class="uri">https://www.senat.fr/questions/base/2022/qSEQ221204236.html</a> : la suspension de l’accueil pendant la coupure.</li>
-<li>RTE, « RTE incite les Français à réduire leur consommation d’électricité le 8 janvier 2021 », 7 janvier 2021, <a href="https://www.rte-france.com/actualites/rte-incite-les-francais-reduire-leur-consommation-delectricite-le-8-janvier-2021" class="uri">https://www.rte-france.com/actualites/rte-incite-les-francais-reduire-leur-consommation-delectricite-le-8-janvier-2021</a> : le signal rouge national de 7 h à 13 h, 88 000 MW prévus pour 88 200 MW disponibles, aucune coupure prévue.</li>
-<li>Techniques de l’Ingénieur, M. Combe, « Le froid : un premier signal rouge pour le réseau électrique », 18 janvier 2021, <a href="https://www.techniques-ingenieur.fr/actualite/articles/le-froid-un-premier-signal-rouge-pour-le-reseau-electrique-88338/" class="uri">https://www.techniques-ingenieur.fr/actualite/articles/le-froid-un-premier-signal-rouge-pour-le-reseau-electrique-88338/</a> : environ 2 400 MW par degré sous les normales.</li>
-<li>RTE, « Bilan de l’hiver 2022-2023 : des coupures d’électricité évitées grâce à la baisse de consommation », 16 mars 2023, <a href="https://www.rte-france.com/actualites/bilan-hiver-2022-2023-coupures-electricite-evitees-grace-baisse-consommation" class="uri">https://www.rte-france.com/actualites/bilan-hiver-2022-2023-coupures-electricite-evitees-grace-baisse-consommation</a> : aucun signal émis, la baisse d’environ 9 %, les importations jusqu’à 15 GW, 12 signaux rouges et 8 orange dans le scénario le plus défavorable.</li>
-<li>RTE, « Les éco-gestes techniques à adopter selon les bâtiments durant les heures d’alerte EcoWatt orange et rouge », 7 décembre 2022, <a href="https://www.rte-france.com/actualites/eco-gestes-techniques-adopter-selon-batiments-durant-heures-alerte-ecowatt-orange-rouge" class="uri">https://www.rte-france.com/actualites/eco-gestes-techniques-adopter-selon-batiments-durant-heures-alerte-ecowatt-orange-rouge</a> : le travail avec le Gimelec et l’Ignes, les cinq étapes, les 30 % du tertiaire.</li>
-<li>RTE et ODRÉ, jeu de données « Données du signal Ecowatt (à partir du 01/09/2022) », <a href="https://www.data.gouv.fr/datasets/donnees-du-signal-ecowatt-a-partir-du-01-09-2022" class="uri">https://www.data.gouv.fr/datasets/donnees-du-signal-ecowatt-a-partir-du-01-09-2022</a>, interrogé par l’interface <a href="https://odre.opendatasoft.com/explore/dataset/nouveau_signal_ecowatt/" class="uri">https://odre.opendatasoft.com/explore/dataset/nouveau_signal_ecowatt/</a> : la signification des valeurs 0 à 3, le pas horaire, l’horizon de J à J+3 ; 1 470 journées du 1er septembre 2022 au 12 septembre 2026, dont la valeur la plus élevée est celle du vert.</li>
-<li>EDF, « Tempo : économies sur facture électricité », sans date, <a href="https://particulier.edf.fr/fr/accueil/gestion-contrat/options/tempo/details.html" class="uri">https://particulier.edf.fr/fr/accueil/gestion-contrat/options/tempo/details.html</a> : 300, 43 et 22 jours, la période des jours rouges, cinq jours rouges consécutifs au plus, les heures creuses de 22 h à 6 h, l’annonce dès 11 h et sur le compteur dès 20 h, les couleurs fixées par RTE.</li>
-<li>Hello Watt, source commerciale, « Nouveaux tarifs Tempo : êtes-vous toujours gagnants ? », 6 février 2026, <a href="https://www.hellowatt.fr/blog/rentabilite-tempo-fevrier-2026/" class="uri">https://www.hellowatt.fr/blog/rentabilite-tempo-fevrier-2026/</a>, et Révolution Énergétique, « Voici les nouveaux prix de l’électricité au 1er février 2026 », 1er février 2026, <a href="https://www.revolution-energetique.com/actus/voici-les-nouveaux-prix-de-lelectricite-au-1er-fevrier-2026/" class="uri">https://www.revolution-energetique.com/actus/voici-les-nouveaux-prix-de-lelectricite-au-1er-fevrier-2026/</a> : les six prix Tempo TTC au 1er février 2026, identiques dans les deux sources. La grille officielle est celle de l’arrêté du 28 janvier 2026, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053417042" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053417042</a>, dont les barèmes, publiés en image au Journal officiel, n’ont pas été lus.</li>
-<li>EDF, « Mouvements de prix de l’électricité 2026 », 1er septembre 2026, <a href="https://particulier.edf.fr/fr/accueil/guide-energie/electricite/prix-electricite-fournisseurs.html" class="uri">https://particulier.edf.fr/fr/accueil/guide-energie/electricite/prix-electricite-fournisseurs.html</a> : la hausse de 2,5 % de l’option Tempo au 1er août 2026.</li>
-</ul>
-<p>Sources consultées le 13 septembre 2026.</p></div></details>
+<h2 id="huit-plaintes-et-ce-qu-elles-ont-en-commun">Huit plaintes, et ce qu’elles ont en commun</h2>
+
+<p>Personne n’appelle un technicien pour lui parler de tarification. On l’appelle parce que la facture a doublé, parce que le disjoncteur saute, parce que le gestionnaire trouve des pénalités qu’il ne comprend pas. <strong>La théorie arrive toujours par un symptôme</strong> : c’est l’ordre que suit cette page, une plainte par section, puis le diagnostic, puis ce qu’il faut savoir pour conclure.</p>
+
+<p>Derrière les huit, une seule distinction, et elle suffit à en résoudre la moitié : <strong>l’énergie se compte en kilowattheures, le réseau se dimensionne en kilovoltampères</strong>. Une facture paie les deux, par deux lignes différentes, et presque toutes les incompréhensions viennent de ce qu’on les confond.</p>
+
+<div class="cle">
+
+<p>Le kWh paie ce qui a été consommé. Le kVA paie ce que le réseau doit être capable de livrer à l’instant le plus chargé. Réduire l’un ne réduit pas l’autre : un bâtiment peut consommer moins et payer autant, s’il appelle la même pointe.</p>
+
+</div>
+
+<p>Deux bâtiments servent tout au long de la page. On y reviendra à chaque symptôme, avec les mêmes chiffres.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th></th>
+
+<th>Les bureaux</th>
+
+<th>La maison</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Surface</td>
+
+<td>2 000 m²</td>
+
+<td>110 m²</td>
+
+</tr>
+
+<tr>
+
+<td>Raccordement</td>
+
+<td>BT au-delà de 36 kVA, triphasé</td>
+
+<td>BT jusqu’à 36 kVA, monophasé</td>
+
+</tr>
+
+<tr>
+
+<td>Contrat</td>
+
+<td>offre de marché, acheminement <strong>longue utilisation</strong></td>
+
+<td>tarif réglementé Bleu</td>
+
+</tr>
+
+<tr>
+
+<td>Puissance souscrite</td>
+
+<td>110 kVA, la même sur les quatre plages</td>
+
+<td>9 kVA</td>
+
+</tr>
+
+<tr>
+
+<td>Consommation annuelle</td>
+
+<td>220 000 kWh</td>
+
+<td>7 000 kWh</td>
+
+</tr>
+
+<tr>
+
+<td>Chauffage</td>
+
+<td>pompe à chaleur</td>
+
+<td>convecteurs</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<h2 id="la-facture-a-double-cet-hiver">« La facture a doublé cet hiver »</h2>
+
+<p><em>Le gestionnaire des bureaux, en février : la facture de janvier est à 5 900 € HT, celle d’octobre était à 2 600 €. « On n’a pourtant pas consommé deux fois plus. »</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Relever la consommation des deux mois sur les factures : 15 000 kWh en octobre, 26 000 kWh en janvier — un rapport de 1,73, pas de 2,28.</li>
+
+<li>Séparer la facture en ses quatre blocs : fourniture, acheminement, taxes, TVA.</li>
+
+<li>Regarder dans quelle <strong>plage temporelle</strong> tombe chaque mois : octobre en saison basse, janvier en saison haute.</li>
+
+<li>Chercher une ligne qui n’existe qu’en hiver : les dépassements de puissance.</li>
+
+</ol>
+
+</div>
+
+<p>Il a raison sur la consommation, et tort sur la conclusion. La facture n’est pas proportionnelle aux kWh parce que <strong>le prix du kWh change avec le moment où il est consommé</strong>. Au-delà de 36 kVA, l’acheminement distingue quatre plages : heures pleines et creuses, de saison haute — novembre à mars par défaut — et de saison basse. Le kWh de janvier en heures pleines coûte, en acheminement seul, près de trois fois celui d’octobre.</p>
+
+<div class="formule">
+
+<p><strong>CS = b₁ · P₁ + Σ bᵢ · (Pᵢ − Pᵢ₋₁) + Σ cᵢ · Eᵢ</strong></p>
+
+<ul>
+
+<li><strong>CS</strong><span>composante annuelle de soutirage de l’acheminement, en €/an</span></li>
+
+<li><strong>Pᵢ</strong><span>puissance souscrite sur la plage i, en kVA, avec <strong>P₁ ≤ P₂ ≤ P₃ ≤ P₄</strong></span></li>
+
+<li><strong>bᵢ</strong><span>prix de la puissance, en €/kVA/an ; <strong>cᵢ</strong> — prix de l’énergie, en c€/kWh</span></li>
+
+<li><strong>Eᵢ</strong><span>énergie soutirée sur la plage i, en kWh</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>Grille TURPE 7 au 1er août 2026, longue utilisation : b = 31,08 · 21,82 · 17,15 · 12,75 ; c = 5,86 · 3,58 · 2,07 · 1,54 pour HPH · HCH · HPB · HCB.</p>
+
+</blockquote>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les deux mois reconstitués, ligne par ligne</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les parts fixes se paient par douzièmes, quelle que soit la saison : gestion 222,53 €, comptage 291,88 € et puissance 31,08 × 110 = 3 418,80 €, soit <strong>327,77 € par mois</strong>, plus la contribution tarifaire d’acheminement, 15 % de ces parts fixes depuis février 2026 : <strong>49,17 €</strong>.</p>
+
+<p><strong>Octobre</strong> — 11 250 kWh en heures pleines et 3 750 en heures creuses de saison basse. Fourniture à 11 et 8 c€ : 1 537,50 €. Acheminement énergie à 2,07 et 1,54 c€ : 290,63 €. Accise, 26,35 €/MWh au-delà de 36 kVA depuis août 2026 : 395,25 €. Total <strong>2 600,31 € HT</strong>, soit <strong>17,3 c€/kWh</strong>.</p>
+
+<p><strong>Janvier</strong> — 19 500 kWh en heures pleines et 6 500 en heures creuses de saison haute. Fourniture à 14 et 10 c€ : 3 380,00 €. Acheminement énergie à 5,86 et 3,58 c€ : 1 375,40 €. Accise : 685,10 €. Et <strong>huit heures de dépassement</strong> à 12,79 € : 102,32 €. Total <strong>5 919,75 € HT</strong>, soit <strong>22,8 c€/kWh</strong>.</p>
+
+<p>Le rapport des factures vaut 2,28 pour une consommation multipliée par 1,73. La différence tient entière dans le prix moyen du kWh, qui passe de 17,3 à 22,8 c€ : <strong>un hiver ne coûte pas seulement plus de kWh, il coûte des kWh plus chers</strong>.</p></div></details>
+
+</div><div class="piege">
+
+<p>La TVA ne compte pas dans ce raisonnement pour un bâtiment tertiaire : une entreprise la récupère. On compare donc des montants <strong>hors taxe</strong>, et c’est une erreur fréquente de raisonner en TTC sur une facture professionnelle — à l’inverse d’une facture de particulier, où seul le TTC a un sens.</p>
+
+</div>
+
+<h2 id="le-compteur-tourne-la-nuit-et-le-batiment-est-vide">« Le compteur tourne la nuit, et le bâtiment est vide »</h2>
+
+<p><em>Le même gestionnaire, qui a ouvert pour la première fois la courbe de charge fournie par le compteur : à 3 heures du matin, un dimanche, le bâtiment appelle 14 kW.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Lire le <strong>talon</strong> : la puissance minimale de la courbe, nuits et week-ends.</li>
+
+<li>Compter les heures d’inoccupation : douze heures par nuit ouvrée, plus le week-end.</li>
+
+<li>Multiplier, et rapporter à la consommation annuelle.</li>
+
+<li>Faire la liste de ce qui ne s’arrête jamais, départ par départ.</li>
+
+</ol>
+
+</div>
+
+<p>Le calcul surprend toujours. Douze heures par nuit sur cinq jours, plus quarante-huit heures de week-end, font <strong>108 heures d’inoccupation par semaine</strong> — plus que les 60 heures où le bâtiment est occupé. Un talon de 14 kW pèse donc 14 × 108 × 52 = <strong>78 624 kWh par an</strong>, soit <strong>36 %</strong> de la consommation d’un bâtiment où il ne se passe rien.</p>
+
+<p>Ce qui fait un talon est connu : la ventilation qui tourne à débit nominal au lieu d’être réduite, les serveurs et la baie de brassage, l’éclairage des circulations et des parkings, les veilles de centaines d’appareils, l’eau chaude électrique maintenue en température. Aucun de ces postes ne se voit sur une facture ; tous se voient sur une courbe de charge à pas de dix minutes.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Ce que rapporte un talon ramené de 14 à 6 kW</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le gain d’énergie est de (14 − 6) × 108 × 52 = <strong>44 928 kWh par an</strong>.</p>
+
+<p>Ces kWh sont consommés en heures creuses pour l’essentiel. Leur prix marginal, hors parts fixes, est la somme de la fourniture, de l’acheminement énergie et de l’accise : en moyenne sur les heures creuses des deux saisons, 14,2 c€/kWh HT. Le gain vaut donc de l’ordre de <strong>6 400 € HT par an</strong> — la moitié de la part acheminement de toute la facture.</p>
+
+<p><strong>C’est l’action la plus rentable d’un bâtiment tertiaire</strong>, et elle ne coûte presque rien : une horloge sur la ventilation, une temporisation sur les circulations, une coupure des départs de confort le vendredi soir. C’est exactement ce que fait une GTB bien paramétrée, et c’est l’argument qui la finance.</p></div></details>
+
+</div><div class="cle">
+
+<p>Le talon se lit sur la courbe de charge, jamais sur la facture. Un bâtiment qui n’a pas de courbe ne connaît pas son talon — et c’est souvent le premier investissement à conseiller : un sous-compteur communicant par départ.</p>
+
+</div>
+
+<h2 id="on-paie-des-penalites-tous-les-mois">« On paie des pénalités tous les mois »</h2>
+
+<p><em>Le service comptable des bureaux, cette fois : chaque mois d’hiver porte une ligne « composante mensuelle des dépassements de puissance souscrite », de 80 à 250 €. Personne ne sait ce qui la déclenche.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Relever la puissance souscrite par plage sur le contrat.</li>
+
+<li>Relever sur la courbe de charge les instants où la puissance l’a dépassée.</li>
+
+<li>Compter la <strong>durée</strong> des dépassements, plage par plage, mois par mois.</li>
+
+<li>Comparer au coût d’une souscription plus haute.</li>
+
+</ol>
+
+</div>
+
+<p>Au-delà de 36 kVA, le réseau ne coupe pas quand on dépasse : il <strong>facture</strong>. La règle est d’une simplicité qui trompe, et c’est elle qu’il faut faire lire en entier.</p>
+
+<div class="formule">
+
+<p><strong>CMDPS = α · h</strong></p>
+
+<ul>
+
+<li><strong>α</strong><span>prix d’une heure de dépassement : <strong>12,79 €/h</strong> au 1er août 2026</span></li>
+
+<li><strong>h</strong><span>durée pendant laquelle la puissance apparente a dépassé la souscription, en heures, par plage et par mois</span></li>
+
+</ul>
+
+<blockquote>
+
+<p><strong>L’ampleur du dépassement n’apparaît nulle part.</strong> Dépasser d’un kVA ou de trente pendant une heure coûte la même chose.</p>
+
+</blockquote>
+
+</div>
+
+<p>C’est le point qui change tout le raisonnement. Puisque seule la durée se paie, la question n’est jamais « de combien a-t-on dépassé » mais <strong>« combien d’heures par an la puissance passe-t-elle au-dessus de telle valeur »</strong>. Cette fonction porte un nom : la <strong>monotone de puissance</strong>.</p>
+
+<figure class="schema"><div class="dessin" data-schema="monotone-puissance"></div><figcaption>Les heures d’hiver pendant lesquelles la puissance dépasse chaque valeur. Souscrire 110 kVA laisse 15 heures de dépassement ; le calcul retourné, plus bas, montre que c’est l’optimum.</figcaption></figure>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi les puissances doivent croître d&#39;une plage à l&#39;autre</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La règle P₁ ≤ P₂ ≤ P₃ ≤ P₄ surprend : la plage la plus chère, l’heure pleine d’hiver, porte la puissance la plus <strong>faible</strong>. Elle se comprend en lisant la formule à l’envers.</p>
+
+<p>Le terme b₁ · P₁ facture P₁ au prix fort. Chaque terme suivant, bᵢ · (Pᵢ − Pᵢ₋₁), ne facture que <strong>l’écart</strong> avec la plage précédente, à un prix plus bas. Souscrire davantage en été qu’en hiver ne coûte donc que l’écart, au tarif d’été.</p>
+
+<p>Pour un bâtiment dont la pointe est en hiver — le cas des bureaux chauffés par pompe à chaleur —, la règle impose la même puissance sur les quatre plages, et la formule se réduit à b₁ · P. Pour un bâtiment climatisé dont la pointe est en été, elle permet de souscrire plus haut en saison basse <strong>sans toucher au prix de l’hiver</strong>. C’est l’exercice 2.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le plafonnement, que personne ne demande et qui existe</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Le texte prévoit une soupape : un utilisateur dont les dépassements d’un mois dépassent <strong>à la fois</strong> 30 % de sa facture d’acheminement mensuelle et 25 fois le prix de la puissance qu’il aurait fallu souscrire pour ne pas dépasser peut obtenir, sur demande auprès du gestionnaire de réseau, le plafonnement à la plus élevée des deux limites.</p>
+
+<p>Ce cas est rare sur un bâtiment de bureaux, mais il survient après un événement ponctuel — une vague de froid, un groupe froid qui démarre avec tout le reste. C’est le genre de clause qui fait gagner quelques centaines d’euros à qui connaît son contrat, et que la plupart des gestionnaires ignorent.</p></div></details>
+
+</div><h2 id="le-disjoncteur-de-la-maison-saute-a-19-heures">« Le disjoncteur de la maison saute à 19 heures »</h2>
+
+<p><em>Un client particulier. Tous les soirs d’hiver vers 19 h, tout s’éteint. Il a souscrit 9 kVA et demande s’il doit passer à 12.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Faire la liste de ce qui fonctionne <strong>en même temps</strong> à 19 h, pas de ce qui est installé.</li>
+
+<li>Additionner les puissances <strong>appelées</strong>, et comparer à la puissance souscrite.</li>
+
+<li>Chercher l’appareil qui ne devrait pas être là à cette heure-ci.</li>
+
+<li>Seulement ensuite, comparer les remèdes : souscrire plus, déplacer, délester.</li>
+
+</ol>
+
+</div>
+
+<p>À 19 h, un soir de janvier, la maison appelle : convecteurs 6 kW, plaque à induction 3 kW en usage courant, four 2,5 kW, chauffe-eau 2,4 kW, éclairage et appareils 0,5 kW. <strong>Total : 14,4 kW, pour 9 kVA souscrits.</strong> Le disjoncteur de branchement fait exactement ce pour quoi il est réglé.</p>
+
+<p>La première anomalie saute aux yeux quand on la cherche : <strong>le chauffe-eau n’a rien à faire à 19 h</strong>. Il devrait être asservi au contact heures creuses et chauffer la nuit. Un contact non câblé, ou shunté lors d’une intervention, suffit à le faire tourner à l’heure de la pointe. Sans lui, la maison appelle 12 kW — encore trop.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Délester ou souscrire plus : le calcul honnête</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un <strong>délesteur</strong> mesure le courant en tête de l’installation et coupe, par ordre de priorité, les circuits qui peuvent attendre — ici deux zones de convecteurs sur trois, soit 4 kW. La maison redescend à 8 kW, sous les 9 kVA, et personne ne sent la coupure de quelques minutes d’un convecteur dans une maison chaude.</p>
+
+<p>Mais le calcul inverse doit être fait, et il surprend : au tarif Bleu du 1er février 2026, passer de 9 à 12 kVA coûte <strong>45,12 € TTC par an</strong> d’abonnement. Un délesteur posé en coûte plusieurs centaines. Sur une maison déjà en monophasé à 9 kVA, <strong>souscrire plus est souvent la bonne réponse</strong>, et la bonne réponse n’est pas celle qu’on attend d’un technicien en domotique.</p>
+
+<p>Le délesteur redevient indispensable à une frontière précise : quand on est déjà au plafond du branchement. Au-delà de 12 kVA en monophasé, monter en puissance demande souvent un <strong>branchement triphasé</strong>, donc des travaux. Là, le délestage évite un chantier — c’est l’exercice 3.</p></div></details>
+
+</div><div class="cle">
+
+<p><strong>Le foisonnement</strong> est l’écart entre la puissance installée — ici plus de 20 kW en comptant la plaque à pleine puissance — et la puissance appelée en même temps. On dimensionne sur la seconde, jamais sur la première ; la domotique sert précisément à la maîtriser.</p>
+
+</div>
+
+<h2 id="on-est-passe-en-heures-creuses-et-rien-n-a-baisse">« On est passé en heures creuses, et rien n’a baissé »</h2>
+
+<p><em>Le même client, six mois plus tard. Sur le conseil d’un voisin, il a pris l’option heures pleines / heures creuses. Sa facture a légèrement augmenté.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Relever les prix : au tarif Bleu du 1er février 2026, 9 kVA, le kWh est à 0,1927 € en base, 0,2065 € en heures pleines, 0,1579 € en heures creuses, pour le même abonnement.</li>
+
+<li>Relever la <strong>part de la consommation réellement en heures creuses</strong> sur la facture.</li>
+
+<li>Comparer à la part d’équilibre.</li>
+
+</ol>
+
+</div>
+
+<p>L’option heures creuses n’est pas une réduction : c’est <strong>un pari sur le moment où l’on consomme</strong>. Elle rend les heures pleines plus chères que la base et les heures creuses moins chères. Elle ne rapporte que si assez de kWh basculent la nuit.</p>
+
+<div class="formule">
+
+<p><strong>x = (p_HP − p_base) / (p_HP − p_HC)</strong></p>
+
+<ul>
+
+<li><strong>x</strong><span>part minimale de la consommation en heures creuses pour que l’option soit rentable</span></li>
+
+<li><strong>p</strong><span>prix du kWh dans chaque option, en €/kWh</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>À 9 kVA en février 2026 : x = (0,2065 − 0,1927) / (0,2065 − 0,1579) = <strong>28,4 %</strong>. À 6 kVA, 25,7 %.</p>
+
+</blockquote>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La démonstration, et les deux factures du client</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>En base, le coût de l’énergie vaut p_base · E. En heures pleines / heures creuses, il vaut p_HP · (1 − x) · E + p_HC · x · E. L’abonnement étant le même, l’option est rentable dès que la seconde expression est inférieure à la première, soit p_HP − x (p_HP − p_HC) &lt; p_base, d’où la formule.</p>
+
+<p>Pour 7 000 kWh par an, abonnement 234,72 € compris, la base coûte <strong>1 583,62 €</strong>. Avec <strong>20 %</strong> en heures creuses — une maison sans chauffe-eau asservi, où seules les veilles tournent la nuit — l’option coûte <strong>1 612,18 €</strong>, soit 28,56 € de plus. Avec <strong>40 %</strong> — chauffe-eau et lave-linge programmés la nuit — elle coûte <strong>1 544,14 €</strong>, soit 39,48 € de moins.</p>
+
+<p>Le client est dans le premier cas, et c’est le même contact heures creuses non câblé qui explique ses deux plaintes.</p></div></details>
+
+</div><div class="piege">
+
+<p>Les écarts sont de quelques dizaines d’euros par an sur une maison. C’est trop peu pour justifier un équipement, et assez pour qu’un conseil faux se voie. Le seul geste qui paie vraiment est <strong>gratuit</strong> : asservir ce qui peut attendre au contact heures creuses. C’est de la domotique au sens le plus élémentaire, et c’est le premier réflexe à installer chez les étudiants.</p>
+
+</div>
+
+<h2 id="le-compteur-de-l-etage-ne-dit-pas-la-meme-chose-que-le-general">« Le compteur de l’étage ne dit pas la même chose que le général »</h2>
+
+<p><em>Retour aux bureaux. Chaque étage a son sous-compteur, posé l’an dernier. Ce mois-ci, le compteur général a enregistré 18 400 kWh, et la somme des sous-compteurs 16 900 kWh. Le gestionnaire soupçonne un appareil défaillant.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Calculer l’écart, en kWh et en pourcentage : 1 500 kWh, soit 8,2 %.</li>
+
+<li>Calculer l’incertitude qu’on peut attendre des compteurs eux-mêmes.</li>
+
+<li>Comparer les deux, et ne conclure qu’ensuite.</li>
+
+<li>Vérifier que les index ont été relevés <strong>au même instant</strong>.</li>
+
+</ol>
+
+</div>
+
+<p>Un compteur d’énergie a une <strong>classe de précision</strong>. En classe 1, il garantit sa mesure à 1 % près dans les conditions de la norme. Le général est donc connu à ± 184 kWh, et la somme des sous-compteurs à ± 169 kWh au plus. <strong>L’écart de 1 500 kWh vaut quatre fois la somme des deux incertitudes</strong> : aucun défaut de précision ne l’explique.</p>
+
+<p>Reste l’hypothèse la plus fréquente, et la moins technique : <strong>un usage que personne n’a sous-compté</strong>. Les parties communes, l’ascenseur, la chaufferie, le parking, l’éclairage extérieur passent par le compteur général et par aucun sous-compteur. Un sous-comptage qui ne boucle pas n’est pas un sous-comptage faux : c’est un sous-comptage incomplet.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Index, courbe de charge, et pourquoi on préfère le bus à l&#39;impulsion</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un <strong>index</strong> ne redescend jamais. La consommation d’une période est une <strong>différence d’index</strong>, et elle n’a de sens que si les deux relevés sont faits au même instant. Un sous-compteur relevé le 1er à 8 h et un général relevé le 3 à 14 h ne se comparent pas.</p>
+
+<p>Un compteur à <strong>sortie impulsions</strong> envoie une impulsion par quantité d’énergie : l’automate compte, et reconstitue. Il perd les impulsions pendant une coupure de son alimentation et ignore l’index de départ. Un compteur relié par <strong>bus</strong> — M-Bus, Modbus — transmet l’index lui-même, horodaté : une coupure fait perdre des points de la courbe, jamais l’index.</p>
+
+<p>C’est pour cette raison que le comptage à des fins de facturation interne passe par le bus, et que l’impulsion reste réservée au suivi de tendance.</p></div></details>
+
+</div><div class="cle">
+
+<p>C’est la démarche de la situation 1 du CCF, appliquée à un compteur : un écart ne se commente qu’<strong>après</strong> l’avoir comparé à l’incertitude. En dessous, on ne peut pas conclure ; au-dessus, il y a une cause à chercher.</p>
+
+</div>
+
+<h2 id="le-tgbt-est-communicant-mais-personne-ne-regarde">« Le TGBT est communicant, mais personne ne regarde »</h2>
+
+<p><em>Le directeur technique des bureaux : le tableau général a été refait avec des disjoncteurs communicants et une centrale de mesure par départ. Tout remonte sur un écran que personne n’ouvre.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Faire l’inventaire de ce qui remonte : courants, puissances, énergies, états des protections.</li>
+
+<li>Identifier les <strong>trois questions</strong> auxquelles ces données répondent.</li>
+
+<li>Décider pour chacune qui la regarde, et quand.</li>
+
+</ol>
+
+</div>
+
+<p>Le référentiel place le <strong>TGBT communicant</strong> au niveau 3 pour l’option C, alors qu’il est au niveau 1 pour les deux autres. Architecture, critères de choix, sectionnement et protections, gestion des sources et des départs, comptage, supervision : c’est le point où l’installation électrique devient un système d’information.</p>
+
+<p>Un TGBT communicant répond à trois questions, et à trois seulement. <strong>Qui fait la pointe ?</strong> — la puissance par départ, au pas de dix minutes, désigne le coupable des dépassements. <strong>Qui consomme la nuit ?</strong> — le talon par départ localise ce que la courbe générale ne fait que constater. <strong>Qu’est-ce qui a déclenché ?</strong> — l’état des protections, horodaté, dit ce qui s’est passé avant que quelqu’un ne descende au tableau.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Du TGBT au délestage automatique</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les données du TGBT permettent de faire mieux que constater les dépassements : <strong>les empêcher</strong>. Le principe est celui du délesteur de la maison, porté à l’échelle du bâtiment.</p>
+
+<p>On fixe un seuil d’alerte un peu sous la puissance souscrite — par exemple 105 kVA pour 110 souscrits. Quand la puissance totale le franchit, l’automate coupe, par ordre de priorité, les charges qui peuvent attendre : une batterie électrique de CTA, des bornes de recharge, un ballon d’eau chaude, une zone de climatisation. Il les rétablit dans l’ordre inverse quand la puissance redescend.</p>
+
+<p>Ce que cela suppose est exactement ce que la domotique enseigne : <strong>une mesure qui remonte, une décision dans l’automate, un ordre qui redescend</strong> vers des pré-actionneurs. Le délestage est une chaîne d’information qui commande une chaîne d’énergie.</p></div></details>
+
+</div><div class="piege">
+
+<p>Un TGBT communicant <strong>ne réduit rien par lui-même</strong>. Il rend visible. Un écran que personne n’ouvre ne vaut pas mieux qu’un tableau muet — et c’est la situation la plus fréquente sur le terrain. La prescription ne s’arrête donc pas au matériel : elle nomme qui lit quoi, à quelle fréquence, et ce qui déclenche une alarme.</p>
+
+</div>
+
+<h2 id="une-phase-chauffe-pas-les-deux-autres">« Une phase chauffe, pas les deux autres »</h2>
+
+<p><em>Un petit commerce raccordé en triphasé, 36 kVA. Le disjoncteur de branchement saute certains après-midi, alors que la puissance totale relevée n’est que de 28,75 kW. L’électricien a remarqué qu’un câble de phase est plus chaud que les autres.</em></p>
+
+<div class="etapes">
+
+<ol type="1">
+
+<li>Mesurer le courant <strong>dans chaque phase</strong>, pas la puissance totale.</li>
+
+<li>Comparer chaque courant à ce que la souscription autorise <strong>par phase</strong>.</li>
+
+<li>Mesurer le courant dans le neutre.</li>
+
+<li>Relever la répartition des départs monophasés sur les trois phases.</li>
+
+</ol>
+
+</div>
+
+<p>Les pinces donnent 60 A sur L1, 35 A sur L2, 30 A sur L3. Or 36 kVA en triphasé, c’est 36 000 / (√3 × 400) = <strong>52 A par phase</strong> — 12 kVA par phase. <strong>La phase 1 dépasse de 8 A pendant que les deux autres sont loin de leur limite.</strong> Le disjoncteur protège chaque phase : il coupe dès que l’une d’elles dépasse, quelle que soit la puissance totale.</p>
+
+<p>Tous les départs monophasés chargés — éclairage de la vitrine, vitrine réfrigérée, chauffage de l’arrière-boutique — ont été raccordés sur L1 au fil des travaux. C’est l’erreur la plus banale du triphasé, et elle se corrige en déplaçant des départs, sans rien acheter.</p>
+
+<figure class="schema"><div class="dessin" data-schema="phaseurs-neutre"></div><figcaption>Trois courants de phase mis bout à bout. Déséquilibrés, ils ne se referment pas, et l’écart revient par le neutre ; équilibrés, le triangle se ferme et le neutre ne porte rien.</figcaption></figure>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Le courant de neutre se calcule, et il ne se devine pas</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Les trois courants, résistifs ici, sont décalés de 120°. Le courant de neutre est leur <strong>somme vectorielle</strong>. En posant les trois phaseurs et en développant le module de leur somme, on obtient :</p>
+
+<p><strong>I_N² = I₁² + I₂² + I₃² − I₁I₂ − I₂I₃ − I₃I₁</strong></p>
+
+<p>Avec 60, 35 et 30 A : I_N² = 3 600 + 1 225 + 900 − 2 100 − 1 050 − 1 800 = 775, soit <strong>I_N = 27,8 A</strong>. Réparties en 42, 42 et 41 A, les mêmes charges donnent <strong>I_N = 1,0 A</strong>.</p>
+
+<p><strong>Le cas qui piège les bons élèves</strong> : cette formule suppose des courants sinusoïdaux à 50 Hz. Les alimentations à découpage — informatique, drivers de LED — produisent un courant riche en <strong>harmonique de rang 3</strong>, et ces harmoniques-là sont <strong>en phase</strong> sur les trois conducteurs. Au lieu de s’annuler dans le neutre, elles s’y additionnent : trois courants de rang 3 de 10 A donnent 30 A dans le neutre, <strong>même avec des phases parfaitement équilibrées</strong>. C’est la raison pour laquelle on ne réduit plus la section du neutre dans un bâtiment de bureaux.</p></div></details>
+
+</div><h2 id="le-seuil-de-36-kva-la-ou-la-methode-change">Le seuil de 36 kVA : là où la méthode change</h2>
+
+<p>Les huit symptômes se rangent de part et d’autre d’une frontière, et elle change la nature même du problème.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th></th>
+
+<th>Jusqu’à 36 kVA</th>
+
+<th>Au-delà de 36 kVA</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Ce qui arrive au dépassement</td>
+
+<td><strong>le disjoncteur coupe</strong></td>
+
+<td><strong>le dépassement se paie</strong>, 12,79 € de l’heure</td>
+
+</tr>
+
+<tr>
+
+<td>La limite est</td>
+
+<td>physique</td>
+
+<td>financière</td>
+
+</tr>
+
+<tr>
+
+<td>La question du dimensionnement</td>
+
+<td>ne jamais l’atteindre</td>
+
+<td>l’atteindre quand c’est moins cher</td>
+
+</tr>
+
+<tr>
+
+<td>Le rôle du délestage</td>
+
+<td>éviter la coupure</td>
+
+<td>éviter la pénalité, s’il coûte moins qu’elle</td>
+
+</tr>
+
+<tr>
+
+<td>Les puissances souscrites</td>
+
+<td>par paliers : 3, 6, 9, 12… jusqu’à 36 kVA</td>
+
+<td>au kVA près, une par plage</td>
+
+</tr>
+
+<tr>
+
+<td>L’énergie réactive</td>
+
+<td>non facturée</td>
+
+<td><strong>non facturée non plus</strong> depuis août 2025</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>Même grandeur, deux raisonnements opposés.</strong> Sous le seuil, dépasser n’est pas une option : on dimensionne pour la pointe, en jouant sur le foisonnement et le délestage. Au-dessus, dépasser est une décision économique : on accepte quelques heures par an si elles coûtent moins cher qu’un abonnement plus haut. Un étudiant qui applique au commerce de 36 kVA le raisonnement des bureaux se fait couper le courant ; celui qui applique aux bureaux le raisonnement de la maison surpaie son abonnement.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi le réseau se paie en kVA et non en kW</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Un câble, un transformateur, un disjoncteur ne voient pas la puissance active : ils voient le <strong>courant</strong>, qui les échauffe. Or à tension donnée, le courant est fixé par la puissance <strong>apparente</strong>, S = √3 · U · I en triphasé, et non par la puissance active P = S · cos φ.</p>
+
+<p>Une installation qui consomme 100 kW avec un cos φ de 0,8 fait circuler le courant de 125 kVA. Le réseau doit être dimensionné pour ces 125 kVA ; il est donc logique qu’il les facture. C’est pour la même raison que la souscription s’exprime en kVA et que l’énergie, elle, se compte en kWh.</p>
+
+<p>L’énergie réactive, qui explique l’écart entre les deux, n’est plus facturée en basse tension depuis le 1er août 2025. C’est ce qui justifie que le référentiel place sa compensation au <strong>niveau 1</strong> pour l’option C : on la mentionne, on ne la dimensionne pas.</p></div></details>
+
+</div><h2 id="de-la-courbe-a-la-souscription-le-calcul-retourne">De la courbe à la souscription : le calcul retourné</h2>
+
+<p>La séance vérifie une facture ; le bureau d’études <strong>choisit la puissance à souscrire</strong>. C’est le même calcul, retourné : au lieu de chiffrer une souscription donnée, on cherche celle qui minimise le coût annuel.</p>
+
+<p>Pour les bureaux, dont la pointe est en hiver, la souscription est la même sur les quatre plages et la part puissance vaut b₁ · P. Le coût annuel à minimiser est donc <strong>C(P) = 31,08 · P + 12,79 · h(P)</strong>, où h(P) se lit sur la monotone.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+<col style="width: 20%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>P souscrite</th>
+
+<th>Heures au-dessus</th>
+
+<th>Abonnement</th>
+
+<th>Dépassements</th>
+
+<th>Total</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>120 kVA</td>
+
+<td>0 h</td>
+
+<td>3 729,60 €</td>
+
+<td>0 €</td>
+
+<td>3 729,60 €</td>
+
+</tr>
+
+<tr>
+
+<td>115 kVA</td>
+
+<td>6 h</td>
+
+<td>3 574,20 €</td>
+
+<td>76,74 €</td>
+
+<td>3 650,94 €</td>
+
+</tr>
+
+<tr>
+
+<td><strong>110 kVA</strong></td>
+
+<td><strong>15 h</strong></td>
+
+<td><strong>3 418,80 €</strong></td>
+
+<td><strong>191,85 €</strong></td>
+
+<td><strong>3 610,65 €</strong></td>
+
+</tr>
+
+<tr>
+
+<td>105 kVA</td>
+
+<td>32 h</td>
+
+<td>3 263,40 €</td>
+
+<td>409,28 €</td>
+
+<td>3 672,68 €</td>
+
+</tr>
+
+<tr>
+
+<td>100 kVA</td>
+
+<td>60 h</td>
+
+<td>3 108,00 €</td>
+
+<td>767,40 €</td>
+
+<td>3 875,40 €</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p>L’optimum est à <strong>110 kVA</strong>, avec 15 heures de dépassement acceptées chaque hiver. Souscrire 120 kVA pour ne jamais dépasser coûterait 119 € de plus par an.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La règle qui dispense de tout calculer</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Descendre la souscription d’un kVA économise b₁ = 31,08 € par an, et ajoute les heures de dépassement que ce kVA laisse passer, à 12,79 € chacune. L’opération est rentable tant qu’un kVA de moins ajoute <strong>moins de b₁ / α = 2,43 heures</strong> de dépassement.</p>
+
+<p>Sur la monotone : de 115 à 110 kVA, les dépassements passent de 6 à 15 heures, soit 1,8 heure par kVA — on descend. De 110 à 105, ils passent de 15 à 32 heures, soit 3,4 heures par kVA — on s’arrête. <strong>L’optimum est l’endroit où la pente de la monotone franchit 2,43 heures par kVA.</strong></p>
+
+<p>C’est la même structure que tout arbitrage entre un coût fixe et un coût à l’usage — l’abonnement de transport contre le ticket, l’assurance contre le risque. La formule tient en une ligne ; ce qui demande du métier, c’est d’avoir une monotone fiable, donc une année de courbe de charge.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Longue ou courte utilisation : ce bâtiment est pile sur la frontière</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>L’acheminement propose deux options. La <strong>courte utilisation</strong> facture la puissance moins cher — b₁ = 18,15 au lieu de 31,08 — et l’énergie plus cher — 7,12 c€ au lieu de 5,86 en heures pleines d’hiver. Elle convient aux bâtiments qui appellent une forte puissance peu de temps.</p>
+
+<p>Pour les bureaux, à 110 kVA et 220 000 kWh, les deux options coûtent <strong>11 566,72 €</strong> en longue utilisation et <strong>11 556,82 €</strong> en courte : <strong>9,90 € d’écart par an</strong>. Le bâtiment consomme 220 000 / 110 = 2 000 heures à pleine puissance souscrite ; l’équilibre, pour cette répartition entre plages, est à environ 2 014 heures.</p>
+
+<p>Ce résultat est à garder pour la classe : <strong>un choix de tarif n’a de sens qu’avec la durée d’utilisation</strong>, et un bâtiment qui est sur la frontière n’a pas à choisir. Tout gain d’efficacité — un talon réduit — le fait basculer vers la longue utilisation ; toute pointe ajoutée, vers la courte.</p></div></details>
+
+</div><h2 id="trois-exercices-resolus-du-direct-au-complet">Trois exercices résolus, du direct au complet</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 1, application directe : la facture d&#39;acheminement des bureaux</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Les bureaux souscrivent 110 kVA en longue utilisation sur les quatre plages et consomment 88 000 · 26 400 · 79 200 · 26 400 kWh en HPH · HCH · HPB · HCB. Ils dépassent 15 heures dans l’année. Calculer la facture annuelle d’acheminement.</p>
+
+<p><strong>Résolution.</strong> Gestion : 222,53 €. Comptage : 291,88 €. Part puissance : 31,08 × 110 = 3 418,80 €. Part énergie : 88 000 × 0,0586 + 26 400 × 0,0358 + 79 200 × 0,0207 + 26 400 × 0,0154 = <strong>8 147,92 €</strong>. Dépassements : 15 × 12,79 = 191,85 €. <strong>Total : 12 272,98 € par an.</strong></p>
+
+<p><strong>Vérification de plausibilité.</strong> Rapporté aux 220 000 kWh, l’acheminement coûte 5,6 c€/kWh, soit un peu plus du quart d’un prix moyen de l’ordre de 20 c€ HT : c’est l’ordre de grandeur attendu en basse tension.</p>
+
+<p><strong>Ce que l’étudiant doit rédiger.</strong> Le nom de chaque composante et son unité. Une facture reconstituée sans les noms n’apprend rien au client, et c’est la moitié des points à l’écrit.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 2, le calcul retourné : un bâtiment qui pointe en été</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Les mêmes bureaux installent une climatisation. En été, en heures pleines de saison basse, la puissance dépasse 110 kVA pendant 40 heures, 115 kVA pendant 20 heures, 120 kVA pendant 8, 125 kVA pendant 3 et 130 kVA jamais. Quelle puissance P₃ souscrire, P₁ restant à 110 kVA ?</p>
+
+<p><strong>Choisir le bon prix avant de calculer.</strong> Relever P₃ ne coûte pas b₁ mais seulement <strong>b₃ = 17,15 €/kVA/an</strong> sur l’écart P₃ − P₂, grâce à la formule incrémentale — et P₄, obligée d’être au moins égale à P₃, suit sans rien coûter.</p>
+
+<p><strong>Résolution.</strong> Coût annuel = 17,15 × (P₃ − 110) + 12,79 × h :</p>
+
+<div class="enveloppe-tbl"><table>
+
+<thead>
+
+<tr>
+
+<th>P₃</th>
+
+<th>Surcoût d’abonnement</th>
+
+<th>Dépassements</th>
+
+<th>Total</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>110</td>
+
+<td>0 €</td>
+
+<td>511,60 €</td>
+
+<td>511,60 €</td>
+
+</tr>
+
+<tr>
+
+<td>115</td>
+
+<td>85,75 €</td>
+
+<td>255,80 €</td>
+
+<td>341,55 €</td>
+
+</tr>
+
+<tr>
+
+<td><strong>120</strong></td>
+
+<td><strong>171,50 €</strong></td>
+
+<td><strong>102,32 €</strong></td>
+
+<td><strong>273,82 €</strong></td>
+
+</tr>
+
+<tr>
+
+<td>125</td>
+
+<td>257,25 €</td>
+
+<td>38,37 €</td>
+
+<td>295,62 €</td>
+
+</tr>
+
+<tr>
+
+<td>130</td>
+
+<td>343,00 €</td>
+
+<td>0 €</td>
+
+<td>343,00 €</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p><strong>P₃ = 120 kVA.</strong> Le seuil vaut ici 17,15 / 12,79 = 1,34 heure par kVA : l’été tolère moins de dépassement que l’hiver, parce que le kVA d’été est moins cher.</p>
+
+<p><strong>L’erreur attendue</strong> est de prendre b₁ au lieu de b₃ : on trouve alors qu’il vaut mieux ne rien souscrire de plus et payer les 40 heures, ce qui coûte 238 € de trop par an.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">Exercice 3, cas complet : une borne de recharge dans une maison au plafond</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>Énoncé.</strong> Une maison est en monophasé à 12 kVA, soit 52,2 A. À 19 h, une fois le chauffe-eau asservi et les convecteurs délestés, elle appelle 8 kW. Le client veut une borne de recharge de 7,4 kW, soit 32,2 A, pour une voiture qui roule 2 500 kWh par an. Que lui proposer ?</p>
+
+<p><strong>Choisir la méthode avant de calculer.</strong> On est sous 36 kVA : la limite est <strong>physique</strong>, dépasser signifie être coupé. La question n’est donc pas « combien coûte le dépassement » mais « comment ne jamais l’atteindre ». Trois voies, dans l’ordre de ce qu’elles coûtent :</p>
+
+<p><strong>1. Déplacer la charge.</strong> Programmer la recharge en heures creuses, la nuit, quand la maison n’appelle presque rien. À 7,4 kW, 40 kWh se rechargent en 5,4 heures. Le coût annuel de l’énergie tombe de 516 € en heures pleines à <strong>395 € en heures creuses</strong>. Ce premier geste est gratuit et fait gagner de l’argent.</p>
+
+<p><strong>2. Délester la borne.</strong> Un pilotage dynamique réduit la puissance de charge quand la maison approche des 12 kVA. Il sert de sécurité si la recharge démarre un soir imprévu.</p>
+
+<p><strong>3. Passer en triphasé.</strong> Indispensable seulement si la voiture doit se recharger à pleine puissance aux heures de pointe. C’est le seul des trois qui demande des travaux.</p>
+
+<p><strong>La réponse</strong> : 1 et 2 ensemble, sans toucher au branchement. <strong>Ce que l’étudiant doit rédiger</strong> : pourquoi la limite est physique ici, et pourquoi c’est elle qui ordonne les solutions. Un étudiant qui propose d’emblée le triphasé a raisonné comme au-delà de 36 kVA.</p></div></details>
+
+</div><h2 id="trois-cas-reels-et-ce-qu-ils-enseignent">Trois cas réels, et ce qu’ils enseignent</h2>
+
+<p>Les huit plaintes de cette page se règlent dans un bâtiment. Les trois cas qui suivent portent les mêmes mots, délestage, pointe, tarification, à l’échelle du réseau national, où ils désignent les mêmes mécanismes à une autre maille. Chacun oblige à préciser une notion de la page : ce qu’un délestage peut choisir, ce que vaut un signal, et ce que coûte une heure de pointe.</p>
+
+<h3 id="un-plan-de-délestage-préparé-et-jamais-appliqué-france-hiver-2022-2023">Un plan de délestage préparé et jamais appliqué, France, hiver 2022-2023</h3>
+
+<p><em>À l’automne 2022, alors que certains réacteurs nucléaires sont arrêtés pour une maintenance approfondie, l’État prépare des coupures organisées. Selon la circulaire adressée aux préfets, dont Maire-Info rend compte le 2 décembre 2022, jamais plus de 4 millions de clients ne devaient être coupés en même temps, ni plus de deux heures. La préfecture de la Loire-Atlantique précise les plages, de 8 h à 13 h et de 18 h à 20 h en semaine, et la maille : des zones de 2 000 clients en moyenne, alimentées par une même ligne. Aucune coupure n’a eu lieu ; selon RTE, la consommation de l’hiver a été inférieure d’environ 9 % aux normales de saison.</em></p>
+
+<p>Le délestage du réseau et celui de la maison portent le même nom, mais pas la même maille. Enedis coupe « directement au départ des lignes moyenne tension », et tous les clients de la ligne sont privés de courant, qu’ils disposent ou non d’un compteur Linky. Le délesteur de la maison, lui, choisit circuit par circuit ce qui peut attendre. <strong>Le réseau ne sait couper qu’une ligne entière ; seul le bâtiment sait choisir un circuit.</strong> C’est pourquoi, avant d’en arriver à couper des lignes, le réseau demande aux consommateurs de s’effacer, et cet effacement passe par les automatismes des bâtiments et des usines.</p>
+
+<p>Les usagers prioritaires obéissent à la même maille. L’arrêté du 5 juillet 1990 protège les hôpitaux, cliniques et laboratoires, la signalisation et l’éclairage routiers indispensables à la sécurité, et les installations qui ne supportent pas d’interruption, notamment de défense ; les préfets y ajoutent des listes, et l’ensemble ne peut dépasser 38 % de la consommation hivernale du département. Selon Maire-Info, le périmètre des sites prioritaires est protégé avec eux. Un patient à haut risque vital, en revanche, est seulement prévenu par Enedis : sa continuité ne peut venir que d’une alimentation secourue à domicile, au sens de la page Prof 4.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">L&#39;ordre des leviers, et ce qu&#39;il enseigne sur la hiérarchie d&#39;un délesteur</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>La préfecture de la Loire-Atlantique énumérait, le 13 décembre 2022, les leviers mobilisés avant toute coupure, dans cet ordre : maximiser les importations ; mobiliser toutes les capacités d’effacement, soit 3 900 MW, l’équivalent de quatre réacteurs nucléaires ou de la consommation d’environ 3 millions de personnes ; démarrer les moyens de production de secours ; interrompre de gros consommateurs industriels ; abaisser la tension de 5 % ; enfin, en dernier recours, couper.</p>
+
+<p>L’ordre est celui du délesteur de la page, porté à l’échelle d’un pays : d’abord ce qui ne se remarque pas, ensuite ce qui se négocie, et la coupure en dernier. La baisse de tension appelle une remarque de physique. Sur une charge résistive, la puissance varie comme le carré de la tension : 0,95² = 0,9025, soit près de 10 % de puissance en moins. Sur une charge régulée, un convecteur à thermostat ou une alimentation à découpage, l’appareil compense, en fonctionnant plus longtemps ou en appelant plus de courant, et l’effet s’efface.</p>
+
+<p>Les ordres de grandeur se recoupent : 4 millions de clients par zones de 2 000 font 2 000 zones coupées ensemble, chacune pour deux heures, par rotation, sur les sept heures des deux plages. À Paris, selon la même préfecture, la liste des sites prioritaires, du fait de la conception du réseau et de sa densité, ne laissait délestables que 20 % de la consommation.</p>
+
+<p>Le calendrier dit enfin ce qu’un gestionnaire de bâtiment peut préparer. Selon Maire-Info, RTE alerte trois jours avant ; la veille, les régions concernées sont connues à 15 h, les départements à 17 h et la liste définitive des communes à 21 h 30 ; le jour même, à 6 h, seuls des allègements restent possibles. Les écoles d’une zone coupée le matin ne devaient pas accueillir les élèves, ce que le ministère de l’Éducation nationale a confirmé au Sénat le 6 avril 2023.</p></div></details>
+
+</div><p><strong>En classe.</strong> En DOMA23, « Tarifer et délester », après le délesteur de la maison, demander : « Enedis coupe 2 000 clients à la fois et ne peut épargner personne en particulier ; le délesteur de la maison choisit ses circuits un par un. Qu’est-ce qui fixe la maille de chacun ? » La réponse attendue désigne l’organe de coupure, placé au départ de la ligne moyenne tension pour l’un et sur chaque circuit du tableau pour l’autre, puis l’information : le réseau ignore ce qui se trouve derrière le compteur, le délesteur le connaît. La question prépare la hiérarchie des charges, qui fait le cœur de la séance.</p>
+
+<h3 id="un-signal-rouge-pour-une-marge-de-200-mw-rte-8-janvier-2021">Un signal rouge pour une marge de 200 MW, RTE, 8 janvier 2021</h3>
+
+<p><em>Le 7 janvier 2021, RTE active pour le lendemain, de 7 h à 13 h, le signal rouge de son dispositif Ecowatt, à l’échelle nationale. Il prévoit une consommation de 88 000 MW, par des températures inférieures de 4 à 4,5 °C aux normales, pour 88 200 MW de production disponible, et précise qu’aucune coupure n’est prévue. Les données ouvertes de RTE, qui couvrent le signal depuis le 1er septembre 2022, ne comptent aucune heure orange ni rouge : 1 470 journées jusqu’au 12 septembre 2026, toutes au vert. En décembre 2022, RTE a publié avec le Gimelec et l’Ignes des éco-gestes techniques propres à chaque type de bâtiment, destinés à être automatisés.</em></p>
+
+<p>La marge du 8 janvier valait 200 MW, soit 0,23 % de la prévision. Selon Techniques de l’Ingénieur, chaque degré sous les normales ajoute environ 2 400 MW à la consommation d’hiver : la marge correspondait à un douzième de degré. Le signal est une information qui commande une énergie, comme le seuil d’alerte du TGBT de cette page, à cette différence près que la mesure vient de l’extérieur du bâtiment. <strong>Un signal de réseau n’efface rien par lui-même : il ne vaut que par les automatismes programmés pour y répondre.</strong></p>
+
+<p>L’échelle se mesure sur les bureaux de la page. Si chaque bâtiment réduit son appel de 10 kW pendant les heures rouges, hypothèse de calcul qui correspond à une batterie de CTA ou à quelques bornes de recharge, il en faut 20 000 pour effacer 200 MW. Selon RTE, le tertiaire représente 30 % de la consommation hivernale nationale : c’est un gisement diffus, qui ne se mobilise qu’automatiquement, bâtiment par bâtiment. Le guide publié avec le Gimelec et l’Ignes le dit en cinq étapes, dont la troisième consiste à automatiser et à programmer les mesures.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Pourquoi le signal est resté vert depuis septembre 2022</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Selon le bilan publié par RTE le 16 mars 2023, l’hiver 2022-2023 s’est passé sans aucun signal Ecowatt et sans coupure. La consommation a baissé d’environ 9 % par rapport aux normales, soit de l’ordre de 20 TWh, pour les trois quarts environ sous l’effet de la crise, par le prix et par des efforts volontaires, et les importations ont atteint 15 GW. Sans cette baisse et sans ces importations, les simulations de RTE donnaient jusqu’à 12 signaux rouges et 8 orange dans le scénario le plus défavorable.</p>
+
+<p>Le jeu de données ouvert décrit le signal tel qu’un automate peut le lire : une valeur par heure, de 0 à 3, sur quatre jours glissants, de J à J+3, la couleur du jour étant la valeur horaire la plus élevée. La valeur 0, créée le 3 novembre 2023, signale une production décarbonée : le signal ne sert plus seulement à demander de réduire, il indique aussi quand consommer. C’est le raisonnement des heures creuses, appliqué au carbone.</p>
+
+<p>Le premier chiffre du cas reste le plus instructif : le 8 janvier 2021, une marge de 0,23 % a suffi à faire passer le signal au rouge. C’est à cette échelle que l’effacement d’un bâtiment, négligeable pris seul, prend un sens, dès lors qu’il est automatique et multiplié.</p></div></details>
+
+</div><p><strong>En classe.</strong> En DOMA25, « La GTB : supervision, hypervision, alarmes techniques », présenter le signal du 8 janvier 2021, puis demander : « Le signal passe au rouge demain de 8 h à 13 h. Quels départs des bureaux acceptez-vous de réduire, dans quel ordre, et lesquels ne toucheriez-vous jamais ? » La réponse attendue reprend la hiérarchie du délestage de la page, batterie de CTA, bornes de recharge, ballon d’eau chaude, zone de climatisation, et exclut l’éclairage, l’informatique et la sécurité. Elle aboutit à un scénario de supervision, qui est l’objet de la séance.</p>
+
+<h3 id="vingt-deux-jours-rouges-à-07060-le-kwh-option-tempo-2026">Vingt-deux jours rouges à 0,7060 € le kWh, option Tempo, 2026</h3>
+
+<p><em>L’option Tempo du tarif Bleu partage l’année en 300 jours bleus, 43 blancs et 22 rouges. Selon EDF, les jours rouges tombent du 1er novembre au 31 mars, hors week-ends et jours fériés, jamais plus de cinq de suite ; les heures creuses vont de 22 h à 6 h ; RTE détermine les couleurs, et celle du lendemain est annoncée dès 11 h, puis disponible sur le compteur Linky dès 20 h. Au 1er février 2026, selon les grilles publiées, le kWh coûte TTC 0,1325 et 0,1612 € un jour bleu, 0,1499 et 0,1871 € un jour blanc, 0,1575 et 0,7060 € un jour rouge, en heures creuses puis en heures pleines.</em></p>
+
+<p>Les jours rouges comptent 22 × 16 = 352 heures pleines, 4 % de l’année, et le kWh y coûte 3,4 fois celui des heures pleines de l’option heures creuses à la même date, 0,2065 €. Tempo pousse à l’extrême le pari de la page : l’option ne récompense pas une consommation faible, elle récompense une consommation absente pendant ces 352 heures. Elle appelle exactement les « solutions de délestage en fonction d’une tarification » que le référentiel place au niveau 3, et ces solutions peuvent devenir automatiques parce que la couleur est connue la veille. <strong>Tempo ne paie que si l’installation sait s’effacer pendant les heures pleines des jours rouges.</strong></p>
+
+<div class="formule">
+
+<p><strong>y = (p_base − p_m) / (p_R − p_m)</strong></p>
+
+<ul>
+
+<li><strong>y</strong><span>: part maximale de la consommation annuelle placée en heures pleines de jour rouge pour que Tempo reste moins cher que la base</span></li>
+
+<li><strong>p_R</strong><span>: prix du kWh en heure pleine de jour rouge ; <strong>p_m</strong> : prix moyen de tous les autres kWh de l’option ; <strong>p_base</strong> : prix de l’option base, en €/kWh</span></li>
+
+</ul>
+
+<blockquote>
+
+<p>Au 1er février 2026, à 9 kVA, avec p_m = 0,15 € par hypothèse : y = (0,1927 − 0,15) / (0,7060 − 0,15) = <strong>7,7 %</strong>.</p>
+
+</blockquote>
+
+</div>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">La démonstration, et la maison de la page sous Tempo</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>En base, l’énergie coûte p_base · E. Sous Tempo, elle coûte p_R · y · E + p_m · (1 − y) · E. À abonnement égal, hypothèse du calcul, l’option est moins chère dès que p_m + y · (p_R − p_m) &lt; p_base, d’où la formule.</p>
+
+<p>Pour les 7 000 kWh de la maison, la base coûte 1 348,90 € d’énergie. Si, hypothèse de calcul, 10 % de la consommation tombe en heures pleines de jour rouge, parce que les convecteurs chauffent au cœur de l’hiver, Tempo coûte 700 × 0,7060 + 6 300 × 0,15 = <strong>1 439,20 €</strong>, soit 90,30 € de plus. Si le délesteur coupe deux zones de convecteurs pendant ces heures et ramène la part à 4 %, l’énergie déplacée étant consommée à d’autres heures, Tempo coûte 280 × 0,7060 + 6 720 × 0,15 = <strong>1 205,68 €</strong>, soit 143,22 € de moins. Les deux comportements diffèrent de 233,52 € par an, sans rien changer au bâtiment.</p>
+
+<p>L’écart dépasse de loin celui de l’option heures creuses, quelques dizaines d’euros par an sur la même maison : Tempo est l’option où l’automatisme rapporte le plus. Les 22 jours rouges sont choisis parmi les 104 jours ouvrés non fériés de l’hiver 2025-2026, soit environ un sur cinq : le délestage se programme, il ne s’improvise pas.</p>
+
+<p>Au 1er août 2026, selon EDF, l’option Tempo a augmenté de 2,5 % en moyenne. Les prix de février sont conservés ici, comme les autres prix de la page, et le raisonnement n’en dépend pas.</p></div></details>
+
+</div><p><strong>En classe.</strong> En DOMB25, « Comptage et délestage : câbler, relever, calculer », une fois le délesteur câblé, demander : « La couleur de demain est connue la veille. Quels circuits de la maison coupez-vous pendant les heures pleines d’un jour rouge, et quelle part de la consommation annuelle peut-on y laisser sans que l’option cesse de payer ? » La réponse attendue désigne les convecteurs par zones, le ballon déjà asservi aux heures creuses et la recharge déplacée, puis applique la formule : 7,7 % avec l’hypothèse de la page. Elle relie la séance de comptage au savoir C3 de niveau 3.</p>
+
+<h2 id="les-nombres-qui-permettent-de-dire-c-est-faux">Les nombres qui permettent de dire « c’est faux »</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 50%" />
+
+<col style="width: 50%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Grandeur</th>
+
+<th>Ordre de grandeur</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Consommation électrique de bureaux chauffés par PAC</td>
+
+<td>100 à 150 kWh/m²/an</td>
+
+</tr>
+
+<tr>
+
+<td>Talon d’un bâtiment de bureaux mal géré</td>
+
+<td>30 à 40 % de la consommation</td>
+
+</tr>
+
+<tr>
+
+<td>Heures d’inoccupation d’un bureau</td>
+
+<td><strong>108 h par semaine</strong>, contre 60 d’occupation</td>
+
+</tr>
+
+<tr>
+
+<td>Prix moyen HT d’un kWh tertiaire en 2026</td>
+
+<td>de l’ordre de 20 c€, dont un quart d’acheminement</td>
+
+</tr>
+
+<tr>
+
+<td>Une heure de dépassement au-delà de 36 kVA</td>
+
+<td><strong>12,79 €</strong> au 1er août 2026</td>
+
+</tr>
+
+<tr>
+
+<td>Un kVA souscrit en HPH, longue utilisation</td>
+
+<td>31,08 € par an</td>
+
+</tr>
+
+<tr>
+
+<td>Seuil de rentabilité d’un kVA d’hiver</td>
+
+<td>2,43 heures de dépassement évitées</td>
+
+</tr>
+
+<tr>
+
+<td>Courant par phase à 36 kVA triphasé</td>
+
+<td><strong>52 A</strong></td>
+
+</tr>
+
+<tr>
+
+<td>Courant de 12 kVA en monophasé</td>
+
+<td>52 A</td>
+
+</tr>
+
+<tr>
+
+<td>Part d’heures creuses pour que l’option paie</td>
+
+<td><strong>26 à 28 %</strong> selon la puissance</td>
+
+</tr>
+
+<tr>
+
+<td>Heures pleines de jour rouge, option Tempo</td>
+
+<td><strong>352 h</strong> par an, à 0,7060 € TTC le kWh en février 2026</td>
+
+</tr>
+
+<tr>
+
+<td>Écart annuel entre options, maison de 7 000 kWh</td>
+
+<td>quelques dizaines d’euros</td>
+
+</tr>
+
+<tr>
+
+<td>Précision d’un compteur de classe 1</td>
+
+<td>± 1 %</td>
+
+</tr>
+
+<tr>
+
+<td>Accise sur l’électricité, août 2026</td>
+
+<td>30,62 €/MWh jusqu’à 36 kVA · 26,35 au-delà</td>
+
+</tr>
+
+<tr>
+
+<td>CTA</td>
+
+<td>15 % des parts fixes de l’acheminement</td>
+
+</tr>
+
+<tr>
+
+<td>TVA</td>
+
+<td>20 % sur toute la facture depuis août 2025</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<div class="cle">
+
+<p>Deux réflexes suffisent à trier la plupart des affirmations : <strong>un prix de kWh se situe entre 15 et 25 c€</strong>, tertiaire HT ou particulier TTC ; <strong>un dépassement se paie à l’heure, pas au kVA</strong>. Une valeur qui sort de là mérite qu’on refasse le calcul.</p>
+
+</div>
+
+<h2 id="les-diagnostics-qui-trompent">Les diagnostics qui trompent</h2>
+
+<p>Chaque symptôme appelle d’abord un mauvais diagnostic, toujours le même. Les connaître d’avance fait gagner la moitié du temps en intervention — et c’est exactement ce que les étudiants proposeront en premier.</p>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">Les cinq premiers diagnostics, et pourquoi ils sont faux</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>« La facture a doublé, le compteur est déréglé. »</strong> Un compteur déréglé est rarissime ; un changement de saison tarifaire arrive chaque année. On regarde la plage temporelle avant de mettre en cause le matériel.</p>
+
+<p><strong>« Le disjoncteur saute, il faut souscrire plus. »</strong> Parfois — mais seulement après avoir cherché l’appareil qui n’a rien à faire là à cette heure. Un chauffe-eau non asservi se corrige gratuitement.</p>
+
+<p><strong>« Il y a des pénalités, on dépasse de beaucoup. »</strong> L’ampleur ne compte pas au-delà de 36 kVA : un dépassement de 1 kVA coûte comme un de 30. On compte des heures, pas des kVA.</p>
+
+<p><strong>« Le sous-compteur est faux. »</strong> Seulement si l’écart est inférieur à l’incertitude — sinon, c’est un usage que personne n’a compté.</p>
+
+<p><strong>« Le disjoncteur triphasé saute alors qu’on est loin des 36 kVA : il est défectueux. »</strong> Il protège chaque phase. On mesure les trois courants avant de changer quoi que ce soit.</p></div></details>
+
+</div><h2 id="les-questions-qui-destabilisent">Les questions qui déstabilisent</h2>
+
+<div class="replis"><p class="chapeau">Pour aller plus loin</p><details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Si on consomme moins, pourquoi la facture ne baisse-t-elle pas autant ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce qu’une partie de la facture ne dépend pas de la consommation. Sur les bureaux, gestion, comptage, part puissance et CTA pèsent <strong>4 523 € par an</strong>, que le bâtiment consomme 220 000 kWh ou 150 000. Réduire les kWh réduit la fourniture, l’acheminement énergie et l’accise, pas le reste.</p>
+
+<p>La réponse chiffrée qui porte : sur les 44 444 € HT de la facture annuelle, un dixième environ est fixe. Consommer 20 % de moins fait baisser la facture d’un peu moins de 18 %. Pour toucher la part fixe, il faut toucher la <strong>pointe</strong>, pas la consommation — et c’est exactement ce que fait le délestage.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Pourquoi payer le réseau à part, puisqu&#39;on achète déjà l&#39;électricité ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>Parce que ce ne sont pas les mêmes entreprises, et pas le même service. Le fournisseur vend de l’énergie, sur un marché concurrentiel ; le gestionnaire de réseau l’achemine, en monopole régulé. Le prix de l’acheminement est fixé par la Commission de régulation de l’énergie, le même pour tous les fournisseurs : c’est ce qui permet de changer de fournisseur sans changer de câble.</p>
+
+<p>C’est aussi pourquoi l’acheminement est la partie de la facture sur laquelle le technicien a prise : <strong>on ne négocie pas le TURPE, mais on choisit sa puissance souscrite et son option</strong> — les deux décisions de cette page.</p></div></details>
+
+<details class="appro"><summary><span class="niv"></span><span class="titre-appro">« Un délestage, ce n&#39;est pas priver les gens de chauffage ? »</span><span class="etiq">Pour aller plus loin</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p>C’est la crainte la plus fréquente, et elle se chiffre. Un bâtiment chauffé a de l’<strong>inertie</strong> : couper une zone de convecteurs pendant cinq minutes fait perdre quelques dixièmes de degré, que personne ne perçoit. Ce qu’on déleste, ce sont les charges qui supportent l’attente — chauffage, eau chaude, recharge — jamais l’éclairage, l’informatique ou la sécurité.</p>
+
+<p>Le bon argument pour la classe : <strong>un délestage bien réglé ne se remarque pas</strong>. Un délestage qui se remarque est mal hiérarchisé, et c’est un défaut de paramétrage, pas de principe.</p></div></details>
+
+<details class="appro be"><summary><span class="niv"></span><span class="titre-appro">D&#39;où viennent les chiffres de cette page, et comment les mettre à jour</span><span class="etiq">Bureau d'études</span><span class="chev">&rsaquo;</span></summary><div class="corps"><p><strong>L’acheminement</strong> — structure et coefficients du TURPE 7 en basse tension, délibération de la Commission de régulation de l’énergie n° 2026-105 du 21 mai 2026, grille applicable au 1er août 2026 : composantes de gestion et de comptage, coefficients bᵢ et cᵢ, α = 12,79 €/h, règle P₁ ≤ P₂ ≤ P₃ ≤ P₄ et clause de plafonnement.</p>
+
+<p><strong>Le tarif réglementé</strong> — tarif Bleu résidentiel au 1er février 2026, TTC.</p>
+
+<p><strong>Les taxes</strong> — accise au 1er août 2026 ; CTA à 15 % des parts fixes depuis le 1er février 2026 ; TVA unifiée à 20 % depuis le 1er août 2025.</p>
+
+<p><strong>La fourniture des bureaux</strong> est une <strong>offre de marché illustrative</strong> : 14, 10, 11 et 8 c€/kWh selon la plage. Aucun prix de fourniture professionnelle n’est réglementé.</p>
+
+<p><strong>Chaque année</strong>, remplacer la grille d’acheminement au 1er août et le tarif Bleu au 1er février. Les raisonnements ne changent pas ; les résultats changent de quelques pour cent, et l’optimum de souscription peut se déplacer d’un palier.</p>
+
+<p><strong>Les sources des cas réels</strong></p>
+
+<ul>
+
+<li>Préfecture de la Loire-Atlantique, « Coupure, délestage… Quelles mesures en cas de pénurie d’électricité ? », 13 décembre 2022, <a href="https://www.loire-atlantique.gouv.fr/Actions-de-l-Etat/Actualites/Coupure-d-electricite-programmee-Delestage/Coupure-delestage-Quelles-mesures-en-cas-de-penurie-d-electricite/(theme)/3" class="uri">https://www.loire-atlantique.gouv.fr/Actions-de-l-Etat/Actualites/Coupure-d-electricite-programmee-Delestage/Coupure-delestage-Quelles-mesures-en-cas-de-penurie-d-electricite/(theme)/3</a> : les réacteurs en maintenance, les coupures de deux heures, les plages de 8 h à 13 h et de 18 h à 20 h, les zones de 2 000 clients, l’ordre des leviers et les 3 900 MW d’effacement, le plafond de 38 %, les 20 % délestables à Paris.</li>
+
+<li>Maire-Info, « Coupures d’électricité : pourquoi et comment les maires doivent se préparer dès maintenant », 2 décembre 2022, <a href="https://www.maire-info.com/coupures-d&#39;electricite-pourquoi-et-comment-les-maires-doivent-se-preparer-des-maintenant-article2-26979" class="uri">https://www.maire-info.com/coupures-d'electricite-pourquoi-et-comment-les-maires-doivent-se-preparer-des-maintenant-article2-26979</a> : la circulaire aux préfets, 4 millions de clients au plus, deux heures au plus, le calendrier de la veille et du jour même, le périmètre protégé autour des sites prioritaires, les écoles fermées le matin.</li>
+
+<li>Enedis, « Comment s’organise le choix des zones de délestage ? », sans date, <a href="https://www.enedis.fr/faq/delestage/comment-sorganise-le-choix-des-zones-de-delestage" class="uri">https://www.enedis.fr/faq/delestage/comment-sorganise-le-choix-des-zones-de-delestage</a> : les zones fixées par RTE, la coupure au départ des lignes moyenne tension.</li>
+
+<li>Enedis, « Peut-il y avoir des délestages ciblant les foyers équipés du compteur Linky ? », sans date, <a href="https://www.enedis.fr/faq/delestage/peut-il-y-avoir-des-delestages-ciblant-linky" class="uri">https://www.enedis.fr/faq/delestage/peut-il-y-avoir-des-delestages-ciblant-linky</a> : tous les clients d’une ligne coupée, compteur Linky ou non.</li>
+
+<li>Enedis, « Certaines personnes bénéficient-elles d’un traitement privilégié lors des délestages ? », sans date, <a href="https://www.enedis.fr/faq/delestage/certaines-personnes-ont-elles-un-traitement-privilegie-lors-des-delestages" class="uri">https://www.enedis.fr/faq/delestage/certaines-personnes-ont-elles-un-traitement-privilegie-lors-des-delestages</a> : les seuls sites prioritaires de l’arrêté du 5 juillet 1990.</li>
+
+<li>Enedis, « Comment les Patients à Haut Risque Vital sont-ils avertis d’une coupure d’électricité ? », sans date, <a href="https://www.enedis.fr/faq/coupures-de-courant-hiver-2022-2023/comment-les-patients-haut-risque-vital-sont-ils-avertis" class="uri">https://www.enedis.fr/faq/coupures-de-courant-hiver-2022-2023/comment-les-patients-haut-risque-vital-sont-ils-avertis</a> : les deux catégories de patients, prévenus par Enedis.</li>
+
+<li>Légifrance, arrêté du 5 juillet 1990 fixant les consignes générales de délestages sur les réseaux électriques, version consolidée, <a href="https://www.legifrance.gouv.fr/loda/id/LEGITEXT000006076272/" class="uri">https://www.legifrance.gouv.fr/loda/id/LEGITEXT000006076272/</a> : les trois catégories d’usagers prioritaires de l’article 2, les listes préfectorales de l’article 4.</li>
+
+<li>DREAL Pays de la Loire, « Le dispositif de délestage de l’électricité », 2 janvier 2023, mis à jour le 8 juillet 2026, <a href="https://www.pays-de-la-loire.developpement-durable.gouv.fr/le-dispositif-de-delestage-de-l-electricite-a6122.html" class="uri">https://www.pays-de-la-loire.developpement-durable.gouv.fr/le-dispositif-de-delestage-de-l-electricite-a6122.html</a> : le plafond de 38 % de la consommation hivernale du département.</li>
+
+<li>Sénat, question écrite de C. Brulin, « Fermeture des écoles en cas de coupure d’électricité », 8 décembre 2022, réponse du 6 avril 2023, <a href="https://www.senat.fr/questions/base/2022/qSEQ221204236.html" class="uri">https://www.senat.fr/questions/base/2022/qSEQ221204236.html</a> : la suspension de l’accueil pendant la coupure.</li>
+
+<li>RTE, « RTE incite les Français à réduire leur consommation d’électricité le 8 janvier 2021 », 7 janvier 2021, <a href="https://www.rte-france.com/actualites/rte-incite-les-francais-reduire-leur-consommation-delectricite-le-8-janvier-2021" class="uri">https://www.rte-france.com/actualites/rte-incite-les-francais-reduire-leur-consommation-delectricite-le-8-janvier-2021</a> : le signal rouge national de 7 h à 13 h, 88 000 MW prévus pour 88 200 MW disponibles, aucune coupure prévue.</li>
+
+<li>Techniques de l’Ingénieur, M. Combe, « Le froid : un premier signal rouge pour le réseau électrique », 18 janvier 2021, <a href="https://www.techniques-ingenieur.fr/actualite/articles/le-froid-un-premier-signal-rouge-pour-le-reseau-electrique-88338/" class="uri">https://www.techniques-ingenieur.fr/actualite/articles/le-froid-un-premier-signal-rouge-pour-le-reseau-electrique-88338/</a> : environ 2 400 MW par degré sous les normales.</li>
+
+<li>RTE, « Bilan de l’hiver 2022-2023 : des coupures d’électricité évitées grâce à la baisse de consommation », 16 mars 2023, <a href="https://www.rte-france.com/actualites/bilan-hiver-2022-2023-coupures-electricite-evitees-grace-baisse-consommation" class="uri">https://www.rte-france.com/actualites/bilan-hiver-2022-2023-coupures-electricite-evitees-grace-baisse-consommation</a> : aucun signal émis, la baisse d’environ 9 %, les importations jusqu’à 15 GW, 12 signaux rouges et 8 orange dans le scénario le plus défavorable.</li>
+
+<li>RTE, « Les éco-gestes techniques à adopter selon les bâtiments durant les heures d’alerte EcoWatt orange et rouge », 7 décembre 2022, <a href="https://www.rte-france.com/actualites/eco-gestes-techniques-adopter-selon-batiments-durant-heures-alerte-ecowatt-orange-rouge" class="uri">https://www.rte-france.com/actualites/eco-gestes-techniques-adopter-selon-batiments-durant-heures-alerte-ecowatt-orange-rouge</a> : le travail avec le Gimelec et l’Ignes, les cinq étapes, les 30 % du tertiaire.</li>
+
+<li>RTE et ODRÉ, jeu de données « Données du signal Ecowatt (à partir du 01/09/2022) », <a href="https://www.data.gouv.fr/datasets/donnees-du-signal-ecowatt-a-partir-du-01-09-2022" class="uri">https://www.data.gouv.fr/datasets/donnees-du-signal-ecowatt-a-partir-du-01-09-2022</a>, interrogé par l’interface <a href="https://odre.opendatasoft.com/explore/dataset/nouveau_signal_ecowatt/" class="uri">https://odre.opendatasoft.com/explore/dataset/nouveau_signal_ecowatt/</a> : la signification des valeurs 0 à 3, le pas horaire, l’horizon de J à J+3 ; 1 470 journées du 1er septembre 2022 au 12 septembre 2026, dont la valeur la plus élevée est celle du vert.</li>
+
+<li>EDF, « Tempo : économies sur facture électricité », sans date, <a href="https://particulier.edf.fr/fr/accueil/gestion-contrat/options/tempo/details.html" class="uri">https://particulier.edf.fr/fr/accueil/gestion-contrat/options/tempo/details.html</a> : 300, 43 et 22 jours, la période des jours rouges, cinq jours rouges consécutifs au plus, les heures creuses de 22 h à 6 h, l’annonce dès 11 h et sur le compteur dès 20 h, les couleurs fixées par RTE.</li>
+
+<li>Hello Watt, source commerciale, « Nouveaux tarifs Tempo : êtes-vous toujours gagnants ? », 6 février 2026, <a href="https://www.hellowatt.fr/blog/rentabilite-tempo-fevrier-2026/" class="uri">https://www.hellowatt.fr/blog/rentabilite-tempo-fevrier-2026/</a>, et Révolution Énergétique, « Voici les nouveaux prix de l’électricité au 1er février 2026 », 1er février 2026, <a href="https://www.revolution-energetique.com/actus/voici-les-nouveaux-prix-de-lelectricite-au-1er-fevrier-2026/" class="uri">https://www.revolution-energetique.com/actus/voici-les-nouveaux-prix-de-lelectricite-au-1er-fevrier-2026/</a> : les six prix Tempo TTC au 1er février 2026, identiques dans les deux sources. La grille officielle est celle de l’arrêté du 28 janvier 2026, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053417042" class="uri">https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053417042</a>, dont les barèmes, publiés en image au Journal officiel, n’ont pas été lus.</li>
+
+<li>EDF, « Mouvements de prix de l’électricité 2026 », 1er septembre 2026, <a href="https://particulier.edf.fr/fr/accueil/guide-energie/electricite/prix-electricite-fournisseurs.html" class="uri">https://particulier.edf.fr/fr/accueil/guide-energie/electricite/prix-electricite-fournisseurs.html</a> : la hausse de 2,5 % de l’option Tempo au 1er août 2026.</li>
+
+</ul>
+
+<p>Sources consultées le 13 septembre 2026.</p></div></details>
+
 </div><nav class="suite"><p class="chapeau-s">La suite</p><div class="pas-a-pas"><a class="ap" href="COURS2-RESEAU-IP-CYBERSECURITE.html" rel="next"><span class="k">Suivant &rsaquo;</span><span class="t">Domotique, cours 2 — réseau IP et sécurité</span></a></div></nav>
 <p class="pied">Page de formation. Elle contient des démonstrations, des factures reconstituées et des corrigés — c'est ce qui la distingue des pages étudiantes. Les prix de fourniture sont illustratifs ; les grilles d'acheminement et les taxes sont celles de 2026, datées à chaque emploi.</p><p class="pied-site"><a class="mentions" href="../mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="../assets/kit.js?v=a0a2a7e5"></script>
-<script src="../assets/site.js?v=a0a2a7e5"></script>
-<script src="../assets/vivant.js?v=a0a2a7e5"></script>
-<script src="../assets/plan.js?v=a0a2a7e5"></script>
-<script src="../assets/doc.js?v=a0a2a7e5"></script>
+

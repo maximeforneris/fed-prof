@@ -1,13 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="robots" content="noindex, nofollow">
 <title>Ressources enseignement fluides énergétiques</title>
-<link rel="stylesheet" href="assets/kit.css?v=a0a2a7e5">
-<link rel="stylesheet" href="assets/site.css?v=a0a2a7e5">
-<link rel="stylesheet" href="assets/calque.css?v=a0a2a7e5">
-<link rel="stylesheet" href="assets/vivant.css?v=a0a2a7e5">
-<link rel="stylesheet" href="assets/doc.css?v=a0a2a7e5">
+<link rel="stylesheet" href="assets/kit.css?v=9471a56a">
+<link rel="stylesheet" href="assets/site.css?v=9471a56a">
+<link rel="stylesheet" href="assets/calque.css?v=9471a56a">
+<link rel="stylesheet" href="assets/vivant.css?v=9471a56a">
+<link rel="stylesheet" href="assets/doc.css?v=9471a56a">
+<link rel="stylesheet" href="assets/impression.css?v=9471a56a">
+<script src="assets/kit.js?v=9471a56a-3f965b" defer></script>
+<script src="recherche.js?v=9471a56a" defer></script>
+<script src="assets/site.js?v=9471a56a" defer></script>
+<script src="assets/vivant.js?v=9471a56a" defer></script>
+<script src="assets/plan.js?v=9471a56a" defer></script>
+<script src="assets/doc.js?v=9471a56a" defer></script>
 
 <div class="page" data-site="fed-prof">
 <header class="tete a-img"><div class="tete-img" data-schema="quatre-domaines"></div>
@@ -15,9 +24,9 @@
   <h1>Ressources enseignement<span>fluides énergétiques</span></h1>
   <p class="accroche">Les cours détaillés, les machines et la méthode d'épreuve, le manuel du cours en quatorze chapitres, les corrigés des exercices types U41, les fiches de domotique et les leçons sur les chaudières. Tout se calcule dans le navigateur ; rien n'est enregistré, rien n'est envoyé.</p>
 </header>
-<ul class="chiffres"><li><b>49</b><span>outils</span></li><li><b>56</b><span>exercices</span></li></ul>
+<ul class="chiffres"><li><b>50</b><span>outils</span></li><li><b>56</b><span>exercices</span></li></ul>
 <div class="chercher"><input id="q" type="search" autocomplete="off" placeholder="Chercher dans tout le cours… (touche /)"><ul class="resultats" id="resultats"></ul></div>
-<nav class="portes"><a class="porte outils" href="outils.html"><svg class="ico" viewBox="0 0 28 28" aria-hidden="true"><path d="M4 20 L12 12"/><path d="M11 9a4 4 0 1 0 4 4l6 6 3-3-6-6a4 4 0 0 0-7-1z"/></svg><span class="n">49 outils</span><span class="t">La boîte à outils</span><span class="d">Débit, pertes de charge, air humide, COP, loi d’eau — les calculateurs du cours, sortis de leur séance.</span></a><a class="porte exos" href="exercices.html"><svg class="ico" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="9"/><circle cx="14" cy="14" r="4"/><path d="M14 5V2M14 26v-3M5 14H2M26 14h-3"/></svg><span class="n">56 exercices</span><span class="t">S’entraîner</span><span class="d">Calcul, lecture de document, justification. La page dit si c’est juste et rappelle la méthode.</span></a></nav>
+<nav class="portes"><a class="porte outils" href="outils.html"><svg class="ico" viewBox="0 0 28 28" aria-hidden="true"><path d="M4 20 L12 12"/><path d="M11 9a4 4 0 1 0 4 4l6 6 3-3-6-6a4 4 0 0 0-7-1z"/></svg><span class="n">50 outils</span><span class="t">La boîte à outils</span><span class="d">Débit, pertes de charge, air humide, COP, loi d’eau — les calculateurs du cours, sortis de leur séance.</span></a><a class="porte exos" href="exercices.html"><svg class="ico" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="9"/><circle cx="14" cy="14" r="4"/><path d="M14 5V2M14 26v-3M5 14H2M26 14h-3"/></svg><span class="n">56 exercices</span><span class="t">S’entraîner</span><span class="d">Calcul, lecture de document, justification. La page dit si c’est juste et rappelle la méthode.</span></a></nav>
 <p class="reprendre" id="reprendre" hidden></p>
 <p class="compteur" id="compteur-lu"></p>
 <section class="espace" id="prof">
@@ -41,107 +50,196 @@
 </section>
 <div class="fiches"><div class="grille-f"><a href="exercices/EXO-CHAUFFERIE-COLLEGE-PROF.html"><span class="k">Page 1</span><span class="t">Exercice type U41 la chaufferie d'un collège</span><span class="d">Le corrigé barémé d'un exercice au format de l'épreuve : deux chaudières à condensation en cascade, la bouteille de découplage, le retour qui décide du rendement, la loi d'eau et la recharge de l'eau chaude.</span></a><a href="exercices/EXO-CTA-AMPHI-PROF.html"><span class="k">Page 2</span><span class="t">Exercice type U41 la CTA d'un amphithéâtre</span><span class="d">Le corrigé barémé d'un exercice au format de l'épreuve : une centrale double flux à roue, l'air neuf réglé par le CO₂, le tracé d'hiver, la batterie avec et sans roue, le graphe de la V2V et la liste des points.</span></a><a href="exercices/EXO-PAC-MEDIATHEQUE-PROF.html"><span class="k">Page 3</span><span class="t">Exercice type U41 la PAC sur nappe d'une médiathèque</span><span class="d">Le corrigé barémé d'un exercice au format de l'épreuve : une PAC eau/eau sur nappe, l'échangeur intermédiaire, le débit de nappe, le ballon tampon, le contrôleur de débit, l'appoint et le temps de retour.</span></a></div></div>
 <div class="fiches"><p class="chapeau-f">Apprendre les chaudières des sujets U41</p><div class="grille-f"><a href="chaudieres/lessons/0001-le-retour-decide.html"><span class="k">Leçon</span><span class="t">Le retour décide</span><span class="d"></span></a><a href="chaudieres/lessons/0002-repartition-ou-melange.html"><span class="k">Leçon</span><span class="t">Répartition ou mélange</span><span class="d"></span></a><a href="chaudieres/reference/chaudieres-dans-les-sujets-u41.html"><span class="k">Référence</span><span class="t">Les chaudières des sujets U41</span><span class="d"></span></a></div></div>
-<div class="fiches"><p class="chapeau-f">Mon niveau en domotique, le bilan de départ</p><div class="grille-f"><a href="niveau-domotique/lessons/0001-bilan-de-niveau.html"><span class="k">Leçon</span><span class="t">Le bilan de départ</span><span class="d"></span></a><a href="niveau-domotique/lessons/0002-les-350-metres-se-calculent.html"><span class="k">Leçon</span><span class="t">Les 350 mètres se calculent</span><span class="d"></span></a><a href="niveau-domotique/reference/carte-des-dix-sept-savoirs.html"><span class="k">Référence</span><span class="t">Les dix-sept savoirs de domotique</span><span class="d"></span></a><a href="niveau-domotique/reference/longueurs-d-une-ligne-knx.html"><span class="k">Référence</span><span class="t">Les longueurs d'une ligne KNX</span><span class="d"></span></a></div></div><section class="mot"><h2 id="ce-site-ne-se-diffuse-pas">Ce site ne se diffuse pas</h2>
-<p>Il rassemble des pages qui contiennent des <strong>démonstrations, des corrigés, des barèmes et les réponses aux questions qui déstabilisent</strong>. Elles sont écrites pour préparer un cours, pas pour être lues par ceux qui le suivent.</p>
-<p>Le bandeau rouge en tête de chaque page le rappelle, y compris à l’impression. Le site des étudiants est un autre site, produit à partir de <code>BTS FED C/SITE.md</code>, et il n’a aucun lien vers celui-ci.</p>
-<h2 id="ce-que-le-site-réunit">Ce que le site réunit</h2>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th>Série</th>
-<th>Ce qu’elle contient</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Cours 1 à 4</strong></td>
-<td>les quatre fondamentaux déroulés : démonstrations, calculs retournés de bureau d’études, et <strong>trois exercices résolus</strong> par page</td>
-</tr>
-<tr>
-<td><strong>Cours 5</strong></td>
-<td>le froid au niveau de l’option B : ce que le référentiel place à zéro pour nous et à trois pour la FCA, avec ses cinq calculateurs</td>
-</tr>
-<tr>
-<td><strong>Prof 5</strong></td>
-<td>ce que l’épreuve U41 demande vraiment, chiffré sur neuf sessions</td>
-</tr>
-<tr>
-<td><strong>Prof 6 et 7</strong></td>
-<td>les machines, famille par famille</td>
-</tr>
-<tr>
-<td><strong>Hab prof 1 et 2</strong></td>
-<td>conduire la préparation à l’attestation fluides, et le corrigé de son épreuve blanche</td>
-</tr>
-<tr>
-<td><strong>Le manuel, chapitres 1 à 14</strong></td>
-<td>toutes les leçons de fluides de la progression, de la chaleur du bâtiment à la GTB : la source du polycopié Word, lue ici en page. Il n’est sur aucun site étudiant, que l’avancement ouvrirait d’un coup</td>
-</tr>
-<tr>
-<td><strong>Domotique, cours 1 à 10 et fiches 1 à 5</strong></td>
-<td>tout le programme de domotique, par des cas réels datés et sourcés : l’énergie électrique, le réseau IP et sa sécurité, le VDI et la CEM, la téléphonie et la fin du cuivre, l’éclairage, la GTB, la sûreté, la production d’énergie, les moteurs et volets, le projet KNX ; puis les cinq fiches. Ils gardent aussi leur propre site, <code>_site-prof-domotique</code></td>
-</tr>
-<tr>
-<td><strong>Les exercices types U41</strong></td>
-<td>trois corrigés barémés au format de l’épreuve, la CTA d’un amphithéâtre, la chaufferie d’un collège, la PAC sur nappe d’une médiathèque, chacun avec sa grille de diagnostic. Les énoncés élèves sont les documents Word du même nom, sans le suffixe PROF, dans <code>23-exercices-types</code></td>
-</tr>
-<tr>
-<td><strong>Les chaudières des sujets U41</strong></td>
-<td>deux leçons et une référence, faites pour apprendre à mieux expliquer. Recopiées telles quelles : elles ont leur propre mise en page et leurs quiz</td>
-</tr>
-</tbody>
-</table></div>
-<p>Chaque page finit par une table d’ordres de grandeur et par les questions d’étudiants qui déstabilisent, avec leur réponse chiffrée. Les pages <strong>Cours</strong> ajoutent les analogies qui marchent en classe, et celles qui trompent.</p>
-<p><strong>Les deux pages « Hab prof » accompagnent un parcours étudiant</strong> qui vit sur l’autre site, dans <code>18-habilitation-fluides</code> : cinq pages qui préparent la partie théorique de l’attestation d’aptitude aux fluides frigorigènes. Ici se trouvent la conduite de cette préparation et le corrigé barémé de son épreuve blanche, donc ce que les étudiants ne doivent pas voir.</p>
-<p>Il existait une version courte de ces quatre thèmes, les fiches <strong>Prof 1 à 4</strong>. Elles disaient la même chose que les Cours, en moins bien depuis que ceux-ci portent les démonstrations : <strong>une redite se relit deux fois et se met à jour une fois sur deux.</strong> Elles sont mises de côté, pas supprimées.</p>
-<h2 id="ce-que-les-quatre-cours-contiennent-depuis-septembre">Ce que les quatre Cours contiennent depuis septembre</h2>
-<p>Ils sont passés du cours résumé au <strong>manuel</strong>, avec quatre natures de contenu en plus. Les démonstrations de ce que le cours se contentait d’affirmer, chacune avec l’hypothèse qui la porte et qui dit quand elle tombe. Un <strong>calcul retourné</strong> par page, dimensionner au lieu de vérifier. Un repli « là où la méthode change », qui nomme le domaine de validité et ce qui le déborde. Et <strong>trois exercices résolus gradués</strong>, avec leur vérification de plausibilité et ce qu’il faut rédiger.</p>
-<div class="enveloppe-tbl"><table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>Cours</th>
-<th>Le calcul retourné</th>
-<th>Le cas où la méthode change</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>1 : la chaleur</strong></td>
-<td>de la déperdition à l’épaisseur d’isolant</td>
-<td>la paroi à ossature</td>
-</tr>
-<tr>
-<td><strong>2 : l’eau</strong></td>
-<td>du circuit à la HMT du circulateur</td>
-<td>le régime laminaire</td>
-</tr>
-<tr>
-<td><strong>3 : l’air humide</strong></td>
-<td>du local au débit et au point de soufflage</td>
-<td>la batterie sèche, le SHR trop bas</td>
-</tr>
-<tr>
-<td><strong>4 : produire et réguler</strong></td>
-<td>des déperditions au point de bivalence</td>
-<td>l’exposant d’émission, la charge partielle</td>
-</tr>
-</tbody>
-</table></div>
+<div class="fiches"><p class="chapeau-f">Mon niveau en domotique, le bilan de départ</p><div class="grille-f"><a href="niveau-domotique/lessons/0001-bilan-de-niveau.html"><span class="k">Leçon</span><span class="t">Le bilan de départ</span><span class="d"></span></a><a href="niveau-domotique/lessons/0002-les-350-metres-se-calculent.html"><span class="k">Leçon</span><span class="t">Les 350 mètres se calculent</span><span class="d"></span></a><a href="niveau-domotique/reference/carte-des-dix-sept-savoirs.html"><span class="k">Référence</span><span class="t">Les dix-sept savoirs de domotique</span><span class="d"></span></a><a href="niveau-domotique/reference/longueurs-d-une-ligne-knx.html"><span class="k">Référence</span><span class="t">Les longueurs d'une ligne KNX</span><span class="d"></span></a></div></div><section class="mot"><h2 id="ce-site-ne-se-diffuse-pas">Ce site ne se diffuse pas</h2>
+
+<p>Il rassemble des pages qui contiennent des <strong>démonstrations, des corrigés, des barèmes et les réponses aux questions qui déstabilisent</strong>. Elles sont écrites pour préparer un cours, pas pour être lues par ceux qui le suivent.</p>
+
+<p>Le bandeau rouge en tête de chaque page le rappelle, y compris à l’impression. Le site des étudiants est un autre site, produit à partir de <code>BTS FED C/SITE.md</code>, et il n’a aucun lien vers celui-ci.</p>
+
+<h2 id="ce-que-le-site-réunit">Ce que le site réunit</h2>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 50%" />
+
+<col style="width: 50%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Série</th>
+
+<th>Ce qu’elle contient</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td><strong>Cours 1 à 4</strong></td>
+
+<td>les quatre fondamentaux déroulés : démonstrations, calculs retournés de bureau d’études, et <strong>trois exercices résolus</strong> par page</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Cours 5</strong></td>
+
+<td>le froid au niveau de l’option B : ce que le référentiel place à zéro pour nous et à trois pour la FCA, avec ses cinq calculateurs</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Prof 5</strong></td>
+
+<td>ce que l’épreuve U41 demande vraiment, chiffré sur neuf sessions</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Prof 6 et 7</strong></td>
+
+<td>les machines, famille par famille</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Hab prof 1 et 2</strong></td>
+
+<td>conduire la préparation à l’attestation fluides, et le corrigé de son épreuve blanche</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Le manuel, chapitres 1 à 14</strong></td>
+
+<td>toutes les leçons de fluides de la progression, de la chaleur du bâtiment à la GTB : la source du polycopié Word, lue ici en page. Il n’est sur aucun site étudiant, que l’avancement ouvrirait d’un coup</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Domotique, cours 1 à 10 et fiches 1 à 5</strong></td>
+
+<td>tout le programme de domotique, par des cas réels datés et sourcés : l’énergie électrique, le réseau IP et sa sécurité, le VDI et la CEM, la téléphonie et la fin du cuivre, l’éclairage, la GTB, la sûreté, la production d’énergie, les moteurs et volets, le projet KNX ; puis les cinq fiches. Ils gardent aussi leur propre site, <code>_site-prof-domotique</code></td>
+
+</tr>
+
+<tr>
+
+<td><strong>Les exercices types U41</strong></td>
+
+<td>trois corrigés barémés au format de l’épreuve, la CTA d’un amphithéâtre, la chaufferie d’un collège, la PAC sur nappe d’une médiathèque, chacun avec sa grille de diagnostic. Les énoncés élèves sont les documents Word du même nom, sans le suffixe PROF, dans <code>23-exercices-types</code></td>
+
+</tr>
+
+<tr>
+
+<td><strong>Les chaudières des sujets U41</strong></td>
+
+<td>deux leçons et une référence, faites pour apprendre à mieux expliquer. Recopiées telles quelles : elles ont leur propre mise en page et leurs quiz</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
+<p>Chaque page finit par une table d’ordres de grandeur et par les questions d’étudiants qui déstabilisent, avec leur réponse chiffrée. Les pages <strong>Cours</strong> ajoutent les analogies qui marchent en classe, et celles qui trompent.</p>
+
+<p><strong>Les deux pages « Hab prof » accompagnent un parcours étudiant</strong> qui vit sur l’autre site, dans <code>18-habilitation-fluides</code> : cinq pages qui préparent la partie théorique de l’attestation d’aptitude aux fluides frigorigènes. Ici se trouvent la conduite de cette préparation et le corrigé barémé de son épreuve blanche, donc ce que les étudiants ne doivent pas voir.</p>
+
+<p>Il existait une version courte de ces quatre thèmes, les fiches <strong>Prof 1 à 4</strong>. Elles disaient la même chose que les Cours, en moins bien depuis que ceux-ci portent les démonstrations : <strong>une redite se relit deux fois et se met à jour une fois sur deux.</strong> Elles sont mises de côté, pas supprimées.</p>
+
+<h2 id="ce-que-les-quatre-cours-contiennent-depuis-septembre">Ce que les quatre Cours contiennent depuis septembre</h2>
+
+<p>Ils sont passés du cours résumé au <strong>manuel</strong>, avec quatre natures de contenu en plus. Les démonstrations de ce que le cours se contentait d’affirmer, chacune avec l’hypothèse qui la porte et qui dit quand elle tombe. Un <strong>calcul retourné</strong> par page, dimensionner au lieu de vérifier. Un repli « là où la méthode change », qui nomme le domaine de validité et ce qui le déborde. Et <strong>trois exercices résolus gradués</strong>, avec leur vérification de plausibilité et ce qu’il faut rédiger.</p>
+
+<div class="enveloppe-tbl"><table>
+
+<colgroup>
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+<col style="width: 33%" />
+
+</colgroup>
+
+<thead>
+
+<tr>
+
+<th>Cours</th>
+
+<th>Le calcul retourné</th>
+
+<th>Le cas où la méthode change</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td><strong>1 : la chaleur</strong></td>
+
+<td>de la déperdition à l’épaisseur d’isolant</td>
+
+<td>la paroi à ossature</td>
+
+</tr>
+
+<tr>
+
+<td><strong>2 : l’eau</strong></td>
+
+<td>du circuit à la HMT du circulateur</td>
+
+<td>le régime laminaire</td>
+
+</tr>
+
+<tr>
+
+<td><strong>3 : l’air humide</strong></td>
+
+<td>du local au débit et au point de soufflage</td>
+
+<td>la batterie sèche, le SHR trop bas</td>
+
+</tr>
+
+<tr>
+
+<td><strong>4 : produire et réguler</strong></td>
+
+<td>des déperditions au point de bivalence</td>
+
+<td>l’exposant d’émission, la charge partielle</td>
+
+</tr>
+
+</tbody>
+
+</table></div>
+
 </section>
 <p class="pied-site">Document de formation du professeur, ne pas diffuser aux étudiants. · <a class="mentions" href="mentions-legales.html">Mentions légales</a></p>
 </div>
-<script src="assets/kit.js?v=a0a2a7e5"></script>
-<script src="recherche.js?v=a0a2a7e5"></script>
-<script src="assets/site.js?v=a0a2a7e5"></script>
-<script src="assets/vivant.js?v=a0a2a7e5"></script>
-<script src="assets/plan.js?v=a0a2a7e5"></script>
-<script src="assets/doc.js?v=a0a2a7e5"></script>

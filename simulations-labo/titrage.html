@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le titrage acide-base</title>
+<meta name="description" content="Une vraie paillasse : burette à rincer, remplir et ajuster au zéro, robinet à tourner du doigt, agitateur, pH-mètre et conductimètre à étalonner. Quatre expériences dans la même page, sur le vinaigre, le détartrant ou un flacon sans étiquette.">
+<meta name="etiquette" content="Simulation · SIM-16">
+<style>
+/* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
+   Palette du kit web (kit.css) : papier, graphite, un seul accent. Polices du systeme : la page
+   s'ouvre sans reseau, depuis une cle ou le poste de la salle. */
+:root{
+  --fond:#e9e7e3; --carte:#fbfaf9; --carte2:#f2f0ec; --encre:#191a1c; --encre2:#5d5b57;
+  --trait:#c9c5bf; --trait2:#dedbd6; --accent:#2c6da6; --accent-doux:#dfe8f1;
+  --juste:#2f7a55; --juste-doux:#e2efe7; --faux:#ab432a; --faux-doux:#f5e3dd; --tiede:#b8801f;
+  --scene:#f6f5f2; --ombre:0 1px 2px rgba(25,26,28,.05),0 10px 26px rgba(25,26,28,.07); --r:6px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --fond:#131315; --carte:#1c1d20; --carte2:#232427; --encre:#eceae6; --encre2:#a6a49f;
+    --trait:#4a4a4d; --trait2:#333437; --accent:#63a6dd; --accent-doux:#1d2a36;
+    --juste:#5cc08d; --juste-doux:#17281f; --faux:#ef7a58; --faux-doux:#34201a; --tiede:#dfae4e;
+    --scene:#18191b; --ombre:0 1px 2px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --fond:#131315; --carte:#1c1d20; --carte2:#232427; --encre:#eceae6; --encre2:#a6a49f;
+  --trait:#4a4a4d; --trait2:#333437; --accent:#63a6dd; --accent-doux:#1d2a36;
+  --juste:#5cc08d; --juste-doux:#17281f; --faux:#ef7a58; --faux-doux:#34201a; --tiede:#dfae4e;
+  --scene:#18191b; --ombre:0 1px 2px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--fond);color:var(--encre);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Arial,sans-serif;font-size:16px;line-height:1.5}
+.page{max-width:1120px;margin:0 auto;padding:18px 16px 48px}
+.mono,.afficheur .val,.curseur .val,table.releve td{font-family:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono",monospace;font-variant-numeric:tabular-nums}
+h1,h2,h3{line-height:1.2;margin:0;text-wrap:balance}
+sub,sup{font-size:.72em;line-height:0}
+
+/* En-tete */
+.tete{padding:6px 0 16px;border-bottom:1px solid var(--trait);margin-bottom:16px}
+.surtitre{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--encre2);font-weight:600}
+.tete h1{font-size:clamp(1.45rem,4vw,2rem);margin:4px 0 6px;font-weight:750}
+.chapeau{margin:0;color:var(--encre2);max-width:70ch}
+
+/* Onglets : un par protocole ou par ecran */
+.onglets{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
+.onglets button{font:inherit;font-weight:650;font-size:.95rem;padding:9px 14px;border-radius:var(--r);
+  border:1px solid var(--trait);background:var(--carte);color:var(--encre2);cursor:pointer}
+.onglets button[aria-selected="true"]{background:var(--encre);border-color:var(--encre);color:var(--carte)}
+.onglets button:not([aria-selected="true"]):hover{border-color:var(--encre2);color:var(--encre)}
+.vue[hidden]{display:none}
+
+/* Mise en page : la scene a gauche, les commandes a droite ; une colonne sous 820 px */
+.plan{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr);gap:16px;align-items:start}
+@media (max-width:820px){.plan{grid-template-columns:1fr}}
+.carte{background:var(--carte);border:1px solid var(--trait2);border-radius:var(--r);box-shadow:var(--ombre);padding:16px;margin-bottom:16px}
+.carte > h2{font-size:1.08rem;margin-bottom:10px;font-weight:700}
+.carte > h2 .num{color:var(--accent);margin-right:.35em}
+.consigne{color:var(--encre2);margin:0 0 12px;font-size:.95rem}
+.scene{background:var(--scene);border:1px solid var(--trait2);border-radius:var(--r);overflow:hidden;position:relative}
+.scene svg,.scene canvas{display:block;width:100%;height:auto}
+.legende{font-size:.82rem;color:var(--encre2);margin-top:6px}
+
+/* Commandes */
+.commandes{display:flex;flex-direction:column;gap:14px}
+.curseur label{display:flex;justify-content:space-between;gap:8px;font-size:.9rem;font-weight:600;margin-bottom:2px}
+.curseur .val{font-weight:600;color:var(--encre)}
+.curseur input[type=range]{width:100%;accent-color:var(--accent);height:28px;margin:0}
+.curseur .bornes{display:flex;justify-content:space-between;font-size:.75rem;color:var(--encre2)}
+.choix .titre{font-size:.9rem;font-weight:600;margin-bottom:4px}
+.choix .boutons{display:flex;flex-wrap:wrap;gap:6px}
+.choix button,.bouton{font:inherit;font-size:.9rem;font-weight:600;padding:8px 12px;border-radius:var(--r);
+  border:1px solid var(--trait);background:var(--carte);color:var(--encre);cursor:pointer;min-height:40px}
+.choix button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.bouton:hover,.choix button:hover{border-color:var(--encre2)}
+.bouton.principal{background:var(--encre);border-color:var(--encre);color:var(--carte)}
+.bouton:disabled{opacity:.45;cursor:not-allowed}
+.rangee{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* Afficheurs : ce que lit un instrument */
+.afficheurs{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.afficheur{border:1px solid var(--trait);border-radius:var(--r);background:var(--carte2);padding:8px 10px}
+.afficheur .nom{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--encre2);font-weight:650}
+.afficheur .val{font-size:1.45rem;font-weight:650;white-space:nowrap}
+.afficheur .unite{font-size:.95rem;color:var(--encre2);margin-left:.25em}
+.afficheur .note{font-size:.75rem;color:var(--encre2)}
+
+/* Releve de mesures et graphe */
+.releve-zone{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:14px;align-items:start}
+@media (max-width:820px){.releve-zone{grid-template-columns:1fr}}
+table.releve{border-collapse:collapse;width:100%;font-size:.92rem}
+table.releve th,table.releve td{border:1px solid var(--trait);padding:5px 8px;text-align:center}
+table.releve th{background:var(--carte2);font-weight:650;font-size:.82rem}
+table.releve tr.vide td{color:var(--encre2);font-style:italic}
+.graphe{background:var(--carte);border:1px solid var(--trait2);border-radius:var(--r)}
+.graphe canvas{display:block;width:100%;height:auto}
+
+/* Enregistreur : une mesure toute seule, a intervalle regulier du temps simule */
+.enregistreur{border:1px solid var(--trait);border-radius:var(--r);background:var(--carte2);padding:10px 12px;display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.enr-lampe{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--trait)}
+.enr-lampe.actif{background:var(--faux)}
+.enr-lampe.eclair{animation:eclair .6s ease-out}
+@keyframes eclair{from{box-shadow:0 0 0 0 var(--faux)}to{box-shadow:0 0 0 10px transparent}}
+.enr-info{font-size:.88rem;color:var(--encre2)}
+
+/* Defi : l'eleve propose une valeur, la page dit juste ou pas encore, jamais la reponse */
+.defi{border:1px dashed var(--trait);border-radius:var(--r);padding:12px 14px;background:var(--carte2)}
+.defi p{margin:0 0 8px}
+.defi .saisie{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.defi input{font:inherit;width:9em;padding:7px 9px;border-radius:var(--r);border:1px solid var(--trait);background:var(--carte);color:var(--encre)}
+.defi .retour{margin-top:8px;font-weight:600;min-height:1.4em}
+.defi .retour.juste{color:var(--juste)}
+.defi .retour.faux{color:var(--faux)}
+.defi .methode{font-weight:400;color:var(--encre2)}
+
+/* Encadres */
+.note-modele{margin-top:6px}
+details.modele{border-top:1px solid var(--trait);padding-top:10px;margin-top:8px}
+details.modele summary{cursor:pointer;font-weight:650}
+details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-size:.92rem}
+.alerte{border-left:4px solid var(--tiede);background:var(--carte2);padding:8px 12px;border-radius:0 var(--r) var(--r) 0;font-size:.92rem}
+.pied{margin-top:24px;padding-top:10px;border-top:1px solid var(--trait);font-size:.8rem;color:var(--encre2)}
+
+@media print{
+  body{background:#fff}
+  .onglets,.commandes .bouton,.defi{display:none}
+  .carte{box-shadow:none;break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Centrale d'acquisition : periode, duree, deux courbes en direct, tableau defilant, export */
+.centrale{display:flex;flex-direction:column;gap:12px}
+.centrale-reglages{display:flex;flex-wrap:wrap;gap:12px 22px;border:1px solid var(--trait);border-radius:var(--r);background:var(--carte2);padding:10px 12px}
+.centrale-traces{display:flex;flex-wrap:wrap;gap:8px 18px}
+.centrale-traces label{display:flex;align-items:center;gap:8px;font-size:.9rem;font-weight:600}
+.centrale-traces select{font:inherit;font-size:.9rem;padding:7px 8px;border-radius:var(--r);border:1px solid var(--trait);background:var(--carte);color:var(--encre);min-height:40px;max-width:100%}
+.centrale-pastille{display:inline-block;width:14px;height:4px;border-radius:2px}
+.centrale-table{max-height:300px;overflow:auto;border:1px solid var(--trait2);border-radius:var(--r)}
+.centrale-table table.releve th{position:sticky;top:0;z-index:1}
+.centrale-table table.releve{border-collapse:separate;border-spacing:0}
+
+/* Molette posee sur la scene : on la tourne au doigt */
+.molette{cursor:grab;touch-action:none;outline:none}
+.molette.tourne{cursor:grabbing}
+.molette:focus-visible .molette-corps{stroke:var(--accent);stroke-width:3}
+.molette-corps{fill:var(--carte2);stroke:var(--encre);stroke-width:2}
+.molette.tourne .molette-corps{fill:var(--accent-doux)}
+.molette-index{stroke:var(--accent);stroke-width:3.5;stroke-linecap:round}
+.molette-graduation{stroke:var(--encre2);stroke-width:1.2}
+.molette-titre{font-size:11px;font-weight:650;fill:var(--encre)}
+.molette-val{font-size:11.5px;font-weight:650;fill:var(--accent);font-family:ui-monospace,Consolas,monospace}
+
+</style>
+<script>
+/* Simulations des TP · briques communes, inlinees dans l'en-tete de chaque page.
+   Rien ici ne touche au DOM au chargement : une simulation appelle ce dont elle a besoin.
+   Aucune requete, aucun stockage : la page fonctionne hors ligne et n'enregistre rien. */
+"use strict";
+var Sim = (function () {
+
+  /* Nombres a la francaise : virgule, espace fine insecable entre les milliers. */
+  function fr(x, dec) {
+    if (x === null || x === undefined || !isFinite(x)) return "—";
+    if (dec === undefined) dec = 2;
+    var s = Math.abs(x).toFixed(dec).split(".");
+    s[0] = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return (x < 0 && Number(x.toFixed(dec)) !== 0 ? "−" : "") + s.join(",");
+  }
+  /* Lecture d'une saisie d'eleve : virgule ou point, espaces ignores. */
+  function lire(txt) {
+    if (txt === null || txt === undefined) return NaN;
+    var t = String(txt).replace(/\s| | /g, "").replace(",", ".").replace("−", "-");
+    return t === "" ? NaN : Number(t);
+  }
+  function el(tag, attrs, enfants) {
+    var n = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      if (k === "texte") n.textContent = attrs[k];
+      else if (k === "html") n.innerHTML = attrs[k];
+      else if (k === "classe") n.className = attrs[k];
+      else n.setAttribute(k, attrs[k]);
+    }
+    (enfants || []).forEach(function (e) { if (e) n.appendChild(e); });
+    return n;
+  }
+  function $(sel) { return typeof sel === "string" ? document.querySelector(sel) : sel; }
+  function borne(x, a, b) { return Math.max(a, Math.min(b, x)); }
+
+  /* Un instrument ne donne jamais la valeur exacte : bruit gaussien relatif, puis resolution. */
+  function gauss() { var u = 1 - Math.random(), v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+  function mesure(vraie, opts) {
+    opts = opts || {};
+    var x = vraie * (1 + (opts.relatif || 0) * gauss()) + (opts.absolu || 0) * gauss();
+    if (opts.resolution) x = Math.round(x / opts.resolution) * opts.resolution;
+    return x;
+  }
+
+  /* Onglets : boutons [data-vue="id"] qui montrent la section #id. */
+  function onglets(nav, surChange) {
+    nav = $(nav);
+    var boutons = Array.prototype.slice.call(nav.querySelectorAll("button[data-vue]"));
+    nav.setAttribute("role", "tablist");
+    function montrer(id) {
+      boutons.forEach(function (b) {
+        var actif = b.getAttribute("data-vue") === id;
+        b.setAttribute("aria-selected", actif ? "true" : "false");
+        b.setAttribute("role", "tab");
+        var v = document.getElementById(b.getAttribute("data-vue"));
+        if (v) v.hidden = !actif;
+      });
+      if (surChange) surChange(id);
+    }
+    boutons.forEach(function (b) { b.addEventListener("click", function () { montrer(b.getAttribute("data-vue")); }); });
+    montrer(boutons[0].getAttribute("data-vue"));
+    return { montrer: montrer };
+  }
+
+  /* Curseur avec son etiquette, sa valeur affichee et ses bornes. */
+  function curseur(parent, o) {
+    var dec = o.dec === undefined ? 0 : o.dec;
+    var id = o.id || ("c" + Math.random().toString(36).slice(2, 8));
+    var val = el("span", { classe: "val" });
+    var inp = el("input", { type: "range", id: id, min: o.min, max: o.max, step: o.pas || 1, value: o.valeur });
+    var bloc = el("div", { classe: "curseur" }, [
+      el("label", { "for": id }, [el("span", { texte: o.label }), val]), inp,
+      el("div", { classe: "bornes" }, [el("span", { texte: fr(o.min, dec) + " " + (o.unite || "") }), el("span", { texte: fr(o.max, dec) + " " + (o.unite || "") })])
+    ]);
+    function maj() { val.textContent = fr(Number(inp.value), dec) + (o.unite ? " " + o.unite : ""); }
+    inp.addEventListener("input", function () { maj(); if (o.surChange) o.surChange(Number(inp.value)); });
+    maj();
+    $(parent).appendChild(bloc);
+    return {
+      get: function () { return Number(inp.value); },
+      set: function (v, silencieux) { inp.value = v; maj(); if (!silencieux && o.surChange) o.surChange(Number(inp.value)); },
+      activer: function (oui) { inp.disabled = !oui; },
+      noeud: bloc
+    };
+  }
+
+  /* Groupe de boutons dont un seul est enfonce. options : [{val, texte}] */
+  function choix(parent, o) {
+    var courant = o.valeur;
+    var zone = el("div", { classe: "boutons", role: "group", "aria-label": o.label || "" });
+    var boutons = o.options.map(function (op) {
+      var b = el("button", { type: "button", texte: op.texte });
+      b.addEventListener("click", function () { poser(op.val); });
+      zone.appendChild(b);
+      return { b: b, val: op.val };
+    });
+    function poser(v, silencieux) {
+      courant = v;
+      boutons.forEach(function (x) { x.b.setAttribute("aria-pressed", x.val === v ? "true" : "false"); });
+      if (!silencieux && o.surChange) o.surChange(v);
+    }
+    var bloc = el("div", { classe: "choix" }, [o.label ? el("div", { classe: "titre", texte: o.label }) : null, zone]);
+    $(parent).appendChild(bloc);
+    poser(courant, true);
+    return { get: function () { return courant; }, set: poser, noeud: bloc };
+  }
+
+  /* Afficheur d'instrument : nom, valeur, unite, et une note facultative. */
+  function afficheur(parent, o) {
+    var v = el("span", { classe: "val", texte: "—" });
+    var n = el("div", { classe: "note", texte: o.note || "" });
+    var bloc = el("div", { classe: "afficheur" }, [el("div", { classe: "nom", texte: o.nom }), el("div", null, [v, el("span", { classe: "unite", texte: o.unite || "" })]), o.note !== undefined ? n : null]);
+    $(parent).appendChild(bloc);
+    return {
+      set: function (x, dec) { v.textContent = typeof x === "string" ? x : fr(x, dec === undefined ? (o.dec === undefined ? 2 : o.dec) : dec); },
+      note: function (t) { n.textContent = t; },
+      noeud: bloc
+    };
+  }
+
+  /* Graphe sur canvas, net sur les ecrans haute densite. Axes, grille, courbes, points. */
+  function graphe(parent, o) {
+    var larg = o.largeur || 640, haut = o.hauteur || 380;
+    var cv = el("canvas", { width: larg, height: haut, role: "img", "aria-label": o.titre || "graphe" });
+    var cadre = el("div", { classe: "graphe" }, [cv]);
+    $(parent).appendChild(cadre);
+    var ctx = cv.getContext("2d");
+    var dpr = Math.max(1, window.devicePixelRatio || 1);
+    cv.width = larg * dpr; cv.height = haut * dpr; ctx.scale(dpr, dpr);
+    var m = { g: 62, d: 16, h: 16, b: 48 };
+    var ax = { xmin: o.xmin, xmax: o.xmax, ymin: o.ymin, ymax: o.ymax };
+    function css(nom) { return getComputedStyle(document.documentElement).getPropertyValue(nom).trim() || "#333"; }
+    function X(x) { return m.g + (x - ax.xmin) / (ax.xmax - ax.xmin) * (larg - m.g - m.d); }
+    function Y(y) { return haut - m.b - (y - ax.ymin) / (ax.ymax - ax.ymin) * (haut - m.h - m.b); }
+    function pasJoli(etendue, n) {
+      var brut = etendue / n, p = Math.pow(10, Math.floor(Math.log10(brut))), r = brut / p;
+      return (r < 1.5 ? 1 : r < 3 ? 2 : r < 7 ? 5 : 10) * p;
+    }
+    function decimales(pas) { return Math.max(0, -Math.floor(Math.log10(pas) + 1e-9)); }
+    function fond() {
+      ctx.clearRect(0, 0, larg, haut);
+      ctx.fillStyle = css("--carte"); ctx.fillRect(0, 0, larg, haut);
+      ctx.font = "12px system-ui, Segoe UI, Arial, sans-serif";
+      var px = o.pasX || pasJoli(ax.xmax - ax.xmin, 8), py = o.pasY || pasJoli(ax.ymax - ax.ymin, 6);
+      ctx.strokeStyle = css("--trait2"); ctx.lineWidth = 1; ctx.fillStyle = css("--encre2");
+      ctx.textAlign = "center"; ctx.textBaseline = "top";
+      for (var x = Math.ceil(ax.xmin / px) * px; x <= ax.xmax + 1e-9; x += px) {
+        ctx.beginPath(); ctx.moveTo(X(x), Y(ax.ymin)); ctx.lineTo(X(x), Y(ax.ymax)); ctx.stroke();
+        ctx.fillText(fr(x, o.decX !== undefined ? o.decX : decimales(px)), X(x), Y(ax.ymin) + 5);
+      }
+      ctx.textAlign = "right"; ctx.textBaseline = "middle";
+      for (var y = Math.ceil(ax.ymin / py) * py; y <= ax.ymax + 1e-9; y += py) {
+        ctx.beginPath(); ctx.moveTo(X(ax.xmin), Y(y)); ctx.lineTo(X(ax.xmax), Y(y)); ctx.stroke();
+        ctx.fillText(fr(y, o.decY !== undefined ? o.decY : decimales(py)), X(ax.xmin) - 6, Y(y));
+      }
+      ctx.strokeStyle = css("--encre"); ctx.lineWidth = 1.4;
+      var y0 = borne(0, ax.ymin, ax.ymax), x0 = borne(0, ax.xmin, ax.xmax);
+      ctx.beginPath(); ctx.moveTo(X(ax.xmin), Y(y0)); ctx.lineTo(X(ax.xmax), Y(y0)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(X(x0), Y(ax.ymin)); ctx.lineTo(X(x0), Y(ax.ymax)); ctx.stroke();
+      ctx.fillStyle = css("--encre"); ctx.font = "600 13px system-ui, Segoe UI, Arial, sans-serif";
+      ctx.textAlign = "right"; ctx.textBaseline = "bottom";
+      ctx.fillText(o.titreX || "", larg - m.d, haut - 4);
+      ctx.save(); ctx.translate(14, m.h); ctx.rotate(-Math.PI / 2); ctx.textAlign = "right"; ctx.textBaseline = "top";
+      ctx.fillText(o.titreY || "", 0, 0); ctx.restore();
+    }
+    function couleur(c) { return c && c.indexOf("--") === 0 ? css(c) : (c || css("--accent")); }
+    var api = {
+      axes: function (n) { for (var k in n) ax[k] = n[k]; return api; },
+      effacer: function () { fond(); return api; },
+      /* f : fonction x -> y, ou tableau de [x, y] */
+      courbe: function (f, opts) {
+        opts = opts || {};
+        ctx.save(); ctx.beginPath();
+        ctx.rect(m.g, m.h, larg - m.g - m.d, haut - m.h - m.b); ctx.clip();
+        ctx.strokeStyle = couleur(opts.couleur); ctx.lineWidth = opts.epaisseur || 2.2;
+        if (opts.pointille) ctx.setLineDash([6, 5]);
+        ctx.beginPath();
+        if (typeof f === "function") {
+          var n = opts.pas || 400, prem = true;
+          for (var i = 0; i <= n; i++) {
+            var x = ax.xmin + (ax.xmax - ax.xmin) * i / n, y = f(x);
+            if (!isFinite(y)) { prem = true; continue; }
+            if (prem) { ctx.moveTo(X(x), Y(y)); prem = false; } else ctx.lineTo(X(x), Y(y));
+          }
+        } else {
+          f.forEach(function (p, i) { if (i === 0) ctx.moveTo(X(p[0]), Y(p[1])); else ctx.lineTo(X(p[0]), Y(p[1])); });
+        }
+        ctx.stroke(); ctx.restore();
+        return api;
+      },
+      points: function (pts, opts) {
+        opts = opts || {};
+        ctx.fillStyle = couleur(opts.couleur); ctx.strokeStyle = css("--carte");
+        pts.forEach(function (p) {
+          var r = opts.rayon || 4.5;
+          ctx.beginPath();
+          if (opts.forme === "croix") {
+            ctx.strokeStyle = couleur(opts.couleur); ctx.lineWidth = 2;
+            ctx.moveTo(X(p[0]) - r, Y(p[1]) - r); ctx.lineTo(X(p[0]) + r, Y(p[1]) + r);
+            ctx.moveTo(X(p[0]) + r, Y(p[1]) - r); ctx.lineTo(X(p[0]) - r, Y(p[1]) + r); ctx.stroke();
+          } else { ctx.arc(X(p[0]), Y(p[1]), r, 0, 2 * Math.PI); ctx.fill(); ctx.lineWidth = 1; ctx.stroke(); }
+        });
+        return api;
+      },
+      texte: function (x, y, t, opts) {
+        opts = opts || {};
+        ctx.fillStyle = couleur(opts.couleur); ctx.font = (opts.gras ? "600 " : "") + "13px system-ui, Segoe UI, Arial, sans-serif";
+        ctx.textAlign = opts.align || "left"; ctx.textBaseline = "middle";
+        ctx.fillText(t, X(x) + (opts.dx || 0), Y(y) + (opts.dy || 0));
+        return api;
+      },
+      X: X, Y: Y, ctx: ctx, canvas: cv
+    };
+    fond();
+    return api;
+  }
+
+  /* Releve : l'eleve garde une mesure dans un tableau, qui peut alimenter un graphe.
+     colonnes : [{cle, titre, unite, dec}] ; graphe : {x, y, ...options de Sim.graphe} */
+  function releve(parent, o) {
+    var lignes = [];
+    var zone = el("div", { classe: "releve-zone" });
+    var gauche = el("div");
+    var table = el("table", { classe: "releve" });
+    var tete = el("tr"); o.colonnes.forEach(function (c) { tete.appendChild(el("th", { texte: c.titre + (c.unite ? " (" + c.unite + ")" : "") })); });
+    table.appendChild(el("thead", null, [tete]));
+    var corps = el("tbody"); table.appendChild(corps);
+    var boutons = el("div", { classe: "rangee", style: "margin-top:8px" });
+    var bAnnuler = el("button", { type: "button", classe: "bouton", texte: "Retirer la dernière" });
+    var bVider = el("button", { type: "button", classe: "bouton", texte: "Tout effacer" });
+    boutons.appendChild(bAnnuler); boutons.appendChild(bVider);
+    gauche.appendChild(table); gauche.appendChild(boutons);
+    zone.appendChild(gauche);
+    var gr = null;
+    if (o.graphe) { var droite = el("div"); zone.appendChild(droite); gr = graphe(droite, o.graphe); }
+    $(parent).appendChild(zone);
+    function dessiner() {
+      corps.innerHTML = "";
+      if (!lignes.length) {
+        var tr = el("tr", { classe: "vide" }); tr.appendChild(el("td", { colspan: o.colonnes.length, texte: o.vide || "Aucune mesure gardée pour l'instant." })); corps.appendChild(tr);
+      }
+      lignes.forEach(function (l) {
+        var tr = el("tr");
+        o.colonnes.forEach(function (c) { tr.appendChild(el("td", { texte: typeof l[c.cle] === "number" ? fr(l[c.cle], c.dec === undefined ? 2 : c.dec) : (l[c.cle] || "") })); });
+        corps.appendChild(tr);
+      });
+      if (gr) {
+        gr.effacer();
+        if (o.avantPoints) o.avantPoints(gr, lignes);
+        gr.points(lignes.map(function (l) { return [l[o.graphe.x], l[o.graphe.y]]; }), { couleur: o.graphe.couleur });
+      }
+      if (o.surChange) o.surChange(lignes);
+    }
+    bAnnuler.addEventListener("click", function () { lignes.pop(); dessiner(); });
+    bVider.addEventListener("click", function () { lignes = []; dessiner(); });
+    dessiner();
+    return {
+      ajouter: function (l) { if (o.max && lignes.length >= o.max) lignes.shift(); lignes.push(l); dessiner(); },
+      lignes: function () { return lignes.slice(); },
+      vider: function () { lignes = []; dessiner(); },
+      redessiner: dessiner,
+      graphe: gr
+    };
+  }
+
+  /* Enregistreur : garde une ligne du releve tout seul, a intervalle regulier du temps SIMULE,
+     comme une centrale d'acquisition. La simulation appelle tic(t) a chaque pas de calcul.
+     o : { periodes: [{val, texte}], valeur, lire: function (tPlanifie, tLancement) -> ligne ou null, label } */
+  function enregistreur(parent, rel, o) {
+    var periode = o.valeur, actif = false, prochain = null, dernier = 0, debut = 0;
+    var zone = el("div", { classe: "enregistreur" });
+    choix(zone, { label: o.label || "Enregistrement automatique : une mesure toutes les", valeur: periode, options: o.periodes,
+      surChange: function (v) { periode = v; if (actif && prochain !== null) prochain = dernier + v; } });
+    var b = el("button", { type: "button", classe: "bouton principal", texte: "Lancer l'enregistrement" });
+    var lampe = el("span", { classe: "enr-lampe", "aria-hidden": "true" });
+    var info = el("span", { classe: "enr-info", "aria-live": "polite" });
+    zone.appendChild(el("div", { classe: "rangee" }, [b, lampe, info]));
+    $(parent).appendChild(zone);
+    function majInfo() {
+      var n = rel.lignes().length;
+      info.textContent = (actif ? "enregistre" : "à l'arrêt") + (n ? " · " + n + " mesure" + (n > 1 ? "s" : "") + " dans le tableau" : "");
+    }
+    function poser(oui) {
+      actif = oui; prochain = null;
+      b.textContent = oui ? "Arrêter l'enregistrement" : "Lancer l'enregistrement";
+      lampe.className = "enr-lampe" + (oui ? " actif" : "");
+      majInfo();
+      if (o.surEtat) o.surEtat(oui);
+    }
+    b.addEventListener("click", function () { poser(!actif); });
+    majInfo();
+    return {
+      tic: function (t) {
+        if (!actif) return;
+        if (prochain === null) { prochain = t; debut = t; }
+        if (t + 1e-9 < prochain) return;
+        var l = o.lire(prochain, debut);
+        dernier = prochain; prochain += periode;
+        if (prochain <= t) prochain = t + periode;      // un pas trop long : pas de rattrapage en rafale
+        if (l) {
+          rel.ajouter(l); majInfo();
+          lampe.classList.remove("eclair"); void lampe.offsetWidth; lampe.classList.add("eclair");
+        }
+      },
+      actif: function () { return actif; },
+      lancer: function () { if (!actif) poser(true); },
+      arreter: function () { if (actif) poser(false); },
+      majInfo: majInfo,
+      noeud: zone
+    };
+  }
+
+  /* Centrale d'acquisition : l'enregistreur, le tableau et la courbe reunis, comme sur un vrai
+     enregistreur de donnees. On choisit la periode, la duree, les voies du tableau, et deux voies
+     tracees en direct sur deux axes ; le tableau se copie vers un tableur ou s'enregistre en CSV.
+     Toutes les voies sont toujours enregistrees : masquer une colonne ne perd rien.
+     o : { temps: {cle, titre, unite, dec, echelle (s par unite)}, voies: [{cle, titre, unite, dec, cache}],
+           lire: function (tPlanifie, tDebut) -> ligne, periodes, valeur, durees, duree, trace: [cle1, cle2],
+           nomFichier, surChange } */
+  var COULEURS_VOIES = ["--accent", "--faux"];
+  function centrale(parent, o) {
+    var lignes = [], actif = false, prochain = null, debut = null, depart = 0, dernier = 0, tCourant = 0;
+    var periode = o.valeur, duree = o.duree || 0, TP = o.temps, voies = o.voies;
+    var montree = {}; voies.forEach(function (v) { montree[v.cle] = !v.cache; });
+    var trace = (o.trace || [voies[0].cle]).concat([null]).slice(0, 2);
+    var zone = el("div", { classe: "centrale" });
+    function css(nom) { return getComputedStyle(document.documentElement).getPropertyValue(nom).trim() || "#333"; }
+
+    /* Les reglages de l'acquisition */
+    var reg = el("div", { classe: "centrale-reglages" });
+    choix(reg, { label: "Une mesure toutes les", valeur: periode, options: o.periodes,
+      surChange: function (v) { periode = v; if (actif && prochain !== null) prochain = dernier + v; majInfo(); } });
+    if (o.durees) choix(reg, { label: "Arrêt automatique au bout de", valeur: duree, options: o.durees, surChange: function (v) { duree = v; majInfo(); } });
+    zone.appendChild(reg);
+    var bLancer = el("button", { type: "button", classe: "bouton principal", texte: "Lancer l'acquisition" });
+    var bMain = el("button", { type: "button", classe: "bouton", texte: "Une mesure maintenant" });
+    var lampe = el("span", { classe: "enr-lampe", "aria-hidden": "true" });
+    lampe.addEventListener("animationend", function () { lampe.classList.remove("eclair"); });
+    var info = el("span", { classe: "enr-info", "aria-live": "polite" });
+    zone.appendChild(el("div", { classe: "rangee" }, [bLancer, bMain, lampe, info]));
+
+    /* La courbe en direct : deux voies au choix, chacune sur son axe */
+    var selects = [0, 1].map(function (i) {
+      var s = el("select", { "aria-label": i ? "Courbe 2, axe de droite" : "Courbe 1, axe de gauche" });
+      if (i) s.appendChild(el("option", { value: "", texte: "aucune" }));
+      voies.forEach(function (v) { s.appendChild(el("option", { value: v.cle, texte: v.titre + (v.unite ? " (" + v.unite + ")" : "") })); });
+      s.value = trace[i] || "";
+      s.addEventListener("change", function () { trace[i] = s.value || null; dessinerCourbe(); });
+      return s;
+    });
+    var pastille = function (i) { return el("span", { classe: "centrale-pastille", style: "background:" + css(COULEURS_VOIES[i]) }); };
+    var pastilles = [pastille(0), pastille(1)];
+    zone.appendChild(el("div", { classe: "centrale-traces" }, [
+      el("label", null, [pastilles[0], el("span", { texte: "Courbe 1, à gauche" }), selects[0]]),
+      el("label", null, [pastilles[1], el("span", { texte: "Courbe 2, à droite" }), selects[1]])
+    ]));
+    var larg = 640, haut = 300, cv = el("canvas", { width: larg, height: haut, role: "img", "aria-label": "courbe de l'acquisition" });
+    zone.appendChild(el("div", { classe: "graphe" }, [cv]));
+    var ctx = cv.getContext("2d"), dpr = Math.max(1, window.devicePixelRatio || 1);
+    cv.width = larg * dpr; cv.height = haut * dpr; ctx.scale(dpr, dpr);
+
+    /* Les voies du tableau */
+    var puces = el("div", { classe: "boutons" });
+    voies.forEach(function (v) {
+      var b = el("button", { type: "button", texte: v.titre, "aria-pressed": montree[v.cle] ? "true" : "false" });
+      b.addEventListener("click", function () { montree[v.cle] = !montree[v.cle]; b.setAttribute("aria-pressed", montree[v.cle] ? "true" : "false"); dessinerTable(); });
+      puces.appendChild(b);
+    });
+    zone.appendChild(el("div", { classe: "choix" }, [el("div", { classe: "titre", texte: "Colonnes du tableau (tout est enregistré)" }), puces]));
+    var table = el("table", { classe: "releve" }), boite = el("div", { classe: "centrale-table" }, [table]);
+    zone.appendChild(boite);
+    var bCopier = el("button", { type: "button", classe: "bouton", texte: "Copier pour un tableur" });
+    var bCsv = el("button", { type: "button", classe: "bouton", texte: "Enregistrer en CSV" });
+    var bRetirer = el("button", { type: "button", classe: "bouton", texte: "Retirer la dernière" });
+    var bVider = el("button", { type: "button", classe: "bouton", texte: "Tout effacer" });
+    var retour = el("span", { classe: "enr-info", "aria-live": "polite" });
+    zone.appendChild(el("div", { classe: "rangee" }, [bCopier, bCsv, bRetirer, bVider, retour]));
+    $(parent).appendChild(zone);
+
+    function colonnes() { return [TP].concat(voies.filter(function (v) { return montree[v.cle]; })); }
+    var corps = null;
+    function ligneTable(l, cs) { var r = el("tr"); cs.forEach(function (c) { r.appendChild(el("td", { texte: texteVal(l, c) })); }); return r; }
+    function texteVal(l, c) { var x = l[c.cle]; return typeof x === "number" ? fr(x, c.dec === undefined ? 2 : c.dec) : (x === undefined || x === null ? "" : String(x)); }
+    function dessinerTable() {
+      var cs = colonnes(); table.innerHTML = "";
+      var tr = el("tr"); cs.forEach(function (c) { tr.appendChild(el("th", { texte: c.titre + (c.unite ? " (" + c.unite + ")" : "") })); });
+      table.appendChild(el("thead", null, [tr]));
+      corps = el("tbody");
+      if (!lignes.length) corps.appendChild(el("tr", { classe: "vide" }, [el("td", { colspan: cs.length, texte: "Aucune mesure pour l'instant : lance l'acquisition." })]));
+      lignes.forEach(function (l) { corps.appendChild(ligneTable(l, cs)); });
+      table.appendChild(corps);
+      boite.scrollTop = boite.scrollHeight;
+    }
+    function pasJoli(etendue, n) {
+      if (!(etendue > 0)) return 1;
+      var brut = etendue / n, p = Math.pow(10, Math.floor(Math.log10(brut))), r = brut / p;
+      return (r < 1.5 ? 1 : r < 3 ? 2 : r < 7 ? 5 : 10) * p;
+    }
+    function bornes(cle) {
+      var a = Infinity, b = -Infinity;
+      lignes.forEach(function (l) { var y = l[cle]; if (typeof y === "number" && isFinite(y)) { a = Math.min(a, y); b = Math.max(b, y); } });
+      if (!isFinite(a)) return null;
+      if (b - a < 1e-9) { var d = Math.max(Math.abs(a) * 0.05, 0.5); a -= d; b += d; }
+      var pas = pasJoli(b - a, 5); return { min: Math.floor(a / pas) * pas, max: Math.ceil(b / pas) * pas, pas: pas };
+    }
+    function decimales(pas) { return Math.max(0, -Math.floor(Math.log10(pas) + 1e-9)); }
+    function dessinerCourbe() {
+      var mg = 58, md = trace[1] ? 58 : 16, mh = 26, mb = 40, w = larg - mg - md, h = haut - mh - mb;
+      ctx.clearRect(0, 0, larg, haut); ctx.fillStyle = css("--carte"); ctx.fillRect(0, 0, larg, haut);
+      ctx.font = "12px system-ui, Segoe UI, Arial, sans-serif";
+      var xs = lignes.map(function (l) { return l[TP.cle]; }).filter(function (x) { return typeof x === "number"; });
+      var x0 = xs.length ? Math.min.apply(null, xs) : 0, x1 = xs.length ? Math.max.apply(null, xs) : 1;
+      if (x1 - x0 < 1e-9) x1 = x0 + 1;
+      var px = pasJoli(x1 - x0, 8); x0 = Math.floor(x0 / px) * px; x1 = Math.ceil(x1 / px) * px;
+      var X = function (x) { return mg + (x - x0) / (x1 - x0) * w; };
+      ctx.strokeStyle = css("--trait2"); ctx.lineWidth = 1; ctx.fillStyle = css("--encre2"); ctx.textAlign = "center"; ctx.textBaseline = "top";
+      for (var x = x0; x <= x1 + 1e-9; x += px) { ctx.beginPath(); ctx.moveTo(X(x), mh); ctx.lineTo(X(x), mh + h); ctx.stroke(); ctx.fillText(fr(x, decimales(px)), X(x), mh + h + 5); }
+      ctx.fillStyle = css("--encre"); ctx.font = "600 12px system-ui, Segoe UI, Arial, sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "bottom";
+      ctx.fillText(TP.titre + (TP.unite ? " (" + TP.unite + ")" : ""), larg - md, haut - 3);
+      trace.forEach(function (cle, i) {
+        if (!cle) return;
+        var v = voies.filter(function (q) { return q.cle === cle; })[0], b = bornes(cle), coul = css(COULEURS_VOIES[i]);
+        ctx.font = "600 12px system-ui, Segoe UI, Arial, sans-serif"; ctx.fillStyle = coul; ctx.textBaseline = "top";
+        ctx.textAlign = i ? "right" : "left"; ctx.fillText(v.titre + (v.unite ? " (" + v.unite + ")" : ""), i ? larg - 6 : 6, 5);
+        if (!b) return;
+        var Y = function (y) { return mh + h - (y - b.min) / (b.max - b.min) * h; };
+        ctx.font = "12px system-ui, Segoe UI, Arial, sans-serif"; ctx.textBaseline = "middle"; ctx.textAlign = i ? "left" : "right";
+        for (var y = b.min; y <= b.max + 1e-9; y += b.pas) {
+          if (!i) { ctx.strokeStyle = css("--trait2"); ctx.beginPath(); ctx.moveTo(mg, Y(y)); ctx.lineTo(mg + w, Y(y)); ctx.stroke(); }
+          ctx.fillText(fr(y, decimales(b.pas)), i ? mg + w + 6 : mg - 6, Y(y));
+        }
+        ctx.strokeStyle = coul; ctx.lineWidth = 2; ctx.beginPath();
+        var prem = true;
+        lignes.forEach(function (l) { var yy = l[cle], xx = l[TP.cle]; if (typeof yy !== "number" || !isFinite(yy)) { prem = true; return; }
+          if (prem) { ctx.moveTo(X(xx), Y(yy)); prem = false; } else ctx.lineTo(X(xx), Y(yy)); });
+        ctx.stroke();
+        ctx.fillStyle = coul;
+        if (lignes.length <= 80) lignes.forEach(function (l) { var yy = l[cle]; if (typeof yy === "number" && isFinite(yy)) { ctx.beginPath(); ctx.arc(X(l[TP.cle]), Y(yy), 3, 0, 2 * Math.PI); ctx.fill(); } });
+      });
+      ctx.strokeStyle = css("--encre"); ctx.lineWidth = 1.2; ctx.strokeRect(mg, mh, w, h);
+      pastilles[1].style.visibility = trace[1] ? "visible" : "hidden";
+    }
+    function dessiner() { dessinerTable(); dessinerCourbe(); majInfo(); if (o.surChange) o.surChange(lignes); }
+    /* A chaque mesure, une ligne de plus au tableau et une courbe redessinee au plus quatre fois par seconde :
+       a grande vitesse, refaire tout le tableau a chaque point finit par figer la page. */
+    var dernierTrace = 0, traceEnAttente = null;
+    var suivre = true;      // le tableau defile avec les mesures, sauf si on est remonte le lire
+    boite.addEventListener("scroll", function () { suivre = boite.scrollTop + boite.clientHeight >= boite.scrollHeight - 8; });
+    function tracer() { dernierTrace = Date.now(); dessinerCourbe(); if (suivre) boite.scrollTop = boite.scrollHeight; }
+    function courbePlusTard() {
+      if (Date.now() - dernierTrace > 250) { tracer(); return; }
+      if (!traceEnAttente) traceEnAttente = setTimeout(function () { traceEnAttente = null; tracer(); }, 260);
+    }
+    function ecoule() { return Math.max(0, dernier - depart); }
+    function texteDuree(s) { return s >= 3600 ? fr(s / 3600, s % 3600 ? 1 : 0) + " h" : s >= 60 ? fr(s / 60, s % 60 ? 1 : 0) + " min" : fr(s, 0) + " s"; }
+    function majInfo() {
+      var n = lignes.length;
+      info.textContent = (actif ? "acquisition en cours" : "à l'arrêt") + (n ? " · " + n + " mesure" + (n > 1 ? "s" : "") : "") +
+        (actif && duree ? " · " + texteDuree(ecoule()) + " sur " + texteDuree(duree) : "");
+    }
+    function poser(oui) {
+      actif = oui; prochain = null;
+      bLancer.textContent = oui ? "Arrêter l'acquisition" : "Lancer l'acquisition";
+      lampe.className = "enr-lampe" + (oui ? " actif" : "");
+      majInfo(); if (o.surEtat) o.surEtat(oui);
+    }
+    function ajouter(l) {
+      if (!l) return;
+      if (l[TP.cle] === undefined) l[TP.cle] = (tCourant - (debut === null ? 0 : debut)) / (TP.echelle || 1);
+      lignes.push(l);
+      if (o.max && lignes.length > o.max) { lignes.shift(); dessinerTable(); }
+      else if (corps) {
+        if (lignes.length === 1) dessinerTable();
+        else corps.appendChild(ligneTable(l, colonnes()));
+      }
+      courbePlusTard(); majInfo(); if (o.surChange) o.surChange(lignes);
+      lampe.classList.remove("eclair"); lampe.classList.add("eclair");
+    }
+    function versTexte(sep, decimale) {
+      var cs = colonnes(), lignesTxt = [cs.map(function (c) { return c.titre + (c.unite ? " (" + c.unite + ")" : ""); }).join(sep)];
+      lignes.forEach(function (l) { lignesTxt.push(cs.map(function (c) { var x = l[c.cle]; return typeof x === "number" ? x.toFixed(c.dec === undefined ? 2 : c.dec).replace(".", decimale) : (x || ""); }).join(sep)); });
+      return lignesTxt.join("\r\n");
+    }
+    function dire(t) { retour.textContent = t; setTimeout(function () { if (retour.textContent === t) retour.textContent = ""; }, 4000); }
+    /* Relancer apres un arret continue la meme serie, sur le meme temps ; tout effacer la remet a zero. */
+    function lancer() { if (!lignes.length) debut = null; poser(true); }
+    bLancer.addEventListener("click", function () { if (actif) poser(false); else lancer(); });
+    bMain.addEventListener("click", function () { if (debut === null) debut = tCourant; ajouter(o.lire(tCourant, debut)); });
+    bRetirer.addEventListener("click", function () { lignes.pop(); if (!lignes.length && !actif) debut = null; dessiner(); });
+    bVider.addEventListener("click", function () { lignes = []; if (!actif) debut = null; dessiner(); });
+    bCopier.addEventListener("click", function () {
+      var t = versTexte("\t", ",");
+      function secours() {
+        var ta = el("textarea", { style: "position:fixed;left:-9999px;top:0" }); ta.value = t; document.body.appendChild(ta); ta.select();
+        var ok = false; try { ok = document.execCommand("copy"); } catch (x) { ok = false; }
+        document.body.removeChild(ta); dire(ok ? "Copié : colle-le dans le tableur." : "La copie est refusée par ce navigateur : enregistre en CSV.");
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function () { dire("Copié : colle-le dans le tableur."); }, secours);
+      else secours();
+    });
+    bCsv.addEventListener("click", function () {
+      var blob = new Blob(["﻿" + versTexte(";", ",")], { type: "text/csv;charset=utf-8" });
+      var a = el("a", { href: URL.createObjectURL(blob), download: o.nomFichier || "acquisition.csv" });
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+      dire("Fichier CSV enregistré, séparateur point-virgule.");
+    });
+    dessiner();
+    return {
+      tic: function (t) {
+        tCourant = t;
+        if (!actif) return;
+        if (prochain === null) { prochain = t; if (debut === null) debut = t; depart = t; }
+        if (t + 1e-9 < prochain) return;
+        var l = o.lire(prochain, debut);
+        dernier = prochain; prochain += periode;
+        if (prochain <= t) prochain = t + periode;
+        if (l) { if (l[TP.cle] === undefined) l[TP.cle] = (dernier - debut) / (TP.echelle || 1); ajouter(l); }
+        if (duree && dernier - depart >= duree - 1e-9) poser(false);
+        else majInfo();
+      },
+      ajouter: ajouter, lignes: function () { return lignes.slice(); }, vider: function () { lignes = []; if (!actif) debut = null; dessiner(); },
+      lancer: function () { if (!actif) lancer(); }, arreter: function () { if (actif) poser(false); },
+      actif: function () { return actif; }, majInfo: majInfo, redessiner: dessiner,
+      tracer: function (c1, c2) { trace = [c1 || trace[0], c2 === undefined ? trace[1] : c2]; selects[0].value = trace[0]; selects[1].value = trace[1] || ""; dessinerCourbe(); },
+      periode: function () { return periode; }, noeud: zone
+    };
+  }
+
+  /* Molette posee sur la scene SVG : on la tourne au doigt (glisser vers le haut ou la droite
+     pour monter), a la molette de la souris ou aux fleches du clavier.
+     o : { x, y, r, zone, min, max, pas, valeur, dec, unite, label, surChange, format } */
+  function molette(parent, o) {
+    var v = o.valeur, r = o.r || 17, dec = o.dec === undefined ? 0 : o.dec;
+    var g = svg("g", { "class": "molette", transform: "translate(" + o.x + " " + o.y + ")", tabindex: "0", role: "slider",
+      "aria-label": o.label || "", "aria-valuemin": o.min, "aria-valuemax": o.max }, parent);
+    svg("circle", { r: o.zone || 46, fill: "transparent" }, g);
+    for (var k = 0; k <= 10; k++) {
+      var a = (-135 + 27 * k) * Math.PI / 180;
+      svg("line", { x1: Math.sin(a) * (r + 3), y1: -Math.cos(a) * (r + 3), x2: Math.sin(a) * (r + (k % 5 ? 6 : 8)), y2: -Math.cos(a) * (r + (k % 5 ? 6 : 8)), "class": "molette-graduation" }, g);
+    }
+    svg("circle", { r: r, "class": "molette-corps" }, g);
+    var index = svg("line", { x1: 0, y1: -r * 0.25, x2: 0, y2: -r + 3, "class": "molette-index" }, g);
+    var titre = o.label ? svg("text", { x: 0, y: -r - 12, "text-anchor": "middle", "class": "molette-titre", texte: o.titreCourt || o.label }, g) : null;
+    var val = svg("text", { x: 0, y: r + 19, "text-anchor": "middle", "class": "molette-val" }, g);
+    function maj() {
+      var f = (v - o.min) / (o.max - o.min);
+      index.setAttribute("transform", "rotate(" + (-135 + 270 * f) + ")");
+      val.textContent = o.format ? o.format(v) : fr(v, dec) + (o.unite ? " " + o.unite : "");
+      g.setAttribute("aria-valuenow", v); g.setAttribute("aria-valuetext", val.textContent);
+    }
+    function poser(x, silencieux) {
+      var p = o.pas || 1; x = borne(Math.round(x / p) * p, o.min, o.max); x = Number(x.toFixed(6));
+      var change = x !== v; v = x; maj();
+      if (change && !silencieux && o.surChange) o.surChange(v);
+    }
+    g.addEventListener("touchstart", function (e) { e.preventDefault(); }, { passive: false });
+    g.addEventListener("pointerdown", function (e) {
+      e.preventDefault(); try { g.setPointerCapture(e.pointerId); } catch (x) { /* evenement de synthese */ }
+      var x0 = e.clientX, y0 = e.clientY, v0 = v, course = o.course || 160;
+      g.classList.add("tourne");
+      function mv(e2) { poser(v0 + ((e2.clientX - x0) - (e2.clientY - y0)) / course * (o.max - o.min)); }
+      function fin() { g.classList.remove("tourne"); g.removeEventListener("pointermove", mv); g.removeEventListener("pointerup", fin); g.removeEventListener("pointercancel", fin); }
+      g.addEventListener("pointermove", mv); g.addEventListener("pointerup", fin); g.addEventListener("pointercancel", fin);
+    });
+    g.addEventListener("wheel", function (e) { e.preventDefault(); poser(v + (e.deltaY < 0 ? 1 : -1) * (o.pas || 1)); }, { passive: false });
+    g.addEventListener("keydown", function (e) {
+      var p = o.pas || 1;
+      if (e.key === "ArrowUp" || e.key === "ArrowRight") { poser(v + p); e.preventDefault(); }
+      if (e.key === "ArrowDown" || e.key === "ArrowLeft") { poser(v - p); e.preventDefault(); }
+    });
+    maj();
+    return { get: function () { return v; }, set: poser, noeud: g, montrer: function (oui) { g.style.display = oui ? "" : "none"; } };
+  }
+
+  /* Defi : une valeur a trouver. La page dit juste ou pas encore, et rappelle la methode,
+     jamais la valeur attendue. attendu : nombre ou fonction qui le calcule au moment du clic. */
+  function defi(parent, o) {
+    var inp = el("input", { type: "text", inputmode: "decimal", "aria-label": o.question });
+    var b = el("button", { type: "button", classe: "bouton", texte: "Vérifier" });
+    var retour = el("div", { classe: "retour", "aria-live": "polite" });
+    var bloc = el("div", { classe: "defi" }, [el("p", { html: o.question }), el("div", { classe: "saisie" }, [inp, o.unite ? el("span", { texte: o.unite }) : null, b]), retour]);
+    function verifier() {
+      var v = lire(inp.value), a = typeof o.attendu === "function" ? o.attendu() : o.attendu;
+      retour.className = "retour";
+      if (!isFinite(v)) { retour.textContent = "Écris un nombre."; return; }
+      var tol = o.tolerance === undefined ? 0.05 : o.tolerance;
+      var ok = Math.abs(v - a) <= Math.abs(a) * tol + (o.toleranceAbsolue || 0);
+      retour.className = "retour " + (ok ? "juste" : "faux");
+      retour.innerHTML = ok ? "Juste." : "Pas encore. <span class=\"methode\">" + (o.methode || "") + "</span>";
+      if (o.surReponse) o.surReponse(ok, v);
+    }
+    b.addEventListener("click", verifier);
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") verifier(); });
+    $(parent).appendChild(bloc);
+    return { noeud: bloc, effacer: function () { inp.value = ""; retour.textContent = ""; retour.className = "retour"; } };
+  }
+
+  /* Boucle d'animation : f(dt en secondes). S'arrete seule quand l'onglet est cache.
+     Sim.avancer(s) fait tourner les boucles a la main : c'est la porte des essais, dans un
+     navigateur qui ne dessine pas (onglet cache, capture sans affichage). */
+  var boucles = [];
+  function avancer(secondes, pasDt) {
+    pasDt = pasDt || 0.05;
+    for (var t = 0; t < secondes - 1e-9; t += pasDt) boucles.forEach(function (f) { f(pasDt); });
+  }
+  function animer(f) {
+    boucles.push(f);
+    var avant = null, actif = true, id = null;
+    function pas(t) {
+      if (avant === null) avant = t;
+      var dt = Math.min(0.1, (t - avant) / 1000); avant = t;
+      if (actif) f(dt);
+      id = requestAnimationFrame(pas);
+    }
+    id = requestAnimationFrame(pas);
+    return { pause: function () { actif = false; }, reprise: function () { actif = true; avant = null; }, actif: function () { return actif; } };
+  }
+
+  /* Petit utilitaire SVG. */
+  var NS = "http://www.w3.org/2000/svg";
+  function svg(tag, attrs, parent) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) { if (k === "texte") n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]); }
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+
+  return { fr: fr, lire: lire, el: el, $: $, borne: borne, mesure: mesure, gauss: gauss, onglets: onglets, curseur: curseur, choix: choix,
+    afficheur: afficheur, graphe: graphe, releve: releve, enregistreur: enregistreur, centrale: centrale, molette: molette,
+    defi: defi, animer: animer, avancer: avancer, svg: svg };
+})();
+
+</script>
+</head>
+<body>
+<div class="page">
+<header class="tete">
+<div class="surtitre">Physique-chimie · simulation des TP SIM-16 et CT-06</div>
+<h1>Le titrage acide-base</h1>
+<p class="chapeau">Une vraie paillasse : burette à rincer, remplir et ajuster au zéro, robinet à tourner du doigt, agitateur, pH-mètre et conductimètre à étalonner. Quatre expériences dans la même page, sur le vinaigre, le détartrant ou un flacon sans étiquette.</p>
+</header>
+<style>
+:root{--liquide:#d9e7f2;--bulle:#ffffff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--liquide:#2b3d4e;--bulle:#e8eef3}}
+:root[data-theme="dark"]{--liquide:#2b3d4e;--bulle:#e8eef3}
+.verre{fill:none;stroke:var(--encre);stroke-width:2.2;stroke-linejoin:round}
+.liquide{fill:var(--liquide)}
+.grad{stroke:var(--encre);stroke-width:1}
+.grad-txt{font-size:10px;fill:var(--encre2)}
+.etiq{font-size:11px;fill:var(--encre2)}
+.etiq-titre{font-size:12px;font-weight:700;fill:var(--encre)}
+.boite{fill:var(--carte);stroke:var(--encre);stroke-width:2}
+.metal{fill:var(--encre2)}
+.lcd{fill:#cfd8cf;stroke:var(--encre2);stroke-width:1}
+.lcd-txt{font-family:ui-monospace,Consolas,monospace;font-size:17px;font-weight:600;fill:#1d2a1d}
+.lcd-petit{font-family:ui-monospace,Consolas,monospace;font-size:8px;fill:#1d2a1d}
+.prise{cursor:grab;touch-action:none;outline:none}
+.prise:active{cursor:grabbing}
+.prise:focus-visible .prise-zone{stroke-width:3}
+.prise-zone{fill:var(--accent);fill-opacity:.08;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
+.indice{font-size:12px;font-weight:650;fill:var(--accent)}
+.halo{paint-order:stroke;stroke-linejoin:round}
+.carte [hidden]{display:none!important}
+.case{display:flex;gap:8px;align-items:center;font-size:.92rem;font-weight:600}
+.case input{width:20px;height:20px;accent-color:var(--accent)}
+.lecture{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.92rem;font-weight:600}
+.lecture input{font:inherit;width:6.5em;padding:7px 9px;border-radius:var(--r);border:1px solid var(--trait);background:var(--carte);color:var(--encre)}
+.bouton[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.sous-titre{font-size:.75rem;font-weight:700;color:var(--encre2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:-6px}
+#zoom{background:var(--scene);border:1px solid var(--trait2);border-radius:var(--r)}
+#zoom svg{display:block;width:100%;height:auto}
+.releve-zone > div{overflow-x:auto}
+</style>
+
+<nav class="onglets" id="experiences" aria-label="Expériences">
+  <button type="button" data-vue="vueInd">Indicateur coloré</button>
+  <button type="button" data-vue="vuePh">Suivi au pH-mètre</button>
+  <button type="button" data-vue="vueCond">Suivi au conductimètre</button>
+  <button type="button" data-vue="vueSer">Petite échelle · seringue</button>
+</nav>
+
+<div class="carte">
+  <h2><span class="num">1</span>Le flacon à doser et le matériel</h2>
+  <p class="consigne">La soude est à 0,100 mol/L. Changer un réglage prépare un nouveau bécher.</p>
+  <div class="commandes" id="reglages"></div>
+</div>
+
+<div class="plan">
+  <div class="carte">
+    <h2><span class="num">2</span>La paillasse</h2>
+    <div class="scene">
+      <svg id="scene" viewBox="0 0 640 600" role="img" aria-label="La paillasse de titrage : la burette ou la seringue, le bécher, les instruments"></svg>
+    </div>
+    <p class="legende" id="legende"></p>
+  </div>
+  <div class="carte">
+    <h2><span class="num">3</span>Prépare, verse, mesure</h2>
+    <div class="commandes">
+      <div class="sous-titre">Préparer</div>
+      <div class="rangee">
+        <button type="button" class="bouton" id="bRincer">Rincer la burette à la soude</button>
+        <button type="button" class="bouton" id="bRemplir">Remplir la burette</button>
+        <button type="button" class="bouton" id="bEchanger">Mettre le bécher à titrer sous la burette</button>
+        <button type="button" class="bouton" id="bSeringue">Rincer et remplir la seringue</button>
+      </div>
+      <div class="rangee" id="rgSonde">
+        <div id="choixSonde"></div>
+        <button type="button" class="bouton" id="bEtalonner">Étalonner</button>
+      </div>
+      <div class="sous-titre">Verser</div>
+      <div class="rangee">
+        <button type="button" class="bouton" id="bGoutte">Une goutte</button>
+        <button type="button" class="bouton" id="bFermer">Fermer le robinet</button>
+        <button type="button" class="bouton" id="bAgiter" aria-pressed="false">Agitateur</button>
+      </div>
+      <div class="afficheurs" id="instruments"></div>
+      <label class="case"><input type="checkbox" id="especes"> Montrer ce que contient le bécher</label>
+      <div id="zoom" hidden><svg id="zoomSvg" viewBox="0 0 320 172" role="img" aria-label="Les espèces du bécher, vues de très près"></svg></div>
+      <div class="sous-titre">Mesurer</div>
+      <div class="lecture" id="rgLecture">
+        <label for="lecture">Ta lecture dans la loupe</label>
+        <input id="lecture" type="text" inputmode="decimal" autocomplete="off"><span>mL</span>
+      </div>
+      <div class="rangee">
+        <button type="button" class="bouton principal" id="garder">Garder cette mesure</button>
+        <button type="button" class="bouton" id="nouveau">Nouveau titrage</button>
+        <button type="button" class="bouton" id="vider">Tout vider au bidon</button>
+      </div>
+      <p class="alerte" id="etat"></p>
+    </div>
+  </div>
+</div>
+
+<div class="carte">
+  <h2><span class="num">4</span>Le relevé</h2>
+  <p class="consigne" id="consigneReleve"></p>
+  <div id="vueInd" class="vue"></div>
+  <div id="vuePh" class="vue"></div>
+  <div id="vueCond" class="vue"></div>
+  <div id="vueSer" class="vue"></div>
+</div>
+
+<div class="carte">
+  <h2><span class="num">5</span>Le résultat</h2>
+  <p class="consigne" id="consigneResultat"></p>
+  <div class="commandes" id="defis"></div>
+  <details class="modele">
+    <summary>Ce que la simulation simplifie</summary>
+    <ul>
+      <li>Le vinaigre ne contient que de l'acide éthanoïque, et un litre de vinaigre a une masse de 1 000 g. Le détartrant ne contient que de l'acide chlorhydrique.</li>
+      <li>Une goutte fait 0,05 mL, à 8 % près d'une goutte à l'autre. En vrai, elle dépend aussi de la pointe et de la vitesse.</li>
+      <li>L'agitateur mélange tout en une fraction de seconde. Sans lui, la couleur reste là où tombe la goutte, et les instruments ne voient presque rien.</li>
+      <li>Le pH-mètre et le conductimètre répondent en quelques secondes, sans dérive, à 25 °C. Un vrai pH-mètre se rince entre deux solutions.</li>
+      <li>La soude ne se carbonate pas à l'air : en vrai, le rose d'un virage exact pâlit en une minute, et l'on retient celui qui tient trente secondes.</li>
+      <li>La loupe exagère la parallaxe pour qu'elle se voie : l'œil trop haut fait lire trop peu, trop bas fait lire trop.</li>
+      <li>Le bidon compte la soude du rinçage, ce qui passe dans le bécher de récupération, les béchers titrés et la soude restée dans la burette ou la seringue. Pas l'eau qui rince la verrerie.</li>
+    </ul>
+  </details>
+</div>
+
+<script>
+(function () {
+  /* ---------- La chimie : acide ethanoique (pKa 4,76) ou chlorhydrique, titres par la soude ---------- */
+  var CB = 0.100, KW = 1e-14, KA = Math.pow(10, -4.76), GOUTTE = 0.05;
+  var LAMBDA = { h: 34.98, oh: 19.86, na: 5.01, cl: 7.63, ac: 4.09 };   // conductivites molaires ioniques, mS.m2/mol a 25 degres
+  var degreInconnu = Math.round(50 + Math.random() * 45) / 10;           // 5,0 a 9,5 degres, tire a l'ouverture de la page
+  var FLACONS = {
+    blanc: { texte: "Vinaigre blanc · 8°", l1: "vinaigre", l2: "blanc 8°", fort: false, degre: 8, dilution: 10 },
+    menager: { texte: "Vinaigre ménager · 14°", l1: "vinaigre", l2: "ménager 14°", fort: false, degre: 14, dilution: 10 },
+    inconnu: { texte: "Vinaigre sans étiquette", l1: "vinaigre", l2: "?", fort: false, degre: degreInconnu, dilution: 10 },
+    detartrant: { texte: "Détartrant · acide chlorhydrique", l1: "détartrant", l2: "HCl", fort: true, c: 2.40, dilution: 20 }
+  };
+  function cFlacon(f) { return f.fort ? f.c : f.degre * 10 / 60; }      // degre x 10 g par litre, M = 60 g/mol
+  var INDIC = {
+    phenol: { texte: "Phénolphtaléine", court: "phénolphtaléine", pki: 9.3, acide: null, base: [214, 64, 138], noms: ["incolore", "rose pâle", "rose"], seuils: [0.05, 0.9] },
+    bbt: { texte: "Bleu de bromothymol", court: "BBT", pki: 7.1, acide: [238, 208, 44], base: [40, 92, 206], noms: ["jaune", "vert", "bleu"], seuils: [0.15, 0.85] },
+    helian: { texte: "Hélianthine", court: "hélianthine", pki: 3.7, acide: [214, 48, 40], base: [242, 178, 36], noms: ["rouge", "orange", "jaune"], seuils: [0.2, 0.8] },
+    aucun: { texte: "Aucun", court: "aucun", pki: null }
+  };
+  var EXP = {
+    ind: { burette: true, becher: { cap: 50, l: 60, h: 90, nom: "bécher de 50 mL" }, eau: 0, va: 10.0, ind: 3, sonde: null, tolVe: 0.1, tolC: 0.03 },
+    ph: { burette: true, becher: { cap: 100, l: 76, h: 112, nom: "bécher de 100 mL" }, eau: 40, va: 10.0, ind: 3, sonde: "ph", tolVe: 0.25, tolC: 0.03 },
+    cond: { burette: true, becher: { cap: 250, l: 120, h: 120, nom: "bécher de 250 mL" }, eau: 100, va: 10.0, ind: 0, sonde: "cond", tolVe: 0.3, tolC: 0.04 },
+    ser: { burette: false, eau: 0, va: 1.00, ind: 1, sonde: null, tolVe: 0.1, tolC: 0.08 }
+  };
+
+  function vbMele(e) { return Math.max(0, e.vb - e.nm); }
+  function contenu(e) { return e.va + e.vb + e.eau + e.vind; }
+  function veVrai(e) { return e.ca * e.va / e.cb; }
+  /* Composition du becher : bilan des charges resolu par dichotomie sur log[H3O+]. */
+  function compo(e) {
+    var vt = e.va + vbMele(e) + e.eau + e.vind, ca = e.ca * e.va / vt, cna = e.cb * vbMele(e) / vt;
+    var lo = -14, hi = 0, h, an;
+    for (var i = 0; i < 60; i++) {
+      var m = (lo + hi) / 2; h = Math.pow(10, m); an = e.fort ? ca : ca * KA / (KA + h);
+      if (h + cna - KW / h - an > 0) hi = m; else lo = m;
+    }
+    h = Math.pow(10, (lo + hi) / 2); an = e.fort ? ca : ca * KA / (KA + h);
+    return { ph: -Math.log10(h), h: h, oh: KW / h, na: cna, cl: e.fort ? ca : 0, ac: e.fort ? 0 : an, ha: e.fort ? 0 : ca - an, vt: vt };
+  }
+  function sigma(c) { return 10 * (LAMBDA.h * c.h + LAMBDA.oh * c.oh + LAMBDA.na * c.na + LAMBDA.cl * c.cl + LAMBDA.ac * c.ac); }   // mS/cm
+  function fBase(ind, ph) { return 1 / (1 + Math.pow(10, ind.pki - ph)); }
+  function nomCouleur(ind, f) { return !ind.pki ? "incolore" : f < ind.seuils[0] ? ind.noms[0] : f < ind.seuils[1] ? ind.noms[1] : ind.noms[2]; }
+  /* Couleur de l'indicateur : melange soustractif des deux formes, [rgb, opacite]. */
+  function teinte(ind, f) {
+    if (!ind.pki) return null;
+    if (!ind.acide) return [ind.base, f < 0.05 ? 0 : 0.15 + 0.7 * Math.pow((f - 0.05) / 0.95, 2)];
+    return [[0, 1, 2].map(function (i) { return Math.round(255 * Math.pow(ind.acide[i] / 255, 1 - f) * Math.pow(ind.base[i] / 255, f)); }), 0.7];
+  }
+  function rgba(c, a) { return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a.toFixed(3) + ")"; }
+  function tirerGoutte() { return GOUTTE * Sim.borne(1 + 0.08 * Sim.gauss(), 0.8, 1.2); }
+  /* Robinet : fermé sous 8 degres, goutte a goutte jusqu'a 35 degres, puis un filet. mL/s */
+  function debit(a) { return a < 8 ? 0 : a < 35 ? 0.012 + (a - 8) / 27 * 0.288 : 0.3 + (a - 35) / 55 * 0.9; }
+  function signe() { return Math.random() < 0.5 ? -1 : 1; }
+
+  /* ---------- L'etat : un par experience ---------- */
+  var reg = { flacon: "blanc", indic: "phenol", prelev: "pipette", oeil: 0.55 };
+  var exp = "ind", etats = {};
+  function E() { return etats[exp]; }
+  var LVIDE = 26.5;              // lecture du niveau quand la burette est vide jusqu'au robinet
+  function etatNeuf(x) {
+    var e = { exp: x, essai: 0, bidon: 0, recup: 0, sous: x === "ser" ? "titrage" : "recup",
+      rempli: false, lev: LVIDE, bulle: 0, videPointe: true, rincee: false, cb: CB, angle: 0,
+      pendante: 0, vg: tirerGoutte(), chutes: [], filet: 0, flash: 0, chasse: 0, depuis: 0, bulleSeuil: 1, bulleAnim: 0,
+      agit: false, phase: 0, secoue: 0, nm: 0, r: 0, seringue: false,
+      pm: { decal: signe() * (0.12 + 0.18 * Math.random()), pente: 0.93 + 0.04 * Math.random() },
+      cm: { k: 1 + signe() * (0.03 + 0.05 * Math.random()) },
+      sonde: "becher", aff: NaN, lu: NaN, stable: false, gouttes: 0, pret: false, vuRobinet: false, vuOeil: false, vuPiston: false };
+    preparerBecher(e);
+    return e;
+  }
+  function preparerBecher(e) {
+    var X = EXP[e.exp], fl = FLACONS[reg.flacon];
+    var sd = e.exp === "ser" ? 0.005 : reg.prelev === "pipette" ? 0.012 : 0.15;
+    e.pret = true; e.essai++; e.fort = fl.fort; e.ca = cFlacon(fl) / fl.dilution; e.indic = reg.indic;
+    e.va = X.va + sd * Sim.gauss(); e.vb = 0; e.nm = 0; e.eau = X.eau; e.gouttes = 0; e.nomVu = null; e.ditAgit = false;
+    e.vind = reg.indic === "aucun" ? 0 : X.ind * GOUTTE;
+  }
+
+  /* ---------- Les reglages ---------- */
+  var R = document.getElementById("reglages");
+  function rePreparer(t) {
+    Object.keys(etats).forEach(function (k) { var e = etats[k]; if (e.pret && e.vb > 0) e.bidon += contenu(e); preparerBecher(e); });
+    poserDefis(); dessinerFond(); message(t);
+  }
+  Sim.choix(R, { label: "Le flacon", valeur: reg.flacon,
+    options: Object.keys(FLACONS).map(function (k) { return { val: k, texte: FLACONS[k].texte }; }),
+    surChange: function (v) { reg.flacon = v; rePreparer("Nouveau flacon : un bécher neuf est prêt. " + (FLACONS[v].fort ? "Le détartrant a été dilué vingt fois." : "Le vinaigre a été dilué dix fois.")); } });
+  Sim.choix(R, { label: "L'indicateur coloré", valeur: reg.indic,
+    options: Object.keys(INDIC).map(function (k) { return { val: k, texte: INDIC[k].texte }; }),
+    surChange: function (v) { reg.indic = v; rePreparer(v === "aucun" ? "Bécher neuf, sans indicateur." : "Bécher neuf, avec quelques gouttes de " + INDIC[v].court + "."); } });
+  var cPrelev = Sim.choix(R, { label: "Prélever les 10 mL de vinaigre dilué", valeur: reg.prelev,
+    options: [{ val: "pipette", texte: "Pipette jaugée de 10 mL" }, { val: "eprouvette", texte: "Éprouvette graduée de 10 mL" }],
+    surChange: function (v) { reg.prelev = v; rePreparer(v === "pipette" ? "Prise d'essai à la pipette jaugée : 10,0 mL à 0,02 mL près." : "Prise d'essai à l'éprouvette : 10 mL à quelques dixièmes près."); } });
+
+  /* ---------- Les instruments et les releves ---------- */
+  var I = document.getElementById("instruments");
+  var A = {
+    ph: Sim.afficheur(I, { nom: "pH-mètre", unite: "", dec: 2, note: "" }),
+    cond: Sim.afficheur(I, { nom: "Conductimètre", unite: "mS/cm", dec: 3, note: "" }),
+    gouttes: Sim.afficheur(I, { nom: "Gouttes comptées", unite: "", dec: 0 }),
+    bidon: Sim.afficheur(I, { nom: "Bidon de récupération", unite: "mL", dec: 1 })
+  };
+  var relInd = Sim.releve("#vueInd", { colonnes: [{ cle: "essai", titre: "Essai", dec: 0 }, { cle: "ind", titre: "Indicateur" }, { cle: "lu", titre: "Lecture", unite: "mL", dec: 2 }, { cle: "coul", titre: "Couleur" }] });
+  var relSer = Sim.releve("#vueSer", { colonnes: [{ cle: "essai", titre: "Essai", dec: 0 }, { cle: "n", titre: "Gouttes", dec: 0 }, { cle: "lu", titre: "Lecture", unite: "mL", dec: 2 }, { cle: "coul", titre: "Couleur" }] });
+  function axeV(gr, lignes, o) {
+    var vmax = 14; lignes.forEach(function (l) { vmax = Math.max(vmax, l.V); });
+    o.xmax = Math.min(26, Math.ceil((vmax + 2) / 2) * 2); gr.axes(o).effacer();
+  }
+  var relPh = Sim.releve("#vuePh", {
+    colonnes: [{ cle: "essai", titre: "Essai", dec: 0 }, { cle: "V", titre: "V", unite: "mL", dec: 2 }, { cle: "ph", titre: "pH", dec: 2 }, { cle: "pente", titre: "ΔpH ÷ ΔV", unite: "par mL", dec: 2 }],
+    graphe: { x: "V", y: "ph", xmin: 0, xmax: 16, ymin: 0, ymax: 14, pasY: 2, titreX: "V (mL)", titreY: "pH", largeur: 620, hauteur: 340 },
+    avantPoints: function (gr, lignes) { axeV(gr, lignes, {}); }
+  });
+  var relCond = Sim.releve("#vueCond", {
+    colonnes: [{ cle: "essai", titre: "Essai", dec: 0 }, { cle: "V", titre: "V", unite: "mL", dec: 2 }, { cle: "s", titre: "σ", unite: "mS/cm", dec: 3 }],
+    graphe: { x: "V", y: "s", xmin: 0, xmax: 16, ymin: 0, ymax: 2, titreX: "V (mL)", titreY: "σ (mS/cm)", largeur: 620, hauteur: 340 },
+    avantPoints: function (gr, lignes) {
+      var smax = 1; lignes.forEach(function (l) { smax = Math.max(smax, l.s); });
+      axeV(gr, lignes, { ymax: Math.ceil(smax * 1.15 * 2) / 2 });
+    }
+  });
+
+  /* ---------- Les defis : juste ou pas encore, jamais la valeur ---------- */
+  var METH_VE = {
+    ind: "Arrête-toi au premier virage qui tient après agitation. V<sub>E</sub> = lecture au virage − lecture de départ, au bas du ménisque, l'œil au niveau du trait. L'indicateur doit virer là où le pH saute.",
+    ph: "V<sub>E</sub> est là où la courbe monte le plus vite : la plus grande pente ΔpH ÷ ΔV. Resserre les mesures près du saut.",
+    cond: "Trace une droite par les points d'avant le changement de pente, une par ceux d'après : V<sub>E</sub> est à leur croisement.",
+    ser: "V<sub>E</sub> = lecture de départ − lecture au virage, ou nombre de gouttes × 0,05 mL."
+  };
+  function poserDefis() {
+    var D = document.getElementById("defis"), X = EXP[exp], fl = FLACONS[reg.flacon], va = exp === "ser" ? "1,00" : "10,0";
+    D.innerHTML = "";
+    Sim.defi(D, { question: "Volume de soude versé à l'équivalence, V<sub>E</sub> :", unite: "mL",
+      attendu: function () { return veVrai(E()); }, tolerance: 0, toleranceAbsolue: X.tolVe, methode: METH_VE[exp] });
+    Sim.defi(D, { question: "Concentration de l'acide dans le bécher, C<sub>a</sub> = C<sub>b</sub> × V<sub>E</sub> ÷ V<sub>a</sub>, avec V<sub>a</sub> = " + va + " mL :", unite: "mol/L",
+      attendu: function () { return E().ca; }, tolerance: X.tolC, methode: "C<sub>b</sub> = 0,100 mol/L ; V<sub>E</sub> et V<sub>a</sub> dans la même unité." });
+    if (fl.fort) Sim.defi(D, { question: "Concentration du détartrant avant dilution, C = 20 × C<sub>a</sub> :", unite: "mol/L",
+      attendu: function () { return cFlacon(FLACONS[reg.flacon]); }, tolerance: X.tolC, methode: "Le détartrant a été dilué vingt fois : C = 20 × C<sub>a</sub>." });
+    else Sim.defi(D, { question: "Degré du vinaigre, en grammes d'acide pour 100 g de vinaigre :", unite: "°",
+      attendu: function () { return FLACONS[reg.flacon].degre; }, tolerance: X.tolC,
+      methode: "Avant dilution, C = 10 × C<sub>a</sub>. Masse d'acide dans 1 L = C × 60 g ; un litre pèse 1 000 g : ramène à 100 g." });
+    document.getElementById("consigneResultat").innerHTML = "Calcule avec <b>tes</b> lectures. Données : C<sub>b</sub> = 0,100 mol/L" +
+      (fl.fort ? " ; le détartrant a été dilué vingt fois." : " ; le vinaigre a été dilué dix fois ; M = 60 g/mol ; 1 L de vinaigre a une masse de 1 000 g.");
+  }
+
+  /* ---------- La scene : couches fixes et couches redessinees ---------- */
+  var S = document.getElementById("scene"), svg = Sim.svg, Lc = {};
+  function css(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  ["fond", "liq", "verre", "avant"].forEach(function (k) { Lc[k] = svg("g", {}, S); });
+  Lc.robinet = svg("g", { "class": "prise", tabindex: 0, role: "slider", "aria-label": "Clé du robinet de la burette", "aria-valuemin": 0, "aria-valuemax": 90 }, S);
+  Lc.piston = svg("g", { "class": "prise", tabindex: 0, role: "slider", "aria-label": "Piston de la seringue, à pousser vers le bas" }, S);
+  Lc.oeil = svg("g", { "class": "prise", tabindex: 0, role: "slider", "aria-label": "Ton œil devant la loupe, à monter ou descendre" }, S);
+
+  var XB = 190, Y0 = 40, PXB = 13, YR = 398, YPB = 451;   // burette : zero, px par mL, robinet, goutte pendante
+  var YS0 = 330, PXS = 30, YPS = 375;                     // seringue : zero, px par mL, goutte pendante
+  var LX = 372, LY = 30, LW = 190, LH = 246;              // la loupe
+  var DIM_RECUP = { cap: 100, l: 70, h: 96 }, DIM_TUBE = { px: 22, bas: 519 };
+  function yB(v) { return Y0 + PXB * v; }
+  function yS(v) { return YS0 - PXS * v; }
+  function positions(e) {
+    var sous = { x: XB, bas: 530 }, cote = { x: 322, bas: 560 };
+    return e.sous === "titrage" ? { titrage: sous, recup: cote } : { titrage: cote, recup: sous };
+  }
+  function surface(dim, pos, vol) { return pos.bas - 3 - vol * (dim.h - 12) / dim.cap; }
+  function surfaceCible(e, cible) {
+    if (exp === "ser") return e.pret ? DIM_TUBE.bas - contenu(e) * DIM_TUBE.px : DIM_TUBE.bas;
+    var P = positions(e)[cible];
+    if (cible === "recup") return surface(DIM_RECUP, P, e.recup);
+    return e.pret ? surface(EXP[exp].becher, P, contenu(e)) : P.bas;
+  }
+  function becher(parent, pos, d) {
+    var g = pos.x - d.l / 2, dr = pos.x + d.l / 2, h = pos.bas - d.h;
+    svg("path", { d: "M" + (g - 5) + " " + h + " Q" + g + " " + h + " " + g + " " + (h + 6) + " L" + g + " " + (pos.bas - 5) + " Q" + g + " " + pos.bas + " " + (g + 5) + " " + pos.bas +
+      " L" + (dr - 5) + " " + pos.bas + " Q" + dr + " " + pos.bas + " " + dr + " " + (pos.bas - 5) + " L" + dr + " " + (h + 6) + " Q" + dr + " " + h + " " + (dr + 5) + " " + h, "class": "verre" }, parent);
+  }
+  function texte(parent, x, y, t, o) {
+    o = o || {};
+    return svg("text", { x: x, y: y, "class": o.classe || "etiq", "text-anchor": o.ancre || "start", texte: t }, parent);
+  }
+
+  function dessinerFond() {
+    var e = E(), F = Lc.fond, V = Lc.verre, X = EXP[exp];
+    F.innerHTML = ""; V.innerHTML = "";
+    svg("rect", { x: 0, y: 560, width: 640, height: 40, fill: css("--carte2") }, F);
+    svg("line", { x1: 0, y1: 560, x2: 640, y2: 560, stroke: css("--trait"), "stroke-width": 2 }, F);
+    // la potence et sa pince
+    svg("rect", { x: 20, y: 548, width: 96, height: 12, rx: 2, "class": "metal" }, F);
+    svg("line", { x1: 50, y1: 14, x2: 50, y2: 548, stroke: css("--encre2"), "stroke-width": 6, "stroke-linecap": "round" }, F);
+    var yP = X.burette ? 150 : 250;
+    svg("line", { x1: 50, y1: yP, x2: XB - 12, y2: yP, stroke: css("--encre"), "stroke-width": 4 }, F);
+    svg("rect", { x: XB - 13, y: yP - 7, width: 26, height: 14, rx: 3, fill: "none", stroke: css("--encre"), "stroke-width": 2.5 }, V);
+    if (X.burette) fondBurette(F, V, e); else fondSeringue(F, V, e);
+    // les flacons
+    var fl = FLACONS[reg.flacon];
+    flacon(F, 416, fl.l1, fl.l2);
+    flacon(F, 466, "soude", "0,100 mol/L");
+    if (X.sonde) fondInstrument(F, V);
+    // la loupe
+    var clip = svg("clipPath", { id: "clipLoupe" }, F);
+    svg("rect", { x: LX, y: LY, width: LW, height: LH, rx: 10 }, clip);
+    svg("rect", { x: LX, y: LY, width: LW, height: LH, rx: 10, fill: css("--carte") }, F);
+    texte(F, LX + LW / 2, 22, X.burette ? "loupe sur la burette" : "loupe sur la seringue", { ancre: "middle" });
+    svg("rect", { x: LX, y: LY, width: LW, height: LH, rx: 10, fill: "none", stroke: css("--encre2"), "stroke-width": 2 }, V);
+    if (X.burette) {
+      svg("line", { x1: 604, y1: LY + 6, x2: 604, y2: LY + LH - 6, stroke: css("--trait"), "stroke-width": 3, "stroke-linecap": "round" }, F);
+      svg("line", { x1: 596, y1: LY + LH / 2, x2: 612, y2: LY + LH / 2, stroke: css("--encre2"), "stroke-width": 1.5 }, F);
+      texte(F, 604, 22, "ton œil", { ancre: "middle" });
+    }
+  }
+  function flacon(F, x, l1, l2) {
+    svg("path", { d: "M" + (x - 18) + " 560 L" + (x - 18) + " 500 Q" + (x - 18) + " 490 " + (x - 8) + " 488 L" + (x - 6) + " 476 L" + (x + 6) + " 476 L" + (x + 8) + " 488 Q" + (x + 18) + " 490 " + (x + 18) + " 500 L" + (x + 18) + " 560 Z",
+      fill: css("--carte"), stroke: css("--encre"), "stroke-width": 1.8 }, F);
+    svg("rect", { x: x - 8, y: 470, width: 16, height: 7, rx: 2, "class": "metal" }, F);
+    svg("rect", { x: x - 16, y: 508, width: 32, height: 30, fill: css("--carte2"), stroke: css("--encre2"), "stroke-width": 1 }, F);
+    svg("text", { x: x, y: 520, "text-anchor": "middle", "font-size": 8, "font-weight": 700, fill: css("--encre"), texte: l1 }, F);
+    svg("text", { x: x, y: 531, "text-anchor": "middle", "font-size": 8, fill: css("--encre"), texte: l2 }, F);
+  }
+  function fondBurette(F, V, e) {
+    var X = EXP[exp], P = positions(e);
+    // l'agitateur magnetique
+    svg("rect", { x: 110, y: 530, width: 160, height: 30, rx: 4, "class": "boite" }, F);
+    svg("circle", { cx: 252, cy: 545, r: 7, fill: css("--carte2"), stroke: css("--encre"), "stroke-width": 1.5 }, F);
+    texte(F, 120, 549, "agitateur");
+    // la burette : tube, graduations tous les millilitres, chiffres tous les cinq
+    svg("path", { d: "M181 10 L181 385 L185 392 M199 10 L199 385 L195 392", "class": "verre" }, V);
+    svg("path", { d: "M185 405 L188.6 448 L191.4 448 L195 405", "class": "verre", "stroke-width": 1.6 }, V);
+    svg("rect", { x: 181, y: 390, width: 18, height: 16, rx: 3, "class": "boite" }, V);
+    for (var v = 0; v <= 25; v++) {
+      svg("line", { x1: 181, y1: yB(v), x2: 181 + (v % 5 ? 5 : 9), y2: yB(v), "class": "grad" }, V);
+      if (v % 5 === 0) texte(V, 176, yB(v) + 4, String(v), { classe: "grad-txt", ancre: "end" });
+    }
+    texte(F, 206, 64, "burette de 25 mL", { classe: "etiq-titre" });
+    texte(F, 206, 80, "soude à 0,100 mol/L");
+    // les deux bechers
+    becher(V, P.titrage, X.becher);
+    becher(V, P.recup, DIM_RECUP);
+    texte(F, P.titrage.x, 578, "bécher à titrer", { ancre: "middle" });
+    texte(F, P.recup.x, 578, "récupération", { ancre: "middle" });
+    texte(F, XB, 592, "sous la burette", { ancre: "middle", classe: "grad-txt" });
+  }
+  function fondSeringue(F, V, e) {
+    // le support du tube
+    svg("rect", { x: 136, y: 448, width: 108, height: 8, rx: 2, "class": "metal" }, F);
+    svg("rect", { x: 136, y: 530, width: 108, height: 6, rx: 2, "class": "metal" }, F);
+    svg("line", { x1: 144, y1: 456, x2: 144, y2: 560, stroke: css("--encre2"), "stroke-width": 4 }, F);
+    svg("line", { x1: 236, y1: 456, x2: 236, y2: 560, stroke: css("--encre2"), "stroke-width": 4 }, F);
+    // la seringue de 5 mL, pointe en bas
+    svg("path", { d: "M179 172 L179 330 L201 330 L201 172", "class": "verre" }, V);
+    svg("rect", { x: 166, y: 167, width: 48, height: 5, rx: 2, fill: css("--carte2"), stroke: css("--encre"), "stroke-width": 1.5 }, V);
+    svg("path", { d: "M184 330 L188.6 373 L191.4 373 L196 330", "class": "verre", "stroke-width": 1.6 }, V);
+    for (var k = 0; k <= 10; k++) {
+      svg("line", { x1: 179, y1: yS(k / 2), x2: 179 + (k % 2 ? 5 : 9), y2: yS(k / 2), "class": "grad" }, V);
+      if (k % 2 === 0) texte(V, 174, yS(k / 2) + 4, String(k / 2), { classe: "grad-txt", ancre: "end" });
+    }
+    texte(F, 214, 186, "seringue de 5 mL", { classe: "etiq-titre" });
+    texte(F, 214, 202, "soude à 0,100 mol/L");
+    // le petit tube
+    svg("path", { d: "M178 392 L178 508 Q178 522 190 522 Q202 522 202 508 L202 392", "class": "verre" }, V);
+    texte(F, 190, 578, "tube : 1,00 mL de vinaigre dilué", { ancre: "middle" });
+  }
+  function fondInstrument(F, V) {
+    var ph = exp === "ph";
+    svg("rect", { x: 398, y: 296, width: 132, height: 70, rx: 6, "class": "boite" }, F);
+    svg("rect", { x: 408, y: 304, width: 112, height: 32, rx: 2, "class": "lcd" }, F);
+    texte(F, 464, 356, ph ? "pH-mètre" : "conductimètre", { ancre: "middle" });
+    if (ph) {
+      svg("path", { d: "M526 560 L526 510 L570 510 L570 560 Z", fill: "#f3e6a0", opacity: 0.8 }, F);
+      svg("path", { d: "M582 560 L582 510 L626 510 L626 560 Z", fill: "#f2c4c4", opacity: 0.8 }, F);
+      becher(V, { x: 548, bas: 560 }, { l: 44, h: 54 });
+      becher(V, { x: 604, bas: 560 }, { l: 44, h: 54 });
+      texte(F, 548, 578, "pH 7", { ancre: "middle" });
+      texte(F, 604, 578, "pH 4", { ancre: "middle" });
+      texte(F, 576, 592, "solutions tampons", { ancre: "middle", classe: "grad-txt" });
+    } else {
+      svg("path", { d: "M556 560 L556 510 L600 510 L600 560 Z", "class": "liquide" }, F);
+      becher(V, { x: 578, bas: 560 }, { l: 44, h: 54 });
+      texte(F, 578, 578, "étalon KCl", { ancre: "middle" });
+      texte(F, 578, 592, "1,413 mS/cm", { ancre: "middle", classe: "grad-txt" });
+    }
+  }
+
+  /* ---------- Ce qui bouge : redessine a chaque image ---------- */
+  var dernierDessin = 0;
+  function dessiner() {
+    var e = E(), X = EXP[exp];
+    Lc.liq.innerHTML = ""; Lc.avant.innerHTML = "";
+    if (X.burette) { dynBurette(e); dynBechers(e); dynLoupeBurette(e); dynOeil(); }
+    else { dynSeringue(e); dynTube(e); dynLoupeSeringue(e); }
+    // les gouttes qui tombent, et le filet
+    var yp = X.burette ? YPB : YPS;
+    e.chutes.forEach(function (d) { svg("ellipse", { cx: XB, cy: d.y, rx: 2.6, ry: 3.6, "class": "liquide", stroke: css("--encre2"), "stroke-width": 1 }, Lc.avant); });
+    if (e.filet > 0 || e.flash > 0) {
+      var cible = e.sous, ys = surfaceCible(e, cible);
+      svg("line", { x1: XB, y1: yp - 2, x2: XB, y2: ys, stroke: css("--encre2"), "stroke-width": 2.6 }, Lc.avant);
+      svg("line", { x1: XB, y1: yp - 2, x2: XB, y2: ys, stroke: css("--liquide"), "stroke-width": 1.4 }, Lc.avant);
+    } else if (e.pendante > 0.002) {
+      var k = Math.cbrt(Sim.borne(e.pendante / e.vg, 0, 1));
+      svg("ellipse", { cx: XB, cy: yp + 3 * k, rx: 1.5 + 1.6 * k, ry: 1.5 + 2.6 * k, "class": "liquide", stroke: css("--encre2"), "stroke-width": 1 }, Lc.avant);
+    }
+    if (X.sonde) dynInstrument(e);
+    if (document.getElementById("especes").checked) dessinerZoom(e);
+  }
+  function dynBurette(e) {
+    var Q = Lc.liq;
+    if (e.rempli) svg("rect", { x: 182.5, y: yB(e.lev), width: 15, height: 385 - yB(e.lev), "class": "liquide" }, Q);
+    if (!e.videPointe) {
+      svg("path", { d: "M186 392 L186 405 L189 447 L191 447 L194 405 L194 392 Z", "class": "liquide" }, Q);
+      if (e.bulle > 0) svg("ellipse", { cx: XB, cy: 420, rx: 2.4, ry: 3 + 18 * e.bulle, fill: css("--bulle"), stroke: css("--encre2"), "stroke-width": 0.8 }, Lc.avant);
+    }
+    if (e.bulleAnim > 0) svg("circle", { cx: XB, cy: YPB + 40 * (0.5 - e.bulleAnim), r: 3, fill: "none", stroke: css("--encre2"), "stroke-width": 1 }, Lc.avant);
+    // la cle du robinet : fermee a l'horizontale, ouverte a la verticale
+    var G = Lc.robinet, a = e.angle * Math.PI / 180, dx = -Math.cos(a), dy = -Math.sin(a);
+    G.innerHTML = "";
+    G.setAttribute("aria-valuenow", Math.round(e.angle));
+    G.setAttribute("aria-valuetext", e.angle < 8 ? "fermé" : e.angle < 35 ? "goutte à goutte" : "grand ouvert");
+    svg("circle", { cx: XB + 36 * dx, cy: YR + 36 * dy, r: 46, fill: "transparent" }, G);
+    svg("circle", { cx: XB + 36 * dx, cy: YR + 36 * dy, r: 18, "class": "prise-zone" }, G);
+    svg("line", { x1: XB - 8 * dx, y1: YR - 8 * dy, x2: XB + 36 * dx, y2: YR + 36 * dy, stroke: css("--encre"), "stroke-width": 6, "stroke-linecap": "round" }, G);
+    svg("circle", { cx: XB, cy: YR, r: 5, fill: css("--carte"), stroke: css("--encre"), "stroke-width": 2 }, G);
+    svg("circle", { cx: XB + 36 * dx, cy: YR + 36 * dy, r: 6, fill: css("--encre") }, G);
+    if (!e.vuRobinet) svg("text", { x: 144, y: 438, "text-anchor": "end", "class": "indice", texte: "tourne la clé ↻" }, G);
+  }
+  function dynBechers(e) {
+    var P = positions(e), X = EXP[exp], Q = Lc.liq;
+    // la recuperation
+    if (e.recup > 0.01) {
+      var yr = surface(DIM_RECUP, P.recup, e.recup);
+      svg("rect", { x: P.recup.x - DIM_RECUP.l / 2 + 2.5, y: yr, width: DIM_RECUP.l - 5, height: P.recup.bas - 3 - yr, "class": "liquide" }, Q);
+    }
+    if (!e.pret) return;
+    var d = X.becher, pos = P.titrage, g = pos.x - d.l / 2 + 2.5, w = d.l - 5, yt = surface(d, pos, contenu(e));
+    var tourne = e.agit && e.sous === "titrage", creux = tourne ? 6 : 0;
+    var chemin = "M" + g + " " + (pos.bas - 3) + " L" + g + " " + yt + " L" + (pos.x - 14) + " " + yt + " Q" + pos.x + " " + (yt + 2 * creux) + " " + (pos.x + 14) + " " + yt +
+      " L" + (g + w) + " " + yt + " L" + (g + w) + " " + (pos.bas - 3) + " Z";
+    svg("path", { d: chemin, "class": "liquide" }, Q);
+    var ind = INDIC[e.indic], c = e._c;
+    if (ind.pki && c) {
+      var t = teinte(ind, fBase(ind, c.ph));
+      if (t[1] > 0) svg("path", { d: chemin, fill: rgba(t[0], t[1]) }, Q);
+      // la goutte qui vient de tomber colore la solution la ou elle arrive
+      var op = Sim.borne(e.nm / 0.05, 0, 1);
+      if (op > 0.02 && e.sous === "titrage" && fBase(ind, c.ph) < 0.9) {
+        var tb = teinte(ind, 1);
+        svg("ellipse", { cx: XB, cy: yt + 8 + 10 * (1 - op), rx: 6 + 22 * (1 - op), ry: 4 + 6 * (1 - op), fill: rgba(tb[0], 0.85 * Math.max(op, tb[1] > 0.5 ? op : 0.9 * op)) }, Q);
+      }
+    }
+    // le barreau aimante
+    if (e.sous === "titrage") {
+      var c1 = Math.abs(Math.cos(e.phase));
+      svg("rect", { x: XB - 2 - 10 * c1, y: 522, width: 4 + 20 * c1, height: 5, rx: 2.5, fill: css("--encre2") }, Lc.avant);
+    } else svg("rect", { x: pos.x - 12, y: pos.bas - 8, width: 24, height: 5, rx: 2.5, fill: css("--encre2") }, Lc.avant);
+  }
+  function dynSeringue(e) {
+    var Q = Lc.liq, yJ = yS(e.r);
+    if (e.seringue && e.r > 0) svg("rect", { x: 181, y: yJ, width: 18, height: YS0 - yJ, "class": "liquide" }, Q);
+    if (e.seringue) svg("path", { d: "M185 330 L189 372 L191 372 L195 330 Z", "class": "liquide" }, Q);
+    // le piston : joint noir, tige, appui du pouce
+    var G = Lc.piston, yT = yJ - 167;
+    G.innerHTML = "";
+    G.setAttribute("aria-valuenow", Sim.fr(e.r, 2));
+    svg("rect", { x: 140, y: yT - 34, width: 100, height: 70, fill: "transparent" }, G);
+    svg("rect", { x: 158, y: yT - 14, width: 64, height: 32, rx: 8, "class": "prise-zone" }, G);
+    svg("rect", { x: 186, y: yJ - 160, width: 8, height: 150, fill: css("--carte2"), stroke: css("--encre"), "stroke-width": 1.5 }, G);
+    svg("rect", { x: 168, y: yT, width: 44, height: 7, rx: 2, fill: css("--carte2"), stroke: css("--encre"), "stroke-width": 1.5 }, G);
+    svg("rect", { x: 180, y: yJ - 10, width: 20, height: 10, fill: "#2b2b2e" }, G);
+    if (!e.vuPiston && e.seringue) svg("text", { x: 150, y: yT - 20, "text-anchor": "end", "class": "indice", texte: "pousse ↓" }, G);
+  }
+  function dynTube(e) {
+    if (!e.pret) return;
+    var Q = Lc.liq, dx = e.secoue > 0 ? 3 * Math.sin(e.secoue * 40) : 0, ys = DIM_TUBE.bas - contenu(e) * DIM_TUBE.px;
+    var chemin = "M" + (180.5 + dx) + " " + ys + " L" + (180.5 + dx) + " 508 Q" + (180.5 + dx) + " 520 " + (190 + dx) + " 520 Q" + (199.5 + dx) + " 520 " + (199.5 + dx) + " 508 L" + (199.5 + dx) + " " + ys + " Z";
+    svg("path", { d: chemin, "class": "liquide" }, Q);
+    var ind = INDIC[e.indic], c = e._c;
+    if (ind.pki && c) {
+      var t = teinte(ind, fBase(ind, c.ph));
+      if (t[1] > 0) svg("path", { d: chemin, fill: rgba(t[0], t[1]) }, Q);
+      var op = Sim.borne(e.nm / 0.05, 0, 1);
+      if (op > 0.02 && fBase(ind, c.ph) < 0.9) svg("ellipse", { cx: 190 + dx, cy: ys + 5 + 6 * (1 - op), rx: 5 + 4 * (1 - op), ry: 3 + 5 * (1 - op), fill: rgba(teinte(ind, 1)[0], 0.85 * op) }, Q);
+    }
+  }
+  function dynInstrument(e) {
+    var A0 = Lc.avant, P = positions(e), d = EXP[exp].becher, x, y1, y2;
+    if (e.sonde === "becher") { x = P.titrage.x + d.l / 2 - 16; y1 = P.titrage.bas - d.h - 44; y2 = P.titrage.bas - 16; }
+    else { x = exp === "cond" ? 578 : e.sonde === "t7" ? 548 : 604; y1 = 452; y2 = 548; }
+    svg("path", { d: "M" + x + " " + y1 + " C" + x + " " + (y1 - 50) + " 360 330 398 330", fill: "none", stroke: css("--encre2"), "stroke-width": 2 }, A0);
+    if (exp === "ph") {
+      svg("rect", { x: x - 5, y: y1, width: 10, height: y2 - y1 - 6, rx: 3, fill: css("--encre2") }, A0);
+      svg("circle", { cx: x, cy: y2 - 4, r: 6, fill: css("--carte2"), stroke: css("--encre"), "stroke-width": 1.5 }, A0);
+    } else {
+      svg("rect", { x: x - 4, y: y1, width: 8, height: y2 - y1 - 14, rx: 3, fill: css("--encre2") }, A0);
+      svg("rect", { x: x - 8, y: y2 - 16, width: 16, height: 16, rx: 2, fill: "none", stroke: css("--encre"), "stroke-width": 2 }, A0);
+    }
+    var t = !isFinite(e.lu) ? "- - -" : exp === "ph" ? Sim.fr(e.lu, 2) : Sim.fr(e.lu, e.lu < 10 ? 3 : 2);
+    svg("text", { x: 514, y: 327, "text-anchor": "end", "class": "lcd-txt", texte: t }, A0);
+    if (exp === "cond") svg("text", { x: 412, y: 332, "class": "lcd-petit", texte: "mS/cm" }, A0);
+    if (e.stable && isFinite(e.lu)) svg("text", { x: 412, y: 314, "class": "lcd-petit", texte: "STABLE" }, A0);
+  }
+  /* La loupe de la burette, avec la parallaxe : un trait vu d'au-dessus est une ellipse. */
+  function anneau(G, y, t, complet) {
+    var xg = 400, xd = 534, rx = 67, R = 24, ry = Math.abs(R * t), yc = y - R * t;
+    if (ry < 0.6) { svg("line", { x1: xg, y1: y, x2: complet ? xd : xg + 46, y2: y, "class": "grad", "stroke-width": complet ? 2 : 1.5 }, G); return; }
+    var avant = t > 0 ? 0 : 1;
+    svg("path", { d: "M" + xg + " " + yc + " A" + rx + " " + ry + " 0 0 " + avant + " " + xd + " " + yc, fill: "none", stroke: css("--encre"), "stroke-width": complet ? 2 : 1.5 }, G);
+    if (complet) svg("path", { d: "M" + xg + " " + yc + " A" + rx + " " + ry + " 0 0 " + (1 - avant) + " " + xd + " " + yc, fill: "none", stroke: css("--encre2"), "stroke-width": 1, "stroke-dasharray": "3 3" }, G);
+  }
+  function dynLoupeBurette(e) {
+    var G = svg("g", { "clip-path": "url(#clipLoupe)" }, Lc.avant);
+    var xg = 400, xd = 534, xm = 467, K = 80, R = 24, t = 0.5 * reg.oeil, yc = LY + LH / 2;
+    var V = e.rempli ? e.lev : LVIDE, vc = Sim.borne(V, -1.2, 25.4);
+    function yv(v) { return yc + (v - vc) * K; }
+    if (e.rempli) {
+      var ym = yv(V) - R * t;
+      svg("path", { d: "M" + xg + " " + (ym - 8) + " Q" + xm + " " + (ym + 8) + " " + xd + " " + (ym - 8) + " L" + xd + " " + (LY + LH + 10) + " L" + xg + " " + (LY + LH + 10) + " Z",
+        "class": "liquide", stroke: css("--encre2"), "stroke-width": 1.5 }, G);
+    }
+    svg("line", { x1: xg, y1: LY, x2: xg, y2: LY + LH, stroke: css("--encre"), "stroke-width": 2 }, G);
+    svg("line", { x1: xd, y1: LY, x2: xd, y2: LY + LH, stroke: css("--encre"), "stroke-width": 2 }, G);
+    var k0 = Math.max(0, Math.floor((vc - 1.7) * 10)), k1 = Math.min(250, Math.ceil((vc + 1.7) * 10));
+    for (var k = k0; k <= k1; k++) {
+      var y = yv(k / 10);
+      if (k % 5 === 0) anneau(G, y, t, k % 10 === 0);
+      else svg("line", { x1: xg, y1: y, x2: xg + 16, y2: y, "class": "grad", "stroke-width": 1.2 }, G);
+      if (k % 10 === 0) svg("text", { x: xg + 22, y: y - 5, "font-size": 15, "font-weight": 600, fill: css("--encre"), stroke: css("--carte"), "stroke-width": 3, "class": "halo", texte: String(k / 10) }, G);
+    }
+  }
+  function dynOeil() {
+    var G = Lc.oeil, y = LY + LH / 2 - reg.oeil * 100, x = 604;
+    G.innerHTML = "";
+    G.setAttribute("aria-valuenow", reg.oeil.toFixed(2));
+    G.setAttribute("aria-valuetext", Math.abs(reg.oeil) < 0.05 ? "au niveau du trait" : reg.oeil > 0 ? "trop haut" : "trop bas");
+    svg("rect", { x: 562, y: y - 48, width: 78, height: 96, fill: "transparent" }, G);   // 40 px de doigt sur un telephone
+    svg("circle", { cx: x, cy: y, r: 17, "class": "prise-zone" }, G);
+    svg("path", { d: "M" + (x - 13) + " " + y + " Q" + x + " " + (y - 11) + " " + (x + 13) + " " + y + " Q" + x + " " + (y + 11) + " " + (x - 13) + " " + y + " Z", fill: css("--carte"), stroke: css("--encre"), "stroke-width": 1.8 }, G);
+    svg("circle", { cx: x - 3, cy: y, r: 4, fill: css("--encre") }, G);
+    if (!E().vuOeil) svg("text", { x: x, y: y + 34, "text-anchor": "middle", "class": "indice", texte: "↕" }, G);
+  }
+  function dynLoupeSeringue(e) {
+    var G = svg("g", { "clip-path": "url(#clipLoupe)" }, Lc.avant), yc = LY + LH / 2;
+    var vr = e.seringue ? e.r : 0, vc = Sim.borne(vr, 0.5, 4.6);
+    function yv(v) { return yc - (v - vc) * 200; }
+    var yP = yv(vr);
+    svg("rect", { x: 447, y: LY - 10, width: 40, height: Math.max(0, yP - 34 - LY + 10), fill: css("--carte2"), stroke: css("--encre"), "stroke-width": 1.5 }, G);
+    svg("rect", { x: 408, y: yP - 34, width: 118, height: 34, fill: "#2b2b2e" }, G);
+    svg("line", { x1: 408, y1: yP - 22, x2: 526, y2: yP - 22, stroke: "#55555a", "stroke-width": 2 }, G);
+    if (e.seringue) svg("rect", { x: 408, y: yP, width: 118, height: LY + LH + 10 - yP, "class": "liquide" }, G);
+    svg("line", { x1: 407, y1: LY, x2: 407, y2: LY + LH, stroke: css("--encre"), "stroke-width": 2 }, G);
+    svg("line", { x1: 527, y1: LY, x2: 527, y2: LY + LH, stroke: css("--encre"), "stroke-width": 2 }, G);
+    for (var k = Math.max(0, Math.floor((vc - 0.7) * 10)); k <= Math.min(50, Math.ceil((vc + 0.7) * 10)); k++) {
+      var y = yv(k / 10);
+      svg("line", { x1: 407, y1: y, x2: 407 + (k % 10 === 0 ? 36 : k % 5 === 0 ? 26 : 14), y2: y, stroke: k % 5 === 0 ? css("--encre") : "#8a8f96", "stroke-width": k % 5 === 0 ? 2 : 1.2 }, G);
+      if (k % 5 === 0) svg("text", { x: 449, y: y + 5, "font-size": 15, "font-weight": 600, fill: css("--encre"), stroke: css("--carte"), "stroke-width": 3, "class": "halo", texte: Sim.fr(k / 10, k % 10 === 0 ? 0 : 1) }, G);
+    }
+  }
+
+  /* ---------- Vu de tres pres : une pastille pour un douzieme de l'acide de depart ---------- */
+  var PLACES = (function () {
+    var p = [], graine = 7;
+    function alea() { graine = (graine * 16807) % 2147483647; return graine / 2147483647; }
+    for (var r = 0; r < 5; r++) for (var c = 0; c < 16; c++) p.push([14 + c * 19.5 + (r % 2) * 7 + 4 * alea(), 16 + r * 21 + 5 * alea()]);
+    for (var i = p.length - 1; i > 0; i--) { var j = Math.floor(alea() * (i + 1)), t = p[i]; p[i] = p[j]; p[j] = t; }
+    return p;
+  })();
+  var ESPECES = { AH: "#8a8f96", "A⁻": "#2c6da6", "Na⁺": "#7b4fa0", "HO⁻": "#c0392b", "H₃O⁺": "#d9822b", "Cl⁻": "#2f7a55" };
+  function dessinerZoom(e) {
+    var Z = document.getElementById("zoomSvg"), c = e._c;
+    Z.innerHTML = "";
+    if (!e.pret || !c) { svg("text", { x: 160, y: 80, "text-anchor": "middle", "class": "etiq", texte: "Pas de bécher à titrer." }, Z); return; }
+    var u = e.ca * e.va / 12;
+    function nb(conc) { return Math.round(conc * c.vt / u); }
+    var poses = [];
+    function poser(nom, debut, n) { for (var i = 0; i < n && debut + i < PLACES.length; i++) poses.push([nom, PLACES[debut + i]]); }
+    if (e.fort) { poser("Cl⁻", 0, 12); poser("H₃O⁺", 12, Math.min(12, nb(c.h))); }
+    else { var na = Math.min(12, nb(c.ac)); poser("A⁻", 0, na); poser("AH", na, 12 - na); }
+    poser("Na⁺", 24, nb(c.na)); poser("HO⁻", 52, nb(c.oh));
+    poses.forEach(function (p) {
+      svg("circle", { cx: p[1][0], cy: p[1][1], r: 8.5, fill: ESPECES[p[0]] }, Z);
+      svg("text", { x: p[1][0], y: p[1][1] + 3, "text-anchor": "middle", "font-size": 7.5, "font-weight": 700, fill: "#fff", texte: p[0] }, Z);
+    });
+    var leg = e.fort ? [["H₃O⁺", "ion oxonium"], ["Cl⁻", "ion chlorure"], ["Na⁺", "ion sodium"], ["HO⁻", "ion hydroxyde"]]
+      : [["AH", "CH₃COOH"], ["A⁻", "CH₃COO⁻"], ["Na⁺", "ion sodium"], ["HO⁻", "ion hydroxyde"]];
+    leg.forEach(function (l, i) {
+      var x = 14 + (i % 2) * 150, y = 126 + Math.floor(i / 2) * 17;
+      svg("circle", { cx: x, cy: y, r: 6.5, fill: ESPECES[l[0]] }, Z);
+      svg("text", { x: x + 11, y: y + 4, "font-size": 10.5, fill: css("--encre"), texte: l[0] + " · " + l[1] }, Z);
+    });
+    svg("text", { x: 8, y: 166, "font-size": 9.5, fill: css("--encre2"), texte: "Une pastille : un douzième de l'acide de départ. L'eau n'est pas dessinée." }, Z);
+  }
+
+  /* ---------- Faire couler ---------- */
+  function message(t) { if (t) document.getElementById("etat").textContent = t; }
+  function versDans(e, cible, v) {
+    if (v <= 0) return;
+    if (cible === "titrage") { if (e.pret) { e.vb += v; e.nm += v; } else e.bidon += v; }
+    else e.recup += v;
+  }
+  function lacherGoutte(e) {
+    var n = e.chutes.length;
+    e.pendante = Math.max(0, e.pendante - e.vg);
+    e.chutes.push({ y: (EXP[exp].burette ? YPB : YPS) - 6 * (n % 4), v: e.vg, cible: e.sous });
+    e.vg = tirerGoutte();
+  }
+  function sortirBulle(e) {
+    e.lev += e.bulle; e.bulle = 0; e.bulleAnim = 0.5;
+    message(e.sous === "recup" ? "La bulle d'air est partie : le niveau a baissé d'un coup. La pointe est pleine, tu peux ajuster le zéro."
+      : "Une bulle d'air vient de quitter la pointe : le niveau a baissé sans que la soude ne tombe dans le bécher. Ta lecture sera fausse d'autant.");
+  }
+  function pasBurette(e, dt) {
+    var q = e.rempli ? debit(e.angle) : 0;
+    e.filet = 0;
+    if (q <= 0) return;
+    var dv = Math.min(q * dt, LVIDE - e.lev);
+    if (e.bulle > 0) {
+      if (q >= 0.6) e.chasse += dt;
+      if (e.chasse >= 0.25 || e.depuis + dv >= e.bulleSeuil) sortirBulle(e);
+    }
+    e.lev += dv; e.depuis += dv;
+    if (q >= 0.3) { versDans(e, e.sous, dv + e.pendante); e.pendante = 0; e.filet = q; }
+    else { e.pendante += dv; while (e.pendante >= e.vg) lacherGoutte(e); }
+    if (e.lev >= LVIDE - 1e-9) {
+      e.lev = LVIDE; e.rempli = false; e.videPointe = true; e.bulle = 0;
+      message("La burette est vide. Remplis-la, et note la lecture de départ avant de reprendre.");
+    }
+  }
+  function pousserSeringue(e, dv) {
+    if (!e.seringue || e.r <= 1e-9) { message(e.seringue ? "La seringue est vide." : "Rince et remplis d'abord la seringue."); return; }
+    dv = Math.min(dv, e.r);
+    if (dv <= 0) return;
+    e.r -= dv; e.pendante += dv;
+    while (e.pendante >= e.vg) lacherGoutte(e);
+  }
+  function uneGoutte() {
+    var e = E();
+    if (exp === "ser") { pousserSeringue(e, e.vg - e.pendante + 1e-9); return; }
+    if (!e.rempli) { message("La burette est vide : remplis-la d'abord."); return; }
+    if (debit(e.angle) > 0) { message("Le robinet est déjà ouvert : ferme-le pour verser goutte par goutte."); return; }
+    var besoin = Math.min(e.vg - e.pendante, LVIDE - e.lev);
+    if (e.bulle > 0 && e.depuis + besoin >= e.bulleSeuil) sortirBulle(e);
+    e.lev += besoin; e.depuis += besoin; e.pendante += besoin + 1e-9;
+    if (e.pendante >= e.vg) lacherGoutte(e);
+  }
+
+  /* ---------- La boucle ---------- */
+  var cumul = 0;
+  function pas(dt) {
+    var e = E(), X = EXP[exp];
+    if (X.burette) pasBurette(e, dt);
+    e.flash = Math.max(0, e.flash - dt); e.bulleAnim = Math.max(0, e.bulleAnim - dt); e.secoue = Math.max(0, e.secoue - dt);
+    // les gouttes tombent
+    for (var i = e.chutes.length - 1; i >= 0; i--) {
+      var d = e.chutes[i];
+      d.y += 360 * dt;
+      if (d.y >= surfaceCible(e, d.cible)) {
+        versDans(e, d.cible, d.v); e.chutes.splice(i, 1);
+        if (d.cible === "titrage" && e.pret) {
+          e.gouttes++;
+          if (X.burette && !e.agit && !e.ditAgit && INDIC[e.indic].pki) { e.ditAgit = true; message("Sans agitation, la couleur reste là où tombe la goutte : mets l'agitateur en marche."); }
+        }
+      }
+    }
+    // le melange, plus lent pres de l'equivalence
+    if (e.pret) {
+      var ve = veVrai(e), proche = Sim.borne(1 - Math.abs(ve - e.vb) / (0.04 * ve), 0, 1);
+      var tau = (X.burette ? (e.agit && e.sous === "titrage" ? 0.35 : 40) : (e.secoue > 0 ? 0.2 : 8)) * (1 + 5 * proche);
+      e.nm *= Math.exp(-dt / tau);
+      if (e.nm < 1e-6) e.nm = 0;
+      e._c = compo(e);
+      var ind = INDIC[e.indic];
+      if (ind.pki && e.nm < 0.004) {
+        var nom = nomCouleur(ind, fBase(ind, e._c.ph));
+        if (e.nomVu && nom !== e.nomVu) message("Après agitation, la solution est " + nom + ", et la couleur tient.");
+        e.nomVu = nom;
+      }
+    } else e._c = null;
+    if (e.agit && e.sous === "titrage") e.phase += dt * 14;
+    // les instruments suivent avec un temps de reponse
+    if (X.sonde) {
+      var cible = NaN;
+      if (exp === "ph") {
+        var vrai = e.sonde === "t7" ? 7 : e.sonde === "t4" ? 4 : e._c ? e._c.ph : NaN;
+        cible = 7 + e.pm.pente * (vrai - 7) + e.pm.decal;
+      } else cible = e.cm.k * (e.sonde === "kcl" ? 1.413 : e._c ? sigma(e._c) : NaN);
+      if (!isFinite(cible)) e.aff = NaN;
+      else if (!isFinite(e.aff)) e.aff = cible;
+      else e.aff += (cible - e.aff) * (1 - Math.exp(-dt / (exp === "ph" ? (e.agit ? 1.3 : 3) : 0.9)));
+      e.stable = isFinite(cible) && Math.abs(cible - e.aff) < (exp === "ph" ? 0.02 : 0.004 * Math.max(1, cible));
+    }
+    cumul += dt;
+    if (cumul >= 0.3) { cumul = 0; lireInstruments(e); afficher(); }
+    var t = performance.now();
+    if (t - dernierDessin > 14) { dernierDessin = t; dessiner(); }
+  }
+  function lireInstruments(e) {
+    if (!EXP[exp].sonde || !isFinite(e.aff)) { e.lu = NaN; return; }
+    e.lu = exp === "ph" ? Sim.mesure(e.aff, { absolu: 0.004, resolution: 0.01 }) : Sim.mesure(e.aff, { relatif: 0.002, resolution: e.aff < 10 ? 0.001 : 0.01 });
+  }
+  function afficher() {
+    var e = E();
+    A.bidon.set(e.bidon + e.recup, 1);
+    A.gouttes.set(e.gouttes, 0);
+    A.ph.set(exp === "ph" && isFinite(e.lu) ? e.lu : "—", 2); A.ph.note(e.stable ? "stable" : isFinite(e.lu) ? "se stabilise…" : "");
+    A.cond.set(exp === "cond" && isFinite(e.lu) ? e.lu : "—", 3); A.cond.note(e.stable ? "stable" : isFinite(e.lu) ? "se stabilise…" : "");
+    var bA = document.getElementById("bAgiter");
+    if (exp === "ser") { bA.textContent = "Agiter le tube"; bA.setAttribute("aria-pressed", "false"); }
+    else { bA.textContent = e.agit ? "Agitateur en marche" : "Agitateur arrêté"; bA.setAttribute("aria-pressed", e.agit ? "true" : "false"); }
+    document.getElementById("bEchanger").textContent = e.sous === "titrage" ? "Mettre la récupération sous la burette" : "Mettre le bécher à titrer sous la burette";
+  }
+
+  /* ---------- Le doigt : cle du robinet, piston, oeil ---------- */
+  function point(ev) { var p = S.createSVGPoint(); p.x = ev.clientX; p.y = ev.clientY; return p.matrixTransform(S.getScreenCTM().inverse()); }
+  function glisser(el, debut, bouge) {
+    el.addEventListener("touchstart", function (ev) { ev.preventDefault(); }, { passive: false });
+    el.addEventListener("pointerdown", function (ev) {
+      ev.preventDefault();
+      try { el.setPointerCapture(ev.pointerId); } catch (x) { /* evenement de synthese */ }
+      var p0 = point(ev), etat0 = debut(p0);
+      function mv(e2) { bouge(point(e2), p0, etat0); }
+      function fin() { el.removeEventListener("pointermove", mv); el.removeEventListener("pointerup", fin); el.removeEventListener("pointercancel", fin); }
+      el.addEventListener("pointermove", mv); el.addEventListener("pointerup", fin); el.addEventListener("pointercancel", fin);
+    });
+  }
+  function angleRobinet(p) {
+    var dx = p.x - XB, dy = p.y - YR;
+    if (dx > 0) return dy < 0 ? 90 : 0;
+    return Sim.borne(Math.atan2(-dy, -dx) * 180 / Math.PI, 0, 90);
+  }
+  glisser(Lc.robinet, function (p) { E().vuRobinet = true; return null; }, function (p) { var e = E(); if (e.rempli || true) e.angle = angleRobinet(p); });
+  glisser(Lc.piston, function (p) { var e = E(); e.vuPiston = true; return e.r; },
+    function (p, p0, r0) { var e = E(), cible = r0 - (p.y - p0.y) / PXS; if (cible < e.r) pousserSeringue(e, e.r - cible); });
+  glisser(Lc.oeil, function (p) { E().vuOeil = true; return reg.oeil; },
+    function (p, p0, o0) { var o = Sim.borne(o0 - (p.y - p0.y) / 100, -1, 1); reg.oeil = Math.abs(o) < 0.05 ? 0 : o; });
+  function clavier(el, f) { el.addEventListener("keydown", function (ev) { var k = ev.key; if (f(k)) ev.preventDefault(); }); }
+  clavier(Lc.robinet, function (k) {
+    var e = E();
+    if (k === "ArrowUp" || k === "ArrowRight") e.angle = Math.min(90, e.angle + 3);
+    else if (k === "ArrowDown" || k === "ArrowLeft") e.angle = Math.max(0, e.angle - 3);
+    else if (k === "Home") e.angle = 0; else if (k === "End") e.angle = 90; else return false;
+    e.vuRobinet = true; return true;
+  });
+  clavier(Lc.piston, function (k) { if (k !== "ArrowDown") return false; uneGoutte(); E().vuPiston = true; return true; });
+  clavier(Lc.oeil, function (k) {
+    if (k === "ArrowUp") reg.oeil = Math.min(1, reg.oeil + 0.05); else if (k === "ArrowDown") reg.oeil = Math.max(-1, reg.oeil - 0.05); else return false;
+    if (Math.abs(reg.oeil) < 0.03) reg.oeil = 0; E().vuOeil = true; return true;
+  });
+
+  /* ---------- Les boutons ---------- */
+  function clic(id, f) { document.getElementById(id).addEventListener("click", f); }
+  clic("bRincer", function () {
+    var e = E(), v = 5 + (e.rempli ? LVIDE - e.lev : 0) + e.pendante;
+    e.pendante = 0; e.lev = LVIDE; e.rempli = false; e.bulle = 0; e.videPointe = true; e.rincee = true; e.angle = 0; e.flash = 1.2;
+    versDans(e, e.sous, v);
+    message(e.sous === "titrage" && e.pret ? "Le rinçage a coulé dans le bécher à titrer : il n'est plus bon. Clique sur « Nouveau titrage »."
+      : "Burette rincée avec 5 mL de soude, partis dans la récupération. Remplis-la maintenant.");
+  });
+  clic("bRemplir", function () {
+    var e = E();
+    if (e.rempli && e.lev < 0.3) { message("La burette est déjà pleine."); return; }
+    if (e.videPointe) { e.bulle = 0.10 + 0.12 * Math.random(); e.bulleSeuil = 0.4 + 2 * Math.random(); e.chasse = 0; e.depuis = 0; e.videPointe = false; }
+    e.cb = e.rincee ? CB : CB * 0.988;
+    e.lev = -(0.5 + 0.9 * Math.random()); e.rempli = true;
+    message(!e.rincee ? "Burette remplie sans l'avoir rincée à la soude : l'eau qui restait dedans dilue un peu la soude."
+      : e.bulle > 0 ? "Burette remplie au-dessus du zéro. Une bulle d'air reste sous le robinet : chasse-la d'un grand coup de robinet au-dessus de la récupération, puis ajuste le zéro."
+      : "Burette remplie au-dessus du zéro : ajuste le zéro goutte à goutte, au-dessus de la récupération.");
+  });
+  clic("bEchanger", function () {
+    var e = E(); e.sous = e.sous === "titrage" ? "recup" : "titrage"; e.chutes = []; dessinerFond(); afficher();
+    message(e.sous === "titrage" ? "Le bécher à titrer est sous la burette, sur l'agitateur." : "La récupération est sous la burette : ce qui coule part au bidon.");
+  });
+  clic("bSeringue", function () {
+    var e = E(), v = 0.5 + e.r + e.pendante;
+    e.bidon += v; e.pendante = 0; e.chutes = []; e.seringue = true; e.r = Math.round((5 - 0.2 * Math.random()) * 100) / 100;
+    message("Seringue rincée avec 0,5 mL de soude, jetés au bidon, puis remplie. Lis le volume de départ dans la loupe, au bord du joint noir.");
+  });
+  clic("bGoutte", uneGoutte);
+  clic("bFermer", function () { E().angle = 0; });
+  clic("bAgiter", function () {
+    var e = E();
+    if (exp === "ser") { e.secoue = 0.8; return; }
+    e.agit = !e.agit; afficher();
+    message(e.agit ? "L'agitateur tourne : chaque goutte se mélange aussitôt." : "Agitateur arrêté.");
+  });
+  clic("bEtalonner", function () {
+    var e = E();
+    if (!isFinite(e.aff)) return;
+    if (exp === "ph") {
+      if (e.sonde === "t7") { e.pm.decal -= e.aff - 7; message(e.stable ? "Étalonné sur le tampon pH 7." : "Étalonné alors que l'afficheur n'était pas stable : recommence quand il l'est."); }
+      else if (e.sonde === "t4") {
+        var ecart = 7 + e.pm.decal - e.aff;
+        if (ecart > 0.5) e.pm.pente *= 3 / ecart;
+        message(e.stable ? "Étalonné sur le tampon pH 4." : "Étalonné alors que l'afficheur n'était pas stable : recommence quand il l'est.");
+      } else message("Plonge d'abord la sonde dans un tampon : on étalonne sur une solution dont on connaît le pH.");
+    } else {
+      if (e.sonde === "kcl") { e.cm.k *= 1.413 / e.aff; message(e.stable ? "Étalonné sur la solution de KCl à 1,413 mS/cm." : "Étalonné alors que l'afficheur n'était pas stable : recommence quand il l'est."); }
+      else message("Plonge d'abord la cellule dans l'étalon de KCl.");
+    }
+  });
+  var inpLecture = document.getElementById("lecture");
+  clic("garder", function () {
+    var e = E();
+    if (!e.pret) { message("Il n'y a pas de bécher à titrer : clique sur « Nouveau titrage »."); return; }
+    var ind = INDIC[e.indic], coul = e._c ? nomCouleur(ind, fBase(ind, e._c.ph)) : "";
+    if (exp === "ind" || exp === "ser") {
+      var v = Sim.lire(inpLecture.value);
+      if (!isFinite(v)) { message("Écris d'abord ta lecture de la " + (exp === "ser" ? "seringue" : "burette") + ", faite dans la loupe."); inpLecture.focus(); return; }
+      if (exp === "ind") relInd.ajouter({ essai: e.essai, ind: ind.court, lu: v, coul: coul });
+      else relSer.ajouter({ essai: e.essai, n: e.gouttes, lu: v, coul: coul });
+      inpLecture.value = "";
+      return;
+    }
+    if (e.sonde !== "becher") { message("La sonde n'est pas dans le bécher."); return; }
+    if (!e.rempli && e.lev >= LVIDE) { message("La burette est vide : sa lecture n'a plus de sens."); return; }
+    if (e.lev < -0.02 || e.lev > 25.02) { message("Le niveau de la burette est hors de la graduation : on ne peut pas le lire."); return; }
+    lireInstruments(e);
+    var V = Sim.mesure(e.lev, { absolu: 0.01, resolution: 0.05 });
+    if (exp === "ph") {
+      var prec = relPh.lignes().slice(-1)[0];
+      relPh.ajouter({ essai: e.essai, V: V, ph: e.lu, pente: prec && prec.essai === e.essai && V > prec.V + 1e-9 ? (e.lu - prec.ph) / (V - prec.V) : NaN });
+    } else relCond.ajouter({ essai: e.essai, V: V, s: e.lu });
+    if (!e.stable) message("Mesure gardée, mais l'afficheur n'était pas stable : attends quelques secondes avant la suivante.");
+  });
+  clic("nouveau", function () {
+    var e = E();
+    if (e.pret && e.vb === 0 && e.nm === 0) { message("Le bécher est encore neuf : il n'y a rien à refaire."); return; }
+    var v = e.pret ? contenu(e) : 0;
+    e.bidon += v; e.chutes = []; preparerBecher(e);
+    message((v ? "Bécher titré jeté au bidon : + " + Sim.fr(v, 1) + " mL. " : "") + (exp === "ser" ? "Nouveau tube prêt. La seringue reste comme tu l'as laissée : lis son volume de départ."
+      : "Nouveau bécher prêt. La burette reste comme tu l'as laissée : note sa lecture de départ, ou refais le zéro."));
+  });
+  clic("vider", function () {
+    var e = E(), X = EXP[exp];
+    var v = (e.pret ? contenu(e) : 0) + e.recup + e.pendante + (X.burette ? (e.rempli ? LVIDE - e.lev : 0) : e.r);
+    if (v < 1e-6) { message("Tout est déjà vidé."); return; }
+    e.bidon += v; e.recup = 0; e.pret = false; e.pendante = 0; e.chutes = []; e.angle = 0;
+    if (X.burette) { e.rempli = false; e.lev = LVIDE; e.bulle = 0; e.videPointe = true; } else { e.r = 0; e.seringue = false; }
+    message("Tout est au bidon : + " + Sim.fr(v, 1) + " mL" + (X.burette ? ", dont la soude restée dans la burette." : ", dont la soude restée dans la seringue."));
+  });
+  document.getElementById("especes").addEventListener("change", function (ev) { document.getElementById("zoom").hidden = !ev.target.checked; });
+
+  /* ---------- Changer d'experience ---------- */
+  var cSonde = null;
+  var TEXTES = {
+    ind: { legende: "Tourne la clé du robinet du doigt : un peu, la soude tombe goutte à goutte ; beaucoup, elle coule en filet. Lis la burette dans la loupe, au bas du ménisque, l'œil au niveau du trait : vu de trop haut, un trait devient une ellipse.",
+      releve: "Écris ta lecture au départ, puis au premier virage qui tient après agitation, et garde-la. La couleur est notée pour toi.",
+      accueil: "Commence par rincer la burette à la soude, au-dessus de la récupération, puis remplis-la." },
+    ph: { legende: "40 mL d'eau ont été ajoutés au vinaigre pour que la sonde trempe : cela ne change pas le volume à l'équivalence. Étalonne le pH-mètre dans les tampons avant de mesurer.",
+      releve: "Garde une mesure tous les millilitres, puis tous les deux ou trois dixièmes près du saut. Attends que le pH-mètre soit stable. Le volume est lu pour toi, à la graduation près.",
+      accueil: "Rince et remplis la burette, puis étalonne le pH-mètre : sonde dans le tampon pH 7, puis dans le tampon pH 4." },
+    cond: { legende: "100 mL d'eau ont été ajoutés : le volume change peu pendant le titrage, les points s'alignent. Étalonne le conductimètre dans la solution de KCl.",
+      releve: "Garde une mesure tous les millilitres, bien au-delà de l'équivalence : il faut des points des deux côtés. Le volume est lu pour toi.",
+      accueil: "Rince et remplis la burette, puis étalonne le conductimètre dans la solution de KCl." },
+    ser: { legende: "Pousse le piston du doigt : une goutte tombe à peu près tous les 0,05 mL. La seringue indique le volume qui reste dedans : lis au bord du joint noir. Agite le tube après chaque goutte.",
+      releve: "Écris la lecture de la seringue au départ, puis au premier virage qui tient. Les gouttes sont comptées pour toi.",
+      accueil: "Rince et remplis la seringue, puis lis son volume de départ dans la loupe." }
+  };
+  var vus = {};
+  function changerExp(x) {
+    exp = x;
+    if (!etats[x]) etats[x] = etatNeuf(x);
+    var X = EXP[x], e = E();
+    function montrer(id, oui) { document.getElementById(id).hidden = !oui; }
+    ["bRincer", "bRemplir", "bEchanger", "bFermer"].forEach(function (id) { montrer(id, X.burette); });
+    montrer("bSeringue", !X.burette); montrer("rgSonde", !!X.sonde); montrer("rgLecture", x === "ind" || x === "ser");
+    A.ph.noeud.hidden = x !== "ph"; A.cond.noeud.hidden = x !== "cond"; A.gouttes.noeud.hidden = x !== "ser";
+    cPrelev.noeud.hidden = x === "ser";
+    Lc.robinet.style.display = X.burette ? "" : "none"; Lc.oeil.style.display = X.burette ? "" : "none"; Lc.piston.style.display = X.burette ? "none" : "";
+    var Z = document.getElementById("choixSonde"); Z.innerHTML = "";
+    if (X.sonde) cSonde = Sim.choix(Z, { label: x === "ph" ? "La sonde du pH-mètre est dans" : "La cellule du conductimètre est dans", valeur: e.sonde,
+      options: x === "ph" ? [{ val: "becher", texte: "le bécher" }, { val: "t7", texte: "le tampon pH 7" }, { val: "t4", texte: "le tampon pH 4" }]
+        : [{ val: "becher", texte: "le bécher" }, { val: "kcl", texte: "l'étalon KCl" }],
+      surChange: function (v) { E().sonde = v; } });
+    document.getElementById("legende").textContent = TEXTES[x].legende;
+    document.getElementById("consigneReleve").textContent = TEXTES[x].releve;
+    inpLecture.value = "";
+    poserDefis(); dessinerFond(); afficher(); dessiner();
+    message(vus[x] ? "L'expérience est comme tu l'as laissée." : TEXTES[x].accueil);
+    vus[x] = true;
+  }
+  var og = Sim.onglets("#experiences", function (id) { changerExp({ vueInd: "ind", vuePh: "ph", vueCond: "cond", vueSer: "ser" }[id]); });
+  var ancre = { "#B": "vueSer", "#seringue": "vueSer", "#ph": "vuePh", "#conductimetre": "vueCond", "#indicateur": "vueInd" }[location.hash];
+  if (ancre) og.montrer(ancre);
+  Sim.animer(pas);
+
+  /* Porte des essais : la page se pilote sans doigt, dans un navigateur qui ne dessine pas. */
+  window.titrage = { etat: E, exp: function () { return exp; }, reglage: reg, ve: function () { return veVrai(E()); }, compo: function () { return compo(E()); },
+    ouvrir: function (a) { E().angle = a; }, goutte: uneGoutte, pousser: function (v) { pousserSeringue(E(), v); }, dessiner: dessiner, lire: function () { lireInstruments(E()); return E().lu; } };
+})();
+</script>
+<footer class="pied">Simulation hors ligne, sans compte et sans enregistrement. Modèle simplifié : ce qu'il néglige est écrit sous la simulation, et détaillé dans la fiche professeur du TP SIM-16.</footer>
+</div>
+</body>
+</html>

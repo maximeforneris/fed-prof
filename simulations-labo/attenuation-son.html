@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Un son à travers une paroi</title>
+<meta name="description" content="Un haut-parleur enfermé dans un caisson émet un son par une ouverture, que l&#x27;on ferme avec une plaque. Mesure le niveau sonore sans plaque puis avec, change l&#x27;épaisseur, la matière ou la fréquence, et calcule ce que la plaque arrête.">
+<meta name="etiquette" content="Simulation · SIM-14">
+<style>
+/* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
+   Palette du kit web (kit.css) : papier, graphite, un seul accent. Polices du systeme : la page
+   s'ouvre sans reseau, depuis une cle ou le poste de la salle. */
+:root{
+  --fond:#e9e7e3; --carte:#fbfaf9; --carte2:#f2f0ec; --encre:#191a1c; --encre2:#5d5b57;
+  --trait:#c9c5bf; --trait2:#dedbd6; --accent:#2c6da6; --accent-doux:#dfe8f1;
+  --juste:#2f7a55; --juste-doux:#e2efe7; --faux:#ab432a; --faux-doux:#f5e3dd; --tiede:#b8801f;
+  --scene:#f6f5f2; --ombre:0 1px 2px rgba(25,26,28,.05),0 10px 26px rgba(25,26,28,.07); --r:6px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --fond:#131315; --carte:#1c1d20; --carte2:#232427; --encre:#eceae6; --encre2:#a6a49f;
+    --trait:#4a4a4d; --trait2:#333437; --accent:#63a6dd; --accent-doux:#1d2a36;
+    --juste:#5cc08d; --juste-doux:#17281f; --faux:#ef7a58; --faux-doux:#34201a; --tiede:#dfae4e;
+    --scene:#18191b; --ombre:0 1px 2px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --fond:#131315; --carte:#1c1d20; --carte2:#232427; --encre:#eceae6; --encre2:#a6a49f;
+  --trait:#4a4a4d; --trait2:#333437; --accent:#63a6dd; --accent-doux:#1d2a36;
+  --juste:#5cc08d; --juste-doux:#17281f; --faux:#ef7a58; --faux-doux:#34201a; --tiede:#dfae4e;
+  --scene:#18191b; --ombre:0 1px 2px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--fond);color:var(--encre);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Arial,sans-serif;font-size:16px;line-height:1.5}
+.page{max-width:1120px;margin:0 auto;padding:18px 16px 48px}
+.mono,.afficheur .val,.curseur .val,table.releve td{font-family:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono",monospace;font-variant-numeric:tabular-nums}
+h1,h2,h3{line-height:1.2;margin:0;text-wrap:balance}
+sub,sup{font-size:.72em;line-height:0}
+
+/* En-tete */
+.tete{padding:6px 0 16px;border-bottom:1px solid var(--trait);margin-bottom:16px}
+.surtitre{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--encre2);font-weight:600}
+.tete h1{font-size:clamp(1.45rem,4vw,2rem);margin:4px 0 6px;font-weight:750}
+.chapeau{margin:0;color:var(--encre2);max-width:70ch}
+
+/* Onglets : un par protocole ou par ecran */
+.onglets{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
+.onglets button{font:inherit;font-weight:650;font-size:.95rem;padding:9px 14px;border-radius:var(--r);
+  border:1px solid var(--trait);background:var(--carte);color:var(--encre2);cursor:pointer}
+.onglets button[aria-selected="true"]{background:var(--encre);border-color:var(--encre);color:var(--carte)}
+.onglets button:not([aria-selected="true"]):hover{border-color:var(--encre2);color:var(--encre)}
+.vue[hidden]{display:none}
+
+/* Mise en page : la scene a gauche, les commandes a droite ; une colonne sous 820 px */
+.plan{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr);gap:16px;align-items:start}
+@media (max-width:820px){.plan{grid-template-columns:1fr}}
+.carte{background:var(--carte);border:1px solid var(--trait2);border-radius:var(--r);box-shadow:var(--ombre);padding:16px;margin-bottom:16px}
+.carte > h2{font-size:1.08rem;margin-bottom:10px;font-weight:700}
+.carte > h2 .num{color:var(--accent);margin-right:.35em}
+.consigne{color:var(--encre2);margin:0 0 12px;font-size:.95rem}
+.scene{background:var(--scene);border:1px solid var(--trait2);border-radius:var(--r);overflow:hidden;position:relative}
+.scene svg,.scene canvas{display:block;width:100%;height:auto}
+.legende{font-size:.82rem;color:var(--encre2);margin-top:6px}
+
+/* Commandes */
+.commandes{display:flex;flex-direction:column;gap:14px}
+.curseur label{display:flex;justify-content:space-between;gap:8px;font-size:.9rem;font-weight:600;margin-bottom:2px}
+.curseur .val{font-weight:600;color:var(--encre)}
+.curseur input[type=range]{width:100%;accent-color:var(--accent);height:28px;margin:0}
+.curseur .bornes{display:flex;justify-content:space-between;font-size:.75rem;color:var(--encre2)}
+.choix .titre{font-size:.9rem;font-weight:600;margin-bottom:4px}
+.choix .boutons{display:flex;flex-wrap:wrap;gap:6px}
+.choix button,.bouton{font:inherit;font-size:.9rem;font-weight:600;padding:8px 12px;border-radius:var(--r);
+  border:1px solid var(--trait);background:var(--carte);color:var(--encre);cursor:pointer;min-height:40px}
+.choix button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.bouton:hover,.choix button:hover{border-color:var(--encre2)}
+.bouton.principal{background:var(--encre);border-color:var(--encre);color:var(--carte)}
+.bouton:disabled{opacity:.45;cursor:not-allowed}
+.rangee{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* Afficheurs : ce que lit un instrument */
+.afficheurs{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.afficheur{border:1px solid var(--trait);border-radius:var(--r);background:var(--carte2);padding:8px 10px}
+.afficheur .nom{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--encre2);font-weight:650}
+.afficheur .val{font-size:1.45rem;font-weight:650;white-space:nowrap}
+.afficheur .unite{font-size:.95rem;color:var(--encre2);margin-left:.25em}
+.afficheur .note{font-size:.75rem;color:var(--encre2)}
+
+/* Releve de mesures et graphe */
+.releve-zone{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:14px;align-items:start}
+@media (max-width:820px){.releve-zone{grid-template-columns:1fr}}
+table.releve{border-collapse:collapse;width:100%;font-size:.92rem}
+table.releve th,table.releve td{border:1px solid var(--trait);padding:5px 8px;text-align:center}
+table.releve th{background:var(--carte2);font-weight:650;font-size:.82rem}
+table.releve tr.vide td{color:var(--encre2);font-style:italic}
+.graphe{background:var(--carte);border:1px solid var(--trait2);border-radius:var(--r)}
+.graphe canvas{display:block;width:100%;height:auto}
+
+/* Enregistreur : une mesure toute seule, a intervalle regulier du temps simule */
+.enregistreur{border:1px solid var(--trait);border-radius:var(--r);background:var(--carte2);padding:10px 12px;display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.enr-lampe{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--trait)}
+.enr-lampe.actif{background:var(--faux)}
+.enr-lampe.eclair{animation:eclair .6s ease-out}
+@keyframes eclair{from{box-shadow:0 0 0 0 var(--faux)}to{box-shadow:0 0 0 10px transparent}}
+.enr-info{font-size:.88rem;color:var(--encre2)}
+
+/* Defi : l'eleve propose une valeur, la page dit juste ou pas encore, jamais la reponse */
+.defi{border:1px dashed var(--trait);border-radius:var(--r);padding:12px 14px;background:var(--carte2)}
+.defi p{margin:0 0 8px}
+.defi .saisie{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.defi input{font:inherit;width:9em;padding:7px 9px;border-radius:var(--r);border:1px solid var(--trait);background:var(--carte);color:var(--encre)}
+.defi .retour{margin-top:8px;font-weight:600;min-height:1.4em}
+.defi .retour.juste{color:var(--juste)}
+.defi .retour.faux{color:var(--faux)}
+.defi .methode{font-weight:400;color:var(--encre2)}
+
+/* Encadres */
+.note-modele{margin-top:6px}
+details.modele{border-top:1px solid var(--trait);padding-top:10px;margin-top:8px}
+details.modele summary{cursor:pointer;font-weight:650}
+details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-size:.92rem}
+.alerte{border-left:4px solid var(--tiede);background:var(--carte2);padding:8px 12px;border-radius:0 var(--r) var(--r) 0;font-size:.92rem}
+.pied{margin-top:24px;padding-top:10px;border-top:1px solid var(--trait);font-size:.8rem;color:var(--encre2)}
+
+@media print{
+  body{background:#fff}
+  .onglets,.commandes .bouton,.defi{display:none}
+  .carte{box-shadow:none;break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Centrale d'acquisition : periode, duree, deux courbes en direct, tableau defilant, export */
+.centrale{display:flex;flex-direction:column;gap:12px}
+.centrale-reglages{display:flex;flex-wrap:wrap;gap:12px 22px;border:1px solid var(--trait);border-radius:var(--r);background:var(--carte2);padding:10px 12px}
+.centrale-traces{display:flex;flex-wrap:wrap;gap:8px 18px}
+.centrale-traces label{display:flex;align-items:center;gap:8px;font-size:.9rem;font-weight:600}
+.centrale-traces select{font:inherit;font-size:.9rem;padding:7px 8px;border-radius:var(--r);border:1px solid var(--trait);background:var(--carte);color:var(--encre);min-height:40px;max-width:100%}
+.centrale-pastille{display:inline-block;width:14px;height:4px;border-radius:2px}
+.centrale-table{max-height:300px;overflow:auto;border:1px solid var(--trait2);border-radius:var(--r)}
+.centrale-table table.releve th{position:sticky;top:0;z-index:1}
+.centrale-table table.releve{border-collapse:separate;border-spacing:0}
+
+/* Molette posee sur la scene : on la tourne au doigt */
+.molette{cursor:grab;touch-action:none;outline:none}
+.molette.tourne{cursor:grabbing}
+.molette:focus-visible .molette-corps{stroke:var(--accent);stroke-width:3}
+.molette-corps{fill:var(--carte2);stroke:var(--encre);stroke-width:2}
+.molette.tourne .molette-corps{fill:var(--accent-doux)}
+.molette-index{stroke:var(--accent);stroke-width:3.5;stroke-linecap:round}
+.molette-graduation{stroke:var(--encre2);stroke-width:1.2}
+.molette-titre{font-size:11px;font-weight:650;fill:var(--encre)}
+.molette-val{font-size:11.5px;font-weight:650;fill:var(--accent);font-family:ui-monospace,Consolas,monospace}
+
+</style>
+<script>
+/* Simulations des TP · briques communes, inlinees dans l'en-tete de chaque page.
+   Rien ici ne touche au DOM au chargement : une simulation appelle ce dont elle a besoin.
+   Aucune requete, aucun stockage : la page fonctionne hors ligne et n'enregistre rien. */
+"use strict";
+var Sim = (function () {
+
+  /* Nombres a la francaise : virgule, espace fine insecable entre les milliers. */
+  function fr(x, dec) {
+    if (x === null || x === undefined || !isFinite(x)) return "—";
+    if (dec === undefined) dec = 2;
+    var s = Math.abs(x).toFixed(dec).split(".");
+    s[0] = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return (x < 0 && Number(x.toFixed(dec)) !== 0 ? "−" : "") + s.join(",");
+  }
+  /* Lecture d'une saisie d'eleve : virgule ou point, espaces ignores. */
+  function lire(txt) {
+    if (txt === null || txt === undefined) return NaN;
+    var t = String(txt).replace(/\s| | /g, "").replace(",", ".").replace("−", "-");
+    return t === "" ? NaN : Number(t);
+  }
+  function el(tag, attrs, enfants) {
+    var n = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      if (k === "texte") n.textContent = attrs[k];
+      else if (k === "html") n.innerHTML = attrs[k];
+      else if (k === "classe") n.className = attrs[k];
+      else n.setAttribute(k, attrs[k]);
+    }
+    (enfants || []).forEach(function (e) { if (e) n.appendChild(e); });
+    return n;
+  }
+  function $(sel) { return typeof sel === "string" ? document.querySelector(sel) : sel; }
+  function borne(x, a, b) { return Math.max(a, Math.min(b, x)); }
+
+  /* Un instrument ne donne jamais la valeur exacte : bruit gaussien relatif, puis resolution. */
+  function gauss() { var u = 1 - Math.random(), v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+  function mesure(vraie, opts) {
+    opts = opts || {};
+    var x = vraie * (1 + (opts.relatif || 0) * gauss()) + (opts.absolu || 0) * gauss();
+    if (opts.resolution) x = Math.round(x / opts.resolution) * opts.resolution;
+    return x;
+  }
+
+  /* Onglets : boutons [data-vue="id"] qui montrent la section #id. */
+  function onglets(nav, surChange) {
+    nav = $(nav);
+    var boutons = Array.prototype.slice.call(nav.querySelectorAll("button[data-vue]"));
+    nav.setAttribute("role", "tablist");
+    function montrer(id) {
+      boutons.forEach(function (b) {
+        var actif = b.getAttribute("data-vue") === id;
+        b.setAttribute("aria-selected", actif ? "true" : "false");
+        b.setAttribute("role", "tab");
+        var v = document.getElementById(b.getAttribute("data-vue"));
+        if (v) v.hidden = !actif;
+      });
+      if (surChange) surChange(id);
+    }
+    boutons.forEach(function (b) { b.addEventListener("click", function () { montrer(b.getAttribute("data-vue")); }); });
+    montrer(boutons[0].getAttribute("data-vue"));
+    return { montrer: montrer };
+  }
+
+  /* Curseur avec son etiquette, sa valeur affichee et ses bornes. */
+  function curseur(parent, o) {
+    var dec = o.dec === undefined ? 0 : o.dec;
+    var id = o.id || ("c" + Math.random().toString(36).slice(2, 8));
+    var val = el("span", { classe: "val" });
+    var inp = el("input", { type: "range", id: id, min: o.min, max: o.max, step: o.pas || 1, value: o.valeur });
+    var bloc = el("div", { classe: "curseur" }, [
+      el("label", { "for": id }, [el("span", { texte: o.label }), val]), inp,
+      el("div", { classe: "bornes" }, [el("span", { texte: fr(o.min, dec) + " " + (o.unite || "") }), el("span", { texte: fr(o.max, dec) + " " + (o.unite || "") })])
+    ]);
+    function maj() { val.textContent = fr(Number(inp.value), dec) + (o.unite ? " " + o.unite : ""); }
+    inp.addEventListener("input", function () { maj(); if (o.surChange) o.surChange(Number(inp.value)); });
+    maj();
+    $(parent).appendChild(bloc);
+    return {
+      get: function () { return Number(inp.value); },
+      set: function (v, silencieux) { inp.value = v; maj(); if (!silencieux && o.surChange) o.surChange(Number(inp.value)); },
+      activer: function (oui) { inp.disabled = !oui; },
+      noeud: bloc
+    };
+  }
+
+  /* Groupe de boutons dont un seul est enfonce. options : [{val, texte}] */
+  function choix(parent, o) {
+    var courant = o.valeur;
+    var zone = el("div", { classe: "boutons", role: "group", "aria-label": o.label || "" });
+    var boutons = o.options.map(function (op) {
+      var b = el("button", { type: "button", texte: op.texte });
+      b.addEventListener("click", function () { poser(op.val); });
+      zone.appendChild(b);
+      return { b: b, val: op.val };
+    });
+    function poser(v, silencieux) {
+      courant = v;
+      boutons.forEach(function (x) { x.b.setAttribute("aria-pressed", x.val === v ? "true" : "false"); });
+      if (!silencieux && o.surChange) o.surChange(v);
+    }
+    var bloc = el("div", { classe: "choix" }, [o.label ? el("div", { classe: "titre", texte: o.label }) : null, zone]);
+    $(parent).appendChild(bloc);
+    poser(courant, true);
+    return { get: function () { return courant; }, set: poser, noeud: bloc };
+  }
+
+  /* Afficheur d'instrument : nom, valeur, unite, et une note facultative. */
+  function afficheur(parent, o) {
+    var v = el("span", { classe: "val", texte: "—" });
+    var n = el("div", { classe: "note", texte: o.note || "" });
+    var bloc = el("div", { classe: "afficheur" }, [el("div", { classe: "nom", texte: o.nom }), el("div", null, [v, el("span", { classe: "unite", texte: o.unite || "" })]), o.note !== undefined ? n : null]);
+    $(parent).appendChild(bloc);
+    return {
+      set: function (x, dec) { v.textContent = typeof x === "string" ? x : fr(x, dec === undefined ? (o.dec === undefined ? 2 : o.dec) : dec); },
+      note: function (t) { n.textContent = t; },
+      noeud: bloc
+    };
+  }
+
+  /* Graphe sur canvas, net sur les ecrans haute densite. Axes, grille, courbes, points. */
+  function graphe(parent, o) {
+    var larg = o.largeur || 640, haut = o.hauteur || 380;
+    var cv = el("canvas", { width: larg, height: haut, role: "img", "aria-label": o.titre || "graphe" });
+    var cadre = el("div", { classe: "graphe" }, [cv]);
+    $(parent).appendChild(cadre);
+    var ctx = cv.getContext("2d");
+    var dpr = Math.max(1, window.devicePixelRatio || 1);
+    cv.width = larg * dpr; cv.height = haut * dpr; ctx.scale(dpr, dpr);
+    var m = { g: 62, d: 16, h: 16, b: 48 };
+    var ax = { xmin: o.xmin, xmax: o.xmax, ymin: o.ymin, ymax: o.ymax };
+    function css(nom) { return getComputedStyle(document.documentElement).getPropertyValue(nom).trim() || "#333"; }
+    function X(x) { return m.g + (x - ax.xmin) / (ax.xmax - ax.xmin) * (larg - m.g - m.d); }
+    function Y(y) { return haut - m.b - (y - ax.ymin) / (ax.ymax - ax.ymin) * (haut - m.h - m.b); }
+    function pasJoli(etendue, n) {
+      var brut = etendue / n, p = Math.pow(10, Math.floor(Math.log10(brut))), r = brut / p;
+      return (r < 1.5 ? 1 : r < 3 ? 2 : r < 7 ? 5 : 10) * p;
+    }
+    function decimales(pas) { return Math.max(0, -Math.floor(Math.log10(pas) + 1e-9)); }
+    function fond() {
+      ctx.clearRect(0, 0, larg, haut);
+      ctx.fillStyle = css("--carte"); ctx.fillRect(0, 0, larg, haut);
+      ctx.font = "12px system-ui, Segoe UI, Arial, sans-serif";
+      var px = o.pasX || pasJoli(ax.xmax - ax.xmin, 8), py = o.pasY || pasJoli(ax.ymax - ax.ymin, 6);
+      ctx.strokeStyle = css("--trait2"); ctx.lineWidth = 1; ctx.fillStyle = css("--encre2");
+      ctx.textAlign = "center"; ctx.textBaseline = "top";
+      for (var x = Math.ceil(ax.xmin / px) * px; x <= ax.xmax + 1e-9; x += px) {
+        ctx.beginPath(); ctx.moveTo(X(x), Y(ax.ymin)); ctx.lineTo(X(x), Y(ax.ymax)); ctx.stroke();
+        ctx.fillText(fr(x, o.decX !== undefined ? o.decX : decimales(px)), X(x), Y(ax.ymin) + 5);
+      }
+      ctx.textAlign = "right"; ctx.textBaseline = "middle";
+      for (var y = Math.ceil(ax.ymin / py) * py; y <= ax.ymax + 1e-9; y += py) {
+        ctx.beginPath(); ctx.moveTo(X(ax.xmin), Y(y)); ctx.lineTo(X(ax.xmax), Y(y)); ctx.stroke();
+        ctx.fillText(fr(y, o.decY !== undefined ? o.decY : decimales(py)), X(ax.xmin) - 6, Y(y));
+      }
+      ctx.strokeStyle = css("--encre"); ctx.lineWidth = 1.4;
+      var y0 = borne(0, ax.ymin, ax.ymax), x0 = borne(0, ax.xmin, ax.xmax);
+      ctx.beginPath(); ctx.moveTo(X(ax.xmin), Y(y0)); ctx.lineTo(X(ax.xmax), Y(y0)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(X(x0), Y(ax.ymin)); ctx.lineTo(X(x0), Y(ax.ymax)); ctx.stroke();
+      ctx.fillStyle = css("--encre"); ctx.font = "600 13px system-ui, Segoe UI, Arial, sans-serif";
+      ctx.textAlign = "right"; ctx.textBaseline = "bottom";
+      ctx.fillText(o.titreX || "", larg - m.d, haut - 4);
+      ctx.save(); ctx.translate(14, m.h); ctx.rotate(-Math.PI / 2); ctx.textAlign = "right"; ctx.textBaseline = "top";
+      ctx.fillText(o.titreY || "", 0, 0); ctx.restore();
+    }
+    function couleur(c) { return c && c.indexOf("--") === 0 ? css(c) : (c || css("--accent")); }
+    var api = {
+      axes: function (n) { for (var k in n) ax[k] = n[k]; return api; },
+      effacer: function () { fond(); return api; },
+      /* f : fonction x -> y, ou tableau de [x, y] */
+      courbe: function (f, opts) {
+        opts = opts || {};
+        ctx.save(); ctx.beginPath();
+        ctx.rect(m.g, m.h, larg - m.g - m.d, haut - m.h - m.b); ctx.clip();
+        ctx.strokeStyle = couleur(opts.couleur); ctx.lineWidth = opts.epaisseur || 2.2;
+        if (opts.pointille) ctx.setLineDash([6, 5]);
+        ctx.beginPath();
+        if (typeof f === "function") {
+          var n = opts.pas || 400, prem = true;
+          for (var i = 0; i <= n; i++) {
+            var x = ax.xmin + (ax.xmax - ax.xmin) * i / n, y = f(x);
+            if (!isFinite(y)) { prem = true; continue; }
+            if (prem) { ctx.moveTo(X(x), Y(y)); prem = false; } else ctx.lineTo(X(x), Y(y));
+          }
+        } else {
+          f.forEach(function (p, i) { if (i === 0) ctx.moveTo(X(p[0]), Y(p[1])); else ctx.lineTo(X(p[0]), Y(p[1])); });
+        }
+        ctx.stroke(); ctx.restore();
+        return api;
+      },
+      points: function (pts, opts) {
+        opts = opts || {};
+        ctx.fillStyle = couleur(opts.couleur); ctx.strokeStyle = css("--carte");
+        pts.forEach(function (p) {
+          var r = opts.rayon || 4.5;
+          ctx.beginPath();
+          if (opts.forme === "croix") {
+            ctx.strokeStyle = couleur(opts.couleur); ctx.lineWidth = 2;
+            ctx.moveTo(X(p[0]) - r, Y(p[1]) - r); ctx.lineTo(X(p[0]) + r, Y(p[1]) + r);
+            ctx.moveTo(X(p[0]) + r, Y(p[1]) - r); ctx.lineTo(X(p[0]) - r, Y(p[1]) + r); ctx.stroke();
+          } else { ctx.arc(X(p[0]), Y(p[1]), r, 0, 2 * Math.PI); ctx.fill(); ctx.lineWidth = 1; ctx.stroke(); }
+        });
+        return api;
+      },
+      texte: function (x, y, t, opts) {
+        opts = opts || {};
+        ctx.fillStyle = couleur(opts.couleur); ctx.font = (opts.gras ? "600 " : "") + "13px system-ui, Segoe UI, Arial, sans-serif";
+        ctx.textAlign = opts.align || "left"; ctx.textBaseline = "middle";
+        ctx.fillText(t, X(x) + (opts.dx || 0), Y(y) + (opts.dy || 0));
+        return api;
+      },
+      X: X, Y: Y, ctx: ctx, canvas: cv
+    };
+    fond();
+    return api;
+  }
+
+  /* Releve : l'eleve garde une mesure dans un tableau, qui peut alimenter un graphe.
+     colonnes : [{cle, titre, unite, dec}] ; graphe : {x, y, ...options de Sim.graphe} */
+  function releve(parent, o) {
+    var lignes = [];
+    var zone = el("div", { classe: "releve-zone" });
+    var gauche = el("div");
+    var table = el("table", { classe: "releve" });
+    var tete = el("tr"); o.colonnes.forEach(function (c) { tete.appendChild(el("th", { texte: c.titre + (c.unite ? " (" + c.unite + ")" : "") })); });
+    table.appendChild(el("thead", null, [tete]));
+    var corps = el("tbody"); table.appendChild(corps);
+    var boutons = el("div", { classe: "rangee", style: "margin-top:8px" });
+    var bAnnuler = el("button", { type: "button", classe: "bouton", texte: "Retirer la dernière" });
+    var bVider = el("button", { type: "button", classe: "bouton", texte: "Tout effacer" });
+    boutons.appendChild(bAnnuler); boutons.appendChild(bVider);
+    gauche.appendChild(table); gauche.appendChild(boutons);
+    zone.appendChild(gauche);
+    var gr = null;
+    if (o.graphe) { var droite = el("div"); zone.appendChild(droite); gr = graphe(droite, o.graphe); }
+    $(parent).appendChild(zone);
+    function dessiner() {
+      corps.innerHTML = "";
+      if (!lignes.length) {
+        var tr = el("tr", { classe: "vide" }); tr.appendChild(el("td", { colspan: o.colonnes.length, texte: o.vide || "Aucune mesure gardée pour l'instant." })); corps.appendChild(tr);
+      }
+      lignes.forEach(function (l) {
+        var tr = el("tr");
+        o.colonnes.forEach(function (c) { tr.appendChild(el("td", { texte: typeof l[c.cle] === "number" ? fr(l[c.cle], c.dec === undefined ? 2 : c.dec) : (l[c.cle] || "") })); });
+        corps.appendChild(tr);
+      });
+      if (gr) {
+        gr.effacer();
+        if (o.avantPoints) o.avantPoints(gr, lignes);
+        gr.points(lignes.map(function (l) { return [l[o.graphe.x], l[o.graphe.y]]; }), { couleur: o.graphe.couleur });
+      }
+      if (o.surChange) o.surChange(lignes);
+    }
+    bAnnuler.addEventListener("click", function () { lignes.pop(); dessiner(); });
+    bVider.addEventListener("click", function () { lignes = []; dessiner(); });
+    dessiner();
+    return {
+      ajouter: function (l) { if (o.max && lignes.length >= o.max) lignes.shift(); lignes.push(l); dessiner(); },
+      lignes: function () { return lignes.slice(); },
+      vider: function () { lignes = []; dessiner(); },
+      redessiner: dessiner,
+      graphe: gr
+    };
+  }
+
+  /* Enregistreur : garde une ligne du releve tout seul, a intervalle regulier du temps SIMULE,
+     comme une centrale d'acquisition. La simulation appelle tic(t) a chaque pas de calcul.
+     o : { periodes: [{val, texte}], valeur, lire: function (tPlanifie, tLancement) -> ligne ou null, label } */
+  function enregistreur(parent, rel, o) {
+    var periode = o.valeur, actif = false, prochain = null, dernier = 0, debut = 0;
+    var zone = el("div", { classe: "enregistreur" });
+    choix(zone, { label: o.label || "Enregistrement automatique : une mesure toutes les", valeur: periode, options: o.periodes,
+      surChange: function (v) { periode = v; if (actif && prochain !== null) prochain = dernier + v; } });
+    var b = el("button", { type: "button", classe: "bouton principal", texte: "Lancer l'enregistrement" });
+    var lampe = el("span", { classe: "enr-lampe", "aria-hidden": "true" });
+    var info = el("span", { classe: "enr-info", "aria-live": "polite" });
+    zone.appendChild(el("div", { classe: "rangee" }, [b, lampe, info]));
+    $(parent).appendChild(zone);
+    function majInfo() {
+      var n = rel.lignes().length;
+      info.textContent = (actif ? "enregistre" : "à l'arrêt") + (n ? " · " + n + " mesure" + (n > 1 ? "s" : "") + " dans le tableau" : "");
+    }
+    function poser(oui) {
+      actif = oui; prochain = null;
+      b.textContent = oui ? "Arrêter l'enregistrement" : "Lancer l'enregistrement";
+      lampe.className = "enr-lampe" + (oui ? " actif" : "");
+      majInfo();
+      if (o.surEtat) o.surEtat(oui);
+    }
+    b.addEventListener("click", function () { poser(!actif); });
+    majInfo();
+    return {
+      tic: function (t) {
+        if (!actif) return;
+        if (prochain === null) { prochain = t; debut = t; }
+        if (t + 1e-9 < prochain) return;
+        var l = o.lire(prochain, debut);
+        dernier = prochain; prochain += periode;
+        if (prochain <= t) prochain = t + periode;      // un pas trop long : pas de rattrapage en rafale
+        if (l) {
+          rel.ajouter(l); majInfo();
+          lampe.classList.remove("eclair"); void lampe.offsetWidth; lampe.classList.add("eclair");
+        }
+      },
+      actif: function () { return actif; },
+      lancer: function () { if (!actif) poser(true); },
+      arreter: function () { if (actif) poser(false); },
+      majInfo: majInfo,
+      noeud: zone
+    };
+  }
+
+  /* Centrale d'acquisition : l'enregistreur, le tableau et la courbe reunis, comme sur un vrai
+     enregistreur de donnees. On choisit la periode, la duree, les voies du tableau, et deux voies
+     tracees en direct sur deux axes ; le tableau se copie vers un tableur ou s'enregistre en CSV.
+     Toutes les voies sont toujours enregistrees : masquer une colonne ne perd rien.
+     o : { temps: {cle, titre, unite, dec, echelle (s par unite)}, voies: [{cle, titre, unite, dec, cache}],
+           lire: function (tPlanifie, tDebut) -> ligne, periodes, valeur, durees, duree, trace: [cle1, cle2],
+           nomFichier, surChange } */
+  var COULEURS_VOIES = ["--accent", "--faux"];
+  function centrale(parent, o) {
+    var lignes = [], actif = false, prochain = null, debut = null, depart = 0, dernier = 0, tCourant = 0;
+    var periode = o.valeur, duree = o.duree || 0, TP = o.temps, voies = o.voies;
+    var montree = {}; voies.forEach(function (v) { montree[v.cle] = !v.cache; });
+    var trace = (o.trace || [voies[0].cle]).concat([null]).slice(0, 2);
+    var zone = el("div", { classe: "centrale" });
+    function css(nom) { return getComputedStyle(document.documentElement).getPropertyValue(nom).trim() || "#333"; }
+
+    /* Les reglages de l'acquisition */
+    var reg = el("div", { classe: "centrale-reglages" });
+    choix(reg, { label: "Une mesure toutes les", valeur: periode, options: o.periodes,
+      surChange: function (v) { periode = v; if (actif && prochain !== null) prochain = dernier + v; majInfo(); } });
+    if (o.durees) choix(reg, { label: "Arrêt automatique au bout de", valeur: duree, options: o.durees, surChange: function (v) { duree = v; majInfo(); } });
+    zone.appendChild(reg);
+    var bLancer = el("button", { type: "button", classe: "bouton principal", texte: "Lancer l'acquisition" });
+    var bMain = el("button", { type: "button", classe: "bouton", texte: "Une mesure maintenant" });
+    var lampe = el("span", { classe: "enr-lampe", "aria-hidden": "true" });
+    lampe.addEventListener("animationend", function () { lampe.classList.remove("eclair"); });
+    var info = el("span", { classe: "enr-info", "aria-live": "polite" });
+    zone.appendChild(el("div", { classe: "rangee" }, [bLancer, bMain, lampe, info]));
+
+    /* La courbe en direct : deux voies au choix, chacune sur son axe */
+    var selects = [0, 1].map(function (i) {
+      var s = el("select", { "aria-label": i ? "Courbe 2, axe de droite" : "Courbe 1, axe de gauche" });
+      if (i) s.appendChild(el("option", { value: "", texte: "aucune" }));
+      voies.forEach(function (v) { s.appendChild(el("option", { value: v.cle, texte: v.titre + (v.unite ? " (" + v.unite + ")" : "") })); });
+      s.value = trace[i] || "";
+      s.addEventListener("change", function () { trace[i] = s.value || null; dessinerCourbe(); });
+      return s;
+    });
+    var pastille = function (i) { return el("span", { classe: "centrale-pastille", style: "background:" + css(COULEURS_VOIES[i]) }); };
+    var pastilles = [pastille(0), pastille(1)];
+    zone.appendChild(el("div", { classe: "centrale-traces" }, [
+      el("label", null, [pastilles[0], el("span", { texte: "Courbe 1, à gauche" }), selects[0]]),
+      el("label", null, [pastilles[1], el("span", { texte: "Courbe 2, à droite" }), selects[1]])
+    ]));
+    var larg = 640, haut = 300, cv = el("canvas", { width: larg, height: haut, role: "img", "aria-label": "courbe de l'acquisition" });
+    zone.appendChild(el("div", { classe: "graphe" }, [cv]));
+    var ctx = cv.getContext("2d"), dpr = Math.max(1, window.devicePixelRatio || 1);
+    cv.width = larg * dpr; cv.height = haut * dpr; ctx.scale(dpr, dpr);
+
+    /* Les voies du tableau */
+    var puces = el("div", { classe: "boutons" });
+    voies.forEach(function (v) {
+      var b = el("button", { type: "button", texte: v.titre, "aria-pressed": montree[v.cle] ? "true" : "false" });
+      b.addEventListener("click", function () { montree[v.cle] = !montree[v.cle]; b.setAttribute("aria-pressed", montree[v.cle] ? "true" : "false"); dessinerTable(); });
+      puces.appendChild(b);
+    });
+    zone.appendChild(el("div", { classe: "choix" }, [el("div", { classe: "titre", texte: "Colonnes du tableau (tout est enregistré)" }), puces]));
+    var table = el("table", { classe: "releve" }), boite = el("div", { classe: "centrale-table" }, [table]);
+    zone.appendChild(boite);
+    var bCopier = el("button", { type: "button", classe: "bouton", texte: "Copier pour un tableur" });
+    var bCsv = el("button", { type: "button", classe: "bouton", texte: "Enregistrer en CSV" });
+    var bRetirer = el("button", { type: "button", classe: "bouton", texte: "Retirer la dernière" });
+    var bVider = el("button", { type: "button", classe: "bouton", texte: "Tout effacer" });
+    var retour = el("span", { classe: "enr-info", "aria-live": "polite" });
+    zone.appendChild(el("div", { classe: "rangee" }, [bCopier, bCsv, bRetirer, bVider, retour]));
+    $(parent).appendChild(zone);
+
+    function colonnes() { return [TP].concat(voies.filter(function (v) { return montree[v.cle]; })); }
+    var corps = null;
+    function ligneTable(l, cs) { var r = el("tr"); cs.forEach(function (c) { r.appendChild(el("td", { texte: texteVal(l, c) })); }); return r; }
+    function texteVal(l, c) { var x = l[c.cle]; return typeof x === "number" ? fr(x, c.dec === undefined ? 2 : c.dec) : (x === undefined || x === null ? "" : String(x)); }
+    function dessinerTable() {
+      var cs = colonnes(); table.innerHTML = "";
+      var tr = el("tr"); cs.forEach(function (c) { tr.appendChild(el("th", { texte: c.titre + (c.unite ? " (" + c.unite + ")" : "") })); });
+      table.appendChild(el("thead", null, [tr]));
+      corps = el("tbody");
+      if (!lignes.length) corps.appendChild(el("tr", { classe: "vide" }, [el("td", { colspan: cs.length, texte: "Aucune mesure pour l'instant : lance l'acquisition." })]));
+      lignes.forEach(function (l) { corps.appendChild(ligneTable(l, cs)); });
+      table.appendChild(corps);
+      boite.scrollTop = boite.scrollHeight;
+    }
+    function pasJoli(etendue, n) {
+      if (!(etendue > 0)) return 1;
+      var brut = etendue / n, p = Math.pow(10, Math.floor(Math.log10(brut))), r = brut / p;
+      return (r < 1.5 ? 1 : r < 3 ? 2 : r < 7 ? 5 : 10) * p;
+    }
+    function bornes(cle) {
+      var a = Infinity, b = -Infinity;
+      lignes.forEach(function (l) { var y = l[cle]; if (typeof y === "number" && isFinite(y)) { a = Math.min(a, y); b = Math.max(b, y); } });
+      if (!isFinite(a)) return null;
+      if (b - a < 1e-9) { var d = Math.max(Math.abs(a) * 0.05, 0.5); a -= d; b += d; }
+      var pas = pasJoli(b - a, 5); return { min: Math.floor(a / pas) * pas, max: Math.ceil(b / pas) * pas, pas: pas };
+    }
+    function decimales(pas) { return Math.max(0, -Math.floor(Math.log10(pas) + 1e-9)); }
+    function dessinerCourbe() {
+      var mg = 58, md = trace[1] ? 58 : 16, mh = 26, mb = 40, w = larg - mg - md, h = haut - mh - mb;
+      ctx.clearRect(0, 0, larg, haut); ctx.fillStyle = css("--carte"); ctx.fillRect(0, 0, larg, haut);
+      ctx.font = "12px system-ui, Segoe UI, Arial, sans-serif";
+      var xs = lignes.map(function (l) { return l[TP.cle]; }).filter(function (x) { return typeof x === "number"; });
+      var x0 = xs.length ? Math.min.apply(null, xs) : 0, x1 = xs.length ? Math.max.apply(null, xs) : 1;
+      if (x1 - x0 < 1e-9) x1 = x0 + 1;
+      var px = pasJoli(x1 - x0, 8); x0 = Math.floor(x0 / px) * px; x1 = Math.ceil(x1 / px) * px;
+      var X = function (x) { return mg + (x - x0) / (x1 - x0) * w; };
+      ctx.strokeStyle = css("--trait2"); ctx.lineWidth = 1; ctx.fillStyle = css("--encre2"); ctx.textAlign = "center"; ctx.textBaseline = "top";
+      for (var x = x0; x <= x1 + 1e-9; x += px) { ctx.beginPath(); ctx.moveTo(X(x), mh); ctx.lineTo(X(x), mh + h); ctx.stroke(); ctx.fillText(fr(x, decimales(px)), X(x), mh + h + 5); }
+      ctx.fillStyle = css("--encre"); ctx.font = "600 12px system-ui, Segoe UI, Arial, sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "bottom";
+      ctx.fillText(TP.titre + (TP.unite ? " (" + TP.unite + ")" : ""), larg - md, haut - 3);
+      trace.forEach(function (cle, i) {
+        if (!cle) return;
+        var v = voies.filter(function (q) { return q.cle === cle; })[0], b = bornes(cle), coul = css(COULEURS_VOIES[i]);
+        ctx.font = "600 12px system-ui, Segoe UI, Arial, sans-serif"; ctx.fillStyle = coul; ctx.textBaseline = "top";
+        ctx.textAlign = i ? "right" : "left"; ctx.fillText(v.titre + (v.unite ? " (" + v.unite + ")" : ""), i ? larg - 6 : 6, 5);
+        if (!b) return;
+        var Y = function (y) { return mh + h - (y - b.min) / (b.max - b.min) * h; };
+        ctx.font = "12px system-ui, Segoe UI, Arial, sans-serif"; ctx.textBaseline = "middle"; ctx.textAlign = i ? "left" : "right";
+        for (var y = b.min; y <= b.max + 1e-9; y += b.pas) {
+          if (!i) { ctx.strokeStyle = css("--trait2"); ctx.beginPath(); ctx.moveTo(mg, Y(y)); ctx.lineTo(mg + w, Y(y)); ctx.stroke(); }
+          ctx.fillText(fr(y, decimales(b.pas)), i ? mg + w + 6 : mg - 6, Y(y));
+        }
+        ctx.strokeStyle = coul; ctx.lineWidth = 2; ctx.beginPath();
+        var prem = true;
+        lignes.forEach(function (l) { var yy = l[cle], xx = l[TP.cle]; if (typeof yy !== "number" || !isFinite(yy)) { prem = true; return; }
+          if (prem) { ctx.moveTo(X(xx), Y(yy)); prem = false; } else ctx.lineTo(X(xx), Y(yy)); });
+        ctx.stroke();
+        ctx.fillStyle = coul;
+        if (lignes.length <= 80) lignes.forEach(function (l) { var yy = l[cle]; if (typeof yy === "number" && isFinite(yy)) { ctx.beginPath(); ctx.arc(X(l[TP.cle]), Y(yy), 3, 0, 2 * Math.PI); ctx.fill(); } });
+      });
+      ctx.strokeStyle = css("--encre"); ctx.lineWidth = 1.2; ctx.strokeRect(mg, mh, w, h);
+      pastilles[1].style.visibility = trace[1] ? "visible" : "hidden";
+    }
+    function dessiner() { dessinerTable(); dessinerCourbe(); majInfo(); if (o.surChange) o.surChange(lignes); }
+    /* A chaque mesure, une ligne de plus au tableau et une courbe redessinee au plus quatre fois par seconde :
+       a grande vitesse, refaire tout le tableau a chaque point finit par figer la page. */
+    var dernierTrace = 0, traceEnAttente = null;
+    var suivre = true;      // le tableau defile avec les mesures, sauf si on est remonte le lire
+    boite.addEventListener("scroll", function () { suivre = boite.scrollTop + boite.clientHeight >= boite.scrollHeight - 8; });
+    function tracer() { dernierTrace = Date.now(); dessinerCourbe(); if (suivre) boite.scrollTop = boite.scrollHeight; }
+    function courbePlusTard() {
+      if (Date.now() - dernierTrace > 250) { tracer(); return; }
+      if (!traceEnAttente) traceEnAttente = setTimeout(function () { traceEnAttente = null; tracer(); }, 260);
+    }
+    function ecoule() { return Math.max(0, dernier - depart); }
+    function texteDuree(s) { return s >= 3600 ? fr(s / 3600, s % 3600 ? 1 : 0) + " h" : s >= 60 ? fr(s / 60, s % 60 ? 1 : 0) + " min" : fr(s, 0) + " s"; }
+    function majInfo() {
+      var n = lignes.length;
+      info.textContent = (actif ? "acquisition en cours" : "à l'arrêt") + (n ? " · " + n + " mesure" + (n > 1 ? "s" : "") : "") +
+        (actif && duree ? " · " + texteDuree(ecoule()) + " sur " + texteDuree(duree) : "");
+    }
+    function poser(oui) {
+      actif = oui; prochain = null;
+      bLancer.textContent = oui ? "Arrêter l'acquisition" : "Lancer l'acquisition";
+      lampe.className = "enr-lampe" + (oui ? " actif" : "");
+      majInfo(); if (o.surEtat) o.surEtat(oui);
+    }
+    function ajouter(l) {
+      if (!l) return;
+      if (l[TP.cle] === undefined) l[TP.cle] = (tCourant - (debut === null ? 0 : debut)) / (TP.echelle || 1);
+      lignes.push(l);
+      if (o.max && lignes.length > o.max) { lignes.shift(); dessinerTable(); }
+      else if (corps) {
+        if (lignes.length === 1) dessinerTable();
+        else corps.appendChild(ligneTable(l, colonnes()));
+      }
+      courbePlusTard(); majInfo(); if (o.surChange) o.surChange(lignes);
+      lampe.classList.remove("eclair"); lampe.classList.add("eclair");
+    }
+    function versTexte(sep, decimale) {
+      var cs = colonnes(), lignesTxt = [cs.map(function (c) { return c.titre + (c.unite ? " (" + c.unite + ")" : ""); }).join(sep)];
+      lignes.forEach(function (l) { lignesTxt.push(cs.map(function (c) { var x = l[c.cle]; return typeof x === "number" ? x.toFixed(c.dec === undefined ? 2 : c.dec).replace(".", decimale) : (x || ""); }).join(sep)); });
+      return lignesTxt.join("\r\n");
+    }
+    function dire(t) { retour.textContent = t; setTimeout(function () { if (retour.textContent === t) retour.textContent = ""; }, 4000); }
+    /* Relancer apres un arret continue la meme serie, sur le meme temps ; tout effacer la remet a zero. */
+    function lancer() { if (!lignes.length) debut = null; poser(true); }
+    bLancer.addEventListener("click", function () { if (actif) poser(false); else lancer(); });
+    bMain.addEventListener("click", function () { if (debut === null) debut = tCourant; ajouter(o.lire(tCourant, debut)); });
+    bRetirer.addEventListener("click", function () { lignes.pop(); if (!lignes.length && !actif) debut = null; dessiner(); });
+    bVider.addEventListener("click", function () { lignes = []; if (!actif) debut = null; dessiner(); });
+    bCopier.addEventListener("click", function () {
+      var t = versTexte("\t", ",");
+      function secours() {
+        var ta = el("textarea", { style: "position:fixed;left:-9999px;top:0" }); ta.value = t; document.body.appendChild(ta); ta.select();
+        var ok = false; try { ok = document.execCommand("copy"); } catch (x) { ok = false; }
+        document.body.removeChild(ta); dire(ok ? "Copié : colle-le dans le tableur." : "La copie est refusée par ce navigateur : enregistre en CSV.");
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function () { dire("Copié : colle-le dans le tableur."); }, secours);
+      else secours();
+    });
+    bCsv.addEventListener("click", function () {
+      var blob = new Blob(["﻿" + versTexte(";", ",")], { type: "text/csv;charset=utf-8" });
+      var a = el("a", { href: URL.createObjectURL(blob), download: o.nomFichier || "acquisition.csv" });
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+      dire("Fichier CSV enregistré, séparateur point-virgule.");
+    });
+    dessiner();
+    return {
+      tic: function (t) {
+        tCourant = t;
+        if (!actif) return;
+        if (prochain === null) { prochain = t; if (debut === null) debut = t; depart = t; }
+        if (t + 1e-9 < prochain) return;
+        var l = o.lire(prochain, debut);
+        dernier = prochain; prochain += periode;
+        if (prochain <= t) prochain = t + periode;
+        if (l) { if (l[TP.cle] === undefined) l[TP.cle] = (dernier - debut) / (TP.echelle || 1); ajouter(l); }
+        if (duree && dernier - depart >= duree - 1e-9) poser(false);
+        else majInfo();
+      },
+      ajouter: ajouter, lignes: function () { return lignes.slice(); }, vider: function () { lignes = []; if (!actif) debut = null; dessiner(); },
+      lancer: function () { if (!actif) lancer(); }, arreter: function () { if (actif) poser(false); },
+      actif: function () { return actif; }, majInfo: majInfo, redessiner: dessiner,
+      tracer: function (c1, c2) { trace = [c1 || trace[0], c2 === undefined ? trace[1] : c2]; selects[0].value = trace[0]; selects[1].value = trace[1] || ""; dessinerCourbe(); },
+      periode: function () { return periode; }, noeud: zone
+    };
+  }
+
+  /* Molette posee sur la scene SVG : on la tourne au doigt (glisser vers le haut ou la droite
+     pour monter), a la molette de la souris ou aux fleches du clavier.
+     o : { x, y, r, zone, min, max, pas, valeur, dec, unite, label, surChange, format } */
+  function molette(parent, o) {
+    var v = o.valeur, r = o.r || 17, dec = o.dec === undefined ? 0 : o.dec;
+    var g = svg("g", { "class": "molette", transform: "translate(" + o.x + " " + o.y + ")", tabindex: "0", role: "slider",
+      "aria-label": o.label || "", "aria-valuemin": o.min, "aria-valuemax": o.max }, parent);
+    svg("circle", { r: o.zone || 46, fill: "transparent" }, g);
+    for (var k = 0; k <= 10; k++) {
+      var a = (-135 + 27 * k) * Math.PI / 180;
+      svg("line", { x1: Math.sin(a) * (r + 3), y1: -Math.cos(a) * (r + 3), x2: Math.sin(a) * (r + (k % 5 ? 6 : 8)), y2: -Math.cos(a) * (r + (k % 5 ? 6 : 8)), "class": "molette-graduation" }, g);
+    }
+    svg("circle", { r: r, "class": "molette-corps" }, g);
+    var index = svg("line", { x1: 0, y1: -r * 0.25, x2: 0, y2: -r + 3, "class": "molette-index" }, g);
+    var titre = o.label ? svg("text", { x: 0, y: -r - 12, "text-anchor": "middle", "class": "molette-titre", texte: o.titreCourt || o.label }, g) : null;
+    var val = svg("text", { x: 0, y: r + 19, "text-anchor": "middle", "class": "molette-val" }, g);
+    function maj() {
+      var f = (v - o.min) / (o.max - o.min);
+      index.setAttribute("transform", "rotate(" + (-135 + 270 * f) + ")");
+      val.textContent = o.format ? o.format(v) : fr(v, dec) + (o.unite ? " " + o.unite : "");
+      g.setAttribute("aria-valuenow", v); g.setAttribute("aria-valuetext", val.textContent);
+    }
+    function poser(x, silencieux) {
+      var p = o.pas || 1; x = borne(Math.round(x / p) * p, o.min, o.max); x = Number(x.toFixed(6));
+      var change = x !== v; v = x; maj();
+      if (change && !silencieux && o.surChange) o.surChange(v);
+    }
+    g.addEventListener("touchstart", function (e) { e.preventDefault(); }, { passive: false });
+    g.addEventListener("pointerdown", function (e) {
+      e.preventDefault(); try { g.setPointerCapture(e.pointerId); } catch (x) { /* evenement de synthese */ }
+      var x0 = e.clientX, y0 = e.clientY, v0 = v, course = o.course || 160;
+      g.classList.add("tourne");
+      function mv(e2) { poser(v0 + ((e2.clientX - x0) - (e2.clientY - y0)) / course * (o.max - o.min)); }
+      function fin() { g.classList.remove("tourne"); g.removeEventListener("pointermove", mv); g.removeEventListener("pointerup", fin); g.removeEventListener("pointercancel", fin); }
+      g.addEventListener("pointermove", mv); g.addEventListener("pointerup", fin); g.addEventListener("pointercancel", fin);
+    });
+    g.addEventListener("wheel", function (e) { e.preventDefault(); poser(v + (e.deltaY < 0 ? 1 : -1) * (o.pas || 1)); }, { passive: false });
+    g.addEventListener("keydown", function (e) {
+      var p = o.pas || 1;
+      if (e.key === "ArrowUp" || e.key === "ArrowRight") { poser(v + p); e.preventDefault(); }
+      if (e.key === "ArrowDown" || e.key === "ArrowLeft") { poser(v - p); e.preventDefault(); }
+    });
+    maj();
+    return { get: function () { return v; }, set: poser, noeud: g, montrer: function (oui) { g.style.display = oui ? "" : "none"; } };
+  }
+
+  /* Defi : une valeur a trouver. La page dit juste ou pas encore, et rappelle la methode,
+     jamais la valeur attendue. attendu : nombre ou fonction qui le calcule au moment du clic. */
+  function defi(parent, o) {
+    var inp = el("input", { type: "text", inputmode: "decimal", "aria-label": o.question });
+    var b = el("button", { type: "button", classe: "bouton", texte: "Vérifier" });
+    var retour = el("div", { classe: "retour", "aria-live": "polite" });
+    var bloc = el("div", { classe: "defi" }, [el("p", { html: o.question }), el("div", { classe: "saisie" }, [inp, o.unite ? el("span", { texte: o.unite }) : null, b]), retour]);
+    function verifier() {
+      var v = lire(inp.value), a = typeof o.attendu === "function" ? o.attendu() : o.attendu;
+      retour.className = "retour";
+      if (!isFinite(v)) { retour.textContent = "Écris un nombre."; return; }
+      var tol = o.tolerance === undefined ? 0.05 : o.tolerance;
+      var ok = Math.abs(v - a) <= Math.abs(a) * tol + (o.toleranceAbsolue || 0);
+      retour.className = "retour " + (ok ? "juste" : "faux");
+      retour.innerHTML = ok ? "Juste." : "Pas encore. <span class=\"methode\">" + (o.methode || "") + "</span>";
+      if (o.surReponse) o.surReponse(ok, v);
+    }
+    b.addEventListener("click", verifier);
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") verifier(); });
+    $(parent).appendChild(bloc);
+    return { noeud: bloc, effacer: function () { inp.value = ""; retour.textContent = ""; retour.className = "retour"; } };
+  }
+
+  /* Boucle d'animation : f(dt en secondes). S'arrete seule quand l'onglet est cache.
+     Sim.avancer(s) fait tourner les boucles a la main : c'est la porte des essais, dans un
+     navigateur qui ne dessine pas (onglet cache, capture sans affichage). */
+  var boucles = [];
+  function avancer(secondes, pasDt) {
+    pasDt = pasDt || 0.05;
+    for (var t = 0; t < secondes - 1e-9; t += pasDt) boucles.forEach(function (f) { f(pasDt); });
+  }
+  function animer(f) {
+    boucles.push(f);
+    var avant = null, actif = true, id = null;
+    function pas(t) {
+      if (avant === null) avant = t;
+      var dt = Math.min(0.1, (t - avant) / 1000); avant = t;
+      if (actif) f(dt);
+      id = requestAnimationFrame(pas);
+    }
+    id = requestAnimationFrame(pas);
+    return { pause: function () { actif = false; }, reprise: function () { actif = true; avant = null; }, actif: function () { return actif; } };
+  }
+
+  /* Petit utilitaire SVG. */
+  var NS = "http://www.w3.org/2000/svg";
+  function svg(tag, attrs, parent) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) { if (k === "texte") n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]); }
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+
+  return { fr: fr, lire: lire, el: el, $: $, borne: borne, mesure: mesure, gauss: gauss, onglets: onglets, curseur: curseur, choix: choix,
+    afficheur: afficheur, graphe: graphe, releve: releve, enregistreur: enregistreur, centrale: centrale, molette: molette,
+    defi: defi, animer: animer, avancer: avancer, svg: svg };
+})();
+
+</script>
+</head>
+<body>
+<div class="page">
+<header class="tete">
+<div class="surtitre">Physique-chimie · simulation du TP SIM-14</div>
+<h1>Un son à travers une paroi</h1>
+<p class="chapeau">Un haut-parleur enfermé dans un caisson émet un son par une ouverture, que l'on ferme avec une plaque. Mesure le niveau sonore sans plaque puis avec, change l'épaisseur, la matière ou la fréquence, et calcule ce que la plaque arrête.</p>
+</header>
+<style>
+.lcd{font-family:Consolas,"Cascadia Mono",monospace}
+.onde{fill:none;stroke-linecap:round}
+.ecran-osc{background:var(--scene);border:1px solid var(--trait2);border-radius:var(--r);overflow:hidden}
+.ecran-osc svg{display:block;width:100%;height:auto}
+.osc-bas{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--encre2);margin-top:4px;flex-wrap:wrap}
+</style>
+
+<div class="carte">
+  <h2><span class="num">1</span>Monte l'expérience</h2>
+  <p class="consigne">Le son sort du caisson par une seule ouverture : la plaque la ferme. Mesure toujours sans plaque puis avec, à la même distance et à la même fréquence.</p>
+  <div class="commandes">
+    <div id="choixPlaque"></div>
+    <div id="epaisseur"></div>
+    <div id="choixFreq"></div>
+    <div id="distance"></div>
+    <div class="rangee">
+      <button type="button" class="bouton principal" id="son">Couper le son</button>
+    </div>
+  </div>
+</div>
+
+<div class="plan">
+  <div class="carte">
+    <h2><span class="num">2</span>La scène</h2>
+    <div class="scene">
+      <svg id="scene" viewBox="0 0 640 330" role="img" aria-label="Le caisson du haut-parleur, la plaque, le sonomètre et le micro"></svg>
+    </div>
+    <p class="legende">Le sonomètre et le micro sont sur le même pied, à la distance d de la plaque. Le micro est relié à l'oscilloscope, étalonné en pascals.</p>
+  </div>
+  <div class="carte">
+    <h2><span class="num">3</span>Les instruments</h2>
+    <div class="commandes">
+      <div class="afficheurs" id="instruments"></div>
+      <div>
+        <div class="choix"><div class="titre">Oscilloscope · pression acoustique au micro</div></div>
+        <div class="ecran-osc"><svg id="osc" viewBox="0 0 400 320" role="img" aria-label="Écran de l'oscilloscope : dix divisions en largeur, huit en hauteur"></svg></div>
+        <div class="osc-bas"><span id="oscSens"></span><span id="oscBase"></span></div>
+      </div>
+      <div id="sensibilite"></div>
+      <div id="base"></div>
+      <button type="button" class="bouton" id="garder">Garder cette mesure dans le tableau</button>
+      <p class="alerte" id="etat">Le haut-parleur émet. Aucune plaque n'est posée.</p>
+    </div>
+  </div>
+</div>
+
+<div class="carte">
+  <h2><span class="num">4</span>Le relevé : le niveau sonore selon la plaque</h2>
+  <p class="consigne">Garde d'abord la mesure sans plaque, puis une mesure par plaque. Le graphe place chaque mesure selon l'épaisseur de la plaque.</p>
+  <div id="releve"></div>
+</div>
+
+<div class="carte">
+  <h2><span class="num">5</span>Ce que la plaque arrête</h2>
+  <p class="consigne">Calcule avec <b>tes</b> lectures, pour la plaque en place. Relation fournie : R = 20 × log(coefficient d'atténuation).</p>
+  <div class="commandes" id="defis"></div>
+  <details class="modele">
+    <summary>Ce que la simulation simplifie</summary>
+    <ul>
+      <li>Le son ne passe que par la plaque. En vrai, il passe aussi par ses bords, par les fentes et par les parois du caisson.</li>
+      <li>La plaque est grande et bien tenue. Au-delà d'une fréquence propre à chaque plaque, elle vibre avec le son et le laisse mieux passer : la simulation en tient compte de façon approchée.</li>
+      <li>La laine minérale ne suit pas la loi des plaques pleines : légère, elle arrête peu le son quand elle est seule. Elle sert entre deux plaques, dans une cloison double, que la simulation ne montre pas.</li>
+      <li>Le son se propage comme à l'air libre : les murs de la salle ne renvoient aucun écho.</li>
+      <li>Le bruit de la salle ne change pas, et le haut-parleur émet toujours au même niveau.</li>
+    </ul>
+  </details>
+</div>
+
+<script>
+(function () {
+  /* ---------- Modele : entrees -> grandeurs, sans dessin ----------
+     Indice d'affaiblissement R d'une plaque (dB), incidence de champ.
+     Plaques pleines : loi de masse R = 20 log(ms x f) - 47 sous la moitie de la frequence
+     critique fc = K / h ; methode de Sharp au-dessus (plateau de coincidence). Jamais negatif.
+     Laine minerale : poreuse, la loi de masse ne s'y applique pas ; elle absorbe, d'autant
+     plus que le son est aigu (Delany-Bazley simplifie). */
+  var MATIERES = {
+    platre: { texte: "Plâtre", rho: 720, K: 34, eta: 0.02, min: 6.5, max: 50, pas: 0.5, dec: 1, def: 12.5, teinte: "#ecebe6", trait: "#9c9a92" },
+    bois: { texte: "Bois", rho: 600, K: 23, eta: 0.02, min: 3, max: 40, pas: 1, dec: 0, def: 10, teinte: "#c89a64", trait: "#7d5a33" },
+    verre: { texte: "Verre", rho: 2500, K: 12, eta: 0.02, min: 3, max: 12, pas: 1, dec: 0, def: 4, teinte: "#cfe6ee", trait: "#6f9fb1" },
+    polystyrene: { texte: "Polystyrène", rho: 20, K: 100, eta: 0.03, min: 10, max: 100, pas: 5, dec: 0, def: 20, teinte: "#fbfbf8", trait: "#a9a9a2" },
+    laine: { texte: "Laine minérale", poreux: 1.0, min: 20, max: 200, pas: 5, dec: 0, def: 50, teinte: "#e9d58a", trait: "#a88f36" },
+    acier: { texte: "Acier", rho: 7800, K: 12.4, eta: 0.01, min: 0.5, max: 10, pas: 0.5, dec: 1, def: 1, teinte: "#9aa1a8", trait: "#5b6168" },
+    beton: { texte: "Béton cellulaire", rho: 500, K: 33, eta: 0.02, min: 50, max: 200, pas: 10, dec: 0, def: 70, teinte: "#dcdad4", trait: "#8f8c84" }
+  };
+  var L_1M = 90, FOND = 40, P0 = 2e-5;
+
+  function affaiblissement(cle, eMm, f) {
+    if (!cle) return 0;
+    var M = MATIERES[cle];
+    if (M.poreux) return M.poreux * Math.pow(f / 500, 0.4) * eMm / 10;
+    var h = eMm / 1000, ms = M.rho * h, fc = M.K / h, R;
+    function masse(x) { return 20 * Math.log10(ms * x) - 47; }
+    if (f < fc / 2) R = masse(f);
+    else if (f < fc) {
+      var RA = masse(fc / 2), RB = 20 * Math.log10(ms * fc) + 10 * Math.log10(M.eta) - 44;
+      R = RA + (RB - RA) * Math.log(f / (fc / 2)) / Math.LN2;
+    } else R = 20 * Math.log10(ms * f) - 42.4 + 10 * Math.log10(2 * M.eta * f / (Math.PI * fc));
+    return Math.max(0, R);
+  }
+  /* Niveau au point de mesure : source a 90 dB a 1 m, -6 dB par doublement de distance,
+     moins la plaque, plus le bruit de fond de la salle (sommes d'intensites). */
+  function grandeurs(e) {
+    var Lsans = L_1M - 20 * Math.log10(e.d);
+    var R = affaiblissement(e.plaque, e.ep, e.f);
+    var Lt = e.son ? Lsans - R : -Infinity;
+    var L = 10 * Math.log10((e.son ? Math.pow(10, Lt / 10) : 0) + Math.pow(10, FOND / 10));
+    return { Lsans: Lsans, R: R, Lt: Lt, L: L, pAmp: e.son ? Math.SQRT2 * P0 * Math.pow(10, Lt / 20) : 0, pFond: P0 * Math.pow(10, FOND / 20) };
+  }
+
+  var INCONNUE = [330, 392, 440, 523, 587, 659, 784][Math.floor(Math.random() * 7)];
+  var etat = { plaque: null, ep: 10, f: 500, fLibelle: "500", d: 1.0, son: true, sens: 0.5, base: 1 };
+
+  /* ---------- Reglages ---------- */
+  var cPlaque = Sim.choix("#choixPlaque", { label: "Plaque", valeur: "aucune",
+    options: [{ val: "aucune", texte: "Aucune" }].concat(Object.keys(MATIERES).map(function (k) { return { val: k, texte: MATIERES[k].texte }; })),
+    surChange: function (v) { poserPlaque(v === "aucune" ? null : v); } });
+  var cEp = null;
+  function curseurEpaisseur() {
+    var zone = document.getElementById("epaisseur"); zone.innerHTML = "";
+    if (!etat.plaque) { zone.appendChild(Sim.el("p", { classe: "consigne", texte: "Épaisseur : choisis d'abord une plaque." })); cEp = null; return; }
+    var M = MATIERES[etat.plaque];
+    etat.ep = Sim.borne(Math.round(etat.ep / M.pas) * M.pas, M.min, M.max);
+    cEp = Sim.curseur(zone, { label: "Épaisseur de la plaque", min: M.min, max: M.max, pas: M.pas, valeur: etat.ep, unite: "mm", dec: M.dec,
+      surChange: function (v) { etat.ep = v; dessinerScene(); message(); } });
+  }
+  function poserPlaque(cle) {
+    var avant = etat.plaque;
+    etat.plaque = cle;
+    if (cle && !avant) etat.ep = MATIERES[cle].def;
+    curseurEpaisseur(); dessinerScene(); message();
+  }
+  var FREQS = [125, 250, 500, 1000, 2000, 4000];
+  Sim.choix("#choixFreq", { label: "Fréquence du son", valeur: 500,
+    options: FREQS.map(function (f) { return { val: f, texte: Sim.fr(f, 0) + " Hz" }; }).concat([{ val: "x", texte: "Son inconnu" }]),
+    surChange: function (v) { etat.f = v === "x" ? INCONNUE : v; etat.fLibelle = v === "x" ? "inconnue" : Sim.fr(v, 0); dessinerScene(); message(); } });
+  Sim.curseur("#distance", { label: "Distance d entre la plaque et le sonomètre", min: 0.5, max: 4, pas: 0.1, valeur: 1, unite: "m", dec: 1,
+    surChange: function (v) { etat.d = v; dessinerScene(); } });
+  document.getElementById("son").addEventListener("click", function () {
+    etat.son = !etat.son;
+    this.textContent = etat.son ? "Couper le son" : "Remettre le son";
+    dessinerScene(); message();
+  });
+  curseurEpaisseur();
+
+  /* ---------- Instruments ---------- */
+  var I = document.getElementById("instruments");
+  var aL = Sim.afficheur(I, { nom: "Sonomètre · niveau", unite: "dB", dec: 1 });
+  var SENS = [1, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01, 0.005, 0.002];
+  function texteSens(s) { return s >= 0.1 ? Sim.fr(s, s < 1 ? 1 : 0) + " Pa" : Sim.fr(s * 1000, 0) + " mPa"; }
+  Sim.choix("#sensibilite", { label: "Oscilloscope · sensibilité verticale, par division", valeur: 0.5,
+    options: SENS.map(function (s) { return { val: s, texte: texteSens(s) }; }), surChange: function (v) { etat.sens = v; tracer(); } });
+  var BASES = [0.2, 0.5, 1, 2, 5];
+  Sim.choix("#base", { label: "Oscilloscope · base de temps, par division", valeur: 1,
+    options: BASES.map(function (b) { return { val: b, texte: Sim.fr(b, b < 1 ? 1 : 0) + " ms" }; }), surChange: function (v) { etat.base = v; tracer(); } });
+
+  function lectureL() { return Sim.mesure(grandeurs(etat).L, { absolu: 0.25, resolution: 0.1 }); }
+
+  /* Oscilloscope : 10 divisions x 8, synchronise sur le front montant ; le bruit de la salle
+     arrive au micro comme un bruit large bande. */
+  var O = document.getElementById("osc"), svg = Sim.svg;
+  function css(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  function tracer() {
+    O.innerHTML = "";
+    svg("rect", { x: 0, y: 0, width: 400, height: 320, fill: css("--scene") }, O);
+    for (var i = 0; i <= 10; i++) svg("line", { x1: i * 40, y1: 0, x2: i * 40, y2: 320, stroke: css("--trait2"), "stroke-width": i === 5 ? 1.6 : 1 }, O);
+    for (var j = 0; j <= 8; j++) svg("line", { x1: 0, y1: j * 40, x2: 400, y2: j * 40, stroke: css("--trait2"), "stroke-width": j === 4 ? 1.6 : 1 }, O);
+    for (var k = 0; k <= 50; k++) {
+      svg("line", { x1: k * 8, y1: 157, x2: k * 8, y2: 163, stroke: css("--trait"), "stroke-width": 1 }, O);
+      if (k <= 40) svg("line", { x1: 197, y1: k * 8, x2: 203, y2: k * 8, stroke: css("--trait"), "stroke-width": 1 }, O);
+    }
+    var g = grandeurs(etat), n = 500, pts = [];
+    var T = 10 * etat.base / 1000;
+    for (var s = 0; s <= n; s++) {
+      var t = T * s / n;
+      var p = g.pAmp * Math.sin(2 * Math.PI * etat.f * t) + g.pFond * Sim.gauss();
+      var y = 160 - p / etat.sens * 40;
+      pts.push((s * 400 / n).toFixed(1) + "," + Sim.borne(y, -2, 322).toFixed(1));
+    }
+    svg("polyline", { points: pts.join(" "), fill: "none", stroke: css("--accent"), "stroke-width": 2, "stroke-linejoin": "round" }, O);
+    document.getElementById("oscSens").textContent = "Vertical : " + texteSens(etat.sens) + " par division";
+    document.getElementById("oscBase").textContent = "Horizontal : " + Sim.fr(etat.base, etat.base < 1 ? 1 : 0) + " ms par division";
+  }
+
+  /* ---------- Releve ---------- */
+  var rel = Sim.releve("#releve", {
+    colonnes: [{ cle: "plaque", titre: "Plaque" }, { cle: "f", titre: "Fréquence", unite: "Hz" }, { cle: "d", titre: "d", unite: "m", dec: 1 }, { cle: "L", titre: "Niveau", unite: "dB", dec: 1 }],
+    graphe: { x: "e", y: "L", xmin: 0, xmax: 20, ymin: 30, ymax: 100, titreX: "épaisseur (mm)", titreY: "niveau (dB)", largeur: 620, hauteur: 340 },
+    avantPoints: function (gr, lignes) {
+      var emax = 10; lignes.forEach(function (l) { emax = Math.max(emax, l.e); });
+      var pas = emax > 100 ? 50 : emax > 40 ? 20 : emax > 16 ? 10 : 5;
+      gr.axes({ xmax: Math.ceil(emax * 1.1 / pas) * pas }).effacer();
+    }
+  });
+  document.getElementById("garder").addEventListener("click", function () {
+    var M = etat.plaque ? MATIERES[etat.plaque] : null;
+    rel.ajouter({ plaque: M ? M.texte.toLowerCase() + " " + Sim.fr(etat.ep, M.dec) + " mm" : (etat.son ? "aucune" : "son coupé"),
+      f: etat.fLibelle, d: etat.d, L: lectureL(), e: M ? etat.ep : 0 });
+  });
+
+  /* ---------- Defis : juste ou pas encore, jamais la valeur ---------- */
+  var D = document.getElementById("defis");
+  function Rvrai() { var g = grandeurs(etat); return g.Lsans - g.L; }
+  Sim.defi(D, { question: "Indice d'affaiblissement de la plaque en place, R = L<sub>sans plaque</sub> − L<sub>avec plaque</sub> :", unite: "dB",
+    attendu: Rvrai, tolerance: 0, toleranceAbsolue: 1.2,
+    methode: "Relève le niveau sans plaque, puis avec la plaque, à la même distance et à la même fréquence : R est la différence des deux." });
+  Sim.defi(D, { question: "Coefficient d'atténuation de la plaque, p<sub>incidente</sub> ÷ p<sub>transmise</sub> :", unite: "",
+    attendu: function () { return Math.pow(10, Rvrai() / 20); }, tolerance: 0.12,
+    methode: "Sur l'oscilloscope, lis l'amplitude de la pression sans plaque, puis avec : nombre de divisions × sensibilité. Divise la première par la seconde." });
+  Sim.defi(D, { question: "Indice d'affaiblissement calculé à partir du coefficient, R = 20 × log(coefficient) :", unite: "dB",
+    attendu: Rvrai, tolerance: 0, toleranceAbsolue: 1.2,
+    methode: "Touche log de la calculatrice : 20 × log(coefficient d'atténuation). Le résultat se compare au R trouvé avec le sonomètre." });
+
+  /* ---------- Scene ---------- */
+  var S = document.getElementById("scene");
+  var g = {};
+  function largeurPlaque() { return 3 + 37 * Math.sqrt(etat.ep / 200); }
+  function xSono() { return 214 + etat.d * 100; }
+  function dessinerScene() {
+    S.innerHTML = "";
+    svg("rect", { x: 0, y: 270, width: 640, height: 60, fill: css("--carte2") }, S);
+    svg("line", { x1: 0, y1: 270, x2: 640, y2: 270, stroke: css("--trait"), "stroke-width": 2 }, S);
+    // caisson et haut-parleur
+    svg("rect", { x: 24, y: 100, width: 150, height: 150, rx: 4, fill: css("--carte"), stroke: css("--encre"), "stroke-width": 3 }, S);
+    svg("rect", { x: 170, y: 124, width: 10, height: 102, fill: css("--scene") }, S);
+    svg("line", { x1: 174, y1: 100, x2: 174, y2: 124, stroke: css("--encre"), "stroke-width": 3 }, S);
+    svg("line", { x1: 174, y1: 226, x2: 174, y2: 250, stroke: css("--encre"), "stroke-width": 3 }, S);
+    svg("rect", { x: 56, y: 156, width: 30, height: 38, rx: 3, fill: css("--encre2") }, S);
+    svg("path", { d: "M86 160 L132 128 L132 222 L86 190 Z", fill: css("--carte2"), stroke: css("--encre"), "stroke-width": 2.5 }, S);
+    svg("rect", { x: 24, y: 250, width: 150, height: 20, fill: css("--trait2") }, S);
+    svg("text", { x: 99, y: 292, "text-anchor": "middle", "font-size": 13, fill: css("--encre2"), texte: "haut-parleur" }, S);
+    svg("text", { x: 99, y: 308, "text-anchor": "middle", "font-size": 13, fill: css("--encre2"), texte: "dans son caisson" }, S);
+    // ondes dans le caisson
+    svg("clipPath", { id: "dedans" }, S).appendChild(svg("rect", { x: 26, y: 102, width: 146, height: 146 }));
+    g.ondesIn = svg("g", { "clip-path": "url(#dedans)" }, S);
+    // plaque
+    var w = largeurPlaque();
+    if (etat.plaque) {
+      var M = MATIERES[etat.plaque];
+      svg("rect", { x: 176, y: 112, width: w, height: 126, fill: M.teinte, stroke: M.trait, "stroke-width": 2 }, S);
+      if (etat.plaque === "laine") for (var k = 0; k < 9; k++) svg("path", { d: "M" + (178) + " " + (120 + k * 13) + " q " + (w / 4) + " 6 " + (w / 2 - 2) + " 0 t " + (w / 2 - 2) + " 0", fill: "none", stroke: M.trait, "stroke-width": 1 }, S);
+      if (etat.plaque === "beton" || etat.plaque === "polystyrene") for (var q = 0; q < 14; q++) svg("circle", { cx: 178 + ((q * 37) % 100) / 100 * (w - 4), cy: 118 + q * 8.5, r: 1.6, fill: M.trait }, S);
+      svg("text", { x: 176 + w / 2, y: 92, "text-anchor": "middle", "font-size": 13, fill: css("--encre2"), texte: "plaque" }, S);
+    } else {
+      svg("text", { x: 190, y: 92, "text-anchor": "middle", "font-size": 13, fill: css("--encre2"), texte: "ouverture" }, S);
+    }
+    // ondes transmises
+    g.ondesOut = svg("g", {}, S); g.x0 = 180 + (etat.plaque ? w : 0);
+    // pied, sonometre et micro
+    var xs = xSono();
+    svg("line", { x1: xs, y1: 214, x2: xs, y2: 262, stroke: css("--encre2"), "stroke-width": 4 }, S);
+    svg("path", { d: "M" + (xs - 22) + " 270 L" + xs + " 258 L" + (xs + 22) + " 270", fill: "none", stroke: css("--encre2"), "stroke-width": 3 }, S);
+    svg("rect", { x: xs - 16, y: 150, width: 32, height: 66, rx: 6, fill: css("--carte"), stroke: css("--encre"), "stroke-width": 2 }, S);
+    svg("rect", { x: xs - 12, y: 170, width: 24, height: 16, rx: 2, fill: "#cfd8cf", stroke: css("--encre2"), "stroke-width": 1 }, S);
+    svg("path", { d: "M" + (xs - 6) + " 150 L" + (xs - 4) + " 132 L" + (xs + 4) + " 132 L" + (xs + 6) + " 150 Z", fill: css("--encre2") }, S);
+    svg("circle", { cx: xs, cy: 128, r: 6, fill: css("--encre"), stroke: css("--encre2") }, S);
+    // micro de l'oscilloscope, sur un bras
+    svg("line", { x1: xs, y1: 205, x2: xs + 26, y2: 205, stroke: css("--encre2"), "stroke-width": 3 }, S);
+    svg("rect", { x: xs + 22, y: 176, width: 8, height: 30, rx: 3, fill: css("--encre") }, S);
+    svg("path", { d: "M" + (xs + 26) + " 206 C " + (xs + 26) + " 240, " + (xs + 60) + " 250, " + (xs + 64) + " 268", fill: "none", stroke: css("--encre2"), "stroke-width": 1.5 }, S);
+    var droite = xs > 470;
+    svg("text", { x: droite ? xs - 22 : xs + 36, y: 128, "text-anchor": droite ? "end" : "start", "font-size": 13, fill: css("--encre2"), texte: "sonomètre" }, S);
+    svg("text", { x: droite ? xs - 22 : xs + 36, y: 176, "text-anchor": droite ? "end" : "start", "font-size": 13, fill: css("--encre2"), texte: "micro" }, S);
+    g.lcd = svg("text", { x: xs, y: 181, "text-anchor": "middle", "font-size": 8.5, "class": "lcd", fill: "#1d2a1d", texte: "" }, S);
+    // cote de la distance
+    var x0 = g.x0, yC = 298;
+    svg("line", { x1: x0, y1: 284, x2: x0, y2: 312, stroke: css("--encre2"), "stroke-width": 1 }, S);
+    svg("line", { x1: xs, y1: 284, x2: xs, y2: 312, stroke: css("--encre2"), "stroke-width": 1 }, S);
+    svg("line", { x1: x0 + 2, y1: yC, x2: xs - 2, y2: yC, stroke: css("--encre2"), "stroke-width": 1.2 }, S);
+    svg("path", { d: "M" + (x0 + 2) + " " + yC + " l8 -4 l0 8 Z M" + (xs - 2) + " " + yC + " l-8 -4 l0 8 Z", fill: css("--encre2") }, S);
+    svg("rect", { x: (x0 + xs) / 2 - 34, y: yC - 11, width: 68, height: 20, fill: css("--carte2") }, S);
+    svg("text", { x: (x0 + xs) / 2, y: yC + 5, "text-anchor": "middle", "font-size": 13, fill: css("--encre"), texte: "d = " + Sim.fr(etat.d, 1) + " m" }, S);
+    svg("text", { x: 632, y: 26, "text-anchor": "end", "font-size": 13, "font-weight": 600, fill: css("--encre"),
+      texte: (etat.son ? "Son de " + (etat.fLibelle === "inconnue" ? "fréquence inconnue" : etat.fLibelle + " Hz") : "Son coupé") }, S);
+    animerOndes(0);
+  }
+  var phase = 0;
+  function animerOndes(dt) {
+    phase = (phase + dt * 0.8) % 1;
+    g.ondesIn.innerHTML = ""; g.ondesOut.innerHTML = "";
+    if (!etat.son) return;
+    var gr = grandeurs(etat);
+    var opIn = 0.75, opOut = Sim.borne((gr.Lt - FOND) / 55, 0, 0.75);
+    for (var i = 0; i < 3; i++) {
+      var r = 12 + ((i + phase) / 3) * 34;
+      Sim.svg("path", { d: "M" + (140 + r * 0.5) + " " + (175 - r) + " A " + r + " " + r + " 0 0 1 " + (140 + r * 0.5) + " " + (175 + r), "class": "onde", stroke: css("--accent"), "stroke-width": 2.5, "stroke-opacity": opIn * (1 - i * 0.2) }, g.ondesIn);
+    }
+    if (opOut < 0.03) return;
+    var xmax = xSono() - 30;
+    for (var j = 0; j < 5; j++) {
+      var rr = 10 + ((j + phase) / 5) * (xmax - g.x0);
+      if (g.x0 + rr > xmax) continue;
+      var hh = Math.min(rr * 0.9, 58);
+      Sim.svg("path", { d: "M" + (g.x0 + rr * 0.4) + " " + (175 - hh) + " Q " + (g.x0 + rr * 1.05) + " 175 " + (g.x0 + rr * 0.4) + " " + (175 + hh), "class": "onde", stroke: css("--accent"), "stroke-width": 2, "stroke-opacity": opOut * (1 - j * 0.12) }, g.ondesOut);
+    }
+  }
+  function message() {
+    var t;
+    if (!etat.son) t = "Son coupé : le sonomètre mesure le bruit de la salle.";
+    else if (!etat.plaque) t = "Le haut-parleur émet. Aucune plaque n'est posée.";
+    else { var M = MATIERES[etat.plaque]; t = "Plaque " + (etat.plaque === "acier" ? "d'acier" : "de " + M.texte.toLowerCase()) + ", " + Sim.fr(etat.ep, M.dec) + " mm d'épaisseur, posée sur l'ouverture."; }
+    document.getElementById("etat").textContent = t;
+  }
+  function afficher() {
+    var L = lectureL();
+    aL.set(L);
+    if (g.lcd) g.lcd.textContent = Sim.fr(L, 1);
+    tracer();
+  }
+
+  var cumul = 0;
+  Sim.animer(function (dt) {
+    cumul += dt;
+    if (cumul > 0.25) { cumul = 0; afficher(); }
+    animerOndes(dt);
+  });
+  dessinerScene(); message(); afficher();
+})();
+</script>
+<footer class="pied">Simulation hors ligne, sans compte et sans enregistrement. Modèle simplifié : ce qu'il néglige est écrit sous la simulation, et détaillé dans la fiche professeur du TP SIM-14.</footer>
+</div>
+</body>
+</html>

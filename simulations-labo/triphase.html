@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le réseau triphasé</title>
+<meta name="description" content="Trois tensions sortent du même générateur, décalées dans le temps. Mesure ce décalage à l&#x27;oscilloscope, ou avec trois récepteurs et un chronomètre, puis compare la tension entre une phase et le neutre à celle entre deux phases.">
+<meta name="etiquette" content="Simulation · SIM-08">
+<style>
+/* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
+   Palette du kit web (kit.css) : papier, graphite, un seul accent. Polices du systeme : la page
+   s'ouvre sans reseau, depuis une cle ou le poste de la salle. */
+:root{
+  --fond:#e9e7e3; --carte:#fbfaf9; --carte2:#f2f0ec; --encre:#191a1c; --encre2:#5d5b57;
+  --trait:#c9c5bf; --trait2:#dedbd6; --accent:#2c6da6; --accent-doux:#dfe8f1;
+  --juste:#2f7a55; --juste-doux:#e2efe7; --faux:#ab432a; --faux-doux:#f5e3dd; --tiede:#b8801f;
+  --scene:#f6f5f2; --ombre:0 1px 2px rgba(25,26,28,.05),0 10px 26px rgba(25,26,28,.07); --r:6px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --fond:#131315; --carte:#1c1d20; --carte2:#232427; --encre:#eceae6; --encre2:#a6a49f;
+    --trait:#4a4a4d; --trait2:#333437; --accent:#63a6dd; --accent-doux:#1d2a36;
+    --juste:#5cc08d; --juste-doux:#17281f; --faux:#ef7a58; --faux-doux:#34201a; --tiede:#dfae4e;
+    --scene:#18191b; --ombre:0 1px 2px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --fond:#131315; --carte:#1c1d20; --carte2:#232427; --encre:#eceae6; --encre2:#a6a49f;
+  --trait:#4a4a4d; --trait2:#333437; --accent:#63a6dd; --accent-doux:#1d2a36;
+  --juste:#5cc08d; --juste-doux:#17281f; --faux:#ef7a58; --faux-doux:#34201a; --tiede:#dfae4e;
+  --scene:#18191b; --ombre:0 1px 2px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--fond);color:var(--encre);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Arial,sans-serif;font-size:16px;line-height:1.5}
+.page{max-width:1120px;margin:0 auto;padding:18px 16px 48px}
+.mono,.afficheur .val,.curseur .val,table.releve td{font-family:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono",monospace;font-variant-numeric:tabular-nums}
+h1,h2,h3{line-height:1.2;margin:0;text-wrap:balance}
+sub,sup{font-size:.72em;line-height:0}
+
+/* En-tete */
+.tete{padding:6px 0 16px;border-bottom:1px solid var(--trait);margin-bottom:16px}
+.surtitre{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--encre2);font-weight:600}
+.tete h1{font-size:clamp(1.45rem,4vw,2rem);margin:4px 0 6px;font-weight:750}
+.chapeau{margin:0;color:var(--encre2);max-width:70ch}
+
+/* Onglets : un par protocole ou par ecran */
+.onglets{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
+.onglets button{font:inherit;font-weight:650;font-size:.95rem;padding:9px 14px;border-radius:var(--r);
+  border:1px solid var(--trait);background:var(--carte);color:var(--encre2);cursor:pointer}
+.onglets button[aria-selected="true"]{background:var(--encre);border-color:var(--encre);color:var(--carte)}
+.onglets button:not([aria-selected="true"]):hover{border-color:var(--encre2);color:var(--encre)}
+.vue[hidden]{display:none}
+
+/* Mise en page : la scene a gauche, les commandes a droite ; une colonne sous 820 px */
+.plan{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr);gap:16px;align-items:start}
+@media (max-width:820px){.plan{grid-template-columns:1fr}}
+.carte{background:var(--carte);border:1px solid var(--trait2);border-radius:var(--r);box-shadow:var(--ombre);padding:16px;margin-bottom:16px}
+.carte > h2{font-size:1.08rem;margin-bottom:10px;font-weight:700}
+.carte > h2 .num{color:var(--accent);margin-right:.35em}
+.consigne{color:var(--encre2);margin:0 0 12px;font-size:.95rem}
+.scene{background:var(--scene);border:1px solid var(--trait2);border-radius:var(--r);overflow:hidden;position:relative}
+.scene svg,.scene canvas{display:block;width:100%;height:auto}
+.legende{font-size:.82rem;color:var(--encre2);margin-top:6px}
+
+/* Commandes */
+.commandes{display:flex;flex-direction:column;gap:14px}
+.curseur label{display:flex;justify-content:space-between;gap:8px;font-size:.9rem;font-weight:600;margin-bottom:2px}
+.curseur .val{font-weight:600;color:var(--encre)}
+.curseur input[type=range]{width:100%;accent-color:var(--accent);height:28px;margin:0}
+.curseur .bornes{display:flex;justify-content:space-between;font-size:.75rem;color:var(--encre2)}
+.choix .titre{font-size:.9rem;font-weight:600;margin-bottom:4px}
+.choix .boutons{display:flex;flex-wrap:wrap;gap:6px}
+.choix button,.bouton{font:inherit;font-size:.9rem;font-weight:600;padding:8px 12px;border-radius:var(--r);
+  border:1px solid var(--trait);background:var(--carte);color:var(--encre);cursor:pointer;min-height:40px}
+.choix button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.bouton:hover,.choix button:hover{border-color:var(--encre2)}
+.bouton.principal{background:var(--encre);border-color:var(--encre);color:var(--carte)}
+.bouton:disabled{opacity:.45;cursor:not-allowed}
+.rangee{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* Afficheurs : ce que lit un instrument */
+.afficheurs{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.afficheur{border:1px solid var(--trait);border-radius:var(--r);background:var(--carte2);padding:8px 10px}
+.afficheur .nom{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--encre2);font-weight:650}
+.afficheur .val{font-size:1.45rem;font-weight:650;white-space:nowrap}
+.afficheur .unite{font-size:.95rem;color:var(--encre2);margin-left:.25em}
+.afficheur .note{font-size:.75rem;color:var(--encre2)}
+
+/* Releve de mesures et graphe */
+.releve-zone{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:14px;align-items:start}
+@media (max-width:820px){.releve-zone{grid-template-columns:1fr}}
+table.releve{border-collapse:collapse;width:100%;font-size:.92rem}
+table.releve th,table.releve td{border:1px solid var(--trait);padding:5px 8px;text-align:center}
+table.releve th{background:var(--carte2);font-weight:650;font-size:.82rem}
+table.releve tr.vide td{color:var(--encre2);font-style:italic}
+.graphe{background:var(--carte);border:1px solid var(--trait2);border-radius:var(--r)}
+.graphe canvas{display:block;width:100%;height:auto}
+
+/* Enregistreur : une mesure toute seule, a intervalle regulier du temps simule */
+.enregistreur{border:1px solid var(--trait);border-radius:var(--r);background:var(--carte2);padding:10px 12px;display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.enr-lampe{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--trait)}
+.enr-lampe.actif{background:var(--faux)}
+.enr-lampe.eclair{animation:eclair .6s ease-out}
+@keyframes eclair{from{box-shadow:0 0 0 0 var(--faux)}to{box-shadow:0 0 0 10px transparent}}
+.enr-info{font-size:.88rem;color:var(--encre2)}
+
+/* Defi : l'eleve propose une valeur, la page dit juste ou pas encore, jamais la reponse */
+.defi{border:1px dashed var(--trait);border-radius:var(--r);padding:12px 14px;background:var(--carte2)}
+.defi p{margin:0 0 8px}
+.defi .saisie{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.defi input{font:inherit;width:9em;padding:7px 9px;border-radius:var(--r);border:1px solid var(--trait);background:var(--carte);color:var(--encre)}
+.defi .retour{margin-top:8px;font-weight:600;min-height:1.4em}
+.defi .retour.juste{color:var(--juste)}
+.defi .retour.faux{color:var(--faux)}
+.defi .methode{font-weight:400;color:var(--encre2)}
+
+/* Encadres */
+.note-modele{margin-top:6px}
+details.modele{border-top:1px solid var(--trait);padding-top:10px;margin-top:8px}
+details.modele summary{cursor:pointer;font-weight:650}
+details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-size:.92rem}
+.alerte{border-left:4px solid var(--tiede);background:var(--carte2);padding:8px 12px;border-radius:0 var(--r) var(--r) 0;font-size:.92rem}
+.pied{margin-top:24px;padding-top:10px;border-top:1px solid var(--trait);font-size:.8rem;color:var(--encre2)}
+
+@media print{
+  body{background:#fff}
+  .onglets,.commandes .bouton,.defi{display:none}
+  .carte{box-shadow:none;break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Centrale d'acquisition : periode, duree, deux courbes en direct, tableau defilant, export */
+.centrale{display:flex;flex-direction:column;gap:12px}
+.centrale-reglages{display:flex;flex-wrap:wrap;gap:12px 22px;border:1px solid var(--trait);border-radius:var(--r);background:var(--carte2);padding:10px 12px}
+.centrale-traces{display:flex;flex-wrap:wrap;gap:8px 18px}
+.centrale-traces label{display:flex;align-items:center;gap:8px;font-size:.9rem;font-weight:600}
+.centrale-traces select{font:inherit;font-size:.9rem;padding:7px 8px;border-radius:var(--r);border:1px solid var(--trait);background:var(--carte);color:var(--encre);min-height:40px;max-width:100%}
+.centrale-pastille{display:inline-block;width:14px;height:4px;border-radius:2px}
+.centrale-table{max-height:300px;overflow:auto;border:1px solid var(--trait2);border-radius:var(--r)}
+.centrale-table table.releve th{position:sticky;top:0;z-index:1}
+.centrale-table table.releve{border-collapse:separate;border-spacing:0}
+
+/* Molette posee sur la scene : on la tourne au doigt */
+.molette{cursor:grab;touch-action:none;outline:none}
+.molette.tourne{cursor:grabbing}
+.molette:focus-visible .molette-corps{stroke:var(--accent);stroke-width:3}
+.molette-corps{fill:var(--carte2);stroke:var(--encre);stroke-width:2}
+.molette.tourne .molette-corps{fill:var(--accent-doux)}
+.molette-index{stroke:var(--accent);stroke-width:3.5;stroke-linecap:round}
+.molette-graduation{stroke:var(--encre2);stroke-width:1.2}
+.molette-titre{font-size:11px;font-weight:650;fill:var(--encre)}
+.molette-val{font-size:11.5px;font-weight:650;fill:var(--accent);font-family:ui-monospace,Consolas,monospace}
+
+</style>
+<script>
+/* Simulations des TP · briques communes, inlinees dans l'en-tete de chaque page.
+   Rien ici ne touche au DOM au chargement : une simulation appelle ce dont elle a besoin.
+   Aucune requete, aucun stockage : la page fonctionne hors ligne et n'enregistre rien. */
+"use strict";
+var Sim = (function () {
+
+  /* Nombres a la francaise : virgule, espace fine insecable entre les milliers. */
+  function fr(x, dec) {
+    if (x === null || x === undefined || !isFinite(x)) return "—";
+    if (dec === undefined) dec = 2;
+    var s = Math.abs(x).toFixed(dec).split(".");
+    s[0] = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return (x < 0 && Number(x.toFixed(dec)) !== 0 ? "−" : "") + s.join(",");
+  }
+  /* Lecture d'une saisie d'eleve : virgule ou point, espaces ignores. */
+  function lire(txt) {
+    if (txt === null || txt === undefined) return NaN;
+    var t = String(txt).replace(/\s| | /g, "").replace(",", ".").replace("−", "-");
+    return t === "" ? NaN : Number(t);
+  }
+  function el(tag, attrs, enfants) {
+    var n = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      if (k === "texte") n.textContent = attrs[k];
+      else if (k === "html") n.innerHTML = attrs[k];
+      else if (k === "classe") n.className = attrs[k];
+      else n.setAttribute(k, attrs[k]);
+    }
+    (enfants || []).forEach(function (e) { if (e) n.appendChild(e); });
+    return n;
+  }
+  function $(sel) { return typeof sel === "string" ? document.querySelector(sel) : sel; }
+  function borne(x, a, b) { return Math.max(a, Math.min(b, x)); }
+
+  /* Un instrument ne donne jamais la valeur exacte : bruit gaussien relatif, puis resolution. */
+  function gauss() { var u = 1 - Math.random(), v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+  function mesure(vraie, opts) {
+    opts = opts || {};
+    var x = vraie * (1 + (opts.relatif || 0) * gauss()) + (opts.absolu || 0) * gauss();
+    if (opts.resolution) x = Math.round(x / opts.resolution) * opts.resolution;
+    return x;
+  }
+
+  /* Onglets : boutons [data-vue="id"] qui montrent la section #id. */
+  function onglets(nav, surChange) {
+    nav = $(nav);
+    var boutons = Array.prototype.slice.call(nav.querySelectorAll("button[data-vue]"));
+    nav.setAttribute("role", "tablist");
+    function montrer(id) {
+      boutons.forEach(function (b) {
+        var actif = b.getAttribute("data-vue") === id;
+        b.setAttribute("aria-selected", actif ? "true" : "false");
+        b.setAttribute("role", "tab");
+        var v = document.getElementById(b.getAttribute("data-vue"));
+        if (v) v.hidden = !actif;
+      });
+      if (surChange) surChange(id);
+    }
+    boutons.forEach(function (b) { b.addEventListener("click", function () { montrer(b.getAttribute("data-vue")); }); });
+    montrer(boutons[0].getAttribute("data-vue"));
+    return { montrer: montrer };
+  }
+
+  /* Curseur avec son etiquette, sa valeur affichee et ses bornes. */
+  function curseur(parent, o) {
+    var dec = o.dec === undefined ? 0 : o.dec;
+    var id = o.id || ("c" + Math.random().toString(36).slice(2, 8));
+    var val = el("span", { classe: "val" });
+    var inp = el("input", { type: "range", id: id, min: o.min, max: o.max, step: o.pas || 1, value: o.valeur });
+    var bloc = el("div", { classe: "curseur" }, [
+      el("label", { "for": id }, [el("span", { texte: o.label }), val]), inp,
+      el("div", { classe: "bornes" }, [el("span", { texte: fr(o.min, dec) + " " + (o.unite || "") }), el("span", { texte: fr(o.max, dec) + " " + (o.unite || "") })])
+    ]);
+    function maj() { val.textContent = fr(Number(inp.value), dec) + (o.unite ? " " + o.unite : ""); }
+    inp.addEventListener("input", function () { maj(); if (o.surChange) o.surChange(Number(inp.value)); });
+    maj();
+    $(parent).appendChild(bloc);
+    return {
+      get: function () { return Number(inp.value); },
+      set: function (v, silencieux) { inp.value = v; maj(); if (!silencieux && o.surChange) o.surChange(Number(inp.value)); },
+      activer: function (oui) { inp.disabled = !oui; },
+      noeud: bloc
+    };
+  }
+
+  /* Groupe de boutons dont un seul est enfonce. options : [{val, texte}] */
+  function choix(parent, o) {
+    var courant = o.valeur;
+    var zone = el("div", { classe: "boutons", role: "group", "aria-label": o.label || "" });
+    var boutons = o.options.map(function (op) {
+      var b = el("button", { type: "button", texte: op.texte });
+      b.addEventListener("click", function () { poser(op.val); });
+      zone.appendChild(b);
+      return { b: b, val: op.val };
+    });
+    function poser(v, silencieux) {
+      courant = v;
+      boutons.forEach(function (x) { x.b.setAttribute("aria-pressed", x.val === v ? "true" : "false"); });
+      if (!silencieux && o.surChange) o.surChange(v);
+    }
+    var bloc = el("div", { classe: "choix" }, [o.label ? el("div", { classe: "titre", texte: o.label }) : null, zone]);
+    $(parent).appendChild(bloc);
+    poser(courant, true);
+    return { get: function () { return courant; }, set: poser, noeud: bloc };
+  }
+
+  /* Afficheur d'instrument : nom, valeur, unite, et une note facultative. */
+  function afficheur(parent, o) {
+    var v = el("span", { classe: "val", texte: "—" });
+    var n = el("div", { classe: "note", texte: o.note || "" });
+    var bloc = el("div", { classe: "afficheur" }, [el("div", { classe: "nom", texte: o.nom }), el("div", null, [v, el("span", { classe: "unite", texte: o.unite || "" })]), o.note !== undefined ? n : null]);
+    $(parent).appendChild(bloc);
+    return {
+      set: function (x, dec) { v.textContent = typeof x === "string" ? x : fr(x, dec === undefined ? (o.dec === undefined ? 2 : o.dec) : dec); },
+      note: function (t) { n.textContent = t; },
+      noeud: bloc
+    };
+  }
+
+  /* Graphe sur canvas, net sur les ecrans haute densite. Axes, grille, courbes, points. */
+  function graphe(parent, o) {
+    var larg = o.largeur || 640, haut = o.hauteur || 380;
+    var cv = el("canvas", { width: larg, height: haut, role: "img", "aria-label": o.titre || "graphe" });
+    var cadre = el("div", { classe: "graphe" }, [cv]);
+    $(parent).appendChild(cadre);
+    var ctx = cv.getContext("2d");
+    var dpr = Math.max(1, window.devicePixelRatio || 1);
+    cv.width = larg * dpr; cv.height = haut * dpr; ctx.scale(dpr, dpr);
+    var m = { g: 62, d: 16, h: 16, b: 48 };
+    var ax = { xmin: o.xmin, xmax: o.xmax, ymin: o.ymin, ymax: o.ymax };
+    function css(nom) { return getComputedStyle(document.documentElement).getPropertyValue(nom).trim() || "#333"; }
+    function X(x) { return m.g + (x - ax.xmin) / (ax.xmax - ax.xmin) * (larg - m.g - m.d); }
+    function Y(y) { return haut - m.b - (y - ax.ymin) / (ax.ymax - ax.ymin) * (haut - m.h - m.b); }
+    function pasJoli(etendue, n) {
+      var brut = etendue / n, p = Math.pow(10, Math.floor(Math.log10(brut))), r = brut / p;
+      return (r < 1.5 ? 1 : r < 3 ? 2 : r < 7 ? 5 : 10) * p;
+    }
+    function decimales(pas) { return Math.max(0, -Math.floor(Math.log10(pas) + 1e-9)); }
+    function fond() {
+      ctx.clearRect(0, 0, larg, haut);
+      ctx.fillStyle = css("--carte"); ctx.fillRect(0, 0, larg, haut);
+      ctx.font = "12px system-ui, Segoe UI, Arial, sans-serif";
+      var px = o.pasX || pasJoli(ax.xmax - ax.xmin, 8), py = o.pasY || pasJoli(ax.ymax - ax.ymin, 6);
+      ctx.strokeStyle = css("--trait2"); ctx.lineWidth = 1; ctx.fillStyle = css("--encre2");
+      ctx.textAlign = "center"; ctx.textBaseline = "top";
+      for (var x = Math.ceil(ax.xmin / px) * px; x <= ax.xmax + 1e-9; x += px) {
+        ctx.beginPath(); ctx.moveTo(X(x), Y(ax.ymin)); ctx.lineTo(X(x), Y(ax.ymax)); ctx.stroke();
+        ctx.fillText(fr(x, o.decX !== undefined ? o.decX : decimales(px)), X(x), Y(ax.ymin) + 5);
+      }
+      ctx.textAlign = "right"; ctx.textBaseline = "middle";
+      for (var y = Math.ceil(ax.ymin / py) * py; y <= ax.ymax + 1e-9; y += py) {
+        ctx.beginPath(); ctx.moveTo(X(ax.xmin), Y(y)); ctx.lineTo(X(ax.xmax), Y(y)); ctx.stroke();
+        ctx.fillText(fr(y, o.decY !== undefined ? o.decY : decimales(py)), X(ax.xmin) - 6, Y(y));
+      }
+      ctx.strokeStyle = css("--encre"); ctx.lineWidth = 1.4;
+      var y0 = borne(0, ax.ymin, ax.ymax), x0 = borne(0, ax.xmin, ax.xmax);
+      ctx.beginPath(); ctx.moveTo(X(ax.xmin), Y(y0)); ctx.lineTo(X(ax.xmax), Y(y0)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(X(x0), Y(ax.ymin)); ctx.lineTo(X(x0), Y(ax.ymax)); ctx.stroke();
+      ctx.fillStyle = css("--encre"); ctx.font = "600 13px system-ui, Segoe UI, Arial, sans-serif";
+      ctx.textAlign = "right"; ctx.textBaseline = "bottom";
+      ctx.fillText(o.titreX || "", larg - m.d, haut - 4);
+      ctx.save(); ctx.translate(14, m.h); ctx.rotate(-Math.PI / 2); ctx.textAlign = "right"; ctx.textBaseline = "top";
+      ctx.fillText(o.titreY || "", 0, 0); ctx.restore();
+    }
+    function couleur(c) { return c && c.indexOf("--") === 0 ? css(c) : (c || css("--accent")); }
+    var api = {
+      axes: function (n) { for (var k in n) ax[k] = n[k]; return api; },
+      effacer: function () { fond(); return api; },
+      /* f : fonction x -> y, ou tableau de [x, y] */
+      courbe: function (f, opts) {
+        opts = opts || {};
+        ctx.save(); ctx.beginPath();
+        ctx.rect(m.g, m.h, larg - m.g - m.d, haut - m.h - m.b); ctx.clip();
+        ctx.strokeStyle = couleur(opts.couleur); ctx.lineWidth = opts.epaisseur || 2.2;
+        if (opts.pointille) ctx.setLineDash([6, 5]);
+        ctx.beginPath();
+        if (typeof f === "function") {
+          var n = opts.pas || 400, prem = true;
+          for (var i = 0; i <= n; i++) {
+            var x = ax.xmin + (ax.xmax - ax.xmin) * i / n, y = f(x);
+            if (!isFinite(y)) { prem = true; continue; }
+            if (prem) { ctx.moveTo(X(x), Y(y)); prem = false; } else ctx.lineTo(X(x), Y(y));
+          }
+        } else {
+          f.forEach(function (p, i) { if (i === 0) ctx.moveTo(X(p[0]), Y(p[1])); else ctx.lineTo(X(p[0]), Y(p[1])); });
+        }
+        ctx.stroke(); ctx.restore();
+        return api;
+      },
+      points: function (pts, opts) {
+        opts = opts || {};
+        ctx.fillStyle = couleur(opts.couleur); ctx.strokeStyle = css("--carte");
+        pts.forEach(function (p) {
+          var r = opts.rayon || 4.5;
+          ctx.beginPath();
+          if (opts.forme === "croix") {
+            ctx.strokeStyle = couleur(opts.couleur); ctx.lineWidth = 2;
+            ctx.moveTo(X(p[0]) - r, Y(p[1]) - r); ctx.lineTo(X(p[0]) + r, Y(p[1]) + r);
+            ctx.moveTo(X(p[0]) + r, Y(p[1]) - r); ctx.lineTo(X(p[0]) - r, Y(p[1]) + r); ctx.stroke();
+          } else { ctx.arc(X(p[0]), Y(p[1]), r, 0, 2 * Math.PI); ctx.fill(); ctx.lineWidth = 1; ctx.stroke(); }
+        });
+        return api;
+      },
+      texte: function (x, y, t, opts) {
+        opts = opts || {};
+        ctx.fillStyle = couleur(opts.couleur); ctx.font = (opts.gras ? "600 " : "") + "13px system-ui, Segoe UI, Arial, sans-serif";
+        ctx.textAlign = opts.align || "left"; ctx.textBaseline = "middle";
+        ctx.fillText(t, X(x) + (opts.dx || 0), Y(y) + (opts.dy || 0));
+        return api;
+      },
+      X: X, Y: Y, ctx: ctx, canvas: cv
+    };
+    fond();
+    return api;
+  }
+
+  /* Releve : l'eleve garde une mesure dans un tableau, qui peut alimenter un graphe.
+     colonnes : [{cle, titre, unite, dec}] ; graphe : {x, y, ...options de Sim.graphe} */
+  function releve(parent, o) {
+    var lignes = [];
+    var zone = el("div", { classe: "releve-zone" });
+    var gauche = el("div");
+    var table = el("table", { classe: "releve" });
+    var tete = el("tr"); o.colonnes.forEach(function (c) { tete.appendChild(el("th", { texte: c.titre + (c.unite ? " (" + c.unite + ")" : "") })); });
+    table.appendChild(el("thead", null, [tete]));
+    var corps = el("tbody"); table.appendChild(corps);
+    var boutons = el("div", { classe: "rangee", style: "margin-top:8px" });
+    var bAnnuler = el("button", { type: "button", classe: "bouton", texte: "Retirer la dernière" });
+    var bVider = el("button", { type: "button", classe: "bouton", texte: "Tout effacer" });
+    boutons.appendChild(bAnnuler); boutons.appendChild(bVider);
+    gauche.appendChild(table); gauche.appendChild(boutons);
+    zone.appendChild(gauche);
+    var gr = null;
+    if (o.graphe) { var droite = el("div"); zone.appendChild(droite); gr = graphe(droite, o.graphe); }
+    $(parent).appendChild(zone);
+    function dessiner() {
+      corps.innerHTML = "";
+      if (!lignes.length) {
+        var tr = el("tr", { classe: "vide" }); tr.appendChild(el("td", { colspan: o.colonnes.length, texte: o.vide || "Aucune mesure gardée pour l'instant." })); corps.appendChild(tr);
+      }
+      lignes.forEach(function (l) {
+        var tr = el("tr");
+        o.colonnes.forEach(function (c) { tr.appendChild(el("td", { texte: typeof l[c.cle] === "number" ? fr(l[c.cle], c.dec === undefined ? 2 : c.dec) : (l[c.cle] || "") })); });
+        corps.appendChild(tr);
+      });
+      if (gr) {
+        gr.effacer();
+        if (o.avantPoints) o.avantPoints(gr, lignes);
+        gr.points(lignes.map(function (l) { return [l[o.graphe.x], l[o.graphe.y]]; }), { couleur: o.graphe.couleur });
+      }
+      if (o.surChange) o.surChange(lignes);
+    }
+    bAnnuler.addEventListener("click", function () { lignes.pop(); dessiner(); });
+    bVider.addEventListener("click", function () { lignes = []; dessiner(); });
+    dessiner();
+    return {
+      ajouter: function (l) { if (o.max && lignes.length >= o.max) lignes.shift(); lignes.push(l); dessiner(); },
+      lignes: function () { return lignes.slice(); },
+      vider: function () { lignes = []; dessiner(); },
+      redessiner: dessiner,
+      graphe: gr
+    };
+  }
+
+  /* Enregistreur : garde une ligne du releve tout seul, a intervalle regulier du temps SIMULE,
+     comme une centrale d'acquisition. La simulation appelle tic(t) a chaque pas de calcul.
+     o : { periodes: [{val, texte}], valeur, lire: function (tPlanifie, tLancement) -> ligne ou null, label } */
+  function enregistreur(parent, rel, o) {
+    var periode = o.valeur, actif = false, prochain = null, dernier = 0, debut = 0;
+    var zone = el("div", { classe: "enregistreur" });
+    choix(zone, { label: o.label || "Enregistrement automatique : une mesure toutes les", valeur: periode, options: o.periodes,
+      surChange: function (v) { periode = v; if (actif && prochain !== null) prochain = dernier + v; } });
+    var b = el("button", { type: "button", classe: "bouton principal", texte: "Lancer l'enregistrement" });
+    var lampe = el("span", { classe: "enr-lampe", "aria-hidden": "true" });
+    var info = el("span", { classe: "enr-info", "aria-live": "polite" });
+    zone.appendChild(el("div", { classe: "rangee" }, [b, lampe, info]));
+    $(parent).appendChild(zone);
+    function majInfo() {
+      var n = rel.lignes().length;
+      info.textContent = (actif ? "enregistre" : "à l'arrêt") + (n ? " · " + n + " mesure" + (n > 1 ? "s" : "") + " dans le tableau" : "");
+    }
+    function poser(oui) {
+      actif = oui; prochain = null;
+      b.textContent = oui ? "Arrêter l'enregistrement" : "Lancer l'enregistrement";
+      lampe.className = "enr-lampe" + (oui ? " actif" : "");
+      majInfo();
+      if (o.surEtat) o.surEtat(oui);
+    }
+    b.addEventListener("click", function () { poser(!actif); });
+    majInfo();
+    return {
+      tic: function (t) {
+        if (!actif) return;
+        if (prochain === null) { prochain = t; debut = t; }
+        if (t + 1e-9 < prochain) return;
+        var l = o.lire(prochain, debut);
+        dernier = prochain; prochain += periode;
+        if (prochain <= t) prochain = t + periode;      // un pas trop long : pas de rattrapage en rafale
+        if (l) {
+          rel.ajouter(l); majInfo();
+          lampe.classList.remove("eclair"); void lampe.offsetWidth; lampe.classList.add("eclair");
+        }
+      },
+      actif: function () { return actif; },
+      lancer: function () { if (!actif) poser(true); },
+      arreter: function () { if (actif) poser(false); },
+      majInfo: majInfo,
+      noeud: zone
+    };
+  }
+
+  /* Centrale d'acquisition : l'enregistreur, le tableau et la courbe reunis, comme sur un vrai
+     enregistreur de donnees. On choisit la periode, la duree, les voies du tableau, et deux voies
+     tracees en direct sur deux axes ; le tableau se copie vers un tableur ou s'enregistre en CSV.
+     Toutes les voies sont toujours enregistrees : masquer une colonne ne perd rien.
+     o : { temps: {cle, titre, unite, dec, echelle (s par unite)}, voies: [{cle, titre, unite, dec, cache}],
+           lire: function (tPlanifie, tDebut) -> ligne, periodes, valeur, durees, duree, trace: [cle1, cle2],
+           nomFichier, surChange } */
+  var COULEURS_VOIES = ["--accent", "--faux"];
+  function centrale(parent, o) {
+    var lignes = [], actif = false, prochain = null, debut = null, depart = 0, dernier = 0, tCourant = 0;
+    var periode = o.valeur, duree = o.duree || 0, TP = o.temps, voies = o.voies;
+    var montree = {}; voies.forEach(function (v) { montree[v.cle] = !v.cache; });
+    var trace = (o.trace || [voies[0].cle]).concat([null]).slice(0, 2);
+    var zone = el("div", { classe: "centrale" });
+    function css(nom) { return getComputedStyle(document.documentElement).getPropertyValue(nom).trim() || "#333"; }
+
+    /* Les reglages de l'acquisition */
+    var reg = el("div", { classe: "centrale-reglages" });
+    choix(reg, { label: "Une mesure toutes les", valeur: periode, options: o.periodes,
+      surChange: function (v) { periode = v; if (actif && prochain !== null) prochain = dernier + v; majInfo(); } });
+    if (o.durees) choix(reg, { label: "Arrêt automatique au bout de", valeur: duree, options: o.durees, surChange: function (v) { duree = v; majInfo(); } });
+    zone.appendChild(reg);
+    var bLancer = el("button", { type: "button", classe: "bouton principal", texte: "Lancer l'acquisition" });
+    var bMain = el("button", { type: "button", classe: "bouton", texte: "Une mesure maintenant" });
+    var lampe = el("span", { classe: "enr-lampe", "aria-hidden": "true" });
+    lampe.addEventListener("animationend", function () { lampe.classList.remove("eclair"); });
+    var info = el("span", { classe: "enr-info", "aria-live": "polite" });
+    zone.appendChild(el("div", { classe: "rangee" }, [bLancer, bMain, lampe, info]));
+
+    /* La courbe en direct : deux voies au choix, chacune sur son axe */
+    var selects = [0, 1].map(function (i) {
+      var s = el("select", { "aria-label": i ? "Courbe 2, axe de droite" : "Courbe 1, axe de gauche" });
+      if (i) s.appendChild(el("option", { value: "", texte: "aucune" }));
+      voies.forEach(function (v) { s.appendChild(el("option", { value: v.cle, texte: v.titre + (v.unite ? " (" + v.unite + ")" : "") })); });
+      s.value = trace[i] || "";
+      s.addEventListener("change", function () { trace[i] = s.value || null; dessinerCourbe(); });
+      return s;
+    });
+    var pastille = function (i) { return el("span", { classe: "centrale-pastille", style: "background:" + css(COULEURS_VOIES[i]) }); };
+    var pastilles = [pastille(0), pastille(1)];
+    zone.appendChild(el("div", { classe: "centrale-traces" }, [
+      el("label", null, [pastilles[0], el("span", { texte: "Courbe 1, à gauche" }), selects[0]]),
+      el("label", null, [pastilles[1], el("span", { texte: "Courbe 2, à droite" }), selects[1]])
+    ]));
+    var larg = 640, haut = 300, cv = el("canvas", { width: larg, height: haut, role: "img", "aria-label": "courbe de l'acquisition" });
+    zone.appendChild(el("div", { classe: "graphe" }, [cv]));
+    var ctx = cv.getContext("2d"), dpr = Math.max(1, window.devicePixelRatio || 1);
+    cv.width = larg * dpr; cv.height = haut * dpr; ctx.scale(dpr, dpr);
+
+    /* Les voies du tableau */
+    var puces = el("div", { classe: "boutons" });
+    voies.forEach(function (v) {
+      var b = el("button", { type: "button", texte: v.titre, "aria-pressed": montree[v.cle] ? "true" : "false" });
+      b.addEventListener("click", function () { montree[v.cle] = !montree[v.cle]; b.setAttribute("aria-pressed", montree[v.cle] ? "true" : "false"); dessinerTable(); });
+      puces.appendChild(b);
+    });
+    zone.appendChild(el("div", { classe: "choix" }, [el("div", { classe: "titre", texte: "Colonnes du tableau (tout est enregistré)" }), puces]));
+    var table = el("table", { classe: "releve" }), boite = el("div", { classe: "centrale-table" }, [table]);
+    zone.appendChild(boite);
+    var bCopier = el("button", { type: "button", classe: "bouton", texte: "Copier pour un tableur" });
+    var bCsv = el("button", { type: "button", classe: "bouton", texte: "Enregistrer en CSV" });
+    var bRetirer = el("button", { type: "button", classe: "bouton", texte: "Retirer la dernière" });
+    var bVider = el("button", { type: "button", classe: "bouton", texte: "Tout effacer" });
+    var retour = el("span", { classe: "enr-info", "aria-live": "polite" });
+    zone.appendChild(el("div", { classe: "rangee" }, [bCopier, bCsv, bRetirer, bVider, retour]));
+    $(parent).appendChild(zone);
+
+    function colonnes() { return [TP].concat(voies.filter(function (v) { return montree[v.cle]; })); }
+    var corps = null;
+    function ligneTable(l, cs) { var r = el("tr"); cs.forEach(function (c) { r.appendChild(el("td", { texte: texteVal(l, c) })); }); return r; }
+    function texteVal(l, c) { var x = l[c.cle]; return typeof x === "number" ? fr(x, c.dec === undefined ? 2 : c.dec) : (x === undefined || x === null ? "" : String(x)); }
+    function dessinerTable() {
+      var cs = colonnes(); table.innerHTML = "";
+      var tr = el("tr"); cs.forEach(function (c) { tr.appendChild(el("th", { texte: c.titre + (c.unite ? " (" + c.unite + ")" : "") })); });
+      table.appendChild(el("thead", null, [tr]));
+      corps = el("tbody");
+      if (!lignes.length) corps.appendChild(el("tr", { classe: "vide" }, [el("td", { colspan: cs.length, texte: "Aucune mesure pour l'instant : lance l'acquisition." })]));
+      lignes.forEach(function (l) { corps.appendChild(ligneTable(l, cs)); });
+      table.appendChild(corps);
+      boite.scrollTop = boite.scrollHeight;
+    }
+    function pasJoli(etendue, n) {
+      if (!(etendue > 0)) return 1;
+      var brut = etendue / n, p = Math.pow(10, Math.floor(Math.log10(brut))), r = brut / p;
+      return (r < 1.5 ? 1 : r < 3 ? 2 : r < 7 ? 5 : 10) * p;
+    }
+    function bornes(cle) {
+      var a = Infinity, b = -Infinity;
+      lignes.forEach(function (l) { var y = l[cle]; if (typeof y === "number" && isFinite(y)) { a = Math.min(a, y); b = Math.max(b, y); } });
+      if (!isFinite(a)) return null;
+      if (b - a < 1e-9) { var d = Math.max(Math.abs(a) * 0.05, 0.5); a -= d; b += d; }
+      var pas = pasJoli(b - a, 5); return { min: Math.floor(a / pas) * pas, max: Math.ceil(b / pas) * pas, pas: pas };
+    }
+    function decimales(pas) { return Math.max(0, -Math.floor(Math.log10(pas) + 1e-9)); }
+    function dessinerCourbe() {
+      var mg = 58, md = trace[1] ? 58 : 16, mh = 26, mb = 40, w = larg - mg - md, h = haut - mh - mb;
+      ctx.clearRect(0, 0, larg, haut); ctx.fillStyle = css("--carte"); ctx.fillRect(0, 0, larg, haut);
+      ctx.font = "12px system-ui, Segoe UI, Arial, sans-serif";
+      var xs = lignes.map(function (l) { return l[TP.cle]; }).filter(function (x) { return typeof x === "number"; });
+      var x0 = xs.length ? Math.min.apply(null, xs) : 0, x1 = xs.length ? Math.max.apply(null, xs) : 1;
+      if (x1 - x0 < 1e-9) x1 = x0 + 1;
+      var px = pasJoli(x1 - x0, 8); x0 = Math.floor(x0 / px) * px; x1 = Math.ceil(x1 / px) * px;
+      var X = function (x) { return mg + (x - x0) / (x1 - x0) * w; };
+      ctx.strokeStyle = css("--trait2"); ctx.lineWidth = 1; ctx.fillStyle = css("--encre2"); ctx.textAlign = "center"; ctx.textBaseline = "top";
+      for (var x = x0; x <= x1 + 1e-9; x += px) { ctx.beginPath(); ctx.moveTo(X(x), mh); ctx.lineTo(X(x), mh + h); ctx.stroke(); ctx.fillText(fr(x, decimales(px)), X(x), mh + h + 5); }
+      ctx.fillStyle = css("--encre"); ctx.font = "600 12px system-ui, Segoe UI, Arial, sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "bottom";
+      ctx.fillText(TP.titre + (TP.unite ? " (" + TP.unite + ")" : ""), larg - md, haut - 3);
+      trace.forEach(function (cle, i) {
+        if (!cle) return;
+        var v = voies.filter(function (q) { return q.cle === cle; })[0], b = bornes(cle), coul = css(COULEURS_VOIES[i]);
+        ctx.font = "600 12px system-ui, Segoe UI, Arial, sans-serif"; ctx.fillStyle = coul; ctx.textBaseline = "top";
+        ctx.textAlign = i ? "right" : "left"; ctx.fillText(v.titre + (v.unite ? " (" + v.unite + ")" : ""), i ? larg - 6 : 6, 5);
+        if (!b) return;
+        var Y = function (y) { return mh + h - (y - b.min) / (b.max - b.min) * h; };
+        ctx.font = "12px system-ui, Segoe UI, Arial, sans-serif"; ctx.textBaseline = "middle"; ctx.textAlign = i ? "left" : "right";
+        for (var y = b.min; y <= b.max + 1e-9; y += b.pas) {
+          if (!i) { ctx.strokeStyle = css("--trait2"); ctx.beginPath(); ctx.moveTo(mg, Y(y)); ctx.lineTo(mg + w, Y(y)); ctx.stroke(); }
+          ctx.fillText(fr(y, decimales(b.pas)), i ? mg + w + 6 : mg - 6, Y(y));
+        }
+        ctx.strokeStyle = coul; ctx.lineWidth = 2; ctx.beginPath();
+        var prem = true;
+        lignes.forEach(function (l) { var yy = l[cle], xx = l[TP.cle]; if (typeof yy !== "number" || !isFinite(yy)) { prem = true; return; }
+          if (prem) { ctx.moveTo(X(xx), Y(yy)); prem = false; } else ctx.lineTo(X(xx), Y(yy)); });
+        ctx.stroke();
+        ctx.fillStyle = coul;
+        if (lignes.length <= 80) lignes.forEach(function (l) { var yy = l[cle]; if (typeof yy === "number" && isFinite(yy)) { ctx.beginPath(); ctx.arc(X(l[TP.cle]), Y(yy), 3, 0, 2 * Math.PI); ctx.fill(); } });
+      });
+      ctx.strokeStyle = css("--encre"); ctx.lineWidth = 1.2; ctx.strokeRect(mg, mh, w, h);
+      pastilles[1].style.visibility = trace[1] ? "visible" : "hidden";
+    }
+    function dessiner() { dessinerTable(); dessinerCourbe(); majInfo(); if (o.surChange) o.surChange(lignes); }
+    /* A chaque mesure, une ligne de plus au tableau et une courbe redessinee au plus quatre fois par seconde :
+       a grande vitesse, refaire tout le tableau a chaque point finit par figer la page. */
+    var dernierTrace = 0, traceEnAttente = null;
+    var suivre = true;      // le tableau defile avec les mesures, sauf si on est remonte le lire
+    boite.addEventListener("scroll", function () { suivre = boite.scrollTop + boite.clientHeight >= boite.scrollHeight - 8; });
+    function tracer() { dernierTrace = Date.now(); dessinerCourbe(); if (suivre) boite.scrollTop = boite.scrollHeight; }
+    function courbePlusTard() {
+      if (Date.now() - dernierTrace > 250) { tracer(); return; }
+      if (!traceEnAttente) traceEnAttente = setTimeout(function () { traceEnAttente = null; tracer(); }, 260);
+    }
+    function ecoule() { return Math.max(0, dernier - depart); }
+    function texteDuree(s) { return s >= 3600 ? fr(s / 3600, s % 3600 ? 1 : 0) + " h" : s >= 60 ? fr(s / 60, s % 60 ? 1 : 0) + " min" : fr(s, 0) + " s"; }
+    function majInfo() {
+      var n = lignes.length;
+      info.textContent = (actif ? "acquisition en cours" : "à l'arrêt") + (n ? " · " + n + " mesure" + (n > 1 ? "s" : "") : "") +
+        (actif && duree ? " · " + texteDuree(ecoule()) + " sur " + texteDuree(duree) : "");
+    }
+    function poser(oui) {
+      actif = oui; prochain = null;
+      bLancer.textContent = oui ? "Arrêter l'acquisition" : "Lancer l'acquisition";
+      lampe.className = "enr-lampe" + (oui ? " actif" : "");
+      majInfo(); if (o.surEtat) o.surEtat(oui);
+    }
+    function ajouter(l) {
+      if (!l) return;
+      if (l[TP.cle] === undefined) l[TP.cle] = (tCourant - (debut === null ? 0 : debut)) / (TP.echelle || 1);
+      lignes.push(l);
+      if (o.max && lignes.length > o.max) { lignes.shift(); dessinerTable(); }
+      else if (corps) {
+        if (lignes.length === 1) dessinerTable();
+        else corps.appendChild(ligneTable(l, colonnes()));
+      }
+      courbePlusTard(); majInfo(); if (o.surChange) o.surChange(lignes);
+      lampe.classList.remove("eclair"); lampe.classList.add("eclair");
+    }
+    function versTexte(sep, decimale) {
+      var cs = colonnes(), lignesTxt = [cs.map(function (c) { return c.titre + (c.unite ? " (" + c.unite + ")" : ""); }).join(sep)];
+      lignes.forEach(function (l) { lignesTxt.push(cs.map(function (c) { var x = l[c.cle]; return typeof x === "number" ? x.toFixed(c.dec === undefined ? 2 : c.dec).replace(".", decimale) : (x || ""); }).join(sep)); });
+      return lignesTxt.join("\r\n");
+    }
+    function dire(t) { retour.textContent = t; setTimeout(function () { if (retour.textContent === t) retour.textContent = ""; }, 4000); }
+    /* Relancer apres un arret continue la meme serie, sur le meme temps ; tout effacer la remet a zero. */
+    function lancer() { if (!lignes.length) debut = null; poser(true); }
+    bLancer.addEventListener("click", function () { if (actif) poser(false); else lancer(); });
+    bMain.addEventListener("click", function () { if (debut === null) debut = tCourant; ajouter(o.lire(tCourant, debut)); });
+    bRetirer.addEventListener("click", function () { lignes.pop(); if (!lignes.length && !actif) debut = null; dessiner(); });
+    bVider.addEventListener("click", function () { lignes = []; if (!actif) debut = null; dessiner(); });
+    bCopier.addEventListener("click", function () {
+      var t = versTexte("\t", ",");
+      function secours() {
+        var ta = el("textarea", { style: "position:fixed;left:-9999px;top:0" }); ta.value = t; document.body.appendChild(ta); ta.select();
+        var ok = false; try { ok = document.execCommand("copy"); } catch (x) { ok = false; }
+        document.body.removeChild(ta); dire(ok ? "Copié : colle-le dans le tableur." : "La copie est refusée par ce navigateur : enregistre en CSV.");
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function () { dire("Copié : colle-le dans le tableur."); }, secours);
+      else secours();
+    });
+    bCsv.addEventListener("click", function () {
+      var blob = new Blob(["﻿" + versTexte(";", ",")], { type: "text/csv;charset=utf-8" });
+      var a = el("a", { href: URL.createObjectURL(blob), download: o.nomFichier || "acquisition.csv" });
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+      dire("Fichier CSV enregistré, séparateur point-virgule.");
+    });
+    dessiner();
+    return {
+      tic: function (t) {
+        tCourant = t;
+        if (!actif) return;
+        if (prochain === null) { prochain = t; if (debut === null) debut = t; depart = t; }
+        if (t + 1e-9 < prochain) return;
+        var l = o.lire(prochain, debut);
+        dernier = prochain; prochain += periode;
+        if (prochain <= t) prochain = t + periode;
+        if (l) { if (l[TP.cle] === undefined) l[TP.cle] = (dernier - debut) / (TP.echelle || 1); ajouter(l); }
+        if (duree && dernier - depart >= duree - 1e-9) poser(false);
+        else majInfo();
+      },
+      ajouter: ajouter, lignes: function () { return lignes.slice(); }, vider: function () { lignes = []; if (!actif) debut = null; dessiner(); },
+      lancer: function () { if (!actif) lancer(); }, arreter: function () { if (actif) poser(false); },
+      actif: function () { return actif; }, majInfo: majInfo, redessiner: dessiner,
+      tracer: function (c1, c2) { trace = [c1 || trace[0], c2 === undefined ? trace[1] : c2]; selects[0].value = trace[0]; selects[1].value = trace[1] || ""; dessinerCourbe(); },
+      periode: function () { return periode; }, noeud: zone
+    };
+  }
+
+  /* Molette posee sur la scene SVG : on la tourne au doigt (glisser vers le haut ou la droite
+     pour monter), a la molette de la souris ou aux fleches du clavier.
+     o : { x, y, r, zone, min, max, pas, valeur, dec, unite, label, surChange, format } */
+  function molette(parent, o) {
+    var v = o.valeur, r = o.r || 17, dec = o.dec === undefined ? 0 : o.dec;
+    var g = svg("g", { "class": "molette", transform: "translate(" + o.x + " " + o.y + ")", tabindex: "0", role: "slider",
+      "aria-label": o.label || "", "aria-valuemin": o.min, "aria-valuemax": o.max }, parent);
+    svg("circle", { r: o.zone || 46, fill: "transparent" }, g);
+    for (var k = 0; k <= 10; k++) {
+      var a = (-135 + 27 * k) * Math.PI / 180;
+      svg("line", { x1: Math.sin(a) * (r + 3), y1: -Math.cos(a) * (r + 3), x2: Math.sin(a) * (r + (k % 5 ? 6 : 8)), y2: -Math.cos(a) * (r + (k % 5 ? 6 : 8)), "class": "molette-graduation" }, g);
+    }
+    svg("circle", { r: r, "class": "molette-corps" }, g);
+    var index = svg("line", { x1: 0, y1: -r * 0.25, x2: 0, y2: -r + 3, "class": "molette-index" }, g);
+    var titre = o.label ? svg("text", { x: 0, y: -r - 12, "text-anchor": "middle", "class": "molette-titre", texte: o.titreCourt || o.label }, g) : null;
+    var val = svg("text", { x: 0, y: r + 19, "text-anchor": "middle", "class": "molette-val" }, g);
+    function maj() {
+      var f = (v - o.min) / (o.max - o.min);
+      index.setAttribute("transform", "rotate(" + (-135 + 270 * f) + ")");
+      val.textContent = o.format ? o.format(v) : fr(v, dec) + (o.unite ? " " + o.unite : "");
+      g.setAttribute("aria-valuenow", v); g.setAttribute("aria-valuetext", val.textContent);
+    }
+    function poser(x, silencieux) {
+      var p = o.pas || 1; x = borne(Math.round(x / p) * p, o.min, o.max); x = Number(x.toFixed(6));
+      var change = x !== v; v = x; maj();
+      if (change && !silencieux && o.surChange) o.surChange(v);
+    }
+    g.addEventListener("touchstart", function (e) { e.preventDefault(); }, { passive: false });
+    g.addEventListener("pointerdown", function (e) {
+      e.preventDefault(); try { g.setPointerCapture(e.pointerId); } catch (x) { /* evenement de synthese */ }
+      var x0 = e.clientX, y0 = e.clientY, v0 = v, course = o.course || 160;
+      g.classList.add("tourne");
+      function mv(e2) { poser(v0 + ((e2.clientX - x0) - (e2.clientY - y0)) / course * (o.max - o.min)); }
+      function fin() { g.classList.remove("tourne"); g.removeEventListener("pointermove", mv); g.removeEventListener("pointerup", fin); g.removeEventListener("pointercancel", fin); }
+      g.addEventListener("pointermove", mv); g.addEventListener("pointerup", fin); g.addEventListener("pointercancel", fin);
+    });
+    g.addEventListener("wheel", function (e) { e.preventDefault(); poser(v + (e.deltaY < 0 ? 1 : -1) * (o.pas || 1)); }, { passive: false });
+    g.addEventListener("keydown", function (e) {
+      var p = o.pas || 1;
+      if (e.key === "ArrowUp" || e.key === "ArrowRight") { poser(v + p); e.preventDefault(); }
+      if (e.key === "ArrowDown" || e.key === "ArrowLeft") { poser(v - p); e.preventDefault(); }
+    });
+    maj();
+    return { get: function () { return v; }, set: poser, noeud: g, montrer: function (oui) { g.style.display = oui ? "" : "none"; } };
+  }
+
+  /* Defi : une valeur a trouver. La page dit juste ou pas encore, et rappelle la methode,
+     jamais la valeur attendue. attendu : nombre ou fonction qui le calcule au moment du clic. */
+  function defi(parent, o) {
+    var inp = el("input", { type: "text", inputmode: "decimal", "aria-label": o.question });
+    var b = el("button", { type: "button", classe: "bouton", texte: "Vérifier" });
+    var retour = el("div", { classe: "retour", "aria-live": "polite" });
+    var bloc = el("div", { classe: "defi" }, [el("p", { html: o.question }), el("div", { classe: "saisie" }, [inp, o.unite ? el("span", { texte: o.unite }) : null, b]), retour]);
+    function verifier() {
+      var v = lire(inp.value), a = typeof o.attendu === "function" ? o.attendu() : o.attendu;
+      retour.className = "retour";
+      if (!isFinite(v)) { retour.textContent = "Écris un nombre."; return; }
+      var tol = o.tolerance === undefined ? 0.05 : o.tolerance;
+      var ok = Math.abs(v - a) <= Math.abs(a) * tol + (o.toleranceAbsolue || 0);
+      retour.className = "retour " + (ok ? "juste" : "faux");
+      retour.innerHTML = ok ? "Juste." : "Pas encore. <span class=\"methode\">" + (o.methode || "") + "</span>";
+      if (o.surReponse) o.surReponse(ok, v);
+    }
+    b.addEventListener("click", verifier);
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") verifier(); });
+    $(parent).appendChild(bloc);
+    return { noeud: bloc, effacer: function () { inp.value = ""; retour.textContent = ""; retour.className = "retour"; } };
+  }
+
+  /* Boucle d'animation : f(dt en secondes). S'arrete seule quand l'onglet est cache.
+     Sim.avancer(s) fait tourner les boucles a la main : c'est la porte des essais, dans un
+     navigateur qui ne dessine pas (onglet cache, capture sans affichage). */
+  var boucles = [];
+  function avancer(secondes, pasDt) {
+    pasDt = pasDt || 0.05;
+    for (var t = 0; t < secondes - 1e-9; t += pasDt) boucles.forEach(function (f) { f(pasDt); });
+  }
+  function animer(f) {
+    boucles.push(f);
+    var avant = null, actif = true, id = null;
+    function pas(t) {
+      if (avant === null) avant = t;
+      var dt = Math.min(0.1, (t - avant) / 1000); avant = t;
+      if (actif) f(dt);
+      id = requestAnimationFrame(pas);
+    }
+    id = requestAnimationFrame(pas);
+    return { pause: function () { actif = false; }, reprise: function () { actif = true; avant = null; }, actif: function () { return actif; } };
+  }
+
+  /* Petit utilitaire SVG. */
+  var NS = "http://www.w3.org/2000/svg";
+  function svg(tag, attrs, parent) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) { if (k === "texte") n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]); }
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+
+  return { fr: fr, lire: lire, el: el, $: $, borne: borne, mesure: mesure, gauss: gauss, onglets: onglets, curseur: curseur, choix: choix,
+    afficheur: afficheur, graphe: graphe, releve: releve, enregistreur: enregistreur, centrale: centrale, molette: molette,
+    defi: defi, animer: animer, avancer: avancer, svg: svg };
+})();
+
+</script>
+</head>
+<body>
+<div class="page">
+<header class="tete">
+<div class="surtitre">Physique-chimie · simulation du TP SIM-08</div>
+<h1>Le réseau triphasé</h1>
+<p class="chapeau">Trois tensions sortent du même générateur, décalées dans le temps. Mesure ce décalage à l'oscilloscope, ou avec trois récepteurs et un chronomètre, puis compare la tension entre une phase et le neutre à celle entre deux phases.</p>
+</header>
+<style>
+.oscillo{background:#0f1915;border:1px solid var(--trait2);border-radius:var(--r);overflow:hidden}
+.oscillo svg{display:block;width:100%;height:auto}
+.sous-titre{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--encre2);font-weight:650;border-top:1px solid var(--trait2);padding-top:10px}
+.groupe-curseurs[hidden],.afficheurs[hidden]{display:none}
+.afficheurs.serres{grid-template-columns:repeat(auto-fit,minmax(96px,1fr))}
+.afficheurs.serres .val{font-size:1.15rem}
+.pastille-voie{display:inline-block;width:.8em;height:.8em;border-radius:50%;margin:0 .25em 0 .5em;vertical-align:-.05em}
+.fresnel{max-width:520px}
+</style>
+
+<div class="carte">
+  <h2><span class="num">1</span>Choisis la source</h2>
+  <p class="consigne">Le réseau est toujours à 50 Hz. Seul le générateur de labo descend à 0,1 Hz : un tour complet dure alors dix secondes.</p>
+  <div class="commandes" id="source"></div>
+  <p class="alerte" id="etatSource" style="margin-bottom:0">Générateur de labo, très basse tension, 50 Hz.</p>
+</div>
+
+<nav class="onglets" id="onglets" aria-label="Les deux protocoles">
+  <button type="button" data-vue="vueA">Protocole A · l'oscilloscope</button>
+  <button type="button" data-vue="vueB">Protocole B · lampes, DEL et voltmètre</button>
+</nav>
+
+<section class="vue" id="vueA">
+  <div class="plan">
+    <div class="carte">
+      <h2><span class="num">2</span>L'oscilloscope à quatre voies</h2>
+      <div class="oscillo"><svg id="ecranA" role="img" aria-label="Écran de l'oscilloscope"></svg></div>
+      <p class="legende" id="legendeVoies"></p>
+    </div>
+    <div class="carte">
+      <h2><span class="num">3</span>Les réglages</h2>
+      <div class="commandes" id="reglagesA"></div>
+      <div class="commandes" style="margin-top:14px">
+        <div class="groupe-curseurs" id="curseursTension"></div>
+        <div class="groupe-curseurs" id="curseursTemps"></div>
+        <div class="afficheurs serres" id="lecturesA"></div>
+        <button type="button" class="bouton" id="garderA">Garder cette lecture dans le tableau</button>
+      </div>
+    </div>
+  </div>
+  <div class="carte">
+    <h2><span class="num">4</span>Le relevé des lectures</h2>
+    <p class="consigne">Une ligne par lecture : note sur ta feuille ce que mesure chaque écart.</p>
+    <div id="releveA"></div>
+  </div>
+  <div class="carte">
+    <h2><span class="num">5</span>Vérifie tes lectures</h2>
+    <p class="consigne">Calcule avec <b>tes</b> lectures, puis vérifie. Le déphasage, en degrés, vaut Δt ÷ T × 360.</p>
+    <div class="commandes" id="defisA"></div>
+  </div>
+</section>
+
+<section class="vue" id="vueB">
+  <div class="plan">
+    <div class="carte">
+      <h2><span class="num">2</span>Le montage : trois récepteurs et un voltmètre</h2>
+      <div class="scene"><svg id="schemaB" viewBox="0 0 640 300" role="img" aria-label="Trois récepteurs branchés entre chaque phase et le neutre, et un voltmètre"></svg></div>
+      <p class="legende">Chaque récepteur est branché entre une phase et le neutre. Les pointes du voltmètre se posent sur les conducteurs choisis.</p>
+    </div>
+    <div class="carte">
+      <h2><span class="num">3</span>Les instruments</h2>
+      <div class="commandes" id="reglagesB"></div>
+      <div class="commandes" style="margin-top:14px">
+        <div class="afficheurs" id="instrumentsB"></div>
+        <div class="rangee" id="tops">
+          <button type="button" class="bouton principal" data-top="1">Top : 1</button>
+          <button type="button" class="bouton principal" data-top="2">Top : 2</button>
+          <button type="button" class="bouton principal" data-top="3">Top : 3</button>
+        </div>
+        <div class="rangee">
+          <button type="button" class="bouton" id="razChrono">Remettre le chronomètre à zéro</button>
+          <button type="button" class="bouton" id="garderV">Garder la lecture du voltmètre</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="carte">
+    <h2><span class="num">4</span>Le relevé</h2>
+    <p class="consigne">Appuie sur « Top » au moment où le récepteur s'allume : le chronomètre garde l'instant.</p>
+    <div id="releveTops"></div>
+    <div id="releveV" style="margin-top:14px"></div>
+  </div>
+  <div class="carte">
+    <h2><span class="num">5</span>Vérifie tes mesures</h2>
+    <div class="commandes" id="defisB"></div>
+  </div>
+</section>
+
+<div class="carte">
+  <h2><span class="num">6</span>Le diagramme de Fresnel</h2>
+  <p class="consigne">Chaque tension est un vecteur qui tourne. Sa projection sur l'axe vertical donne la valeur de la tension à cet instant.</p>
+  <div class="scene fresnel"><svg id="fresnel" viewBox="0 0 420 300" role="img" aria-label="Diagramme de Fresnel des trois tensions simples"></svg></div>
+  <p class="legende" id="noteFresnel"></p>
+  <details class="modele">
+    <summary>Ce que la simulation simplifie</summary>
+    <ul>
+      <li>Les trois tensions sont des sinusoïdes parfaites, de même valeur efficace, décalées d'exactement un tiers de période. Le vrai réseau varie de quelques pour cent et n'est jamais une sinusoïde parfaite.</li>
+      <li>Le générateur de labo délivre 6 V efficaces par phase : une valeur supposée, à relever sur l'appareil.</li>
+      <li>Au labo, on ne branche jamais le réseau sur l'oscilloscope : la simulation l'affiche, un vrai montage demanderait des sondes différentielles.</li>
+      <li>Le voltmètre calcule la valeur efficace sur quelques dixièmes de seconde : à 0,1 Hz, sa lecture n'a plus de sens.</li>
+      <li>Un récepteur suit sa tension sans retard : le filament d'une vraie lampe garde un peu de chaleur, et s'éteint moins franchement.</li>
+    </ul>
+  </details>
+</div>
+
+<script>
+(function () {
+  /* ================= Physique : fonctions pures, separees du dessin ================= */
+  var SOURCES = { reseau: { V: 230, seuilDEL: 5, nom: "réseau du bâtiment" }, gbf: { V: 6, seuilDEL: 1.8, nom: "générateur de labo" } };
+  var PHASES = ["L1", "L2", "L3"];
+  /* Valeurs instantanees des trois tensions simples (phase - neutre) : v_k = V√2 sin(wt - (k-1)·2π/3). */
+  function potentiels(t, V, f) {
+    var w = 2 * Math.PI * f * t, a = V * Math.SQRT2;
+    return { L1: a * Math.sin(w), L2: a * Math.sin(w - 2 * Math.PI / 3), L3: a * Math.sin(w - 4 * Math.PI / 3), N: 0 };
+  }
+  function tension(t, V, f, a, b) { var p = potentiels(t, V, f); return p[a] - p[b]; }
+
+  /* ================= Etat ================= */
+  var etat = { src: "gbf", f: 50, t: 0, chrono: 0, onglet: "vueA",
+               voies: { v1: true, v2: true, v3: true, u: false }, composee: "L1-L2", vdiv: 5, tdiv: 0.002, curseurs: "aucun",
+               recepteurs: "lampes", pV: "L1", pCOM: "N", m1: 0, m2: 0, eclat: [0, 0, 0] };
+  (function lireAdresse() {
+    (location.hash || "").replace(/^#/, "").split("&").forEach(function (kv) {
+      var p = kv.split("="), k = p[0], v = decodeURIComponent(p[1] || "");
+      if (k === "source" && (v === "reseau" || v === "gbf")) etat.src = v;
+      if (k === "f" && v === "0.1") etat.f = 0.1;
+      if (k === "onglet" && v === "B") etat.onglet = "vueB";
+      if (k === "u" && v === "oui") etat.voies.u = true;
+      if (k === "v" && +v > 0) etat.vdiv = +v;
+      if (k === "t" && +v > 0) etat.tdiv = +v / 1000;
+      if (k === "recepteurs" && v === "del") etat.recepteurs = "del";
+      if (k === "curseurs" && (v === "temps" || v === "tension")) etat.curseurs = v;
+    });
+    if (etat.src === "reseau") etat.f = 50;
+  })();
+  function V() { return SOURCES[etat.src].V; }
+  var svg = Sim.svg;
+  function css(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  var COUL = { v1: "#f2c94c", v2: "#56ccf2", v3: "#e98ac1", u: "#8fe08a" };
+  var FILS = { L1: "#8b5a2b", L2: "#1b1b1b", L3: "#8d9299", N: "#2f6fd0" };
+
+  /* ================= Source ================= */
+  var S0 = document.getElementById("source");
+  var cSrc = Sim.choix(S0, { label: "Source", valeur: etat.src,
+    options: [{ val: "reseau", texte: "Réseau du bâtiment · 230 V" }, { val: "gbf", texte: "Générateur de labo · très basse tension" }],
+    surChange: function (v) { etat.src = v; if (v === "reseau" && etat.f !== 50) { etat.f = 50; cF.set(50, true); } majSource(); } });
+  var cF = Sim.choix(S0, { label: "Fréquence", valeur: etat.f,
+    options: [{ val: 50, texte: "50 Hz" }, { val: 0.1, texte: "0,1 Hz" }],
+    surChange: function (v) {
+      if (v === 0.1 && etat.src === "reseau") { cF.set(50, true); message("Le réseau est à 50 Hz, et on ne le ralentit pas : choisis le générateur de labo pour descendre à 0,1 Hz."); return; }
+      etat.f = v; majSource(); } });
+  function message(t) { document.getElementById("etatSource").textContent = t; }
+  function majSource() {
+    etat.t = 0; etat.chrono = 0; calerVolt();
+    message(SOURCES[etat.src].nom.charAt(0).toUpperCase() + SOURCES[etat.src].nom.slice(1) + (etat.src === "gbf" ? ", très basse tension" : ", 230 V entre phase et neutre") + ", " + (etat.f === 50 ? "50 Hz." : "0,1 Hz : une période dure dix secondes."));
+    dessinerSchemaB(); dessinerEcranA(); dessinerFresnel();
+  }
+
+  /* ================= L'oscilloscope ================= */
+  var ECRAN = { D: 44, NX: 10, NY: 8, X0: 26, Y0: 12 };
+  function Oscillo(el) {
+    var E = ECRAN, W = E.NX * E.D, H = E.NY * E.D, LW = E.X0 + W + 14, LH = E.Y0 + H + 40;
+    el.setAttribute("viewBox", "0 0 " + LW + " " + LH);
+    var clipId = "clip" + Math.random().toString(36).slice(2, 7);
+    svg("clipPath", { id: clipId }, el).appendChild(svg("rect", { x: E.X0, y: E.Y0, width: W, height: H }));
+    var grille = svg("g", {}, el);
+    for (var i = 0; i <= E.NX; i++) svg("line", { x1: E.X0 + i * E.D, y1: E.Y0, x2: E.X0 + i * E.D, y2: E.Y0 + H, stroke: "#9fc2b1", "stroke-opacity": i % E.NX ? 0.28 : 0.55 }, grille);
+    for (var j = 0; j <= E.NY; j++) svg("line", { x1: E.X0, y1: E.Y0 + j * E.D, x2: E.X0 + W, y2: E.Y0 + j * E.D, stroke: "#9fc2b1", "stroke-opacity": j % E.NY ? 0.28 : 0.55 }, grille);
+    for (var k = 1; k < E.NX * 5; k++) svg("line", { x1: E.X0 + k * E.D / 5, y1: E.Y0 + H / 2 - 3, x2: E.X0 + k * E.D / 5, y2: E.Y0 + H / 2 + 3, stroke: "#9fc2b1", "stroke-opacity": 0.5 }, grille);
+    for (var q = 1; q < E.NY * 5; q++) svg("line", { x1: E.X0 + W / 2 - 3, y1: E.Y0 + q * E.D / 5, x2: E.X0 + W / 2 + 3, y2: E.Y0 + q * E.D / 5, stroke: "#9fc2b1", "stroke-opacity": 0.5 }, grille);
+    var gTr = svg("g", { "clip-path": "url(#" + clipId + ")" }, el), gMarq = svg("g", {}, el), gCur = svg("g", {}, el), gTxt = svg("g", {}, el);
+    function X(div) { return E.X0 + div * E.D; }
+    function Y(div) { return E.Y0 + H / 2 - div * E.D; }
+    return {
+      X: X, Y: Y,
+      tracer: function (traces) {
+        gTr.innerHTML = ""; gMarq.innerHTML = "";
+        traces.forEach(function (tr) {
+          if (tr.bande) {
+            var h = Math.min(4.3, tr.bande);
+            svg("rect", { x: X(0), y: Y(h), width: X(10) - X(0), height: Y(-h) - Y(h), fill: tr.couleur, "fill-opacity": 0.22, stroke: tr.couleur, "stroke-width": 1.5 }, gTr);
+          } else if (tr.pts.length > 1) {
+            var d = tr.pts.map(function (p, i) { return (i ? "L" : "M") + X(p[0]).toFixed(1) + " " + Y(Sim.borne(p[1], -4.3, 4.3)).toFixed(1); }).join(" ");
+            svg("path", { d: d, fill: "none", stroke: tr.couleur, "stroke-width": 2, "stroke-linejoin": "round" }, gTr);
+          }
+        });
+        svg("path", { d: "M" + (E.X0 - 2) + " " + Y(0) + " l-9 -6 l0 12 Z", fill: "#cfe3d8" }, gMarq);
+        svg("text", { x: E.X0 - 17, y: Y(0) + 4, "font-size": 11, "text-anchor": "middle", fill: "#0f1915", "font-weight": 700, texte: "0" }, gMarq);
+      },
+      curseurs: function (c) {
+        gCur.innerHTML = "";
+        if (!c) return;
+        [c.a, c.b].forEach(function (v, n) {
+          var at = c.type === "tension" ? { x1: E.X0, x2: E.X0 + W, y1: Y(v), y2: Y(v) } : { x1: X(v), x2: X(v), y1: E.Y0, y2: E.Y0 + H };
+          at.stroke = "#f4f4f0"; at["stroke-width"] = 1.3; at["stroke-dasharray"] = "6 4";
+          svg("line", at, gCur);
+          var lx = c.type === "tension" ? E.X0 + W - 4 : X(v) + 4, ly = c.type === "tension" ? Y(v) - 4 : E.Y0 + 14 + 14 * n;
+          svg("text", { x: lx, y: ly, "font-size": 11, "text-anchor": c.type === "tension" ? "end" : "start", fill: "#f4f4f0", texte: String(n + 1) }, gCur);
+        });
+      },
+      legende: function (morceaux) {
+        gTxt.innerHTML = "";
+        var x = E.X0;
+        morceaux.forEach(function (m) {
+          svg("text", { x: x, y: E.Y0 + H + 26, "font-size": 13, fill: m.couleur || "#cfe3d8", "font-family": "Consolas, monospace", texte: m.texte }, gTxt);
+          x += 11 + 7.3 * m.texte.length;
+        });
+      }
+    };
+  }
+  var ecranA = Oscillo(document.getElementById("ecranA"));
+
+  /* ================= Protocole A : reglages ================= */
+  var RA = document.getElementById("reglagesA");
+  (function bascules() {
+    var zone = Sim.el("div", { classe: "boutons", role: "group", "aria-label": "Voies affichées" });
+    [["v1", "v1"], ["v2", "v2"], ["v3", "v3"], ["u", "tension composée"]].forEach(function (o) {
+      var b = Sim.el("button", { type: "button", texte: o[1] });
+      b.setAttribute("aria-pressed", etat.voies[o[0]] ? "true" : "false");
+      b.addEventListener("click", function () { etat.voies[o[0]] = !etat.voies[o[0]]; b.setAttribute("aria-pressed", etat.voies[o[0]] ? "true" : "false"); dessinerEcranA(); });
+      zone.appendChild(b);
+    });
+    RA.appendChild(Sim.el("div", { classe: "choix" }, [Sim.el("div", { classe: "titre", texte: "Voies affichées, appuie pour montrer ou cacher" }), zone]));
+  })();
+  Sim.choix(RA, { label: "Voie 4 : la tension composée", valeur: etat.composee,
+    options: [{ val: "L1-L2", texte: "u12, entre L1 et L2" }, { val: "L2-L3", texte: "u23" }, { val: "L3-L1", texte: "u31" }],
+    surChange: function (v) { etat.composee = v; majLegende(); dessinerEcranA(); dessinerFresnel(); } });
+  RA.appendChild(Sim.el("div", { classe: "sous-titre", texte: "Les réglages de l'écran" }));
+  Sim.choix(RA, { label: "Sensibilité verticale, les quatre voies", valeur: etat.vdiv,
+    options: [1, 2, 5, 10, 20, 50, 100, 200].map(function (v) { return { val: v, texte: v + " V/div" }; }),
+    surChange: function (v) { etat.vdiv = v; dessinerEcranA(); } });
+  Sim.choix(RA, { label: "Balayage", valeur: etat.tdiv,
+    options: [[0.001, "1 ms/div"], [0.002, "2 ms/div"], [0.005, "5 ms/div"], [0.01, "10 ms/div"], [1, "1 s/div"], [2, "2 s/div"]].map(function (o) { return { val: o[0], texte: o[1] }; }),
+    surChange: function (v) { etat.tdiv = v; dessinerEcranA(); } });
+  Sim.choix(RA, { label: "Curseurs", valeur: etat.curseurs,
+    options: [{ val: "aucun", texte: "Aucun" }, { val: "tension", texte: "Tension" }, { val: "temps", texte: "Temps" }],
+    surChange: function (v) { etat.curseurs = v; montrerCurseurs(); dessinerEcranA(); } });
+  var gTension = document.getElementById("curseursTension"), gTemps = document.getElementById("curseursTemps");
+  var cY1 = Sim.curseur(gTension, { label: "Curseur de tension 1", min: -4, max: 4, pas: 0.02, valeur: 2, unite: "div", dec: 2, surChange: function () { dessinerEcranA(); } });
+  var cY2 = Sim.curseur(gTension, { label: "Curseur de tension 2", min: -4, max: 4, pas: 0.02, valeur: 0, unite: "div", dec: 2, surChange: function () { dessinerEcranA(); } });
+  var cX1 = Sim.curseur(gTemps, { label: "Curseur de temps 1", min: 0, max: 10, pas: 0.02, valeur: 0, unite: "div", dec: 2, surChange: function () { dessinerEcranA(); } });
+  var cX2 = Sim.curseur(gTemps, { label: "Curseur de temps 2", min: 0, max: 10, pas: 0.02, valeur: 5, unite: "div", dec: 2, surChange: function () { dessinerEcranA(); } });
+  var LA = document.getElementById("lecturesA");
+  var aC1 = Sim.afficheur(LA, { nom: "Curseur 1" }), aC2 = Sim.afficheur(LA, { nom: "Curseur 2" }), aDC = Sim.afficheur(LA, { nom: "Écart" });
+  function montrerCurseurs() { gTension.hidden = etat.curseurs !== "tension"; gTemps.hidden = etat.curseurs !== "temps"; LA.hidden = etat.curseurs === "aucun"; }
+  function enMs() { return etat.tdiv < 0.5; }
+  function lectureCurseurs() {
+    if (etat.curseurs === "tension") {
+      var y1 = cY1.get() * etat.vdiv, y2 = cY2.get() * etat.vdiv, dec = etat.vdiv < 5 ? 2 : (etat.vdiv < 50 ? 1 : 0);
+      return { a: y1, b: y2, d: y1 - y2, u: "V", dec: dec };
+    }
+    if (etat.curseurs === "temps") {
+      var k = enMs() ? 1000 : 1, t1 = cX1.get() * etat.tdiv * k, t2 = cX2.get() * etat.tdiv * k;
+      return { a: t1, b: t2, d: t2 - t1, u: enMs() ? "ms" : "s", dec: enMs() ? 2 : 2 };
+    }
+    return null;
+  }
+  function nomComposee() { return { "L1-L2": "u12", "L2-L3": "u23", "L3-L1": "u31" }[etat.composee]; }
+  function majLegende() {
+    var l = document.getElementById("legendeVoies");
+    l.innerHTML = "";
+    [["v1", "voie 1 : v1, entre L1 et N"], ["v2", "voie 2 : v2, entre L2 et N"], ["v3", "voie 3 : v3, entre L3 et N"], ["u", "voie 4 : " + nomComposee() + ", entre deux phases"]].forEach(function (o) {
+      l.appendChild(Sim.el("span", { classe: "pastille-voie", style: "background:" + COUL[o[0]] }));
+      l.appendChild(document.createTextNode(o[1] + " "));
+    });
+  }
+  function dessinerEcranA() {
+    var n = 500, S = 10 * etat.tdiv, T = 1 / etat.f, Vv = V(), traces = [], debut, fin;
+    var couples = { v1: ["L1", "N"], v2: ["L2", "N"], v3: ["L3", "N"], u: etat.composee.split("-") };
+    var mode;
+    if (etat.f === 50) mode = S >= 40 * T ? "bande" : "fixe";
+    else mode = S >= T ? "balayage" : "defile";
+    if (mode === "fixe") { debut = 0; fin = S; }
+    else if (mode === "balayage") { debut = Math.floor(etat.t / S) * S; fin = etat.t; }
+    else { debut = etat.t - S; fin = etat.t; }
+    ["v1", "v2", "v3", "u"].forEach(function (c) {
+      if (!etat.voies[c]) return;
+      var ab = couples[c];
+      if (mode === "bande") { traces.push({ bande: Vv * Math.SQRT2 * (c === "u" ? Math.sqrt(3) : 1) / etat.vdiv, couleur: COUL[c] }); return; }
+      var pts = [];
+      for (var i = 0; i <= n; i++) {
+        var t = debut + S * i / n;
+        if (mode === "balayage" && t > fin) break;
+        pts.push([10 * i / n, tension(t, Vv, etat.f, ab[0], ab[1]) / etat.vdiv + 0.012 * Sim.gauss()]);
+      }
+      traces.push({ pts: pts, couleur: COUL[c] });
+    });
+    ecranA.tracer(traces);
+    var c = etat.curseurs === "tension" ? { type: "tension", a: cY1.get(), b: cY2.get() } : (etat.curseurs === "temps" ? { type: "temps", a: cX1.get(), b: cX2.get() } : null);
+    ecranA.curseurs(c);
+    ecranA.legende([{ texte: etat.vdiv + " V/div" }, { texte: enMs() ? (etat.tdiv * 1000) + " ms/div" : etat.tdiv + " s/div" }, { texte: etat.f === 50 ? "50 Hz" : "0,1 Hz" }]);
+    var lc = lectureCurseurs();
+    if (lc) { aC1.set(Sim.fr(lc.a, lc.dec) + " " + lc.u); aC2.set(Sim.fr(lc.b, lc.dec) + " " + lc.u); aDC.set(Sim.fr(Math.abs(lc.d), lc.dec) + " " + lc.u); }
+  }
+  var relA = Sim.releve("#releveA", { colonnes: [{ cle: "s", titre: "Source" }, { cle: "c", titre: "Curseurs" }, { cle: "a", titre: "Curseur 1" }, { cle: "b", titre: "Curseur 2" }, { cle: "d", titre: "Écart" }] });
+  document.getElementById("garderA").addEventListener("click", function () {
+    var lc = lectureCurseurs();
+    if (!lc) { relA.ajouter({ s: etat.src === "gbf" ? "labo" : "réseau", c: "aucun", a: "", b: "", d: "" }); return; }
+    relA.ajouter({ s: (etat.src === "gbf" ? "labo" : "réseau") + ", " + (etat.f === 50 ? "50 Hz" : "0,1 Hz"), c: etat.curseurs,
+                   a: Sim.fr(lc.a, lc.dec) + " " + lc.u, b: Sim.fr(lc.b, lc.dec) + " " + lc.u, d: Sim.fr(Math.abs(lc.d), lc.dec) + " " + lc.u });
+  });
+  var DA = document.getElementById("defisA");
+  Sim.defi(DA, { question: "À 50 Hz : période T des tensions, mesurée sur v1 :", unite: "ms", attendu: 20, tolerance: 0.03,
+    methode: "Curseurs de temps : le 1 au début d'un motif de v1, le 2 au début du motif suivant. L'écart est T." });
+  Sim.defi(DA, { question: "À 50 Hz : décalage Δt entre v1 et v2, d'une montée par zéro à la suivante :", unite: "ms", attendu: 20 / 3, tolerance: 0.03,
+    methode: "Curseur 1 là où v1 passe par zéro en montant, curseur 2 là où v2 passe par zéro en montant, juste après. Prends 1 ou 2 ms/div." });
+  Sim.defi(DA, { question: "Déphasage de v2 par rapport à v1, en degrés :", unite: "°", attendu: 120, tolerance: 0, toleranceAbsolue: 4,
+    methode: "Une période entière vaut 360°. Calcule Δt ÷ T × 360 avec tes deux lectures, dans la même unité." });
+  Sim.defi(DA, { question: "Rapport des valeurs maximales, U<sub>max</sub> de la tension composée ÷ V<sub>max</sub> d'une tension simple :", unite: "", attendu: Math.sqrt(3), tolerance: 0.03,
+    methode: "Curseurs de tension : le 2 sur le zéro, le 1 sur un sommet. Lis V<sub>max</sub> sur v1, puis U<sub>max</sub> sur la voie 4, avec la même sensibilité." });
+
+  /* ================= Protocole B ================= */
+  var RB = document.getElementById("reglagesB");
+  Sim.choix(RB, { label: "Récepteurs", valeur: etat.recepteurs,
+    options: [{ val: "lampes", texte: "Trois lampes" }, { val: "del", texte: "Trois DEL" }],
+    surChange: function (v) { etat.recepteurs = v; etat.eclat = [0, 0, 0]; dessinerSchemaB(); } });
+  Sim.choix(RB, { label: "Pointe rouge du voltmètre, borne V", valeur: etat.pV,
+    options: ["L1", "L2", "L3", "N"].map(function (x) { return { val: x, texte: x }; }),
+    surChange: function (v) { etat.pV = v; calerVolt(); dessinerSchemaB(); } });
+  Sim.choix(RB, { label: "Pointe noire du voltmètre, borne COM", valeur: etat.pCOM,
+    options: ["L1", "L2", "L3", "N"].map(function (x) { return { val: x, texte: x }; }),
+    surChange: function (v) { etat.pCOM = v; calerVolt(); dessinerSchemaB(); } });
+  var IB = document.getElementById("instrumentsB");
+  var aVolt = Sim.afficheur(IB, { nom: "Voltmètre · position alternatif", unite: "V", dec: 2 });
+  var aChrono = Sim.afficheur(IB, { nom: "Chronomètre", unite: "s", dec: 2 });
+  var lectureV = 0;
+  function resolution(x) { return Math.abs(x) < 40 ? 0.01 : (Math.abs(x) < 400 ? 0.1 : 1); }
+  /* Pointes posees ou source changee : le voltmetre part de son regime etabli, sans trainer l'ancienne lecture. */
+  function calerVolt() {
+    var a = etat.pV, b = etat.pCOM, v = V(), u2;
+    if (etat.f === 50) u2 = a === b ? 0 : (a === "N" || b === "N" ? v * v : 3 * v * v);
+    else { var p = potentiels(etat.t, v, etat.f), u = p[a] - p[b]; u2 = u * u; }
+    etat.m1 = u2; etat.m2 = u2;
+    if (aVolt) lireVolt();
+  }
+  function lireVolt() {
+    var eff = Math.sqrt(Math.max(0, etat.m2));
+    lectureV = Sim.mesure(eff, { relatif: 0.002, resolution: resolution(eff) });
+    aVolt.set(lectureV, resolution(eff) < 0.1 ? 2 : (resolution(eff) < 1 ? 1 : 0));
+  }
+  var relTops = Sim.releve("#releveTops", { colonnes: [{ cle: "n", titre: "Récepteur" }, { cle: "t", titre: "Instant du top", unite: "s", dec: 2 }] , vide: "Aucun top pour l'instant." });
+  var relV = Sim.releve("#releveV", { colonnes: [{ cle: "e", titre: "Voltmètre entre" }, { cle: "u", titre: "Lecture" }], vide: "Aucune lecture gardée pour l'instant." });
+  Array.prototype.forEach.call(document.querySelectorAll("#tops button"), function (b) {
+    b.addEventListener("click", function () { relTops.ajouter({ n: (etat.recepteurs === "del" ? "DEL " : "lampe ") + b.getAttribute("data-top"), t: Math.round(etat.chrono * 100) / 100 }); });
+  });
+  document.getElementById("razChrono").addEventListener("click", function () { etat.chrono = 0; aChrono.set(0); });
+  document.getElementById("garderV").addEventListener("click", function () {
+    var r = resolution(lectureV);
+    relV.ajouter({ e: etat.pV + " et " + etat.pCOM, u: Sim.fr(lectureV, r < 0.1 ? 2 : (r < 1 ? 1 : 0)) + " V, " + (etat.f === 50 ? "50 Hz" : "0,1 Hz") });
+  });
+  var DB = document.getElementById("defisB");
+  Sim.defi(DB, { question: "Avec les DEL, à 0,1 Hz : durée entre l'allumage de la DEL 1 et celui de la DEL 2 :", unite: "s", attendu: 10 / 3, tolerance: 0.08,
+    methode: "Remets le chronomètre à zéro, appuie sur « Top : 1 » quand la DEL 1 s'allume, sur « Top : 2 » quand la DEL 2 s'allume. Fais la différence des deux instants." });
+  Sim.defi(DB, { question: "Avec les DEL, à 0,1 Hz : période T, entre deux allumages de la DEL 1 :", unite: "s", attendu: 10, tolerance: 0.05,
+    methode: "Deux tops sur la même DEL, à son allumage puis à l'allumage suivant." });
+  Sim.defi(DB, { question: "À 50 Hz : rapport U ÷ V, tension entre deux phases divisée par tension entre une phase et le neutre :", unite: "", attendu: Math.sqrt(3), tolerance: 0.02,
+    methode: "Pointes sur L1 et N, lis V ; pointes sur L1 et L2, lis U. Divise la seconde lecture par la première." });
+
+  /* ================= Schema du protocole B ================= */
+  var Yc = { L1: 42, L2: 74, L3: 106, N: 232, PE: 266 }, XR = [260, 360, 460], gEclat = [];
+  function fil(g, pts, coul, ep) {
+    var d = pts.map(function (p, i) { return (i ? "L" : "M") + p[0] + " " + p[1]; }).join(" ");
+    return svg("path", { d: d, fill: "none", stroke: coul || css("--encre"), "stroke-width": ep || 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, g);
+  }
+  function noeud(g, x, y) { svg("circle", { cx: x, cy: y, r: 3.4, fill: css("--encre") }, g); }
+  function texte(g, x, y, t, o) {
+    o = o || {};
+    return svg("text", { x: x, y: y, "font-size": o.taille || 12, "text-anchor": o.ancre || "middle", fill: o.coul || css("--encre2"), "font-weight": o.gras ? 650 : 400, texte: t }, g);
+  }
+  function conducteur(g, nom) {
+    var y = Yc[nom];
+    svg("line", { x1: 108, y1: y, x2: 628, y2: y, stroke: css("--trait"), "stroke-width": 7, "stroke-linecap": "round" }, g);
+    if (nom === "PE") {
+      svg("line", { x1: 108, y1: y, x2: 628, y2: y, stroke: "#e2c229", "stroke-width": 4, "stroke-linecap": "round" }, g);
+      svg("line", { x1: 108, y1: y, x2: 628, y2: y, stroke: "#2f9a4a", "stroke-width": 4, "stroke-dasharray": "14 14" }, g);
+    } else svg("line", { x1: 108, y1: y, x2: 628, y2: y, stroke: FILS[nom], "stroke-width": 4, "stroke-linecap": "round" }, g);
+    texte(g, 120, y - 7, nom, { ancre: "start", coul: css("--encre"), gras: true });
+  }
+  function dessinerSchemaB() {
+    var S = document.getElementById("schemaB");
+    S.innerHTML = "";
+    // la source, trois phases et neutre
+    svg("circle", { cx: 50, cy: 150, r: 28, fill: css("--carte"), stroke: css("--encre"), "stroke-width": 2 }, S);
+    texte(S, 50, 146, "3", { coul: css("--encre"), taille: 15, gras: true });
+    svg("path", { d: "M38 157 q6 -9 12 0 t12 0", fill: "none", stroke: css("--encre"), "stroke-width": 2 }, S);
+    texte(S, 50, 198, etat.src === "gbf" ? "générateur" : "réseau", {});
+    texte(S, 50, 213, etat.src === "gbf" ? "de labo" : "230 / 400 V", {});
+    [["L1", 131], ["L2", 143], ["L3", 157], ["N", 169]].forEach(function (p) {
+      var xb = 50 + Math.sqrt(28 * 28 - (p[1] - 150) * (p[1] - 150));
+      fil(S, [[xb, p[1]], [92, p[1]], [108, Yc[p[0]]]]);
+    });
+    ["L1", "L2", "L3", "N", "PE"].forEach(function (n) { conducteur(S, n); });
+    // la terre du conducteur de protection
+    fil(S, [[108, Yc.PE], [96, Yc.PE], [96, Yc.PE + 12]]);
+    [[16, 0], [10, 5], [4, 10]].forEach(function (l) { svg("line", { x1: 96 - l[0] / 2 * 1.2, y1: Yc.PE + 12 + l[1], x2: 96 + l[0] / 2 * 1.2, y2: Yc.PE + 12 + l[1], stroke: css("--encre"), "stroke-width": 2 }, S); });
+    // les trois recepteurs, en etoile entre chaque phase et le neutre
+    gEclat = [];
+    XR.forEach(function (x, k) {
+      var y0 = Yc[PHASES[k]], yc = 170;
+      fil(S, [[x, y0], [x, yc - 16]]); fil(S, [[x, yc + 16], [x, Yc.N]]);
+      noeud(S, x, y0); noeud(S, x, Yc.N);
+      gEclat.push(svg("circle", { cx: x, cy: yc, r: 27, fill: etat.recepteurs === "del" ? "#e0413a" : "#f5c542", "fill-opacity": 0 }, S));
+      if (etat.recepteurs === "lampes") {
+        svg("circle", { cx: x, cy: yc, r: 15, fill: "none", stroke: css("--encre"), "stroke-width": 2 }, S);
+        var r = 15 / Math.SQRT2;
+        svg("path", { d: "M" + (x - r) + " " + (yc - r) + " L" + (x + r) + " " + (yc + r) + " M" + (x + r) + " " + (yc - r) + " L" + (x - r) + " " + (yc + r), stroke: css("--encre"), "stroke-width": 2 }, S);
+      } else {
+        var s = 10;
+        fil(S, [[x, yc - 16], [x, yc - s]]); fil(S, [[x, yc + s], [x, yc + 16]]);
+        svg("path", { d: "M" + (x - s) + " " + (yc - s) + " L" + (x + s) + " " + (yc - s) + " L" + x + " " + (yc + s) + " Z", fill: css("--encre") }, S);
+        svg("line", { x1: x - s - 1, y1: yc + s, x2: x + s + 1, y2: yc + s, stroke: css("--encre"), "stroke-width": 2.5 }, S);
+        [[-2, 0], [6, 0]].forEach(function (d) {
+          var x0 = x + s + 3, y0b = yc - 4 + d[0];
+          svg("path", { d: "M" + x0 + " " + y0b + " l9 -7 m0 0 l-5 0 m5 0 l-1 5", stroke: css("--encre"), "stroke-width": 1.4, fill: "none" }, S);
+        });
+      }
+      texte(S, x - 31, yc + 5, String(k + 1), { coul: css("--encre"), taille: 15, gras: true, ancre: "end" });
+    });
+    // le voltmetre et ses deux cordons
+    var xv = 570, yv = 170, xr = 540, xn = 600;
+    fil(S, [[xv - 15, yv], [xr, yv], [xr, Yc[etat.pV]]], "#c8322b", 2.5);
+    fil(S, [[xv + 15, yv], [xn, yv], [xn, Yc[etat.pCOM]]], css("--encre"), 2.5);
+    svg("circle", { cx: xr, cy: Yc[etat.pV], r: 4.5, fill: "#c8322b" }, S);
+    svg("circle", { cx: xn, cy: Yc[etat.pCOM], r: 4.5, fill: css("--encre") }, S);
+    svg("circle", { cx: xv, cy: yv, r: 15, fill: css("--carte"), stroke: css("--encre"), "stroke-width": 2 }, S);
+    texte(S, xv, yv + 5, "V", { coul: css("--encre"), taille: 15, gras: true });
+    texte(S, xv, yv + 32, "V~", { coul: css("--encre") });
+    majEclat();
+  }
+  function majEclat() {
+    gEclat.forEach(function (c, k) {
+      var b = etat.eclat[k], o = etat.recepteurs === "del" ? Math.min(1, b * 1.6) : Math.min(1, b / 0.6);
+      c.setAttribute("fill-opacity", (0.85 * o).toFixed(3));
+    });
+  }
+
+  /* ================= Diagramme de Fresnel ================= */
+  function dessinerFresnel() {
+    var F = document.getElementById("fresnel"), cx = 150, cy = 150, r = 105;
+    F.innerHTML = "";
+    var tt = etat.f === 50 ? 0 : etat.t, w = 2 * Math.PI * etat.f * tt;
+    svg("circle", { cx: cx, cy: cy, r: r, fill: "none", stroke: css("--trait"), "stroke-dasharray": "3 4" }, F);
+    svg("line", { x1: cx - r - 14, y1: cy, x2: cx + r + 14, y2: cy, stroke: css("--trait") }, F);
+    svg("line", { x1: 330, y1: cy - r - 14, x2: 330, y2: cy + r + 14, stroke: css("--encre2"), "stroke-width": 1.4 }, F);
+    svg("line", { x1: 325, y1: cy, x2: 335, y2: cy, stroke: css("--encre2") }, F);
+    texte(F, 342, cy + 4, "0", { ancre: "start" });
+    texte(F, 342, cy - r + 4, "+Vmax", { ancre: "start" });
+    texte(F, 342, cy + r + 4, "−Vmax", { ancre: "start" });
+    var pts = {}, etiquettes = [];
+    var couls = { L1: "#8b5a2b", L2: css("--encre"), L3: "#8d9299" };
+    PHASES.forEach(function (p, k) {
+      var a = w - k * 2 * Math.PI / 3, x = cx + r * Math.cos(a), y = cy - r * Math.sin(a);
+      pts[p] = [x, y];
+      svg("line", { x1: x, y1: y, x2: 330, y2: y, stroke: couls[p], "stroke-opacity": 0.5, "stroke-dasharray": "4 4" }, F);
+      svg("circle", { cx: 330, cy: y, r: 4.5, fill: couls[p] }, F);
+      fleche(F, cx, cy, x, y, couls[p]);
+      var lx = cx + (r + 18) * Math.cos(a), ly = cy - (r + 18) * Math.sin(a) + 5;
+      etiquettes.push([lx, ly, "V" + (k + 1), couls[p]]);
+    });
+    if (etat.voies.u) {
+      var ab = etat.composee.split("-"), A = pts[ab[0]], B = pts[ab[1]];
+      fleche(F, B[0], B[1], A[0], A[1], css("--accent"), true);
+      /* l'etiquette se pose a cote du vecteur, du cote oppose au centre, jamais sur le trait */
+      var mx = (A[0] + B[0]) / 2, my = (A[1] + B[1]) / 2, dx = A[0] - B[0], dy = A[1] - B[1], L = Math.sqrt(dx * dx + dy * dy) || 1;
+      var nx = -dy / L, ny = dx / L;
+      if ((mx - cx) * nx + (my - cy) * ny < 0) { nx = -nx; ny = -ny; }
+      etiquettes.push([mx + 20 * nx, my + 20 * ny + 5, "U" + ab[0].slice(1) + ab[1].slice(1), css("--accent")]);
+    }
+    /* les etiquettes en dernier, avec un liseré couleur de scene : aucun trait ne les barre */
+    etiquettes.forEach(function (e) {
+      var t = texte(F, e[0], e[1], e[2], { coul: e[3], gras: true, taille: 13 });
+      t.setAttribute("stroke", css("--scene")); t.setAttribute("stroke-width", 4); t.setAttribute("paint-order", "stroke");
+    });
+    svg("circle", { cx: cx, cy: cy, r: 3, fill: css("--encre") }, F);
+    document.getElementById("noteFresnel").textContent = etat.f === 50
+      ? "À 50 Hz, les vecteurs feraient cinquante tours par seconde : le diagramme est figé. Passe le générateur de labo à 0,1 Hz pour le voir tourner."
+      : "À 0,1 Hz, les trois vecteurs font un tour en dix secondes, dans le sens inverse des aiguilles d'une montre.";
+  }
+  function fleche(g, x1, y1, x2, y2, coul, tirets) {
+    var a = Math.atan2(y2 - y1, x2 - x1), L = 11;
+    var at = { x1: x1, y1: y1, x2: x2 - 0.6 * L * Math.cos(a), y2: y2 - 0.6 * L * Math.sin(a), stroke: coul, "stroke-width": 2.6 };
+    if (tirets) at["stroke-dasharray"] = "7 4";
+    svg("line", at, g);
+    svg("path", { d: "M" + x2 + " " + y2 + " L" + (x2 - L * Math.cos(a - 0.4)) + " " + (y2 - L * Math.sin(a - 0.4)) + " L" + (x2 - L * Math.cos(a + 0.4)) + " " + (y2 - L * Math.sin(a + 0.4)) + " Z", fill: coul }, g);
+  }
+
+  /* ================= Temps ================= */
+  function pas(dt) {
+    var h = etat.f === 50 ? 0.00025 : 0.01, n = Math.max(1, Math.ceil(dt / h)), hh = dt / n, Vv = V(), Vm = Vv * Math.SQRT2, sd = SOURCES[etat.src].seuilDEL;
+    for (var k = 0; k < n; k++) {
+      etat.t += hh; etat.chrono += hh;
+      var p = potentiels(etat.t, Vv, etat.f), u = p[etat.pV] - p[etat.pCOM], a = Math.min(1, hh / 0.15);
+      etat.m1 += (u * u - etat.m1) * a; etat.m2 += (etat.m1 - etat.m2) * a;
+      var b = Math.min(1, hh / 0.05);
+      PHASES.forEach(function (ph, j) {
+        var v = p[ph], cible = etat.recepteurs === "del" ? Math.max(0, (v - sd) / (Vm - sd)) : (v / Vm) * (v / Vm);
+        etat.eclat[j] += (cible - etat.eclat[j]) * b;
+      });
+    }
+  }
+  var ongletDemande = etat.onglet;
+  var ong = Sim.onglets("#onglets", function (id) { etat.onglet = id; });
+  if (ongletDemande === "vueB") ong.montrer("vueB");
+  montrerCurseurs(); majLegende(); majSource();
+  var cumulV = 0, cumulE = 0;
+  Sim.animer(function (dt) {
+    pas(dt);
+    cumulV += dt; cumulE += dt;
+    majEclat(); aChrono.set(etat.chrono);
+    if (cumulV > 0.4) { cumulV = 0; lireVolt(); }
+    if (cumulE > (etat.f === 50 ? 0.25 : 0.05)) { cumulE = 0; if (etat.onglet === "vueA") dessinerEcranA(); if (etat.f !== 50) dessinerFresnel(); }
+  });
+})();
+</script>
+<footer class="pied">Simulation hors ligne, sans compte et sans enregistrement. Modèle simplifié : ce qu'il néglige est écrit sous la simulation, et détaillé dans la fiche professeur du TP SIM-08.</footer>
+</div>
+</body>
+</html>

@@ -147,7 +147,7 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
 /* Molette posee sur la scene : on la tourne au doigt */
 .molette{cursor:grab;touch-action:none;outline:none}
 .molette.tourne{cursor:grabbing}
-.molette:focus-visible .molette-corps{stroke:var(--accent);stroke-width:3}
+.molette:focus-visible .molette-corps,.molette.prise .molette-corps{stroke:var(--accent);stroke-width:3}
 .molette-corps{fill:var(--carte2);stroke:var(--encre);stroke-width:2}
 .molette.tourne .molette-corps{fill:var(--accent-doux)}
 .molette-index{stroke:var(--accent);stroke-width:3.5;stroke-linecap:round}
@@ -173,6 +173,7 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
 .pc-noeud.pc-fait.pc-ici .pc-rond{color:#fff}
 .pc-noeud.pc-ici .pc-comp{color:var(--encre)}
 .pc-drapeau .pc-rond{font-size:1.15rem}
+.pc-facultatif .pc-rond{border-style:dashed;font-size:1.3rem}
 .pc-info{display:flex;gap:12px;align-items:center;font-size:.9rem;font-weight:650;color:var(--encre2)}
 .pc-score{color:var(--tiede);font-variant-numeric:tabular-nums}
 .pc-niveau:empty,.pc-temps:empty{display:none}

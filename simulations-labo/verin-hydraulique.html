@@ -196,6 +196,13 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
 .pc-q[data-etat="juste"]{border-color:var(--juste);background:var(--juste-doux)}
 .pc-q[data-etat="faux"]{border-color:var(--faux)}
 .pc-q[data-etat="passe"]{border-style:dashed;opacity:.85}
+/* les deux modes (16 octobre 2026) : en note, une reponse enregistree n'a pas de couleur de verdict */
+.pc-q[data-etat="enregistree"]{border-color:var(--accent);background:var(--accent-doux)}
+.pc-q[data-etat="enregistree"] .pc-q-num{background:var(--accent)}
+.pc-q[data-etat="modifiee"]{border-color:var(--accent);border-style:dashed}
+.pc-bandeau-mode{margin:10px 0;padding:10px 12px;border-left:4px solid var(--accent);background:var(--accent-doux);border-radius:var(--r)}
+.pc-note .pc-bandeau-mode{border-left-color:var(--encre)}
+.pc-confirmer{margin-top:10px;padding:10px 12px;border:1px solid var(--encre);border-radius:var(--r)}
 .pc-q-lib{margin:0 0 8px;font-weight:600}
 .pc-q-num{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--encre);color:var(--carte);
   font-size:.8rem;margin-right:.5em;vertical-align:.1em}
@@ -1532,7 +1539,25 @@ var Sim = (function () {
      la place de true en donne d'autres. La scene doit supporter d'etre appelee deux fois (effets gardes).
      LA CALCULATRICE : Sim.calculatrice() pose celle des sites de classe (_commun/entrainement/moteur/
      calculette.js, que l'assembleur embarque dans chaque page), un bouton flottant hors parcours, un
-     bouton dans la tete du parcours pendant l'entrainement. Rien n'est garde : pas de memoire. */
+     bouton dans la tete du parcours pendant l'entrainement. Rien n'est garde : pas de memoire.
+     DEUX MODES (16 octobre 2026, demande de l'utilisateur pour la notation) :
+     - LE TD, par defaut : tout ce qui precede (juste ou pas encore, methode, « A corriger », aide), mais
+       AUCUN FICHIER. La fin est un bilan a l'ecran ; rien a rendre.
+     - LE MODE NOTE, par le lien du professeur : l'adresse qui contient « note » (#note). Ni verdict, ni
+       methode, ni aide, ni etoiles ; « Enregistrer » garde la reponse, que l'eleve peut changer jusqu'a
+       rendre sa copie. Rendre la copie (produire le fichier, ou en afficher le texte) VERROUILLE tout : le
+       fichier porte les verdicts, il ne doit plus servir a se corriger. Une manipulation est jugee telle
+       qu'elle est au moment ou on l'enregistre ; une reponse qui attendait une mesure est rejugee au rendu.
+       Le mode libre de la page (« Explorer la simulation ») disparait : ses defis disent juste ou pas.
+     - LES VALEURS CHANGENT D'UN MODE A L'AUTRE : Sim.note (vrai en mode note) se lit des le chargement,
+       avant que la page tire son sujet ; chaque page y prend d'autres nombres. Changer l'adresse d'un mode
+       a l'autre recharge la page.
+     - En mode note, q.apres et q.fini sont appeles A CHAQUE ENREGISTREMENT, juste ou non, avec le verdict en
+       second argument : une page ne doit rien afficher qui en depende (une mesure rappelee seulement si elle
+       est juste trahirait le verdict). ctx.note le dit aux scenes.
+     LES PROPOSITIONS D'UN CHOIX SE MELANGENT (16 octobre 2026, « la bonne reponse est trop souvent la 1re ») :
+     q.bonne garde l'indice de la source, chaque bouton porte data-k ; « ordreFixe: true » garde l'ordre ecrit
+     (une echelle, « aucune des precedentes »). */
   var COMPETENCES = {
     APP: "S'approprier", ANA: "Analyser", REA: "Réaliser", VAL: "Valider", COM: "Communiquer"
   };
@@ -1552,6 +1577,9 @@ var Sim = (function () {
     "C2-3": "Décrire le fonctionnement du système", "C1-2": "Exprimer les contraintes"
   };
   var ORDRE_U41 = ["C12-1", "C12-2", "C4-3", "C2-1", "C2-2", "C2-3", "C1-2"];
+  /* le mode note, par l'adresse : #note (ou #ccf-note, #u41-note) ; lu des le chargement, avant le tirage du sujet */
+  function noteDans(h) { return /(^#|[^a-z])note\b/i.test(h || ""); }
+  var NOTE_ADRESSE = noteDans(location.hash);
   var COTES = { NA: "non acquis", ECA: "en cours d'acquisition", A: "acquis" };
   var POINTS_COTE = { NA: 0, ECA: 1, A: 2 };
   /* Le code du professeur pour valider un appel : seule son empreinte est dans la page. Pour le
@@ -1569,8 +1597,15 @@ var Sim = (function () {
   }
   function deux(n) { return (n < 10 ? "0" : "") + n; }
   function heure(d) { return deux(d.getHours()) + "h" + deux(d.getMinutes()); }
+  /* le melange de Fisher-Yates, en place */
+  function melanger(t) { for (var i = t.length - 1; i > 0; i--) { var k = Math.floor(Math.random() * (i + 1)), x = t[i]; t[i] = t[k]; t[k] = x; } return t; }
   function parcours(parent, o) {
     var ccf = !!o.ccf, u41 = !!o.u41, epreuve = ccf || u41;
+    /* le mode note : lu a l'adresse ; passer d'un mode a l'autre recharge, pour retirer les valeurs */
+    var NOTE = NOTE_ADRESSE;
+    window.addEventListener("hashchange", function () { if (noteDans(location.hash) !== NOTE) location.reload(); });
+    /* une question a une reponse : verifiee (TD), ou enregistree (note) ; un appel, des qu'il est lance */
+    function fait(f) { return !!f && (NOTE && !f.appel ? !!f.enr : !!f.fini); }
     var NOMS = u41 ? U41 : COMPETENCES, ORDRE = u41 ? ORDRE_U41 : ORDRE_COMP;
     function nomComp(k) { return NOMS[k] || COMPETENCES[k] || U41[k] || k; }
     var niveaux = o.niveaux || ["CAP", "Seconde"];
@@ -1582,9 +1617,12 @@ var Sim = (function () {
     /* une partie facultative intouchee ne compte nulle part ; entamee, seulement pour ce qui y est fait */
     var nOblig = o.phases.filter(function (ph) { return !ph.facultative; }).length || nPh;
     var aFacultative = nOblig < nPh;
-    function touchee(f) { return !!f && !!(f.fini || f.essais || f.appuis || f.aide); }
+    function touchee(f) { return !!f && !!(f.fini || f.essais || f.appuis || f.aide || f.enr); }
     function compte(i, f) { return !o.phases[i].facultative || touchee(f); }
-    var racine = el("div", { classe: "pc" + (ccf ? " pc-ccf" : "") + (u41 ? " pc-u41" : "") });
+    var racine = el("div", { classe: "pc" + (ccf ? " pc-ccf" : "") + (u41 ? " pc-u41" : "") + (NOTE ? " pc-note" : "") });
+    /* les mots qui changent d'un mode a l'autre : en TD, la fin est un bilan ; en note, une copie ou un livrable */
+    var MOT_FIN = NOTE ? (epreuve ? "La copie" : "Le livrable") : "Le bilan";
+    var MOT_FIN_COURT = NOTE ? (epreuve ? "Copie" : "Livrable") : "Bilan";
     var P = $(parent);
 
     /* ---- deux facons d'utiliser la page : la simulation libre, ou le parcours ---- */
@@ -1594,9 +1632,11 @@ var Sim = (function () {
         [el("b", { texte: "Explorer la simulation" }), el("span", { texte: o.libreTexte || "librement, sans note ni fichier" })]);
       bParcours = el("button", { type: "button", classe: "pc-mode", "aria-pressed": "false" },
         [el("b", { texte: ccf ? "Entraînement au CCF" : u41 ? "TD sur simulation" : "Le parcours" }),
-         el("span", { texte: o.modeTexte || ((u41 ? (o.u41.duree || "deux heures") : "une heure") + ", et un fichier pour le professeur") })]);
+         el("span", { texte: (u41 ? (o.u41.duree || "deux heures") : "une heure") + ", avec les indications ; sans note ni fichier" })]);
       barreModes = el("div", { classe: "pc-modes", role: "group", "aria-label": "Deux façons d'utiliser la page" }, [bLibre, bParcours]);
       P.appendChild(barreModes);
+      /* en mode note, la simulation libre s'efface : ses defis diraient juste ou pas, sur les valeurs de l'evaluation */
+      if (NOTE) barreModes.hidden = true;
       bLibre.addEventListener("click", function () { mode(false); });
       bParcours.addEventListener("click", function () { mode(true); });
     }
@@ -1647,8 +1687,8 @@ var Sim = (function () {
       chemin.appendChild(el("li", null, [b]));
       return b;
     });
-    var drapeau = el("button", { type: "button", classe: "pc-noeud pc-drapeau", disabled: "disabled", "aria-label": epreuve ? "La copie" : "Le livrable" },
-      [el("span", { classe: "pc-rond", html: "&#9873;" }), el("span", { classe: "pc-comp", texte: epreuve ? "Copie" : "Livrable" }), el("span", { classe: "pc-etoiles" })]);
+    var drapeau = el("button", { type: "button", classe: "pc-noeud pc-drapeau", disabled: "disabled", "aria-label": MOT_FIN },
+      [el("span", { classe: "pc-rond", html: "&#9873;" }), el("span", { classe: "pc-comp", texte: MOT_FIN_COURT }), el("span", { classe: "pc-etoiles" })]);
     drapeau.addEventListener("click", function () { montrer(nPh); });
     chemin.appendChild(el("li", null, [drapeau]));
     var info = el("div", { classe: "pc-info" });
@@ -1699,7 +1739,13 @@ var Sim = (function () {
     var illus = el("div", { classe: "scene pc-illus" });
     if (c.illustration) c.illustration(illus);
     var choixNiv = el("div", { classe: "pc-choix-niveau" });
-    var partir = el("button", { type: "button", classe: "bouton principal pc-partir", texte: ccf ? "Commencer l'épreuve" : u41 ? "Commencer" : "Accepter la mission" });
+    var partir = el("button", { type: "button", classe: "bouton principal pc-partir", texte: NOTE ? "Commencer l'évaluation" : ccf ? "Commencer l'épreuve" : u41 ? "Commencer" : "Accepter la mission" });
+    /* le mode, dit a l'accueil : en TD, des indications et rien a rendre ; en note, ni verdict ni aide, et un fichier */
+    var bandeauMode = el("p", { classe: "pc-bandeau-mode", html: NOTE
+      ? "<b>Évaluation notée.</b> La page ne dit ni juste ni faux et ne donne aucune méthode : « Enregistrer » garde votre réponse, " +
+        "que vous pouvez changer jusqu'à rendre votre copie. Rendre la copie produit le fichier pour le professeur et verrouille tout."
+      : "<b>TD, non noté.</b> La page dit juste ou pas encore et donne la méthode quand ça coince. À la fin, un bilan à l'écran : " +
+        "rien à rendre. L'évaluation notée se fait par le lien que donne le professeur, avec d'autres valeurs." });
     if (niveaux.length > 1) {
       choixNiv.appendChild(el("p", { classe: "pc-surtitre", texte: "Ma classe" }));
       var rang = el("div", { classe: "rangee" });
@@ -1755,8 +1801,9 @@ var Sim = (function () {
         grille,
         el("p", { classe: "consigne", html: "<b>Chaque compétence est cotée à part</b> : non acquis, en cours d'acquisition, acquis. Rater une partie ne fait pas perdre les autres." }),
         el("p", { classe: "pc-appel-annonce", html: "<span class=\"pc-main\" aria-hidden=\"true\">✋</span><span><b>Deux appels professeur</b>, à des moments précis du sujet, et notés. Vous appelez, puis vous continuez : le professeur vient valider sur la tablette.</span>" }),
-        el("p", { classe: "consigne", html: "<b>Bonus d'autonomie de +0,25</b> : il va à qui termine sans demander d'aide. Demander n'est pas interdit, et ne retire rien d'autre." }),
-        choixNiv, partir] : [
+        el("p", { classe: "consigne", html: NOTE ? "<b>Bonus d'autonomie de +0,25</b> : il va à qui répond à toutes les questions. En évaluation, la page ne donne aucune aide."
+          : "<b>Bonus d'autonomie de +0,25</b> : il va à qui termine sans demander d'aide. Demander n'est pas interdit, et ne retire rien d'autre." }),
+        bandeauMode, choixNiv, partir] : [
         el("h2", { texte: "L'U41 et ce TD" }),
         /* les parts des consignes : relevees sur les neuf sujets 2018-2026 (bts-fed-c-u41.yml) */
         el("p", { html: cc.format || "À l'examen, l'U41 dure <b>4 heures</b> : cinq parties indépendantes autour d'un dossier technique. " +
@@ -1767,8 +1814,8 @@ var Sim = (function () {
         aFacultative ? el("p", { classe: "consigne", html: "<b>« Pour aller plus loin »</b>, la partie marquée <b>+</b> sur le chemin, est <b>facultative</b> : " +
           "si vous n'y touchez pas, elle ne compte pas ; si vous l'abordez, seules les questions que vous y travaillez comptent." }) : null,
         nAppels ? el("p", { classe: "pc-appel-annonce", html: "<span class=\"pc-main\" aria-hidden=\"true\">✋</span><span><b>" + (nAppels > 1 ? nAppels + " appels" : "Un appel") + " professeur</b>, à l'oral, notés. Vous appelez, puis vous continuez : le professeur vient évaluer sur votre poste.</span>" }) : null,
-        el("p", { classe: "consigne", html: "<b>« Demander de l'aide »</b> donne la méthode, jamais la valeur. Elle ne retire rien à la question ; le fichier dit combien d'aides vous avez demandées." }),
-        choixNiv, partir]);
+        NOTE ? null : el("p", { classe: "consigne", html: "<b>« Demander de l'aide »</b> donne la méthode, jamais la valeur. Elle ne retire rien à la question." }),
+        bandeauMode, choixNiv, partir]);
       accueil.appendChild(el("div", { classe: "plan pc-plan-accueil" }, [el("div", null, [sujet, illus]), carteFormat]));
     } else {
       var carteCmd = el("div", { classe: "carte pc-commande" }, [
@@ -1786,8 +1833,8 @@ var Sim = (function () {
         el("div", null, [carteCmd, illus]),
         el("div", { classe: "carte" }, [el("h2", { texte: "Le projet en cinq phases" }), etapes,
           el("p", { classe: "consigne", html: "Une heure en tout. On passe d'une phase à l'autre comme on veut, par le chemin en haut ; " +
-            "à la fin, vous produisez un <b>fichier</b> à remettre au professeur." }),
-          choixNiv, partir])
+            (NOTE ? "à la fin, vous produisez un <b>fichier</b> à remettre au professeur." : "à la fin, un bilan de vos réussites.") }),
+          bandeauMode, choixNiv, partir])
       ]));
     }
     racine.appendChild(accueil);
@@ -1808,7 +1855,7 @@ var Sim = (function () {
       return qs.filter(function (q) { return !q.niveau || q.niveau === etat.niveau; });
     }
 
-    var ctx = { donnees: donnees, niveau: function () { return etat.niveau; }, ccf: ccf, u41: u41,
+    var ctx = { donnees: donnees, niveau: function () { return etat.niveau; }, ccf: ccf, u41: u41, note: NOTE,
       fr: fr, lire: lire, mesure: mesure, gauss: gauss, svg: svg, el: el, borne: borne, animer: animer };
 
     /* un recit ou une consigne peut dependre du niveau : une fonction de ctx */
@@ -1839,11 +1886,11 @@ var Sim = (function () {
       etat.fiches[i] = qs.map(function (q, j) { return q.type === "appel" ? poserAppel(colQ, q, i) : poserQuestion(colQ, q, i, j); });
       var bravo = el("p", { classe: "pc-bravo", hidden: "hidden", html: ph.bravo || "" });
       var suite = el("button", { type: "button", classe: "bouton principal pc-suite", disabled: "disabled",
-        texte: i + 1 < nPh ? (o.phases[i + 1].facultative ? "Pour aller plus loin, facultatif" : epreuve ? (nomPhase(i + 1) === "Conclusion" ? "La conclusion" : "Partie suivante") : "Phase suivante") : (epreuve ? "La copie" : "Le livrable") });
+        texte: i + 1 < nPh ? (o.phases[i + 1].facultative ? "Pour aller plus loin, facultatif" : epreuve ? (nomPhase(i + 1) === "Conclusion" ? "La conclusion" : "Partie suivante") : "Phase suivante") : MOT_FIN });
       suite.addEventListener("click", function () { ouvrir(i + 1); });
       var versFin = null;
       if (i + 1 < nPh) {
-        versFin = el("button", { type: "button", classe: "bouton pc-vers-fin", texte: epreuve ? "Aller à la copie" : "Aller au livrable" });
+        versFin = el("button", { type: "button", classe: "bouton pc-vers-fin", texte: NOTE ? (epreuve ? "Aller à la copie" : "Aller au livrable") : "Voir le bilan" });
         versFin.addEventListener("click", function () { montrer(nPh); });
       }
       s.appendChild(el("div", { classe: "pc-pied" }, [versFin, bravo, suite]));
@@ -1864,26 +1911,39 @@ var Sim = (function () {
         champ.appendChild(inp); if (q.unite) champ.appendChild(el("span", { classe: "pc-unite", html: q.unite }));
         controles.push(inp);
         inp.addEventListener("keydown", function (e) { if (e.key === "Enter") verifier(); });
+        inp.addEventListener("input", function () { modifiee(); });
         lireReponse = function () { var v = lire(inp.value); return isFinite(v) ? fr(v, q.dec === undefined ? decimalesDe(inp.value) : q.dec) + (q.unite ? " " + texteSeul(q.unite) : "") : ""; };
         verifierOk = function () {
           var v = lire(inp.value); if (!isFinite(v)) return null;
           f.valeur = v;
           var a = typeof q.attendu === "function" ? q.attendu(ctx) : q.attendu;
           if (!isFinite(a)) return "attente";               // elle repose sur une mesure, ou une reponse, d'une autre partie
-          var tol = q.tolerance === undefined ? 0.05 : q.tolerance;
-          return Math.abs(v - a) <= Math.abs(a) * tol + (q.toleranceAbsolue || 0);
+          // tolerance et toleranceAbsolue peuvent dependre du niveau : fonctions de ctx (16 octobre 2026,
+          // le bar a sirops plus tolerant en CAP qu'en seconde)
+          var tol = typeof q.tolerance === "function" ? q.tolerance(ctx) : q.tolerance === undefined ? 0.05 : q.tolerance;
+          var tolAbs = typeof q.toleranceAbsolue === "function" ? q.toleranceAbsolue(ctx) : (q.toleranceAbsolue || 0);
+          // sansSigne : une lecture d'appareil, ou le signe ne dit que le sens du branchement
+          // (-0,25 A lu quand le courant entre par COM est une lecture juste)
+          if (q.sansSigne) { v = Math.abs(v); a = Math.abs(a); }
+          return Math.abs(v - a) <= Math.abs(a) * tol + tolAbs;
         };
       } else if (q.type === "choix" || q.type === "multi") {
         var multi = q.type === "multi", choisis = [];
         var rang = el("div", { classe: "pc-options" });
         var options = typeof q.options === "function" ? q.options(ctx) : q.options;
-        options.forEach(function (op, k) {
-          var b = el("button", { type: "button", classe: "pc-option", "aria-pressed": "false", html: propre(op) });
+        /* l'ordre affiche est tire au sort (16 octobre 2026 : la bonne reponse etait la premiere 135 fois sur 154) ;
+           k reste l'indice de la source, que q.bonne designe, et chaque bouton le porte en data-k */
+        var ordreVu = options.map(function (x, k) { return k; });
+        if (!q.ordreFixe) melanger(ordreVu);
+        ordreVu.forEach(function (k) {
+          var op = options[k];
+          var b = el("button", { type: "button", classe: "pc-option", "aria-pressed": "false", "data-k": String(k), html: propre(op) });
           b.addEventListener("click", function () {
             if (f.fini) return;
             if (multi) { var p = choisis.indexOf(k); if (p < 0) choisis.push(k); else choisis.splice(p, 1); }
             else choisis = [k];
-            [].forEach.call(rang.children, function (x, m) { x.setAttribute("aria-pressed", choisis.indexOf(m) >= 0 ? "true" : "false"); });
+            [].forEach.call(rang.children, function (x) { x.setAttribute("aria-pressed", choisis.indexOf(Number(x.getAttribute("data-k"))) >= 0 ? "true" : "false"); });
+            modifiee();
           });
           rang.appendChild(b); controles.push(b);
         });
@@ -1907,7 +1967,7 @@ var Sim = (function () {
             var choix = el("select", { classe: "pc-classer-choix", "aria-label": texteSeul(it) });
             choix.appendChild(el("option", { value: "-1", texte: "— choisir —" }));
             q.categories.forEach(function (cat, m) { choix.appendChild(el("option", { value: String(m), texte: texteSeul(cat) })); });
-            choix.addEventListener("change", function () { if (!f.fini) places[k] = Number(choix.value); });
+            choix.addEventListener("change", function () { if (!f.fini) { places[k] = Number(choix.value); modifiee(); } });
             ligne.appendChild(choix); grille.appendChild(ligne); controles.push(choix);
             return;
           }
@@ -1918,6 +1978,7 @@ var Sim = (function () {
               if (f.fini) return;
               places[k] = m;
               [].forEach.call(cats.children, function (x, n) { x.setAttribute("aria-pressed", n === m ? "true" : "false"); });
+              modifiee();
             });
             cats.appendChild(b); controles.push(b);
           });
@@ -1949,10 +2010,10 @@ var Sim = (function () {
           return ok;
         };
       }
-      var bVerif = el("button", { type: "button", classe: "bouton principal", texte: "Vérifier" });
+      var bVerif = el("button", { type: "button", classe: "bouton principal", texte: NOTE ? "Enregistrer" : "Vérifier" });
       var bPasser = el("button", { type: "button", classe: "bouton", hidden: "hidden", texte: "Continuer sans trouver" });
       /* en CCF, la methode se demande : c'est l'appel a l'aide de l'epreuve, et il coute le bonus d'autonomie */
-      var bAide = epreuve && q.methode ? el("button", { type: "button", classe: "bouton pc-aide-btn", hidden: "hidden", texte: "Demander de l'aide" }) : null;
+      var bAide = epreuve && q.methode && !NOTE ? el("button", { type: "button", classe: "bouton pc-aide-btn", hidden: "hidden", texte: "Demander de l'aide" }) : null;
       var retour = el("div", { classe: "pc-retour", "aria-live": "polite" });
       var methodeVue = el("p", { classe: "pc-methode", hidden: "hidden", html: q.methode || "" });
       bloc.appendChild(champ);
@@ -1969,7 +2030,45 @@ var Sim = (function () {
         /* « fini » previent la scene a la cloture, juste ou passee ; « apres », seulement si juste */
         if (q.fini) q.fini(ctx, f.juste, f.reponse, f.valeur);
       }
+      /* MODE NOTE : enregistrer, sans verdict. La reponse gardee est celle du dernier « Enregistrer » ; une
+         manipulation est jugee telle qu'elle est a cet instant ; une reponse qui attend une mesure est rejugee au rendu. */
+      function enregistrer() {
+        if (f.fini) return;                                // la copie est rendue : tout est verrouille
+        var ok = verifierOk();
+        f.appuis = (f.appuis || 0) + 1;
+        retour.className = "pc-retour";
+        if (ok === null) {
+          retour.innerHTML = q.type === "nombre" ? "Écrivez un nombre." : (q.type === "action" ? "Faites d'abord la manipulation." : "Choisissez d'abord.");
+          return;
+        }
+        f.enr = true; f.modifiee = false; f.enAttente = ok === "attente"; f.note = ok === true; f.juste = f.note;
+        f.reponse = lireReponse(); f.heureEnr = new Date();
+        bloc.setAttribute("data-etat", "enregistree");
+        var vu = q.type === "action" ? (f.lu !== undefined ? f.lu : f.reponse) : "";
+        retour.innerHTML = "Réponse enregistrée à " + heure(f.heureEnr) + "." + (vu ? " <span class=\"pc-lu\">La page a gardé : " + insecables(vu) + ".</span>" : "") +
+          " Vous pouvez la changer, puis enregistrer de nouveau, jusqu'à rendre votre copie.";
+        if (q.apres) q.apres(ctx, f.note, f.reponse, f.valeur);   // a chaque enregistrement, juste ou non : rien ne doit trahir le verdict
+        if (q.fini) q.fini(ctx, f.note, f.reponse, f.valeur);
+        majPhase(i); majTete();
+      }
+      /* une reponse changee apres l'enregistrement : c'est l'ancienne qui compte tant qu'on n'enregistre pas */
+      function modifiee() {
+        if (!NOTE || !f.enr || f.fini) return;
+        f.modifiee = true;
+        bloc.setAttribute("data-etat", "modifiee");
+        retour.className = "pc-retour";
+        retour.innerHTML = "Modifiée, pas encore enregistrée : la réponse gardée reste « " + insecables(f.reponse || "") + " ».";
+      }
+      /* au rendu de la copie : rejuger ce qui attendait une mesure, puis tout fermer */
+      f.verrouiller = function () {
+        if (f.fini) return;
+        if (f.enr && f.enAttente && !f.modifiee) { var ok = verifierOk(); f.note = ok === true; f.juste = f.note; }
+        if (f.enr) f.fini = true;
+        bVerif.disabled = true;
+        controles.forEach(function (x) { x.disabled = true; });
+      };
       function verifier() {
+        if (NOTE) { enregistrer(); return; }
         if (f.fini) return;
         var ok = verifierOk();
         f.appuis = (f.appuis || 0) + 1;
@@ -2024,6 +2123,7 @@ var Sim = (function () {
         f.aide = true; etat.aides++;
         bAide.hidden = true; methodeVue.hidden = false;
       });
+      if (NOTE && etat.rendu) f.verrouiller();             // une partie ouverte apres le rendu : deja fermee
       bPasser.addEventListener("click", function () {
         f.passe = true; f.note = false;
         if (!f.reponse) f.reponse = q.type === "action" ? "(manipulation non faite)" : "(sans réponse)";
@@ -2049,7 +2149,7 @@ var Sim = (function () {
       bloc.appendChild(retour);
       parentQ.appendChild(bloc);
       bAppel.addEventListener("click", function () {
-        if (f.appele) return;
+        if (f.appele || etat.rendu) return;
         f.appele = new Date(); f.fini = true; f.reponse = "appel lancé à " + heure(f.appele);
         bAppel.disabled = true; bProf.hidden = false;
         bloc.setAttribute("data-etat", "attente");
@@ -2141,16 +2241,16 @@ var Sim = (function () {
     }
 
     function etoilesDe(i) {
-      var fs = etat.fiches[i]; if (!fs || !fs.length) return 0;
+      var fs = etat.fiches[i]; if (NOTE || !fs || !fs.length) return 0;      // en mode note, aucune etoile : elles diraient le verdict
       if (fs.some(function (f) { return !f.fini; })) return 0;
       var n = fs.filter(function (f) { return f.note; }).length;
       return n === fs.length ? 3 : n >= fs.length * 0.6 ? 2 : 1;
     }
     function majPhase(i) {
       var fs = etat.fiches[i]; if (!fs || !fs.pied) return;
-      var finie = fs.every(function (f) { return f.fini; });
+      var finie = fs.every(fait);
       fs.pied.suite.disabled = false;
-      fs.pied.bravo.hidden = !finie || !o.phases[i].bravo;
+      fs.pied.bravo.hidden = NOTE || !finie || !o.phases[i].bravo;
       if (finie && etat.ouverte === i) etat.ouverte = i + 1;
       majChemin();
     }
@@ -2158,9 +2258,10 @@ var Sim = (function () {
       noeuds.forEach(function (b, i) {
         var dispo = !!etat.debut;                         // comme dans un controle : toutes les parties, dans l'ordre qu'on veut
         if (dispo) b.removeAttribute("disabled"); else b.setAttribute("disabled", "disabled");
-        var e = etoilesDe(i);
-        b.querySelector(".pc-etoiles").textContent = e ? "★★★".slice(0, e) + "☆☆☆".slice(0, 3 - e) : "";
-        b.classList.toggle("pc-fait", e > 0);
+        var e = etoilesDe(i), fs = etat.fiches[i];
+        var tout = NOTE && fs && fs.length && fs.every(fait);   // en mode note : une coche quand tout est enregistre, sans verdict
+        b.querySelector(".pc-etoiles").textContent = NOTE ? (tout ? "✓" : "") : e ? "★★★".slice(0, e) + "☆☆☆".slice(0, 3 - e) : "";
+        b.classList.toggle("pc-fait", NOTE ? !!tout : e > 0);
         b.classList.toggle("pc-ici", etat.courante === i);
       });
       if (etat.debut) drapeau.removeAttribute("disabled");   // le livrable s'ouvre a tout moment
@@ -2172,8 +2273,19 @@ var Sim = (function () {
     function etoilesPlus() { var s = 0; o.phases.forEach(function (ph, i) { if (ph.facultative) s += etoilesDe(i); }); return s; }
     function enPlus() { var p = etoilesPlus(); return p ? " · +" + p : ""; }
     function minutes() { return etat.debut ? Math.floor((Date.now() - etat.debut) / 60000) : 0; }
+    /* en mode note, la tete compte les reponses enregistrees, jamais les reussites */
+    function comptesNote() {
+      var n = 0, m = 0;
+      o.phases.forEach(function (ph, i) {
+        var fs = etat.fiches[i];
+        if (!fs) { if (!ph.facultative) m += questionsDe(i).filter(function (q) { return q.type !== "appel"; }).length; return; }
+        fs.forEach(function (f) { if (f.appel || !compte(i, f)) return; m++; if (f.enr) n++; });
+      });
+      return { n: n, m: m };
+    }
     function majTete() {
-      score.textContent = "★ " + totalEtoiles() + " / " + (3 * nOblig) + enPlus();
+      var cn = NOTE ? comptesNote() : null;
+      score.textContent = NOTE ? cn.n + " / " + cn.m + " réponses" : "★ " + totalEtoiles() + " / " + (3 * nOblig) + enPlus();
       temps.textContent = etat.debut ? minutes() + " min" : "";
       if (bDos) bDos.hidden = !etat.debut;
     }
@@ -2185,11 +2297,11 @@ var Sim = (function () {
     }
     /* une partie ouverte trop tot : ses phrases portaient « … » ; on la refait tant qu'on n'y a rien touche */
     function intacte(i) {
-      return (etat.fiches[i] || []).every(function (f) { return !f.fini && !f.essais && !f.appuis && !f.appele && !f.aide; });
+      return (etat.fiches[i] || []).every(function (f) { return !f.fini && !f.essais && !f.appuis && !f.appele && !f.aide && !f.enr; });
     }
     function rafraichir(i) {
       var ph = o.phases[i], colQ = etat.colonnes[i];
-      if (!etat.construites[i] || typeof ph.questions !== "function" || !colQ || !intacte(i)) return;
+      if (etat.rendu || !etat.construites[i] || typeof ph.questions !== "function" || !colQ || !intacte(i)) return;
       var pied = etat.fiches[i].pied;
       while (colQ.children.length > 1) colQ.removeChild(colQ.lastChild);
       etat.fiches[i] = questionsDe(i).map(function (q, j) { return q.type === "appel" ? poserAppel(colQ, q, i) : poserQuestion(colQ, q, i, j); });
@@ -2213,9 +2325,13 @@ var Sim = (function () {
     /* ---- l'autonomie, au sens de l'epreuve : ni aide demandee, ni question passee ---- */
     function autonomie() {
       var passees = 0, restent = 0;
-      etat.fiches.forEach(function (fs, i) { (fs || []).forEach(function (f) { if (f.appel || !compte(i, f)) return; if (f.passe) passees++; if (!f.fini) restent++; }); });
+      etat.fiches.forEach(function (fs, i) { (fs || []).forEach(function (f) { if (f.appel || !compte(i, f)) return; if (f.passe) passees++; if (!fait(f)) restent++; }); });
       o.phases.forEach(function (ph, i) { if (!etat.fiches[i] && !ph.facultative) restent += questionsDe(i).filter(function (q) { return q.type !== "appel"; }).length; });
       var merite = !etat.aides && !passees && !restent;
+      if (NOTE) {                                          // en mode note : ni aide ni question passee, seulement ce qui reste sans reponse
+        var tn = restent ? restent + " question" + (restent > 1 ? "s" : "") + " sans réponse" : "toutes les questions ont une réponse";
+        return { merite: merite, texte: u41 ? "aucune aide en évaluation, " + tn : (merite ? "bonus +0,25 mérité — " : "pas de bonus — ") + tn };
+      }
       if (u41) {
         var u = [etat.aides ? etat.aides + " aide" + (etat.aides > 1 ? "s" : "") + " demandée" + (etat.aides > 1 ? "s" : "") : "aucune aide demandée",
           passees ? passees + " question" + (passees > 1 ? "s" : "") + " passée" + (passees > 1 ? "s" : "") : "rien de passé"];
@@ -2235,23 +2351,54 @@ var Sim = (function () {
       if (!finalFait) {
         finalFait = true;
         titreFin = el("h2"); bulleFin = el("p", { classe: "pc-bulle" });
-        final.appendChild(el("div", { classe: "pc-phase-tete" }, [el("div", { classe: "pc-surtitre", texte: epreuve ? "La copie" : "Le livrable" }), titreFin, bulleFin]));
+        final.appendChild(el("div", { classe: "pc-phase-tete" }, [el("div", { classe: "pc-surtitre", texte: MOT_FIN }), titreFin, bulleFin]));
         recap = el("div", { classe: "carte" });
+        var simpl = null;
+        if (o.simplifie && o.simplifie.length) {
+          simpl = el("details", { classe: "modele carte" }, [el("summary", { texte: "Ce que la simulation simplifie" }),
+            el("ul", null, o.simplifie.map(function (t) { return el("li", { html: t }); }))]);
+        }
+        if (!NOTE) {                                       // en TD : rien a rendre
+          var rien = el("div", { classe: "carte pc-remise" }, [el("h2", { texte: "Rien à rendre" }),
+            el("p", { classe: "consigne", html: "En TD, la page ne produit <b>aucun fichier</b> : ce bilan vous montre ce qui est acquis et ce qui reste à revoir. " +
+              "L'évaluation notée se fait par le <b>lien que donne le professeur</b>, avec d'autres valeurs, sans indication." })]);
+          final.appendChild(el("div", { classe: "plan" }, [recap, el("div", null, [rien, simpl])]));
+          return construireFinal();
+        }
         var remise = el("div", { classe: "carte pc-remise" });
         remise.appendChild(el("h2", { texte: "Mon fichier pour le professeur" }));
         remise.appendChild(el("p", { classe: "consigne", html: "Tapez l’<b>identifiant donné en classe</b>, puis produisez le fichier. " +
           "Il se fabrique <b>dans cette page</b> : rien n’est envoyé, rien n’est enregistré. Il part dans vos téléchargements, et c’est vous qui le remettez." }));
         var ident = el("input", { type: "text", autocomplete: "off", "aria-label": "Identifiant", placeholder: "identifiant donné en classe" });
-        var bProd = el("button", { type: "button", classe: "bouton principal", texte: "Produire mon fichier" });
-        var bVoir = el("button", { type: "button", classe: "bouton", texte: "Afficher le texte" });
+        var bProd = el("button", { type: "button", classe: "bouton principal", texte: "Rendre ma copie" });
+        var bVoir = el("button", { type: "button", classe: "bouton", hidden: "hidden", texte: "Afficher le texte" });
+        /* rendre la copie verrouille tout : le fichier porte les verdicts, il ne doit plus servir a se corriger */
+        var bOui = el("button", { type: "button", classe: "bouton principal", texte: "Oui, je rends ma copie" });
+        var bNon = el("button", { type: "button", classe: "bouton", texte: "Pas encore" });
+        var confirmer = el("div", { classe: "pc-confirmer", hidden: "hidden" }, [
+          el("p", { classe: "consigne", html: "<b>Rendre la copie verrouille toutes vos réponses</b> : plus rien ne pourra changer. Le fichier part ensuite dans vos téléchargements." }),
+          el("div", { classe: "rangee" }, [bOui, bNon])]);
         var dit = el("p", { classe: "pc-retour", "aria-live": "polite" });
         apercu = el("textarea", { classe: "pc-apercu", readonly: "readonly", rows: "10", hidden: "hidden", "aria-label": "Le texte du fichier" });
         remise.appendChild(el("div", { classe: "pc-q-champ" }, [ident]));
         remise.appendChild(el("div", { classe: "rangee" }, [bProd, bVoir]));
+        remise.appendChild(confirmer);
         remise.appendChild(dit); remise.appendChild(apercu);
         bProd.addEventListener("click", function () {
           var id = ident.value.trim();
           if (!id) { dit.className = "pc-retour faux"; dit.textContent = "Tapez d’abord l’identifiant donné en classe."; return; }
+          if (!etat.rendu) { confirmer.hidden = false; dit.textContent = ""; return; }
+          produire();
+        });
+        bNon.addEventListener("click", function () { confirmer.hidden = true; });
+        bOui.addEventListener("click", function () {
+          if (!ident.value.trim()) { confirmer.hidden = true; return; }
+          rendre(); confirmer.hidden = true; ident.disabled = true;
+          bProd.textContent = "Produire de nouveau le fichier"; bVoir.hidden = false;
+          construireFinal(); produire();
+        });
+        function produire() {
+          var id = ident.value.trim();
           var txt = fabriquer(id);
           var nom = "bilan-" + nettoie(id) + "-" + nettoie(o.code || "parcours") + ".txt";
           try {
@@ -2264,16 +2411,12 @@ var Sim = (function () {
           } catch (e) {
             dit.className = "pc-retour faux"; dit.textContent = "Le téléchargement est bloqué ici : affichez le texte et copiez-le.";
           }
-        });
+        }
         bVoir.addEventListener("click", function () {
+          if (!etat.rendu) return;                         // le texte porte les verdicts : seulement une fois la copie rendue
           var id = ident.value.trim() || "(identifiant à taper)";
           apercu.value = fabriquer(id); apercu.hidden = false; apercu.focus(); apercu.select();
         });
-        var simpl = null;
-        if (o.simplifie && o.simplifie.length) {
-          simpl = el("details", { classe: "modele carte" }, [el("summary", { texte: "Ce que la simulation simplifie" }),
-            el("ul", null, o.simplifie.map(function (t) { return el("li", { html: t }); }))]);
-        }
         final.appendChild(el("div", { classe: "plan" }, [recap, el("div", null, [remise, simpl])]));
       }
       /* le livrable se produit meme inacheve : ce qui reste compte comme non reussi */
@@ -2281,23 +2424,43 @@ var Sim = (function () {
       o.phases.forEach(function (ph, i) {
         var fs = etat.fiches[i];
         if (ph.facultative && !(fs || []).some(touchee)) return;   // pas abordee : elle ne manque pas
-        (fs ? fs.filter(function (f) { return !f.fini && compte(i, f); }).map(function (f) { return f.q; }) : questionsDe(i)).forEach(function (q) {
+        (fs ? fs.filter(function (f) { return !fait(f) && compte(i, f); }).map(function (f) { return f.q; }) : questionsDe(i)).forEach(function (q) {
           if (q.type === "appel") appelsAFaire++; else restent++;
         });
       });
-      var enAttente = attente().length;
-      titreFin.innerHTML = restent || appelsAFaire ? (epreuve ? "La copie n’est pas finie" : "Le projet n’est pas fini") : (o.livrableTitre || (epreuve ? "La copie est finie" : "Le projet est fini"));
+      var enAttente = attente().length, modifiees = 0;
+      etat.fiches.forEach(function (fs) { (fs || []).forEach(function (f) { if (f.modifiee && !f.fini) modifiees++; }); });
+      titreFin.innerHTML = !NOTE ? (restent ? "Le TD n’est pas fini" : "Le TD est fini")
+        : etat.rendu ? "La copie est rendue"
+        : restent || appelsAFaire ? (epreuve ? "La copie n’est pas finie" : "Le projet n’est pas fini") : (o.livrableTitre || (epreuve ? "La copie est finie" : "Le projet est fini"));
       var mots = [];
-      if (restent) mots.push("Il reste <b>" + restent + " question" + (restent > 1 ? "s" : "") + "</b> sans réponse. Vous pouvez y revenir par le chemin, en haut, " +
-        "ou produire votre fichier tel quel : " + (restent > 1 ? "elles compteront" : "elle comptera") + " comme non réussie" + (restent > 1 ? "s" : "") + ".");
+      if (NOTE && etat.rendu) mots.push("Vos réponses sont verrouillées. Remettez le fichier au professeur.");
+      else if (restent) mots.push("Il reste <b>" + restent + " question" + (restent > 1 ? "s" : "") + "</b> sans réponse. Vous pouvez y revenir par le chemin, en haut" +
+        (NOTE ? ", ou rendre votre copie telle quelle : " + (restent > 1 ? "elles compteront" : "elle comptera") + " comme non réussie" + (restent > 1 ? "s" : "") + "." : "."));
+      if (NOTE && !etat.rendu && modifiees) mots.push("<b>" + (modifiees > 1 ? modifiees + " réponses ont été modifiées" : "Une réponse a été modifiée") + " sans être enregistrée</b> : " +
+        (modifiees > 1 ? "c'est l'ancienne réponse qui comptera pour chacune" : "c'est l'ancienne réponse qui comptera") + ", sauf si vous appuyez sur « Enregistrer ».");
       if (appelsAFaire) mots.push("<b>" + (appelsAFaire > 1 ? appelsAFaire + " appels n'ont pas été lancés" : "Un appel n'a pas été lancé") + "</b> : " + (appelsAFaire > 1 ? "ils comptent" : "il compte") + " zéro.");
       if (enAttente) mots.push("<b>" + (enAttente > 1 ? enAttente + " appels attendent" : "Un appel attend") + " encore le professeur</b> : faites-le valider avant de produire le fichier, sinon il ne comptera pas.");
-      if (!restent && !appelsAFaire && !enAttente && o.fin) mots.push(o.fin);
+      if (!restent && !appelsAFaire && !enAttente && !(NOTE && etat.rendu)) mots.push(finTexte());
       bulleFin.innerHTML = mots.join(" ");
       bulleFin.hidden = !bulleFin.innerHTML;
       recap.innerHTML = "";
       recap.appendChild(el("h2", { texte: ccf ? "Le bilan de l'épreuve" : u41 ? "Le bilan, compétence par compétence" : "Le bilan du projet" }));
       var t = el("table", { classe: "releve pc-recap" });
+      if (NOTE) {
+        recap.firstChild.textContent = "Ce que contient votre copie";
+        t.appendChild(el("tr", null, [el("th", { texte: epreuve ? "Partie" : "Phase" }), el("th", { texte: "Compétence" }), el("th", { texte: "Réponses enregistrées" })]));
+        o.phases.forEach(function (ph, i) {
+          var fs = etat.fiches[i], qs = fs ? fs.map(function (f) { return f.q; }) : questionsDe(i), n = 0, m = 0;
+          if (ph.facultative && !(fs || []).some(touchee)) { t.appendChild(el("tr", null, [el("td", { texte: nomPhase(i) }), el("td", { texte: ph.competence }), el("td", { texte: "facultative, non abordée" })])); return; }
+          qs.forEach(function (q, j) { var f = fs && fs[j]; if (q.type === "appel") { m++; if (f && f.appele) n++; return; } if (!compte(i, f)) return; m++; if (f && f.enr) n++; });
+          t.appendChild(el("tr", null, [el("td", { texte: nomPhase(i) }), el("td", { texte: ph.competence }), el("td", { texte: n + " sur " + m })]));
+        });
+        recap.appendChild(t);
+        if (ccf) recap.appendChild(el("p", { classe: "pc-autonomie", html: "<b>Autonomie</b> : " + autonomie().texte + "." }));
+        recap.appendChild(el("p", { classe: "pc-score-final", html: minutes() + " min" }));
+        return;
+      }
       if (epreuve) {
         t.appendChild(el("tr", null, [el("th", { texte: "Compétence" }), el("th", { texte: "Réussi du premier coup" }), el("th", { texte: "Appel" })]));
         ORDRE.forEach(function (k) {
@@ -2335,13 +2498,30 @@ var Sim = (function () {
       return (s.normalize ? s.normalize("NFD").replace(/[̀-ͯ]/g, "") : s)
         .replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase() || "sans-identifiant";
     }
+    /* le mot de la fin des pages parle du fichier : en TD il n'y en a pas, en note le bouton est « Rendre ma copie » */
+    function finTexte() {
+      var t = String(o.fin || "");
+      var sans = t.replace(/\s*(La copie est prête|Produisez)[^.]*\.?/g, "").trim();
+      if (!NOTE) return (sans ? sans + " " : "Tout est fait. ") + "En TD, rien à rendre : relisez la méthode des questions qui ont coincé.";
+      return (sans ? sans + " " : "") + "Rendez votre copie : le fichier part dans vos téléchargements.";
+    }
+    /* rendre la copie (mode note) : rejuger ce qui attendait une mesure, et tout verrouiller */
+    function rendre() {
+      if (!NOTE || etat.rendu) return;
+      etat.rendu = true;
+      etat.fiches.forEach(function (fs) { (fs || []).forEach(function (f) { if (f.verrouiller) f.verrouiller(); }); });
+      majChemin(); majTete();
+    }
     function fabriquer(id) {
+      if (NOTE) rendre();                                  // le texte porte les verdicts : le fabriquer, c'est rendre la copie
       var d = new Date();
       var out = ["BILAN DE SÉQUENCE",
         "Page       : " + (ccf ? "Entraînement au CCF " : u41 ? "TD sur simulation " : "Parcours ") + (o.code ? o.code + " · " : "") + texteSeul(o.titre) + " · " + etat.niveau,
         "Identifiant: " + id,
         "Date       : " + deux(d.getDate()) + "/" + deux(d.getMonth() + 1) + "/" + d.getFullYear() + " à " + deux(d.getHours()) + "h" + deux(d.getMinutes()),
-        "Bilan      : " + totalEtoiles() + " étoiles sur " + 3 * nOblig + ", en " + minutes() + " min" +
+        "Mode       : " + (NOTE ? "évaluation notée, sans indication" : "TD, non noté"),
+        NOTE ? "Bilan      : " + comptesNote().n + " réponses enregistrées sur " + comptesNote().m + ", en " + minutes() + " min"
+          : "Bilan      : " + totalEtoiles() + " étoiles sur " + 3 * nOblig + ", en " + minutes() + " min" +
           (etoilesPlus() ? ", et " + etoilesPlus() + " de plus en partie facultative" : "")];
       if (ccf) out.push("Autonomie  : " + autonomie().texte);
       if (u41) out.push("Grille     : BTS FED · U41", "Aides      : " + autonomie().texte);
@@ -2370,7 +2550,7 @@ var Sim = (function () {
             if (!f || !f.fini) { etatCase = "non vérifié"; rep = "(non faite)"; }
             else {
               etatCase = f.note ? "juste" : "faux";
-              var det = f.passe ? (f.essais ? "passée après " + f.essais + " essai" + (f.essais > 1 ? "s" : "") : "passée sans réponse")
+              var det = NOTE ? "enregistrée à " + heure(f.heureEnr) + (f.modifiee ? ", modifiée ensuite sans être enregistrée" : "") : f.passe ? (f.essais ? "passée après " + f.essais + " essai" + (f.essais > 1 ? "s" : "") : "passée sans réponse")
                 : (f.essais === 1 ? "juste au 1er essai" : "trouvée au " + f.essais + "e essai");
               if (f.aide) det += ", avec aide";
               rep = f.passe && !f.essais ? det : (f.reponse || "(vide)") + " — " + det;
@@ -2402,9 +2582,9 @@ var Sim = (function () {
       if (etat.debut && !etat.exporte) { e.preventDefault(); e.returnValue = ""; }
     });
     majTete();
-    if (libre) mode(/^#(ccf|u41|parcours)$/.test(location.hash));
+    if (libre) mode(NOTE || /^#(ccf|u41|parcours)$/.test(location.hash));
     /* la porte d'essai : etat interne et fichier, pour les controles */
-    return { etat: etat, donnees: donnees, ouvrir: ouvrir, fabriquer: fabriquer, fiches: function () { return etat.fiches; },
+    return { etat: etat, donnees: donnees, ouvrir: ouvrir, fabriquer: fabriquer, rendre: rendre, note: NOTE, fiches: function () { return etat.fiches; },
       appels: appels, mode: mode, dossier: function () { if (dossierFn) basculerDossier(); return panDos; }, coter: function (f, x) { f.cote = x; f.heureCote = new Date(); f.note = x === "A"; f.afficher(); majPhase(f.phase); majAppels(); },
       choisirNiveau: function (n) { etat.niveau = n; niv.textContent = n; }, demarrer: function (n) {
         if (libre) mode(true);
@@ -2487,7 +2667,9 @@ var Sim = (function () {
 
   return { fr: fr, lire: lire, el: el, $: $, borne: borne, mesure: mesure, gauss: gauss, onglets: onglets, curseur: curseur, choix: choix,
     afficheur: afficheur, graphe: graphe, releve: releve, enregistreur: enregistreur, centrale: centrale, molette: molette,
-    defi: defi, animer: animer, avancer: avancer, svg: svg, parcours: parcours, calculatrice: calculatrice };
+    defi: defi, animer: animer, avancer: avancer, svg: svg, parcours: parcours, calculatrice: calculatrice,
+    /* vrai quand la page est ouverte en mode note (#note) : chaque page y tire d'autres valeurs */
+    note: NOTE_ADRESSE };
 })();
 
 </script>
@@ -2628,11 +2810,21 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
   var SERINGUES = { 5: 12.06, 10: 14.5, 20: 19.13, 30: 21.7, 60: 26.7 };
   var K_DYN = 1;          // raideur du ressort du dynamometre, N/mm : 1 mm par newton, une echelle lisible
   var C_MAX = 30;         // compression maximale du ressort, mm : 30 N en butee
-  var LEVIER = 8;         // le levier du cric multiplie la force de la main par 8
+  /* DEUX MODES (16 octobre 2026) : en evaluation notee (#note), le cric de l'entrainement au CCF n'est pas
+     celui du TD. Le levier multiplie par 10 au lieu de 8, la roue se decolle de 4 cm au lieu de 3, et la
+     jauge de l'effort marque « dur » a 120 N, la regle de l'atelier de ce sujet. Le mode libre, masque en
+     evaluation, garde ses valeurs. */
+  var LEVIER = Sim.note ? 10 : 8;      // le levier du cric multiplie la force de la main par 8 (TD) ou 10 (note)
+  var DECOLLE = Sim.note ? 40 : 30;    // mm : la roue est assez haute pour etre changee
+  var DUR = Sim.note ? 120 : 150;      // N : la marque « dur » de la jauge de l'effort
   var COURSE_POMPE = 25;  // course du petit piston du cric, mm
   var COURSE_VERIN = 120; // course du grand piston du cric, mm
   var MAIN_MAX = 400;     // au-dela, meme en pesant de tout son poids, le levier ne descend pas (N)
   var JEU = 40;           // mm de montee avant que la roue avant quitte le sol (la suspension se detend)
+  if (DUR !== 150) {
+    document.querySelector("#jaugeBloc .jauge").style.background = "linear-gradient(to right,var(--juste) 0 " + (DUR / 4) + "%,var(--tiede) " + (DUR / 4) + "% 75%,var(--faux) 75% 100%)";
+    document.querySelectorAll("#jaugeBloc .jauge-txt span")[1].textContent = DUR + " N · dur";
+  }
 
   /* ---------- Physique : fonction pure, sans dessin ---------- */
   function modele(e) {
@@ -2778,8 +2970,8 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
   Sim.defi(DC, { question: "Force F₁ sur le petit piston pour soulever la charge, F₁ = P × S₁ ÷ S₂ :", unite: "N",
     attendu: function () { return modele(etat).seuil; }, tolerance: 0.03,
     methode: "La pression est la même partout dans l'huile : F₁ ÷ S₁ = P ÷ S₂." });
-  Sim.defi(DC, { question: "Force de ta main sur le levier, qui multiplie la force par 8 :", unite: "N",
-    attendu: function () { return modele(etat).main; }, tolerance: 0.03, methode: "Divise F₁ par 8." });
+  Sim.defi(DC, { question: "Force de ta main sur le levier, qui multiplie la force par " + LEVIER + " :", unite: "N",
+    attendu: function () { return modele(etat).main; }, tolerance: 0.03, methode: "Divise F₁ par " + LEVIER + "." });
   Sim.defi(DC, { question: "Montée du vérin à chaque coup de pompe complet, le petit piston descendant de 25 mm :", unite: "mm",
     attendu: function () { return COURSE_POMPE * modele(etat).r; }, tolerance: 0.04,
     methode: "Le volume S₁ × 25 mm passe du petit cylindre au grand : d₂ = 25 × S₁ ÷ S₂." });
@@ -2942,7 +3134,7 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
   }
 
   /* === Le cric : l'atelier en haut, la coupe en bas === */
-  var PIV = { x: 200, y: 318 }, BRAS_A = 18, BRAS_B = 144, SP = 0.6, SR = 1.0;   // levier ; echelles du petit et du grand piston (px/mm)
+  var PIV = { x: 200, y: 318 }, BRAS_B = 144, BRAS_A = BRAS_B / LEVIER, SP = 0.6, SR = 1.0;   // levier (18 px sur 144 en TD) ; echelles du petit et du grand piston (px/mm)
   var XP = PIV.x - BRAS_A, XR = 452, YF = 535;          // petit cylindre, verin, fond de la coupe
   function yPoignee(wp) { return PIV.y + LEVIER * (wp - COURSE_POMPE / 2) * SP; }
   function dessinerCric() {
@@ -3102,7 +3294,7 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
     svg("circle", { cx: xr, cy: yRoue, r: 8, "class": "jante" }, A);
     svg("circle", { cx: 560, cy: 140, r: 20, "class": "pneu" }, A);
     svg("circle", { cx: 560, cy: 140, r: 8, "class": "jante" }, A);
-    if (levee() >= 30) svg("text", { x: xr, y: 196 - 30, "text-anchor": "middle", "class": "indice", texte: "roue décollée !" }, A);
+    if (levee() >= DECOLLE) svg("text", { x: xr, y: 196 - 30, "text-anchor": "middle", "class": "indice", texte: "roue décollée !" }, A);
   }
 
   function dessinerScene() { if (etat.disp === "seringues") dessinerSeringues(); else dessinerCric(); }
@@ -3160,7 +3352,7 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
     else if (phase === "descend") message("La vis de décharge est ouverte : la voiture redescend doucement.");
     else if (phase === "monte") message("La voiture monte : le clapet 2 s'ouvre, l'huile passe dans le vérin.");
     else if (phase === "aspire") message("Le levier remonte : le clapet 1 s'ouvre, l'huile du réservoir remplit le petit cylindre. Le clapet 2 tient la voiture.");
-    else if (levee() >= 30) message("La roue avant a décollé de plus de 3 cm : on peut la changer. Combien de coups de pompe as-tu donnés ?");
+    else if (levee() >= DECOLLE) message("La roue avant a décollé de plus de " + DECOLLE / 10 + " cm : on peut la changer. Combien de coups de pompe as-tu donnés ?");
     else if (etat.z2 > 0.01) message("Le clapet 2 garde la voiture en place. Pompe encore pour la monter.");
     else message("Pompe avec le levier : tire-le vers le bas, puis remonte-le.");
   }
@@ -3224,29 +3416,44 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
    « Caracteriser la pression dans un fluide immobile » — le principe du verin sur le banc des deux
    seringues, la relation de Pascal, puis le cric. Le vehicule et le banc sont tires au sort : deux
    voisins n'ont pas les memes nombres. La paillasse est celle du mode libre, empruntee.
-   Le piege qui fait la partie 4 : sans frottement, le calcul et la simulation donnent moins de 150 N
-   sur le levier pour les trois vehicules ; la notice du cric reel ajoute 15 %, et la reponse passe a
-   « non » pour deux vehicules sur trois. */
+   Le piege qui fait la partie 4 : sans frottement, le calcul et la simulation donnent moins que la limite
+   (150 N en TD, 120 N en evaluation) sur le levier pour les trois vehicules ; la notice du cric reel ajoute
+   15 % (20 % en evaluation), et la reponse passe a « non » pour deux vehicules sur trois.
+   DEUX JEUX DE VALEURS (16 octobre 2026) : le TD et l'evaluation notee (#note) n'ont pas les memes nombres.
+   Le cric (pistons, levier, hauteur a decoller), l'huile et la hauteur du manometre, la regle de l'atelier,
+   la notice, les vehicules, le banc (seringues, charges). Le levier et la hauteur de la roue sont aussi ceux
+   de la simulation (LEVIER et DECOLLE, plus haut), lus a la meme adresse. */
 (function () {
   var V = window.verin, fr = Sim.fr, el = Sim.el, G = 9.81;
-  var CRIC = { D1: 12, D2: 32, S1: 113, S2: 804, levier: 8 };   // surfaces du document 1, en mm²
-  var RHO = 870, H = 0.10, LIMITE = 150, FROTT = 0.15, S2B = 560, D2B = 26.7;
-  var MASSES = [700, 800, 850];                                    // l'avant du vehicule, sur le cric (kg)
-  var PAIRES = [{ v1: 10, D: 14.5, S: 165 }, { v1: 20, D: 19.1, S: 287 }];
-  var CHARGES = [2, 3, 4];
+  var SUJET = Sim.note
+    ? { cric: { D1: 14, D2: 40, S1: 154, S2: 1257, levier: 10 }, rho: 900, hcm: 15, limite: 120, frott: 20, decolle: 4,
+        masses: [750, 900, 950], paires: [{ v1: 5, D: 12.1, Dx: 12.06, S: 114 }], v2: 30, D2b: 21.7, S2b: 370, charges: [1.5, 2.5, 3.5] }
+    : { cric: { D1: 12, D2: 32, S1: 113, S2: 804, levier: 8 }, rho: 870, hcm: 10, limite: 150, frott: 15, decolle: 3,
+        masses: [700, 800, 850], paires: [{ v1: 10, D: 14.5, Dx: 14.5, S: 165 }, { v1: 20, D: 19.1, Dx: 19.13, S: 287 }], v2: 60, D2b: 26.7, S2b: 560, charges: [2, 3, 4] };
+  var CRIC = SUJET.cric;                                           // surfaces du document 1, en mm²
+  var RHO = SUJET.rho, H = SUJET.hcm / 100, LIMITE = SUJET.limite, FROTT = SUJET.frott / 100, S2B = SUJET.S2b, D2B = SUJET.D2b;
+  var MASSES = SUJET.masses;                                       // l'avant du vehicule, sur le cric (kg)
+  var PAIRES = SUJET.paires;
+  var CHARGES = SUJET.charges;
+  var V2 = SUJET.v2;                                               // la grande seringue du banc (mL)
+  var MULT = fr(1 + FROTT, 2);                                     // « 1,15 » ou « 1,20 »
+  var FOIS = { 8: "huit", 10: "dix" }[CRIC.levier] || String(CRIC.levier);
+  function kg(m) { return fr(m, m % 1 ? 1 : 0); }
 
   function tirer(t) { return t[Math.floor(Math.random() * t.length)]; }
   function cfg(ctx) {
     var d = ctx.donnees;
-    if (!d.cfg) { var p = tirer(PAIRES); d.cfg = { M: tirer(MASSES), v1: p.v1, D1b: p.D, S1b: p.S, mB: tirer(CHARGES) }; }
+    if (!d.cfg) { var p = tirer(PAIRES); d.cfg = { M: tirer(MASSES), v1: p.v1, D1b: p.D, Dx: p.Dx, S1b: p.S, mB: tirer(CHARGES) }; }
     return d.cfg;
   }
   /* les valeurs vraies, tirees des reglages de la simulation */
-  function seuilBanc(c) { return c.mB * G * Math.pow(V.etat.disp === "seringues" ? V.etat.D1 / D2B : (c.v1 === 10 ? 14.5 : 19.13) / D2B, 2); }
+  function seuilBanc(c) { return c.mB * G * Math.pow((V.etat.disp === "seringues" ? V.etat.D1 : c.Dx) / D2B, 2); }
   function pBanc(c) { return c.mB * G / (Math.PI * D2B * D2B / 4 * 1e-6) / 1e5; }
   function mainVraie(c) { return c.M * G * Math.pow(CRIC.D1 / CRIC.D2, 2) / CRIC.levier; }
-  /* ce que l'eleve a trouve, ou a defaut la valeur vraie : la suite se calcule sur SES nombres */
-  function garde(cle, mesure) { return function (ctx, juste, rep, v) { ctx.donnees[cle] = juste && isFinite(v) ? v : mesure(ctx); }; }
+  /* ce que l'eleve a trouve, ou a defaut la valeur vraie : la suite se calcule sur SES nombres. En evaluation,
+     fini est appele a chaque enregistrement, juste ou non : on garde le nombre de l'eleve quel qu'il soit, sinon
+     la conclusion, ecrite avec ses nombres, montrerait la valeur vraie a la place d'une valeur fausse. */
+  function garde(cle, mesure) { return function (ctx, juste, rep, v) { ctx.donnees[cle] = (juste || Sim.note) && isFinite(v) ? v : mesure(ctx); }; }
   function val(ctx, cle, mesure) { var x = ctx.donnees[cle]; return isFinite(x) ? x : mesure(ctx); }
   var M = {
     P: function (ctx) { return cfg(ctx).M * G; },
@@ -3262,7 +3469,7 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
   /* le dispositif du sujet sur la paillasse ; on ne le remet au depart que s'il a change */
   function banc(ctx) {
     var c = cfg(ctx), e = V.etat;
-    if (e.disp !== "seringues" || e.v1 !== c.v1 || e.v2 !== 60 || e.M !== c.mB) V.regler("seringues", { v1: c.v1, v2: 60, m: c.mB });
+    if (e.disp !== "seringues" || e.v1 !== c.v1 || e.v2 !== V2 || e.M !== c.mB) V.regler("seringues", { v1: c.v1, v2: V2, m: c.mB });
   }
   function cric(ctx) {
     var c = cfg(ctx), e = V.etat;
@@ -3280,19 +3487,19 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
     zone.appendChild(el("div", { classe: "pc-docs" }, [
       el("section", null, [el("h3", { texte: "Document 1 · Le cric rouleur de l'atelier" }),
         el("table", { classe: "releve" }, [
-          ligne("Piston de pompe", "Ø <b>12 mm</b> · S₁ = <b>113 mm²</b> · course 25 mm"),
-          ligne("Vérin", "Ø <b>32 mm</b> · S₂ = <b>804 mm²</b>"),
-          ligne("Levier", "multiplie la force de la main par <b>8</b>"),
-          ligne("Huile", "masse volumique <b>870 kg/m³</b>")])]),
+          ligne("Piston de pompe", "Ø <b>" + CRIC.D1 + " mm</b> · S₁ = <b>" + CRIC.S1 + " mm²</b> · course 25 mm"),
+          ligne("Vérin", "Ø <b>" + CRIC.D2 + " mm</b> · S₂ = <b>" + fr(CRIC.S2, 0) + " mm²</b>"),
+          ligne("Levier", "multiplie la force de la main par <b>" + CRIC.levier + "</b>"),
+          ligne("Huile", "masse volumique <b>" + RHO + " kg/m³</b>")])]),
       el("section", null, [el("h3", { texte: "Document 2 · Le véhicule" }),
         el("p", { html: "Le cric se place sous l'avant du véhicule. Il porte alors une masse de <b>" + c.M + " kg</b>." }),
-        el("p", { html: "Pour changer la roue, il faut la <b>décoller d'au moins 3 cm</b> du sol." })]),
+        el("p", { html: "Pour changer la roue, il faut la <b>décoller d'au moins " + SUJET.decolle + " cm</b> du sol." })]),
       el("section", null, [el("h3", { texte: "Document 3 · La règle de l'atelier" }),
-        el("p", { html: "« Au-delà de <b>150 N</b> sur le levier, répétés à chaque coup de pompe, l'épaule se fatigue : on prend alors le cric pneumatique. »" })]),
+        el("p", { html: "« Au-delà de <b>" + LIMITE + " N</b> sur le levier, répétés à chaque coup de pompe, l'épaule se fatigue : on prend alors le cric pneumatique. »" })]),
       el("section", null, [el("h3", { texte: "Document 4 · Le banc des deux seringues" }),
         el("p", { html: "Deux seringues pleines de la même huile, reliées par un tuyau. Petite seringue de <b>" + c.v1 + " mL</b>, Ø " + fr(c.D1b, 1) + " mm, S₁ = " + c.S1b + " mm². " +
-          "Grande seringue de <b>60 mL</b>, Ø 26,7 mm, S₂ = <b>560 mm²</b>." }),
-        el("p", { html: "Charge d'essai posée sur la grande : <b>" + fr(c.mB, 0) + " kg</b>. On pousse la petite avec un dynamomètre ; un manomètre est piqué sur le tuyau, <b>10 cm sous le grand piston</b>." })]),
+          "Grande seringue de <b>" + V2 + " mL</b>, Ø " + fr(D2B, 1) + " mm, S₂ = <b>" + S2B + " mm²</b>." }),
+        el("p", { html: "Charge d'essai posée sur la grande : <b>" + kg(c.mB) + " kg</b>. On pousse la petite avec un dynamomètre ; un manomètre est piqué sur le tuyau, <b>" + SUJET.hcm + " cm sous le grand piston</b>." })]),
       el("section", { classe: "pc-annexe" }, [el("h3", { texte: "Annexe · formulaire" }),
         el("p", { html: "<b>p = F ÷ S</b> — p en pascals (Pa), F en newtons (N), S en m²<br><b>P = m × g</b> — g = 9,81 N/kg<br>" +
           "<b>Relation de Pascal</b> : dans un liquide immobile, entre un point A et un point B situé h mètres plus bas, p<sub>B</sub> − p<sub>A</sub> = ρ × g × h<br>" +
@@ -3305,14 +3512,17 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
   }
   function notice(zone, ctx) {
     rappel(zone, ctx, function (c) {
-      return "Banc : charge de " + fr(c.mB, 0) + " kg, S₂ = 560 mm², huile à 870 kg/m³, manomètre 10 cm sous le grand piston. " +
-        "Cric : S₁ = 113 mm², S₂ = 804 mm², levier × 8, " + c.M + " kg à l'avant.";
+      return "Banc : charge de " + kg(c.mB) + " kg, S₂ = " + S2B + " mm², huile à " + RHO + " kg/m³, manomètre " + SUJET.hcm + " cm sous le grand piston. " +
+        "Cric : S₁ = " + CRIC.S1 + " mm², S₂ = " + fr(CRIC.S2, 0) + " mm², levier × " + CRIC.levier + ", " + c.M + " kg à l'avant.";
     });
     zone.appendChild(el("div", { classe: "pc-docs pc-donnees" }, [el("section", null, [el("h3", { texte: "Document 5 · La notice du cric" }),
-      el("p", { html: "« Les joints du piston de pompe et les articulations du levier frottent. <b>En service, l'effort réel sur le levier dépasse de 15 % l'effort calculé sans frottement.</b> »" })])]));
+      el("p", { html: "« Les joints du piston de pompe et les articulations du levier frottent. <b>En service, l'effort réel sur le levier dépasse de " + SUJET.frott + " % l'effort calculé sans frottement.</b> »" })])]));
   }
 
-  var simplifie = [].map.call(document.querySelectorAll("#libre details.modele li"), function (li) { return li.innerHTML; });
+  /* la hauteur d'huile negligee : le chiffre suit le sujet (Δp = ρ × g × h : 853 Pa en TD, 1 324 Pa en evaluation) */
+  var simplifie = [].map.call(document.querySelectorAll("#libre details.modele li"), function (li) {
+    return li.innerHTML.replace("moins de 0,01 bar pour 10 cm d'huile", "moins de " + fr(Math.ceil(RHO * G * H / 1000) / 100, 2) + " bar pour " + SUJET.hcm + " cm d'huile");
+  });
 
   window.ccf01 = Sim.parcours("#ccf", {
     code: "CCF-01",
@@ -3320,7 +3530,7 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
     niveaux: ["Terminale"],
     libre: "#libre",
     paillasse: ["#carteScene", "#carteMesure", "#carteReleve"],
-    ccf: { problematique: "Le cric de l'atelier permet-il de décoller la roue du véhicule sans dépasser 150 N d'effort sur le levier ?" },
+    ccf: { problematique: "Le cric de l'atelier permet-il de décoller la roue du véhicule sans dépasser " + LIMITE + " N d'effort sur le levier ?" },
     commande: {
       client: "Atelier de maintenance · la cheffe d'atelier",
       texte: "<p>Il faut changer une roue avant, et le pont élévateur est occupé. Reste le <b>cric rouleur hydraulique</b>. La cheffe d'atelier veut savoir si le mécanicien pourra le pomper sans dépasser la règle de l'atelier. " +
@@ -3336,13 +3546,13 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
           var c = cfg(ctx);
           return [
             { type: "classer", lib: "Dans les documents, que donne chaque indication ?",
-              items: ["<b>Ø 32 mm</b>", "<b>" + c.M + " kg</b>", "<b>150 N</b>", "<b>870 kg/m³</b>"],
+              items: ["<b>Ø " + CRIC.D2 + " mm</b>", "<b>" + c.M + " kg</b>", "<b>" + LIMITE + " N</b>", "<b>" + RHO + " kg/m³</b>"],
               categories: ["une force", "une masse", "un diamètre", "une masse volumique"], bonnes: [2, 1, 0, 3],
               methode: "L'unité dit la grandeur : N pour une force, kg pour une masse, mm pour une longueur, kg/m³ pour une masse volumique." },
             { type: "nombre", lib: "Quel poids le vérin du cric doit-il soulever ?", unite: "N",
               attendu: M.P, tolerance: 0.01, fini: garde("P", M.P),
               methode: "P = m × g, avec la masse portée par le cric et g = 9,81 N/kg." },
-            { type: "choix", lib: "Quelle force faut-il comparer aux 150 N de la règle ?",
+            { type: "choix", lib: "Quelle force faut-il comparer aux " + LIMITE + " N de la règle ?",
               options: ["la force de la main sur le levier", "la force F₁ du petit piston sur l'huile", "le poids de l'avant du véhicule", "la force du vérin sous le véhicule"], bonne: 0,
               methode: "La règle porte sur le geste du mécanicien : ce que son épaule sent, c'est le levier." }
           ];
@@ -3379,7 +3589,7 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
         competence: "REA", titre: "L'essai au banc, puis le calcul du cric",
         recit: "Le banc est prêt, la charge posée. À vous de mesurer, puis de calculer avec vos lectures.",
         consigne: "La poignée du dynamomètre se tire au doigt, vers le bas ; « Appuyer + » fait la même chose pas à pas. « Garder cette mesure » l'écrit dans le relevé.",
-        scene: function (zone, ctx) { rappel(zone, ctx, function (c) { return "Banc : grande seringue S₂ = 560 mm², charge de " + fr(c.mB, 0) + " kg. Cric : S₁ = 113 mm², S₂ = 804 mm², levier × 8, " + c.M + " kg à l'avant. 1 bar = 100 000 Pa."; }); },
+        scene: function (zone, ctx) { rappel(zone, ctx, function (c) { return "Banc : grande seringue S₂ = " + S2B + " mm², charge de " + kg(c.mB) + " kg. Cric : S₁ = " + CRIC.S1 + " mm², S₂ = " + fr(CRIC.S2, 0) + " mm², levier × " + CRIC.levier + ", " + c.M + " kg à l'avant. 1 bar = 100 000 Pa."; }); },
         paillasse: ["#carteScene", "#carteMesure", "#carteReleve"], large: true,
         surOuvrir: banc,
         questions: [
@@ -3394,13 +3604,13 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
               if (!ls.length) return null;
               var s = seuilBanc(c);
               var ok = ls.some(function (l) {
-                return l.disp === "seringues " + c.v1 + "/60 mL" && Math.abs(l.M - c.mB) < 1e-6 && l.F1 >= 0.96 * s - 0.1 && l.F1 <= 1.04 * s + 0.1;
+                return l.disp === "seringues " + c.v1 + "/" + V2 + " mL" && Math.abs(l.M - c.mB) < 1e-6 && l.F1 >= 0.96 * s - 0.1 && l.F1 <= 1.04 * s + 0.1;
               });
               var d = ls[ls.length - 1], reponse = "mesure gardée : " + d.disp + ", " + fr(d.M, 1) + " kg, F₁ = " + fr(d.F1, 1) + " N, p = " + fr(d.bar, 3) + " bar";
               if (ok) return { ok: true, reponse: reponse };
               /* une manipulation refusee nomme ses erreurs (14 octobre 2026), sur la derniere mesure gardee : jamais la force a trouver */
               var e = [];
-              if (d.disp !== "seringues " + c.v1 + "/60 mL") e.push("les seringues de cette mesure ne sont pas celles du banc du sujet");
+              if (d.disp !== "seringues " + c.v1 + "/" + V2 + " mL") e.push("les seringues de cette mesure ne sont pas celles du banc du sujet");
               if (Math.abs(d.M - c.mB) >= 1e-6) e.push("la charge de cette mesure n'est pas celle du sujet (rappel des données)");
               if (!e.length && d.F1 < 0.96 * s - 0.1) e.push("la charge ne montait pas encore quand la mesure a été gardée : tirez jusqu'au message « La charge monte », puis gardez-la");
               if (!e.length && d.F1 > 1.04 * s + 0.1) e.push("la poignée a été tirée trop fort, jusqu'au bout de la course : « Remettre au départ », puis tirez doucement et gardez la mesure dès le message « La charge monte »");
@@ -3421,7 +3631,7 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
             methode: "La pression est la même sous les deux pistons : F₁ ÷ S₁ = P ÷ S₂, donc F₁ = P × S₁ ÷ S₂, avec les surfaces du cric et le poids de la partie 1." },
           { type: "nombre", lib: "Déduisez l'effort de la main sur le levier.", unite: "N",
             attendu: M.main, tolerance: 0.03, fini: garde("main", M.main),
-            methode: "Le levier multiplie la force de la main par 8 : la main fournit huit fois moins que F₁." }
+            methode: "Le levier multiplie la force de la main par " + CRIC.levier + " : la main fournit " + FOIS + " fois moins que F₁." }
         ],
         bravo: "Le banc est mesuré, le cric calculé. Reste à savoir ce que ce calcul vaut."
       },
@@ -3438,7 +3648,7 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
               "F₂ est bien plus grande que le poids : l'huile multiplie la pression", "F₂ est égale à F₁ : l'huile transmet la force telle quelle",
               "F₂ est bien plus petite que le poids : la pression se perd dans le tuyau"], bonne: 0,
             methode: "Le poids de la charge, P = m × g ; l'écart avec F₂, en pourcentage du poids." },
-          { type: "nombre", lib: "Sur le banc, le manomètre est 10 cm sous le grand piston. D'après la relation de Pascal, de combien la pression qu'il lit dépasse-t-elle celle sous le grand piston ?", unite: "Pa",
+          { type: "nombre", lib: "Sur le banc, le manomètre est " + SUJET.hcm + " cm sous le grand piston. D'après la relation de Pascal, de combien la pression qu'il lit dépasse-t-elle celle sous le grand piston ?", unite: "Pa",
             attendu: RHO * G * H, tolerance: 0.02, fini: garde("dp", function () { return RHO * G * H; }),
             methode: "Δp = ρ × g × h, avec ρ de l'huile en kg/m³, g = 9,81 N/kg et h en mètres." },
           { type: "choix", lib: "Cet écart remet-il en cause l'hypothèse « même pression dans toute l'huile » ?",
@@ -3446,13 +3656,13 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
               "oui : il est du même ordre que la pression lue sur le banc", "oui : la pression double entre le tuyau et le grand piston",
               "on ne peut pas le savoir sans un second manomètre"], bonne: 0,
             methode: "Comparez Δp à la pression que vous avez lue, dans la même unité : 1 bar = 100 000 Pa." },
-          { type: "action", lib: "Vérifiez sur le cric de l'atelier : pompez jusqu'à décoller la roue d'au moins 3 cm.",
+          { type: "action", lib: "Vérifiez sur le cric de l'atelier : pompez jusqu'à décoller la roue d'au moins " + SUJET.decolle + " cm.",
             aide: "L'afficheur « Roue avant » dit de combien elle a décollé ; la vis de décharge reste fermée.",
             verifier: function (ctx) {
               var c = cfg(ctx), e = V.etat;
               if (e.disp !== "cric" || (e.coups === 0 && e.z2 < 0.5))
                 return e.disp === "cric" && e.vis ? { attente: "La vis de décharge est ouverte : l'huile retourne au réservoir, le cric ne soulève rien. Fermez-la, puis pompez." } : null;
-              var lv = V.levee(), ok = e.D1 === CRIC.D1 && e.D2 === CRIC.D2 && e.M === c.M && lv >= 30;
+              var lv = V.levee(), ok = e.D1 === CRIC.D1 && e.D2 === CRIC.D2 && e.M === c.M && lv >= 10 * SUJET.decolle;
               var reponse = (lv >= 0.5 ? "roue décollée de " + Math.round(lv) + " mm" : "roue encore au sol") + " après " + e.coups + " coup" + (e.coups > 1 ? "s" : "") + " de pompe" + (e.vis ? ", vis de décharge ouverte" : "");
               if (ok) return { ok: true, reponse: reponse };
               /* une manipulation refusee nomme ses erreurs (14 octobre 2026) ; le cric juste, la roue pas encore assez haute : on attend */
@@ -3461,15 +3671,15 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
               if (e.M !== c.M) err.push("la charge n'est pas celle de l'avant du véhicule (rappel des données)");
               if (e.vis) err.push("la vis de décharge est ouverte : l'huile retourne au réservoir, fermez-la");
               if (err.length) return { corriger: err, reponse: reponse };
-              return { attente: "Réglages justes. " + (lv >= 0.5 ? "La roue n'a décollé que de " + Math.round(lv) + " mm" : "La roue n'a pas encore décollé") + " : continuez à pomper jusqu'à 3 cm au moins, puis vérifiez." };
+              return { attente: "Réglages justes. " + (lv >= 0.5 ? "La roue n'a décollé que de " + Math.round(lv) + " mm" : "La roue n'a pas encore décollé") + " : continuez à pomper jusqu'à " + SUJET.decolle + " cm au moins, puis vérifiez." };
             },
-            methode: "Le levier, un coup après l'autre, la vis de décharge fermée, jusqu'à 30 mm au moins sur l'afficheur « Roue avant »." },
+            methode: "Le levier, un coup après l'autre, la vis de décharge fermée, jusqu'à " + 10 * SUJET.decolle + " mm au moins sur l'afficheur « Roue avant »." },
           { type: "nombre", lib: "Relevez l'effort de la main pendant le dernier coup de pompe.", unite: "N",
             attendu: M.mainMes, tolerance: 0.03, toleranceAbsolue: 1, fini: garde("mainMes", M.mainMes),
             methode: "L'afficheur « Force de la main » garde la dernière poussée, écrite sous sa valeur." },
           { type: "nombre", lib: "La notice du cric (document 5) : calculez l'effort réel sur le levier, à partir de l'effort mesuré.", unite: "N",
             attendu: M.reel, tolerance: 0.03, fini: garde("reel", M.reel),
-            methode: "15 % de plus : on multiplie l'effort mesuré par 1,15." }
+            methode: SUJET.frott + " % de plus : on multiplie l'effort mesuré par " + MULT + "." }
         ],
         bravo: "Le principe tient, Pascal le confirme, et le vrai cric frotte : vous savez quel nombre croire."
       },
@@ -3479,10 +3689,10 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
         questions: function (ctx) {
           var R = Math.round(val(ctx, "reel", M.reel)), T = Math.round(val(ctx, "mainMes", M.mainMes)), P = Math.round(val(ctx, "P", M.P));
           var oui = R <= LIMITE;
-          var vraie = oui ? "Oui : même avec les frottements du cric réel, l'effort sur le levier reste d'environ " + R + " N, sous les 150 N de la règle."
-            : "Non : avec les frottements du cric réel, l'effort sur le levier atteint environ " + R + " N, plus que les 150 N de la règle.";
-          var fausse = oui ? "Non : l'effort sur le levier dépasse les 150 N de la règle, il faut le cric pneumatique."
-            : "Oui : l'effort sur le levier reste sous les 150 N de la règle, le mécanicien peut pomper.";
+          var vraie = oui ? "Oui : même avec les frottements du cric réel, l'effort sur le levier reste d'environ " + R + " N, sous les " + LIMITE + " N de la règle."
+            : "Non : avec les frottements du cric réel, l'effort sur le levier atteint environ " + R + " N, plus que les " + LIMITE + " N de la règle.";
+          var fausse = oui ? "Non : l'effort sur le levier dépasse les " + LIMITE + " N de la règle, il faut le cric pneumatique."
+            : "Oui : l'effort sur le levier reste sous les " + LIMITE + " N de la règle, le mécanicien peut pomper.";
           return [
             { type: "multi", essais: 2, lib: "Gardez les phrases qui répondent juste à la cheffe d'atelier.",
               options: [vraie, "Sans frottement, le calcul et la simulation donnent environ " + T + " N : ils ne suffisent pas, un vrai cric frotte.", fausse,
@@ -3499,8 +3709,10 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
         bravo: "La cheffe d'atelier a sa réponse, son nombre, et une piste."
       }
     ],
-    fin: "La copie est prête : produisez le fichier, il part dans vos téléchargements."
+    fin: Sim.note ? "La copie est prête : rendez-la, le fichier part dans vos téléchargements."
+      : "Le TD est fini : le bilan dit ce qui est acquis et ce qui reste à revoir."
   });
+  window.ccf01.sujet = SUJET;                                      // le sujet tire, pour les scenarios
 })();
 </script>
 <footer class="pied">Simulation hors ligne, sans compte et sans enregistrement. Modèle simplifié : ce qu'il néglige est écrit sous la simulation, et détaillé dans la fiche professeur du TP SIM-03.</footer>

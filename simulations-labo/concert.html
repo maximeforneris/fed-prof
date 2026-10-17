@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Le concert sans danger</title>
-<meta name="description" content="Le groupe du lycée joue deux heures à la fête de fin d&#x27;année, devant trois cents personnes. Lire l&#x27;échelle des niveaux sonores, comparer des sons graves et aigus à l&#x27;oscilloscope, accorder la guitare en mesurant sa période, placer le public et choisir les protections au sonomètre, puis faire l&#x27;affiche. À la fin, un fichier pour le professeur.">
+<meta name="description" content="Le groupe du lycée joue à la fête de fin d&#x27;année, devant plusieurs centaines de personnes. Lire l&#x27;échelle des niveaux sonores, comparer des sons graves et aigus à l&#x27;oscilloscope, accorder la guitare en mesurant sa période, placer le public et choisir les protections au sonomètre, puis faire l&#x27;affiche. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.">
 <meta name="etiquette" content="Simulation · Parcours PAR-06">
 <style>
 /* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
@@ -196,6 +196,13 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
 .pc-q[data-etat="juste"]{border-color:var(--juste);background:var(--juste-doux)}
 .pc-q[data-etat="faux"]{border-color:var(--faux)}
 .pc-q[data-etat="passe"]{border-style:dashed;opacity:.85}
+/* les deux modes (16 octobre 2026) : en note, une reponse enregistree n'a pas de couleur de verdict */
+.pc-q[data-etat="enregistree"]{border-color:var(--accent);background:var(--accent-doux)}
+.pc-q[data-etat="enregistree"] .pc-q-num{background:var(--accent)}
+.pc-q[data-etat="modifiee"]{border-color:var(--accent);border-style:dashed}
+.pc-bandeau-mode{margin:10px 0;padding:10px 12px;border-left:4px solid var(--accent);background:var(--accent-doux);border-radius:var(--r)}
+.pc-note .pc-bandeau-mode{border-left-color:var(--encre)}
+.pc-confirmer{margin-top:10px;padding:10px 12px;border:1px solid var(--encre);border-radius:var(--r)}
 .pc-q-lib{margin:0 0 8px;font-weight:600}
 .pc-q-num{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--encre);color:var(--carte);
   font-size:.8rem;margin-right:.5em;vertical-align:.1em}
@@ -1532,7 +1539,25 @@ var Sim = (function () {
      la place de true en donne d'autres. La scene doit supporter d'etre appelee deux fois (effets gardes).
      LA CALCULATRICE : Sim.calculatrice() pose celle des sites de classe (_commun/entrainement/moteur/
      calculette.js, que l'assembleur embarque dans chaque page), un bouton flottant hors parcours, un
-     bouton dans la tete du parcours pendant l'entrainement. Rien n'est garde : pas de memoire. */
+     bouton dans la tete du parcours pendant l'entrainement. Rien n'est garde : pas de memoire.
+     DEUX MODES (16 octobre 2026, demande de l'utilisateur pour la notation) :
+     - LE TD, par defaut : tout ce qui precede (juste ou pas encore, methode, « A corriger », aide), mais
+       AUCUN FICHIER. La fin est un bilan a l'ecran ; rien a rendre.
+     - LE MODE NOTE, par le lien du professeur : l'adresse qui contient « note » (#note). Ni verdict, ni
+       methode, ni aide, ni etoiles ; « Enregistrer » garde la reponse, que l'eleve peut changer jusqu'a
+       rendre sa copie. Rendre la copie (produire le fichier, ou en afficher le texte) VERROUILLE tout : le
+       fichier porte les verdicts, il ne doit plus servir a se corriger. Une manipulation est jugee telle
+       qu'elle est au moment ou on l'enregistre ; une reponse qui attendait une mesure est rejugee au rendu.
+       Le mode libre de la page (« Explorer la simulation ») disparait : ses defis disent juste ou pas.
+     - LES VALEURS CHANGENT D'UN MODE A L'AUTRE : Sim.note (vrai en mode note) se lit des le chargement,
+       avant que la page tire son sujet ; chaque page y prend d'autres nombres. Changer l'adresse d'un mode
+       a l'autre recharge la page.
+     - En mode note, q.apres et q.fini sont appeles A CHAQUE ENREGISTREMENT, juste ou non, avec le verdict en
+       second argument : une page ne doit rien afficher qui en depende (une mesure rappelee seulement si elle
+       est juste trahirait le verdict). ctx.note le dit aux scenes.
+     LES PROPOSITIONS D'UN CHOIX SE MELANGENT (16 octobre 2026, « la bonne reponse est trop souvent la 1re ») :
+     q.bonne garde l'indice de la source, chaque bouton porte data-k ; « ordreFixe: true » garde l'ordre ecrit
+     (une echelle, « aucune des precedentes »). */
   var COMPETENCES = {
     APP: "S'approprier", ANA: "Analyser", REA: "Réaliser", VAL: "Valider", COM: "Communiquer"
   };
@@ -1552,6 +1577,9 @@ var Sim = (function () {
     "C2-3": "Décrire le fonctionnement du système", "C1-2": "Exprimer les contraintes"
   };
   var ORDRE_U41 = ["C12-1", "C12-2", "C4-3", "C2-1", "C2-2", "C2-3", "C1-2"];
+  /* le mode note, par l'adresse : #note (ou #ccf-note, #u41-note) ; lu des le chargement, avant le tirage du sujet */
+  function noteDans(h) { return /(^#|[^a-z])note\b/i.test(h || ""); }
+  var NOTE_ADRESSE = noteDans(location.hash);
   var COTES = { NA: "non acquis", ECA: "en cours d'acquisition", A: "acquis" };
   var POINTS_COTE = { NA: 0, ECA: 1, A: 2 };
   /* Le code du professeur pour valider un appel : seule son empreinte est dans la page. Pour le
@@ -1569,8 +1597,15 @@ var Sim = (function () {
   }
   function deux(n) { return (n < 10 ? "0" : "") + n; }
   function heure(d) { return deux(d.getHours()) + "h" + deux(d.getMinutes()); }
+  /* le melange de Fisher-Yates, en place */
+  function melanger(t) { for (var i = t.length - 1; i > 0; i--) { var k = Math.floor(Math.random() * (i + 1)), x = t[i]; t[i] = t[k]; t[k] = x; } return t; }
   function parcours(parent, o) {
     var ccf = !!o.ccf, u41 = !!o.u41, epreuve = ccf || u41;
+    /* le mode note : lu a l'adresse ; passer d'un mode a l'autre recharge, pour retirer les valeurs */
+    var NOTE = NOTE_ADRESSE;
+    window.addEventListener("hashchange", function () { if (noteDans(location.hash) !== NOTE) location.reload(); });
+    /* une question a une reponse : verifiee (TD), ou enregistree (note) ; un appel, des qu'il est lance */
+    function fait(f) { return !!f && (NOTE && !f.appel ? !!f.enr : !!f.fini); }
     var NOMS = u41 ? U41 : COMPETENCES, ORDRE = u41 ? ORDRE_U41 : ORDRE_COMP;
     function nomComp(k) { return NOMS[k] || COMPETENCES[k] || U41[k] || k; }
     var niveaux = o.niveaux || ["CAP", "Seconde"];
@@ -1582,9 +1617,12 @@ var Sim = (function () {
     /* une partie facultative intouchee ne compte nulle part ; entamee, seulement pour ce qui y est fait */
     var nOblig = o.phases.filter(function (ph) { return !ph.facultative; }).length || nPh;
     var aFacultative = nOblig < nPh;
-    function touchee(f) { return !!f && !!(f.fini || f.essais || f.appuis || f.aide); }
+    function touchee(f) { return !!f && !!(f.fini || f.essais || f.appuis || f.aide || f.enr); }
     function compte(i, f) { return !o.phases[i].facultative || touchee(f); }
-    var racine = el("div", { classe: "pc" + (ccf ? " pc-ccf" : "") + (u41 ? " pc-u41" : "") });
+    var racine = el("div", { classe: "pc" + (ccf ? " pc-ccf" : "") + (u41 ? " pc-u41" : "") + (NOTE ? " pc-note" : "") });
+    /* les mots qui changent d'un mode a l'autre : en TD, la fin est un bilan ; en note, une copie ou un livrable */
+    var MOT_FIN = NOTE ? (epreuve ? "La copie" : "Le livrable") : "Le bilan";
+    var MOT_FIN_COURT = NOTE ? (epreuve ? "Copie" : "Livrable") : "Bilan";
     var P = $(parent);
 
     /* ---- deux facons d'utiliser la page : la simulation libre, ou le parcours ---- */
@@ -1594,9 +1632,11 @@ var Sim = (function () {
         [el("b", { texte: "Explorer la simulation" }), el("span", { texte: o.libreTexte || "librement, sans note ni fichier" })]);
       bParcours = el("button", { type: "button", classe: "pc-mode", "aria-pressed": "false" },
         [el("b", { texte: ccf ? "Entraînement au CCF" : u41 ? "TD sur simulation" : "Le parcours" }),
-         el("span", { texte: o.modeTexte || ((u41 ? (o.u41.duree || "deux heures") : "une heure") + ", et un fichier pour le professeur") })]);
+         el("span", { texte: (u41 ? (o.u41.duree || "deux heures") : "une heure") + ", avec les indications ; sans note ni fichier" })]);
       barreModes = el("div", { classe: "pc-modes", role: "group", "aria-label": "Deux façons d'utiliser la page" }, [bLibre, bParcours]);
       P.appendChild(barreModes);
+      /* en mode note, la simulation libre s'efface : ses defis diraient juste ou pas, sur les valeurs de l'evaluation */
+      if (NOTE) barreModes.hidden = true;
       bLibre.addEventListener("click", function () { mode(false); });
       bParcours.addEventListener("click", function () { mode(true); });
     }
@@ -1647,8 +1687,8 @@ var Sim = (function () {
       chemin.appendChild(el("li", null, [b]));
       return b;
     });
-    var drapeau = el("button", { type: "button", classe: "pc-noeud pc-drapeau", disabled: "disabled", "aria-label": epreuve ? "La copie" : "Le livrable" },
-      [el("span", { classe: "pc-rond", html: "&#9873;" }), el("span", { classe: "pc-comp", texte: epreuve ? "Copie" : "Livrable" }), el("span", { classe: "pc-etoiles" })]);
+    var drapeau = el("button", { type: "button", classe: "pc-noeud pc-drapeau", disabled: "disabled", "aria-label": MOT_FIN },
+      [el("span", { classe: "pc-rond", html: "&#9873;" }), el("span", { classe: "pc-comp", texte: MOT_FIN_COURT }), el("span", { classe: "pc-etoiles" })]);
     drapeau.addEventListener("click", function () { montrer(nPh); });
     chemin.appendChild(el("li", null, [drapeau]));
     var info = el("div", { classe: "pc-info" });
@@ -1699,7 +1739,13 @@ var Sim = (function () {
     var illus = el("div", { classe: "scene pc-illus" });
     if (c.illustration) c.illustration(illus);
     var choixNiv = el("div", { classe: "pc-choix-niveau" });
-    var partir = el("button", { type: "button", classe: "bouton principal pc-partir", texte: ccf ? "Commencer l'épreuve" : u41 ? "Commencer" : "Accepter la mission" });
+    var partir = el("button", { type: "button", classe: "bouton principal pc-partir", texte: NOTE ? "Commencer l'évaluation" : ccf ? "Commencer l'épreuve" : u41 ? "Commencer" : "Accepter la mission" });
+    /* le mode, dit a l'accueil : en TD, des indications et rien a rendre ; en note, ni verdict ni aide, et un fichier */
+    var bandeauMode = el("p", { classe: "pc-bandeau-mode", html: NOTE
+      ? "<b>Évaluation notée.</b> La page ne dit ni juste ni faux et ne donne aucune méthode : « Enregistrer » garde votre réponse, " +
+        "que vous pouvez changer jusqu'à rendre votre copie. Rendre la copie produit le fichier pour le professeur et verrouille tout."
+      : "<b>TD, non noté.</b> La page dit juste ou pas encore et donne la méthode quand ça coince. À la fin, un bilan à l'écran : " +
+        "rien à rendre. L'évaluation notée se fait par le lien que donne le professeur, avec d'autres valeurs." });
     if (niveaux.length > 1) {
       choixNiv.appendChild(el("p", { classe: "pc-surtitre", texte: "Ma classe" }));
       var rang = el("div", { classe: "rangee" });
@@ -1755,8 +1801,9 @@ var Sim = (function () {
         grille,
         el("p", { classe: "consigne", html: "<b>Chaque compétence est cotée à part</b> : non acquis, en cours d'acquisition, acquis. Rater une partie ne fait pas perdre les autres." }),
         el("p", { classe: "pc-appel-annonce", html: "<span class=\"pc-main\" aria-hidden=\"true\">✋</span><span><b>Deux appels professeur</b>, à des moments précis du sujet, et notés. Vous appelez, puis vous continuez : le professeur vient valider sur la tablette.</span>" }),
-        el("p", { classe: "consigne", html: "<b>Bonus d'autonomie de +0,25</b> : il va à qui termine sans demander d'aide. Demander n'est pas interdit, et ne retire rien d'autre." }),
-        choixNiv, partir] : [
+        el("p", { classe: "consigne", html: NOTE ? "<b>Bonus d'autonomie de +0,25</b> : il va à qui répond à toutes les questions. En évaluation, la page ne donne aucune aide."
+          : "<b>Bonus d'autonomie de +0,25</b> : il va à qui termine sans demander d'aide. Demander n'est pas interdit, et ne retire rien d'autre." }),
+        bandeauMode, choixNiv, partir] : [
         el("h2", { texte: "L'U41 et ce TD" }),
         /* les parts des consignes : relevees sur les neuf sujets 2018-2026 (bts-fed-c-u41.yml) */
         el("p", { html: cc.format || "À l'examen, l'U41 dure <b>4 heures</b> : cinq parties indépendantes autour d'un dossier technique. " +
@@ -1767,8 +1814,8 @@ var Sim = (function () {
         aFacultative ? el("p", { classe: "consigne", html: "<b>« Pour aller plus loin »</b>, la partie marquée <b>+</b> sur le chemin, est <b>facultative</b> : " +
           "si vous n'y touchez pas, elle ne compte pas ; si vous l'abordez, seules les questions que vous y travaillez comptent." }) : null,
         nAppels ? el("p", { classe: "pc-appel-annonce", html: "<span class=\"pc-main\" aria-hidden=\"true\">✋</span><span><b>" + (nAppels > 1 ? nAppels + " appels" : "Un appel") + " professeur</b>, à l'oral, notés. Vous appelez, puis vous continuez : le professeur vient évaluer sur votre poste.</span>" }) : null,
-        el("p", { classe: "consigne", html: "<b>« Demander de l'aide »</b> donne la méthode, jamais la valeur. Elle ne retire rien à la question ; le fichier dit combien d'aides vous avez demandées." }),
-        choixNiv, partir]);
+        NOTE ? null : el("p", { classe: "consigne", html: "<b>« Demander de l'aide »</b> donne la méthode, jamais la valeur. Elle ne retire rien à la question." }),
+        bandeauMode, choixNiv, partir]);
       accueil.appendChild(el("div", { classe: "plan pc-plan-accueil" }, [el("div", null, [sujet, illus]), carteFormat]));
     } else {
       var carteCmd = el("div", { classe: "carte pc-commande" }, [
@@ -1786,8 +1833,8 @@ var Sim = (function () {
         el("div", null, [carteCmd, illus]),
         el("div", { classe: "carte" }, [el("h2", { texte: "Le projet en cinq phases" }), etapes,
           el("p", { classe: "consigne", html: "Une heure en tout. On passe d'une phase à l'autre comme on veut, par le chemin en haut ; " +
-            "à la fin, vous produisez un <b>fichier</b> à remettre au professeur." }),
-          choixNiv, partir])
+            (NOTE ? "à la fin, vous produisez un <b>fichier</b> à remettre au professeur." : "à la fin, un bilan de vos réussites.") }),
+          bandeauMode, choixNiv, partir])
       ]));
     }
     racine.appendChild(accueil);
@@ -1808,7 +1855,7 @@ var Sim = (function () {
       return qs.filter(function (q) { return !q.niveau || q.niveau === etat.niveau; });
     }
 
-    var ctx = { donnees: donnees, niveau: function () { return etat.niveau; }, ccf: ccf, u41: u41,
+    var ctx = { donnees: donnees, niveau: function () { return etat.niveau; }, ccf: ccf, u41: u41, note: NOTE,
       fr: fr, lire: lire, mesure: mesure, gauss: gauss, svg: svg, el: el, borne: borne, animer: animer };
 
     /* un recit ou une consigne peut dependre du niveau : une fonction de ctx */
@@ -1839,11 +1886,11 @@ var Sim = (function () {
       etat.fiches[i] = qs.map(function (q, j) { return q.type === "appel" ? poserAppel(colQ, q, i) : poserQuestion(colQ, q, i, j); });
       var bravo = el("p", { classe: "pc-bravo", hidden: "hidden", html: ph.bravo || "" });
       var suite = el("button", { type: "button", classe: "bouton principal pc-suite", disabled: "disabled",
-        texte: i + 1 < nPh ? (o.phases[i + 1].facultative ? "Pour aller plus loin, facultatif" : epreuve ? (nomPhase(i + 1) === "Conclusion" ? "La conclusion" : "Partie suivante") : "Phase suivante") : (epreuve ? "La copie" : "Le livrable") });
+        texte: i + 1 < nPh ? (o.phases[i + 1].facultative ? "Pour aller plus loin, facultatif" : epreuve ? (nomPhase(i + 1) === "Conclusion" ? "La conclusion" : "Partie suivante") : "Phase suivante") : MOT_FIN });
       suite.addEventListener("click", function () { ouvrir(i + 1); });
       var versFin = null;
       if (i + 1 < nPh) {
-        versFin = el("button", { type: "button", classe: "bouton pc-vers-fin", texte: epreuve ? "Aller à la copie" : "Aller au livrable" });
+        versFin = el("button", { type: "button", classe: "bouton pc-vers-fin", texte: NOTE ? (epreuve ? "Aller à la copie" : "Aller au livrable") : "Voir le bilan" });
         versFin.addEventListener("click", function () { montrer(nPh); });
       }
       s.appendChild(el("div", { classe: "pc-pied" }, [versFin, bravo, suite]));
@@ -1864,26 +1911,39 @@ var Sim = (function () {
         champ.appendChild(inp); if (q.unite) champ.appendChild(el("span", { classe: "pc-unite", html: q.unite }));
         controles.push(inp);
         inp.addEventListener("keydown", function (e) { if (e.key === "Enter") verifier(); });
+        inp.addEventListener("input", function () { modifiee(); });
         lireReponse = function () { var v = lire(inp.value); return isFinite(v) ? fr(v, q.dec === undefined ? decimalesDe(inp.value) : q.dec) + (q.unite ? " " + texteSeul(q.unite) : "") : ""; };
         verifierOk = function () {
           var v = lire(inp.value); if (!isFinite(v)) return null;
           f.valeur = v;
           var a = typeof q.attendu === "function" ? q.attendu(ctx) : q.attendu;
           if (!isFinite(a)) return "attente";               // elle repose sur une mesure, ou une reponse, d'une autre partie
-          var tol = q.tolerance === undefined ? 0.05 : q.tolerance;
-          return Math.abs(v - a) <= Math.abs(a) * tol + (q.toleranceAbsolue || 0);
+          // tolerance et toleranceAbsolue peuvent dependre du niveau : fonctions de ctx (16 octobre 2026,
+          // le bar a sirops plus tolerant en CAP qu'en seconde)
+          var tol = typeof q.tolerance === "function" ? q.tolerance(ctx) : q.tolerance === undefined ? 0.05 : q.tolerance;
+          var tolAbs = typeof q.toleranceAbsolue === "function" ? q.toleranceAbsolue(ctx) : (q.toleranceAbsolue || 0);
+          // sansSigne : une lecture d'appareil, ou le signe ne dit que le sens du branchement
+          // (-0,25 A lu quand le courant entre par COM est une lecture juste)
+          if (q.sansSigne) { v = Math.abs(v); a = Math.abs(a); }
+          return Math.abs(v - a) <= Math.abs(a) * tol + tolAbs;
         };
       } else if (q.type === "choix" || q.type === "multi") {
         var multi = q.type === "multi", choisis = [];
         var rang = el("div", { classe: "pc-options" });
         var options = typeof q.options === "function" ? q.options(ctx) : q.options;
-        options.forEach(function (op, k) {
-          var b = el("button", { type: "button", classe: "pc-option", "aria-pressed": "false", html: propre(op) });
+        /* l'ordre affiche est tire au sort (16 octobre 2026 : la bonne reponse etait la premiere 135 fois sur 154) ;
+           k reste l'indice de la source, que q.bonne designe, et chaque bouton le porte en data-k */
+        var ordreVu = options.map(function (x, k) { return k; });
+        if (!q.ordreFixe) melanger(ordreVu);
+        ordreVu.forEach(function (k) {
+          var op = options[k];
+          var b = el("button", { type: "button", classe: "pc-option", "aria-pressed": "false", "data-k": String(k), html: propre(op) });
           b.addEventListener("click", function () {
             if (f.fini) return;
             if (multi) { var p = choisis.indexOf(k); if (p < 0) choisis.push(k); else choisis.splice(p, 1); }
             else choisis = [k];
-            [].forEach.call(rang.children, function (x, m) { x.setAttribute("aria-pressed", choisis.indexOf(m) >= 0 ? "true" : "false"); });
+            [].forEach.call(rang.children, function (x) { x.setAttribute("aria-pressed", choisis.indexOf(Number(x.getAttribute("data-k"))) >= 0 ? "true" : "false"); });
+            modifiee();
           });
           rang.appendChild(b); controles.push(b);
         });
@@ -1907,7 +1967,7 @@ var Sim = (function () {
             var choix = el("select", { classe: "pc-classer-choix", "aria-label": texteSeul(it) });
             choix.appendChild(el("option", { value: "-1", texte: "— choisir —" }));
             q.categories.forEach(function (cat, m) { choix.appendChild(el("option", { value: String(m), texte: texteSeul(cat) })); });
-            choix.addEventListener("change", function () { if (!f.fini) places[k] = Number(choix.value); });
+            choix.addEventListener("change", function () { if (!f.fini) { places[k] = Number(choix.value); modifiee(); } });
             ligne.appendChild(choix); grille.appendChild(ligne); controles.push(choix);
             return;
           }
@@ -1918,6 +1978,7 @@ var Sim = (function () {
               if (f.fini) return;
               places[k] = m;
               [].forEach.call(cats.children, function (x, n) { x.setAttribute("aria-pressed", n === m ? "true" : "false"); });
+              modifiee();
             });
             cats.appendChild(b); controles.push(b);
           });
@@ -1949,10 +2010,10 @@ var Sim = (function () {
           return ok;
         };
       }
-      var bVerif = el("button", { type: "button", classe: "bouton principal", texte: "Vérifier" });
+      var bVerif = el("button", { type: "button", classe: "bouton principal", texte: NOTE ? "Enregistrer" : "Vérifier" });
       var bPasser = el("button", { type: "button", classe: "bouton", hidden: "hidden", texte: "Continuer sans trouver" });
       /* en CCF, la methode se demande : c'est l'appel a l'aide de l'epreuve, et il coute le bonus d'autonomie */
-      var bAide = epreuve && q.methode ? el("button", { type: "button", classe: "bouton pc-aide-btn", hidden: "hidden", texte: "Demander de l'aide" }) : null;
+      var bAide = epreuve && q.methode && !NOTE ? el("button", { type: "button", classe: "bouton pc-aide-btn", hidden: "hidden", texte: "Demander de l'aide" }) : null;
       var retour = el("div", { classe: "pc-retour", "aria-live": "polite" });
       var methodeVue = el("p", { classe: "pc-methode", hidden: "hidden", html: q.methode || "" });
       bloc.appendChild(champ);
@@ -1969,7 +2030,45 @@ var Sim = (function () {
         /* « fini » previent la scene a la cloture, juste ou passee ; « apres », seulement si juste */
         if (q.fini) q.fini(ctx, f.juste, f.reponse, f.valeur);
       }
+      /* MODE NOTE : enregistrer, sans verdict. La reponse gardee est celle du dernier « Enregistrer » ; une
+         manipulation est jugee telle qu'elle est a cet instant ; une reponse qui attend une mesure est rejugee au rendu. */
+      function enregistrer() {
+        if (f.fini) return;                                // la copie est rendue : tout est verrouille
+        var ok = verifierOk();
+        f.appuis = (f.appuis || 0) + 1;
+        retour.className = "pc-retour";
+        if (ok === null) {
+          retour.innerHTML = q.type === "nombre" ? "Écrivez un nombre." : (q.type === "action" ? "Faites d'abord la manipulation." : "Choisissez d'abord.");
+          return;
+        }
+        f.enr = true; f.modifiee = false; f.enAttente = ok === "attente"; f.note = ok === true; f.juste = f.note;
+        f.reponse = lireReponse(); f.heureEnr = new Date();
+        bloc.setAttribute("data-etat", "enregistree");
+        var vu = q.type === "action" ? (f.lu !== undefined ? f.lu : f.reponse) : "";
+        retour.innerHTML = "Réponse enregistrée à " + heure(f.heureEnr) + "." + (vu ? " <span class=\"pc-lu\">La page a gardé : " + insecables(vu) + ".</span>" : "") +
+          " Vous pouvez la changer, puis enregistrer de nouveau, jusqu'à rendre votre copie.";
+        if (q.apres) q.apres(ctx, f.note, f.reponse, f.valeur);   // a chaque enregistrement, juste ou non : rien ne doit trahir le verdict
+        if (q.fini) q.fini(ctx, f.note, f.reponse, f.valeur);
+        majPhase(i); majTete();
+      }
+      /* une reponse changee apres l'enregistrement : c'est l'ancienne qui compte tant qu'on n'enregistre pas */
+      function modifiee() {
+        if (!NOTE || !f.enr || f.fini) return;
+        f.modifiee = true;
+        bloc.setAttribute("data-etat", "modifiee");
+        retour.className = "pc-retour";
+        retour.innerHTML = "Modifiée, pas encore enregistrée : la réponse gardée reste « " + insecables(f.reponse || "") + " ».";
+      }
+      /* au rendu de la copie : rejuger ce qui attendait une mesure, puis tout fermer */
+      f.verrouiller = function () {
+        if (f.fini) return;
+        if (f.enr && f.enAttente && !f.modifiee) { var ok = verifierOk(); f.note = ok === true; f.juste = f.note; }
+        if (f.enr) f.fini = true;
+        bVerif.disabled = true;
+        controles.forEach(function (x) { x.disabled = true; });
+      };
       function verifier() {
+        if (NOTE) { enregistrer(); return; }
         if (f.fini) return;
         var ok = verifierOk();
         f.appuis = (f.appuis || 0) + 1;
@@ -2024,6 +2123,7 @@ var Sim = (function () {
         f.aide = true; etat.aides++;
         bAide.hidden = true; methodeVue.hidden = false;
       });
+      if (NOTE && etat.rendu) f.verrouiller();             // une partie ouverte apres le rendu : deja fermee
       bPasser.addEventListener("click", function () {
         f.passe = true; f.note = false;
         if (!f.reponse) f.reponse = q.type === "action" ? "(manipulation non faite)" : "(sans réponse)";
@@ -2049,7 +2149,7 @@ var Sim = (function () {
       bloc.appendChild(retour);
       parentQ.appendChild(bloc);
       bAppel.addEventListener("click", function () {
-        if (f.appele) return;
+        if (f.appele || etat.rendu) return;
         f.appele = new Date(); f.fini = true; f.reponse = "appel lancé à " + heure(f.appele);
         bAppel.disabled = true; bProf.hidden = false;
         bloc.setAttribute("data-etat", "attente");
@@ -2141,16 +2241,16 @@ var Sim = (function () {
     }
 
     function etoilesDe(i) {
-      var fs = etat.fiches[i]; if (!fs || !fs.length) return 0;
+      var fs = etat.fiches[i]; if (NOTE || !fs || !fs.length) return 0;      // en mode note, aucune etoile : elles diraient le verdict
       if (fs.some(function (f) { return !f.fini; })) return 0;
       var n = fs.filter(function (f) { return f.note; }).length;
       return n === fs.length ? 3 : n >= fs.length * 0.6 ? 2 : 1;
     }
     function majPhase(i) {
       var fs = etat.fiches[i]; if (!fs || !fs.pied) return;
-      var finie = fs.every(function (f) { return f.fini; });
+      var finie = fs.every(fait);
       fs.pied.suite.disabled = false;
-      fs.pied.bravo.hidden = !finie || !o.phases[i].bravo;
+      fs.pied.bravo.hidden = NOTE || !finie || !o.phases[i].bravo;
       if (finie && etat.ouverte === i) etat.ouverte = i + 1;
       majChemin();
     }
@@ -2158,9 +2258,10 @@ var Sim = (function () {
       noeuds.forEach(function (b, i) {
         var dispo = !!etat.debut;                         // comme dans un controle : toutes les parties, dans l'ordre qu'on veut
         if (dispo) b.removeAttribute("disabled"); else b.setAttribute("disabled", "disabled");
-        var e = etoilesDe(i);
-        b.querySelector(".pc-etoiles").textContent = e ? "★★★".slice(0, e) + "☆☆☆".slice(0, 3 - e) : "";
-        b.classList.toggle("pc-fait", e > 0);
+        var e = etoilesDe(i), fs = etat.fiches[i];
+        var tout = NOTE && fs && fs.length && fs.every(fait);   // en mode note : une coche quand tout est enregistre, sans verdict
+        b.querySelector(".pc-etoiles").textContent = NOTE ? (tout ? "✓" : "") : e ? "★★★".slice(0, e) + "☆☆☆".slice(0, 3 - e) : "";
+        b.classList.toggle("pc-fait", NOTE ? !!tout : e > 0);
         b.classList.toggle("pc-ici", etat.courante === i);
       });
       if (etat.debut) drapeau.removeAttribute("disabled");   // le livrable s'ouvre a tout moment
@@ -2172,8 +2273,19 @@ var Sim = (function () {
     function etoilesPlus() { var s = 0; o.phases.forEach(function (ph, i) { if (ph.facultative) s += etoilesDe(i); }); return s; }
     function enPlus() { var p = etoilesPlus(); return p ? " · +" + p : ""; }
     function minutes() { return etat.debut ? Math.floor((Date.now() - etat.debut) / 60000) : 0; }
+    /* en mode note, la tete compte les reponses enregistrees, jamais les reussites */
+    function comptesNote() {
+      var n = 0, m = 0;
+      o.phases.forEach(function (ph, i) {
+        var fs = etat.fiches[i];
+        if (!fs) { if (!ph.facultative) m += questionsDe(i).filter(function (q) { return q.type !== "appel"; }).length; return; }
+        fs.forEach(function (f) { if (f.appel || !compte(i, f)) return; m++; if (f.enr) n++; });
+      });
+      return { n: n, m: m };
+    }
     function majTete() {
-      score.textContent = "★ " + totalEtoiles() + " / " + (3 * nOblig) + enPlus();
+      var cn = NOTE ? comptesNote() : null;
+      score.textContent = NOTE ? cn.n + " / " + cn.m + " réponses" : "★ " + totalEtoiles() + " / " + (3 * nOblig) + enPlus();
       temps.textContent = etat.debut ? minutes() + " min" : "";
       if (bDos) bDos.hidden = !etat.debut;
     }
@@ -2185,11 +2297,11 @@ var Sim = (function () {
     }
     /* une partie ouverte trop tot : ses phrases portaient « … » ; on la refait tant qu'on n'y a rien touche */
     function intacte(i) {
-      return (etat.fiches[i] || []).every(function (f) { return !f.fini && !f.essais && !f.appuis && !f.appele && !f.aide; });
+      return (etat.fiches[i] || []).every(function (f) { return !f.fini && !f.essais && !f.appuis && !f.appele && !f.aide && !f.enr; });
     }
     function rafraichir(i) {
       var ph = o.phases[i], colQ = etat.colonnes[i];
-      if (!etat.construites[i] || typeof ph.questions !== "function" || !colQ || !intacte(i)) return;
+      if (etat.rendu || !etat.construites[i] || typeof ph.questions !== "function" || !colQ || !intacte(i)) return;
       var pied = etat.fiches[i].pied;
       while (colQ.children.length > 1) colQ.removeChild(colQ.lastChild);
       etat.fiches[i] = questionsDe(i).map(function (q, j) { return q.type === "appel" ? poserAppel(colQ, q, i) : poserQuestion(colQ, q, i, j); });
@@ -2213,9 +2325,13 @@ var Sim = (function () {
     /* ---- l'autonomie, au sens de l'epreuve : ni aide demandee, ni question passee ---- */
     function autonomie() {
       var passees = 0, restent = 0;
-      etat.fiches.forEach(function (fs, i) { (fs || []).forEach(function (f) { if (f.appel || !compte(i, f)) return; if (f.passe) passees++; if (!f.fini) restent++; }); });
+      etat.fiches.forEach(function (fs, i) { (fs || []).forEach(function (f) { if (f.appel || !compte(i, f)) return; if (f.passe) passees++; if (!fait(f)) restent++; }); });
       o.phases.forEach(function (ph, i) { if (!etat.fiches[i] && !ph.facultative) restent += questionsDe(i).filter(function (q) { return q.type !== "appel"; }).length; });
       var merite = !etat.aides && !passees && !restent;
+      if (NOTE) {                                          // en mode note : ni aide ni question passee, seulement ce qui reste sans reponse
+        var tn = restent ? restent + " question" + (restent > 1 ? "s" : "") + " sans réponse" : "toutes les questions ont une réponse";
+        return { merite: merite, texte: u41 ? "aucune aide en évaluation, " + tn : (merite ? "bonus +0,25 mérité — " : "pas de bonus — ") + tn };
+      }
       if (u41) {
         var u = [etat.aides ? etat.aides + " aide" + (etat.aides > 1 ? "s" : "") + " demandée" + (etat.aides > 1 ? "s" : "") : "aucune aide demandée",
           passees ? passees + " question" + (passees > 1 ? "s" : "") + " passée" + (passees > 1 ? "s" : "") : "rien de passé"];
@@ -2235,23 +2351,54 @@ var Sim = (function () {
       if (!finalFait) {
         finalFait = true;
         titreFin = el("h2"); bulleFin = el("p", { classe: "pc-bulle" });
-        final.appendChild(el("div", { classe: "pc-phase-tete" }, [el("div", { classe: "pc-surtitre", texte: epreuve ? "La copie" : "Le livrable" }), titreFin, bulleFin]));
+        final.appendChild(el("div", { classe: "pc-phase-tete" }, [el("div", { classe: "pc-surtitre", texte: MOT_FIN }), titreFin, bulleFin]));
         recap = el("div", { classe: "carte" });
+        var simpl = null;
+        if (o.simplifie && o.simplifie.length) {
+          simpl = el("details", { classe: "modele carte" }, [el("summary", { texte: "Ce que la simulation simplifie" }),
+            el("ul", null, o.simplifie.map(function (t) { return el("li", { html: t }); }))]);
+        }
+        if (!NOTE) {                                       // en TD : rien a rendre
+          var rien = el("div", { classe: "carte pc-remise" }, [el("h2", { texte: "Rien à rendre" }),
+            el("p", { classe: "consigne", html: "En TD, la page ne produit <b>aucun fichier</b> : ce bilan vous montre ce qui est acquis et ce qui reste à revoir. " +
+              "L'évaluation notée se fait par le <b>lien que donne le professeur</b>, avec d'autres valeurs, sans indication." })]);
+          final.appendChild(el("div", { classe: "plan" }, [recap, el("div", null, [rien, simpl])]));
+          return construireFinal();
+        }
         var remise = el("div", { classe: "carte pc-remise" });
         remise.appendChild(el("h2", { texte: "Mon fichier pour le professeur" }));
         remise.appendChild(el("p", { classe: "consigne", html: "Tapez l’<b>identifiant donné en classe</b>, puis produisez le fichier. " +
           "Il se fabrique <b>dans cette page</b> : rien n’est envoyé, rien n’est enregistré. Il part dans vos téléchargements, et c’est vous qui le remettez." }));
         var ident = el("input", { type: "text", autocomplete: "off", "aria-label": "Identifiant", placeholder: "identifiant donné en classe" });
-        var bProd = el("button", { type: "button", classe: "bouton principal", texte: "Produire mon fichier" });
-        var bVoir = el("button", { type: "button", classe: "bouton", texte: "Afficher le texte" });
+        var bProd = el("button", { type: "button", classe: "bouton principal", texte: "Rendre ma copie" });
+        var bVoir = el("button", { type: "button", classe: "bouton", hidden: "hidden", texte: "Afficher le texte" });
+        /* rendre la copie verrouille tout : le fichier porte les verdicts, il ne doit plus servir a se corriger */
+        var bOui = el("button", { type: "button", classe: "bouton principal", texte: "Oui, je rends ma copie" });
+        var bNon = el("button", { type: "button", classe: "bouton", texte: "Pas encore" });
+        var confirmer = el("div", { classe: "pc-confirmer", hidden: "hidden" }, [
+          el("p", { classe: "consigne", html: "<b>Rendre la copie verrouille toutes vos réponses</b> : plus rien ne pourra changer. Le fichier part ensuite dans vos téléchargements." }),
+          el("div", { classe: "rangee" }, [bOui, bNon])]);
         var dit = el("p", { classe: "pc-retour", "aria-live": "polite" });
         apercu = el("textarea", { classe: "pc-apercu", readonly: "readonly", rows: "10", hidden: "hidden", "aria-label": "Le texte du fichier" });
         remise.appendChild(el("div", { classe: "pc-q-champ" }, [ident]));
         remise.appendChild(el("div", { classe: "rangee" }, [bProd, bVoir]));
+        remise.appendChild(confirmer);
         remise.appendChild(dit); remise.appendChild(apercu);
         bProd.addEventListener("click", function () {
           var id = ident.value.trim();
           if (!id) { dit.className = "pc-retour faux"; dit.textContent = "Tapez d’abord l’identifiant donné en classe."; return; }
+          if (!etat.rendu) { confirmer.hidden = false; dit.textContent = ""; return; }
+          produire();
+        });
+        bNon.addEventListener("click", function () { confirmer.hidden = true; });
+        bOui.addEventListener("click", function () {
+          if (!ident.value.trim()) { confirmer.hidden = true; return; }
+          rendre(); confirmer.hidden = true; ident.disabled = true;
+          bProd.textContent = "Produire de nouveau le fichier"; bVoir.hidden = false;
+          construireFinal(); produire();
+        });
+        function produire() {
+          var id = ident.value.trim();
           var txt = fabriquer(id);
           var nom = "bilan-" + nettoie(id) + "-" + nettoie(o.code || "parcours") + ".txt";
           try {
@@ -2264,16 +2411,12 @@ var Sim = (function () {
           } catch (e) {
             dit.className = "pc-retour faux"; dit.textContent = "Le téléchargement est bloqué ici : affichez le texte et copiez-le.";
           }
-        });
+        }
         bVoir.addEventListener("click", function () {
+          if (!etat.rendu) return;                         // le texte porte les verdicts : seulement une fois la copie rendue
           var id = ident.value.trim() || "(identifiant à taper)";
           apercu.value = fabriquer(id); apercu.hidden = false; apercu.focus(); apercu.select();
         });
-        var simpl = null;
-        if (o.simplifie && o.simplifie.length) {
-          simpl = el("details", { classe: "modele carte" }, [el("summary", { texte: "Ce que la simulation simplifie" }),
-            el("ul", null, o.simplifie.map(function (t) { return el("li", { html: t }); }))]);
-        }
         final.appendChild(el("div", { classe: "plan" }, [recap, el("div", null, [remise, simpl])]));
       }
       /* le livrable se produit meme inacheve : ce qui reste compte comme non reussi */
@@ -2281,23 +2424,43 @@ var Sim = (function () {
       o.phases.forEach(function (ph, i) {
         var fs = etat.fiches[i];
         if (ph.facultative && !(fs || []).some(touchee)) return;   // pas abordee : elle ne manque pas
-        (fs ? fs.filter(function (f) { return !f.fini && compte(i, f); }).map(function (f) { return f.q; }) : questionsDe(i)).forEach(function (q) {
+        (fs ? fs.filter(function (f) { return !fait(f) && compte(i, f); }).map(function (f) { return f.q; }) : questionsDe(i)).forEach(function (q) {
           if (q.type === "appel") appelsAFaire++; else restent++;
         });
       });
-      var enAttente = attente().length;
-      titreFin.innerHTML = restent || appelsAFaire ? (epreuve ? "La copie n’est pas finie" : "Le projet n’est pas fini") : (o.livrableTitre || (epreuve ? "La copie est finie" : "Le projet est fini"));
+      var enAttente = attente().length, modifiees = 0;
+      etat.fiches.forEach(function (fs) { (fs || []).forEach(function (f) { if (f.modifiee && !f.fini) modifiees++; }); });
+      titreFin.innerHTML = !NOTE ? (restent ? "Le TD n’est pas fini" : "Le TD est fini")
+        : etat.rendu ? "La copie est rendue"
+        : restent || appelsAFaire ? (epreuve ? "La copie n’est pas finie" : "Le projet n’est pas fini") : (o.livrableTitre || (epreuve ? "La copie est finie" : "Le projet est fini"));
       var mots = [];
-      if (restent) mots.push("Il reste <b>" + restent + " question" + (restent > 1 ? "s" : "") + "</b> sans réponse. Vous pouvez y revenir par le chemin, en haut, " +
-        "ou produire votre fichier tel quel : " + (restent > 1 ? "elles compteront" : "elle comptera") + " comme non réussie" + (restent > 1 ? "s" : "") + ".");
+      if (NOTE && etat.rendu) mots.push("Vos réponses sont verrouillées. Remettez le fichier au professeur.");
+      else if (restent) mots.push("Il reste <b>" + restent + " question" + (restent > 1 ? "s" : "") + "</b> sans réponse. Vous pouvez y revenir par le chemin, en haut" +
+        (NOTE ? ", ou rendre votre copie telle quelle : " + (restent > 1 ? "elles compteront" : "elle comptera") + " comme non réussie" + (restent > 1 ? "s" : "") + "." : "."));
+      if (NOTE && !etat.rendu && modifiees) mots.push("<b>" + (modifiees > 1 ? modifiees + " réponses ont été modifiées" : "Une réponse a été modifiée") + " sans être enregistrée</b> : " +
+        (modifiees > 1 ? "c'est l'ancienne réponse qui comptera pour chacune" : "c'est l'ancienne réponse qui comptera") + ", sauf si vous appuyez sur « Enregistrer ».");
       if (appelsAFaire) mots.push("<b>" + (appelsAFaire > 1 ? appelsAFaire + " appels n'ont pas été lancés" : "Un appel n'a pas été lancé") + "</b> : " + (appelsAFaire > 1 ? "ils comptent" : "il compte") + " zéro.");
       if (enAttente) mots.push("<b>" + (enAttente > 1 ? enAttente + " appels attendent" : "Un appel attend") + " encore le professeur</b> : faites-le valider avant de produire le fichier, sinon il ne comptera pas.");
-      if (!restent && !appelsAFaire && !enAttente && o.fin) mots.push(o.fin);
+      if (!restent && !appelsAFaire && !enAttente && !(NOTE && etat.rendu)) mots.push(finTexte());
       bulleFin.innerHTML = mots.join(" ");
       bulleFin.hidden = !bulleFin.innerHTML;
       recap.innerHTML = "";
       recap.appendChild(el("h2", { texte: ccf ? "Le bilan de l'épreuve" : u41 ? "Le bilan, compétence par compétence" : "Le bilan du projet" }));
       var t = el("table", { classe: "releve pc-recap" });
+      if (NOTE) {
+        recap.firstChild.textContent = "Ce que contient votre copie";
+        t.appendChild(el("tr", null, [el("th", { texte: epreuve ? "Partie" : "Phase" }), el("th", { texte: "Compétence" }), el("th", { texte: "Réponses enregistrées" })]));
+        o.phases.forEach(function (ph, i) {
+          var fs = etat.fiches[i], qs = fs ? fs.map(function (f) { return f.q; }) : questionsDe(i), n = 0, m = 0;
+          if (ph.facultative && !(fs || []).some(touchee)) { t.appendChild(el("tr", null, [el("td", { texte: nomPhase(i) }), el("td", { texte: ph.competence }), el("td", { texte: "facultative, non abordée" })])); return; }
+          qs.forEach(function (q, j) { var f = fs && fs[j]; if (q.type === "appel") { m++; if (f && f.appele) n++; return; } if (!compte(i, f)) return; m++; if (f && f.enr) n++; });
+          t.appendChild(el("tr", null, [el("td", { texte: nomPhase(i) }), el("td", { texte: ph.competence }), el("td", { texte: n + " sur " + m })]));
+        });
+        recap.appendChild(t);
+        if (ccf) recap.appendChild(el("p", { classe: "pc-autonomie", html: "<b>Autonomie</b> : " + autonomie().texte + "." }));
+        recap.appendChild(el("p", { classe: "pc-score-final", html: minutes() + " min" }));
+        return;
+      }
       if (epreuve) {
         t.appendChild(el("tr", null, [el("th", { texte: "Compétence" }), el("th", { texte: "Réussi du premier coup" }), el("th", { texte: "Appel" })]));
         ORDRE.forEach(function (k) {
@@ -2335,13 +2498,30 @@ var Sim = (function () {
       return (s.normalize ? s.normalize("NFD").replace(/[̀-ͯ]/g, "") : s)
         .replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase() || "sans-identifiant";
     }
+    /* le mot de la fin des pages parle du fichier : en TD il n'y en a pas, en note le bouton est « Rendre ma copie » */
+    function finTexte() {
+      var t = String(o.fin || "");
+      var sans = t.replace(/\s*(La copie est prête|Produisez)[^.]*\.?/g, "").trim();
+      if (!NOTE) return (sans ? sans + " " : "Tout est fait. ") + "En TD, rien à rendre : relisez la méthode des questions qui ont coincé.";
+      return (sans ? sans + " " : "") + "Rendez votre copie : le fichier part dans vos téléchargements.";
+    }
+    /* rendre la copie (mode note) : rejuger ce qui attendait une mesure, et tout verrouiller */
+    function rendre() {
+      if (!NOTE || etat.rendu) return;
+      etat.rendu = true;
+      etat.fiches.forEach(function (fs) { (fs || []).forEach(function (f) { if (f.verrouiller) f.verrouiller(); }); });
+      majChemin(); majTete();
+    }
     function fabriquer(id) {
+      if (NOTE) rendre();                                  // le texte porte les verdicts : le fabriquer, c'est rendre la copie
       var d = new Date();
       var out = ["BILAN DE SÉQUENCE",
         "Page       : " + (ccf ? "Entraînement au CCF " : u41 ? "TD sur simulation " : "Parcours ") + (o.code ? o.code + " · " : "") + texteSeul(o.titre) + " · " + etat.niveau,
         "Identifiant: " + id,
         "Date       : " + deux(d.getDate()) + "/" + deux(d.getMonth() + 1) + "/" + d.getFullYear() + " à " + deux(d.getHours()) + "h" + deux(d.getMinutes()),
-        "Bilan      : " + totalEtoiles() + " étoiles sur " + 3 * nOblig + ", en " + minutes() + " min" +
+        "Mode       : " + (NOTE ? "évaluation notée, sans indication" : "TD, non noté"),
+        NOTE ? "Bilan      : " + comptesNote().n + " réponses enregistrées sur " + comptesNote().m + ", en " + minutes() + " min"
+          : "Bilan      : " + totalEtoiles() + " étoiles sur " + 3 * nOblig + ", en " + minutes() + " min" +
           (etoilesPlus() ? ", et " + etoilesPlus() + " de plus en partie facultative" : "")];
       if (ccf) out.push("Autonomie  : " + autonomie().texte);
       if (u41) out.push("Grille     : BTS FED · U41", "Aides      : " + autonomie().texte);
@@ -2370,7 +2550,7 @@ var Sim = (function () {
             if (!f || !f.fini) { etatCase = "non vérifié"; rep = "(non faite)"; }
             else {
               etatCase = f.note ? "juste" : "faux";
-              var det = f.passe ? (f.essais ? "passée après " + f.essais + " essai" + (f.essais > 1 ? "s" : "") : "passée sans réponse")
+              var det = NOTE ? "enregistrée à " + heure(f.heureEnr) + (f.modifiee ? ", modifiée ensuite sans être enregistrée" : "") : f.passe ? (f.essais ? "passée après " + f.essais + " essai" + (f.essais > 1 ? "s" : "") : "passée sans réponse")
                 : (f.essais === 1 ? "juste au 1er essai" : "trouvée au " + f.essais + "e essai");
               if (f.aide) det += ", avec aide";
               rep = f.passe && !f.essais ? det : (f.reponse || "(vide)") + " — " + det;
@@ -2402,9 +2582,9 @@ var Sim = (function () {
       if (etat.debut && !etat.exporte) { e.preventDefault(); e.returnValue = ""; }
     });
     majTete();
-    if (libre) mode(/^#(ccf|u41|parcours)$/.test(location.hash));
+    if (libre) mode(NOTE || /^#(ccf|u41|parcours)$/.test(location.hash));
     /* la porte d'essai : etat interne et fichier, pour les controles */
-    return { etat: etat, donnees: donnees, ouvrir: ouvrir, fabriquer: fabriquer, fiches: function () { return etat.fiches; },
+    return { etat: etat, donnees: donnees, ouvrir: ouvrir, fabriquer: fabriquer, rendre: rendre, note: NOTE, fiches: function () { return etat.fiches; },
       appels: appels, mode: mode, dossier: function () { if (dossierFn) basculerDossier(); return panDos; }, coter: function (f, x) { f.cote = x; f.heureCote = new Date(); f.note = x === "A"; f.afficher(); majPhase(f.phase); majAppels(); },
       choisirNiveau: function (n) { etat.niveau = n; niv.textContent = n; }, demarrer: function (n) {
         if (libre) mode(true);
@@ -2487,7 +2667,9 @@ var Sim = (function () {
 
   return { fr: fr, lire: lire, el: el, $: $, borne: borne, mesure: mesure, gauss: gauss, onglets: onglets, curseur: curseur, choix: choix,
     afficheur: afficheur, graphe: graphe, releve: releve, enregistreur: enregistreur, centrale: centrale, molette: molette,
-    defi: defi, animer: animer, avancer: avancer, svg: svg, parcours: parcours, calculatrice: calculatrice };
+    defi: defi, animer: animer, avancer: avancer, svg: svg, parcours: parcours, calculatrice: calculatrice,
+    /* vrai quand la page est ouverte en mode note (#note) : chaque page y tire d'autres valeurs */
+    note: NOTE_ADRESSE };
 })();
 
 </script>
@@ -2497,7 +2679,7 @@ var Sim = (function () {
 <header class="tete">
 <div class="surtitre">Physique-chimie · parcours CAP et seconde · une heure sur tablette</div>
 <h1>Le concert sans danger</h1>
-<p class="chapeau">Le groupe du lycée joue deux heures à la fête de fin d'année, devant trois cents personnes. Lire l'échelle des niveaux sonores, comparer des sons graves et aigus à l'oscilloscope, accorder la guitare en mesurant sa période, placer le public et choisir les protections au sonomètre, puis faire l'affiche. À la fin, un fichier pour le professeur.</p>
+<p class="chapeau">Le groupe du lycée joue à la fête de fin d'année, devant plusieurs centaines de personnes. Lire l'échelle des niveaux sonores, comparer des sons graves et aigus à l'oscilloscope, accorder la guitare en mesurant sa période, placer le public et choisir les protections au sonomètre, puis faire l'affiche. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.</p>
 </header>
 <style>
 :root{--ecran:#1f2b25;--ecran-grille:#3f5a4b;--ecran-trace:#8fe3a8;--lcd-fond:#cfd8cf;--lcd-encre:#1d2a1d;--plancher:#efe9df;--scene-bois:#d9cfc0}
@@ -2547,6 +2729,23 @@ var Sim = (function () {
 <script>
 (function () {
   var S = Sim, svg = S.svg, el = S.el, fr = S.fr;
+  /* DEUX JEUX DE VALEURS (16 octobre 2026) : le TD et l'evaluation notee (#note) n'ont pas les memes nombres.
+     Les niveaux du carnet, les notes des pads, la corde a accorder (La a 110 Hz en TD, Re a 146,8 Hz en evaluation),
+     les enceintes (112 ou 114 dB a 1 m), la limite de la mairie (100 ou 102 dB), le public (300 ou 340 personnes, donc
+     9 ou 8 m de recul au plus), les protections, la duree et la date du concert. Les seuils de l'echelle (85 et 120 dB)
+     sont des reperes fixes ; la baisse d'environ 6 dB quand la distance double est une loi : elle reste. */
+  var SUJET = S.note
+    ? { niveaux: { A: 25, B: 108, C: 101, D: 58, E: 128 }, pads: { A: 196, B: 784, C: 392, D: 98 }, rangPads: [1, 3, 2, 0],
+        corde: "Ré", ci: 2, f: 146.8, fTxt: "146,8", tol: 2, tolTxt: "2", exT: "6,5 ms = 0,0065 s",
+        perTxt: "À 146,8 Hz, une période dure 1 ÷ 146,8 = 0,0068 s, soit 6,8 ms ; cinq périodes durent 34,1 ms.",
+        L1: 114, limite: 102, public: "trois cent quarante", aire: 168, recul: 8, att: { coton: 5, mousse: 30, musicien: 20, casque: 27 },
+        d1: 3, duree: "trois heures", Duree: "Trois heures", date: "19 juin" }
+    : { niveaux: { A: 30, B: 115, C: 98, D: 62, E: 125 }, pads: { A: 440, B: 110, C: 880, D: 220 }, rangPads: [2, 0, 3, 1],
+        corde: "La", ci: 1, f: 110, fTxt: "110", tol: 1.5, tolTxt: "1,5", exT: "9,5 ms = 0,0095 s",
+        perTxt: "À 110 Hz, une période dure 1 ÷ 110 = 0,0091 s, soit 9,1 ms ; cinq périodes durent 45,5 ms.",
+        L1: 112, limite: 100, public: "trois cents", aire: 150, recul: 9, att: { coton: 6, mousse: 28, musicien: 18, casque: 25 },
+        d1: 2, duree: "deux heures", Duree: "Deux heures", date: "12 juin" };
+  var CORDE = SUJET.corde, CI = SUJET.ci;
   function pointDe(s, ev) { var p = s.createSVGPoint(); p.x = ev.clientX; p.y = ev.clientY; return p.matrixTransform(s.getScreenCTM().inverse()); }
   function toucheClavier(g, f) { g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); f(); } }); }
   function touche(g, f) { g.addEventListener("click", f); toucheClavier(g, f); }
@@ -2655,11 +2854,11 @@ var Sim = (function () {
 
   /* ── Phase 1 · l'echelle des niveaux ──────────────────────────────────────────────── */
   var CARTES = [
-    { l: "A", nom: "Le chuchotement en coulisse", L: 30 },
-    { l: "B", nom: "La batterie, à 1 m", L: 115 },
-    { l: "C", nom: "La salle, en plein concert", L: 98 },
-    { l: "D", nom: "La conversation au bar", L: 62 },
-    { l: "E", nom: "Le larsen, au ras de l'enceinte", L: 125 }
+    { l: "A", nom: "Le chuchotement en coulisse", L: SUJET.niveaux.A },
+    { l: "B", nom: "La batterie, à 1 m", L: SUJET.niveaux.B },
+    { l: "C", nom: "La salle, en plein concert", L: SUJET.niveaux.C },
+    { l: "D", nom: "La conversation au bar", L: SUJET.niveaux.D },
+    { l: "E", nom: "Le larsen, au ras de l'enceinte", L: SUJET.niveaux.E }
   ];
   var ECHELLE = [[0, "seuil d'audibilité"], [30, "chuchotement"], [60, "conversation"], [70, "aspirateur"], [85, "seuil de danger", true],
     [100, "baladeur au maximum"], [110, "concert, devant les enceintes"], [120, "seuil de douleur", true], [130, "avion au décollage, à 50 m"]];
@@ -2745,7 +2944,7 @@ var Sim = (function () {
   }
 
   /* ── Phase 2 · grave ou aigu ─────────────────────────────────────────────────────── */
-  var PADS = [{ l: "A", f: 440 }, { l: "B", f: 110 }, { l: "C", f: 880 }, { l: "D", f: 220 }];
+  var PADS = [{ l: "A", f: SUJET.pads.A }, { l: "B", f: SUJET.pads.B }, { l: "C", f: SUJET.pads.C }, { l: "D", f: SUJET.pads.D }];
   var sons = null;
   function scenePads(zone) {
     var sc = el("div", { classe: "scene" }); zone.appendChild(sc);
@@ -2784,9 +2983,10 @@ var Sim = (function () {
   }
 
   /* ── Phase 3 · accorder la guitare ───────────────────────────────────────────────── */
-  var LA = 110, guitare = null;
+  var LA = SUJET.f, guitare = null;                  // la note visee : La 110 Hz (TD) ou Re 146,8 Hz (note)
   function sceneGuitare(zone, ctx) {
-    var f0 = Math.random() < 0.5 ? 101 + Math.random() * 5 : 114 + Math.random() * 5;
+    var f0 = S.note ? (Math.random() < 0.5 ? 135 + Math.random() * 7 : 152 + Math.random() * 7)
+      : (Math.random() < 0.5 ? 101 + Math.random() * 5 : 114 + Math.random() * 5);
     var st = guitare = { f: f0, f0: f0, pincee: false, tourne: false, angle: 0, amp: 0 };
     var sc = el("div", { classe: "scene" }); zone.appendChild(sc);
     var s = svg("svg", { viewBox: "0 0 640 480", role: "img", "aria-label": "La guitare électrique, branchée sur l'oscilloscope" }, sc);
@@ -2804,24 +3004,25 @@ var Sim = (function () {
     var corde = [];
     YC.forEach(function (y, i) {
       var haut = i >= 3, py = haut ? 38 : 146;
-      svg("path", { d: "M" + PEGX[i] + " " + py + "L111 " + y, class: "cs-fin", "stroke-width": i === 1 ? 2 : 1.2 }, gg);
-      corde.push(svg("path", { d: "M111 " + y + "H526", fill: "none", stroke: i === 1 ? "var(--encre)" : "var(--encre2)", "stroke-width": 2.4 - i * 0.3 }, gg));
-      if (i !== 1) svg("circle", { cx: PEGX[i], cy: py, r: 7, class: "cs-objet" }, gg);
+      svg("path", { d: "M" + PEGX[i] + " " + py + "L111 " + y, class: "cs-fin", "stroke-width": i === CI ? 2 : 1.2 }, gg);
+      corde.push(svg("path", { d: "M111 " + y + "H526", fill: "none", stroke: i === CI ? "var(--encre)" : "var(--encre2)", "stroke-width": 2.4 - i * 0.3 }, gg));
+      if (i !== CI) svg("circle", { cx: PEGX[i], cy: py, r: 7, class: "cs-objet" }, gg);
     });
-    svg("text", { x: 548, y: YC[1] + 4, class: "cs-etiq-f", style: "font-size:12px", texte: "La" }, gg);
-    // la cle de La, qu'on tourne au doigt
-    var cleG = svg("g", { class: "cs-touche", tabindex: "0", role: "slider", "aria-label": "Mécanique de la corde de La : tournez pour accorder" }, s);
-    svg("circle", { cx: 70, cy: 158, r: 34, fill: "transparent" }, cleG);
+    svg("text", { x: 548, y: YC[CI] + 4, class: "cs-etiq-f", style: "font-size:12px", texte: CORDE }, gg);
+    // la cle de la corde (La en TD, Re en note), qu'on tourne au doigt
+    var MX = PEGX[CI], MY = 146;
+    var cleG = svg("g", { class: "cs-touche", tabindex: "0", role: "slider", "aria-label": "Mécanique de la corde de " + CORDE + " : tournez pour accorder" }, s);
+    svg("circle", { cx: MX, cy: 158, r: 34, fill: "transparent" }, cleG);
     var cle = svg("g", null, cleG);
-    svg("path", { d: "M70 146m-18 0a18 9 0 1 0 36 0a18 9 0 1 0 -36 0", class: "cs-objet", style: "stroke:var(--accent);stroke-width:2.5" }, cle);
-    svg("circle", { cx: 70, cy: 146, r: 5, fill: "var(--encre)" }, cleG);
-    svg("text", { x: 70, y: 186, "text-anchor": "middle", class: "cs-indice", texte: "mécanique de La" }, s);
-    function dessinerCle() { cle.setAttribute("transform", "rotate(" + st.angle.toFixed(1) + " 70 146)"); }
+    svg("path", { d: "M" + MX + " " + MY + "m-18 0a18 9 0 1 0 36 0a18 9 0 1 0 -36 0", class: "cs-objet", style: "stroke:var(--accent);stroke-width:2.5" }, cle);
+    svg("circle", { cx: MX, cy: MY, r: 5, fill: "var(--encre)" }, cleG);
+    svg("text", { x: 70, y: 186, "text-anchor": "middle", class: "cs-indice", texte: "mécanique de " + CORDE }, s);
+    function dessinerCle() { cle.setAttribute("transform", "rotate(" + st.angle.toFixed(1) + " " + MX + " " + MY + ")"); }
     var angle0 = 0;
     glisser(s, cleG, {
-      debut: function (p) { angle0 = Math.atan2(p.y - 146, p.x - 70); return st.angle; },
+      debut: function (p) { angle0 = Math.atan2(p.y - MY, p.x - MX); return st.angle; },
       bouge: function (p) {
-        var a = Math.atan2(p.y - 146, p.x - 70), d = (a - angle0) * 180 / Math.PI;
+        var a = Math.atan2(p.y - MY, p.x - MX), d = (a - angle0) * 180 / Math.PI;
         if (d > 180) d -= 360; if (d < -180) d += 360;
         angle0 = a; tourner(d);
       }
@@ -2832,26 +3033,26 @@ var Sim = (function () {
     });
     function tourner(deg) {
       st.angle += deg; st.tourne = true;
-      st.f = S.borne(st.f + deg * 0.03, 90, 130);
+      st.f = S.note ? S.borne(st.f + deg * 0.04, 120, 175) : S.borne(st.f + deg * 0.03, 90, 130);
       dessinerCle();
       if (st.pincee) osc.signal(st.f, st.amp);
     }
-    // pincer la corde de La
-    var pince = svg("g", { class: "cs-touche", tabindex: "0", role: "button", "aria-label": "Pincer la corde de La" }, s);
-    svg("rect", { x: 140, y: YC[1] - 13, width: 380, height: 26, fill: "transparent" }, pince);
+    // pincer la corde
+    var pince = svg("g", { class: "cs-touche", tabindex: "0", role: "button", "aria-label": "Pincer la corde de " + CORDE }, s);
+    svg("rect", { x: 140, y: YC[CI] - 13, width: 380, height: 26, fill: "transparent" }, pince);
     var vibre = svg("path", { d: "", fill: "var(--accent)", "fill-opacity": 0.18, stroke: "none" }, pince);
-    touche(pince, function () { st.pincee = true; st.amp = 2.6; osc.signal(st.f, st.amp); etat.innerHTML = "La corde de La vibre : son signal est à l'écran."; });
-    svg("text", { x: 140, y: 140, class: "cs-indice", texte: "Touchez la corde de La pour la pincer." }, s);
+    touche(pince, function () { st.pincee = true; st.amp = 2.6; osc.signal(st.f, st.amp); etat.innerHTML = "La corde de " + CORDE + " vibre : son signal est à l'écran."; });
+    svg("text", { x: 140, y: 140, class: "cs-indice", texte: "Touchez la corde de " + CORDE + " pour la pincer." }, s);
     // le cable et l'oscilloscope
     svg("path", { d: "M600 112c30 20 26 56 -14 74h-24", class: "cs-trait", "stroke-width": 3 }, s);
     var osc = oscillo(s, svg("g", null, s), 40, 250, { base: 2, curseurs: true });
     var t = 0;
     S.animer(function (dt) {
       t += dt;
-      var a = st.pincee ? 3.2 * Math.abs(Math.sin(t * 9)) : 0, y = YC[1];
+      var a = st.pincee ? 3.2 * Math.abs(Math.sin(t * 9)) : 0, y = YC[CI];
       vibre.setAttribute("d", a ? "M111 " + y + "Q318 " + (y - a * 2) + " 526 " + y + "Q318 " + (y + a * 2) + " 111 " + y + "z" : "");
     });
-    var etat = el("p", { classe: "cs-etat", "aria-live": "polite", html: "Touchez la corde de La pour la pincer. Glissez les curseurs 1 et 2 sur l'écran pour mesurer une durée." });
+    var etat = el("p", { classe: "cs-etat", "aria-live": "polite", html: "Touchez la corde de " + CORDE + " pour la pincer. Glissez les curseurs 1 et 2 sur l'écran pour mesurer une durée." });
     zone.appendChild(etat);
     st.osc = osc; st.tourner = tourner;
     st.pincer = function () { pince.dispatchEvent(new MouseEvent("click", { bubbles: true })); };
@@ -2861,18 +3062,18 @@ var Sim = (function () {
      dire si elle est trop grave ou trop aigue n'apprend rien de plus, et dit quel geste reprendre. */
   function accordJuste() {
     if (!guitare || (!guitare.pincee && !guitare.tourne)) return null;
-    if (!guitare.pincee) return { attente: "Pincez la corde de La en la touchant : sans elle, l'oscilloscope n'a rien à montrer." };
-    if (!guitare.tourne) return { attente: "La mécanique de La n'a pas encore été tournée : glissez-la au doigt pour accorder." };
+    if (!guitare.pincee) return { attente: "Pincez la corde de " + CORDE + " en la touchant : sans elle, l'oscilloscope n'a rien à montrer." };
+    if (!guitare.tourne) return { attente: "La mécanique de " + CORDE + " n'a pas encore été tournée : glissez-la au doigt pour accorder." };
     var ecart = guitare.f - LA;
-    return { reponse: "corde de La à " + fr(guitare.f, 1) + " Hz (" + fr(guitare.f0, 1) + " Hz au départ)",
-      controles: [[Math.abs(ecart) <= 1.5, "la corde de La n'est pas à 110 Hz à 1,5 Hz près : " +
+    return { reponse: "corde de " + CORDE + " à " + fr(guitare.f, 1) + " Hz (" + fr(guitare.f0, 1) + " Hz au départ)",
+      controles: [[Math.abs(ecart) <= SUJET.tol, "la corde de " + CORDE + " n'est pas à " + SUJET.fTxt + " Hz à " + SUJET.tolTxt + " Hz près : " +
         (ecart < 0 ? "elle est trop grave, tournez la mécanique pour la tendre" : "elle est trop aiguë, tournez la mécanique pour la détendre")]] };
   }
 
   /* ── Phase 4 · la salle, le public, les protections ───────────────────────────────── */
-  var L1 = 112, FOND = 45, ENCEINTES = [{ x: 4, y: 2 }, { x: 4, y: 12 }], PX_M = 25, OX = 20, OY = 20;
-  var PROTECTIONS = [{ k: "rien", nom: "Rien", att: 0 }, { k: "coton", nom: "Coton", att: 6 }, { k: "mousse", nom: "Bouchons mousse", att: 28 },
-    { k: "musicien", nom: "Bouchons musicien", att: 18 }, { k: "casque", nom: "Casque", att: 25 }];
+  var L1 = SUJET.L1, FOND = 45, ENCEINTES = [{ x: 4, y: 2 }, { x: 4, y: 12 }], PX_M = 25, OX = 20, OY = 20;
+  var PROTECTIONS = [{ k: "rien", nom: "Rien", att: 0 }, { k: "coton", nom: "Coton", att: SUJET.att.coton }, { k: "mousse", nom: "Bouchons mousse", att: SUJET.att.mousse },
+    { k: "musicien", nom: "Bouchons musicien", att: SUJET.att.musicien }, { k: "casque", nom: "Casque", att: SUJET.att.casque }];
   function niveau(x, y) {
     var s = Math.pow(10, FOND / 10);
     ENCEINTES.forEach(function (e) { var r = Math.max(0.5, Math.hypot(x - e.x, y - e.y)); s += Math.pow(10, (L1 - 20 * Math.log10(r)) / 10); });
@@ -3009,13 +3210,19 @@ var Sim = (function () {
     st.proteger = function (k) { st.prot = k; st.vu[k] = true; lire(); };
     poserBarriere(6); st.vu.barriere = false; poserTete(16, 7);
   }
+  /* ce que l'eleve a classe « Protège assez » : « des bouchons en mousse, ... ou un casque antibruit » */
+  function protegeant(rep) {
+    var l = String(rep || "").split(" ; ").filter(function (x) { return / → Protège assez$/.test(x); })
+      .map(function (x) { return x.replace(/ → Protège assez$/, "").replace(/^\S/, function (c) { return c.toLowerCase(); }); });
+    return !l.length ? "aucune" : l.length === 1 ? l[0] : l.slice(0, -1).join(", ") + " ou " + l[l.length - 1];
+  }
   function barriereJuste() {
     if (!salle || !salle.vu.barriere) return null;
     var pire = pireBarriere(salle.xb), d = salle.xb - 4;
-    /* les deux limites, 100 dB et 9 m, sont dans la consigne */
+    /* les deux limites, 100 dB et 9 m (102 dB et 8 m en note), sont dans la consigne */
     return { reponse: "barrière à " + fr(d, 1) + " m des enceintes, " + fr(pire, 1) + " dB au plus au premier rang", controles: [
-      [pire <= 100, "au premier rang, face à une enceinte, le niveau dépasse 100 dB : la barrière est trop près des enceintes"],
-      [d <= 9, "la barrière est à plus de 9 m des enceintes : trois cents personnes n'ont plus la place"]] };
+      [pire <= SUJET.limite, "au premier rang, face à une enceinte, le niveau dépasse " + SUJET.limite + " dB : la barrière est trop près des enceintes"],
+      [d <= SUJET.recul, "la barrière est à plus de " + SUJET.recul + " m des enceintes : " + SUJET.public + " personnes n'ont plus la place"]] };
   }
 
   /* ── Phase 5 · l'affiche ─────────────────────────────────────────────────────────── */
@@ -3024,7 +3231,7 @@ var Sim = (function () {
     var s = svg("svg", { viewBox: "0 0 640 300", role: "img", "aria-label": "L'affiche de prévention du concert" }, sc);
     svg("rect", { x: 150, y: 10, width: 340, height: 280, rx: 4, class: "cs-objet", style: "stroke-width:1.5" }, s);
     svg("text", { x: 320, y: 44, "text-anchor": "middle", class: "cs-etiq-f", style: "font-size:20px", texte: "Concert de la fête du lycée" }, s);
-    svg("text", { x: 320, y: 68, "text-anchor": "middle", class: "cs-etiq", texte: "Deux heures de musique : protégez vos oreilles" }, s);
+    svg("text", { x: 320, y: 68, "text-anchor": "middle", class: "cs-etiq", texte: SUJET.Duree + " de musique : protégez vos oreilles" }, s);
     svg("circle", { cx: 320, cy: 150, r: 52, fill: "var(--accent)", "fill-opacity": 0.14, stroke: "var(--accent)", "stroke-width": 3 }, s);
     svg("circle", { cx: 320, cy: 140, r: 22, class: "cs-objet" }, s);
     svg("path", { d: "M296 152a24 24 0 0 1 48 0", class: "cs-trait", "stroke-width": 4 }, s);
@@ -3048,10 +3255,11 @@ var Sim = (function () {
     niveaux: ["CAP", "Seconde"],
     commande: {
       client: "De : Les Pieds dans le Son, le groupe du lycée",
-      texte: "<p>Le 12 juin, nous jouons à la fête du lycée, dans la salle polyvalente : <b>deux heures de concert, trois cents personnes</b>. " +
-        "Nous voulons du son, mais personne ne doit repartir avec les oreilles qui sifflent. La mairie, à qui est la salle, impose <b>100 dB au plus</b> partout où se tient le public.</p>" +
+      texte: "<p>Le " + SUJET.date + ", nous jouons à la fête du lycée, dans la salle polyvalente : <b>" + SUJET.duree + " de concert, " + SUJET.public + " personnes</b>. " +
+        "Nous voulons du son, mais personne ne doit repartir avec les oreilles qui sifflent. La mairie, à qui est la salle, impose <b>" + SUJET.limite + " dB au plus</b> partout où se tient le public.</p>" +
         "<p>Et notre accordeur est cassé : il faut accorder la guitare sans lui.</p>",
-      livrable: "la guitare accordée, la place du public et ses protections, l'affiche de prévention, et le fichier de vos résultats.",
+      livrable: S.note ? "la guitare accordée, la place du public et ses protections, l'affiche de prévention, et le fichier de vos résultats."
+        : "la guitare accordée, la place du public et ses protections, et l'affiche de prévention.",
       illustration: function (z) {
         var s = svg("svg", { viewBox: "0 0 400 150", role: "img", "aria-label": "Une scène, deux enceintes, des ondes sonores" }, z);
         svg("rect", { x: 0, y: 0, width: 400, height: 150, fill: "var(--accent)", "fill-opacity": 0.06 }, s);
@@ -3067,7 +3275,7 @@ var Sim = (function () {
         });
         svg("path", { d: "M180 100l26 -46 8 4 -22 44z", class: "cs-objet2" }, s);
         svg("circle", { cx: 186, cy: 98, r: 12, class: "cs-objet2" }, s);
-        svg("text", { x: 200, y: 140, "text-anchor": "middle", class: "cs-etiq", texte: "La salle polyvalente, le 12 juin" }, s);
+        svg("text", { x: 200, y: 140, "text-anchor": "middle", class: "cs-etiq", texte: "La salle polyvalente, le " + SUJET.date }, s);
       }
     },
     phases: [
@@ -3081,7 +3289,8 @@ var Sim = (function () {
             categories: ["Émetteur", "Milieu de propagation", "Récepteur"], bonnes: [0, 1, 2, 2],
             methode: "Le son part d'un émetteur, voyage dans un milieu, et arrive à un récepteur : une oreille, ou un micro." },
           { type: "classer", lib: "Avec l'échelle, rangez chaque son du carnet.",
-            items: ["A · le chuchotement, 30 dB", "B · la batterie à 1 m, 115 dB", "C · la salle en plein concert, 98 dB", "D · la conversation au bar, 62 dB", "E · le larsen, 125 dB"],
+            items: ["A · le chuchotement, " + SUJET.niveaux.A + " dB", "B · la batterie à 1 m, " + SUJET.niveaux.B + " dB", "C · la salle en plein concert, " + SUJET.niveaux.C + " dB",
+              "D · la conversation au bar, " + SUJET.niveaux.D + " dB", "E · le larsen, " + SUJET.niveaux.E + " dB"],
             categories: ["Sans danger", "Danger pour l'oreille", "Douleur"], bonnes: [0, 1, 1, 0, 2],
             methode: "Sur l'échelle : au-delà du seuil de danger, 85 dB, l'oreille s'abîme ; au-delà du seuil de douleur, 120 dB, elle a mal." },
           { type: "choix", lib: "Un son se caractérise par deux grandeurs. Lesquelles ?",
@@ -3097,7 +3306,7 @@ var Sim = (function () {
         questions: [
           { type: "classer", lib: "Classez les quatre pads du plus grave au plus aigu.",
             items: ["Pad A", "Pad B", "Pad C", "Pad D"],
-            categories: ["1 · le plus grave", "2", "3", "4 · le plus aigu"], bonnes: [2, 0, 3, 1],
+            categories: ["1 · le plus grave", "2", "3", "4 · le plus aigu"], bonnes: SUJET.rangPads,
             methode: "Comptez les motifs sur tout l'écran, à la même base de temps : plus il y en a, plus le son est aigu." },
           { type: "choix", lib: "Qu'avez-vous observé ? Plus un son est aigu…",
             options: ["plus sa période est courte", "plus sa période est longue", "plus la courbe monte haut", "plus la courbe est épaisse"], bonne: 0,
@@ -3109,46 +3318,48 @@ var Sim = (function () {
         ],
         bravo: "Le groupe : « Plus c'est aigu, plus les motifs sont serrés. On passe à la guitare. »" },
       { competence: "REA", titre: "Accorder la guitare",
-        recit: "La guitare électrique est branchée sur l'oscilloscope. Sa corde de La doit vibrer à <b>110 Hz</b>, et elle est désaccordée. Sans accordeur, il reste la mesure.",
-        consigne: "Pincez la corde de La. Glissez les curseurs 1 et 2 sur deux sommets de la courbe : l'oscilloscope affiche la durée Δt entre eux. Tournez la mécanique de La au doigt pour accorder.",
+        recit: "La guitare électrique est branchée sur l'oscilloscope. Sa corde de " + CORDE + " doit vibrer à <b>" + SUJET.fTxt + " Hz</b>, et elle est désaccordée. Sans accordeur, il reste la mesure.",
+        consigne: "Pincez la corde de " + CORDE + ". Glissez les curseurs 1 et 2 sur deux sommets de la courbe : l'oscilloscope affiche la durée Δt entre eux. Tournez la mécanique de " + CORDE + " au doigt pour accorder.",
         scene: sceneGuitare,
         questions: [
-          { type: "nombre", lib: "Mesurez la <b>période T</b> de la corde de La.", unite: "ms",
+          { type: "nombre", lib: "Mesurez la <b>période T</b> de la corde de " + CORDE + ".", unite: "ms",
             attendu: function () { return 1000 / guitare.f; }, tolerance: 0.03, toleranceAbsolue: 0.1,
             methode: "Placez les curseurs sur deux sommets séparés de plusieurs périodes, divisez Δt par le nombre de périodes. Une base de 5 ms par division en montre plus.",
             apres: function (ctx, ok, rep) { ctx.donnees.T = parseFloat(String(rep).replace(",", ".")); } },
           { type: "nombre", lib: "Calculez sa <b>fréquence</b> avec votre période : f = 1 ÷ T, T en secondes.", unite: "Hz",
             attendu: function (ctx) { return ctx.donnees.T ? 1000 / ctx.donnees.T : guitare.f; }, tolerance: 0.02, toleranceAbsolue: 0.6,
-            methode: "Convertissez d'abord T en secondes : 9,5 ms = 0,0095 s. Puis f = 1 ÷ T." },
-          { type: "action", lib: "Accordez la corde de La sur <b>110 Hz</b>, à 1,5 Hz près : tournez sa mécanique, mesurez, recommencez.",
+            methode: "Convertissez d'abord T en secondes : " + SUJET.exT + ". Puis f = 1 ÷ T." },
+          { type: "action", lib: "Accordez la corde de " + CORDE + " sur <b>" + SUJET.fTxt + " Hz</b>, à " + SUJET.tolTxt + " Hz près : tournez sa mécanique, mesurez, recommencez.",
             aide: "Accordez sur la guitare, puis vérifiez.",
             verifier: accordJuste,
-            methode: "À 110 Hz, une période dure 1 ÷ 110 = 0,0091 s, soit 9,1 ms ; cinq périodes durent 45,5 ms. Tendre la corde la rend plus aiguë.",
+            methode: SUJET.perTxt + " Tendre la corde la rend plus aiguë.",
             apres: function (ctx, ok, rep) { ctx.donnees.accord = rep.replace(/ \(.*\)$/, ""); } }
         ],
-        bravo: "Le groupe : « La corde de La est juste. Le reste de la guitare s'accorde sur elle. »" },
+        bravo: "Le groupe : « La corde de " + CORDE + " est juste. Le reste de la guitare s'accorde sur elle. »" },
       { competence: "VAL", titre: "Le public et ses oreilles",
-        recit: "La salle fait 24 m sur 14 m, et les deux enceintes sont au bord de la scène. La mairie impose <b>100 dB au plus</b> dans le public. Trois cents personnes demandent au moins 150 m² : la barrière ne peut pas reculer à plus de <b>9 m des enceintes</b>.",
+        recit: "La salle fait 24 m sur 14 m, et les deux enceintes sont au bord de la scène. La mairie impose <b>" + SUJET.limite + " dB au plus</b> dans le public. " +
+          SUJET.public.charAt(0).toUpperCase() + SUJET.public.slice(1) + " personnes demandent au moins " + SUJET.aire + " m² : la barrière ne peut pas reculer à plus de <b>" + SUJET.recul + " m des enceintes</b>.",
         consigne: "Glissez la tête de mesure dans la salle : le sonomètre est dans son oreille ; s'il affiche OVER, changez sa gamme. Glissez la barrière. Posez une protection dans l'oreille en touchant sa case.",
         scene: sceneSalle,
         questions: [
-          { type: "action", lib: "Placez la barrière : au premier rang, le niveau ne doit dépasser 100 dB nulle part. Mesurez avant de décider.",
+          { type: "action", lib: "Placez la barrière : au premier rang, le niveau ne doit dépasser " + SUJET.limite + " dB nulle part. Mesurez avant de décider.",
             aide: "Placez la barrière dans la salle, puis vérifiez.",
             verifier: barriereJuste,
-            methode: "Le premier rang le plus exposé est face à une enceinte. Mesurez là, contre la barrière, et reculez-la tant que le sonomètre dépasse 100 dB.",
+            methode: "Le premier rang le plus exposé est face à une enceinte. Mesurez là, contre la barrière, et reculez-la tant que le sonomètre dépasse " + SUJET.limite + " dB.",
             apres: function (ctx, ok, rep) { ctx.donnees.barriere = rep; } },
           { type: "classer", lib: "Au premier rang, mesurez le niveau dans l'oreille avec chaque protection. Laquelle ramène sous le seuil de danger, 85 dB ?",
             items: ["Rien", "Du coton", "Des bouchons en mousse", "Des bouchons pour musicien", "Un casque antibruit"],
             categories: ["Protège assez", "Ne protège pas assez"], bonnes: [1, 1, 0, 0, 0],
             methode: "Mettez la tête au premier rang, face à une enceinte, et lisez le sonomètre avec chaque protection : sous 85 dB, elle protège assez.",
-            apres: function (ctx) { ctx.donnees.protections = "bouchons en mousse, bouchons pour musicien ou casque"; } },
-          { type: "choix", lib: "Au fond de la salle, près du bar, que dire du niveau pendant deux heures ?",
+            /* en note, a chaque enregistrement : ce que l'eleve a classe « Protège assez », pas la bonne liste (elle trahirait le verdict) */
+            apres: function (ctx, ok, rep) { ctx.donnees.protections = ctx.note ? protegeant(rep) : "bouchons en mousse, bouchons pour musicien ou casque"; } },
+          { type: "choix", lib: "Au fond de la salle, près du bar, que dire du niveau pendant " + SUJET.duree + " ?",
             options: ["Il dépasse encore 85 dB : il faut proposer des bouchons à tout le public", "Il est loin de 120 dB : il n'y a aucun danger",
               "Il faut monter le son pour couvrir le bar", "On ne peut rien dire sans accordeur"], bonne: 0,
             methode: "Mesurez au fond de la salle : le niveau baisse avec la distance, mais il reste au-dessus de 85 dB." },
-          { type: "nombre", niveau: "Seconde", lib: "Sur l'axe de l'enceinte de gauche, mesurez le niveau à 2 m, puis à 4 m. De combien baisse-t-il quand la distance double ?", unite: "dB",
-            attendu: 5.8, toleranceAbsolue: 0.9, tolerance: 0,
-            methode: "Suivez le ruban : la tête à 2,0 m, puis à 4,0 m, face à l'enceinte de gauche. Faites la différence des deux lectures." }
+          { type: "nombre", niveau: "Seconde", lib: "Sur l'axe de l'enceinte de gauche, mesurez le niveau à " + SUJET.d1 + " m, puis à " + 2 * SUJET.d1 + " m. De combien baisse-t-il quand la distance double ?", unite: "dB",
+            attendu: S.note ? niveau(4 + SUJET.d1, 2) - niveau(4 + 2 * SUJET.d1, 2) : 5.8, toleranceAbsolue: 0.9, tolerance: 0,
+            methode: "Suivez le ruban : la tête à " + fr(SUJET.d1, 1) + " m, puis à " + fr(2 * SUJET.d1, 1) + " m, face à l'enceinte de gauche. Faites la différence des deux lectures." }
         ],
         bravo: "Le groupe : « Barrière posée, bouchons à l'entrée. Et une zone calme près du bar. »" },
       { competence: "COM", titre: "L'affiche de prévention",
@@ -3164,11 +3375,11 @@ var Sim = (function () {
               "Un bouchon d'oreille absorbe une grande partie de l'énergie du son.",
               "Du coton dans les oreilles protège aussi bien qu'un bouchon."], bonne: [0, 2, 4],
             methode: "Le niveau se mesure en décibels ; le danger commence à 85 dB ; le coton n'arrête que quelques décibels." },
-          { type: "choix", lib: "Comment écrire la note de la corde de La dans le programme du concert ?",
-            options: ["f = 110 Hz", "f = 110 dB", "L = 110 Hz", "T = 110 Hz"], bonne: 0,
+          { type: "choix", lib: "Comment écrire la note de la corde de " + CORDE + " dans le programme du concert ?",
+            options: ["f = " + SUJET.fTxt + " Hz", "f = " + SUJET.fTxt + " dB", "L = " + SUJET.fTxt + " Hz", "T = " + SUJET.fTxt + " Hz"], bonne: 0,
             methode: "Une grandeur, sa valeur, et la bonne unité : la fréquence f, en hertz." }
         ],
-        bravo: "Le groupe : « L'affiche est à l'entrée. Rendez-vous le 12 juin ! »" }
+        bravo: "Le groupe : « L'affiche est à l'entrée. Rendez-vous le " + SUJET.date + " ! »" }
     ],
     fin: "La guitare est accordée, le public est placé et protégé, et l'affiche est prête. Produisez votre fichier pour le professeur.",
     grades: [[0, "Oreille curieuse"], [8, "Oreille avertie"], [12, "Oreille d'or"], [15, "Maître·sse des décibels"]],
@@ -3177,11 +3388,11 @@ var Sim = (function () {
       "Le sonomètre donne un seul nombre ; un vrai sonomètre pondère les fréquences, en dB(A), et fait une moyenne dans le temps.",
       "Les pads et la corde donnent des sons purs, qui ne s'éteignent pas ; une vraie corde donne un son riche en harmoniques, qui meurt en quelques secondes.",
       "Chaque protection retire un nombre fixe de décibels ; en vrai, l'atténuation dépend de la fréquence et de la façon dont on pose le bouchon.",
-      "Le niveau au fond de la salle et la règle des 100 dB sont ceux de la commande ; un vrai lieu de concert suit une réglementation, et mesure en continu."
+      "Le niveau au fond de la salle et la règle des " + SUJET.limite + " dB sont ceux de la commande ; un vrai lieu de concert suit une réglementation, et mesure en continu."
     ]
   });
   p.maquette = { carnet: carnet, sons: function () { return sons; }, guitare: function () { return guitare; }, salle: function () { return salle; },
-    niveau: niveau, pireBarriere: pireBarriere };
+    niveau: niveau, pireBarriere: pireBarriere, SUJET: SUJET, PROTECTIONS: PROTECTIONS };   // le sujet tire, pour les scenarios
   window.concert = p;
 })();
 </script>

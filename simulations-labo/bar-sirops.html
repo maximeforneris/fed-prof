@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Le bar à sirops</title>
-<meta name="description" content="Samedi, la fête de l&#x27;école : votre classe tient le bar à sirops, et la mairie demande d&#x27;afficher le sucre de chaque boisson en grammes par litre. Lire l&#x27;étiquette du sirop, choisir la verrerie, peser à la balance tarée, dissoudre et compléter la fiole au trait, contrôler un verre à l&#x27;échelle de teintes, puis écrire la fiche recette du bar. À la fin, un fichier pour le professeur.">
+<meta name="description" content="Samedi, la fête de l&#x27;école : votre classe tient le bar à sirops, et la mairie demande d&#x27;afficher le sucre de chaque boisson en grammes par litre. Lire l&#x27;étiquette du sirop, choisir la verrerie, peser à la balance tarée, dissoudre et compléter la fiole au trait, contrôler un verre à l&#x27;échelle de teintes, puis écrire la fiche recette du bar. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.">
 <meta name="etiquette" content="Simulation · Parcours PAR-04">
 <style>
 /* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
@@ -196,6 +196,13 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
 .pc-q[data-etat="juste"]{border-color:var(--juste);background:var(--juste-doux)}
 .pc-q[data-etat="faux"]{border-color:var(--faux)}
 .pc-q[data-etat="passe"]{border-style:dashed;opacity:.85}
+/* les deux modes (16 octobre 2026) : en note, une reponse enregistree n'a pas de couleur de verdict */
+.pc-q[data-etat="enregistree"]{border-color:var(--accent);background:var(--accent-doux)}
+.pc-q[data-etat="enregistree"] .pc-q-num{background:var(--accent)}
+.pc-q[data-etat="modifiee"]{border-color:var(--accent);border-style:dashed}
+.pc-bandeau-mode{margin:10px 0;padding:10px 12px;border-left:4px solid var(--accent);background:var(--accent-doux);border-radius:var(--r)}
+.pc-note .pc-bandeau-mode{border-left-color:var(--encre)}
+.pc-confirmer{margin-top:10px;padding:10px 12px;border:1px solid var(--encre);border-radius:var(--r)}
 .pc-q-lib{margin:0 0 8px;font-weight:600}
 .pc-q-num{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--encre);color:var(--carte);
   font-size:.8rem;margin-right:.5em;vertical-align:.1em}
@@ -1532,7 +1539,25 @@ var Sim = (function () {
      la place de true en donne d'autres. La scene doit supporter d'etre appelee deux fois (effets gardes).
      LA CALCULATRICE : Sim.calculatrice() pose celle des sites de classe (_commun/entrainement/moteur/
      calculette.js, que l'assembleur embarque dans chaque page), un bouton flottant hors parcours, un
-     bouton dans la tete du parcours pendant l'entrainement. Rien n'est garde : pas de memoire. */
+     bouton dans la tete du parcours pendant l'entrainement. Rien n'est garde : pas de memoire.
+     DEUX MODES (16 octobre 2026, demande de l'utilisateur pour la notation) :
+     - LE TD, par defaut : tout ce qui precede (juste ou pas encore, methode, « A corriger », aide), mais
+       AUCUN FICHIER. La fin est un bilan a l'ecran ; rien a rendre.
+     - LE MODE NOTE, par le lien du professeur : l'adresse qui contient « note » (#note). Ni verdict, ni
+       methode, ni aide, ni etoiles ; « Enregistrer » garde la reponse, que l'eleve peut changer jusqu'a
+       rendre sa copie. Rendre la copie (produire le fichier, ou en afficher le texte) VERROUILLE tout : le
+       fichier porte les verdicts, il ne doit plus servir a se corriger. Une manipulation est jugee telle
+       qu'elle est au moment ou on l'enregistre ; une reponse qui attendait une mesure est rejugee au rendu.
+       Le mode libre de la page (« Explorer la simulation ») disparait : ses defis disent juste ou pas.
+     - LES VALEURS CHANGENT D'UN MODE A L'AUTRE : Sim.note (vrai en mode note) se lit des le chargement,
+       avant que la page tire son sujet ; chaque page y prend d'autres nombres. Changer l'adresse d'un mode
+       a l'autre recharge la page.
+     - En mode note, q.apres et q.fini sont appeles A CHAQUE ENREGISTREMENT, juste ou non, avec le verdict en
+       second argument : une page ne doit rien afficher qui en depende (une mesure rappelee seulement si elle
+       est juste trahirait le verdict). ctx.note le dit aux scenes.
+     LES PROPOSITIONS D'UN CHOIX SE MELANGENT (16 octobre 2026, « la bonne reponse est trop souvent la 1re ») :
+     q.bonne garde l'indice de la source, chaque bouton porte data-k ; « ordreFixe: true » garde l'ordre ecrit
+     (une echelle, « aucune des precedentes »). */
   var COMPETENCES = {
     APP: "S'approprier", ANA: "Analyser", REA: "Réaliser", VAL: "Valider", COM: "Communiquer"
   };
@@ -1552,6 +1577,9 @@ var Sim = (function () {
     "C2-3": "Décrire le fonctionnement du système", "C1-2": "Exprimer les contraintes"
   };
   var ORDRE_U41 = ["C12-1", "C12-2", "C4-3", "C2-1", "C2-2", "C2-3", "C1-2"];
+  /* le mode note, par l'adresse : #note (ou #ccf-note, #u41-note) ; lu des le chargement, avant le tirage du sujet */
+  function noteDans(h) { return /(^#|[^a-z])note\b/i.test(h || ""); }
+  var NOTE_ADRESSE = noteDans(location.hash);
   var COTES = { NA: "non acquis", ECA: "en cours d'acquisition", A: "acquis" };
   var POINTS_COTE = { NA: 0, ECA: 1, A: 2 };
   /* Le code du professeur pour valider un appel : seule son empreinte est dans la page. Pour le
@@ -1569,8 +1597,15 @@ var Sim = (function () {
   }
   function deux(n) { return (n < 10 ? "0" : "") + n; }
   function heure(d) { return deux(d.getHours()) + "h" + deux(d.getMinutes()); }
+  /* le melange de Fisher-Yates, en place */
+  function melanger(t) { for (var i = t.length - 1; i > 0; i--) { var k = Math.floor(Math.random() * (i + 1)), x = t[i]; t[i] = t[k]; t[k] = x; } return t; }
   function parcours(parent, o) {
     var ccf = !!o.ccf, u41 = !!o.u41, epreuve = ccf || u41;
+    /* le mode note : lu a l'adresse ; passer d'un mode a l'autre recharge, pour retirer les valeurs */
+    var NOTE = NOTE_ADRESSE;
+    window.addEventListener("hashchange", function () { if (noteDans(location.hash) !== NOTE) location.reload(); });
+    /* une question a une reponse : verifiee (TD), ou enregistree (note) ; un appel, des qu'il est lance */
+    function fait(f) { return !!f && (NOTE && !f.appel ? !!f.enr : !!f.fini); }
     var NOMS = u41 ? U41 : COMPETENCES, ORDRE = u41 ? ORDRE_U41 : ORDRE_COMP;
     function nomComp(k) { return NOMS[k] || COMPETENCES[k] || U41[k] || k; }
     var niveaux = o.niveaux || ["CAP", "Seconde"];
@@ -1582,9 +1617,12 @@ var Sim = (function () {
     /* une partie facultative intouchee ne compte nulle part ; entamee, seulement pour ce qui y est fait */
     var nOblig = o.phases.filter(function (ph) { return !ph.facultative; }).length || nPh;
     var aFacultative = nOblig < nPh;
-    function touchee(f) { return !!f && !!(f.fini || f.essais || f.appuis || f.aide); }
+    function touchee(f) { return !!f && !!(f.fini || f.essais || f.appuis || f.aide || f.enr); }
     function compte(i, f) { return !o.phases[i].facultative || touchee(f); }
-    var racine = el("div", { classe: "pc" + (ccf ? " pc-ccf" : "") + (u41 ? " pc-u41" : "") });
+    var racine = el("div", { classe: "pc" + (ccf ? " pc-ccf" : "") + (u41 ? " pc-u41" : "") + (NOTE ? " pc-note" : "") });
+    /* les mots qui changent d'un mode a l'autre : en TD, la fin est un bilan ; en note, une copie ou un livrable */
+    var MOT_FIN = NOTE ? (epreuve ? "La copie" : "Le livrable") : "Le bilan";
+    var MOT_FIN_COURT = NOTE ? (epreuve ? "Copie" : "Livrable") : "Bilan";
     var P = $(parent);
 
     /* ---- deux facons d'utiliser la page : la simulation libre, ou le parcours ---- */
@@ -1594,9 +1632,11 @@ var Sim = (function () {
         [el("b", { texte: "Explorer la simulation" }), el("span", { texte: o.libreTexte || "librement, sans note ni fichier" })]);
       bParcours = el("button", { type: "button", classe: "pc-mode", "aria-pressed": "false" },
         [el("b", { texte: ccf ? "Entraînement au CCF" : u41 ? "TD sur simulation" : "Le parcours" }),
-         el("span", { texte: o.modeTexte || ((u41 ? (o.u41.duree || "deux heures") : "une heure") + ", et un fichier pour le professeur") })]);
+         el("span", { texte: (u41 ? (o.u41.duree || "deux heures") : "une heure") + ", avec les indications ; sans note ni fichier" })]);
       barreModes = el("div", { classe: "pc-modes", role: "group", "aria-label": "Deux façons d'utiliser la page" }, [bLibre, bParcours]);
       P.appendChild(barreModes);
+      /* en mode note, la simulation libre s'efface : ses defis diraient juste ou pas, sur les valeurs de l'evaluation */
+      if (NOTE) barreModes.hidden = true;
       bLibre.addEventListener("click", function () { mode(false); });
       bParcours.addEventListener("click", function () { mode(true); });
     }
@@ -1647,8 +1687,8 @@ var Sim = (function () {
       chemin.appendChild(el("li", null, [b]));
       return b;
     });
-    var drapeau = el("button", { type: "button", classe: "pc-noeud pc-drapeau", disabled: "disabled", "aria-label": epreuve ? "La copie" : "Le livrable" },
-      [el("span", { classe: "pc-rond", html: "&#9873;" }), el("span", { classe: "pc-comp", texte: epreuve ? "Copie" : "Livrable" }), el("span", { classe: "pc-etoiles" })]);
+    var drapeau = el("button", { type: "button", classe: "pc-noeud pc-drapeau", disabled: "disabled", "aria-label": MOT_FIN },
+      [el("span", { classe: "pc-rond", html: "&#9873;" }), el("span", { classe: "pc-comp", texte: MOT_FIN_COURT }), el("span", { classe: "pc-etoiles" })]);
     drapeau.addEventListener("click", function () { montrer(nPh); });
     chemin.appendChild(el("li", null, [drapeau]));
     var info = el("div", { classe: "pc-info" });
@@ -1699,7 +1739,13 @@ var Sim = (function () {
     var illus = el("div", { classe: "scene pc-illus" });
     if (c.illustration) c.illustration(illus);
     var choixNiv = el("div", { classe: "pc-choix-niveau" });
-    var partir = el("button", { type: "button", classe: "bouton principal pc-partir", texte: ccf ? "Commencer l'épreuve" : u41 ? "Commencer" : "Accepter la mission" });
+    var partir = el("button", { type: "button", classe: "bouton principal pc-partir", texte: NOTE ? "Commencer l'évaluation" : ccf ? "Commencer l'épreuve" : u41 ? "Commencer" : "Accepter la mission" });
+    /* le mode, dit a l'accueil : en TD, des indications et rien a rendre ; en note, ni verdict ni aide, et un fichier */
+    var bandeauMode = el("p", { classe: "pc-bandeau-mode", html: NOTE
+      ? "<b>Évaluation notée.</b> La page ne dit ni juste ni faux et ne donne aucune méthode : « Enregistrer » garde votre réponse, " +
+        "que vous pouvez changer jusqu'à rendre votre copie. Rendre la copie produit le fichier pour le professeur et verrouille tout."
+      : "<b>TD, non noté.</b> La page dit juste ou pas encore et donne la méthode quand ça coince. À la fin, un bilan à l'écran : " +
+        "rien à rendre. L'évaluation notée se fait par le lien que donne le professeur, avec d'autres valeurs." });
     if (niveaux.length > 1) {
       choixNiv.appendChild(el("p", { classe: "pc-surtitre", texte: "Ma classe" }));
       var rang = el("div", { classe: "rangee" });
@@ -1755,8 +1801,9 @@ var Sim = (function () {
         grille,
         el("p", { classe: "consigne", html: "<b>Chaque compétence est cotée à part</b> : non acquis, en cours d'acquisition, acquis. Rater une partie ne fait pas perdre les autres." }),
         el("p", { classe: "pc-appel-annonce", html: "<span class=\"pc-main\" aria-hidden=\"true\">✋</span><span><b>Deux appels professeur</b>, à des moments précis du sujet, et notés. Vous appelez, puis vous continuez : le professeur vient valider sur la tablette.</span>" }),
-        el("p", { classe: "consigne", html: "<b>Bonus d'autonomie de +0,25</b> : il va à qui termine sans demander d'aide. Demander n'est pas interdit, et ne retire rien d'autre." }),
-        choixNiv, partir] : [
+        el("p", { classe: "consigne", html: NOTE ? "<b>Bonus d'autonomie de +0,25</b> : il va à qui répond à toutes les questions. En évaluation, la page ne donne aucune aide."
+          : "<b>Bonus d'autonomie de +0,25</b> : il va à qui termine sans demander d'aide. Demander n'est pas interdit, et ne retire rien d'autre." }),
+        bandeauMode, choixNiv, partir] : [
         el("h2", { texte: "L'U41 et ce TD" }),
         /* les parts des consignes : relevees sur les neuf sujets 2018-2026 (bts-fed-c-u41.yml) */
         el("p", { html: cc.format || "À l'examen, l'U41 dure <b>4 heures</b> : cinq parties indépendantes autour d'un dossier technique. " +
@@ -1767,8 +1814,8 @@ var Sim = (function () {
         aFacultative ? el("p", { classe: "consigne", html: "<b>« Pour aller plus loin »</b>, la partie marquée <b>+</b> sur le chemin, est <b>facultative</b> : " +
           "si vous n'y touchez pas, elle ne compte pas ; si vous l'abordez, seules les questions que vous y travaillez comptent." }) : null,
         nAppels ? el("p", { classe: "pc-appel-annonce", html: "<span class=\"pc-main\" aria-hidden=\"true\">✋</span><span><b>" + (nAppels > 1 ? nAppels + " appels" : "Un appel") + " professeur</b>, à l'oral, notés. Vous appelez, puis vous continuez : le professeur vient évaluer sur votre poste.</span>" }) : null,
-        el("p", { classe: "consigne", html: "<b>« Demander de l'aide »</b> donne la méthode, jamais la valeur. Elle ne retire rien à la question ; le fichier dit combien d'aides vous avez demandées." }),
-        choixNiv, partir]);
+        NOTE ? null : el("p", { classe: "consigne", html: "<b>« Demander de l'aide »</b> donne la méthode, jamais la valeur. Elle ne retire rien à la question." }),
+        bandeauMode, choixNiv, partir]);
       accueil.appendChild(el("div", { classe: "plan pc-plan-accueil" }, [el("div", null, [sujet, illus]), carteFormat]));
     } else {
       var carteCmd = el("div", { classe: "carte pc-commande" }, [
@@ -1786,8 +1833,8 @@ var Sim = (function () {
         el("div", null, [carteCmd, illus]),
         el("div", { classe: "carte" }, [el("h2", { texte: "Le projet en cinq phases" }), etapes,
           el("p", { classe: "consigne", html: "Une heure en tout. On passe d'une phase à l'autre comme on veut, par le chemin en haut ; " +
-            "à la fin, vous produisez un <b>fichier</b> à remettre au professeur." }),
-          choixNiv, partir])
+            (NOTE ? "à la fin, vous produisez un <b>fichier</b> à remettre au professeur." : "à la fin, un bilan de vos réussites.") }),
+          bandeauMode, choixNiv, partir])
       ]));
     }
     racine.appendChild(accueil);
@@ -1808,7 +1855,7 @@ var Sim = (function () {
       return qs.filter(function (q) { return !q.niveau || q.niveau === etat.niveau; });
     }
 
-    var ctx = { donnees: donnees, niveau: function () { return etat.niveau; }, ccf: ccf, u41: u41,
+    var ctx = { donnees: donnees, niveau: function () { return etat.niveau; }, ccf: ccf, u41: u41, note: NOTE,
       fr: fr, lire: lire, mesure: mesure, gauss: gauss, svg: svg, el: el, borne: borne, animer: animer };
 
     /* un recit ou une consigne peut dependre du niveau : une fonction de ctx */
@@ -1839,11 +1886,11 @@ var Sim = (function () {
       etat.fiches[i] = qs.map(function (q, j) { return q.type === "appel" ? poserAppel(colQ, q, i) : poserQuestion(colQ, q, i, j); });
       var bravo = el("p", { classe: "pc-bravo", hidden: "hidden", html: ph.bravo || "" });
       var suite = el("button", { type: "button", classe: "bouton principal pc-suite", disabled: "disabled",
-        texte: i + 1 < nPh ? (o.phases[i + 1].facultative ? "Pour aller plus loin, facultatif" : epreuve ? (nomPhase(i + 1) === "Conclusion" ? "La conclusion" : "Partie suivante") : "Phase suivante") : (epreuve ? "La copie" : "Le livrable") });
+        texte: i + 1 < nPh ? (o.phases[i + 1].facultative ? "Pour aller plus loin, facultatif" : epreuve ? (nomPhase(i + 1) === "Conclusion" ? "La conclusion" : "Partie suivante") : "Phase suivante") : MOT_FIN });
       suite.addEventListener("click", function () { ouvrir(i + 1); });
       var versFin = null;
       if (i + 1 < nPh) {
-        versFin = el("button", { type: "button", classe: "bouton pc-vers-fin", texte: epreuve ? "Aller à la copie" : "Aller au livrable" });
+        versFin = el("button", { type: "button", classe: "bouton pc-vers-fin", texte: NOTE ? (epreuve ? "Aller à la copie" : "Aller au livrable") : "Voir le bilan" });
         versFin.addEventListener("click", function () { montrer(nPh); });
       }
       s.appendChild(el("div", { classe: "pc-pied" }, [versFin, bravo, suite]));
@@ -1864,26 +1911,39 @@ var Sim = (function () {
         champ.appendChild(inp); if (q.unite) champ.appendChild(el("span", { classe: "pc-unite", html: q.unite }));
         controles.push(inp);
         inp.addEventListener("keydown", function (e) { if (e.key === "Enter") verifier(); });
+        inp.addEventListener("input", function () { modifiee(); });
         lireReponse = function () { var v = lire(inp.value); return isFinite(v) ? fr(v, q.dec === undefined ? decimalesDe(inp.value) : q.dec) + (q.unite ? " " + texteSeul(q.unite) : "") : ""; };
         verifierOk = function () {
           var v = lire(inp.value); if (!isFinite(v)) return null;
           f.valeur = v;
           var a = typeof q.attendu === "function" ? q.attendu(ctx) : q.attendu;
           if (!isFinite(a)) return "attente";               // elle repose sur une mesure, ou une reponse, d'une autre partie
-          var tol = q.tolerance === undefined ? 0.05 : q.tolerance;
-          return Math.abs(v - a) <= Math.abs(a) * tol + (q.toleranceAbsolue || 0);
+          // tolerance et toleranceAbsolue peuvent dependre du niveau : fonctions de ctx (16 octobre 2026,
+          // le bar a sirops plus tolerant en CAP qu'en seconde)
+          var tol = typeof q.tolerance === "function" ? q.tolerance(ctx) : q.tolerance === undefined ? 0.05 : q.tolerance;
+          var tolAbs = typeof q.toleranceAbsolue === "function" ? q.toleranceAbsolue(ctx) : (q.toleranceAbsolue || 0);
+          // sansSigne : une lecture d'appareil, ou le signe ne dit que le sens du branchement
+          // (-0,25 A lu quand le courant entre par COM est une lecture juste)
+          if (q.sansSigne) { v = Math.abs(v); a = Math.abs(a); }
+          return Math.abs(v - a) <= Math.abs(a) * tol + tolAbs;
         };
       } else if (q.type === "choix" || q.type === "multi") {
         var multi = q.type === "multi", choisis = [];
         var rang = el("div", { classe: "pc-options" });
         var options = typeof q.options === "function" ? q.options(ctx) : q.options;
-        options.forEach(function (op, k) {
-          var b = el("button", { type: "button", classe: "pc-option", "aria-pressed": "false", html: propre(op) });
+        /* l'ordre affiche est tire au sort (16 octobre 2026 : la bonne reponse etait la premiere 135 fois sur 154) ;
+           k reste l'indice de la source, que q.bonne designe, et chaque bouton le porte en data-k */
+        var ordreVu = options.map(function (x, k) { return k; });
+        if (!q.ordreFixe) melanger(ordreVu);
+        ordreVu.forEach(function (k) {
+          var op = options[k];
+          var b = el("button", { type: "button", classe: "pc-option", "aria-pressed": "false", "data-k": String(k), html: propre(op) });
           b.addEventListener("click", function () {
             if (f.fini) return;
             if (multi) { var p = choisis.indexOf(k); if (p < 0) choisis.push(k); else choisis.splice(p, 1); }
             else choisis = [k];
-            [].forEach.call(rang.children, function (x, m) { x.setAttribute("aria-pressed", choisis.indexOf(m) >= 0 ? "true" : "false"); });
+            [].forEach.call(rang.children, function (x) { x.setAttribute("aria-pressed", choisis.indexOf(Number(x.getAttribute("data-k"))) >= 0 ? "true" : "false"); });
+            modifiee();
           });
           rang.appendChild(b); controles.push(b);
         });
@@ -1907,7 +1967,7 @@ var Sim = (function () {
             var choix = el("select", { classe: "pc-classer-choix", "aria-label": texteSeul(it) });
             choix.appendChild(el("option", { value: "-1", texte: "— choisir —" }));
             q.categories.forEach(function (cat, m) { choix.appendChild(el("option", { value: String(m), texte: texteSeul(cat) })); });
-            choix.addEventListener("change", function () { if (!f.fini) places[k] = Number(choix.value); });
+            choix.addEventListener("change", function () { if (!f.fini) { places[k] = Number(choix.value); modifiee(); } });
             ligne.appendChild(choix); grille.appendChild(ligne); controles.push(choix);
             return;
           }
@@ -1918,6 +1978,7 @@ var Sim = (function () {
               if (f.fini) return;
               places[k] = m;
               [].forEach.call(cats.children, function (x, n) { x.setAttribute("aria-pressed", n === m ? "true" : "false"); });
+              modifiee();
             });
             cats.appendChild(b); controles.push(b);
           });
@@ -1949,10 +2010,10 @@ var Sim = (function () {
           return ok;
         };
       }
-      var bVerif = el("button", { type: "button", classe: "bouton principal", texte: "Vérifier" });
+      var bVerif = el("button", { type: "button", classe: "bouton principal", texte: NOTE ? "Enregistrer" : "Vérifier" });
       var bPasser = el("button", { type: "button", classe: "bouton", hidden: "hidden", texte: "Continuer sans trouver" });
       /* en CCF, la methode se demande : c'est l'appel a l'aide de l'epreuve, et il coute le bonus d'autonomie */
-      var bAide = epreuve && q.methode ? el("button", { type: "button", classe: "bouton pc-aide-btn", hidden: "hidden", texte: "Demander de l'aide" }) : null;
+      var bAide = epreuve && q.methode && !NOTE ? el("button", { type: "button", classe: "bouton pc-aide-btn", hidden: "hidden", texte: "Demander de l'aide" }) : null;
       var retour = el("div", { classe: "pc-retour", "aria-live": "polite" });
       var methodeVue = el("p", { classe: "pc-methode", hidden: "hidden", html: q.methode || "" });
       bloc.appendChild(champ);
@@ -1969,7 +2030,45 @@ var Sim = (function () {
         /* « fini » previent la scene a la cloture, juste ou passee ; « apres », seulement si juste */
         if (q.fini) q.fini(ctx, f.juste, f.reponse, f.valeur);
       }
+      /* MODE NOTE : enregistrer, sans verdict. La reponse gardee est celle du dernier « Enregistrer » ; une
+         manipulation est jugee telle qu'elle est a cet instant ; une reponse qui attend une mesure est rejugee au rendu. */
+      function enregistrer() {
+        if (f.fini) return;                                // la copie est rendue : tout est verrouille
+        var ok = verifierOk();
+        f.appuis = (f.appuis || 0) + 1;
+        retour.className = "pc-retour";
+        if (ok === null) {
+          retour.innerHTML = q.type === "nombre" ? "Écrivez un nombre." : (q.type === "action" ? "Faites d'abord la manipulation." : "Choisissez d'abord.");
+          return;
+        }
+        f.enr = true; f.modifiee = false; f.enAttente = ok === "attente"; f.note = ok === true; f.juste = f.note;
+        f.reponse = lireReponse(); f.heureEnr = new Date();
+        bloc.setAttribute("data-etat", "enregistree");
+        var vu = q.type === "action" ? (f.lu !== undefined ? f.lu : f.reponse) : "";
+        retour.innerHTML = "Réponse enregistrée à " + heure(f.heureEnr) + "." + (vu ? " <span class=\"pc-lu\">La page a gardé : " + insecables(vu) + ".</span>" : "") +
+          " Vous pouvez la changer, puis enregistrer de nouveau, jusqu'à rendre votre copie.";
+        if (q.apres) q.apres(ctx, f.note, f.reponse, f.valeur);   // a chaque enregistrement, juste ou non : rien ne doit trahir le verdict
+        if (q.fini) q.fini(ctx, f.note, f.reponse, f.valeur);
+        majPhase(i); majTete();
+      }
+      /* une reponse changee apres l'enregistrement : c'est l'ancienne qui compte tant qu'on n'enregistre pas */
+      function modifiee() {
+        if (!NOTE || !f.enr || f.fini) return;
+        f.modifiee = true;
+        bloc.setAttribute("data-etat", "modifiee");
+        retour.className = "pc-retour";
+        retour.innerHTML = "Modifiée, pas encore enregistrée : la réponse gardée reste « " + insecables(f.reponse || "") + " ».";
+      }
+      /* au rendu de la copie : rejuger ce qui attendait une mesure, puis tout fermer */
+      f.verrouiller = function () {
+        if (f.fini) return;
+        if (f.enr && f.enAttente && !f.modifiee) { var ok = verifierOk(); f.note = ok === true; f.juste = f.note; }
+        if (f.enr) f.fini = true;
+        bVerif.disabled = true;
+        controles.forEach(function (x) { x.disabled = true; });
+      };
       function verifier() {
+        if (NOTE) { enregistrer(); return; }
         if (f.fini) return;
         var ok = verifierOk();
         f.appuis = (f.appuis || 0) + 1;
@@ -2024,6 +2123,7 @@ var Sim = (function () {
         f.aide = true; etat.aides++;
         bAide.hidden = true; methodeVue.hidden = false;
       });
+      if (NOTE && etat.rendu) f.verrouiller();             // une partie ouverte apres le rendu : deja fermee
       bPasser.addEventListener("click", function () {
         f.passe = true; f.note = false;
         if (!f.reponse) f.reponse = q.type === "action" ? "(manipulation non faite)" : "(sans réponse)";
@@ -2049,7 +2149,7 @@ var Sim = (function () {
       bloc.appendChild(retour);
       parentQ.appendChild(bloc);
       bAppel.addEventListener("click", function () {
-        if (f.appele) return;
+        if (f.appele || etat.rendu) return;
         f.appele = new Date(); f.fini = true; f.reponse = "appel lancé à " + heure(f.appele);
         bAppel.disabled = true; bProf.hidden = false;
         bloc.setAttribute("data-etat", "attente");
@@ -2141,16 +2241,16 @@ var Sim = (function () {
     }
 
     function etoilesDe(i) {
-      var fs = etat.fiches[i]; if (!fs || !fs.length) return 0;
+      var fs = etat.fiches[i]; if (NOTE || !fs || !fs.length) return 0;      // en mode note, aucune etoile : elles diraient le verdict
       if (fs.some(function (f) { return !f.fini; })) return 0;
       var n = fs.filter(function (f) { return f.note; }).length;
       return n === fs.length ? 3 : n >= fs.length * 0.6 ? 2 : 1;
     }
     function majPhase(i) {
       var fs = etat.fiches[i]; if (!fs || !fs.pied) return;
-      var finie = fs.every(function (f) { return f.fini; });
+      var finie = fs.every(fait);
       fs.pied.suite.disabled = false;
-      fs.pied.bravo.hidden = !finie || !o.phases[i].bravo;
+      fs.pied.bravo.hidden = NOTE || !finie || !o.phases[i].bravo;
       if (finie && etat.ouverte === i) etat.ouverte = i + 1;
       majChemin();
     }
@@ -2158,9 +2258,10 @@ var Sim = (function () {
       noeuds.forEach(function (b, i) {
         var dispo = !!etat.debut;                         // comme dans un controle : toutes les parties, dans l'ordre qu'on veut
         if (dispo) b.removeAttribute("disabled"); else b.setAttribute("disabled", "disabled");
-        var e = etoilesDe(i);
-        b.querySelector(".pc-etoiles").textContent = e ? "★★★".slice(0, e) + "☆☆☆".slice(0, 3 - e) : "";
-        b.classList.toggle("pc-fait", e > 0);
+        var e = etoilesDe(i), fs = etat.fiches[i];
+        var tout = NOTE && fs && fs.length && fs.every(fait);   // en mode note : une coche quand tout est enregistre, sans verdict
+        b.querySelector(".pc-etoiles").textContent = NOTE ? (tout ? "✓" : "") : e ? "★★★".slice(0, e) + "☆☆☆".slice(0, 3 - e) : "";
+        b.classList.toggle("pc-fait", NOTE ? !!tout : e > 0);
         b.classList.toggle("pc-ici", etat.courante === i);
       });
       if (etat.debut) drapeau.removeAttribute("disabled");   // le livrable s'ouvre a tout moment
@@ -2172,8 +2273,19 @@ var Sim = (function () {
     function etoilesPlus() { var s = 0; o.phases.forEach(function (ph, i) { if (ph.facultative) s += etoilesDe(i); }); return s; }
     function enPlus() { var p = etoilesPlus(); return p ? " · +" + p : ""; }
     function minutes() { return etat.debut ? Math.floor((Date.now() - etat.debut) / 60000) : 0; }
+    /* en mode note, la tete compte les reponses enregistrees, jamais les reussites */
+    function comptesNote() {
+      var n = 0, m = 0;
+      o.phases.forEach(function (ph, i) {
+        var fs = etat.fiches[i];
+        if (!fs) { if (!ph.facultative) m += questionsDe(i).filter(function (q) { return q.type !== "appel"; }).length; return; }
+        fs.forEach(function (f) { if (f.appel || !compte(i, f)) return; m++; if (f.enr) n++; });
+      });
+      return { n: n, m: m };
+    }
     function majTete() {
-      score.textContent = "★ " + totalEtoiles() + " / " + (3 * nOblig) + enPlus();
+      var cn = NOTE ? comptesNote() : null;
+      score.textContent = NOTE ? cn.n + " / " + cn.m + " réponses" : "★ " + totalEtoiles() + " / " + (3 * nOblig) + enPlus();
       temps.textContent = etat.debut ? minutes() + " min" : "";
       if (bDos) bDos.hidden = !etat.debut;
     }
@@ -2185,11 +2297,11 @@ var Sim = (function () {
     }
     /* une partie ouverte trop tot : ses phrases portaient « … » ; on la refait tant qu'on n'y a rien touche */
     function intacte(i) {
-      return (etat.fiches[i] || []).every(function (f) { return !f.fini && !f.essais && !f.appuis && !f.appele && !f.aide; });
+      return (etat.fiches[i] || []).every(function (f) { return !f.fini && !f.essais && !f.appuis && !f.appele && !f.aide && !f.enr; });
     }
     function rafraichir(i) {
       var ph = o.phases[i], colQ = etat.colonnes[i];
-      if (!etat.construites[i] || typeof ph.questions !== "function" || !colQ || !intacte(i)) return;
+      if (etat.rendu || !etat.construites[i] || typeof ph.questions !== "function" || !colQ || !intacte(i)) return;
       var pied = etat.fiches[i].pied;
       while (colQ.children.length > 1) colQ.removeChild(colQ.lastChild);
       etat.fiches[i] = questionsDe(i).map(function (q, j) { return q.type === "appel" ? poserAppel(colQ, q, i) : poserQuestion(colQ, q, i, j); });
@@ -2213,9 +2325,13 @@ var Sim = (function () {
     /* ---- l'autonomie, au sens de l'epreuve : ni aide demandee, ni question passee ---- */
     function autonomie() {
       var passees = 0, restent = 0;
-      etat.fiches.forEach(function (fs, i) { (fs || []).forEach(function (f) { if (f.appel || !compte(i, f)) return; if (f.passe) passees++; if (!f.fini) restent++; }); });
+      etat.fiches.forEach(function (fs, i) { (fs || []).forEach(function (f) { if (f.appel || !compte(i, f)) return; if (f.passe) passees++; if (!fait(f)) restent++; }); });
       o.phases.forEach(function (ph, i) { if (!etat.fiches[i] && !ph.facultative) restent += questionsDe(i).filter(function (q) { return q.type !== "appel"; }).length; });
       var merite = !etat.aides && !passees && !restent;
+      if (NOTE) {                                          // en mode note : ni aide ni question passee, seulement ce qui reste sans reponse
+        var tn = restent ? restent + " question" + (restent > 1 ? "s" : "") + " sans réponse" : "toutes les questions ont une réponse";
+        return { merite: merite, texte: u41 ? "aucune aide en évaluation, " + tn : (merite ? "bonus +0,25 mérité — " : "pas de bonus — ") + tn };
+      }
       if (u41) {
         var u = [etat.aides ? etat.aides + " aide" + (etat.aides > 1 ? "s" : "") + " demandée" + (etat.aides > 1 ? "s" : "") : "aucune aide demandée",
           passees ? passees + " question" + (passees > 1 ? "s" : "") + " passée" + (passees > 1 ? "s" : "") : "rien de passé"];
@@ -2235,23 +2351,54 @@ var Sim = (function () {
       if (!finalFait) {
         finalFait = true;
         titreFin = el("h2"); bulleFin = el("p", { classe: "pc-bulle" });
-        final.appendChild(el("div", { classe: "pc-phase-tete" }, [el("div", { classe: "pc-surtitre", texte: epreuve ? "La copie" : "Le livrable" }), titreFin, bulleFin]));
+        final.appendChild(el("div", { classe: "pc-phase-tete" }, [el("div", { classe: "pc-surtitre", texte: MOT_FIN }), titreFin, bulleFin]));
         recap = el("div", { classe: "carte" });
+        var simpl = null;
+        if (o.simplifie && o.simplifie.length) {
+          simpl = el("details", { classe: "modele carte" }, [el("summary", { texte: "Ce que la simulation simplifie" }),
+            el("ul", null, o.simplifie.map(function (t) { return el("li", { html: t }); }))]);
+        }
+        if (!NOTE) {                                       // en TD : rien a rendre
+          var rien = el("div", { classe: "carte pc-remise" }, [el("h2", { texte: "Rien à rendre" }),
+            el("p", { classe: "consigne", html: "En TD, la page ne produit <b>aucun fichier</b> : ce bilan vous montre ce qui est acquis et ce qui reste à revoir. " +
+              "L'évaluation notée se fait par le <b>lien que donne le professeur</b>, avec d'autres valeurs, sans indication." })]);
+          final.appendChild(el("div", { classe: "plan" }, [recap, el("div", null, [rien, simpl])]));
+          return construireFinal();
+        }
         var remise = el("div", { classe: "carte pc-remise" });
         remise.appendChild(el("h2", { texte: "Mon fichier pour le professeur" }));
         remise.appendChild(el("p", { classe: "consigne", html: "Tapez l’<b>identifiant donné en classe</b>, puis produisez le fichier. " +
           "Il se fabrique <b>dans cette page</b> : rien n’est envoyé, rien n’est enregistré. Il part dans vos téléchargements, et c’est vous qui le remettez." }));
         var ident = el("input", { type: "text", autocomplete: "off", "aria-label": "Identifiant", placeholder: "identifiant donné en classe" });
-        var bProd = el("button", { type: "button", classe: "bouton principal", texte: "Produire mon fichier" });
-        var bVoir = el("button", { type: "button", classe: "bouton", texte: "Afficher le texte" });
+        var bProd = el("button", { type: "button", classe: "bouton principal", texte: "Rendre ma copie" });
+        var bVoir = el("button", { type: "button", classe: "bouton", hidden: "hidden", texte: "Afficher le texte" });
+        /* rendre la copie verrouille tout : le fichier porte les verdicts, il ne doit plus servir a se corriger */
+        var bOui = el("button", { type: "button", classe: "bouton principal", texte: "Oui, je rends ma copie" });
+        var bNon = el("button", { type: "button", classe: "bouton", texte: "Pas encore" });
+        var confirmer = el("div", { classe: "pc-confirmer", hidden: "hidden" }, [
+          el("p", { classe: "consigne", html: "<b>Rendre la copie verrouille toutes vos réponses</b> : plus rien ne pourra changer. Le fichier part ensuite dans vos téléchargements." }),
+          el("div", { classe: "rangee" }, [bOui, bNon])]);
         var dit = el("p", { classe: "pc-retour", "aria-live": "polite" });
         apercu = el("textarea", { classe: "pc-apercu", readonly: "readonly", rows: "10", hidden: "hidden", "aria-label": "Le texte du fichier" });
         remise.appendChild(el("div", { classe: "pc-q-champ" }, [ident]));
         remise.appendChild(el("div", { classe: "rangee" }, [bProd, bVoir]));
+        remise.appendChild(confirmer);
         remise.appendChild(dit); remise.appendChild(apercu);
         bProd.addEventListener("click", function () {
           var id = ident.value.trim();
           if (!id) { dit.className = "pc-retour faux"; dit.textContent = "Tapez d’abord l’identifiant donné en classe."; return; }
+          if (!etat.rendu) { confirmer.hidden = false; dit.textContent = ""; return; }
+          produire();
+        });
+        bNon.addEventListener("click", function () { confirmer.hidden = true; });
+        bOui.addEventListener("click", function () {
+          if (!ident.value.trim()) { confirmer.hidden = true; return; }
+          rendre(); confirmer.hidden = true; ident.disabled = true;
+          bProd.textContent = "Produire de nouveau le fichier"; bVoir.hidden = false;
+          construireFinal(); produire();
+        });
+        function produire() {
+          var id = ident.value.trim();
           var txt = fabriquer(id);
           var nom = "bilan-" + nettoie(id) + "-" + nettoie(o.code || "parcours") + ".txt";
           try {
@@ -2264,16 +2411,12 @@ var Sim = (function () {
           } catch (e) {
             dit.className = "pc-retour faux"; dit.textContent = "Le téléchargement est bloqué ici : affichez le texte et copiez-le.";
           }
-        });
+        }
         bVoir.addEventListener("click", function () {
+          if (!etat.rendu) return;                         // le texte porte les verdicts : seulement une fois la copie rendue
           var id = ident.value.trim() || "(identifiant à taper)";
           apercu.value = fabriquer(id); apercu.hidden = false; apercu.focus(); apercu.select();
         });
-        var simpl = null;
-        if (o.simplifie && o.simplifie.length) {
-          simpl = el("details", { classe: "modele carte" }, [el("summary", { texte: "Ce que la simulation simplifie" }),
-            el("ul", null, o.simplifie.map(function (t) { return el("li", { html: t }); }))]);
-        }
         final.appendChild(el("div", { classe: "plan" }, [recap, el("div", null, [remise, simpl])]));
       }
       /* le livrable se produit meme inacheve : ce qui reste compte comme non reussi */
@@ -2281,23 +2424,43 @@ var Sim = (function () {
       o.phases.forEach(function (ph, i) {
         var fs = etat.fiches[i];
         if (ph.facultative && !(fs || []).some(touchee)) return;   // pas abordee : elle ne manque pas
-        (fs ? fs.filter(function (f) { return !f.fini && compte(i, f); }).map(function (f) { return f.q; }) : questionsDe(i)).forEach(function (q) {
+        (fs ? fs.filter(function (f) { return !fait(f) && compte(i, f); }).map(function (f) { return f.q; }) : questionsDe(i)).forEach(function (q) {
           if (q.type === "appel") appelsAFaire++; else restent++;
         });
       });
-      var enAttente = attente().length;
-      titreFin.innerHTML = restent || appelsAFaire ? (epreuve ? "La copie n’est pas finie" : "Le projet n’est pas fini") : (o.livrableTitre || (epreuve ? "La copie est finie" : "Le projet est fini"));
+      var enAttente = attente().length, modifiees = 0;
+      etat.fiches.forEach(function (fs) { (fs || []).forEach(function (f) { if (f.modifiee && !f.fini) modifiees++; }); });
+      titreFin.innerHTML = !NOTE ? (restent ? "Le TD n’est pas fini" : "Le TD est fini")
+        : etat.rendu ? "La copie est rendue"
+        : restent || appelsAFaire ? (epreuve ? "La copie n’est pas finie" : "Le projet n’est pas fini") : (o.livrableTitre || (epreuve ? "La copie est finie" : "Le projet est fini"));
       var mots = [];
-      if (restent) mots.push("Il reste <b>" + restent + " question" + (restent > 1 ? "s" : "") + "</b> sans réponse. Vous pouvez y revenir par le chemin, en haut, " +
-        "ou produire votre fichier tel quel : " + (restent > 1 ? "elles compteront" : "elle comptera") + " comme non réussie" + (restent > 1 ? "s" : "") + ".");
+      if (NOTE && etat.rendu) mots.push("Vos réponses sont verrouillées. Remettez le fichier au professeur.");
+      else if (restent) mots.push("Il reste <b>" + restent + " question" + (restent > 1 ? "s" : "") + "</b> sans réponse. Vous pouvez y revenir par le chemin, en haut" +
+        (NOTE ? ", ou rendre votre copie telle quelle : " + (restent > 1 ? "elles compteront" : "elle comptera") + " comme non réussie" + (restent > 1 ? "s" : "") + "." : "."));
+      if (NOTE && !etat.rendu && modifiees) mots.push("<b>" + (modifiees > 1 ? modifiees + " réponses ont été modifiées" : "Une réponse a été modifiée") + " sans être enregistrée</b> : " +
+        (modifiees > 1 ? "c'est l'ancienne réponse qui comptera pour chacune" : "c'est l'ancienne réponse qui comptera") + ", sauf si vous appuyez sur « Enregistrer ».");
       if (appelsAFaire) mots.push("<b>" + (appelsAFaire > 1 ? appelsAFaire + " appels n'ont pas été lancés" : "Un appel n'a pas été lancé") + "</b> : " + (appelsAFaire > 1 ? "ils comptent" : "il compte") + " zéro.");
       if (enAttente) mots.push("<b>" + (enAttente > 1 ? enAttente + " appels attendent" : "Un appel attend") + " encore le professeur</b> : faites-le valider avant de produire le fichier, sinon il ne comptera pas.");
-      if (!restent && !appelsAFaire && !enAttente && o.fin) mots.push(o.fin);
+      if (!restent && !appelsAFaire && !enAttente && !(NOTE && etat.rendu)) mots.push(finTexte());
       bulleFin.innerHTML = mots.join(" ");
       bulleFin.hidden = !bulleFin.innerHTML;
       recap.innerHTML = "";
       recap.appendChild(el("h2", { texte: ccf ? "Le bilan de l'épreuve" : u41 ? "Le bilan, compétence par compétence" : "Le bilan du projet" }));
       var t = el("table", { classe: "releve pc-recap" });
+      if (NOTE) {
+        recap.firstChild.textContent = "Ce que contient votre copie";
+        t.appendChild(el("tr", null, [el("th", { texte: epreuve ? "Partie" : "Phase" }), el("th", { texte: "Compétence" }), el("th", { texte: "Réponses enregistrées" })]));
+        o.phases.forEach(function (ph, i) {
+          var fs = etat.fiches[i], qs = fs ? fs.map(function (f) { return f.q; }) : questionsDe(i), n = 0, m = 0;
+          if (ph.facultative && !(fs || []).some(touchee)) { t.appendChild(el("tr", null, [el("td", { texte: nomPhase(i) }), el("td", { texte: ph.competence }), el("td", { texte: "facultative, non abordée" })])); return; }
+          qs.forEach(function (q, j) { var f = fs && fs[j]; if (q.type === "appel") { m++; if (f && f.appele) n++; return; } if (!compte(i, f)) return; m++; if (f && f.enr) n++; });
+          t.appendChild(el("tr", null, [el("td", { texte: nomPhase(i) }), el("td", { texte: ph.competence }), el("td", { texte: n + " sur " + m })]));
+        });
+        recap.appendChild(t);
+        if (ccf) recap.appendChild(el("p", { classe: "pc-autonomie", html: "<b>Autonomie</b> : " + autonomie().texte + "." }));
+        recap.appendChild(el("p", { classe: "pc-score-final", html: minutes() + " min" }));
+        return;
+      }
       if (epreuve) {
         t.appendChild(el("tr", null, [el("th", { texte: "Compétence" }), el("th", { texte: "Réussi du premier coup" }), el("th", { texte: "Appel" })]));
         ORDRE.forEach(function (k) {
@@ -2335,13 +2498,30 @@ var Sim = (function () {
       return (s.normalize ? s.normalize("NFD").replace(/[̀-ͯ]/g, "") : s)
         .replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase() || "sans-identifiant";
     }
+    /* le mot de la fin des pages parle du fichier : en TD il n'y en a pas, en note le bouton est « Rendre ma copie » */
+    function finTexte() {
+      var t = String(o.fin || "");
+      var sans = t.replace(/\s*(La copie est prête|Produisez)[^.]*\.?/g, "").trim();
+      if (!NOTE) return (sans ? sans + " " : "Tout est fait. ") + "En TD, rien à rendre : relisez la méthode des questions qui ont coincé.";
+      return (sans ? sans + " " : "") + "Rendez votre copie : le fichier part dans vos téléchargements.";
+    }
+    /* rendre la copie (mode note) : rejuger ce qui attendait une mesure, et tout verrouiller */
+    function rendre() {
+      if (!NOTE || etat.rendu) return;
+      etat.rendu = true;
+      etat.fiches.forEach(function (fs) { (fs || []).forEach(function (f) { if (f.verrouiller) f.verrouiller(); }); });
+      majChemin(); majTete();
+    }
     function fabriquer(id) {
+      if (NOTE) rendre();                                  // le texte porte les verdicts : le fabriquer, c'est rendre la copie
       var d = new Date();
       var out = ["BILAN DE SÉQUENCE",
         "Page       : " + (ccf ? "Entraînement au CCF " : u41 ? "TD sur simulation " : "Parcours ") + (o.code ? o.code + " · " : "") + texteSeul(o.titre) + " · " + etat.niveau,
         "Identifiant: " + id,
         "Date       : " + deux(d.getDate()) + "/" + deux(d.getMonth() + 1) + "/" + d.getFullYear() + " à " + deux(d.getHours()) + "h" + deux(d.getMinutes()),
-        "Bilan      : " + totalEtoiles() + " étoiles sur " + 3 * nOblig + ", en " + minutes() + " min" +
+        "Mode       : " + (NOTE ? "évaluation notée, sans indication" : "TD, non noté"),
+        NOTE ? "Bilan      : " + comptesNote().n + " réponses enregistrées sur " + comptesNote().m + ", en " + minutes() + " min"
+          : "Bilan      : " + totalEtoiles() + " étoiles sur " + 3 * nOblig + ", en " + minutes() + " min" +
           (etoilesPlus() ? ", et " + etoilesPlus() + " de plus en partie facultative" : "")];
       if (ccf) out.push("Autonomie  : " + autonomie().texte);
       if (u41) out.push("Grille     : BTS FED · U41", "Aides      : " + autonomie().texte);
@@ -2370,7 +2550,7 @@ var Sim = (function () {
             if (!f || !f.fini) { etatCase = "non vérifié"; rep = "(non faite)"; }
             else {
               etatCase = f.note ? "juste" : "faux";
-              var det = f.passe ? (f.essais ? "passée après " + f.essais + " essai" + (f.essais > 1 ? "s" : "") : "passée sans réponse")
+              var det = NOTE ? "enregistrée à " + heure(f.heureEnr) + (f.modifiee ? ", modifiée ensuite sans être enregistrée" : "") : f.passe ? (f.essais ? "passée après " + f.essais + " essai" + (f.essais > 1 ? "s" : "") : "passée sans réponse")
                 : (f.essais === 1 ? "juste au 1er essai" : "trouvée au " + f.essais + "e essai");
               if (f.aide) det += ", avec aide";
               rep = f.passe && !f.essais ? det : (f.reponse || "(vide)") + " — " + det;
@@ -2402,9 +2582,9 @@ var Sim = (function () {
       if (etat.debut && !etat.exporte) { e.preventDefault(); e.returnValue = ""; }
     });
     majTete();
-    if (libre) mode(/^#(ccf|u41|parcours)$/.test(location.hash));
+    if (libre) mode(NOTE || /^#(ccf|u41|parcours)$/.test(location.hash));
     /* la porte d'essai : etat interne et fichier, pour les controles */
-    return { etat: etat, donnees: donnees, ouvrir: ouvrir, fabriquer: fabriquer, fiches: function () { return etat.fiches; },
+    return { etat: etat, donnees: donnees, ouvrir: ouvrir, fabriquer: fabriquer, rendre: rendre, note: NOTE, fiches: function () { return etat.fiches; },
       appels: appels, mode: mode, dossier: function () { if (dossierFn) basculerDossier(); return panDos; }, coter: function (f, x) { f.cote = x; f.heureCote = new Date(); f.note = x === "A"; f.afficher(); majPhase(f.phase); majAppels(); },
       choisirNiveau: function (n) { etat.niveau = n; niv.textContent = n; }, demarrer: function (n) {
         if (libre) mode(true);
@@ -2487,7 +2667,9 @@ var Sim = (function () {
 
   return { fr: fr, lire: lire, el: el, $: $, borne: borne, mesure: mesure, gauss: gauss, onglets: onglets, curseur: curseur, choix: choix,
     afficheur: afficheur, graphe: graphe, releve: releve, enregistreur: enregistreur, centrale: centrale, molette: molette,
-    defi: defi, animer: animer, avancer: avancer, svg: svg, parcours: parcours, calculatrice: calculatrice };
+    defi: defi, animer: animer, avancer: avancer, svg: svg, parcours: parcours, calculatrice: calculatrice,
+    /* vrai quand la page est ouverte en mode note (#note) : chaque page y tire d'autres valeurs */
+    note: NOTE_ADRESSE };
 })();
 
 </script>
@@ -2497,7 +2679,7 @@ var Sim = (function () {
 <header class="tete">
 <div class="surtitre">Physique-chimie · parcours CAP et seconde · une heure sur tablette</div>
 <h1>Le bar à sirops</h1>
-<p class="chapeau">Samedi, la fête de l'école : votre classe tient le bar à sirops, et la mairie demande d'afficher le sucre de chaque boisson en grammes par litre. Lire l'étiquette du sirop, choisir la verrerie, peser à la balance tarée, dissoudre et compléter la fiole au trait, contrôler un verre à l'échelle de teintes, puis écrire la fiche recette du bar. À la fin, un fichier pour le professeur.</p>
+<p class="chapeau">Samedi, la fête de l'école : votre classe tient le bar à sirops, et la mairie demande d'afficher le sucre de chaque boisson en grammes par litre. Lire l'étiquette du sirop, choisir la verrerie, peser à la balance tarée, dissoudre et compléter la fiole au trait, contrôler un verre à l'échelle de teintes, puis écrire la fiche recette du bar. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.</p>
 </header>
 <style>
 :root{--papier:#f8f6f0;--encre-papier:#1d1d1b;--papier-trait:#8a8579;--blanc:#fbfaf7;--liquide:#d9e7f2;--metal:#9aa3ad;
@@ -2556,12 +2738,20 @@ var Sim = (function () {
   var u = Math.random;
 
   /* ── Le sirop du bar, la recette, le verre de Jules ── */
-  var C_SIROP = 640;                 // g/L : 64 g de sucres pour 100 mL de sirop
+  /* DEUX JEUX DE VALEURS (16 octobre 2026) : le TD et l'evaluation notee (#note) n'ont pas les memes nombres.
+     Le sirop (sucres pour 100 mL, et l'energie qui en decoule), son mode d'emploi (doses d'eau pour une dose :
+     la grenadine des enfants fait 80 g/L dans les deux cas), le sirop de canne a preparer, et les litres de la fete. */
+  var SUJET = S.note
+    ? { sucres: 72, kj: "1 205 kJ", kcal: "288 kcal", canne: 200, eau: 8, fete: 2 }
+    : { sucres: 64, kj: "1 071 kJ", kcal: "256 kcal", canne: 250, eau: 7, fete: 1.5 };
+  var C_SIROP = SUJET.sucres * 10;   // g/L : 64 g (TD) ou 72 g (note) de sucres pour 100 mL de sirop
   var DOSE = 20;                     // mL : le bouchon doseur
-  var CIBLE = 250, V_FIOLE = 100;    // le sirop de canne : 100 mL a 250 g/L
+  var CIBLE = SUJET.canne, V_FIOLE = 100;    // le sirop de canne : 100 mL a 250 g/L (TD) ou 200 g/L (note)
+  var MASSE = CIBLE * V_FIOLE / 1000;        // le sucre a peser : 25 g (TD) ou 20 g (note)
+  var EAU = SUJET.eau;                       // doses d'eau pour une dose de sirop : 7 (TD) ou 8 (note)
   var VOL_SUCRE = 0.62;              // mL occupes par 1 g de saccharose dissous
   var ECHELLE = [40, 60, 80, 100, 120];
-  var C_JULES = (u() < 0.5 ? 60 : 100) + (u() * 8 - 4);
+  var C_JULES = (S.note ? (u() < 0.5 ? 40 : 120) : (u() < 0.5 ? 60 : 100)) + (u() * 8 - 4);
   function procheEchelle(C) { return ECHELLE.reduce(function (a, b) { return Math.abs(b - C) < Math.abs(a - C) ? b : a; }); }
   /* La couleur de la grenadine suit la quantite de sirop : loi de Beer-Lambert, canal par canal.
      l : epaisseur traversee, en diametres de tube (1 de cote, 3 par le dessus). */
@@ -2652,7 +2842,7 @@ var Sim = (function () {
 
   /* ── L'etat partage entre les phases, et la porte des essais ── */
   var labo = {
-    C_JULES: C_JULES, C_SIROP: C_SIROP,
+    C_JULES: C_JULES, C_SIROP: C_SIROP, SUJET: SUJET, MASSE: MASSE,   // le sujet tire, pour les scenarios
     bal: { tare: 0, aff: 0, montre: 0, stable: true, t: 0 },
     coupelle: { ou: "banc", masse: 2.1 + 1.3 * u(), sucre: 0 },
     spat: { ou: "repos", charge: 0 },
@@ -2696,14 +2886,14 @@ var Sim = (function () {
         svg("text", { x: 0, y: -40, "text-anchor": "middle", "class": "etiq-p-forte", texte: "75 cL" }, t);
       } else {
         svg("text", { x: -54, y: -146, "class": "etiq-p-forte", style: "font-size:9px", texte: "Pour 100 mL de sirop :" }, t);
-        [["Énergie", "1 071 kJ"], ["", "256 kcal"], ["Glucides", "64 g"], ["dont sucres", "64 g"], ["Sel", "0 g"]].forEach(function (l, i) {
+        [["Énergie", SUJET.kj], ["", SUJET.kcal], ["Glucides", SUJET.sucres + " g"], ["dont sucres", SUJET.sucres + " g"], ["Sel", "0 g"]].forEach(function (l, i) {
           svg("text", { x: -54, y: -130 + i * 12, "class": "etiq-p", style: "font-size:9px", texte: l[0] }, t);
           svg("text", { x: 54, y: -130 + i * 12, "text-anchor": "end", "class": "etiq-p", style: "font-size:9px;font-weight:700", texte: l[1] }, t);
         });
         svg("path", { d: "M-54 -68H54", "class": "grad-p" }, t);
         svg("text", { x: -54, y: -56, "class": "etiq-p-forte", style: "font-size:8.5px", texte: "Mode d'emploi :" }, t);
         svg("text", { x: -54, y: -45, "class": "etiq-p", style: "font-size:8.5px", texte: "1 volume de sirop pour" }, t);
-        svg("text", { x: -54, y: -34, "class": "etiq-p", style: "font-size:8.5px", texte: "7 volumes d'eau fraîche." }, t);
+        svg("text", { x: -54, y: -34, "class": "etiq-p", style: "font-size:8.5px", texte: EAU + " volumes d'eau fraîche." }, t);
       }
       svg("text", { x: 140, y: 18, "text-anchor": "middle", "class": "etiq", texte: dos ? "l'arrière de la bouteille" : "glissez pour tourner la bouteille" }, corps);
     }
@@ -2717,7 +2907,7 @@ var Sim = (function () {
     svg("rect", { x: 290, y: 20, width: 330, height: 236, rx: 6, fill: "var(--bois)" }, s);
     svg("rect", { x: 300, y: 30, width: 310, height: 216, rx: 3, fill: "var(--tableau)" }, s);
     svg("text", { x: 455, y: 62, "text-anchor": "middle", "class": "craie", style: "font-size:20px;font-weight:700", texte: "Bar à sirops" }, s);
-    [["Grenadine à l'eau", "enfants : 80 g/L de sucre au plus"], ["Sirop de canne maison", "pour les cocktails sans alcool : 250 g/L"], ["Eau plate", "0 g/L"]].forEach(function (l, i) {
+    [["Grenadine à l'eau", "enfants : 80 g/L de sucre au plus"], ["Sirop de canne maison", "pour les cocktails sans alcool : " + CIBLE + " g/L"], ["Eau plate", "0 g/L"]].forEach(function (l, i) {
       svg("text", { x: 316, y: 100 + i * 50, "class": "craie", style: "font-size:15px;font-weight:700", texte: l[0] }, s);
       svg("text", { x: 316, y: 120 + i * 50, "class": "craie", style: "font-size:12.5px", texte: l[1] }, s);
     });
@@ -2776,10 +2966,15 @@ var Sim = (function () {
   function sceneSirop(zone, ctx) {
     var sc = el("div", { classe: "scene" }); zone.appendChild(sc);
     var s = svg("svg", { viewBox: "0 0 640 470", role: "img", "aria-label": "La balance, le sucre, la spatule et la fiole jaugée de 100 mL" }, sc);
-    var msg = el("p", { classe: "message-scene", "aria-live": "polite", texte: "Posez la coupelle sur la balance, tarez, puis prenez le sucre à la spatule." });
+    var msg = el("p", { classe: "message-scene", "aria-live": "polite", texte: "Posez la coupelle sur la balance, tarez, puis prenez le sucre à la spatule. « Une pincée de plus » et « Une pincée de moins » finissent la pesée." });
     var bVider = el("button", { type: "button", classe: "bouton", texte: "Vider la fiole et tout recommencer" });
+    /* ajouter ou retirer une pincee d'un bouton (16 octobre 2026, essai de l'utilisateur en CAP : « trop complique
+       de peser le sucre, il faudrait pouvoir en enlever ») ; le retrait existait, mais en glissant la spatule vers
+       le becher « exces », et rien ne le disait */
+    var bPlus = el("button", { type: "button", classe: "bouton", texte: "Une pincée de plus" });
+    var bMoins = el("button", { type: "button", classe: "bouton", texte: "Une pincée de moins" });
     zone.appendChild(msg);
-    zone.appendChild(el("div", { classe: "rangee rangee-bas" }, [bVider]));
+    zone.appendChild(el("div", { classe: "rangee rangee-bas" }, [bPlus, bMoins, bVider]));
     svg("path", { d: "M0 460H640", "class": "trait" }, s);
     // la balance de labo
     svg("rect", { x: 10, y: 330, width: 222, height: 122, rx: 10, "class": "objet" }, s);
@@ -2965,6 +3160,21 @@ var Sim = (function () {
       labo.coupelle.sucre += v; sp.charge -= v;
       return true;
     }
+    function pincee(signe) {
+      var co = labo.coupelle;
+      if (co.ou !== "plateau") { message(msg, "Posez d'abord la coupelle sur le plateau de la balance."); return false; }
+      if (signe > 0) {
+        var v = 0.15 + 0.35 * u();
+        co.sucre += v; labo.spat.ou = "coupelle";
+        message(msg, "Une pincée de sucre dans la coupelle.");
+        return true;
+      }
+      if (co.sucre < 0.01) { message(msg, "La coupelle est vide : il n'y a rien à retirer."); return false; }
+      var r = Math.min(co.sucre, 0.15 + 0.35 * u());
+      co.sucre -= r; labo.exces += r;
+      message(msg, "Une pincée retirée, jetée dans le bécher « excès » : on ne remet jamais dans le pot ce qui est passé dans la coupelle.");
+      return true;
+    }
     function eau(v) {                                     // la pissette verse v mL dans la fiole
       var f = labo.fiole;
       if (labo.pis.ou !== "fiole") return false;
@@ -2988,6 +3198,8 @@ var Sim = (function () {
     }
     surTouche(bTare, function () { tarer(); dessiner(); });
     bVider.addEventListener("click", function () { vider(); dessiner(); });
+    bPlus.addEventListener("click", function () { pincee(1); dessiner(); });
+    bMoins.addEventListener("click", function () { pincee(-1); dessiner(); });
     prise(s, gC, {
       bouge: function (q) { glisse.c = { x: q.x, y: q.y }; dessiner(); },
       lacher: function (q) {
@@ -3091,13 +3303,17 @@ var Sim = (function () {
     // la feuille blanche derriere l'echelle : elle reste blanche en mode sombre, c'est un fond de mesure
     svg("rect", { x: 200, y: 30, width: 430, height: 370, rx: 4, fill: "var(--blanc)", stroke: "var(--papier-trait)" }, s);
     svg("text", { x: 300, y: 52, "class": "etiq-p-forte", texte: "Échelle de teintes · sucre en g/L" }, s);
-    svg("text", { x: 300, y: 372, "class": "etiq-p", style: "font-size:10.5px", texte: "Posez un tube à droite du tube" }, s);
-    svg("text", { x: 300, y: 386, "class": "etiq-p", style: "font-size:10.5px", texte: "de l'échelle qui a la même teinte." }, s);
+    svg("text", { x: 300, y: 372, "class": "etiq-p", style: "font-size:10.5px", texte: "Glissez un tube sur celui de l'échelle qui a" }, s);
+    svg("text", { x: 300, y: 386, "class": "etiq-p", style: "font-size:10.5px", texte: "la même teinte : il se range juste à sa droite." }, s);
     svg("text", { x: 238, y: 84, "text-anchor": "middle", "class": "etiq-p", style: "font-size:11px", texte: "R : recette" }, s);
     svg("text", { x: 238, y: 70, "text-anchor": "middle", "class": "etiq-p", style: "font-size:11px", texte: "J : Jules" }, s);
     var gEch = svg("g", null, s);
+    /* une place par tube de l'echelle, centree sur lui : on vise le tube qui a la meme teinte, et
+       le tube pose se range a sa droite. Decalees vers la droite, ces places faisaient d'un tube
+       lache sur celui de 80 g/L un tube range a cote de 60 g/L (16 octobre 2026). */
+    function placeSous(x) { var k = -1; ECHELLE.forEach(function (C, i) { if (Math.abs(x - E4.x(i)) < 31) k = i; }); return k; }
     var cibles = ECHELLE.map(function (C, i) {
-      var z = svg("rect", { x: E4.x(i) + 8, y: E4.haut - 10, width: 36, height: 250, "class": "zone cible" }, s);
+      var z = svg("rect", { x: E4.x(i) - 31, y: E4.haut - 10, width: 62, height: 260, "class": "zone cible" }, s);
       return z;
     });
     // le verre, la bouteille, la carafe
@@ -3150,12 +3366,20 @@ var Sim = (function () {
       ["R", "J"].forEach(function (nm) {
         var g = tubes[nm]; g.innerHTML = "";
         var p = posTube(nm), CC = nm === "R" ? cVerre() : C_JULES, rempli = nm === "J" || n > 0;
-        svg("rect", { x: p.x - 18, y: dessus && !p.porte ? 280 : E4.haut - 6, width: 36, height: dessus && !p.porte ? 60 : 180, "class": "zone" }, g);
-        if (gl[nm]) dessinerTube(g, gl[nm].x, CC, gl[nm].y - 60, rempli, nm, false);
-        else if (p.porte) dessinerTube(g, p.x, CC, E4.haut + 10, rempli, nm, false);
-        else dessinerTube(g, p.x, CC, E4.haut + 14, rempli, nm, dessus);
+        svg("rect", { x: p.x - 18, y: dessus ? 280 : E4.haut - 6, width: 36, height: dessus ? 60 : 180, "class": "zone" }, g);
+        if (gl[nm]) { dessinerTube(g, gl[nm].x, CC, gl[nm].y - 60, rempli, nm, false); return; }
+        // le tube en main, par un toucher : il attend sa place
+        if (enMain === nm) svg("rect", { x: p.x - 15, y: dessus ? 285 : E4.haut + 4, width: 30, height: dessus ? 30 : E4.bas - E4.haut, rx: 8,
+          fill: "none", stroke: "var(--accent)", "stroke-width": 2.5, "stroke-dasharray": "5 3" }, g);
+        // par le dessus, les tubes de la porte aussi : on les compare a la rangee de l'echelle
+        dessinerTube(g, p.x, CC, E4.haut + (p.porte ? 10 : 14), rempli, nm, dessus);
+        // un tube pose : une accolade le lie au tube de l'echelle qu'on lui a choisi
+        if (!p.porte) {
+          var x0 = p.x - 26 - 9, x1 = p.x + 9, y = dessus ? 314 : E4.bas + 4;
+          svg("path", { d: "M" + x0 + " " + y + "v4H" + x1 + "v-4", fill: "none", stroke: "var(--encre-papier)", "stroke-width": 1.5 }, g);
+        }
       });
-      svg("rect", { x: 204, y: E4.haut - 4, width: 68, height: E4.bas - E4.haut + 40, rx: 4, fill: "none", stroke: "var(--papier-trait)", "stroke-dasharray": "4 3" }, gEch);
+      svg("rect", { x: 204, y: E4.haut - 4, width: 68, height: 250, rx: 4, fill: "none", stroke: "var(--papier-trait)", "stroke-dasharray": "4 3" }, gEch);
     }
     function dose(quoi) {
       var v = labo.verre;
@@ -3167,7 +3391,11 @@ var Sim = (function () {
     function placer(nm, C) {
       if (nm === "R" && labo.verre.sirop + labo.verre.eau === 0) { message(msg, "Le verre est vide : préparez-le d'abord."); labo.tubes.R = null; return false; }
       labo.tubes[nm] = C;
-      if (C !== null) message(msg, "Tube « " + (nm === "R" ? "recette" : "Jules") + " » posé à côté du tube de " + C + " g/L.");
+      // une seule place a cote de chaque tube de l'echelle : l'autre tube, s'il y etait, retourne a la porte
+      var autre = nm === "R" ? "J" : "R", rendu = C !== null && labo.tubes[autre] === C;
+      if (rendu) labo.tubes[autre] = null;
+      if (C !== null) message(msg, "Tube « " + (nm === "R" ? "recette" : "Jules") + " » posé à côté du tube de " + C + " g/L."
+        + (rendu ? " Le tube « " + (autre === "R" ? "recette" : "Jules") + " » qui y était revient à sa place, à gauche." : ""));
       return true;
     }
     bVider.addEventListener("click", function () { labo.verre = { sirop: 0, eau: 0 }; labo.tubes.R = null; message(msg, "Verre vidé et rincé."); dessiner(); });
@@ -3185,10 +3413,10 @@ var Sim = (function () {
         bouge: function (q) { gl[nm] = { x: q.x, y: q.y }; dessiner(); },
         lacher: function (q) {
           gl[nm] = null;
-          var k = -1; ECHELLE.forEach(function (C, i) { if (Math.abs(q.x - (E4.x(i) + 26)) < 31 && q.y > 50 && q.y < 380) k = i; });
+          var k = q.y > 50 && q.y < 380 ? placeSous(q.x) : -1;
           placer(nm, k >= 0 ? ECHELLE[k] : null); enMain = null; dessiner();
         },
-        toucher: function () { enMain = enMain === nm ? null : nm; message(msg, enMain ? "Tube en main : touchez la place à droite du tube de l'échelle qui lui ressemble." : ""); }
+        toucher: function () { enMain = enMain === nm ? null : nm; message(msg, enMain ? "Tube en main : touchez le tube de l'échelle qui lui ressemble." : ""); dessiner(); }
       });
     });
     cibles.forEach(function (z, i) { z.addEventListener("click", function () { if (enMain) { placer(enMain, ECHELLE[i]); enMain = null; dessiner(); } }); });
@@ -3199,11 +3427,11 @@ var Sim = (function () {
 
   /* ── Phase 5 · la fiche recette du bar ──────────────────────────────────── */
   var TROUS = [
-    { cle: "masse", options: ["8 g", "25 g", "250 g"], bonne: 1 },
+    { cle: "masse", options: ["8 g", MASSE + " g", CIBLE + " g"], bonne: 1 },
     { cle: "verrerie", options: ["un bécher", "une fiole jaugée", "une éprouvette graduée"], bonne: 1 },
     { cle: "completer", options: ["jusqu'au trait de jauge", "avec 100 mL d'eau", "à ras bord"], bonne: 0 },
-    { cle: "conc", options: ["2,5 g/L", "25 g/L", "250 g/L"], bonne: 2 },
-    { cle: "doses", options: ["3", "7", "15"], bonne: 1 }
+    { cle: "conc", options: [fr(CIBLE / 100, 1).replace(/,0$/, "") + " g/L", MASSE + " g/L", CIBLE + " g/L"], bonne: 2 },
+    { cle: "doses", options: ["3", String(EAU), "15"], bonne: 1 }
   ];
   var mesures5 = null;
   function sceneFiche(zone, ctx) {
@@ -3252,7 +3480,7 @@ var Sim = (function () {
       client: "De : Inès, présidente de l'association des parents d'élèves",
       texte: "<p>Samedi, c'est la fête de l'école, et votre classe tient le <b>bar à sirops</b>. La mairie a une condition : <b>afficher le sucre de chaque boisson, en grammes par litre</b>, et ne pas dépasser <b>80 g/L</b> dans les verres des enfants.</p>" +
         "<p>Vous préparez le sirop de canne maison, vous vérifiez la recette de la grenadine, et vous contrôlez le verre qu'un bénévole, Jules, vient de servir.</p>",
-      livrable: "la fiche recette du bar, le contrôle du verre de Jules, et le fichier de vos résultats.",
+      livrable: S.note ? "la fiche recette du bar, le contrôle du verre de Jules, et le fichier de vos résultats." : "la fiche recette du bar et le contrôle du verre de Jules.",
       illustration: function (z) {
         var s = svg("svg", { viewBox: "0 0 400 150", role: "img", "aria-label": "Le stand du bar à sirops" }, z);
         svg("rect", { x: 0, y: 0, width: 400, height: 150, fill: "var(--carte2)" }, s);
@@ -3275,19 +3503,19 @@ var Sim = (function () {
         scene: sceneEtiquette,
         questions: [
           { type: "classer", lib: "Que mesure chaque nombre : une masse, un volume ou une concentration massique ?",
-            items: ["64 g", "100 mL", "80 g/L", "75 cL", "250 g/L"],
+            items: [SUJET.sucres + " g", "100 mL", "80 g/L", "75 cL", CIBLE + " g/L"],
             categories: ["Masse", "Volume", "Concentration"], bonnes: [0, 1, 2, 1, 2],
             methode: "Le gramme dit une masse, le litre et ses sous-multiples un volume, le gramme par litre une concentration massique." },
           { type: "nombre", lib: "Quelle est la concentration massique en sucres du <b>sirop pur</b> ?", unite: "g/L",
             attendu: C_SIROP, tolerance: 0.01,
-            methode: "64 g de sucres dans 100 mL, c'est-à-dire dans 0,100 L : Cm = 64 ÷ 0,100." },
+            methode: SUJET.sucres + " g de sucres dans 100 mL, c'est-à-dire dans 0,100 L : Cm = " + SUJET.sucres + " ÷ 0,100." },
           { type: "choix", lib: "Sur la carte, « 80 g/L de sucre » veut dire…",
             options: ["80 g de sucre dissous dans 1 L de boisson", "80 g de sucre pour 1 L d'eau ajoutée", "1 L de boisson pèse 80 g", "80 g de sirop dans 1 L de boisson"], bonne: 0,
             methode: "Une concentration massique : la masse de soluté dissoute dans un litre de solution, la boisson entière." }
         ],
         bravo: "Inès : « Parfait. Une masse, un volume, et le rapport des deux : on parle la même langue que la mairie. »" },
       { competence: "ANA", titre: "Le plan de préparation",
-        recit: "Pour les cocktails sans alcool, il faut 100 mL de sirop de canne maison, à 250 g/L de sucre. Sur la paillasse : quatre pièces de verrerie et deux balances.",
+        recit: "Pour les cocktails sans alcool, il faut 100 mL de sirop de canne maison, à " + CIBLE + " g/L de sucre. Sur la paillasse : quatre pièces de verrerie et deux balances.",
         consigne: "Touchez la verrerie et les balances pour lire leurs inscriptions.",
         scene: sceneVerrerie,
         questions: [
@@ -3298,31 +3526,34 @@ var Sim = (function () {
             options: ["Dissoudre le sucre dans la fiole jaugée de 100 mL, puis compléter au trait", "Mesurer 100 mL d'eau à l'éprouvette, puis y ajouter le sucre",
               "Remplir un bécher de 100 mL jusqu'à sa graduation", "Mélanger dans un verre doseur de cuisine"], bonne: 0,
             methode: "Seule la fiole jaugée contient 100 mL à 0,1 mL près ; et c'est la solution, sucre compris, qui doit faire 100 mL." },
-          { type: "nombre", lib: "Quelle masse de sucre faut-il peser pour 100 mL de sirop à 250 g/L ?", unite: "g",
+          { type: "nombre", lib: "Quelle masse de sucre faut-il peser pour 100 mL de sirop à " + CIBLE + " g/L ?", unite: "g",
             attendu: CIBLE * V_FIOLE / 1000, tolerance: 0.01,
             methode: "m = Cm × V, avec V en litres : 100 mL = 0,100 L." }
         ],
-        bravo: "Inès : « Fiole jaugée, balance de labo, 25 grammes : le plan tient debout. »" },
+        bravo: "Inès : « Fiole jaugée, balance de labo, " + MASSE + " grammes : le plan tient debout. »" },
       { competence: "REA", titre: "Le sirop de canne maison",
         recit: "La balance de labo lit le centième de gramme. La fiole jaugée de 100 mL attend, avec son entonnoir. Une loupe montre le trait de jauge, et l'œil se règle à côté.",
         consigne: "Coupelle sur la balance, TARE, sucre à la spatule ; coupelle versée dans l'entonnoir ; pissette sur la fiole ; fiole agitée en la glissant ; complétez au trait.",
         scene: sceneSirop,
         questions: [
-          { type: "action", lib: "Pesez <b>25 g de sucre</b> dans la coupelle.",
+          { type: "action", lib: "Pesez <b>" + MASSE + " g de sucre</b> dans la coupelle.",
             aide: "Pesée faite sur la scène, puis vérifiez.",
-            verifier: function () {
+            verifier: function (ctx) {
               var m = labo.fiole.sucre > 0 ? labo.fiole.sucre : labo.coupelle.sucre;
               if (m < 0.01) return null;
-              var ok = Math.abs(m - 25) <= 0.25, err = [], fiole = labo.fiole.sucre > 0;
+              /* en CAP, 25 g a 1 g pres (16 octobre 2026, « que la question 1 de REA soit plus tolerante ») ;
+                 en seconde, toujours a 0,25 g. La concentration se calcule ensuite sur la vraie pesee */
+              var cap = !ctx || !ctx.niveau || ctx.niveau() === "CAP", tol = cap ? 1 : 0.25, a = cap ? "à 1 g près" : "à 0,25 g près";
+              var ok = Math.abs(m - MASSE) <= tol, err = [], fiole = labo.fiole.sucre > 0;
               /* refusee, la pesee dit ce qui ne va pas (14 octobre 2026) : 25 g est dans la consigne */
               if (!ok) {
-                if (m > 25) err.push(fiole ? "trop de sucre dans la fiole : il en faut 25 g, videz la fiole et recommencez la pesée" : "trop de sucre : la balance doit montrer 25 g, retirez-en à la spatule vers le bécher « excès »");
-                else err.push(fiole ? "pas assez de sucre dans la fiole : il en faut 25 g" : "pas assez de sucre : la balance doit montrer 25 g, ajoutez-en à la spatule");
+                if (m > MASSE) err.push(fiole ? "trop de sucre dans la fiole : il en faut " + MASSE + " g " + a + ", videz la fiole et recommencez la pesée" : "trop de sucre : la balance doit montrer " + MASSE + " g " + a + ", retirez-en avec « Une pincée de moins »");
+                else err.push(fiole ? "pas assez de sucre dans la fiole : il en faut " + MASSE + " g " + a : "pas assez de sucre : la balance doit montrer " + MASSE + " g " + a + ", ajoutez-en avec « Une pincée de plus »");
                 if (Math.abs(labo.bal.tare - labo.coupelle.masse) > 0.02) err.push("la balance n'a pas été tarée avec la coupelle vide dessus : elle ne montre pas le sucre seul");
               }
               return { ok: ok, corriger: err, reponse: "balance : " + fr(labo.bal.montre, 2) + " g, sucre réellement pesé : " + fr(m, 2) + " g" };
             },
-            methode: "La coupelle d'abord sur le plateau, puis TARE : la balance ne compte plus que le sucre. Finissez en tapotant la spatule.",
+            methode: "La coupelle d'abord sur le plateau, puis TARE : la balance ne compte plus que le sucre. Le gros à la spatule, puis « Une pincée de plus » ou « Une pincée de moins » pour finir.",
             apres: function (ctx) { var m = labo.fiole.sucre > 0 ? labo.fiole.sucre : labo.coupelle.sucre; ctx.donnees.pesee = fr(m, 2) + " g"; } },
           { type: "action", lib: "Préparez le sirop : sucre dissous, fiole <b>complétée au trait</b>, puis agitée.",
             aide: "La fiole prête, puis vérifiez.",
@@ -3347,7 +3578,11 @@ var Sim = (function () {
             },
             methode: "De l'eau jusqu'aux trois quarts, agiter jusqu'au dernier cristal ; compléter goutte à goutte, le bas du ménisque sur le trait, le trait vu comme une seule ligne ; agiter encore." },
           { type: "nombre", lib: "Calculez la concentration massique de <b>votre</b> sirop, à partir de votre pesée.", unite: "g/L",
-            attendu: function () { var m = labo.fiole.sucre > 0 ? labo.fiole.sucre : labo.coupelle.sucre; return m / (V_FIOLE / 1000); }, tolerance: 0.01, toleranceAbsolue: 0.5,
+            /* en CAP, 5 % (16 octobre 2026, « pour la question 3 aussi, plus tolerante ») : la pesee est acceptee
+               a 1 g pres, et l'eleve qui calcule avec 25 g au lieu de sa pesee exacte n'a pas tort de methode ;
+               en seconde, 1 % */
+            attendu: function () { var m = labo.fiole.sucre > 0 ? labo.fiole.sucre : labo.coupelle.sucre; return m / (V_FIOLE / 1000); },
+            tolerance: function (ctx) { return !ctx || !ctx.niveau || ctx.niveau() === "CAP" ? 0.05 : 0.01; }, toleranceAbsolue: 0.5,
             methode: "Cm = m ÷ V : la masse que vous avez pesée, en grammes, divisée par 0,100 L.",
             apres: function (ctx, ok, rep) { ctx.donnees.cm = rep.replace(/\s*g\/L$/, ""); } }
         ],
@@ -3357,20 +3592,20 @@ var Sim = (function () {
         consigne: "Préparez un verre à la recette, puis comparez son tube et celui de Jules à l'échelle de teintes.",
         scene: sceneEchelle,
         questions: [
-          { type: "action", lib: "Préparez un verre <b>à la recette</b> (1 dose de sirop pour 7 doses d'eau) et posez son tube à côté du tube de même teinte.",
+          { type: "action", lib: "Préparez un verre <b>à la recette</b> (1 dose de sirop pour " + EAU + " doses d'eau) et posez son tube à côté du tube de même teinte.",
             aide: "Verre fait, tube posé, puis vérifiez.",
             verifier: function () {
               var v = labo.verre;
               if (!v.sirop && !v.eau) return null;
               /* le meme message quel que soit le verre : il dit ce qui manque, sans juger la recette */
               if (!v.sirop) return { attente: "Le verre n'a pas encore de sirop : glissez la bouteille au-dessus du verre." };
-              if (labo.tubes.R === null) return { attente: "Le tube « recette » n'est pas encore posé : glissez-le à droite du tube de l'échelle qui a la même teinte." };
-              var recette = v.eau === 7 * v.sirop, err = [];
-              if (!recette) err.push((v.eau < 7 * v.sirop ? "pas assez d'eau" : "trop d'eau") + " : la recette, c'est 1 dose de sirop pour 7 doses d'eau ; videz le verre et recommencez");
+              if (labo.tubes.R === null) return { attente: "Le tube « recette » n'est pas encore posé : glissez-le sur le tube de l'échelle qui a la même teinte." };
+              var recette = v.eau === EAU * v.sirop, err = [];
+              if (!recette) err.push((v.eau < EAU * v.sirop ? "pas assez d'eau" : "trop d'eau") + " : la recette, c'est 1 dose de sirop pour " + EAU + " doses d'eau ; videz le verre et recommencez");
               else if (labo.tubes.R !== 80) err.push("le tube « recette » n'est pas à côté du tube de même teinte" + (labo.vue === "dessus" ? "" : " : regardez les tubes par le dessus"));
               return { ok: recette && labo.tubes.R === 80, corriger: err, reponse: v.sirop + " dose(s) de sirop, " + v.eau + " dose(s) d'eau ; tube posé à côté de " + labo.tubes.R + " g/L" };
             },
-            methode: "1 dose de sirop et 7 doses d'eau font 8 doses : le sirop est dilué 8 fois. Comparez par le dessus, sur le fond blanc." },
+            methode: "1 dose de sirop et " + EAU + " doses d'eau font " + (EAU + 1) + " doses : le sirop est dilué " + (EAU + 1) + " fois. Comparez par le dessus, sur le fond blanc." },
           { type: "action", lib: "Posez le tube du <b>verre de Jules</b> à côté du tube de même teinte.",
             aide: "Tube posé, puis vérifiez.",
             verifier: function () {
@@ -3384,9 +3619,9 @@ var Sim = (function () {
             options: ["Oui : il est sous 80 g/L", "Non : il dépasse 80 g/L, il faut le rallonger d'eau", "On ne peut pas savoir sans y goûter"],
             bonne: function () { return C_JULES > 80 ? 1 : 0; },
             methode: "Le tube de Jules se place à côté d'un tube de l'échelle : comparez sa concentration aux 80 g/L. Au labo, on ne goûte jamais." },
-          { type: "nombre", niveau: "Seconde", lib: "Pour la fête, Inès veut <b>1,5 L</b> de grenadine à 80 g/L. Quel volume de sirop pur (640 g/L) faut-il ?", unite: "mL",
-            attendu: 1500 * 80 / C_SIROP, tolerance: 0.01,
-            methode: "La masse de sucre voulue : 80 × 1,5 = 120 g. Le sirop en apporte 640 g par litre : V = 120 ÷ 640 L, à convertir en millilitres." }
+          { type: "nombre", niveau: "Seconde", lib: "Pour la fête, Inès veut <b>" + fr(SUJET.fete, SUJET.fete % 1 ? 1 : 0) + " L</b> de grenadine à 80 g/L. Quel volume de sirop pur (" + C_SIROP + " g/L) faut-il ?", unite: "mL",
+            attendu: 1000 * SUJET.fete * 80 / C_SIROP, tolerance: 0.01,
+            methode: "La masse de sucre voulue : 80 × " + fr(SUJET.fete, SUJET.fete % 1 ? 1 : 0) + " = " + (80 * SUJET.fete) + " g. Le sirop en apporte " + C_SIROP + " g par litre : V = " + (80 * SUJET.fete) + " ÷ " + C_SIROP + " L, à convertir en millilitres." }
         ],
         bravo: "Inès : « Avec l'échelle de teintes, plus besoin de discuter : on regarde, on compare, on rallonge s'il le faut. »" },
       { competence: "COM", titre: "La fiche recette du bar",
@@ -3406,9 +3641,9 @@ var Sim = (function () {
               return { controles: TROUS.map(function (t, k) { return [labo.fiche[t.cle] === t.bonne, "le mot de la ligne " + (k + 1) + " n'est pas juste"]; }),
                 reponse: TROUS.map(function (t) { return t.options[labo.fiche[t.cle]]; }).join(" ; ") };
             },
-            methode: "Reprenez votre plan et vos mesures : m = Cm × V, la fiole jaugée complétée au trait, Cm = m ÷ V, et le sirop dilué 8 fois." },
+            methode: "Reprenez votre plan et vos mesures : m = Cm × V, la fiole jaugée complétée au trait, Cm = m ÷ V, et le sirop dilué " + (EAU + 1) + " fois." },
           { type: "choix", lib: "Comment écrire la concentration du sirop de canne sur son étiquette ?",
-            options: ["Cm = 250 g/L", "Cm = 250 g", "Cm = 250 g/mL", "m = 250 g/L"], bonne: 0,
+            options: ["Cm = " + CIBLE + " g/L", "Cm = " + CIBLE + " g", "Cm = " + CIBLE + " g/mL", "m = " + CIBLE + " g/L"], bonne: 0,
             methode: "Le symbole de la grandeur, sa valeur, et l'unité d'une concentration massique : le gramme par litre." }
         ],
         bravo: "Inès : « La fiche est sur le comptoir. Le bar peut ouvrir ! »" }
@@ -3416,7 +3651,7 @@ var Sim = (function () {
     fin: "Le sirop de canne est prêt, le verre de Jules est contrôlé, et la fiche recette est sur le comptoir. Produisez votre fichier pour le professeur.",
     grades: [[0, "Apprenti·e du bar"], [8, "Doseur·se de confiance"], [12, "Maître·sse des sirops"], [15, "Star de la fête"]],
     simplifie: [
-      "Le sucre se dissout dès qu'on agite ; en vrai, 25 g demandent une bonne minute d'agitation, davantage dans l'eau froide.",
+      "Le sucre se dissout dès qu'on agite ; en vrai, " + MASSE + " g demandent une bonne minute d'agitation, davantage dans l'eau froide.",
       "La coupelle se vide entièrement dans l'entonnoir ; en vrai, on la rince à la pissette au-dessus de l'entonnoir pour ne rien perdre.",
       "La balance est juste à 0,01 g ; une vraie balance se met de niveau, et l'on attend la stabilité avant de lire.",
       "La couleur suit exactement la quantité de sirop (la loi de Beer-Lambert) ; à l'œil, deux teintes à moins de 10 g/L l'une de l'autre se confondent.",

@@ -1103,7 +1103,10 @@ var Sim = (function () {
            lire: function (tPlanifie, tDebut) -> ligne, periodes, valeur, durees, duree, trace: [cle1, cle2],
            nomFichier, surChange }
      « jours: true » sur un temps en heures : le tableau et l'axe ecrivent « J8 · 10 h 25 » au lieu de
-     « 178,42 h », illisible passe le premier jour (14 octobre 2026) ; la copie et le CSV gardent les heures. */
+     « 178,42 h », illisible passe le premier jour (14 octobre 2026) ; la copie et le CSV gardent les heures.
+     « axeCommun: true » : les deux courbes tracees partagent la meme echelle, calculee sur les deux (17 octobre
+     2026, la chaine du froid : deux sondes de temperature sur deux axes differents semblaient se croiser a 0 °C
+     alors que l'eau salee etait a −6 °C). Pour deux voies de meme grandeur ; sans l'option, chacune a son axe. */
   var COULEURS_VOIES = ["--accent", "--faux"];
   function centrale(parent, o) {
     var lignes = [], actif = false, prochain = null, debut = null, depart = 0, dernier = 0, tCourant = 0;
@@ -1138,8 +1141,8 @@ var Sim = (function () {
     var pastille = function (i) { return el("span", { classe: "centrale-pastille", style: "background:" + css(COULEURS_VOIES[i]) }); };
     var pastilles = [pastille(0), pastille(1)];
     zone.appendChild(el("div", { classe: "centrale-traces" }, [
-      el("label", null, [pastilles[0], el("span", { texte: "Courbe 1, à gauche" }), selects[0]]),
-      el("label", null, [pastilles[1], el("span", { texte: "Courbe 2, à droite" }), selects[1]])
+      el("label", null, [pastilles[0], el("span", { texte: o.axeCommun ? "Courbe 1" : "Courbe 1, à gauche" }), selects[0]]),
+      el("label", null, [pastilles[1], el("span", { texte: o.axeCommun ? "Courbe 2, même échelle" : "Courbe 2, à droite" }), selects[1]])
     ]));
     /* Le canevas se dessine a la largeur reelle de son cadre : sur un telephone, les graduations
        restent lisibles au lieu d'etre reduites de moitie. */
@@ -1207,15 +1210,15 @@ var Sim = (function () {
       return (r < 1.5 ? 1 : r < 3 ? 2 : r < 7 ? 5 : 10) * p;
     }
     function bornes(cle) {
-      var a = Infinity, b = -Infinity;
-      lignes.forEach(function (l) { var y = l[cle]; if (typeof y === "number" && isFinite(y)) { a = Math.min(a, y); b = Math.max(b, y); } });
+      var cles = [].concat(cle), a = Infinity, b = -Infinity;      // une cle, ou plusieurs pour un axe commun
+      lignes.forEach(function (l) { cles.forEach(function (c) { var y = l[c]; if (typeof y === "number" && isFinite(y)) { a = Math.min(a, y); b = Math.max(b, y); } }); });
       if (!isFinite(a)) return null;
       // Une etendue minimale : en regime etabli, quelques dixiemes de bruit prenaient toute
       // la hauteur et une courbe plate paraissait agitee (releve par l'utilisateur sur U41-07,
       // le 15 octobre 2026). 10 % de la valeur lue et au moins une unite, centres sur les
       // mesures ; une voie peut fixer la sienne, etendueMin.
-      var v = voies.filter(function (q) { return q.cle === cle; })[0];
-      var mini = v && v.etendueMin !== undefined ? v.etendueMin : Math.max(Math.max(Math.abs(a), Math.abs(b)) * 0.1, 1);
+      var v = voies.filter(function (q) { return cles.indexOf(q.cle) >= 0 && q.etendueMin !== undefined; })[0];
+      var mini = v ? v.etendueMin : Math.max(Math.max(Math.abs(a), Math.abs(b)) * 0.1, 1);
       if (b - a < mini) { var mil = (a + b) / 2; a = mil - mini / 2; b = mil + mini / 2; }
       var marge = (b - a) * 0.04; a -= marge; b += marge;
       var pas = pasJoli(b - a, 5); return { min: Math.floor(a / pas) * pas, max: Math.ceil(b / pas) * pas, pas: pas };
@@ -1247,9 +1250,10 @@ var Sim = (function () {
       }
       ctx.fillStyle = css("--encre"); ctx.font = "600 12px system-ui, Segoe UI, Arial, sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "bottom";
       ctx.fillText(titreCol(TP), larg - md, haut - 3);
+      var bCommun = o.axeCommun ? bornes(trace.filter(Boolean)) : null;
       trace.forEach(function (cle, i) {
         if (!cle) return;
-        var v = voies.filter(function (q) { return q.cle === cle; })[0], b = bornes(cle), coul = css(COULEURS_VOIES[i]);
+        var v = voies.filter(function (q) { return q.cle === cle; })[0], b = bCommun || bornes(cle), coul = css(COULEURS_VOIES[i]);
         ctx.font = "600 12px system-ui, Segoe UI, Arial, sans-serif"; ctx.fillStyle = coul; ctx.textBaseline = "top";
         ctx.textAlign = i ? "right" : "left"; ctx.fillText(v.titre + (v.unite ? " (" + v.unite + ")" : ""), i ? larg - 6 : 6, 5);
         if (!b) return;
@@ -2804,16 +2808,17 @@ var Sim = (function () {
 (function () {
   /* ================= Physique : fonctions pures, separees du dessin ================= */
   /* DEUX MODES (16 octobre 2026) : en evaluation notee (#note), le banc de l'entrainement au CCF reproduit le reseau
-     de bord d'un navire, a 60 Hz, et le generateur de labo descend a 0,2 Hz (une periode en cinq secondes) au lieu
-     de 50 Hz et 0,1 Hz ; le reseau de la source « reseau » est alors celui du bord, 254/440 V. Le mode libre, masque
-     en evaluation, garde ses valeurs. */
+     d'essai des machines qu'un atelier francais expedie en Coree du Sud, 220/380 V a 60 Hz (un convertisseur de
+     frequence l'alimente ; le navire du 16 octobre a ete retire le 17 a la demande de l'utilisateur), et le generateur
+     de labo descend a 0,2 Hz (une periode en cinq secondes) au lieu de 50 Hz et 0,1 Hz. Le mode libre, masque en
+     evaluation, garde ses valeurs. */
   var FH = Sim.note ? 60 : 50, FL = Sim.note ? 0.2 : 0.1;          // la frequence du banc, et celle de l'observation lente
   var FH_T = FH + " Hz", FL_T = Sim.fr(FL, 1) + " Hz", PL = 1 / FL;  // « 50 Hz », « 0,1 Hz », 10 s
   var PL_T = Sim.note ? "cinq secondes" : "dix secondes";
-  var SOURCES = { reseau: Sim.note ? { V: 254, seuilDEL: 5, nom: "réseau de bord" } : { V: 230, seuilDEL: 5, nom: "réseau du bâtiment" },
+  var SOURCES = { reseau: Sim.note ? { V: 220, seuilDEL: 5, nom: "réseau d'essai" } : { V: 230, seuilDEL: 5, nom: "réseau du bâtiment" },
     gbf: { V: 6, seuilDEL: 1.8, nom: "générateur de labo" } };
   if (Sim.note) document.querySelector("#carteSource p.consigne").textContent =
-    "Le réseau de bord est toujours à 60 Hz. Seul le générateur de labo descend à 0,2 Hz : un tour complet dure alors cinq secondes.";
+    "Le réseau d'essai est toujours à 60 Hz. Seul le générateur de labo descend à 0,2 Hz : un tour complet dure alors cinq secondes.";
   var PHASES = ["L1", "L2", "L3"];
   /* Valeurs instantanees des trois tensions simples (phase - neutre) : v_k = V√2 sin(wt - (k-1)·2π/3). */
   function potentiels(t, V, f) {
@@ -2849,7 +2854,7 @@ var Sim = (function () {
   /* ================= Source ================= */
   var S0 = document.getElementById("source");
   var cSrc = Sim.choix(S0, { label: "Source", valeur: etat.src,
-    options: [{ val: "reseau", texte: Sim.note ? "Réseau de bord · 254 V" : "Réseau du bâtiment · 230 V" }, { val: "gbf", texte: "Générateur de labo · très basse tension" }],
+    options: [{ val: "reseau", texte: Sim.note ? "Réseau d'essai · 220 V" : "Réseau du bâtiment · 230 V" }, { val: "gbf", texte: "Générateur de labo · très basse tension" }],
     surChange: function (v) { etat.src = v; if (v === "reseau" && etat.f !== FH) { etat.f = FH; cF.set(FH, true); } majSource(); } });
   var cF = Sim.choix(S0, { label: "Fréquence", valeur: etat.f,
     options: [{ val: FH, texte: FH_T }, { val: FL, texte: FL_T }],
@@ -3091,7 +3096,7 @@ var Sim = (function () {
     texte(S, 50, 146, "3", { coul: css("--encre"), taille: 15, gras: true });
     svg("path", { d: "M38 157 q6 -9 12 0 t12 0", fill: "none", stroke: css("--encre"), "stroke-width": 2 }, S);
     texte(S, 50, 198, etat.src === "gbf" ? "générateur" : "réseau", {});
-    texte(S, 50, 213, etat.src === "gbf" ? "de labo" : (Sim.note ? "254 / 440 V" : "230 / 400 V"), {});
+    texte(S, 50, 213, etat.src === "gbf" ? "de labo" : (Sim.note ? "220 / 380 V" : "230 / 400 V"), {});
     [["L1", 131], ["L2", 143], ["L3", 157], ["N", 169]].forEach(function (p) {
       var xb = 50 + Math.sqrt(28 * 28 - (p[1] - 150) * (p[1] - 150));
       fil(S, [[xb, p[1]], [92, p[1]], [108, Yc[p[0]]]]);
@@ -3238,15 +3243,16 @@ var Sim = (function () {
    Le piege qui fait la partie 4 : a 0,1 Hz, les trois lampes s'allument dans l'ordre 1, 3, 2, deux
    fois par periode, une toutes les 1,7 s. Une lampe brille a chaque alternance, une DEL a une
    seule : les DEL rendent le tiers de periode, donc les 120° de l'oscilloscope.
-   DEUX JEUX DE VALEURS (16 octobre 2026) : en evaluation notee (#note), un banc qui reproduit le reseau de bord d'un
-   navire, a 60 Hz (T = 16,7 ms, Δt = 5,6 ms), observe a 0,2 Hz (une periode en 5 s), 7, 10 ou 15 V par phase, et un
-   tableau de bord en 3N~ 254/440 V 60 Hz. Les 120° et le rapport √3 ne changent pas : c'est la physique du triphase. */
+   DEUX JEUX DE VALEURS (16 octobre 2026) : en evaluation notee (#note), un banc qui reproduit le reseau d'essai des
+   machines expediees en Coree du Sud, a 60 Hz (T = 16,7 ms, Δt = 5,6 ms), observe a 0,2 Hz (une periode en 5 s), 7, 10
+   ou 15 V par phase, et un tableau d'essai en 3N~ 220/380 V 60 Hz (le reseau coreen ; le navire et son 254/440 V ont ete
+   retires le 17 octobre). Les 120° et le rapport √3 ne changent pas : c'est la physique du triphase. */
 (function () {
   var P = window.triphase, fr = Sim.fr, el = Sim.el;
   var FH = P.frequences.haute, FL = P.frequences.lente, FH_T = FH + " Hz", FL_T = fr(FL, 1) + " Hz";
   var SUJET = Sim.note
     ? { tensions: [7, 10, 15], FH: FH, FL: FL, periode: 5, periodeT: "cinq secondes", deux: "dix secondes", deuxN: "dix",
-        tableau: "le tableau électrique du navire", plaque: { V: 254, U: 440 }, titre3: "Document 3 · Le tableau électrique du navire", tolDEL: 0.25, ecartDeg: 20 }
+        tableau: "le tableau d'essai des machines", plaque: { V: 220, U: 380 }, titre3: "Document 3 · Le tableau d'essai des machines", tolDEL: 0.25, ecartDeg: 20 }
     : { tensions: [6, 9, 12], FH: FH, FL: FL, periode: 10, periodeT: "dix secondes", deux: "vingt secondes", deuxN: "vingt",
         tableau: "le tableau de l'atelier", plaque: { V: 230, U: 400 }, titre3: "Document 3 · Le tableau de l'atelier", tolDEL: 0.35, ecartDeg: 15 };
   /* ecartDeg : l'ecart en degres qu'on met sur le compte des reflexes. A 0,2 Hz, 0,25 s de reflexe font deja 18° */
@@ -3316,8 +3322,9 @@ var Sim = (function () {
     paillasse: ["#carteSource", "#carteOscillo", "#planA", "#carteReleveA", "#planB", "#carteReleveB"],
     ccf: { problematique: "Quelle tension le banc donne-t-il entre deux phases, et pourquoi n'est-ce pas le double de la tension entre une phase et le neutre ?" },
     commande: {
-      client: Sim.note ? "Chantier naval · la formatrice des apprentis" : "Paillon Électricité · la formatrice des apprentis",
-      texte: (Sim.note ? "<p>Le chantier forme ses apprentis sur un <b>banc triphasé en très basse tension</b> qui reproduit le réseau de bord d'un navire, à <b>60 Hz</b> : trois phases et le neutre, comme le tableau d'un bateau, mais sans danger."
+      client: Sim.note ? "Estérel Machines · la formatrice des apprentis" : "Paillon Électricité · la formatrice des apprentis",
+      texte: (Sim.note ? "<p>L'entreprise fabrique des machines pour une usine de <b>Corée du Sud</b>, où le réseau est à <b>60 Hz</b>. Avant l'expédition, chaque machine est essayée sur un tableau qu'" +
+          "un convertisseur de fréquence alimente comme là-bas. Les apprentis se forment sur un <b>banc triphasé en très basse tension</b> qui reproduit ce réseau : trois phases et le neutre, comme le tableau d'essai, mais sans danger."
         : "<p>L'entreprise forme ses apprentis sur un <b>banc triphasé en très basse tension</b> : trois phases et le neutre, comme le tableau d'un atelier, mais sans danger.") + " Sa plaque ne donne que la tension entre une phase et le neutre.</p>" +
         "<p>La formatrice doit coller sur le banc l'étiquette des bornes. Un apprenti affirme déjà : « Entre deux phases, c'est deux fois plus. » Elle vous confie le banc, l'oscilloscope et le voltmètre de l'atelier.</p>"
     },

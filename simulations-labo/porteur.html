@@ -264,7 +264,7 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
 .pc-mode span{font-size:.85rem;color:var(--encre2)}
 .pc-mode[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-doux)}
 .pc-en-cours .pc-modes{display:none}
-@media (max-width:480px){.pc-modes{grid-template-columns:1fr}}
+@media (max-width:480px){.pc-modes{grid-template-columns:1fr}.pc-info{flex-wrap:wrap}}
 .pc-problematique{margin:12px 0 0;padding:10px 12px;border-left:4px solid var(--accent);background:var(--carte2);border-radius:0 var(--r) var(--r) 0}
 .pc-grille{list-style:none;margin:10px 0;padding:0;border-top:1px solid var(--trait2)}
 .pc-grille li{padding:7px 0;border-bottom:1px solid var(--trait2)}
@@ -414,6 +414,60 @@ body.calc-ouverte .outils-flottants{display:none}
   body.calc-ouverte .doc-corps{--col-plan:0px}
   body.calc-ouverte .doc-plan{display:none}
 }
+
+/* habillage du site : charte « paillasse » */
+@font-face{font-family:'Red Hat Text';font-style:normal;font-weight:400;font-display:swap;src:url(../assets/polices/red-hat-text-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Red Hat Text';font-style:normal;font-weight:400;font-display:swap;src:url(../assets/polices/red-hat-text-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Red Hat Text';font-style:normal;font-weight:500;font-display:swap;src:url(../assets/polices/red-hat-text-500-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Red Hat Text';font-style:normal;font-weight:500;font-display:swap;src:url(../assets/polices/red-hat-text-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Red Hat Text';font-style:normal;font-weight:700;font-display:swap;src:url(../assets/polices/red-hat-text-700-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Red Hat Text';font-style:normal;font-weight:700;font-display:swap;src:url(../assets/polices/red-hat-text-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Share Tech Mono';font-style:normal;font-weight:400;font-display:swap;src:url(../assets/polices/share-tech-mono-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+  --fond:#eceae4;          /* le stratifié de la paillasse */
+  --carte:#ffffff;         /* la feuille qu'on y pose */
+  --carte2:#f5f3ee;
+  --encre:#16201b;
+  --encre2:#5b6660;
+  --trait:#c3c7c0;
+  --trait2:#dcdfd9;
+  --froid:#1f6b4a;         /* le vert bouteille — l'accent du site */
+  --teinte:#1f6b4a;
+  --tiede:#8a6a12;         /* la terre : les TP du labo réel */
+  --chaud:#a8432c;
+  --vert:#1f6b4a;
+  --violet:#4a4f7a;
+  --ardoise:#3f5a6b;       /* les feuilles des TP sur simulation */
+  --ombre:0 1px 0 rgba(22,32,27,.10);
+  --r:2px;
+}
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --fond:#111614; --carte:#182020; --carte2:#1e2725;
+    --encre:#e9efe9; --encre2:#9aa8a1;
+    --trait:#35403c; --trait2:#28312e;
+    --froid:#53b98a; --teinte:#53b98a; --vert:#53b98a;
+    --chaud:#e07f66; --tiede:#d5a94a; --ardoise:#7fa3b8;
+    --ombre:0 1px 0 rgba(0,0,0,.55);
+  }
+}
+/* Les simulations du labo a la charte « paillasse » (19 octobre 2026) : Red Hat Text et
+   Share Tech Mono, le stratifie clair, le vert bouteille pour accent. Sans cette feuille, les
+   trente simulations et leur page d'accueil garderaient l'ancien habillage, et la moitie la
+   plus visitee du site ne suivrait pas. Les jetons propres aux simulations s'accordent. */
+:root{
+  --accent:var(--froid); --accent-doux:#dbe9e1;
+  --juste:var(--vert); --juste-doux:#dcece3; --faux:var(--chaud); --faux-doux:#f2dfd9;
+  --scene:var(--carte);
+}
+body{font-family:"Red Hat Text","Helvetica Neue",Arial,sans-serif}
+h1,h2,h3{font-family:"Red Hat Text","Helvetica Neue",Arial,sans-serif;letter-spacing:-.01em}
+.tete h1{font-weight:700}
+.tete .surtitre,.mono,.afficheur .val,.curseur .val,table.releve td,.pc-comp,.pc-surtitre{font-family:"Share Tech Mono",ui-monospace,monospace}
+.carte{border-radius:2px}
+.tete{border-top:3px solid var(--froid);padding-top:18px}
 
 </style>
 <script>
@@ -1777,7 +1831,7 @@ var Sim = (function () {
         el("div", { classe: "pc-surtitre", texte: cc.surtitre || "Le sujet" }),
         c.client ? el("p", { classe: "pc-client", html: c.client }) : null,
         el("div", { classe: "pc-texte", html: c.texte || "" }),
-        el("p", { classe: "pc-problematique", html: "<b>Problématique</b> « " + cc.problematique + " »" })
+        el("p", { classe: "pc-problematique", html: "<b>Problématique</b> « " + String(cc.problematique).replace(/ ([?!:;])/g, " $1") + " »" })
       ]);
       var grille = el("ul", { classe: "pc-grille", "aria-label": "La grille de l'épreuve" });
       ORDRE.forEach(function (k) {
@@ -1927,7 +1981,7 @@ var Sim = (function () {
           var tolAbs = typeof q.toleranceAbsolue === "function" ? q.toleranceAbsolue(ctx) : (q.toleranceAbsolue || 0);
           // sansSigne : une lecture d'appareil, ou le signe ne dit que le sens du branchement
           // (-0,25 A lu quand le courant entre par COM est une lecture juste)
-          if (q.sansSigne) { v = Math.abs(v); a = Math.abs(a); }
+          if (q.sansSigne) { v = Math.abs(v); a = Math.abs(a); f.valeur = v; }   // la valeur gardee pour la suite est sans signe
           return Math.abs(v - a) <= Math.abs(a) * tol + tolAbs;
         };
       } else if (q.type === "choix" || q.type === "multi") {

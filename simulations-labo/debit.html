@@ -3215,7 +3215,11 @@ body.pc-en-cours #defis{display:none!important}
    DEUX JEUX DE VALEURS (16 octobre 2026) : en evaluation notee (#note), un autre montage (tuyau de 16 mm et
    de 1,5 m, fut a 1,2 m, de section 0,22 m²), une autre huile (HM 46, 0,87 kg/L), un planning de 15 min et
    d'autres reservoirs. L'eau y passe a 22 L/min, l'huile a 5,2 L/min : le remplissage depasse encore le
-   planning pour deux reservoirs sur quatre. */
+   planning pour deux reservoirs sur quatre.
+   ALLEGEMENT du 21 octobre 2026 (« trop dur pour les eleves ») : cinq calculs au lieu de huit, la formule et ses
+   valeurs (ou l'endroit ou les lire) dans l'intitule, les conversions donnees ; la section du tuyau est donnee ; la
+   duree a l'huile se calcule t = m / Qm, m donnee. La duree a l'eau, le Qv de l'huile et la vitesse de la surface
+   deviennent des questions sans calcul. */
 (function () {
   var Dm = window.debit, fr = Sim.fr, el = Sim.el;
   var SUJET = Sim.note
@@ -3228,6 +3232,8 @@ body.pc-en-cours #defis{display:none!important}
   var VOLUMES = SUJET.volumes, PLANNING = SUJET.planning, RHO = SUJET.rho, S_FUT = SUJET.sFut, D = SUJET.D;
   var RHO_T = fr(RHO, 2), SFUT_T = fr(S_FUT, 2), DM_T = fr(D / 1000, 3);   // « 0,92 », « 0,25 », « 0,012 »
   var S_TUYAU = Math.PI * Math.pow(D / 1000, 2) / 4;
+  var S_TUYAU_T = fr(S_TUYAU * 1e4, 2) + " × 10<sup>−4</sup> m²";        // « 1,13 × 10⁻⁴ m² », donnee a l'eleve
+  var RAPPORT_S = fr(Math.round(S_FUT / S_TUYAU / 100) * 100, 0);        // la section du fut, en sections du tuyau
 
   function cfg(ctx) {
     var d = ctx.donnees;
@@ -3286,12 +3292,11 @@ body.pc-en-cours #defis{display:none!important}
   var M = {
     Qmin: function (ctx) { return cfg(ctx).V / PLANNING; },
     QvE: function () { var l = valideA(); return l ? (l.V / 1000) / (l.t / 60) : Dm.modele("eau", D, 1).Qv * 60000; },
-    tE: function (ctx) { return cfg(ctx).V / val(ctx, "QvE", M.QvE); },
     vE: function (ctx) { return val(ctx, "QvE", M.QvE) / 60000 / S_TUYAU; },
     QmH: function () { var l = valideB(); return l ? (l.m / 1000) / (l.t / 60) : Dm.modele("huile", D, 1).Qm * 60; },
     QvH: function (ctx) { return val(ctx, "QmH", M.QmH) / RHO; },
-    tH: function (ctx) { return cfg(ctx).V / val(ctx, "QvH", M.QvH); },
-    vS: function (ctx) { return val(ctx, "QvH", M.QvH) / 60000 / S_FUT * 1000; }
+    mH: function (ctx) { return Math.round(cfg(ctx).V * RHO * 10) / 10; },     // la masse d'huile du reservoir, donnee
+    tH: function (ctx) { return M.mH(ctx) / val(ctx, "QmH", M.QmH); }
   };
 
   /* le liquide et le protocole du sujet sur la paillasse ; on ne remet au depart que s'ils ont change */
@@ -3363,7 +3368,7 @@ body.pc-en-cours #defis{display:none!important}
             { type: "choix", lib: "Quelle relation lie le débit en volume Q<sub>v</sub>, le volume écoulé V et la durée t ?",
               options: ["Q<sub>v</sub> = V ÷ t", "Q<sub>v</sub> = V × t", "Q<sub>v</sub> = t ÷ V", "Q<sub>v</sub> = ρ × V"], bonne: 0,
               methode: "Un débit en litres par minute : des litres, divisés par des minutes." },
-            { type: "nombre", lib: "Quel débit en volume faut-il, au moins, pour verser les " + c.V + " L dans le temps du planning ?", unite: "L/min",
+            { type: "nombre", lib: "Quel débit en volume faut-il, au moins, pour verser les " + c.V + " L dans le temps du planning ? Avec la relation de la question 2, V = <b>" + c.V + " L</b> et t = <b>" + PLANNING + " min</b> (document 3).", unite: "L/min",
               attendu: M.Qmin, tolerance: 0.01,
               methode: "Le volume à verser, divisé par la durée du planning." }
           ];
@@ -3390,7 +3395,7 @@ body.pc-en-cours #defis{display:none!important}
           { type: "appel", numero: 1, competence: "COM",
             lib: "Présentez votre protocole au professeur, à l'oral, avant d'ouvrir le robinet.",
             attendus: ["le récipient : le seau de 10 L, pas l'éprouvette, et pourquoi", "les lectures : le volume, en mL, et la durée",
-              "les calculs : Q<sub>v</sub> = V ÷ t, la durée de remplissage, la vitesse v = Q<sub>v</sub> ÷ S", "pour l'huile : la balance tarée, Q<sub>m</sub> = m ÷ t, puis Q<sub>v</sub> = Q<sub>m</sub> ÷ ρ",
+              "les calculs : Q<sub>v</sub> = V ÷ t, la vitesse v = Q<sub>v</sub> ÷ S", "pour l'huile : la balance tarée, Q<sub>m</sub> = m ÷ t, puis la durée du remplissage",
               "un vocabulaire juste : débit en volume, débit en masse, vitesse moyenne"] }
         ],
         bravo: "Le protocole tient : un récipient adapté, deux lectures, et la tare pour l'huile."
@@ -3399,7 +3404,7 @@ body.pc-en-cours #defis{display:none!important}
         competence: "REA", titre: "L'essai à l'eau",
         recit: "Le fût est plein d'eau, le robinet ouvert en grand. À vous de mesurer, puis de calculer avec vos lectures.",
         consigne: "Le récipient se choisit dans « Mesurer ». « Mettre le récipient sous le jet » lance le chronomètre, « Retirer » l'arrête ; le volume lu s'écrit en mL avant « Garder cette mesure ».",
-        scene: rappel(function (c) { return "Réservoir de l'engin : " + c.V + " L. Tuyau : diamètre intérieur " + D + " mm. S = π × D² ÷ 4 · 1 L = 0,001 m³ · 1 min = 60 s."; }),
+        scene: rappel(function (c) { return "Réservoir de l'engin : " + c.V + " L. Tuyau : diamètre intérieur " + D + " mm, section S = " + S_TUYAU_T + ". 1 L = 1 000 mL = 0,001 m³ · 1 min = 60 s."; }),
         paillasse: ["#carteScene", "#carteMesure", "#carteReleve"], large: true,
         surOuvrir: eau,
         questions: [
@@ -3407,6 +3412,9 @@ body.pc-en-cours #defis{display:none!important}
             lib: "Appelez avant de mettre le récipient sous le jet : vous faites la mesure devant le professeur.",
             attendus: ["le seau choisi, vide au départ", "le seau glissé sous le jet, le chronomètre lancé avec lui", SUJET.duree + " au moins, sans déborder",
               "le volume lu au niveau du liquide, sur la graduation agrandie, écrit en mL", "la mesure gardée, des gestes sûrs"] },
+          { type: "choix", lib: "Un camarade lit <b>6,8 L</b> sur la graduation agrandie du seau. Qu'écrit-il dans la case « volume lu », avant de garder sa mesure ?",
+            options: ["6 800", "6,8", "0,0068", "680"], bonne: 0,
+            methode: "La case attend des millilitres. Combien de millilitres dans un litre ?" },
           { type: "action", lib: "Faites la mesure : au moins 20 s d'écoulement dans le récipient choisi, puis « Garder cette mesure ».",
             aide: "La graduation agrandie montre le niveau ; le volume s'écrit en millilitres : 1 L = 1 000 mL.",
             verifier: function () {
@@ -3417,15 +3425,12 @@ body.pc-en-cours #defis{display:none!important}
               return { ok: ok, corriger: ok ? [] : erreursA(d), reponse: "mesure gardée : " + fr(d.V, 0) + " mL en " + fr(d.t, 1) + " s" + (d.t < 20 ? ", moins de 20 s" : "") };
             },
             methode: "Le seau, sous le jet " + SUJET.duree + " ; retiré, il arrête le chronomètre ; le volume se lit à la surface du liquide, et s'écrit en mL." },
-          { type: "nombre", lib: "Calculez le débit en volume de l'eau, avec votre mesure.", unite: "L/min",
+          { type: "nombre", lib: "Calculez le débit en volume de l'eau : <b>Q<sub>v</sub> = V ÷ t</b>, avec votre mesure du relevé : V en litres (vos mL ÷ 1 000) et t en minutes (vos secondes ÷ 60).", unite: "L/min",
             attendu: M.QvE, tolerance: 0.02, fini: garde("QvE", M.QvE),
-            methode: "Q<sub>v</sub> = V ÷ t, le volume en litres et la durée en minutes : 30 s, c'est 0,5 min." },
-          { type: "nombre", lib: "Avec ce débit, combien de temps durerait le remplissage du réservoir ?", unite: "min",
-            attendu: M.tE, tolerance: 0.03, fini: garde("tE", M.tE),
-            methode: "t = V ÷ Q<sub>v</sub> : le volume du réservoir divisé par le débit, en L/min." },
-          { type: "nombre", lib: "Calculez la vitesse moyenne de l'eau dans le tuyau.", unite: "m/s",
+            methode: "Convertissez d'abord : 30 s, c'est 0,5 min ; 7 000 mL, c'est 7 L. Puis le volume divisé par la durée." },
+          { type: "nombre", lib: "Calculez la vitesse moyenne de l'eau dans le tuyau : <b>v = Q<sub>v</sub> ÷ S</b>, avec S = <b>" + S_TUYAU_T + "</b> et Q<sub>v</sub> en m³/s : votre débit en L/min divisé par 60 000.", unite: "m/s",
             attendu: M.vE, tolerance: 0.03, fini: garde("vE", M.vE),
-            methode: "v = Q<sub>v</sub> ÷ S, avec Q<sub>v</sub> en m³/s (1 L = 0,001 m³, 1 min = 60 s) et S en m² : S = π × " + DM_T + "² ÷ 4." }
+            methode: "Deux divisions : le débit en L/min par 60 000 donne des m³/s ; puis par la section en m², pour des m/s. La touche « × 10<sup>x</sup> » de la calculatrice écrit le 10<sup>−4</sup>." }
         ],
         bravo: "L'essai à l'eau est refait et calculé. Reste à savoir s'il vaut pour l'huile."
       },
@@ -3433,10 +3438,12 @@ body.pc-en-cours #defis{display:none!important}
         competence: "VAL", titre: "L'huile, et ce que vaut l'essai à l'eau",
         recit: "Le chef d'atelier doute : l'huile coule-t-elle comme l'eau ? On recueille l'huile dans une bassine propre sur la balance, puis on la verse dans le réservoir : rien n'est perdu.",
         consigne: "Le fût est maintenant plein d'huile, la balance sous le jet. « Tare », puis la bassine sous le jet, puis « Retirer ».",
-        scene: rappel(function (c) { return "Réservoir de l'engin : " + c.V + " L. Huile : ρ = " + RHO_T + " kg/L. Fût : section " + SFUT_T + " m². Planning : " + PLANNING + " min."; }),
+        scene: rappel(function (c) { return "Réservoir de l'engin : " + c.V + " L, soit " + fr(Math.round(c.V * RHO * 10) / 10, 1) + " kg d'huile. Huile : ρ = " + RHO_T + " kg/L. Fût : section " + SFUT_T + " m², environ " + RAPPORT_S + " fois celle du tuyau. Planning : " + PLANNING + " min."; }),
         paillasse: ["#carteScene", "#carteMesure", "#carteReleve"], large: true,
         surOuvrir: huile,
-        questions: [
+        questions: function (ctx) {
+          var mH = M.mH(ctx);                                          // ne depend que du tirage : la partie peut se refaire
+          return [
           { type: "action", lib: "Mesurez le débit de l'huile à la balance : au moins 20 s d'écoulement, puis « Garder cette mesure ».",
             aide: "La balance porte 5 kg au plus, bassine comprise : au-delà, elle affiche « - - - - ».",
             verifier: function () {
@@ -3447,35 +3454,38 @@ body.pc-en-cours #defis{display:none!important}
               return { ok: ok, corriger: ok ? [] : erreursB(d), reponse: "mesure gardée : " + fr(d.m, 0) + " g en " + fr(d.t, 1) + " s" + (d.t < 20 ? ", moins de 20 s" : "") };
             },
             methode: "La tare d'abord, bassine vide ; puis la bassine sous le jet une trentaine de secondes ; retirée, elle arrête le chronomètre." },
-          { type: "nombre", lib: "Calculez le débit en masse de l'huile.", unite: "kg/min",
+          { type: "nombre", lib: "Calculez le débit en masse de l'huile : <b>Q<sub>m</sub> = m ÷ t</b>, avec votre mesure du relevé : m en kilogrammes (vos g ÷ 1 000) et t en minutes (vos secondes ÷ 60).", unite: "kg/min",
             attendu: M.QmH, tolerance: 0.02, fini: garde("QmH", M.QmH),
-            methode: "Q<sub>m</sub> = m ÷ t, la masse en kilogrammes (1 kg = 1 000 g) et la durée en minutes." },
-          { type: "nombre", lib: "Déduisez son débit en volume.", unite: "L/min",
-            attendu: M.QvH, tolerance: 0.02, fini: garde("QvH", M.QvH),
-            methode: "Q<sub>m</sub> = ρ × Q<sub>v</sub>, donc Q<sub>v</sub> = Q<sub>m</sub> ÷ ρ, avec ρ = " + RHO_T + " kg/L." },
-          { type: "nombre", lib: "Combien de temps dure vraiment le remplissage du réservoir ?", unite: "min",
+            methode: "Convertissez d'abord : 2 500 g, c'est 2,5 kg ; 30 s, c'est 0,5 min. Puis la masse divisée par la durée." },
+          { type: "choix", lib: "Votre débit en masse est en kg/min. Le débit en volume de la même huile, en L/min, est-il plus grand, égal ou plus petit ? (Document 2 : ρ = " + RHO_T + " kg/L.)",
+            options: ["plus grand : un litre d'huile pèse moins d'un kilogramme", "plus petit : un litre d'huile pèse moins d'un kilogramme", "égal : l'huile est un liquide, comme l'eau",
+              "on ne peut pas le savoir sans une seconde mesure, au seau"], bonne: 0,
+            methode: "Q<sub>m</sub> = ρ × Q<sub>v</sub>. Si chaque litre pèse moins d'un kilogramme, combien de litres faut-il pour faire un kilogramme ?" },
+          { type: "nombre", lib: "Combien de temps dure vraiment le remplissage du réservoir ? Il attend <b>m = " + fr(mH, 1) + " kg</b> d'huile (ρ × V). Calculez <b>t = m ÷ Q<sub>m</sub></b>, avec votre débit en masse.", unite: "min",
             attendu: M.tH, tolerance: 0.03, fini: garde("tH", M.tH),
-            methode: "Même calcul qu'avec l'eau : t = V ÷ Q<sub>v</sub>, avec le débit de l'huile." },
+            methode: "La masse à verser, en kilogrammes, divisée par le débit en masse, en kg/min, donne des minutes." },
           { type: "choix", lib: "L'huile coule bien moins vite que l'eau dans le même montage. Pourquoi ?",
             options: ["elle est plus visqueuse, plus « épaisse » : elle frotte davantage dans le robinet et le tuyau", "elle est moins dense que l'eau : elle tombe moins vite",
               "la balance mesure moins bien que le seau", "le fût d'huile est plus bas que celui d'eau"], bonne: 0,
             methode: "Le montage et la hauteur sont les mêmes ; seul le liquide a changé. Qu'est-ce qui le freine ?" },
-          { type: "nombre", lib: "Le débit en masse est le même en tout point. À quelle vitesse la surface de l'huile descend-elle dans le fût ?", unite: "mm/s",
-            attendu: M.vS, tolerance: 0.03, fini: garde("vS", M.vS),
-            methode: "La même relation que dans le tuyau, v = Q<sub>v</sub> ÷ S, avec la section du fût, " + SFUT_T + " m², et Q<sub>v</sub> en m³/s ; puis 1 m = 1 000 mm." },
+          { type: "choix", lib: "Le débit est le même en tout point : dans le tuyau et à la surface de l'huile, dans le fût. La section du fût vaut environ <b>" + RAPPORT_S + " fois</b> celle du tuyau. La surface de l'huile descend donc…",
+            options: ["environ " + RAPPORT_S + " fois moins vite que l'huile ne coule dans le tuyau", "à la même vitesse que l'huile dans le tuyau, puisque le débit est le même",
+              "environ " + RAPPORT_S + " fois plus vite que l'huile dans le tuyau", "pas du tout : le niveau d'un fût plein ne bouge pas"], bonne: 0,
+            methode: "v = Q<sub>v</sub> ÷ S : le même débit, divisé par une section bien plus grande." },
           { type: "choix", lib: "La simulation garde le niveau du fût constant. Cette hypothèse tient-elle ?",
             options: ["oui pendant une mesure de 30 s, où le niveau baisse d'à peine plus d'un centimètre ; non sur tout le remplissage, où il baisse d'une vingtaine de centimètres ou plus : le vrai remplissage sera un peu plus long",
               "oui tout le temps : le fût est grand, son niveau ne bouge pas", "non, même pendant la mesure : le niveau baisse de plusieurs centimètres par seconde",
               "la question ne se pose pas : le débit ne dépend pas du niveau"], bonne: 0,
-            methode: "La vitesse de la surface, multipliée par la durée : celle de la mesure, puis celle du remplissage. Comparez au mètre de hauteur." }
-        ],
+            methode: "Comparez ce qui sort du fût pendant une mesure de 30 s, quelques litres, et pendant tout le remplissage, des dizaines de litres, à la hauteur d'huile au-dessus du tuyau." }
+          ];
+        },
         bravo: "L'essai à l'eau ne valait pas pour l'huile, et vous savez de combien."
       },
       {
         competence: "COM", titre: "La réponse au chef d'atelier",
         recit: "Le chef d'atelier lira trois lignes, pas plus. Elles doivent répondre à sa question, avec un nombre et son unité.",
         questions: function (ctx) {
-          var tH = val(ctx, "tH", M.tH), tE = val(ctx, "tE", M.tE), QmH = val(ctx, "QmH", M.QmH), QvH = val(ctx, "QvH", M.QvH);
+          var tH = val(ctx, "tH", M.tH), QvE = val(ctx, "QvE", M.QvE), QmH = val(ctx, "QmH", M.QmH), QvH = val(ctx, "QvH", M.QvH);
           var oui = tH <= PLANNING, T = fr(tH, 1);
           var vraie = oui ? "Oui : avec l'huile, le remplissage dure environ " + T + " min, moins que les " + PLANNING + " min du planning."
             : "Non : avec l'huile, le remplissage dure environ " + T + " min, plus que les " + PLANNING + " min du planning.";
@@ -3483,7 +3493,7 @@ body.pc-en-cours #defis{display:none!important}
             : "Oui : le remplissage tient dans les " + PLANNING + " min du planning, comme l'essai à l'eau l'annonçait.";
           return [
             { type: "multi", essais: 2, lib: "Gardez les phrases qui répondent juste au chef d'atelier.",
-              options: [vraie, "L'essai à l'eau donnait environ " + fr(tE, 1) + " min : l'eau coule bien plus facilement que l'huile, cet essai ne vaut pas pour elle.", fausse,
+              options: [vraie, "L'essai à l'eau tenait le planning, à environ " + fr(QvE, 1) + " L/min : l'eau coule bien plus facilement que l'huile, cet essai ne vaut pas pour elle.", fausse,
                 "Le débit de l'huile est d'environ " + fr(QvH, 1) + " kg/L.", "L'huile avance dans le tuyau à environ " + fr(QvH, 1) + " L/min.",
                 "Le débit en masse de l'huile vaut environ " + fr(QmH, 2) + " kg/min, soit " + fr(QvH, 1) + " L/min avec ρ = " + RHO_T + " kg/L."],
               bonne: [0, 1, 5],

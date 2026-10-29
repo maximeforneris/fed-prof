@@ -3391,6 +3391,7 @@ var Sim = (function () {
   /* ecartDeg : l'ecart en degres qu'on met sur le compte des reflexes. A 0,2 Hz, 0,25 s de reflexe font deja 18° */
   var TENSIONS = SUJET.tensions, PERIODE_LENTE = SUJET.periode;
   var PLAQUE = "3N~ " + SUJET.plaque.V + "/" + SUJET.plaque.U + " V " + FH_T;  // « 3N~ 230/400 V 50 Hz »
+  var T_T = (1000 / FH % 1 ? fr(1000 / FH, 1) : String(1000 / FH)) + " ms";       // « 20 ms » ou « 16,7 ms »
 
   function cfg(ctx) {
     var d = ctx.donnees;
@@ -3490,9 +3491,9 @@ var Sim = (function () {
         paillasse: ["#carteOscillo"],
         surOuvrir: cinquante,
         questions: [
-          { type: "nombre", lib: "Si les trois tensions simples sont bien décalées de 120°, quel décalage Δt attendre entre v1 et v2, à " + FH_T + " ?", unite: "ms",
+          { type: "nombre", lib: "Si les trois tensions simples sont bien décalées de 120°, un tiers de période, quel décalage Δt attendre entre v1 et v2 ? Calculez <b>Δt = T ÷ 3</b>, avec T = 1 ÷ f = " + T_T + " à " + FH_T + ".", unite: "ms",
             attendu: 1000 / FH / 3, tolerance: 0.02,
-            methode: "T = 1 ÷ f, en millisecondes. Puis 120° : quelle part des 360° d'une période ?" },
+            methode: "120° sur les 360° d'une période, c'est un tiers : on divise la période donnée par 3, le résultat est en millisecondes." },
           { type: "choix", lib: "Pour mesurer Δt entre v1 et v2, où poser les deux curseurs de temps ?",
             options: ["là où v1 passe par zéro en montant, puis là où v2 passe par zéro en montant, juste après", "au sommet de v1, puis au creux de v2",
               "sur deux montées par zéro de v1", "là où les courbes de v1 et v2 se croisent"], bonne: 0,
@@ -3526,21 +3527,21 @@ var Sim = (function () {
           { type: "nombre", lib: "Mesurez le décalage Δt entre v1 et v2.", unite: "ms",
             attendu: M.dt, tolerance: 0, toleranceAbsolue: 0.25, fini: garde("dt", M.dt),
             methode: "Le curseur 1 sur la montée par zéro de v1, le 2 sur celle de v2 qui suit. Un balayage de 1 ou 2 ms/div rend la lecture plus fine." },
-          { type: "nombre", lib: "Calculez le déphasage de v2 par rapport à v1.", unite: "°",
+          { type: "nombre", lib: "Calculez le déphasage de v2 par rapport à v1 : <b>φ = Δt ÷ T × 360</b>, avec vos deux lectures en millisecondes.", unite: "°",
             attendu: M.phi, tolerance: 0.02, fini: garde("phi", M.phi),
-            methode: "φ = Δt ÷ T × 360, avec vos deux lectures dans la même unité." },
+            methode: "Δt divisé par T dit quelle part de la période sépare les deux courbes ; × 360 la met en degrés." },
           { type: "nombre", lib: "Mesurez la valeur maximale V<sub>max</sub> de v1.", unite: "V",
             attendu: M.Vmax, tolerance: 0.04, fini: garde("Vmax", M.Vmax),
             methode: "Curseurs de tension : le 2 sur le zéro, le 1 sur un sommet de v1. Une courbe qui sort de l'écran se lit mal : changez la sensibilité." },
           { type: "nombre", lib: "Affichez la voie 4, la tension composée u12, et mesurez sa valeur maximale U<sub>max</sub>.", unite: "V",
             attendu: M.Umax, tolerance: 0.04, fini: garde("Umax", M.Umax),
             methode: "Le bouton « tension composée » affiche la voie 4. Mêmes curseurs, même sensibilité pour les deux voies." },
-          { type: "nombre", lib: "Calculez le rapport U<sub>max</sub> ÷ V<sub>max</sub> de vos deux lectures.", unite: "",
+          { type: "nombre", lib: "Calculez le rapport <b>U<sub>max</sub> ÷ V<sub>max</sub></b> de vos deux lectures.", unite: "",
             attendu: M.r, tolerance: 0.02, fini: garde("r", M.r),
-            methode: "La valeur maximale de la voie 4 divisée par celle de v1, toutes deux en volts." },
-          { type: "nombre", lib: "Calculez U, la tension efficace entre deux phases, celle de l'étiquette, avec la relation de l'annexe.", unite: "V",
+            methode: "La valeur maximale de la voie 4 divisée par celle de v1, toutes deux en volts : un rapport n'a pas d'unité." },
+          { type: "nombre", lib: "Calculez U, la tension efficace entre deux phases, celle de l'étiquette : <b>U = √3 × V</b>, avec V la tension simple de la plaque (document 1) et √3 ≈ 1,73.", unite: "V",
             attendu: M.U, tolerance: 0.02, fini: garde("U", M.U),
-            methode: "La tension simple V est celle de la plaque, une valeur efficace : U = √3 × V." }
+            methode: "La tension simple de la plaque est une valeur efficace, comme U : on la multiplie par 1,73." }
         ],
         bravo: "Les mesures sont faites et calculées. Reste à les faire voir."
       },
@@ -3551,6 +3552,10 @@ var Sim = (function () {
         paillasse: ["#carteSource", "#planB", "#carteReleveB"], large: true,
         surOuvrir: function () { onglet("vueB"); },
         questions: [
+          { type: "choix", lib: "D'abord l'annonce de l'apprenti, « entre deux phases, c'est deux fois plus ». Que dit votre rapport U<sub>max</sub> ÷ V<sub>max</sub> de la partie 3 ?",
+            options: ["il vaut environ 1,73, la valeur de √3 : l'apprenti se trompe, U n'atteint pas le double de V", "il est assez proche de 2 : l'apprenti a raison, aux erreurs de lecture près",
+              "il vaut environ 1,41, la valeur de √2 : c'est l'écart entre une valeur maximale et une valeur efficace", "il ne dit rien : des valeurs maximales ne se comparent pas"], bonne: 0,
+            methode: "Mettez votre rapport à côté de 2, l'annonce de l'apprenti, et de la relation de l'annexe. Deux valeurs maximales se comparent comme deux valeurs efficaces." },
           { type: "action", lib: "Passez le générateur à " + FL_T + ", gardez les trois lampes, et regardez-les pendant deux périodes au moins.",
             aide: "Deux périodes à " + FL_T + ", c'est " + SUJET.deux + ".",
             /* rien ne se compte ici : on dit seulement ce qui manque encore (14 octobre 2026, « tu dois preciser les erreurs a corriger ») */
@@ -3574,11 +3579,11 @@ var Sim = (function () {
           { type: "nombre", lib: "Passez aux trois DEL, et mesurez avec les tops la durée entre l'allumage de la DEL 1 et celui de la DEL 2.", unite: "s",
             attendu: M.dtDEL, tolerance: 0, toleranceAbsolue: SUJET.tolDEL, fini: garde("dtDEL", M.dtDEL),
             methode: "Chronomètre à zéro, « Top : 1 » quand la DEL 1 s'allume, « Top : 2 » quand la DEL 2 s'allume : la différence des deux instants du relevé." },
-          { type: "choix", lib: "Ce décalage confirme-t-il le déphasage mesuré à l'oscilloscope ?",
+          { type: "choix", lib: "À " + FL_T + ", la période dure " + PERIODE_LENTE + " s. Ce décalage confirme-t-il le déphasage mesuré à l'oscilloscope ?",
             options: ["oui : c'est le même tiers de période, aux réflexes près", "non : à " + FL_T + ", le déphasage n'est plus le même",
               "on ne peut pas comparer : les fréquences sont différentes"],
             bonne: function (ctx) { var p = val(ctx, "dtDEL", M.dtDEL) / PERIODE_LENTE * 360; return Math.abs(p - val(ctx, "phi", M.phi)) <= SUJET.ecartDeg ? 0 : 1; },
-            methode: "Convertissez votre Δt en degrés avec la période à " + FL_T + ", φ = Δt ÷ T × 360, et comparez à la partie 3." }
+            methode: "120°, c'est un tiers de période : comparez votre durée au tiers de " + PERIODE_LENTE + " s, et votre déphasage de la partie 3 à 120°." }
         ],
         bravo: "Une démonstration qui trompait, et vous savez pourquoi."
       },

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Le tableau de la colocation</title>
-<meta name="description" content="Trois colocataires emménagent, et l&#x27;état des lieux est jeudi. Lire le tableau électrique et ce qui protège chaque circuit, distinguer le continu de l&#x27;alternatif, mesurer à l&#x27;oscilloscope la tension de la sonnette, en très basse tension, trouver l&#x27;appareil qui fait sauter le différentiel, puis écrire le rapport pour la propriétaire et l&#x27;affiche du tableau. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.">
+<meta name="description" content="Trois colocataires emménagent, et l&#x27;état des lieux est jeudi. Lire le tableau électrique et ce qui protège chaque circuit, distinguer le continu de l&#x27;alternatif, mesurer à l&#x27;oscilloscope la tension de la sonnette, en très basse tension, trouver l&#x27;appareil qui fait sauter le différentiel, puis écrire le rapport pour la propriétaire et l&#x27;affiche du tableau. En TD, la page guide ; en évaluation notée, dans l&#x27;espace d&#x27;évaluation, elle finit par un fichier.">
 <meta name="etiquette" content="Simulation · Parcours PAR-09">
 <style>
 /* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
@@ -2816,7 +2816,7 @@ var Sim = (function () {
 <header class="tete">
 <div class="surtitre">Physique-chimie · parcours CAP et seconde · une heure sur tablette</div>
 <h1>Le tableau de la colocation</h1>
-<p class="chapeau">Trois colocataires emménagent, et l'état des lieux est jeudi. Lire le tableau électrique et ce qui protège chaque circuit, distinguer le continu de l'alternatif, mesurer à l'oscilloscope la tension de la sonnette, en très basse tension, trouver l'appareil qui fait sauter le différentiel, puis écrire le rapport pour la propriétaire et l'affiche du tableau. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.</p>
+<p class="chapeau">Trois colocataires emménagent, et l'état des lieux est jeudi. Lire le tableau électrique et ce qui protège chaque circuit, distinguer le continu de l'alternatif, mesurer à l'oscilloscope la tension de la sonnette, en très basse tension, trouver l'appareil qui fait sauter le différentiel, puis écrire le rapport pour la propriétaire et l'affiche du tableau. En TD, la page guide ; en évaluation notée, dans l'espace d'évaluation, elle finit par un fichier.</p>
 </header>
 <style>
 :root{--tc-module:#f6f5f1;--tc-module-trait:#55534d;--tc-coffret:#e4e1db;--tc-manette:#3b3b38;--tc-terre-v:#2f8a3c;--tc-terre-j:#d4b21f;
@@ -3613,7 +3613,7 @@ var Sim = (function () {
               "La tension est trop faible : il faut le calibre des millivolts.", "Les cordons sont inversés : il suffit de les permuter."], bonne: 0,
             methode: "Une tension alternative est positive la moitié du temps, négative l'autre moitié : en position continue, le multimètre en affiche la moyenne. Essayez la position V ~." },
           { type: "choix", niveau: "Seconde", ordreFixe: true,
-            lib: "L'écran de l'oscilloscope a <b>4 divisions</b> au-dessus de l'axe. La plaque annonce <b>" + SUJET.transfo + " V~</b>, une valeur efficace. Quelle sensibilité choisir pour voir le sommet en entier, le plus haut possible ?",
+            lib: "L'écran de l'oscilloscope a <b>4 divisions</b> au-dessus de l'axe. La plaque annonce <b>" + SUJET.transfo + " V~</b>, une valeur efficace ; au sommet, <b>U<sub>max</sub> = U<sub>eff</sub> × √2</b>. Quelle sensibilité choisir pour voir le sommet en entier, le plus haut possible ?",
             options: SENS.map(function (v) { return v + " V/div"; }), bonne: BON_SENS,
             methode: "La valeur maximale vaut la valeur efficace × √2. Divisez-la par chaque sensibilité : il faut moins de 4 divisions, et le plus possible." }
         ],
@@ -3639,19 +3639,20 @@ var Sim = (function () {
               return { controles: c, reponse: "voie 1 sur " + (st.src === "transfo" ? "le transformateur" : st.src === "box" ? "le bloc de la box" : "rien") + ", " + sens + " V/div, " + base + " ms/div" };
             },
             methode: "Les volts par division règlent la hauteur : le sommet doit tenir dans les 4 divisions du haut. La base de temps règle la largeur : 10 divisions doivent couvrir au moins une période." },
-          { type: "nombre", lib: "Mesurez la <b>valeur maximale</b> de cette tension.", unite: "V",
+          { type: "nombre", lib: "Mesurez la <b>valeur maximale</b> de cette tension : <b>U<sub>max</sub> = nombre de divisions × sensibilité</b>, en volts par division.", unite: "V",
             attendu: UMAX, tolerance: 0.06,
             methode: "Le repère H sur un sommet : le nombre de divisions au-dessus de l'axe, multiplié par la sensibilité, en volts par division.",
             apres: function (ctx, ok, rep, v) { ctx.donnees.umax = v; } },
-          { type: "nombre", lib: "Mesurez sa <b>période</b> T.", unite: "ms",
+          { type: "nombre", lib: "Mesurez sa <b>période</b> T : <b>T = nombre de divisions × base de temps</b>, en millisecondes par division.", unite: "ms",
             attendu: T_MS, tolerance: 0.05,
             methode: "Les repères 1 et 2 sur deux sommets voisins, ou sur deux passages de l'axe en montant : l'écart en divisions, multiplié par la base de temps, en millisecondes par division.",
             apres: function (ctx, ok, rep, v) { ctx.donnees.T = v; } },
-          { type: "nombre", lib: "Calculez sa <b>fréquence</b> f, à partir de votre période.", unite: "Hz",
+          /* 21 octobre 2026, allegement des calculs : la conversion ms -> s est faite dans la formule, une seule operation */
+          { type: "nombre", lib: "Calculez sa <b>fréquence</b> f, à partir de votre période : f = 1 ÷ T, T en secondes. Votre T est en millisecondes : calculez <b>f = 1 000 ÷ T</b>.", unite: "Hz",
             /* sur la periode de l'eleve si elle est juste ; une periode fausse ne fait pas une frequence juste */
             attendu: function (ctx) { var T = ctx.donnees.T; return isFinite(T) && Math.abs(T - T_MS) <= T_MS * 0.05 ? 1000 / T : F_HZ; },
             tolerance: 0.03, toleranceAbsolue: 0.3,
-            methode: "f = 1 ÷ T, avec T en secondes : des millisecondes, on passe aux secondes en divisant par 1 000.",
+            methode: "f = 1 ÷ T, avec T en secondes : des millisecondes, on passe aux secondes en divisant par 1 000 ; c'est le même calcul que f = 1 000 ÷ T, avec T en millisecondes.",
             apres: function (ctx, ok, rep, v) { ctx.donnees.f = v; } },
           { type: "nombre", niveau: "Seconde", lib: "Calculez la <b>valeur efficace</b> qu'annonce votre valeur maximale : U<sub>eff</sub> = U<sub>max</sub> ÷ √2. Le voltmètre de la phase 2, en position V ~, affichait-il à peu près cela ?", unite: "V",
             attendu: function (ctx) { var m = ctx.donnees.umax; return (isFinite(m) && Math.abs(m - UMAX) <= UMAX * 0.06 ? m : UMAX) / Math.SQRT2; },
@@ -3681,9 +3682,9 @@ var Sim = (function () {
               return { controles: c, reponse: "différentiel " + (k.arme ? "réarmé" : "coupé") + " ; débranché" + (deb.length > 1 ? "s" : "") + " : " + (deb.length ? deb.map(function (a) { return APP[a].nom; }).join(", ") : "aucun") + " ; touche T " + (k.tTeste ? "essayée" : "pas essayée") };
             },
             methode: "Tout débrancher, puis réarmer : s'il tient, le différentiel n'y est pour rien ; la touche T montre qu'il coupe bien. Puis rebrancher un appareil à la fois : celui qui le fait sauter laisse fuir du courant." },
-          { type: "nombre", lib: "Une main sur la carcasse de l'appareil en défaut, l'autre sur le robinet de l'évier : d'une main à l'autre, le corps fait environ <b>R = " + fr(SUJET.R, 0) + " Ω</b>. Sous 230 V, quel courant le traverserait ?", unite: "mA",
+          { type: "nombre", lib: "Une main sur la carcasse de l'appareil en défaut, l'autre sur le robinet de l'évier : d'une main à l'autre, le corps fait environ <b>R = " + fr(SUJET.R, 0) + "\u00a0Ω, soit " + fr(SUJET.R / 1000, SUJET.R % 1000 ? 1 : 0) + "\u00a0kΩ</b>. Sous 230 V, quel courant le traverserait ? Calculez <b>I = U ÷ R</b>, avec U = 230 V et R = " + fr(SUJET.R / 1000, SUJET.R % 1000 ? 1 : 0) + "\u00a0kΩ : avec R en kilohms, le résultat est en milliampères.", unite: "mA",
             attendu: I_CORPS, tolerance: 0.02, toleranceAbsolue: 1,
-            methode: "I = U ÷ R, avec U en volts et R en ohms, donne des ampères ; 1 A = 1 000 mA.",
+            methode: "I = U ÷ R : des volts divisés par des ohms donnent des ampères ; des volts divisés par des kilohms, des milliampères (1 V ÷ 1 kΩ = 1 mA).",
             apres: function (ctx, ok, rep, v) { ctx.donnees.i = v; } },
           { type: "choix", lib: "Malik : « Un 500 mA à la place du 30 mA, et il ne sautera plus. » Que lui répondre, avec l'échelle des effets ?",
             options: ["Non : un 500 mA laisserait passer le courant calculé, qui peut faire fibriller le cœur ; le 30 mA coupe avant.",

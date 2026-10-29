@@ -3170,7 +3170,9 @@ var Sim = (function () {
    DEUX JEUX DE VALEURS (16 octobre 2026) : le TD (#ccf) garde ceux d'avant ; l'evaluation notee (#note)
    mesure a 250 Hz et 1,5 m, demande 32 dB, et tire d'autres epaisseurs. Sous la frequence de coincidence,
    doubler gagne toujours 6 dB : le panneau double rate encore le seuil (27,6 a 28,8 dB mesures contre 32)
-   et la tole l'atteint (34,1 a 35,4 dB). La meme evidence, d'autres nombres. */
+   et la tole l'atteint (34,1 a 35,4 dB). La meme evidence, d'autres nombres.
+   ALLEGEMENT du 21 octobre 2026 (« trop dur pour les eleves ») : cinq calculs d'une ou deux operations, la
+   formule ecrite dans chaque intitule ; le coefficient de la vitre (partie 1) devient un choix. */
 (function () {
   var P = window.attenuation, fr = Sim.fr, el = Sim.el;
   var SUJET = Sim.note
@@ -3259,8 +3261,9 @@ var Sim = (function () {
           { type: "choix", lib: "La plaque posée, que mesure le micro relié à l'oscilloscope ?",
             options: ["la pression acoustique transmise par la plaque", "la pression acoustique incidente", "le niveau d'intensité acoustique, en décibels", "l'indice d'affaiblissement de la plaque"], bonne: 0,
             methode: "Un micro mesure une pression acoustique. Le document 3 dit lequel des deux sons il reçoit quand la plaque est posée." },
-          { type: "nombre", lib: "Une vitre laisse passer une pression acoustique " + SUJET.rapportTexte + " fois plus faible que celle qu'elle reçoit. Que vaut son coefficient d'atténuation ?", unite: "", attendu: SUJET.rapport, tolerance: 0,
-            methode: "Le coefficient est la pression incidente divisée par la pression transmise : un nombre plus grand que 1 pour une plaque qui arrête le son." }
+          { type: "choix", lib: "Une vitre laisse passer une pression acoustique " + SUJET.rapportTexte + " fois plus faible que celle qu'elle reçoit. Que vaut son coefficient d'atténuation ?",
+            options: [fr(SUJET.rapport, 0), fr(1 / SUJET.rapport, SUJET.rapport > 10 ? 2 : 1), fr(20 * Math.log10(SUJET.rapport), 0) + " dB"], bonne: 0,
+            methode: "Relisez la définition du document 3 : quelle pression divise-t-on par laquelle ? Et un rapport de deux pressions a-t-il une unité ?" }
         ],
         bravo: "Le dossier est lu : une exigence, deux grandeurs, une relation."
       },
@@ -3300,25 +3303,25 @@ var Sim = (function () {
           { type: "appel", numero: 2, competence: "REA",
             lib: "Appelez avant de mesurer : vous réglez le banc et faites la première mesure devant le professeur.",
             attendus: [HZ + " et " + DM + " réglés avant toute mesure", "la mesure sans plaque d'abord, au sonomètre puis au micro", "une sensibilité choisie pour que la courbe tienne dans l'écran", "l'amplitude lue du trait du milieu au sommet, pas d'un sommet à l'autre", "le panneau posé à la bonne épaisseur, sans toucher à la fréquence ni à la distance"] },
-          { type: "nombre", lib: "Sans plaque, relevez le niveau au sonomètre.", unite: "dB",
+          { type: "nombre", lib: "Sans plaque, relevez le niveau L au sonomètre.", unite: "dB",
             attendu: M.Ls, tolerance: 0, toleranceAbsolue: 1, fini: garde("Ls", M.Ls),
             methode: "Plaque « Aucune », " + HZ + ", distance " + DM + " : le niveau se lit sur le sonomètre, au dixième de décibel." },
-          { type: "nombre", lib: "Sans plaque, relevez l'amplitude de la pression acoustique au micro.", unite: "Pa",
+          { type: "nombre", lib: "Sans plaque, relevez l'amplitude p de la pression acoustique au micro : nombre de divisions × sensibilité verticale.", unite: "Pa",
             attendu: M.ps, tolerance: 0.1, fini: garde("ps", M.ps),
             methode: "L'amplitude va du trait du milieu au sommet de la courbe : ce nombre de divisions × la sensibilité verticale, en pascals." },
-          { type: "nombre", lib: "Posez le panneau habituel : relevez le niveau au sonomètre.", unite: "dB",
+          { type: "nombre", lib: "Posez le panneau habituel : relevez le niveau L au sonomètre.", unite: "dB",
             attendu: M.La, tolerance: 0, toleranceAbsolue: 1, fini: garde("La", M.La),
             methode: "La plaque et son épaisseur se choisissent sur la première carte ; la fréquence et la distance ne bougent pas." },
-          { type: "nombre", lib: "Avec le panneau, relevez l'amplitude de la pression au micro.", unite: "Pa",
+          { type: "nombre", lib: "Avec le panneau, relevez l'amplitude p de la pression au micro, en pascals (1 mPa = 0,001 Pa).", unite: "Pa",
             attendu: M.pa, tolerance: 0.15, fini: garde("pa", M.pa),
             methode: "Une sensibilité plus fine, pour que la courbe remplisse l'écran ; divisions × sensibilité, puis en pascals : 20 mPa = 0,020 Pa." },
-          { type: "nombre", lib: "Calculez l'indice d'affaiblissement R du panneau, avec vos deux niveaux.", unite: "dB",
+          { type: "nombre", lib: "Calculez l'indice d'affaiblissement du panneau : <b>R = L sans plaque − L avec le panneau</b>, avec vos deux niveaux relevés.", unite: "dB",
             attendu: M.R1, tolerance: 0, toleranceAbsolue: 0.25, fini: garde("R1", M.R1),
             methode: "R est la différence entre le niveau incident, sans plaque, et le niveau transmis, avec la plaque." },
-          { type: "nombre", lib: "Calculez le coefficient d'atténuation du panneau, avec vos deux amplitudes.", unite: "",
+          { type: "nombre", lib: "Calculez le coefficient d'atténuation du panneau : <b>coefficient = p sans plaque ÷ p avec le panneau</b>, avec vos deux amplitudes en pascals.", unite: "",
             attendu: M.coef, tolerance: 0.03, fini: garde("coef", M.coef),
             methode: "La pression incidente, sans plaque, divisée par la pression transmise, avec la plaque, les deux dans la même unité." },
-          { type: "nombre", lib: "Calculez R à partir de ce coefficient, avec la relation de l'annexe.", unite: "dB",
+          { type: "nombre", lib: "Calculez R à partir de ce coefficient, avec la relation de l'annexe : <b>R = 20 × log(coefficient)</b>, votre coefficient de la question précédente.", unite: "dB",
             attendu: M.R1b, tolerance: 0, toleranceAbsolue: 0.3, fini: garde("R1b", M.R1b),
             methode: "R = 20 × log(coefficient) : la touche log de la calculatrice, puis × 20." }
         ],
@@ -3330,16 +3333,16 @@ var Sim = (function () {
         consigne: "Même fréquence, même distance : seule la plaque change.",
         paillasse: PAILLASSE, large: true,
         questions: [
-          { type: "choix", lib: "Si le collègue a raison, le panneau doublé arrête-t-il les 35 dB demandés ?", options: ["oui", "non"],
+          { type: "choix", lib: "Selon le collègue, le panneau doublé arrêterait deux fois votre R du panneau habituel. Si c'était vrai, arrêterait-il les " + SEUIL + " dB demandés ?", options: ["oui", "non"],
             bonne: function (ctx) { return 2 * val(ctx, "R1", M.R1) >= SEUIL ? 0 : 1; },
             methode: "Selon le collègue, R double avec l'épaisseur : comparez le double de votre R aux " + SEUIL + " dB." },
-          { type: "nombre", lib: "Posez le panneau doublé : quel est son indice d'affaiblissement mesuré ?", unite: "dB",
+          { type: "nombre", lib: "Posez le panneau doublé et relevez le niveau au sonomètre. Calculez son indice d'affaiblissement : <b>R = L sans plaque − L avec le panneau doublé</b>, votre L sans plaque de la partie 3.", unite: "dB",
             attendu: M.R2, tolerance: 0, toleranceAbsolue: 1, fini: garde("R2", M.R2),
             methode: "Même matière, épaisseur doublée, " + HZ + " et " + DM + " : R est votre niveau sans plaque moins le niveau lu avec la plaque." },
           { type: "choix", lib: "Doubler l'épaisseur, qu'est-ce que cela a fait gagner ?",
             options: ["quelques décibels, environ 6 : R est loin de doubler", "le double de décibels, comme le collègue l'avait prévu", "rien : l'épaisseur ne change pas ce qu'arrête la plaque", "des décibels en moins"], bonne: 0,
             methode: "Comparez le R du panneau doublé à celui du panneau simple, et au double que prévoyait le collègue." },
-          { type: "nombre", lib: "Posez la tôle d'acier du métallier : quel est son indice d'affaiblissement mesuré ?", unite: "dB",
+          { type: "nombre", lib: "Posez la tôle d'acier du métallier et relevez le niveau. Calculez son indice : <b>R = L sans plaque − L avec la tôle</b>.", unite: "dB",
             attendu: M.R3, tolerance: 0, toleranceAbsolue: 1, fini: garde("R3", M.R3),
             methode: "Plaque « Acier » à l'épaisseur du document 2, " + HZ + ", " + DM + " : votre niveau sans plaque moins le niveau lu." },
           { type: "multi", lib: "Que montrent vos trois mesures ?",

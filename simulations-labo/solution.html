@@ -3896,20 +3896,19 @@ table.protection td,table.protection th{font-family:inherit;text-align:center;pa
      en mode note, fini est appele a chaque enregistrement : la valeur est gardee quelle qu'elle soit */
   function garde(cle, mesure) { return function (ctx, juste, rep, v) { ctx.donnees[cle] = (juste || ctx.note) && isFinite(v) ? v : mesure(ctx); }; }
   function val(ctx, cle, mesure) { var x = ctx.donnees[cle]; return isFinite(x) ? x : mesure(ctx); }
-  function Mde(ctx) { var M = val(ctx, "M", MES.M); return M >= 20 && M <= 300 ? M : SUJET.M; }
   function temp(x) { return isFinite(x) ? "−" + fr(Math.abs(x), 0) : "…"; }
+  /* ALLEGEMENT du 21 octobre 2026 (« trop dur pour les eleves ») : quatre calculs au lieu de huit, chacun d'une
+     ou deux operations, la formule et les valeurs dans l'intitule. M n'est plus calcule (on choisit le calcul,
+     M est donne ensuite) ; n et C de la fiole sont retires ; Cm se calcule sur la concentration visee, relevee
+     en partie 1 ; C du bidon devient une question sans calcul. */
   var MES = {
-    M: function () { return SUJET.M; },
     Cc: function (ctx) { cfg(ctx); var l = lignes().filter(function (x) { return x.T === T; })[0]; return l ? l.C : NaN; },
-    n1: function (ctx) { return SUJET.masse / Mde(ctx); },
+    n1: function () { return SUJET.masse / SUJET.M; },
     V0: function (ctx) { return val(ctx, "Cc", MES.Cc) * VF / val(ctx, "n1", MES.n1); },
-    n: function (ctx) { var f = P.etat().fiole; return f.Vg > 0 ? val(ctx, "n1", MES.n1) * f.Vg / 1000 : NaN; },
-    C: function (ctx) { return val(ctx, "n", MES.n) / (P.etat().fiole.Vf / 1000); },
-    Cm: function (ctx) { return val(ctx, "C", MES.C) * Mde(ctx); },
+    Cm: function (ctx) { return val(ctx, "Cc", MES.Cc) * SUJET.M; },
     lu: function () { var f = P.etat().fiole; return f.Vg > 0 ? P.fpDeC(P.Cfiole()) : NaN; },
     luB: function (ctx) { cfg(ctx); return P.fpDeC(P.Capprenti()); },
-    nb: function (ctx) { return NEUF.C * cfg(ctx).V1; },
-    Cb: function (ctx) { return val(ctx, "nb", MES.nb) / NEUF.V; }
+    nb: function (ctx) { return NEUF.C * cfg(ctx).V1; }
   };
   P.MES = MES;
 
@@ -4013,14 +4012,16 @@ table.protection td,table.protection th{font-family:inherit;text-align:center;pa
           { type: "classer", lib: "Dans le liquide de refroidissement préparé à l'atelier, qui est qui ?",
             items: ["l'eau déminéralisée", "le liquide de refroidissement prêt à l'emploi", SUJET.le], categories: ["le soluté", "le solvant", "la solution"], bonnes: [1, 2, 0],
             methode: "Le soluté est l'espèce dissoute ; le solvant, le liquide qui la reçoit ; leur mélange est la solution." },
-          { type: "nombre", lib: "Calculez la masse molaire " + SUJET.du + ", " + F + ", avec les masses molaires atomiques de l'annexe.", unite: "g/mol",
-            attendu: SUJET.M, tolerance: 0, fini: garde("M", MES.M),
-            methode: "Pour chaque sorte d'atome : le nombre d'atomes de la formule × sa masse molaire ; puis on additionne." },
+          { type: "choix", lib: "Quel calcul donne la masse molaire moléculaire " + SUJET.du + ", " + F + ", avec les masses molaires atomiques de l'annexe ?",
+            options: SUJET.gly === "PG"
+              ? ["M = 3 × 12 + 8 × 1 + 2 × 16", "M = 12 + 1 + 16", "M = 3 + 8 + 2", "M = 3 × 12 × 8 × 1 × 2 × 16"]
+              : ["M = 2 × 12 + 6 × 1 + 2 × 16", "M = 12 + 1 + 16", "M = 2 + 6 + 2", "M = 2 × 12 × 6 × 1 × 2 × 16"], bonne: 0,
+            methode: "Pour chaque sorte d'atome : le nombre d'atomes, écrit en indice dans la formule, multiplié par sa masse molaire ; puis on additionne les trois produits." },
           { type: "nombre", lib: "Le site descend jusqu'à " + TT + " °C (document 1). Quelle concentration en glycol le liquide doit-il avoir ? Lisez-la dans la fiche technique (document 3).", unite: "mol/L",
             attendu: MES.Cc, tolerance: 0, toleranceAbsolue: 0.05, fini: garde("Cc", MES.Cc),
             methode: "Dans le tableau, la colonne de la température du site ; la concentration est en dessous." }
         ],
-        bravo: "Le dossier est lu : un soluté, une masse molaire, une concentration à atteindre."
+        bravo: "Le dossier est lu : un soluté, le calcul de sa masse molaire, une concentration à atteindre."
       },
       {
         competence: "ANA", titre: "Le calcul et le protocole",
@@ -4028,12 +4029,12 @@ table.protection td,table.protection th{font-family:inherit;text-align:center;pa
         consigne: "La paillasse, telle qu'elle est : la verrerie disponible est au-dessus de la scène. Les gestes viendront à la partie 3.",
         paillasse: ["#carteScene"],
         questions: [
-          { type: "nombre", lib: "Calculez la quantité de matière de glycol dans 1,00 L de concentré. Sa masse est dans le document 2, <b>" + fr(SUJET.masse, 0) + " g</b> ; M est votre masse molaire. n = m ÷ M.", unite: "mol",
+          { type: "nombre", lib: "Calculez la quantité de matière de glycol dans 1,00 L de concentré : <b>n = m ÷ M</b>, avec m = <b>" + fr(SUJET.masse, 0) + " g</b> (document 2) et M = <b>" + SUJET.M + " g/mol</b>.", unite: "mol",
             attendu: MES.n1, tolerance: 0.03, fini: garde("n1", MES.n1),
             methode: "La masse en grammes divisée par la masse molaire en g/mol donne des moles." },
-          { type: "nombre", lib: "Le concentré a donc pour concentration C₀ = n ÷ 1,00 L. Calculez le volume V₀ de concentré à prélever pour préparer <b>" + VF + " mL</b> de liquide à votre concentration de la partie 1. La quantité de glycol se conserve : C₀ × V₀ = C × V.", unite: "mL",
+          { type: "nombre", lib: "Ces n moles sont dans 1,00 L : la concentration du concentré est C₀ = n ÷ 1,00 L, le même nombre, en mol/L. Calculez le volume de concentré à prélever : <b>V₀ = C × V ÷ C₀</b>, avec C votre concentration visée de la partie 1, V = <b>" + VF + " mL</b> et C₀ votre résultat précédent.", unite: "mL",
             attendu: MES.V0, tolerance: 0.03, fini: garde("V0", MES.V0),
-            methode: "V₀ = C × V ÷ C₀, avec V en millilitres : le résultat est en millilitres." },
+            methode: "La quantité de glycol se conserve : C₀ × V₀ = C × V. V étant en millilitres, V₀ sort en millilitres." },
           { type: "choix", lib: "Avec quelle verrerie préparer ces " + VF + " mL ?",
             options: ["une pipette jaugée, une ou plusieurs fois, et une fiole jaugée de " + VF + " mL", "une éprouvette graduée pour le concentré, et un bécher de " + VF + " mL",
               "un bécher gradué : le concentré, puis l'eau jusqu'à la graduation " + VF, "une pipette jaugée pour le concentré, et un bécher de " + VF + " mL"], bonne: 0,
@@ -4070,6 +4071,10 @@ table.protection td,table.protection th{font-family:inherit;text-align:center;pa
             aide: "La loupe sur le trait montre la pipette quand elle est dans le bécher, la fiole sinon. Près du trait, ouvrez à peine le robinet.",
             verifier: verifPrep,
             methode: "Pipette au trait, vidée jusqu'au bout ; eau jusqu'au trait de la fiole, pas au-delà ; bouchon, et une dizaine de retournements." },
+          { type: "choix", lib: "À la paillasse voisine, un camarade a laissé monter l'eau au-dessus du trait de jauge de sa fiole. Que doit-il faire ?",
+            options: ["Vider la fiole, la rincer et recommencer la préparation", "Retirer l'eau en trop à la pipette, jusqu'au trait",
+              "Garder sa fiole : quelques gouttes de trop ne changent rien", "Ajouter un peu de concentré pour compenser l'eau en trop"], bonne: 0,
+            methode: "Au-dessus du trait, le volume de la solution n'est plus celui de la fiole. Demandez-vous si l'on peut retirer de l'eau seule d'un liquide où le concentré est déjà versé." },
           { type: "action", lib: "Réglez le zéro du réfractomètre : une goutte d'eau déminéralisée sur le prisme propre, le couvercle fermé, et la limite bleu-blanc amenée sur la ligne de l'eau avec la vis du zéro.",
             aide: "La vis du zéro est la petite molette au-dessus du réfractomètre ; l'oculaire est dans la carte de droite.",
             verifier: verifZero,
@@ -4077,17 +4082,15 @@ table.protection td,table.protection th{font-family:inherit;text-align:center;pa
           { type: "nombre", lib: "Essuyez le prisme, déposez une goutte de votre fiole, fermez le couvercle : lisez la protection sur l'échelle « " + SUJET.echelle + " » de l'oculaire.", unite: "°C",
             sansSigne: true, attendu: MES.lu, tolerance: 0, toleranceAbsolue: 1.5, fini: garde("lu", MES.lu),
             methode: "Le zéro réglé, la limite bleu-blanc se lit sur l'échelle de votre glycol : deux degrés par graduation." },
-          { type: "nombre", lib: "Calculez la quantité de matière de glycol versée dans la fiole : n = C₀ × V₀, avec votre C₀ de la partie 2, en mol/L, et le volume de concentré que vous avez prélevé, en litres.", unite: "mol",
-            attendu: MES.n, tolerance: 0.05, fini: garde("n", MES.n),
-            methode: "V₀ est la somme des volumes gravés sur les pipettes vidées, convertie en litres." },
-          { type: "nombre", lib: "Calculez la concentration en glycol de votre solution : C = n ÷ V, V étant le volume de la fiole, en litres.", unite: "mol/L",
-            attendu: MES.C, tolerance: 0.05, fini: garde("C", MES.C),
-            methode: "Le volume de la solution est celui de la fiole jaugée, pas celui du concentré prélevé." },
-          { type: "nombre", lib: "Calculez la concentration en masse du glycol dans votre solution : Cm = C × M, avec votre masse molaire.", unite: "g/L",
+          { type: "choix", lib: "Un autre camarade dépose sur le prisme une goutte prise en haut de sa fiole, qu'il n'a pas retournée : le glycol, plus dense, est resté au fond. Que lira-t-il ?",
+            options: ["Une protection moins basse que la vraie : le haut de la fiole est plus pauvre en glycol", "Une protection plus basse que la vraie : le haut de la fiole est plus riche en glycol",
+              "La vraie protection : la fiole contient la bonne quantité de glycol", "La vraie protection, puisque le zéro est réglé à l'eau"], bonne: 0,
+            methode: "Le réfractomètre lit la goutte, pas la fiole entière. Tant que la solution n'est pas homogène, la goutte du haut n'a pas la concentration de l'ensemble." },
+          { type: "nombre", lib: "Calculez la concentration en masse du glycol de votre solution : <b>Cm = C × M</b>, avec C votre concentration visée de la partie 1, en mol/L, et M = <b>" + SUJET.M + " g/mol</b>.", unite: "g/L",
             attendu: MES.Cm, tolerance: 0.05, fini: garde("Cm", MES.Cm),
             methode: "Des mol/L multipliées par des g/mol donnent des g/L." }
         ],
-        bravo: "La fiole est prête, contrôlée et calculée. Reste le bidon de l'apprenti."
+        bravo: "La fiole est prête et contrôlée, sa concentration en masse calculée. Reste le bidon de l'apprenti."
       },
       {
         competence: "VAL", titre: "Le bidon de l'apprenti",
@@ -4098,12 +4101,13 @@ table.protection td,table.protection th{font-family:inherit;text-align:center;pa
           { type: "nombre", lib: "Déposez une goutte du bidon de l'apprenti sur le prisme essuyé, couvercle fermé : lisez sa protection sur l'échelle « " + SUJET.echelle + " ».", unite: "°C",
             sansSigne: true, attendu: MES.luB, tolerance: 0, toleranceAbsolue: 1.5, fini: garde("luB", MES.luB),
             methode: "Comme pour votre fiole : prisme essuyé, une goutte, le couvercle, l'échelle de votre glycol." },
-          { type: "nombre", lib: "Le bidon contenait <b>" + fr(V1, 1) + " L</b> de liquide prêt à l'emploi à <b>" + fr(NEUF.C, 1) + " mol/L</b> (document 4). Calculez la quantité de matière de glycol qu'il contient : n = C × V.", unite: "mol",
+          { type: "nombre", lib: "Le bidon contenait encore " + fr(V1, 1) + " L de liquide prêt à l'emploi (document 4). Calculez la quantité de matière de glycol qu'il contenait : <b>n = C × V</b>, avec C = <b>" + fr(NEUF.C, 1) + " mol/L</b> et V = <b>" + fr(V1, 1) + " L</b>.", unite: "mol",
             attendu: MES.nb, tolerance: 0.03, fini: garde("nb", MES.nb),
-            methode: "La concentration en mol/L multipliée par le volume en litres." },
-          { type: "nombre", lib: "L'apprenti a complété le bidon jusqu'à <b>" + NEUF.V + " L</b> avec de l'eau. Calculez sa nouvelle concentration en glycol : C = n ÷ V.", unite: "mol/L",
-            attendu: MES.Cb, tolerance: 0.03, fini: garde("Cb", MES.Cb),
-            methode: "L'eau ajoutée n'apporte pas de glycol : la même quantité de matière, dans le volume du bidon plein." },
+            methode: "La concentration en mol/L multipliée par le volume en litres donne des moles." },
+          { type: "choix", lib: "L'apprenti a complété le bidon jusqu'à <b>" + NEUF.V + " L</b> avec de l'eau. Que sont devenues la quantité de matière de glycol n et la concentration C du bidon ?",
+            options: ["n est la même ; C a baissé, car le volume a augmenté", "n et C ont baissé toutes les deux", "n et C n'ont pas changé : on n'a pas enlevé de glycol",
+              "n a augmenté avec le volume ; C n'a pas changé"], bonne: 0,
+            methode: "Demandez-vous ce que l'eau du robinet apporte au bidon, en glycol ; puis servez-vous de C = n ÷ V, le volume ayant changé." },
           { type: "action", lib: "Mettez les deux liquides à l'épreuve du froid : un tube de votre solution et un tube du bidon de l'apprenti dans l'enceinte, la consigne réglée à la température du site, <b>" + TT + " °C</b>, jusqu'à ce que les tubes y soient.",
             aide: "Le compte-gouttes se glisse dans le liquide, puis dans un tube de l'enceinte. La consigne est la molette en haut à droite de l'enceinte.",
             verifier: verifFroid,
@@ -4123,12 +4127,12 @@ table.protection td,table.protection th{font-family:inherit;text-align:center;pa
         questions: function (ctx) {
           var e = P.etat(), Vp = e.fiole.prelev.reduce(function (a, x) { return a + x.V; }, 0);
           if (!(Vp > 0)) Vp = val(ctx, "V0", MES.V0);
-          var C = val(ctx, "C", MES.C), Cm = val(ctx, "Cm", MES.Cm), Cb = val(ctx, "Cb", MES.Cb), lu = val(ctx, "lu", MES.lu), luB = val(ctx, "luB", MES.luB);
+          var C = val(ctx, "Cc", MES.Cc), Cm = val(ctx, "Cm", MES.Cm), nb = val(ctx, "nb", MES.nb), lu = val(ctx, "lu", MES.lu), luB = val(ctx, "luB", MES.luB);
           return [
             { type: "multi", essais: 2, lib: "Gardez les phrases qui répondent juste au chef d'atelier.",
               options: ["Pour " + VF + " mL qui protègent jusqu'à " + TT + " °C, on prélève " + fr(Vp, 0) + " mL de concentré à la pipette jaugée, complétés à l'eau déminéralisée dans une fiole jaugée : C ≈ " + fr(C, 1) + " mol/L, soit " + fr(Cm, 0) + " g/L de glycol.",
                 "Au réfractomètre réglé à l'eau, notre solution protège jusqu'à " + temp(lu) + " °C ; le bidon complété à l'eau, jusqu'à " + temp(luB) + " °C seulement, et il a pris en glace dans l'enceinte.",
-                "Le bidon de l'apprenti contient toujours autant de glycol, mais dans " + NEUF.V + " L : " + fr(Cb, 1) + " mol/L ; il n'est plus conforme.",
+                "Le bidon de l'apprenti contient toujours ses " + fr(nb, 1) + " mol de glycol, mais dans " + NEUF.V + " L : sa concentration a baissé, il n'est plus conforme.",
                 "Le bidon de l'apprenti est encore " + SUJET.couleur + " : il protège toujours jusqu'à " + TN + " °C.",
                 "Notre solution contient " + fr(Cm, 0) + " mol/L de glycol.",
                 "Ajouter de l'eau a fait baisser la quantité de matière de glycol du bidon."], bonne: [0, 1, 2],

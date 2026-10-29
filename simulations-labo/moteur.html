@@ -3264,9 +3264,11 @@ var Sim = (function () {
   var UN = SUJET.UN, H = SUJET.H, G = 9.81, TMAX = SUJET.TMAX, MMAX = SUJET.MMAX;
   var H_T = fr(H, 2) + " m", UN_T = UN + " V";                    // « 1,00 m » ou « 0,80 m » ; « 12 V » ou « 24 V »
 
+  var CFG = null;                                                  // le tirage, pour les intitules des parties a appel
   function cfg(ctx) {
     var d = ctx.donnees;
     if (!d.cfg) { var c = CONFIGS[Math.floor(Math.random() * CONFIGS.length)]; d.cfg = { m: c.m, Y: c.Y, t12: c.t12, I12: c.I12, tY: c.tY }; }
+    CFG = d.cfg;
     return d.cfg;
   }
   function kg(m) { return fr(m, m % 1 ? 1 : 0).replace(/,0$/, "") + " kg"; }
@@ -3358,8 +3360,8 @@ var Sim = (function () {
           { type: "choix", lib: "Quelle conversion d'énergie le moteur du volet réalise-t-il ?",
             options: ["de l'énergie électrique en énergie mécanique, avec des pertes en chaleur", "de l'énergie mécanique en énergie électrique", "de l'énergie électrique en énergie mécanique, sans aucune perte", "de l'énergie chimique en énergie mécanique"], bonne: 0,
             methode: "Un moteur reçoit de l'électricité et fait tourner un arbre ; aucun convertisseur ne rend tout ce qu'il reçoit." },
-          { type: "nombre", lib: "Quelle vitesse de montée minimale l'exigence de l'exploitante impose-t-elle ?", unite: "m/s", attendu: M.vmin, tolerance: 0, toleranceAbsolue: Sim.note ? 0.0015 : 0.001,   // en évaluation, 0,80 ÷ 9 = 0,0889 : « 0,09 » passe
-            methode: "v = h ÷ t, avec la hauteur d'ouverture et la durée maximale des documents 1 et 2." }
+          { type: "nombre", lib: "Quelle vitesse de montée minimale l'exigence de l'exploitante impose-t-elle ? Calculez <b>v = h ÷ t</b>, avec la hauteur d'ouverture du document 1 et la durée maximale du document 2.", unite: "m/s", attendu: M.vmin, tolerance: 0, toleranceAbsolue: Sim.note ? 0.0015 : 0.001,   // en évaluation, 0,80 ÷ 9 = 0,0889 : « 0,09 » passe
+            methode: "La hauteur en mètres divisée par la durée en secondes donne une vitesse en m/s." }
         ],
         bravo: "Le dossier est lu : un moteur à courant continu, une masse, une exigence."
       },
@@ -3407,15 +3409,15 @@ var Sim = (function () {
           { type: "nombre", lib: "Relevez l'intensité du courant pendant la montée.", unite: "A",
             attendu: M.I12, tolerance: 0.01, toleranceAbsolue: 0.003, fini: garde("I", M.I12),
             methode: "L'ampèremètre, pendant que la masse monte ; le tableau garde l'intensité de la montée." },
-          { type: "nombre", lib: "Calculez la puissance électrique reçue par le moteur.", unite: "W",
+          { type: "nombre", lib: "Calculez la puissance électrique reçue par le moteur : <b>P<sub>él</sub> = U × I</b>, avec U = " + UN_T + " et votre intensité en ampères.", unite: "W",
             attendu: M.Pe, tolerance: 0.03, fini: garde("Pe", M.Pe),
-            methode: "P<sub>él</sub> = U × I, U en volts, I en ampères." },
-          { type: "nombre", lib: "Calculez la puissance mécanique reçue par la masse.", unite: "W",
+            methode: "On multiplie la tension en volts par l'intensité en ampères : le résultat est en watts." },
+          { type: "nombre", get lib() { var m = CFG ? CFG.m : 1; return "Calculez la puissance mécanique reçue par la masse : <b>P<sub>méca</sub> = P × h ÷ t</b>, avec son poids P = " + fr(m * G, 2) + " N (m × g, " + kg(m) + "), h = " + H_T + " et votre durée t."; }, unite: "W",
             attendu: M.Pm, tolerance: 0.03, fini: garde("Pm", M.Pm),
-            methode: "D'abord v = h ÷ t en m/s, puis P<sub>méca</sub> = m × g × v, m en kilogrammes." },
-          { type: "nombre", lib: "Calculez le rendement du moteur sous " + UN_T + ", en pourcentage.", unite: "%",
+            methode: "Le poids multiplié par la hauteur, puis divisé par la durée en secondes : P × h ÷ t revient à P × v, avec v = h ÷ t." },
+          { type: "nombre", lib: "Calculez le rendement du moteur sous " + UN_T + " : <b>η = P<sub>méca</sub> ÷ P<sub>él</sub> × 100</b>, avec vos deux puissances, en pourcentage.", unite: "%",
             attendu: M.eta, tolerance: 0, toleranceAbsolue: 1.5, fini: garde("eta", M.eta),
-            methode: "η = P<sub>méca</sub> ÷ P<sub>él</sub>, les deux en watts, puis × 100. Un rendement passe toujours sous 100 %." }
+            methode: "La puissance mécanique divisée par la puissance électrique, les deux en watts, puis × 100. Un rendement passe toujours sous 100 %." }
         ],
         bravo: "Le moteur est mesuré batterie pleine. Reste la batterie faible."
       },
@@ -3427,9 +3429,13 @@ var Sim = (function () {
         questions: function (ctx) {
           var c = cfg(ctx);
           return [
-            { type: "nombre", lib: "Si la vitesse était proportionnelle à la tension, combien de temps durerait la montée sous " + c.Y + " V ?", unite: "s",
+            { type: "nombre", lib: "Si la vitesse était proportionnelle à la tension, la durée de montée serait multipliée par " + UN + " ÷ " + c.Y + ". Calculez la prévision du collègue : <b>t' = t × " + UN + " ÷ " + c.Y + "</b>, avec votre durée t sous " + UN_T + ".", unite: "s",
               attendu: M.pred, tolerance: 0.03, fini: garde("pred", M.pred),
-              methode: "Une vitesse proportionnelle à la tension est divisée par le même nombre qu'elle ; la durée de montée est alors multipliée par ce nombre." },
+              methode: "Une tension plus faible donnerait une vitesse plus faible, donc une montée plus longue : la durée sous " + UN_T + " est multipliée par un nombre plus grand que 1." },
+            { type: "choix", lib: "D'après cette prévision, le volet s'ouvrirait-il en " + TMAX + " s au plus, batterie faible ?",
+              options: ["oui : la durée prévue reste sous les " + TMAX + " s de l'exigence", "non : la durée prévue dépasse les " + TMAX + " s de l'exigence"],
+              bonne: function (ctx2) { return val(ctx2, "pred", M.pred) <= TMAX ? 0 : 1; },
+              methode: "Mettez votre prévision à côté de la durée maximale du document 2." },
             { type: "action", lib: "Vérifiez : faites la montée sous " + c.Y + " V, avec la même masse.",
               aide: "Redescendez la masse avant de lever.",
               verifier: function () { return verifMontee(c.m, c.Y, "celle du volet (document 1), la même qu'à " + UN_T, c.Y + " V", true); },

@@ -3524,6 +3524,8 @@ var Sim = (function () {
   function garde(cle, mesure) { return function (ctx, juste, rep, v) { ctx.donnees[cle] = (juste || ctx.note) && isFinite(v) ? v : mesure(ctx); }; }
   function val(ctx, cle, mesure) { var x = ctx.donnees[cle]; return isFinite(x) ? x : mesure(ctx); }
   var J = function () { return P.etat().joule; };
+  /* une duree en secondes, comme l'afficheur du joulemetre l'ecrit : « 0:20:13 » */
+  function hms(s) { s = Math.floor(s); var h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return h + ":" + (m < 10 ? "0" : "") + m + ":" + (x < 10 ? "0" : "") + x; }
   var MES = {
     U: function (ctx) { var e = P.etat(); return e.vent === cfg(ctx).V && !e.coupe ? P.U() : ctx.donnees.Uvu; },
     I: function (ctx) { return SUJET.vent[cfg(ctx).V - 1] / 12; },
@@ -3642,9 +3644,9 @@ var Sim = (function () {
             items: ["le watt, W", "le joule, J", "le wattheure, Wh", "l'ampère, A", "le volt, V", "le kilowattheure, kWh"],
             categories: ["une puissance", "une énergie", "une intensité", "une tension"], bonnes: [0, 1, 1, 2, 3, 1],
             methode: "Le joule est l'unité d'énergie du système international ; le wattheure et le kilowattheure en sont d'autres : une puissance multipliée par une durée." },
-          { type: "nombre", get lib() { var c = TIRAGE; return "Quelle énergie la batterie de " + fr(c.Wh, 0) + " Wh peut-elle donner sans être déchargée de plus de " + Math.round(100 * SUJET.utile) + " % (document 2) ?"; },
+          { type: "nombre", get lib() { var c = TIRAGE, pc = Math.round(100 * SUJET.utile); return "Quelle énergie la batterie de " + fr(c.Wh, 0) + " Wh peut-elle donner sans être déchargée de plus de " + pc + " % (document 2) ? Calculez <b>E = " + fr(c.Wh, 0) + " Wh × " + pc + " ÷ 100</b>."; },
             unite: "Wh", attendu: function (ctx) { return cfg(ctx).Wh * SUJET.utile; }, tolerance: 0, toleranceAbsolue: 1,
-            methode: "Un pourcentage d'une énergie : l'énergie stockée multipliée par le pourcentage, divisé par 100." }
+            methode: "Prendre un pourcentage d'une énergie : on la multiplie par le pourcentage, puis on divise par 100. Le résultat reste en Wh." }
         ],
         bravo: "Le dossier est lu : une puissance n'est pas une énergie, et la batterie a ses limites."
       },
@@ -3708,10 +3710,7 @@ var Sim = (function () {
             methode: "La remise à zéro, le comptage, au moins " + DUREE + " minutes au chronomètre, puis l'arrêt : l'énergie ne bouge plus." },
           { type: "nombre", lib: "Relevez l'énergie reçue par le ventilateur pendant le comptage : l'afficheur « Joulemètre · énergie », en J.", unite: "J",
             attendu: MES.Ej, tolerance: 0.005, toleranceAbsolue: 2, fini: garde("Ej", MES.Ej),
-            methode: "Le comptage arrêté, le joulemètre garde l'énergie et la durée." },
-          { type: "nombre", lib: "Calculez la puissance reçue par le ventilateur pendant le comptage : <b>P = E ÷ t</b>, avec votre énergie en J et la durée du joulemètre (h:min:s) convertie en secondes.", unite: "W",
-            attendu: MES.Pe, tolerance: 0.03, fini: garde("Pe", MES.Pe),
-            methode: "Des joules divisés par des secondes donnent des watts ; 1 min = 60 s." }
+            methode: "Le comptage arrêté, le joulemètre garde l'énergie et la durée." }
         ],
         bravo: "Deux mesures de la même puissance : le voltmètre et la pince, le joulemètre et son chronomètre."
       },
@@ -3720,8 +3719,14 @@ var Sim = (function () {
         recit: "Le client accuse la cafetière. Vous comparez ce qu'ont reçu, chacun, le ventilateur pendant la nuit et la cafetière pour les cafés du matin.",
         consigne: "Le joulemètre et la cafetière sont sur la paillasse ; la cafetière s'arrête toute seule à la fin de chaque café.",
         paillasse: ["#carteScene", "#carteMesure"], large: true,
-        questions: [
-          { type: "choix", lib: "Comparez vos deux puissances du ventilateur, P = U × I et P = E ÷ t. Que montrent-elles ?",
+        questions: function (ctx) {
+          var c = cfg(ctx), t = MES.tj(ctx), Ts = isFinite(t) && t > 0 ? fr(Math.floor(t), 0) + " s (" + hms(t) + " au joulemètre)" : "… s (le comptage de la partie 3 n'est pas fait)";
+          /* 21 octobre 2026 (alleger les calculs) : la duree du comptage est donnee en secondes, et cette question reste cotee REA */
+          return [
+          { type: "nombre", competence: "REA", lib: "D'abord la seconde puissance du ventilateur. Le joulemètre a compté pendant t = " + Ts + ". Calculez <b>P = E ÷ t</b>, avec votre énergie en J de la partie 3.", unite: "W",
+            attendu: MES.Pe, tolerance: 0.03, fini: garde("Pe", MES.Pe),
+            methode: "Des joules divisés par des secondes donnent des watts : la durée est déjà en secondes dans l'intitulé." },
+          { type: "choix", lib: "Comparez vos deux puissances du ventilateur, P = U × I et P = E ÷ t. Que montrent-elles ?",
             options: ["Elles sont égales, aux erreurs de lecture près : la puissance reçue en continu vaut U × I, et l'énergie reçue vaut P × t.",
               "Elles sont différentes : une puissance et une énergie ne peuvent pas donner le même nombre.", "Elles sont égales parce que E = U × I.",
               "Elles sont différentes : le joulemètre compte aussi l'énergie du réfrigérateur."], bonne: 0,
@@ -3731,18 +3736,27 @@ var Sim = (function () {
             verifier: verifCafes,
             fini: function (ctx) { var j = J(); if (j.cle === "cafe") ctx.donnees.EcafJ = j.E; },
             methode: "Le joulemètre remis à zéro et lancé sur la cafetière avant le premier café, puis exactement " + NC + " cafés." },
-          { type: "nombre", lib: "Convertissez en Wh l'énergie reçue par la cafetière pour les " + SUJET.cafes + ", lue en J sur le joulemètre. <b>1 Wh = 3 600 J.</b>", unite: "Wh",
+          { type: "nombre", lib: "Convertissez en Wh l'énergie reçue par la cafetière pour les " + SUJET.cafes + ", lue en J sur le joulemètre : <b>E en Wh = E en J ÷ 3 600</b>.", unite: "Wh",
             attendu: MES.Ecaf, tolerance: 0.02, toleranceAbsolue: 0.05, fini: garde("Ecaf", MES.Ecaf),
             methode: "Des joules divisés par 3 600 donnent des wattheures." },
-          { type: "nombre", get lib() { var n = TIRAGE.nuit; return "Calculez l'énergie reçue par le ventilateur pendant la nuit du client, de " + n.de + " à " + n.a + " : <b>E = P × t</b>, avec votre puissance P = U × I de la partie 3 et t en heures. Réponse en Wh."; },
+          { type: "nombre", lib: "Calculez l'énergie reçue par le ventilateur pendant la nuit du client, de " + c.nuit.de + " à " + c.nuit.a + ", soit t = " + c.nuit.h + " h : <b>E = P × t</b>, avec votre puissance P = U × I de la partie 3. Réponse en Wh.",
             unite: "Wh", attendu: MES.Enuit, tolerance: 0.03, fini: garde("Enuit", MES.Enuit),
-            methode: "La durée de la nuit en heures, multipliée par la puissance en watts, donne des wattheures." },
+            methode: "Des watts multipliés par des heures donnent des wattheures." },
+          { type: "classer", lib: "Rangez ces trois énergies, de la plus petite à la plus grande, avec vos nombres.",
+            items: ["l'énergie reçue par la cafetière pour les " + SUJET.cafes, "l'énergie reçue par le ventilateur pendant la nuit", "l'énergie que la batterie peut donner sans s'abîmer (partie 1)"],
+            categories: ["la plus petite", "au milieu", "la plus grande"],
+            bonnes: function (ctx2) {
+              var v = [val(ctx2, "Ecaf", MES.Ecaf), val(ctx2, "Enuit", MES.Enuit), cfg(ctx2).Wh * SUJET.utile];
+              return v.map(function (x) { return v.filter(function (y) { return y < x; }).length; });
+            },
+            methode: "Les trois énergies sont en wattheures : la partie 1 pour la batterie, vos deux calculs de cette partie pour la cafetière et la nuit." },
           { type: "choix", lib: "« C'est la cafetière, l'appareil le plus puissant, qui a vidé la batterie. » Qu'en dites-vous ?",
             options: ["Non : le ventilateur, beaucoup moins puissant, a reçu bien plus d'énergie, parce qu'il a tourné toute la nuit.",
               "Oui : la cafetière a la plus grande puissance, elle prend donc le plus d'énergie.", "Oui : la cafetière tire plus de 10 A, elle vide la batterie en quelques minutes.",
               "On ne peut pas comparer : l'une s'exprime en watts, l'autre en wattheures."], bonne: 0,
             methode: "Comparez vos deux énergies, dans la même unité : la durée de fonctionnement compte autant que la puissance." }
-        ],
+          ];
+        },
         bravo: "L'appareil le plus puissant n'est pas celui qui prend le plus d'énergie."
       },
       {

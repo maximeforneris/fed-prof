@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>La chaîne du froid</title>
-<meta name="description" content="Cette nuit, l&#x27;armoire congélateur de la cantine s&#x27;est arrêtée, et le chef doit décider avant midi de ce qui se garde. Lire l&#x27;enregistreur de la nuit, choisir le bon thermomètre, suivre à la centrale d&#x27;acquisition le palier de la glace qui fond, mesurer le cœur de chaque produit, puis écrire le rapport au chef. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.">
+<meta name="description" content="Cette nuit, l&#x27;armoire congélateur de la cantine s&#x27;est arrêtée, et le chef doit décider avant midi de ce qui se garde. Lire l&#x27;enregistreur de la nuit, choisir le bon thermomètre, suivre à la centrale d&#x27;acquisition le palier de la glace qui fond, mesurer le cœur de chaque produit, puis écrire le rapport au chef. En TD, la page guide ; en évaluation notée, dans l&#x27;espace d&#x27;évaluation, elle finit par un fichier.">
 <meta name="etiquette" content="Simulation · Parcours PAR-07">
 <style>
 /* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
@@ -2816,7 +2816,7 @@ var Sim = (function () {
 <header class="tete">
 <div class="surtitre">Physique-chimie · parcours CAP et seconde · une heure sur tablette</div>
 <h1>La chaîne du froid</h1>
-<p class="chapeau">Cette nuit, l'armoire congélateur de la cantine s'est arrêtée, et le chef doit décider avant midi de ce qui se garde. Lire l'enregistreur de la nuit, choisir le bon thermomètre, suivre à la centrale d'acquisition le palier de la glace qui fond, mesurer le cœur de chaque produit, puis écrire le rapport au chef. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.</p>
+<p class="chapeau">Cette nuit, l'armoire congélateur de la cantine s'est arrêtée, et le chef doit décider avant midi de ce qui se garde. Lire l'enregistreur de la nuit, choisir le bon thermomètre, suivre à la centrale d'acquisition le palier de la glace qui fond, mesurer le cœur de chaque produit, puis écrire le rapport au chef. En TD, la page guide ; en évaluation notée, dans l'espace d'évaluation, elle finit par un fichier.</p>
 </header>
 <style>
 :root{--givre:#e6eef4;--glace:#d3e4f1;--glace-trait:#6f8fa8;--eau:#bad3e6;--carton:#d8c39f;--papier:#f8f6f0;--encre-papier:#1d1d1b;
@@ -3591,7 +3591,7 @@ var Sim = (function () {
             attendu: AIR_ARRIVEE, tolerance: 0, toleranceAbsolue: 0.3,
             methode: "Glissez le curseur jusqu'au bout de la courbe, à " + hh(SUJET.arrivee) + " : l'écran donne l'heure et la température de ce point. Sous zéro, n'oubliez pas le signe moins.",
             apres: function (ctx, ok, rep) { ctx.donnees.air = rep; } },
-          { type: "nombre", lib: "Le thermomètre mural de la cuisine affiche " + deg(SUJET.cuisine, 0) + ". Écrivez cette température en kelvins.", unite: "K",
+          { type: "nombre", lib: "Le thermomètre mural de la cuisine affiche " + deg(SUJET.cuisine, 0) + ". Écrivez cette température en kelvins : <b>T (K) = θ (°C) + 273</b>.", unite: "K",
             attendu: SUJET.cuisine + 273.15, tolerance: 0, toleranceAbsolue: 0.6,
             methode: "T en kelvins = θ en degrés Celsius + 273 (273,15 exactement) : on ajoute, on ne multiplie pas." }
         ],
@@ -3666,7 +3666,7 @@ var Sim = (function () {
           { type: "nombre", lib: "Laissez tourner l'acquisition bien après la fonte : vers quelle température l'eau du bécher A va-t-elle ? Elle s'en approche de plus en plus lentement.", unite: "°C",
             attendu: function () { return finVue() ? SUJET.cuisine : NaN; }, tolerance: 0, toleranceAbsolue: 2,
             methode: "Deux corps en contact vont vers la même température : l'eau du bécher rejoint peu à peu celle de l'air de la cuisine, que donne le thermomètre mural." },
-          { type: "nombre", niveau: "Seconde", lib: "Calculez l'énergie reçue par la glace du bécher A pendant sa fonte : Q = m × L, avec m = " + SUJET.mA + NB + "g et L = 334" + NB + "kJ/kg.", unite: "kJ",
+          { type: "nombre", niveau: "Seconde", lib: "Calculez l'énergie reçue par la glace du bécher A pendant sa fonte : <b>Q = m × L</b>, avec m = " + SUJET.mA + NB + "g = " + fr(SUJET.mA / 1000, 3) + NB + "kg et L = 334" + NB + "kJ/kg.", unite: "kJ",
             attendu: SUJET.mA / 1000 * 334, tolerance: 0.01,
             methode: "La masse en kilogrammes, puisque L est en kJ/kg : " + SUJET.mA + " g = " + fr(SUJET.mA / 1000, 3).replace(/0+$/, "") + " kg ; puis Q = m × L." }
         ],

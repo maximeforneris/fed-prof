@@ -3594,7 +3594,11 @@ var Sim = (function () {
    DEUX JEUX DE VALEURS (16 octobre 2026) : le sujet est pose par la simulation (P.SUJET), avant son premier
    dessin. TD : bouilloire 2 200 W, plaque 2 000 W, eau a 18 °C, tasses de 25 cl (3 a 6), 90 % annonces.
    Evaluation notee : bouilloire 2 400 W (1,5 L), plaque 1 800 W, eau a 10 °C, tasses de 20 cl (3, 4, 6 ou 7),
-   92 % annonces. La meme evidence : la plaque reste loin de l'annonce, la bouilloire gagne. */
+   92 % annonces. La meme evidence : la plaque reste loin de l'annonce, la bouilloire gagne.
+   ALLEGEMENT du 21 octobre 2026 (« trop dur pour les eleves ») : quatre calculs, chaque formule ecrite avec ses
+   valeurs ou l'endroit ou les lire ; la masse se releve en kilogrammes ; le rendement de la plaque a induction, qui
+   demandait toute la chaine sans guide, devient un releve (son compteur) et un choix (plus d'energie pour la meme
+   eau : un rendement plus petit). */
 (function () {
   var P = window.bouilloire, fr = Sim.fr, el = Sim.el, SUJET = P.SUJET;
   var C_EAU = 4180, ANNONCE = SUJET.annonce, TASSE = SUJET.tasse;
@@ -3623,13 +3627,14 @@ var Sim = (function () {
   function val(ctx, cle, mesure) { var x = ctx.donnees[cle]; return isFinite(x) ? x : mesure(ctx); }
   function de(cle) { return function () { var c = chauffe("bouilloire"); return c ? cle(c) : NaN; }; }
   var M = {
-    m: de(function (c) { return 1000 * c.depart.m; }),
+    m: de(function (c) { return c.depart.m; }),                       // en kg, depuis le 21 octobre 2026
     ti: de(function (c) { return c.depart.th; }),
     tf: de(function (c) { return c.arret.th; }),
     E: de(function (c) { return c.arret.Ec - c.depart.Ec; }),
-    Q: function (ctx) { return val(ctx, "m", M.m) / 1000 * C_EAU * (val(ctx, "tf", M.tf) - val(ctx, "ti", M.ti)); },
+    Q: function (ctx) { return val(ctx, "m", M.m) * C_EAU * (val(ctx, "tf", M.tf) - val(ctx, "ti", M.ti)); },
     eta: function (ctx) { return 100 * val(ctx, "Q", M.Q) / val(ctx, "E", M.E); },
-    etai: function () { return rendement(chauffe("induction")); }
+    etai: function () { return rendement(chauffe("induction")); },
+    Ei: function () { var c = chauffe("induction"); return c ? Math.floor(c.arret.Ec / 3600) / 1000 : NaN; }   // le compteur de la plaque, en kWh
   };
   /* une chauffe faite comme il faut : la bonne quantite d'eau, le compteur a zero, jusqu'a l'ebullition, le temps en pause.
      Une manipulation refusee nomme ses erreurs (14 octobre 2026) : le geste oublie, jamais la masse a trouver. Une chauffe
@@ -3705,8 +3710,8 @@ var Sim = (function () {
               items: ["<b>" + watts(SUJET.Pb) + "</b>", "<b>" + PC + "</b>", "<b>" + CL + "</b>", "les <b>kWh</b> du wattmètre-prise"],
               categories: ["une énergie", "un volume", "une puissance", "un rendement"], bonnes: [2, 3, 1, 0],
               methode: "L'unité dit la grandeur : le watt pour une puissance, le kilowattheure pour une énergie, le litre pour un volume ; un rendement est un pourcentage." },
-            { type: "nombre", lib: "Quel volume d'eau faut-il chauffer pour une pause ?", unite: "L", attendu: c.V, tolerance: 0, toleranceAbsolue: 0.001,
-              methode: "Le document 1 : le nombre de tasses × " + CL + ", et 100 cl font 1 L." },
+            { type: "nombre", lib: "Quel volume d'eau faut-il chauffer pour une pause ? <b>V = nombre de tasses × volume d'une tasse</b>, avec " + c.n + " tasses de " + CL + " (document 1), soit " + fr(TASSE, 2) + " L chacune.", unite: "L", attendu: c.V, tolerance: 0, toleranceAbsolue: 0.001,
+              methode: "Le nombre de tasses multiplié par le volume d'une tasse, en litres : la réponse est en litres." },
             { type: "choix", lib: "Les " + PC + " du vendeur comptent comme utile l'énergie qui arrive…",
               options: ["au fond de la casserole", "dans l'eau", "à la prise de courant", "dans l'air de la pièce"], bonne: 0,
               methode: "Lisez la petite ligne sous le rendement annoncé, dans le document 2." }
@@ -3733,7 +3738,7 @@ var Sim = (function () {
             methode: "Le compteur additionne tout ce qui est passé depuis sa remise à zéro, y compris une chauffe précédente." },
           { type: "appel", numero: 1, competence: "COM",
             lib: "Présentez votre protocole au professeur, à l'oral, avant de toucher à la cuisine.",
-            attendus: ["les lectures : la masse d'eau, les deux températures, l'énergie au compteur", "le compteur remis à zéro juste avant la marche, et pourquoi", "les calculs : E en joules, Q avec la relation de l'annexe, η = Q ÷ E", "la même quantité d'eau pour les deux appareils, chauffée jusqu'à ébullition", "un vocabulaire juste : puissance, énergie, rendement"] }
+            attendus: ["les lectures : la masse d'eau, les deux températures, l'énergie au compteur", "le compteur remis à zéro juste avant la marche, et pourquoi", "les calculs : E en joules, Q avec la relation de l'annexe, η = Q ÷ E", "la même quantité d'eau pour les deux appareils, chauffée jusqu'à ébullition, et les deux compteurs comparés", "un vocabulaire juste : puissance, énergie, rendement"] }
         ],
         bravo: "Le protocole tient : trois lectures, un compteur à zéro, la même eau pour les deux."
       },
@@ -3751,24 +3756,24 @@ var Sim = (function () {
             aide: "La bouilloire se coupe seule quelques secondes après le début de l'ébullition.",
             verifier: function (ctx) { return controle("bouilloire", ctx); },
             methode: "Tare avec la bouilloire vide, remplir à l'évier, peser ; sur le socle, sonde dans l'eau ; compteur à zéro, mise en marche ; à l'arrêt, la vitesse du temps sur « pause »." },
-          { type: "nombre", lib: "Quelle masse d'eau avez-vous pesée ?", unite: "g",
-            attendu: M.m, tolerance: 0.005, toleranceAbsolue: 3, fini: garde("m", M.m),
-            methode: "La balance, tare faite avec la bouilloire vide, affiche la masse de l'eau seule." },
+          { type: "nombre", lib: "Quelle masse d'eau avez-vous pesée ? Écrivez-la <b>en kilogrammes</b> : la balance affiche des grammes, et 1 000 g = 1 kg.", unite: "kg",
+            attendu: M.m, tolerance: 0.005, toleranceAbsolue: 0.003, fini: garde("m", M.m),
+            methode: "La balance, tare faite avec la bouilloire vide, affiche la masse de l'eau seule, en grammes : 1 250 g, c'est 1,25 kg." },
           { type: "nombre", lib: "Quelle était la température de l'eau avant la mise en marche ?", unite: "°C",
             attendu: M.ti, tolerance: 0, toleranceAbsolue: 0.5, fini: garde("ti", M.ti),
             methode: "Le thermomètre, la sonde dans l'eau, juste avant la mise en marche." },
           { type: "nombre", lib: "Quelle était sa température quand la bouilloire s'est arrêtée ?", unite: "°C",
             attendu: M.tf, tolerance: 0, toleranceAbsolue: 1, fini: garde("tf", M.tf),
             methode: "À l'arrêt de la bouilloire, temps en pause, avant que l'eau refroidisse." },
-          { type: "nombre", lib: "Quelle énergie la bouilloire a-t-elle consommée ? En joules.", unite: "J",
+          { type: "nombre", lib: "Quelle énergie la bouilloire a-t-elle consommée ? Lisez le compteur du wattmètre en kWh (touche MODE), puis convertissez : <b>E = votre lecture en kWh × 3 600 000</b>, en joules.", unite: "J",
             attendu: M.E, tolerance: 0.01, toleranceAbsolue: 3600, fini: garde("E", M.E),
-            methode: "Le compteur du wattmètre en kWh (touche MODE), puis × 3 600 000 pour des joules." },
-          { type: "nombre", lib: "Calculez l'énergie reçue par l'eau, avec la relation de l'annexe.", unite: "J",
+            methode: "1 kWh = 3 600 000 J : le nombre de kWh lu, multiplié par 3 600 000." },
+          { type: "nombre", lib: "Calculez l'énergie reçue par l'eau, avec la relation de l'annexe : <b>Q = m × 4 180 × (θ<sub>finale</sub> − θ<sub>initiale</sub>)</b>, avec votre masse en kg et vos deux températures.", unite: "J",
             attendu: M.Q, tolerance: 0.02, fini: garde("Q", M.Q),
-            methode: "m en kilogrammes : 1 000 g = 1 kg ; puis × 4 180 × l'écart des deux températures." },
-          { type: "nombre", lib: "Calculez le rendement de la bouilloire.", unite: "%",
+            methode: "D'abord l'écart des deux températures, la plus haute moins la plus basse ; puis la masse en kg × 4 180 × cet écart." },
+          { type: "nombre", lib: "Calculez le rendement de la bouilloire : <b>η = Q ÷ E × 100</b>, en %, avec votre Q et votre E en joules.", unite: "%",
             attendu: M.eta, tolerance: 0, toleranceAbsolue: 1.5, fini: garde("eta", M.eta),
-            methode: "η = Q ÷ E, les deux en joules, puis × 100 pour un pourcentage." }
+            methode: "Q divisé par E, les deux en joules : un nombre plus petit que 1 ; × 100 pour un pourcentage." }
         ],
         bravo: "La bouilloire est mesurée : ce qu'elle consomme, ce que l'eau reçoit, et le rapport des deux."
       },
@@ -3787,9 +3792,13 @@ var Sim = (function () {
             aide: "La plaque ne chauffe que si la casserole est posée dessus ; elle s'éteint par sa touche marche.",
             verifier: function (ctx) { return controle("induction", ctx); },
             methode: "Appareil « plaque à induction » ; tare, remplir, peser ; sur la plaque, sonde dans l'eau ; compteur à zéro, allumer, niveau 9 ; éteindre dès que l'eau bout ; temps en pause." },
-          { type: "nombre", lib: "Calculez le rendement mesuré de la plaque à induction.", unite: "%",
-            attendu: M.etai, tolerance: 0, toleranceAbsolue: 3, fini: garde("etai", M.etai),
-            methode: "Les mêmes lectures et les mêmes calculs que pour la bouilloire : masse, deux températures, compteur en joules, puis η = Q ÷ E." },
+          { type: "nombre", lib: "La plaque éteinte, le temps en pause : lisez le compteur du wattmètre, <b>en kWh</b> (touche MODE).", unite: "kWh",
+            attendu: M.Ei, tolerance: 0.01, toleranceAbsolue: 0.0015, fini: garde("Ei", M.Ei),
+            methode: "Le compteur, remis à zéro avant d'allumer la plaque, affiche l'énergie de cette chauffe ; MODE jusqu'à l'unité kWh." },
+          { type: "choix", lib: "Pour la même eau, chauffée de la même température jusqu'à l'ébullition, la plaque a consommé plus d'énergie que la bouilloire. Son rendement est donc…",
+            options: ["plus petit que celui de la bouilloire, et loin des " + PC + " annoncés", "plus grand que celui de la bouilloire, puisqu'elle a consommé plus",
+              "le même que celui de la bouilloire : l'eau a reçu la même énergie Q", "impossible à comparer sans recalculer Q pour la plaque"], bonne: 0,
+            methode: "η = Q ÷ E. Pour la même eau, Q est le même dans les deux appareils : que devient le rapport quand E est plus grand ?" },
           { type: "multi", lib: "Sur l'eau, la plaque n'atteint pas les " + PC + " annoncés. Pourquoi ?",
             options: ["les " + PC + " ne comptent que l'énergie qui arrive au fond de la casserole : la casserole elle-même chauffe aussi", "la casserole ouverte perd de la chaleur par ses parois et par la vapeur",
               "le wattmètre-prise compte trop d'énergie", "l'eau a reçu moins d'énergie que dans la bouilloire"], bonne: [0, 1],
@@ -3805,16 +3814,15 @@ var Sim = (function () {
         competence: "COM", titre: "La réponse à la responsable des achats",
         recit: "La responsable lira trois lignes, pas plus. Elles doivent répondre à sa question, avec un nombre et son unité.",
         questions: function (ctx) {
-          var c = cfg(ctx), eb = Math.round(val(ctx, "eta", M.eta)), ei = Math.round(val(ctx, "etai", M.etai));
-          if (!isFinite(ei)) ei = Math.round(rendement(chauffe("induction")));
-          var kwh = fr(val(ctx, "E", M.E) / 3.6e6, 3);
-          var vraie = eb >= ei ? "La bouilloire consomme le moins : environ " + eb + " % de son énergie va dans l'eau, contre " + ei + " % pour la plaque à induction."
-            : "La plaque à induction consomme le moins : environ " + ei + " % de son énergie va dans l'eau, contre " + eb + " % pour la bouilloire.";
+          var c = cfg(ctx), eb = Math.round(val(ctx, "eta", M.eta));
+          var kb = val(ctx, "E", M.E) / 3.6e6, ki = val(ctx, "Ei", M.Ei), kwh = fr(kb, 3), kwhi = fr(ki, 3);
+          var vraie = !(ki < kb) ? "La bouilloire consomme le moins : environ " + kwh + " kWh pour " + c.n + " tasses, contre " + kwhi + " kWh avec la plaque à induction."
+            : "La plaque à induction consomme le moins : environ " + kwhi + " kWh pour " + c.n + " tasses, contre " + kwh + " kWh avec la bouilloire.";
           return [
             { type: "multi", essais: 2, lib: "Gardez les phrases qui répondent juste à la responsable des achats.",
               options: [vraie, "La plaque à induction consomme le moins : son rendement est de " + PC + ".",
                 "Pour " + c.n + " tasses, la bouilloire consomme environ " + kwh + " kWh.", "Pour " + c.n + " tasses, la bouilloire consomme environ " + kwh + " kW.",
-                "Les " + PC + " du vendeur ne comptent que la plaque, pas la casserole : sur l'eau, on mesure environ " + ei + " %.",
+                "Les " + PC + " du vendeur ne comptent que la plaque, pas la casserole : sur l'eau, la plaque fait moins bien que la bouilloire et ses " + eb + " %.",
                 "La bouilloire est la plus puissante : elle est donc la plus économe."],
               bonne: [0, 2, 4],
               methode: "Une réponse dit quel appareil, avec un nombre et son unité. Une énergie s'écrit en kWh, une puissance en kW ; puissant ne veut pas dire économe." },

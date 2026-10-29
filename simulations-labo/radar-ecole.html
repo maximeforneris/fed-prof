@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Le radar devant l'école</title>
-<meta name="description" content="La mairie a posé un radar pédagogique devant l&#x27;école et veut savoir si les voitures y ralentissent vraiment. Reconnaître trajectoires et mouvements dans la rue, prévoir ce que doit retenir le câble d&#x27;un panneau, mesurer une vitesse sur une chronophotographie avec une règle qu&#x27;on pose au doigt, confronter l&#x27;affichage du radar à l&#x27;enregistrement, puis écrire la note à la mairie. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.">
+<meta name="description" content="La mairie a posé un radar pédagogique devant l&#x27;école et veut savoir si les voitures y ralentissent vraiment. Reconnaître trajectoires et mouvements dans la rue, prévoir ce que doit retenir le câble d&#x27;un panneau, mesurer une vitesse sur une chronophotographie avec une règle qu&#x27;on pose au doigt, confronter l&#x27;affichage du radar à l&#x27;enregistrement, puis écrire la note à la mairie. En TD, la page guide ; en évaluation notée, dans l&#x27;espace d&#x27;évaluation, elle finit par un fichier.">
 <meta name="etiquette" content="Simulation · Parcours PAR-08">
 <style>
 /* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
@@ -2816,7 +2816,7 @@ var Sim = (function () {
 <header class="tete">
 <div class="surtitre">Physique-chimie · parcours CAP et seconde · une heure sur tablette</div>
 <h1>Le radar devant l'école</h1>
-<p class="chapeau">La mairie a posé un radar pédagogique devant l'école et veut savoir si les voitures y ralentissent vraiment. Reconnaître trajectoires et mouvements dans la rue, prévoir ce que doit retenir le câble d'un panneau, mesurer une vitesse sur une chronophotographie avec une règle qu'on pose au doigt, confronter l'affichage du radar à l'enregistrement, puis écrire la note à la mairie. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.</p>
+<p class="chapeau">La mairie a posé un radar pédagogique devant l'école et veut savoir si les voitures y ralentissent vraiment. Reconnaître trajectoires et mouvements dans la rue, prévoir ce que doit retenir le câble d'un panneau, mesurer une vitesse sur une chronophotographie avec une règle qu'on pose au doigt, confronter l'affichage du radar à l'enregistrement, puis écrire la note à la mairie. En TD, la page guide ; en évaluation notée, dans l'espace d'évaluation, elle finit par un fichier.</p>
 </header>
 <style>
 :root{--asphalte:#d3d1cc;--trottoir:#e7e4dd;--facade:#ebe5d8;--vitre:#cfdbe6;--cour:#dfe2d6;--metal:#9aa3ad;--marquage:#fbfaf7;
@@ -3393,7 +3393,7 @@ var Sim = (function () {
     for (var kk = 0; kk <= 110; kk++) {
       var X = K * kk / 2, L = kk % 10 === 0 ? 11 : kk % 2 === 0 ? 7 : 4;
       gradu += "M" + X.toFixed(1) + " 0V" + L;
-      if (kk % 2 === 0) svg("text", { x: X, y: kk % 10 === 0 ? 21 : 17, "text-anchor": "middle", "class": "etiq-p", style: kk % 10 === 0 ? "font-size:9px;font-weight:700" : "font-size:5.5px", texte: String(kk / 2) }, gR);
+      if (kk % 2 === 0) svg("text", { x: X, y: kk % 10 === 0 ? 21 : 17, "text-anchor": "middle", "class": "etiq-p", style: kk % 10 === 0 ? "font-size:9px;font-weight:700" : "font-size:5.5px", texte: kk % 10 === 0 ? (kk / 2) + " m" : String(kk / 2) }, gR);   // « 0 m », « 5 m » : l'unite se voit (essai de l'utilisateur, 22 octobre 2026)
     }
     svg("path", { d: gradu, "class": "grad-r" }, gR);
     svg("text", { x: K * 55 + 4, y: 28, "text-anchor": "end", "class": "etiq-p", style: "font-size:6px", texte: "mètres de rue" }, gR);
@@ -3560,7 +3560,6 @@ var Sim = (function () {
     if (d.P) li.push("Le poids du panneau : " + d.P);
     if (d.d) li.push("La distance de l'image 1 à l'image " + SUJET.iFin + " : " + d.d);
     if (d.v) li.push("La vitesse d'approche : " + d.v + (d.vk ? ", soit " + d.vk : ""));
-    if (d.vm) li.push("La vitesse moyenne sur tout l'enregistrement : " + d.vm);
     if (d.n) li.push("La fréquence de rotation de la roue au radar : " + d.n);
     mesures5.innerHTML = "<p class=\"consigne\" style=\"margin:14px 0 0\"><b>Vos résultats</b>, pour vous aider :</p><ul class=\"vos-mesures\">" +
       (li.length ? li.map(function (x) { return "<li>" + x + "</li>"; }).join("") : "<li>(les phases précédentes les rempliront)</li>") + "</ul>";
@@ -3570,7 +3569,7 @@ var Sim = (function () {
   function sceneMesure(zone, ctx) { labo.p3 = sceneChrono(zone, ctx, { id: "r3" }); }
   function sceneRadar(zone, ctx) { labo.p4 = sceneChrono(zone, ctx, { id: "r4", val: true }); }
   /* une valeur de l'eleve, si elle est plausible (a 10 % de la vraie) ; sinon la vraie : la suite se juge sur sa methode */
-  function plausible(x, vrai) { return isFinite(x) && Math.abs(x - vrai) <= 0.1 * Math.abs(vrai) ? x : vrai; }
+  function plausible(x, vrai, marge) { return isFinite(x) && Math.abs(x - vrai) <= (marge || 0.1) * Math.abs(vrai) ? x : vrai; }
 
   /* ── Le parcours ── */
   var p = S.parcours("#parcours", {
@@ -3634,7 +3633,7 @@ var Sim = (function () {
             { type: "classer", lib: "L'inventaire : qu'est-ce qui agit sur le panneau suspendu ?",
               items: inv.items, categories: ["Action à distance", "Action de contact", "Aucune action"], bonnes: inv.bonnes,
               methode: "La Terre agit à distance sur tout objet : c'est le poids. Un objet n'agit par contact que s'il touche le panneau. " + cap(sde ? SUJET.supports : SUJET.support) + " ne touche" + (sde ? "nt" : "") + " pas le panneau : il" + (sde ? "s retiennent" : " retient") + " " + (sde ? SUJET.les : SUJET.le) + "." },
-            { type: "nombre", lib: "Le panneau a une masse de " + fr(SUJET.masse, SUJET.masse % 1 ? 1 : 0) + " kg. Quel est son <b>poids</b> ? Calculez-le (g = 9,81 N/kg), puis vérifiez au dynamomètre.", unite: "N",
+            { type: "nombre", lib: "Calculez le <b>poids</b> du panneau : <b>P = m × g</b>, avec m = " + fr(SUJET.masse, SUJET.masse % 1 ? 1 : 0) + " kg et g = 9,81 N/kg. Puis vérifiez au dynamomètre.", unite: "N",
               attendu: POIDS, tolerance: 0.03,
               methode: "P = m × g : la masse en kilogrammes, multipliée par 9,81 N/kg. Accroché au dynamomètre, le panneau doit donner à peu près la même valeur.",
               apres: function (ctx, ok, rep) { if (ok || ctx.note) ctx.donnees.P = rep; } },
@@ -3650,23 +3649,26 @@ var Sim = (function () {
         bravo: "Mme Ferrand : « Nous savons ce que le panneau demandera à sa fixation. Place à la vitesse. »" },
       { competence: "REA", titre: "La vitesse sur l'enregistrement", large: true,
         recit: "Votre classe a filmé la rue depuis sa fenêtre, au passage d'une voiture. Le logiciel a superposé une image toutes les " + fr(SUJET.dt, 1) + " s : c'est une chronophotographie. On suit l'avant de la voiture.",
-        consigne: "Glissez la règle sous les points, le zéro sur le point 1 ; touchez un point pour lire la graduation à la loupe.",
+        consigne: "<b>La règle est graduée en mètres de rue</b> : elle donne directement la distance réelle, sans échelle à appliquer. Glissez-la sous les points, le zéro sur le point 1 ; touchez un point pour lire la graduation à la loupe.",
         scene: sceneMesure,
         questions: [
-          { type: "nombre", lib: "Les images sont prises toutes les <b>" + fr(SUJET.dt, 1) + " s</b>. Quelle durée sépare l'image 1 de l'image " + SUJET.iFin + " ?", unite: "s",
-            attendu: T_APPROCHE, tolerance: 0.01,
-            methode: "Comptez les intervalles entre les images, pas les images elles-mêmes : chacun dure " + fr(SUJET.dt, 1) + " s." },
-          { type: "nombre", lib: "Avec la règle, mesurez la <b>distance</b> parcourue par l'avant de la voiture de l'image 1 à l'image " + SUJET.iFin + ".", unite: "m",
+          /* 21 octobre 2026, allegement des calculs : la duree se choisit (compter les intervalles), elle ne se calcule plus */
+          { type: "choix", lib: "Les images sont prises toutes les <b>" + fr(SUJET.dt, 1) + " s</b>. Quelle durée sépare l'image 1 de l'image " + SUJET.iFin + " ?",
+            options: [(SUJET.iFin - 1) + " intervalles de " + fr(SUJET.dt, 1) + " s, soit " + fr(T_APPROCHE, 1) + " s",
+              SUJET.iFin + " images de " + fr(SUJET.dt, 1) + " s, soit " + fr(Math.round(SUJET.iFin * SUJET.dt * 10) / 10, (SUJET.iFin * SUJET.dt * 10) % 10 ? 1 : 0) + " s",
+              fr(SUJET.dt, 1) + " s : c'est l'écart entre deux images voisines"], bonne: 0,
+            methode: "Comptez les intervalles entre les images, pas les images elles-mêmes : de l'image 1 à l'image 2, il y a un intervalle, qui dure " + fr(SUJET.dt, 1) + " s." },
+          { type: "nombre", lib: "Avec la règle, graduée en mètres de rue, mesurez la <b>distance</b> d parcourue par l'avant de la voiture de l'image 1 à l'image " + SUJET.iFin + ".", unite: "m",
             attendu: D_APPROCHE, tolerance: 0.015, toleranceAbsolue: 0.3,
             methode: "Posez le zéro de la règle sur le point 1, puis lisez la graduation sous le point " + SUJET.iFin + " ; la loupe aide à lire au demi-mètre.",
             apres: function (ctx, ok, rep, val) { if (ok || ctx.note) { ctx.donnees.d = rep; ctx.donnees.dVal = val; } } },
-          { type: "nombre", lib: "Calculez la <b>vitesse moyenne</b> de la voiture sur ce trajet, en mètres par seconde.", unite: "m/s",
-            attendu: function (ctx) { return plausible(ctx.donnees.dVal, D_APPROCHE) / T_APPROCHE; }, tolerance: 0.03, toleranceAbsolue: 0.05,
+          { type: "nombre", lib: "Calculez la <b>vitesse moyenne</b> de la voiture sur ce trajet : <b>v = d ÷ t</b>, avec votre distance d, en mètres, et la durée t de la première question, en secondes.", unite: "m/s",
+            attendu: function (ctx) { return plausible(ctx.donnees.dVal, D_APPROCHE, 0.5) / T_APPROCHE; }, tolerance: 0.03, toleranceAbsolue: 0.05,
             methode: "v = d ÷ t : votre distance, en mètres, divisée par la durée, en secondes.",
             apres: function (ctx, ok, rep, val) { if (ok || ctx.note) { ctx.donnees.v = rep; ctx.donnees.vVal = val; } } },
-          { type: "nombre", lib: "Convertissez cette vitesse en <b>kilomètres par heure</b>.", unite: "km/h",
-            attendu: function (ctx) { return plausible(ctx.donnees.vVal, V_APPROCHE) * 3.6; }, tolerance: 0.03, toleranceAbsolue: 0.3,
-            methode: "1 m/s = 3,6 km/h : en une heure, 1 m/s fait 3 600 m, soit 3,6 km. Multipliez par 3,6.",
+          { type: "nombre", lib: "Convertissez cette vitesse en kilomètres par heure : <b>v (km/h) = v (m/s) × 3,6</b>.", unite: "km/h",
+            attendu: function (ctx) { return plausible(ctx.donnees.vVal, V_APPROCHE, 0.5) * 3.6; }, tolerance: 0.03, toleranceAbsolue: 0.3,
+            methode: "1 m/s = 3,6 km/h : en une heure, 1 m/s fait 3 600 m, soit 3,6 km. Multipliez votre vitesse en m/s par 3,6.",
             apres: function (ctx, ok, rep) { if (ok || ctx.note) ctx.donnees.vk = rep; } }
         ],
         bravo: "Mme Ferrand : « Une vitesse mesurée, et non plus devinée. Comparons-la au radar. »" },
@@ -3675,21 +3677,25 @@ var Sim = (function () {
           return "Le radar a affiché " + RADAR + " km/h. Mme Ferrand : « C'est sous 30 : tout va bien, non ? » Rejouez le passage et confrontez le radar à l'enregistrement" +
             (ctx.niveau() === "Seconde" ? " ; la vidéo de la roue permet de contrôler la mesure du radar." : ".");
         },
-        consigne: "Le même enregistrement, une règle et une loupe. « Rejouer le passage » montre quand le radar mesure.",
+        consigne: "Le même enregistrement, une règle graduée en mètres de rue et une loupe. « Rejouer le passage » montre quand le radar mesure.",
         scene: sceneRadar,
         questions: [
-          { type: "nombre", lib: "Sur <b>tout l'enregistrement</b>, de l'image 1 à l'image " + N_IMG + ", quelle est la vitesse moyenne de la voiture, en km/h ?", unite: "km/h",
-            attendu: V_MOY * 3.6, tolerance: 0.04, toleranceAbsolue: 0.3,
-            methode: "Mesurez la distance du point 1 au point " + N_IMG + ", comptez les intervalles pour la durée, v = d ÷ t en m/s, puis multipliez par 3,6.",
-            apres: function (ctx, ok, rep) { if (ok || ctx.note) ctx.donnees.vm = rep; } },
-          { type: "nombre", niveau: "Seconde", lib: "Avec la vidéo de la roue, mesurez sa <b>fréquence de rotation</b> n au passage devant le radar.", unite: "tr/s",
+          /* 21 octobre 2026, allegement des calculs : la moyenne sur tout l'enregistrement (lecture, duree, d ÷ t, × 3,6)
+             n'est plus a calculer ; elle est donnee, et l'eleve juge ce qu'un camarade en conclut */
+          { type: "choix", lib: "Léo a calculé la vitesse moyenne sur <b>tout l'enregistrement</b>, de l'image 1 à l'image " + N_IMG + " : environ " + Math.round(V_MOY * 3.6) + " km/h. Il conclut : « La voiture n'a jamais dépassé " + Math.round(V_MOY * 3.6) + " km/h. » Qu'en dites-vous ?",
+            options: ["Il se trompe : une moyenne mélange les moments rapides et les moments lents ; à l'approche, la voiture roulait plus vite que cette moyenne",
+              "Il a raison : la vitesse moyenne est la plus grande vitesse de la voiture",
+              "Il a raison : c'est la vitesse que le radar aurait dû afficher",
+              "Il se trompe : la voiture n'a jamais dépassé " + RADAR + " km/h, ce qu'affiche le radar"], bonne: 0,
+            methode: "Comparez la moyenne à votre vitesse d'approche de la phase 3, et regardez les écarts entre les points : là où ils sont plus grands, la voiture va plus vite que la moyenne." },
+          { type: "nombre", niveau: "Seconde", lib: "Avec la vidéo de la roue, mesurez sa <b>fréquence de rotation</b> n au passage devant le radar : notez le temps de deux passages de la marque sous le repère, puis <b>n = nombre de tours ÷ durée</b>.", unite: "tr/s",
             attendu: N_ROUE, tolerance: 0.04,
             methode: "Arrêtez la vidéo quand la marque passe sous le repère et notez le temps ; avancez de plusieurs tours entiers, notez de nouveau : n = nombre de tours ÷ durée. Contrôle : v = π × D × n doit redonner la vitesse du radar.",
             apres: function (ctx, ok, rep) { if (ok || ctx.note) ctx.donnees.n = rep; } },
           { type: "multi", lib: "Cochez <b>les trois</b> phrases que l'enregistrement permet d'écrire.",
             options: ["Avant le radar, la voiture roulait à plus de 30 km/h.", "Elle a ralenti en approchant du radar.", "Après le radar, devant l'entrée de l'école, elle a réaccéléré.",
               "Le radar mesure la vitesse moyenne de la voiture sur toute la rue.", "Puisque le radar affiche " + RADAR + " km/h, la voiture a respecté les 30 km/h dans toute la rue.",
-              "La vitesse moyenne sur l'enregistrement est la plus grande vitesse de la voiture."], bonne: [0, 1, 2],
+              "La voiture a roulé à vitesse constante sur tout l'enregistrement."], bonne: [0, 1, 2],
             methode: "Comparez les écarts entre les points avant le radar, au radar et devant l'école ; le radar ne mesure qu'au moment où la voiture passe devant lui, et une moyenne cache les moments plus rapides." }
         ],
         bravo: "Mme Ferrand : « Le radar ne ment pas, mais il ne voit qu'un instant. Il faut faire ralentir les voitures plus tôt. »" },

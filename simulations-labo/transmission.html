@@ -3378,7 +3378,7 @@ var Sim = (function () {
           { type: "choix", lib: "Quel type d'onde porte le code de la télécommande ?",
             options: ["une onde lumineuse, l'infrarouge, invisible à l'œil", "une onde sonore, trop aiguë pour l'oreille", "un courant électrique", "la chaleur de la DEL"], bonne: 0,
             methode: "Le document 1 dit ce qui émet le code. Une DEL émet de la lumière, même quand l'œil ne la voit pas." },
-          { type: "nombre", lib: "Combien de bits le code de la barrière compte-t-il ?", unite: "bits",
+          { type: "nombre", lib: "Combien de bits le code de la barrière compte-t-il ? Nombre de bits = 8 × nombre de caractères du code (documents 1 et 3).", unite: "bits",
             attendu: function (ctx) { return cfg(ctx).N; }, tolerance: 0,
             methode: "Le document 3 : combien de bits par caractère, et combien de caractères dans le code ?" }
         ],
@@ -3436,7 +3436,7 @@ var Sim = (function () {
           { type: "nombre", lib: "Relevez la durée d'envoi du code.", unite: "s",
             attendu: M.t, tolerance: 0.005, fini: garde("t", M.t),
             methode: "Le chronomètre du récepteur, à la fin de l'envoi, avec le code et le débit du document 1." },
-          { type: "nombre", lib: "Calculez le débit de la télécommande avec votre mesure.", unite: "bit/s",
+          { type: "nombre", lib: "Calculez le débit de la télécommande : débit = nombre de bits ÷ durée d'envoi (annexe), avec le nombre de bits du code (partie 1) et votre durée, en s.", unite: "bit/s",
             attendu: M.debit, tolerance: 0.02, fini: garde("debit", M.debit),
             methode: "Le nombre de bits du code divisé par la durée d'envoi, en secondes." },
           { type: "nombre", lib: "Cherchez la portée de la liaison dans l'atelier éclairé, et donnez-la.", unite: "m",

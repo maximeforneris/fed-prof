@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>L'appartement à rallumer</title>
-<meta name="description" content="Une famille emménage et veut décider de son éclairage avant les travaux. Sur la maquette de l&#x27;appartement, en très basse tension : lire le plan et la plaque du bloc, choisir entre série et dérivation, câbler les quatre pièces au doigt, mesurer au multimètre, puis choisir le fusible qui protège tout. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.">
+<meta name="description" content="Une famille emménage et veut décider de son éclairage avant les travaux. Sur la maquette de l&#x27;appartement, en très basse tension : lire le plan et la plaque du bloc, choisir entre série et dérivation, câbler les quatre pièces au doigt, mesurer au multimètre, puis choisir le fusible qui protège tout. En TD, la page guide ; en évaluation notée, dans l&#x27;espace d&#x27;évaluation, elle finit par un fichier.">
 <meta name="etiquette" content="Simulation · Parcours PAR-02">
 <style>
 /* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
@@ -2816,7 +2816,7 @@ var Sim = (function () {
 <header class="tete">
 <div class="surtitre">Physique-chimie · parcours CAP et seconde · une heure sur tablette</div>
 <h1>L'appartement à rallumer</h1>
-<p class="chapeau">Une famille emménage et veut décider de son éclairage avant les travaux. Sur la maquette de l'appartement, en très basse tension : lire le plan et la plaque du bloc, choisir entre série et dérivation, câbler les quatre pièces au doigt, mesurer au multimètre, puis choisir le fusible qui protège tout. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.</p>
+<p class="chapeau">Une famille emménage et veut décider de son éclairage avant les travaux. Sur la maquette de l'appartement, en très basse tension : lire le plan et la plaque du bloc, choisir entre série et dérivation, câbler les quatre pièces au doigt, mesurer au multimètre, puis choisir le fusible qui protège tout. En TD, la page guide ; en évaluation notée, dans l'espace d'évaluation, elle finit par un fichier.</p>
 </header>
 <style>
 :root{--lcd-fond:#cfd8cf;--lcd-encre:#1d2a1d;--plancher:#efe9df;--nuit:#1f2a3a}
@@ -4006,7 +4006,7 @@ table.ap-carnet td,table.ap-carnet th{text-align:left}
             items: ["230 V ~", "50 Hz", U0 + " V " + DC, SUJET.blocI + " A", SUJET.blocP + " W"],
             categories: ["Tension alternative", "Tension continue", "Intensité", "Fréquence", "Puissance"], bonnes: [0, 3, 1, 2, 4],
             methode: "Le volt (V) pour une tension, l'ampère (A) pour une intensité, le hertz (Hz) pour une fréquence, le watt (W) pour une puissance. Le signe ~ veut dire alternatif ; le trait plein sur un trait pointillé, continu." },
-          { type: "nombre", niveau: "Seconde", lib: "L'entrée du bloc est la prise du secteur : <b>230 V efficaces</b>, sinusoïdale. Quelle est la <b>valeur maximale</b> de cette tension ?", unite: "V",
+          { type: "nombre", niveau: "Seconde", lib: "L'entrée du bloc est la prise du secteur : <b>230 V efficaces</b>, sinusoïdale. Calculez la <b>valeur maximale</b> de cette tension : <b>U<sub>max</sub> = U<sub>eff</sub> × √2</b>, avec U<sub>eff</sub> = 230 V.", unite: "V",
             attendu: 230 * Math.SQRT2, tolerance: 0.012,
             methode: "Pour une tension sinusoïdale, U<sub>max</sub> = U<sub>eff</sub> × √2." }
         ],
@@ -4019,7 +4019,7 @@ table.ap-carnet td,table.ap-carnet th{text-align:left}
           { type: "choix", lib: "Quel montage garde la cuisine allumée quand la lampe du séjour est dévissée ?",
             options: ["Le montage 1, en série", "Le montage 2, en dérivation", "Les deux", "Aucun des deux"], bonne: 1,
             methode: "Dévissez la lampe du séjour sur chaque montage et regardez la cuisine : en série, le courant n'a qu'un seul chemin." },
-          { type: "nombre", niveau: "Seconde", lib: "Dans le montage 1, <b>en série</b>, un voltmètre aux bornes de la lampe de la cuisine lit <b>" + fr(U_CUISINE_SERIE, 2) + " V</b>. Le bloc donne <b>" + U0 + " V</b>. Quelle tension reçoit la lampe du <b>séjour</b> ?", unite: "V",
+          { type: "nombre", niveau: "Seconde", lib: "Dans le montage 1, <b>en série</b>, un voltmètre aux bornes de la lampe de la cuisine lit <b>" + fr(U_CUISINE_SERIE, 2) + " V</b>. Le bloc donne <b>" + U0 + "\u00a0V</b>. Quelle tension reçoit la lampe du <b>séjour</b> ? Loi des mailles : U<sub>bloc</sub> = U<sub>séjour</sub> + U<sub>cuisine</sub> ; calculez <b>U<sub>séjour</sub> = U<sub>bloc</sub> − U<sub>cuisine</sub></b>.", unite: "V",
             attendu: U0 - U_CUISINE_SERIE, tolerance: 0.03, toleranceAbsolue: 0.03,
             methode: "Loi des mailles : sur la boucle bloc → séjour → cuisine → bloc, la tension du générateur est la somme des tensions des deux lampes, U<sub>bloc</sub> = U<sub>séjour</sub> + U<sub>cuisine</sub>." },
           { type: "classer", lib: "Sur le plan du bas, l'ampèremètre peut se placer en 1, 2, 3 ou 4. À chaque place, mesure-t-il le courant du générateur, de la cuisine, du séjour, ou court-circuite-t-il une lampe ?",
@@ -4054,7 +4054,7 @@ table.ap-carnet td,table.ap-carnet th{text-align:left}
             attendu: function () { return iTotal() * 0.986; }, tolerance: 0.04, toleranceAbsolue: 0.02, sansSigne: true,
             methode: "Tout le courant passe dans le fil qui part de la borne + du tableau : c'est là que l'ampèremètre se met, en série.",
             /* en note, la mesure se rappelle quelle qu'elle soit : la garder seulement juste trahirait le verdict */
-            apres: function (ctx, ok, rep) { ctx.donnees.iTotal = rep; if (ok || ctx.note) mesures.iTotal = String(rep).replace(/\s*a\s*$/i, "").replace(/^\s*[-−]\s*/, ""); } },
+            apres: function (ctx, ok, rep, val) { ctx.donnees.iTotal = rep; if (ok || ctx.note) { mesures.iTotal = String(rep).replace(/\s*a\s*$/i, "").replace(/^\s*[-−]\s*/, ""); mesures.iTotalVal = Math.abs(val); } } },
           { type: "nombre", lib: "Mesurez la <b>tension</b> aux bornes de la lampe de la chambre. Le bloc annonce " + U0 + " V.", unite: "V",
             attendu: SUJET.uChambre, tolerance: 0.03, toleranceAbsolue: 0.05, sansSigne: true,
             methode: "Le voltmètre se branche aux deux bornes de la lampe, en dérivation : bornes V et COM, sélecteur sur V.",
@@ -4067,10 +4067,12 @@ table.ap-carnet td,table.ap-carnet th{text-align:left}
         scene: sceneProtection,
         /* une fonction : l'intitule rappelle la mesure de la phase 3, et se refait tant qu'on n'a rien repondu ici */
         questions: function () { return [
-          { type: "nombre", lib: "Avec les quatre lampes <b>et</b> le radiateur (" + U0 + " V · <b>" + I_RADIATEUR + " A</b>), quelle intensité traverse le fusible ? " +
-                (mesures.iTotal ? "Votre mesure du générateur : <b>" + mesures.iTotal + " A</b>." : "Reprenez votre mesure du générateur (phase 3)."),
+          /* 21 octobre 2026, allegement des calculs : la formule est dans l'intitule, et la somme se juge sur la mesure
+             de l'eleve si elle est a 25 % de la vraie : une mesure un peu fausse ne fait pas tomber ce calcul */
+          { type: "nombre", lib: "Avec les quatre lampes <b>et</b> le radiateur (" + U0 + "\u00a0V · <b>" + I_RADIATEUR + "\u00a0A</b>), quelle intensité traverse le fusible ? Calculez <b>I = I<sub>générateur</sub> + I<sub>radiateur</sub></b>. " +
+                (mesures.iTotal ? "Votre mesure du générateur : <b>" + mesures.iTotal + "\u00a0A</b>." : "Reprenez votre mesure du générateur (phase 3)."),
             unite: "A",
-            attendu: function () { return iTotal() + I_RADIATEUR; }, tolerance: 0.04, toleranceAbsolue: 0.05,
+            attendu: function () { var m = mesures.iTotalVal, t = iTotal(); return (isFinite(m) && Math.abs(m - t) <= 0.25 * t ? m : t) + I_RADIATEUR; }, tolerance: 0.04, toleranceAbsolue: 0.05,
             methode: "Le fusible est dans le fil principal : il voit la somme des courants de tout ce qui est branché. Votre mesure du générateur, plus les " + I_RADIATEUR + " A du radiateur.",
             apres: function (ctx, ok, rep) { ctx.donnees.iRadiateur = rep; } },
           { type: "action", lib: "Trouvez le fusible qui <b>tient</b> avec les quatre lampes et qui <b>fond</b> quand on branche le radiateur. Faites les deux essais avec lui, et <b>laissez-le posé</b> pour vérifier.",

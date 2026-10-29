@@ -3505,9 +3505,12 @@ var Sim = (function () {
     U0: function () { return SUJET.U0; },
     I: function (ctx) { return 1000 * SUJET.U0 / (R_RECEPTEUR + cfg(ctx).r); },
     t1: function (ctx) { var t = ctx.donnees.t1; return isFinite(t) && t > 0 ? t : cfg(ctx).N * 3600; },
-    Q: function (ctx) { return val(ctx, "I", M.I) / 1000 * M.t1(ctx); },
+    /* 21 octobre 2026 (alleger les calculs) : Q et la duree du zinc se calculent sur la duree PREVUE, N h, ecrite dans
+       l'intitule ; « ecart » elargit la tolerance de l'ecart entre le prevu et le chronometre, pour qui prend la duree vraie */
+    Q: function (ctx) { return val(ctx, "I", M.I) / 1000 * cfg(ctx).N * 3600; },
+    ecart: function (ctx) { return Math.abs(M.t1(ctx) / (cfg(ctx).N * 3600) - 1); },
     dm: function (ctx) { var x = ctx.donnees.dm1; return isFinite(x) && x > 0 ? x : M.I(ctx) / 1000 * M.t1(ctx) * 65.38 / (2 * 96485); },
-    tZinc: function (ctx) { return ZINC / (val(ctx, "dm", M.dm) / (M.t1(ctx) / 3600)); },
+    tZinc: function (ctx) { return ZINC / val(ctx, "dm", M.dm) * cfg(ctx).N; },
     tReel: function () { return W.tCross === null ? NaN : W.tCross / 3600; }
   };
 
@@ -3638,12 +3641,12 @@ var Sim = (function () {
             },
             fini: function (ctx) { var p = P(); if (p.t > 1800) { ctx.donnees.t1 = p.t; ctx.donnees.dm1 = zincPerdu(); } },
             methode: "Interrupteur fermé jusqu'à la durée prévue au chronomètre, puis ouvert ; « Peser les lames » ensuite, circuit ouvert." },
-          { type: "nombre", lib: "Calculez la quantité d'électricité débitée pendant l'essai.", unite: "C",
-            attendu: M.Q, tolerance: 0.03, fini: garde("Q", M.Q),
-            methode: "Q = I × t, avec I en ampères (1 mA = 0,001 A) et t en secondes : la durée du chronomètre, 1 h = 3 600 s." },
-          { type: "nombre", lib: "Quelle masse la lame de zinc a-t-elle perdue pendant l'essai ?", unite: "g",
+          { type: "nombre", get lib() { var N = CFG ? CFG.N : 2; return "Calculez la quantité d'électricité débitée pendant les " + N + " heures prévues : <b>Q = I × t</b>, avec I en ampères (votre intensité en mA ÷ 1 000) et t = " + N + " × 3 600 = " + fr(N * 3600, 0) + " s."; }, unite: "C",
+            attendu: M.Q, tolerance: function (ctx) { return 0.03 + M.ecart(ctx); }, fini: garde("Q", M.Q),
+            methode: "D'abord l'intensité en ampères : les milliampères divisés par 1 000. Puis on la multiplie par la durée en secondes, donnée dans l'intitulé." },
+          { type: "nombre", lib: "Calculez la masse perdue par la lame de zinc pendant l'essai : <b>Δm = masse avant le débit − masse après</b>, lues sur la balance.", unite: "g",
             attendu: M.dm, tolerance: 0, toleranceAbsolue: 0.025, fini: garde("dm", M.dm),
-            methode: "La masse de la lame de zinc avant le débit, moins sa masse après." }
+            methode: "Les deux pesées de la lame de zinc, avant de fermer le circuit et après l'avoir ouvert : la plus grande moins la plus petite." }
         ],
         bravo: "La pile est montée, mesurée, pesée. Reste à savoir combien de temps elle tiendra."
       },
@@ -3652,10 +3655,12 @@ var Sim = (function () {
         recit: "La conservatrice raisonne simplement : « la pile s'arrêtera quand la lame de zinc sera usée ». Vous avez de quoi le calculer, puis de quoi le vérifier.",
         consigne: "La pile reprend où vous l'avez laissée. Quand l'intensité commence à baisser, passez au temps × 60 pour ouvrir l'interrupteur à temps.",
         paillasse: ["#p-carteScene", "#p-carteMesure", "#p-carteReleve"], large: true,
-        questions: [
-          { type: "nombre", lib: "La lame de zinc neuve pèse " + fr(ZINC, 2) + " g. Si la pile s'arrêtait quand elle est usée, combien d'heures tiendrait-elle, au rythme de votre essai ?", unite: "h",
-            attendu: M.tZinc, tolerance: 0.05, fini: garde("tZinc", M.tZinc),
-            methode: "La masse perdue en une heure : celle de l'essai divisée par sa durée en heures. Puis combien de fois elle tient dans la lame neuve." },
+        questions: function (ctx) {
+          var N = cfg(ctx).N;
+          return [
+          { type: "nombre", lib: "La lame de zinc neuve pèse " + fr(ZINC, 2) + " g. Si la pile s'arrêtait quand elle est usée, combien d'heures tiendrait-elle, au rythme de votre essai ? Calculez <b>t = m ÷ Δm × " + N + "</b>, avec m = " + fr(ZINC, 2) + " g, votre Δm de la partie 3 et " + N + " h d'essai.", unite: "h",
+            attendu: M.tZinc, tolerance: function (ctx) { return 0.05 + M.ecart(ctx); }, fini: garde("tZinc", M.tZinc),
+            methode: "m ÷ Δm dit combien d'essais comme le vôtre la lame neuve permettrait ; chacun dure " + N + " h, d'où la multiplication." },
           { type: "action", lib: "Vérifiez : refermez le circuit, laissez débiter jusqu'à ce que l'intensité passe sous " + SEUIL_T + ", puis ouvrez l'interrupteur.",
             aide: "Le chronomètre reprend où il en était : il donne la durée de fonctionnement depuis le début.",
             verifier: function (ctx) {
@@ -3674,9 +3679,10 @@ var Sim = (function () {
           { type: "nombre", lib: "Pendant combien d'heures, en tout, la pile a-t-elle fourni au moins " + SEUIL_T + " ?", unite: "h",
             attendu: function () { return M.tReel() + 0.15; }, tolerance: 0, toleranceAbsolue: 0.4, fini: garde("tReel", M.tReel),
             methode: "Le chronomètre, lu à l'ouverture de l'interrupteur, en heures : 1 h 30 min, c'est 1,5 h." },
-          { type: "nombre", lib: "Pesez les lames : quelle masse la lame de zinc a-t-elle perdue depuis le début ?", unite: "g",
-            attendu: zincPerdu, tolerance: 0, toleranceAbsolue: 0.03,
-            methode: "La masse de la lame de zinc neuve moins sa masse maintenant ; le dessin exagère l'usure, la balance non." },
+          { type: "choix", lib: "Pesez les lames. Comparée à sa masse neuve, " + fr(ZINC, 2) + " g, que dit la balance de la lame de zinc ?",
+            options: ["elle a perdu moins d'un gramme : elle est presque intacte", "elle a perdu à peu près la moitié de sa masse",
+              "elle est presque entièrement usée, comme le dessin le montre", "elle a pris de la masse : du cuivre s'y est déposé"], bonne: 0,
+            methode: "Lisez la balance et mettez sa lecture à côté de la masse neuve, écrite dans la question : c'est la balance qui fait foi, pas le dessin." },
           { type: "multi", lib: "La pile s'est arrêtée bien avant que le zinc soit usé. Pourquoi ?",
             options: ["les ions Cu²⁺ ont été consommés sur la lame de cuivre : <span class=\"eq\">Cu²⁺ + 2 e⁻ → Cu</span>", "la solution de sulfate de cuivre s'est décolorée : il n'y reste presque plus d'ions Cu²⁺",
               "la lame de zinc est usée", "le dépôt de cuivre empêche le courant de passer", "la jonction s'est bouchée"], bonne: [0, 1],
@@ -3684,7 +3690,8 @@ var Sim = (function () {
           { type: "choix", lib: "Pour qu'une pile pareille fasse fonctionner plus longtemps le même récepteur, que faut-il changer ?",
             options: ["davantage de solution de sulfate de cuivre, donc plus d'ions Cu²⁺", "une lame de zinc plus épaisse", "une jonction qui laisse passer plus de courant", "une lame de cuivre plus grande"], bonne: 0,
             methode: "Ce qui s'épuise en premier fixe la durée : c'est lui qu'il faut augmenter." }
-        ],
+          ];
+        },
         bravo: "Le calcul disait des jours, la pile a tenu des heures : vous savez pourquoi."
       },
       {

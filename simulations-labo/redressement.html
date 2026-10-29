@@ -3522,7 +3522,7 @@ var Sim = (function () {
             items: ["le transformateur", "le pont de diodes", "le condensateur"],
             categories: ["abaisser la tension alternative", "redresser : le courant ne change plus de sens", "filtrer : lisser la tension redressée", "passer du continu à l'alternatif"], bonnes: [0, 1, 2],
             methode: "Suivez la tension du réseau jusqu'au module : d'abord sa valeur, puis son sens, puis ses variations." },
-          { type: "nombre", lib: "Quelle est la valeur maximale de la tension délivrée par le transformateur ?", unite: "V",
+          { type: "nombre", lib: "Calculez la valeur maximale de la tension délivrée par le transformateur : U<sub>max</sub> = U<sub>eff</sub> × √2 (annexe), avec la tension efficace du document 2.", unite: "V",
             attendu: M.Umax, tolerance: 0.01, toleranceAbsolue: 0.1,
             methode: "Une tension sinusoïdale de valeur efficace U<sub>eff</sub> monte jusqu'à U<sub>eff</sub> × √2." },
           { type: "choix", lib: "Pour le chemin inverse, du continu d'une batterie à l'alternatif d'un appareil, quel convertisseur faudrait-il ?",

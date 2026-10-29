@@ -3465,12 +3465,12 @@ var Sim = (function () {
         puissances: [15, 19, 23], duree: 30, Lk: 0.165, g0: 5.5, plage: [10.5, 12.0], coMax: 150, sonne: "trois fois",
         eq: ["2 C<sub>4</sub>H<sub>10</sub> + 13 O<sub>2</sub> → 8 CO<sub>2</sub> + 10 H<sub>2</sub>O", "C<sub>4</sub>H<sub>10</sub> + 6 O<sub>2</sub> → 4 CO<sub>2</sub> + 5 H<sub>2</sub>O",
           "2 C<sub>4</sub>H<sub>10</sub> + 9 O<sub>2</sub> → 8 CO + 10 H<sub>2</sub>O", "C<sub>4</sub>H<sub>10</sub> + O<sub>2</sub> → CO<sub>2</sub> + H<sub>2</sub>O"],
-        eqCO2: [4, 4, NaN, 1] }
+        nH: 10, co2Mol: 176 }
     : { gaz: "propane", nom: "propane", F: "C<sub>3</sub>H<sub>8</sub>", M: 44, nC: 3, PCI: 12.9, bouteille: 35,
         puissances: [18, 21, 24], duree: 20, Lk: 0.18, g0: 5.1, plage: [10.0, 11.5], coMax: 100, sonne: "deux fois",
         eq: ["C<sub>3</sub>H<sub>8</sub> + 5 O<sub>2</sub> → 3 CO<sub>2</sub> + 4 H<sub>2</sub>O", "C<sub>3</sub>H<sub>8</sub> + 4 O<sub>2</sub> → 3 CO<sub>2</sub> + 4 H<sub>2</sub>O",
           "2 C<sub>3</sub>H<sub>8</sub> + 7 O<sub>2</sub> → 6 CO + 8 H<sub>2</sub>O", "C<sub>3</sub>H<sub>8</sub> + O<sub>2</sub> → CO<sub>2</sub> + H<sub>2</sub>O"],
-        eqCO2: [3, 3, NaN, 1] };
+        nH: 8, co2Mol: 132 };
   P.SUJET = SUJET;                                                     // le sujet du mode, pour les scenarios
   var NOM = SUJET.nom, F = SUJET.F, DUREE = SUJET.duree, PL = SUJET.plage, COMAX = SUJET.coMax;
   var PLAGE = "CO₂ entre " + fr(PL[0], 1) + " et " + fr(PL[1], 1) + " %, CO sous " + COMAX + " ppm";
@@ -3488,9 +3488,6 @@ var Sim = (function () {
   /* une lecture de la bascule tarée : l'eleve peut recopier le signe moins, la masse brulee reste positive */
   function gardeAbs(cle, mesure) { return function (ctx, juste, rep, v) { ctx.donnees[cle] = (juste || ctx.note) && isFinite(v) ? Math.abs(v) : mesure(ctx); }; }
   function val(ctx, cle, mesure) { var x = ctx.donnees[cle]; return isFinite(x) ? x : mesure(ctx); }
-  function texteSeul(h) { var d = document.createElement("div"); d.innerHTML = h; return (d.textContent || "").replace(/\s+/g, " ").trim(); }
-  function indexEq(rep) { var r = String(rep || "").replace(/\s+/g, " ").trim(); for (var k = 0; k < SUJET.eq.length; k++) if (texteSeul(SUJET.eq[k]) === r) return k; return NaN; }
-  function ratio(ctx) { var k = ctx.donnees.eq, r = isFinite(k) ? SUJET.eqCO2[k] : NaN; return isFinite(r) ? r : SUJET.nC; }
   function texteCO(v) { return v > 10000 ? "> 10 000" : fr(Math.round(v), 0); }
   /* le dernier essai fini, au reglage de la plaque ou au repere du client */
   function auRepere(x) { return Math.abs(x.gMin - SUJET.g0) < 0.051 && Math.abs(x.gMax - SUJET.g0) < 0.051; }
@@ -3504,7 +3501,9 @@ var Sim = (function () {
     M: function () { return SUJET.M; },
     m: function () { var x = essaiDe("regle"); return x ? x.m : NaN; },
     E: function (ctx) { return val(ctx, "m", MES.m) * SUJET.PCI; },
-    co2: function (ctx) { var m = val(ctx, "m", MES.m), M = val(ctx, "M", MES.M); if (!(M >= 10 && M <= 300)) M = SUJET.M; return m * 1000 / M * ratio(ctx) * 44 / 1000; },
+    /* m(CO2) = m × 132 ÷ M (21 octobre 2026, « trop dur ») : la masse de CO2 d'une mole de gaz est donnée, la masse molaire est
+       celle de l'eleve ; l'equation choisie en partie 2 ne fait plus tomber ce calcul */
+    co2: function (ctx) { var m = val(ctx, "m", MES.m), M = val(ctx, "M", MES.M); if (!(M >= 10 && M <= 300)) M = SUJET.M; return m * SUJET.co2Mol / M; },
     m0: function () { var x = essaiDe("client"); return x ? x.m : NaN; }
   };
 
@@ -3614,9 +3613,9 @@ var Sim = (function () {
           { type: "multi", lib: "Dans le bon d'intervention, quels signes montrent une combustion incomplète ?",
             options: ["la fumée noire au conduit", "le capot noirci", "le détecteur de CO qui sonne", "le panache blanc des matins froids", "la chaudière chauffe encore le garage"], bonne: [0, 1, 2],
             methode: "Une combustion incomplète donne du carbone, la suie, et du monoxyde de carbone. Le panache blanc est de l'eau : toute combustion d'un hydrocarbure en produit." },
-          { type: "nombre", lib: "Calculez la masse molaire du " + NOM + ", " + F + ", avec les masses molaires atomiques du document 3.", unite: "g/mol",
+          { type: "nombre", lib: "Calculez la masse molaire du " + NOM + ", " + F + " : <b>M = " + SUJET.nC + " × M(C) + " + SUJET.nH + " × M(H)</b>, avec les masses molaires atomiques du document 3.", unite: "g/mol",
             attendu: SUJET.M, tolerance: 0, fini: garde("M", MES.M),
-            methode: "M = nombre d'atomes de carbone × 12 + nombre d'atomes d'hydrogène × 1." }
+            methode: "Chaque atome compte : le nombre d'atomes de carbone multiplié par la masse molaire du carbone, plus celui d'hydrogène multiplié par celle de l'hydrogène." }
         ],
         bravo: "Le dossier est lu : un hydrocarbure, des signes qui ne trompent pas, une masse molaire."
       },
@@ -3630,7 +3629,6 @@ var Sim = (function () {
             options: ["le " + NOM + " manque de dioxygène : le volet d'air est trop fermé", "le " + NOM + " reçoit trop d'air", "la bouteille contient de l'eau", "le gaz arrive trop froid au brûleur"], bonne: 0,
             methode: "La suie, c'est du carbone qui n'a pas trouvé de dioxygène pour brûler." },
           { type: "choix", lib: "Quelle équation modélise la combustion <b>complète</b> du " + NOM + " ?", options: SUJET.eq, bonne: 0,
-            fini: function (ctx, juste, rep) { ctx.donnees.eq = indexEq(rep); },
             methode: "Complète : les produits sont le dioxyde de carbone et l'eau. Ajustée : autant d'atomes de chaque sorte de chaque côté de la flèche ; comptez les atomes d'oxygène en dernier." },
           { type: "classer", lib: "Quel test, ou quel instrument, reconnaît quel produit de la combustion ?",
             items: ["l'eau de chaux qui se trouble", "la buée sur un miroir froid", "le dépôt noir sur une soucoupe", "la cellule de l'analyseur, ou le détecteur"],
@@ -3675,10 +3673,10 @@ var Sim = (function () {
           { type: "nombre", lib: "Calculez l'énergie libérée par ce " + NOM + ". Le document 3 donne <b>PCI = " + fr(SUJET.PCI, 1) + " kWh/kg</b> ; m est votre relevé, en kg. E = m × PCI.", unite: "kWh",
             attendu: MES.E, tolerance: 0.05, fini: garde("E", MES.E),
             methode: "La masse en kilogrammes multipliée par le PCI en kWh/kg donne des kWh." },
-          { type: "nombre", lib: "Calculez la masse de CO₂ rejetée pendant l'essai, la combustion étant complète : n = m ÷ M avec votre masse en grammes et votre masse molaire, "
-              + "la quantité de CO₂ que donne votre équation de la partie 2, puis m = n × M avec <b>M(CO<sub>2</sub>) = 44 g/mol</b>. Réponse en kg.", unite: "kg",
+          { type: "nombre", lib: "Calculez la masse de CO₂ rejetée pendant l'essai, la combustion étant complète : <b>m(CO<sub>2</sub>) = m × " + SUJET.co2Mol + " ÷ M</b>, avec votre masse m en kg, "
+              + "votre masse molaire M du " + NOM + " (partie 1), et " + SUJET.co2Mol + " g, la masse de CO₂ que donne une mole de " + NOM + " brûlée (l'équation et M(CO<sub>2</sub>) = 44 g/mol). Réponse en kg.", unite: "kg",
             attendu: MES.co2, tolerance: 0.05, fini: garde("co2", MES.co2),
-            methode: "D'après l'équation ajustée, chaque mole de gaz donne autant de moles de CO₂ qu'elle a d'atomes de carbone. Les grammes, puis les kilogrammes." }
+            methode: "Une règle de proportion : la masse brûlée, en kg, multipliée par la masse de CO₂ d'une mole de gaz, divisée par la masse d'une mole de gaz. Les kilogrammes restent des kilogrammes." }
         ],
         bravo: "La combustion est réglée, l'essai fait et calculé. Reste à répondre au responsable."
       },

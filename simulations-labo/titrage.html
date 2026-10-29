@@ -3759,7 +3759,11 @@ body.pc-en-cours #defis{display:none!important}
    l'evaluation notee (#note) annonce 10° (vinaigre menager), plage de 9,5 a 10,5°, et tire 9,1 / 9,8 / 10,2 /
    11,2° : deux dedans, deux dehors, comme en TD. V_E de 15,2 a 18,7 mL (TD 11,7 a 15,0) : la burette de 25 mL
    suffit aux deux titrages sans la remplir de nouveau. Le materiel ne change pas : soude a 0,100 mol/L,
-   10,0 mL a la pipette, dilution par dix, M = 60 g/mol, et la regle des 5 %. */
+   10,0 mL a la pipette, dilution par dix, M = 60 g/mol, et la regle des 5 %.
+   ALLEGEMENT du 21 octobre 2026 (« trop dur pour les eleves ») : trois calculs au lieu de cinq, chacun de deux operations
+   au plus, la formule ecrite. La masse d'acide d'un litre devient un choix ; la prevision part de C_a donnee ; le degre
+   n'est plus calcule (troisieme etage de la chaine) : la conclusion le donne sur le C_m de l'eleve, et un choix de
+   manipulation prend sa place. */
 (function () {
   var T = window.titrage, fr = Sim.fr, el = Sim.el;
   var SUJET = Sim.note
@@ -3956,9 +3960,9 @@ body.pc-en-cours #defis{display:none!important}
             items: ["<b>" + dg(ANNONCE) + "</b>", "<b>0,100 mol/L</b>", "<b>60 g/mol</b>", "<b>10,0 mL</b>"],
             categories: ["une concentration en quantité de matière", "un volume", "une masse molaire", "une masse d'acide pour 100 g de vinaigre"], bonnes: [3, 0, 2, 1],
             methode: "L'unité dit la grandeur : mol/L pour une concentration, g/mol pour une masse molaire, mL pour un volume ; le degré est défini dans l'annexe." },
-          { type: "nombre", lib: "Quelle masse d'acide éthanoïque contient un litre de vinaigre à " + dg(ANNONCE) + " ?", unite: "g",
-            attendu: ANNONCE * 10, tolerance: 0.01,
-            methode: dg(ANNONCE) + " : " + ANNONCE + " g d'acide pour 100 g de vinaigre. Un litre de vinaigre, c'est 1 000 g." },
+          { type: "choix", lib: "Quelle masse d'acide éthanoïque contient un litre de vinaigre à " + dg(ANNONCE) + " ? (Annexe : le degré, et la masse d'un litre de vinaigre.)",
+            options: [fr(ANNONCE * 10, 0) + " g", fr(ANNONCE, 0) + " g", fr(ANNONCE * 100, 0) + " g", fr(ANNONCE / 10, 1) + " g"], bonne: 0,
+            methode: "Le degré compte les grammes d'acide dans 100 g de vinaigre. Un litre de vinaigre pèse 1 000 g : combien de fois 100 g ?" },
           { type: "choix", lib: "Entre quels degrés la livraison est-elle acceptée ?",
             options: ["de " + dg(BAS) + " à " + dg(HAUT), "de " + dg(ANNONCE - 0.05) + " à " + dg(ANNONCE + 0.05), "de " + dg(ANNONCE - 1) + " à " + dg(ANNONCE + 1), "de " + dg(ANNONCE - 5) + " à " + dg(ANNONCE + 5)], bonne: 0,
             methode: "5 % de " + dg(ANNONCE) + ", en degrés, de part et d'autre de " + dg(ANNONCE) + "." }
@@ -3972,9 +3976,9 @@ body.pc-en-cours #defis{display:none!important}
         paillasse: ["#carteScene"],
         surOuvrir: function (ctx) { poste(ctx, "phenol"); },
         questions: [
-          { type: "nombre", lib: "Si le vinaigre est bien à " + dg(ANNONCE) + ", quel volume de soude faudra-t-il verser à l'équivalence ?", unite: "mL",
+          { type: "nombre", lib: "Un vinaigre à " + dg(ANNONCE) + ", dilué dix fois, contient <b>C<sub>a</sub> = " + fr(ANNONCE * 10 / M_AC / DIL, 3) + " mol/L</b> d'acide. Prévoyez le volume de soude à l'équivalence : <b>V<sub>E</sub> = C<sub>a</sub> × V<sub>a</sub> ÷ C<sub>b</sub></b>, avec V<sub>a</sub> = 10,0 mL et C<sub>b</sub> = 0,100 mol/L.", unite: "mL",
             attendu: M.ve8, tolerance: 0.02,
-            methode: (ANNONCE * 10) + " g d'acide par litre, M = 60 g/mol : la concentration du vinaigre ; dix fois moins après dilution ; puis V<sub>E</sub> = C<sub>a</sub> × V<sub>a</sub> ÷ C<sub>b</sub>." },
+            methode: "La relation de l'équivalence, retournée : V<sub>a</sub> en mL donne V<sub>E</sub> en mL." },
           { type: "classer", lib: "Dans quel ordre préparer la burette ?",
             items: ["Ajuster le zéro, au-dessus de la récupération", "Rincer la burette à la soude", "Mettre le bécher sous la burette, l'agitateur en marche",
               "Remplir la burette au-dessus du zéro", "Chasser la bulle d'air sous le robinet"],
@@ -4012,15 +4016,16 @@ body.pc-en-cours #defis{display:none!important}
           { type: "nombre", lib: "Quel volume de soude avez-vous versé jusqu'à l'équivalence ?", unite: "mL", dec: 2,
             attendu: M.VE, tolerance: 0, toleranceAbsolue: 0.1, fini: garde("VE", M.VE),
             methode: "V<sub>E</sub> = la lecture au virage moins la lecture de départ." },
-          { type: "nombre", lib: "Calculez la concentration de l'acide dans le bécher, C<sub>a</sub>.", unite: "mol/L",
+          { type: "nombre", lib: "Calculez la concentration de l'acide dans le bécher : <b>C<sub>a</sub> = C<sub>b</sub> × V<sub>E</sub> ÷ V<sub>a</sub></b>, avec C<sub>b</sub> = 0,100 mol/L, votre V<sub>E</sub> et V<sub>a</sub> = 10,0 mL.", unite: "mol/L",
             attendu: M.Ca, tolerance: 0.02, fini: garde("Ca", M.Ca),
-            methode: "C<sub>a</sub> = C<sub>b</sub> × V<sub>E</sub> ÷ V<sub>a</sub>, les deux volumes dans la même unité." },
-          { type: "nombre", lib: "Calculez la concentration en masse d'acide du vinaigre livré, avant dilution.", unite: "g/L",
+            methode: "Les deux volumes en mL : leur rapport n'a pas d'unité, et C<sub>a</sub> sort en mol/L, comme C<sub>b</sub>." },
+          { type: "nombre", lib: "Calculez la concentration en masse d'acide du vinaigre livré, avant sa dilution par dix : <b>C<sub>m</sub> = 10 × C<sub>a</sub> × M</b>, avec votre C<sub>a</sub> et M = 60 g/mol.", unite: "g/L",
             attendu: M.Cm, tolerance: 0.02, fini: garde("Cm", M.Cm),
-            methode: "Le vinaigre a été dilué dix fois : sa concentration est dix fois celle du bécher. Puis la concentration en masse : C<sub>m</sub> = C × M." },
-          { type: "nombre", lib: "Déduisez le degré du vinaigre livré.", unite: "°", dec: 1,
-            attendu: M.deg, tolerance: 0.02, fini: garde("deg", M.deg),
-            methode: "Les grammes d'acide d'un litre, c'est-à-dire de 1 000 g de vinaigre ; le degré les compte pour 100 g." }
+            methode: "Le vinaigre livré est dix fois plus concentré que celui du bécher ; des mol/L multipliées par des g/mol donnent des g/L." },
+          { type: "choix", lib: "À la paillasse voisine, un camarade garde sa lecture de fin alors que son bécher est rose vif depuis plusieurs gouttes. Que doit-il faire ?",
+            options: ["refaire un bécher et finir goutte à goutte : il a dépassé l'équivalence, son V<sub>E</sub> est trop grand", "garder sa lecture : plus le rose est franc, plus l'équivalence est sûre",
+              "retirer quelques gouttes de soude du bécher à la pipette", "ajouter un peu de vinaigre pour revenir au rose pâle"], bonne: 0,
+            methode: "L'équivalence est au premier rose pâle qui tient. Au-delà, la soude versée en trop compte dans V<sub>E</sub> ; peut-on la reprendre une fois mélangée ?" }
         ],
         bravo: "Le titrage est fait et calculé. Reste celui de la veille, qui dit tout autre chose."
       },

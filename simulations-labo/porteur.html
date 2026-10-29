@@ -3484,7 +3484,11 @@ var Sim = (function () {
    (282 kWh) ou 2 LFP (414 kWh). Mesure sur la page : au banc 102 a 104 kWh/100 km, en tournee 79 a 81 ;
    le banc dit « non » pour NMC et NCA (245 et 262 km), « oui » pour LFP (378 km) ; la tournee « oui » pour
    les trois (317, 340, 484 km). La meme evidence. Les blocs gardent leur chimie : 66, 94 ou 207 kWh, 600 ou
-   800 V, 150 a 170 Wh/kg. */
+   800 V, 150 a 170 Wh/kg.
+   ALLEGEMENT du 21 octobre 2026 (« trop dur pour les eleves ») : cinq calculs au lieu de huit. La distance du jour et la
+   part consommable deviennent des choix ; l'autonomie au banc (troisieme etage) est retiree, le « oui ou non d'apres le
+   banc » se lit sur des nombres que la page ecrit avec le c de l'eleve ; l'autonomie reelle part de l'energie utilisable,
+   donnee. Les tolerances, la duree exacte et les intitules guides du 14 octobre ne bougent pas. */
 (function () {
   var P = window.porteur, fr = Sim.fr, el = Sim.el;
   var SUJET = Sim.note
@@ -3579,9 +3583,11 @@ var Sim = (function () {
               items: ["<b>" + c.E + " kWh</b>", "<b>" + c.U + " V</b>", "<b>370 kW</b>", "<b>" + c.whkg + " Wh/kg</b>"],
               categories: ["une tension", "une énergie", "une puissance", "une énergie par kilogramme"], bonnes: [1, 0, 2, 3],
               methode: "L'unité dit la grandeur : V pour une tension, W pour une puissance, Wh ou kWh pour une énergie." },
-            { type: "nombre", lib: "Quelle distance le camion doit-il parcourir dans la journée sans recharger ?", unite: "km", attendu: JOUR, tolerance: 0,
-              methode: "Le document 2 : combien de tournées, et de combien de kilomètres chacune." },
-            { type: "nombre", lib: "Quelle part de l'énergie de la batterie le gérant laisse-t-il consommer ?", unite: "%", attendu: 100 - RES, tolerance: 0,
+            { type: "choix", lib: "Quelle distance le camion doit-il parcourir dans la journée sans recharger ? (Document 2.)",
+              options: [JOUR + " km : les " + NT + " tournées de 100 km", "100 km : il recharge sa batterie entre deux tournées", "100 km : une tournée, la suivante se fait avec la batterie rechargée"], bonne: 0,
+              methode: "Le document 2 : combien de tournées, de combien de kilomètres chacune, et ce que le camion recharge entre deux." },
+            { type: "choix", lib: "Quelle part de l'énergie de la batterie le gérant laisse-t-il consommer ? (Document 3.)",
+              options: [(100 - RES) + " %", RES + " %", "100 % : la réserve se consomme pour un détour ou un bouchon"], bonne: 0,
               methode: "La réserve reste dans la batterie : on ne consomme que ce qui est au-dessus." }
           ];
         },
@@ -3657,10 +3663,10 @@ var Sim = (function () {
             attendu: M.E, tolerance: 0.05, fini: garde("E", M.E),
             methode: "E = U × Q donne des wattheures avec U en volts et Q en ampères-heures ; on divise par 1 000 pour des kilowattheures." },
           { type: "nombre", lib: "Calculez la distance parcourue sur les rouleaux pendant l'essai. Le camion roule à <b>v = " + KMH + "</b> ; la durée t se lit sur "
-              + "« Durée de l'essai » : prenez-la <b>exacte</b> (10 min 35 s, ce n'est pas 10 min), convertie en heures. d = v × t.", unite: "km",
+              + "« Durée de l'essai » : prenez-la <b>exacte</b> (10 min 35 s, ce n'est pas 10 min), convertie en heures : <b>t = (minutes + secondes ÷ 60) ÷ 60</b>. Puis <b>d = v × t</b>.", unite: "km",
             attendu: M.d, tolerance: 0.03, fini: garde("d", M.d),   // la duree EXACTE : 10 min 35 s pris pour 10 min faussait la consommation de 6 %
             methode: "d = v × t, avec la vitesse du régulateur et la durée exacte de l'essai en heures : 10 min 35 s, c'est 10,58 min, soit 10,58 ÷ 60 h." },
-          { type: "nombre", lib: "Déduisez la consommation au banc, en kWh aux 100 km : votre énergie E, en kWh, divisée par votre distance d, en km, puis × 100.", unite: "kWh/100 km",
+          { type: "nombre", lib: "Déduisez la consommation au banc, en kWh aux 100 km : <b>c = E ÷ d × 100</b>, votre énergie E en kWh et votre distance d en km.", unite: "kWh/100 km",
             attendu: M.cBanc, tolerance: 0.05, fini: garde("cBanc", M.cBanc),
             methode: "L'énergie pour un kilomètre, E ÷ d, multipliée par 100." }
         ],
@@ -3672,26 +3678,27 @@ var Sim = (function () {
         consigne: "La tournée de livraison est sur la paillasse. « Partir en tournée », puis le temps × 60 : une minute passe en une seconde.",
         paillasse: ["#carteScene", "#carteMesure", "#carteReleve"], large: true,
         surOuvrir: function () { onglet("vueTour"); },
-        questions: function (ctx) { var c = cfg(ctx); return [
-          { type: "nombre", lib: "D'après le banc, quelle autonomie le camion a-t-il en gardant " + RES + " % de réserve ? La batterie stocke <b>" + c.E + " kWh</b>, "
-              + "dont on ne consomme que <b>" + (100 - RES) + " %</b> ; prenez votre consommation au banc, en kWh aux 100 km.", unite: "km",
-            attendu: M.aBanc, tolerance: 0.05, fini: garde("aBanc", M.aBanc),
-            methode: "L'énergie utilisable est " + (100 - RES) + " % de celle de la fiche ; chaque 100 km en consomment ce que vous avez trouvé au banc." },
-          { type: "choix", lib: "D'après le banc seul, le camion ferait-il ses " + NT + " tournées, soit <b>" + JOUR + " km</b> ?", options: ["oui", "non"],
-            bonne: function (ctx) { return val(ctx, "aBanc", M.aBanc) >= JOUR ? 0 : 1; },
-            methode: "On compare l'autonomie trouvée aux " + JOUR + " km de la journée." },
+        questions: function (ctx) {
+          var c = cfg(ctx), Eu = Math.round(USE * c.E * 10) / 10, cB = val(ctx, "cBanc", M.cBanc), X = JOUR / 100 * cB;
+          var besoin = "les " + JOUR + " km demanderaient environ " + (isFinite(X) ? fr(X, 1) : "…") + " kWh au banc", offre = "les " + fr(Eu, 1) + " kWh utilisables (" + (100 - RES) + " % de " + c.E + " kWh)";
+          return [
+          { type: "choix", lib: "D'après le banc seul, le camion ferait-il ses " + NT + " tournées, soit <b>" + JOUR + " km</b> ? Avec votre consommation au banc, " + besoin + ".",
+            options: ["Non : " + besoin + ", plus que " + offre, "Oui : " + besoin + ", moins que " + offre,
+              "Oui : la batterie stocke " + c.E + " kWh, plus que ce que demandent les " + JOUR + " km", "On ne peut pas savoir avant d'avoir fait une vraie tournée"],
+            bonne: function (ctx) { return JOUR / 100 * val(ctx, "cBanc", M.cBanc) <= USE * cfg(ctx).E ? 1 : 0; },
+            methode: "Comparez l'énergie que demande la journée à celle que la règle du gérant laisse consommer, pas à toute la batterie." },
           { type: "action", lib: "Vérifiez sur une vraie tournée : faites-la en entier.",
             aide: "Le relevé et sa courbe suivent la batterie tout le long, si l'enregistreur est lancé.",
             verifier: function () { var e = tour(); if (!e.fini) return null; return { ok: true, reponse: "tournée faite, " + fr(e.z.d, 1) + " km" }; },
             methode: "Onglet de la tournée, « Partir en tournée », temps × 60, et attendre l'arrivée au dépôt." },
           { type: "nombre", lib: "Quelle est la consommation sur la tournée, en kWh aux 100 km ? À l'arrivée, lisez « Énergie consommée », en kWh, "
-              + "et « Distance », en km : énergie ÷ distance × 100.", unite: "kWh/100 km",
+              + "et « Distance », en km : <b>c = énergie ÷ distance × 100</b>.", unite: "kWh/100 km",
             attendu: M.cTour, tolerance: 0.05, fini: garde("cTour", M.cTour),
             methode: "L'énergie consommée et la distance se lisent sur les afficheurs à l'arrivée ; même calcul qu'au banc." },
-          { type: "nombre", lib: "Quelle autonomie réelle, en gardant " + RES + " % de réserve ? Toujours <b>" + (100 - RES) + " % de " + c.E + " kWh</b>, "
-              + "avec cette fois la consommation de la tournée.", unite: "km",
+          { type: "nombre", lib: "Quelle autonomie réelle, en gardant " + RES + " % de réserve ? <b>Autonomie = E<sub>utilisable</sub> ÷ c × 100</b>, avec E<sub>utilisable</sub> = <b>" + fr(Eu, 1) + " kWh</b> ("
+              + (100 - RES) + " % de " + c.E + " kWh) et c votre consommation sur la tournée, en kWh aux 100 km.", unite: "km",
             attendu: M.aTour, tolerance: 0.05, fini: garde("aTour", M.aTour),
-            methode: "Même calcul qu'avec le banc, avec la consommation de la tournée." },
+            methode: "L'énergie utilisable divisée par l'énergie de 100 km : le nombre de fois 100 km que le camion peut faire." },
           { type: "multi", lib: "La tournée consomme moins que l'essai au banc. Pourquoi ?",
             options: ["en ville, le camion roule à 50 km/h : l'air le freine bien moins qu'à " + KMH, "au freinage et dans la descente, le moteur recharge la batterie",
               "la batterie se recharge à quai pendant les livraisons", "la montée du col rend de l'énergie"], bonne: [0, 1],

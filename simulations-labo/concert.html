@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Le concert sans danger</title>
-<meta name="description" content="Le groupe du lycée joue à la fête de fin d&#x27;année, devant plusieurs centaines de personnes. Lire l&#x27;échelle des niveaux sonores, comparer des sons graves et aigus à l&#x27;oscilloscope, accorder la guitare en mesurant sa période, placer le public et choisir les protections au sonomètre, puis faire l&#x27;affiche. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.">
+<meta name="description" content="Le groupe du lycée joue à la fête de fin d&#x27;année, devant plusieurs centaines de personnes. Lire l&#x27;échelle des niveaux sonores, comparer des sons graves et aigus à l&#x27;oscilloscope, accorder la guitare en mesurant sa période, placer le public et choisir les protections au sonomètre, puis faire l&#x27;affiche. En TD, la page guide ; en évaluation notée, dans l&#x27;espace d&#x27;évaluation, elle finit par un fichier.">
 <meta name="etiquette" content="Simulation · Parcours PAR-06">
 <style>
 /* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
@@ -2816,7 +2816,7 @@ var Sim = (function () {
 <header class="tete">
 <div class="surtitre">Physique-chimie · parcours CAP et seconde · une heure sur tablette</div>
 <h1>Le concert sans danger</h1>
-<p class="chapeau">Le groupe du lycée joue à la fête de fin d'année, devant plusieurs centaines de personnes. Lire l'échelle des niveaux sonores, comparer des sons graves et aigus à l'oscilloscope, accorder la guitare en mesurant sa période, placer le public et choisir les protections au sonomètre, puis faire l'affiche. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.</p>
+<p class="chapeau">Le groupe du lycée joue à la fête de fin d'année, devant plusieurs centaines de personnes. Lire l'échelle des niveaux sonores, comparer des sons graves et aigus à l'oscilloscope, accorder la guitare en mesurant sa période, placer le public et choisir les protections au sonomètre, puis faire l'affiche. En TD, la page guide ; en évaluation notée, dans l'espace d'évaluation, elle finit par un fichier.</p>
 </header>
 <style>
 :root{--ecran:#1f2b25;--ecran-grille:#3f5a4b;--ecran-trace:#8fe3a8;--lcd-fond:#cfd8cf;--lcd-encre:#1d2a1d;--plancher:#efe9df;--scene-bois:#d9cfc0}
@@ -3463,9 +3463,10 @@ var Sim = (function () {
             attendu: function () { return 1000 / guitare.f; }, tolerance: 0.03, toleranceAbsolue: 0.1,
             methode: "Placez les curseurs sur deux sommets séparés de plusieurs périodes, divisez Δt par le nombre de périodes. Une base de 5 ms par division en montre plus.",
             apres: function (ctx, ok, rep) { ctx.donnees.T = parseFloat(String(rep).replace(",", ".")); } },
-          { type: "nombre", lib: "Calculez sa <b>fréquence</b> avec votre période : f = 1 ÷ T, T en secondes.", unite: "Hz",
+          /* 21 octobre 2026, allegement des calculs : la conversion ms -> s est faite dans la formule, une seule operation */
+          { type: "nombre", lib: "Calculez sa <b>fréquence</b> avec votre période : f = 1 ÷ T, T en secondes. Votre T est en millisecondes : calculez <b>f = 1 000 ÷ T</b>.", unite: "Hz",
             attendu: function (ctx) { return ctx.donnees.T ? 1000 / ctx.donnees.T : guitare.f; }, tolerance: 0.02, toleranceAbsolue: 0.6,
-            methode: "Convertissez d'abord T en secondes : " + SUJET.exT + ". Puis f = 1 ÷ T." },
+            methode: "f = 1 ÷ T, T en secondes (" + SUJET.exT + ") ; avec T en millisecondes, c'est le même calcul : f = 1 000 ÷ T." },
           { type: "action", lib: "Accordez la corde de " + CORDE + " sur <b>" + SUJET.fTxt + " Hz</b>, à " + SUJET.tolTxt + " Hz près : tournez sa mécanique, mesurez, recommencez.",
             aide: "Accordez sur la guitare, puis vérifiez.",
             verifier: accordJuste,
@@ -3494,7 +3495,7 @@ var Sim = (function () {
             options: ["Il dépasse encore 85 dB : il faut proposer des bouchons à tout le public", "Il est loin de 120 dB : il n'y a aucun danger",
               "Il faut monter le son pour couvrir le bar", "On ne peut rien dire sans accordeur"], bonne: 0,
             methode: "Mesurez au fond de la salle : le niveau baisse avec la distance, mais il reste au-dessus de 85 dB." },
-          { type: "nombre", niveau: "Seconde", lib: "Sur l'axe de l'enceinte de gauche, mesurez le niveau à " + SUJET.d1 + " m, puis à " + 2 * SUJET.d1 + " m. De combien baisse-t-il quand la distance double ?", unite: "dB",
+          { type: "nombre", niveau: "Seconde", lib: "Sur l'axe de l'enceinte de gauche, mesurez le niveau à " + SUJET.d1 + " m, puis à " + 2 * SUJET.d1 + " m. De combien baisse-t-il quand la distance double ? Calculez la différence des deux lectures, <b>L<sub>" + SUJET.d1 + "\u00a0m</sub> − L<sub>" + 2 * SUJET.d1 + "\u00a0m</sub></b>.", unite: "dB",
             attendu: S.note ? niveau(4 + SUJET.d1, 2) - niveau(4 + 2 * SUJET.d1, 2) : 5.8, toleranceAbsolue: 0.9, tolerance: 0,
             methode: "Suivez le ruban : la tête à " + fr(SUJET.d1, 1) + " m, puis à " + fr(2 * SUJET.d1, 1) + " m, face à l'enceinte de gauche. Faites la différence des deux lectures." }
         ],

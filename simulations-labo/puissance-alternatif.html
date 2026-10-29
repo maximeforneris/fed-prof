@@ -3302,8 +3302,9 @@ table.lecture td{font-family:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono"
 (function () {
   var P = window.puissance, fr = Sim.fr, el = Sim.el;
   var SUJET = Sim.note
-    ? { preg: 70, fp: 0.58, tube: "Tube fluorescent de 58 W", configs: [{ In: 10, N: 26 }, { In: 16, N: 25 }, { In: 16, N: 35 }, { In: 10, N: 16 }] }
-    : { preg: 45, fp: 0.45, tube: "Tube fluorescent de 36 W", configs: [{ In: 10, N: 30 }, { In: 16, N: 30 }, { In: 16, N: 40 }, { In: 10, N: 20 }] };
+    ? { preg: 70, fp: 0.58, tube: "Tube fluorescent de 58 W", prad: 1500, configs: [{ In: 10, N: 26 }, { In: 16, N: 25 }, { In: 16, N: 35 }, { In: 10, N: 16 }] }
+    : { preg: 45, fp: 0.45, tube: "Tube fluorescent de 36 W", prad: 1000, configs: [{ In: 10, N: 30 }, { In: 16, N: 30 }, { In: 16, N: 40 }, { In: 10, N: 20 }] };
+  /* prad : le radiateur de la simulation (APPAREILS, plus haut), dont l'intitule de la partie 4 donne le calcul du gerant */
   var CONFIGS = SUJET.configs;
   var PREG = SUJET.preg, U0 = 230, T = 20;
 
@@ -3384,9 +3385,9 @@ table.lecture td{font-family:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono"
               options: ["une intensité efficace plus grande que son calibre", "une puissance plus grande que " + fr(c.In * U0, 0) + " W",
                 "une tension plus grande que 230 V", "un appareil de trop, quel qu'il soit"], bonne: 0,
               methode: "Le document 3 dit ce que le disjoncteur mesure, et ce qu'il ne mesure pas." },
-            { type: "nombre", lib: "D'après le calcul du gérant, combien de réglettes le circuit pourrait-il alimenter ?", unite: "réglettes",
+            { type: "nombre", lib: "D'après le calcul du gérant, combien de réglettes le circuit pourrait-il alimenter ? Calculez <b>N = " + fr(c.In * U0, 0) + " W ÷ " + PREG + " W</b>, sa puissance de circuit divisée par celle d'une réglette.", unite: "réglettes",
               attendu: M.naif, tolerance: 0.03,
-              methode: "Le document 1 : la puissance qu'il trouve pour le circuit, divisée par celle d'une réglette." }
+              methode: "Les deux puissances viennent du document 1 : une seule division, le résultat est un nombre de réglettes." }
           ];
         },
         bravo: "Le dossier est lu : un calcul à vérifier, et ce qui fait couper le disjoncteur."
@@ -3436,15 +3437,16 @@ table.lecture td{font-family:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono"
           { type: "nombre", lib: "Mesurez le décalage Δt entre u et i, à l'oscilloscope.", unite: "ms",
             attendu: surTube(M.dt), tolerance: 0, toleranceAbsolue: 0.1, fini: garde("dt", M.dt),
             methode: "Le curseur 1 là où u passe par zéro en montant, le curseur 2 là où i passe par zéro en montant : la ligne « Écart 2 − 1 »." },
-          { type: "nombre", lib: "Calculez le déphasage φ entre u et i.", unite: "°",
+          { type: "nombre", lib: "Calculez le déphasage φ entre u et i : <b>φ = 360 × Δt ÷ T</b>, avec votre Δt et T = 20 ms au secteur.", unite: "°",
             attendu: M.phi, tolerance: 0.02, fini: garde("phi", M.phi),
-            methode: "φ = 360 × Δt ÷ T, avec T = 20 ms au secteur." },
-          { type: "nombre", lib: "Calculez le facteur de puissance, cos φ.", unite: "",
+            methode: "Δt et T sont tous deux en millisecondes : 360 × Δt, puis divisé par 20." },
+          { type: "nombre", lib: "Calculez le facteur de puissance <b>cos φ</b>, avec votre φ : la touche cos de la calculatrice, réglée en degrés.", unite: "",
             attendu: M.fp, tolerance: 0, toleranceAbsolue: 0.02, fini: garde("fp", M.fp),
-            methode: "La touche cos de la calculatrice, réglée en degrés, avec votre φ." },
-          { type: "nombre", lib: "Sur la courbe p = u × i, relevez p<sub>max</sub> et p<sub>min</sub>, puis calculez la moyenne de p, (p<sub>max</sub> + p<sub>min</sub>) ÷ 2.", unite: "W",
-            attendu: surTube(M.pmoy), tolerance: 0.05, fini: garde("pmoy", M.pmoy),
-            methode: "Un curseur sur le sommet de la courbe p, l'autre sur son creux : p<sub>min</sub> est négatif, gardez son signe." }
+            methode: "Un facteur de puissance n'a pas d'unité et ne dépasse pas 1 : si la calculatrice donne autre chose, vérifiez qu'elle est en degrés." },
+          { type: "choix", lib: "La courbe p = u × i de l'écran passe un moment sous zéro. À quoi correspond sa valeur moyenne, sur une période ?",
+            options: ["à la puissance active P, celle que lit le wattmètre", "au produit U × I des valeurs efficaces", "à p<sub>max</sub>, le sommet de la courbe",
+              "à zéro, puisque p est tantôt positive, tantôt négative"], bonne: 0,
+            methode: "La moyenne de p tient compte des moments où p est négative : elle est plus petite que le sommet, sans être nulle. Relisez la dernière ligne de l'annexe." }
         ],
         bravo: "La réglette est mesurée sous toutes ses coutures. Reste à savoir ce que cela change pour le gérant."
       },
@@ -3456,19 +3458,23 @@ table.lecture td{font-family:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono"
         questions: function (ctx) {
           var c = cfg(ctx);
           return [
-            { type: "nombre", lib: "Calculez le rapport P ÷ (U × I) de la réglette, avec vos mesures.", unite: "",
+            { type: "nombre", lib: "Calculez le rapport <b>P ÷ (U × I)</b> de la réglette, avec U = 230 V et vos mesures de P et de I.", unite: "",
               attendu: M.k, tolerance: 0, toleranceAbsolue: 0.02, fini: garde("k", M.k),
-              methode: "P au wattmètre, U au voltmètre, I à l'ampèremètre : U × I d'abord, puis P divisé par ce produit." },
+              methode: "U × I d'abord, puis P divisé par ce produit : un rapport de deux puissances n'a pas d'unité." },
             { type: "choix", lib: "Comparez ce rapport au cos φ trouvé à l'oscilloscope. Que montre la comparaison ?",
               options: ["ils sont égaux, aux erreurs de lecture près : P = U × I × cos φ", "P ÷ (U × I) vaut toujours 1 en alternatif",
                 "ils n'ont rien à voir : l'un vient des instruments, l'autre de l'écran", "le wattmètre se trompe d'un facteur 2"], bonne: 0,
               methode: "Deux nombres trouvés par deux chemins différents : sont-ils proches ?" },
-            { type: "nombre", lib: "Le gérant a essayé son calcul sur le radiateur de l'atelier. Branchez le radiateur, mettez-le en marche, et calculez son rapport P ÷ (U × I).", unite: "",
-              attendu: function () { var e = P.etat, g = vrai(); return e.app === "radiateur" && e.marche ? g.P / (g.U * g.I) : NaN; }, tolerance: 0, toleranceAbsolue: 0.03,
-              methode: "« L'appareil branché » : Radiateur, puis « Mettre en marche ». Mêmes lectures, même calcul." },
-            { type: "nombre", lib: "Avec votre mesure de I pour une réglette, combien de réglettes le circuit de " + c.In + " A alimente-t-il au plus ?", unite: "réglettes",
+            { type: "nombre", lib: "Le gérant a essayé son calcul sur le radiateur de l'atelier, " + fr(SUJET.prad, 0) + " W : I = P ÷ U = " + fr(SUJET.prad, 0) + " ÷ 230 = " + fr(SUJET.prad / U0, 2) + " A. Branchez le radiateur, mettez-le en marche, et relevez son intensité efficace I.", unite: "A",
+              attendu: function () { var e = P.etat; return e.app === "radiateur" && e.marche ? vrai().I : NaN; }, tolerance: 0.02,
+              methode: "« L'appareil branché » : Radiateur, puis « Mettre en marche ». L'ampèremètre, radiateur en marche." },
+            { type: "choix", lib: "Pour le radiateur, le calcul du gérant tombe-t-il juste ?",
+              options: ["oui : l'intensité mesurée est celle de P ÷ U ; u et i sont en phase, et P = U × I", "non : le radiateur, lui aussi, demande plus d'intensité que P ÷ U",
+                "non : un radiateur ne consomme jamais la puissance de sa plaque", "on ne peut pas le savoir sans l'oscilloscope"], bonne: 0,
+              methode: "Mettez votre mesure à côté de l'intensité que le gérant calcule, écrite dans la question précédente." },
+            { type: "nombre", lib: "Combien de réglettes le circuit de " + c.In + " A alimente-t-il au plus ? Calculez <b>N = " + c.In + " ÷ I</b>, avec votre mesure de I pour une réglette, et gardez le nombre entier.", unite: "réglettes",
               attendu: M.nmax, tolerance: 0, toleranceAbsolue: 1.05, fini: garde("nmax", M.nmax),
-              methode: "Les intensités des réglettes s'ajoutent : le calibre du disjoncteur divisé par l'intensité d'une réglette." },
+              methode: "Les intensités des réglettes s'ajoutent jusqu'au calibre du disjoncteur : « au plus » se lit à l'entier inférieur." },
             { type: "choix", lib: "Le circuit peut-il alimenter les " + c.N + " réglettes prévues ?", options: ["oui", "non"], ordreFixe: true,
               bonne: function (ctx2) { return Math.floor(val(ctx2, "nmax", M.nmax) + 1e-9) >= cfg(ctx2).N ? 0 : 1; },
               methode: "On compare le nombre de réglettes prévues au nombre que vous venez de trouver." },

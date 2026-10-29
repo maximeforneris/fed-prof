@@ -3177,25 +3177,30 @@ var Sim = (function () {
   var V = SUJET.V, T0 = SUJET.T0, HEURE = 3600, EPAIS = SUJET.epais;
   var EAU = fr(V, 1) + " L", CHAUD = T0 + " °C";                        // « 0,5 L », « 70 °C »
   var NOMS = { carton: "carton ondulé", liege: "liège", pse: "polystyrène expansé", laine: "laine de verre" };
+  var CFG = null;                                                      // le tirage, pour les intitules des parties a appel
   function cfg(ctx) {
     var d = ctx.donnees;
     if (!d.cfg) { var e = EPAIS[Math.floor(Math.random() * EPAIS.length)]; d.cfg = { e1: e, e2: 2 * e }; }
+    CFG = d.cfg;
     return d.cfg;
   }
+  function metres(x) { return fr(x / 100, 3).replace(/0$/, ""); }       // 2 cm -> « 0,02 », 1,5 cm -> « 0,015 »
   function cm(x) { return fr(x, x % 1 ? 1 : 0) + " cm"; }
-  function baisse(mat, e) { return T0 - P.theta(mat, e, HEURE); }
   /* ce que l'eleve a trouve, ou a defaut ce que le modele dit : la suite se calcule sur SES nombres */
   /* en mode note, fini est appele a chaque enregistrement, juste ou non : la valeur de l'eleve est gardee quelle
      qu'elle soit, sinon la conclusion qui la rappelle trahirait le verdict */
   function garde(cle, mesure) { return function (ctx, juste, rep, v) { ctx.donnees[cle] = (juste || ctx.note) && isFinite(v) ? v : mesure(ctx); }; }
   function val(ctx, cle, mesure) { var x = ctx.donnees[cle]; return isFinite(x) ? x : mesure(ctx); }
+  /* 21 octobre 2026 (alleger les calculs) : l'eleve releve la temperature a 60 min, la page en deduit la baisse, T0 − t */
+  function bP(ctx) { return T0 - val(ctx, "tP", M.tP); }
+  function bC2(ctx) { return T0 - val(ctx, "tC2", M.tC2); }
   var M = {
-    bP: function (ctx) { return baisse("pse", cfg(ctx).e1); },
-    bC: function (ctx) { return baisse("carton", cfg(ctx).e1); },
+    tP: function (ctx) { return P.theta("pse", cfg(ctx).e1, HEURE); },
+    tC: function (ctx) { return P.theta("carton", cfg(ctx).e1, HEURE); },
+    tC2: function (ctx) { return P.theta("carton", cfg(ctx).e2, HEURE); },
     G: function (ctx) { return P.lambda("pse") * P.S / (cfg(ctx).e1 / 100); },
     phi: function (ctx) { var e = cfg(ctx).e1; return val(ctx, "G", M.G) * (T0 - P.surface("pse", e, T0)); },
-    Gc: function (ctx) { return P.lambda("carton") * P.S / (cfg(ctx).e2 / 100); },
-    bC2: function (ctx) { return baisse("carton", cfg(ctx).e2); }
+    Gc: function (ctx) { return P.lambda("carton") * P.S / (cfg(ctx).e2 / 100); }
   };
   /* une heure de refroidissement menee comme il faut, a l'epaisseur e, et la mesure de 60 min gardee dans le tableau.
      Une manipulation refusee nomme ses erreurs (14 octobre 2026) : le reglage qui s'ecarte du sujet, renvoye a son document,
@@ -3270,8 +3275,10 @@ var Sim = (function () {
               items: ["<b>0,038 W/(m·K)</b>", "G, en <b>W/K</b>", "<b>0,06 m²</b>", "<b>" + CHAUD + "</b>"],
               categories: ["une surface", "une température", "une conductance thermique", "une conductivité thermique"], bonnes: [3, 2, 0, 1],
               methode: "L'unité dit la grandeur : la conductivité λ, propre à la matière, en W/(m·K) ; la conductance G, propre à la couche, en W/K." },
-            { type: "nombre", lib: "Quelle est l'épaisseur du carton proposé, en mètres ?", unite: "m", attendu: c.e2 / 100, tolerance: 0.001,
-              methode: "1 m = 100 cm : on divise les centimètres par 100." },
+            { type: "choix", lib: "Dans la relation G = λ × S ÷ e de l'annexe, en quelle unité faut-il écrire l'épaisseur e de l'isolant ?",
+              options: ["en mètres, comme la surface en m² et la conductivité en W/(m·K)", "en centimètres, l'unité du document 2",
+                "en millimètres, pour être plus précis", "dans n'importe quelle unité : elle se simplifie"], bonne: 0,
+              methode: "L'annexe donne l'unité de chaque grandeur de la relation, juste à côté d'elle." },
             { type: "choix", lib: "Dans quel sens la chaleur traverse-t-elle la paroi du caisson ?",
               options: ["du plat chaud vers l'air de la pièce", "de la pièce vers le plat : le froid entre", "dans les deux sens, autant", "elle ne la traverse pas : l'isolant l'arrête"], bonne: 0,
               methode: "Un transfert thermique se fait toujours du corps le plus chaud vers le plus froid. L'isolant le ralentit, il ne l'arrête pas." }
@@ -3314,22 +3321,22 @@ var Sim = (function () {
             aide: "« Arrêt automatique : toutes les 15 min » ; à chaque arrêt, « Garder cette mesure », puis « Reprendre ».",
             verifier: function (ctx) { var c = cfg(ctx); return heure(ctx, c.e1, "pse", "c"); },
             methode: "Épaisseur du document 2 pour les quatre, " + EAU + ", " + CHAUD + " ; garder le départ ; démarrer ; garder la mesure à chaque arrêt jusqu'à 60 min." },
-          { type: "nombre", lib: "De combien la température de la boîte en polystyrène a-t-elle baissé en une heure ?", unite: "°C",
-            attendu: M.bP, tolerance: 0, toleranceAbsolue: 0.35, fini: garde("bP", M.bP),
-            methode: "Température au départ moins température à 60 min, sur le thermomètre de la boîte en polystyrène." },
-          { type: "nombre", lib: "Et celle de la boîte en carton ondulé ?", unite: "°C",
-            attendu: M.bC, tolerance: 0, toleranceAbsolue: 0.35, fini: garde("bC", M.bC),
-            methode: "Le même calcul sur le thermomètre de la boîte en carton." },
+          { type: "nombre", lib: "Relevez la température de l'eau de la boîte en polystyrène au bout d'une heure, à 60 min.", unite: "°C",
+            attendu: M.tP, tolerance: 0, toleranceAbsolue: 0.35, fini: garde("tP", M.tP),
+            methode: "La ligne de 60 min du tableau, colonne de la boîte en polystyrène, ou son thermomètre à l'arrêt de 60 min." },
+          { type: "nombre", lib: "Relevez la température de l'eau de la boîte en carton ondulé à 60 min.", unite: "°C",
+            attendu: M.tC, tolerance: 0, toleranceAbsolue: 0.35, fini: garde("tC", M.tC),
+            methode: "La même ligne de 60 min, colonne de la boîte en carton." },
           { type: "classer", lib: "Classez les quatre isolants, à cette épaisseur, du meilleur au moins bon.",
             items: ["carton ondulé", "liège", "polystyrène expansé", "laine de verre"],
             categories: ["1er", "2e", "3e", "4e"], bonnes: [3, 2, 1, 0],
-            methode: "Le meilleur est celui dont l'eau a le moins baissé en une heure ; comparez les quatre thermomètres à 60 min." },
-          { type: "nombre", lib: "Calculez la conductance de la couche de polystyrène habituelle.", unite: "W/K",
+            methode: "Toutes les boîtes sont parties de la même température : le meilleur isolant est celui dont l'eau est restée la plus chaude à 60 min." },
+          { type: "nombre", get lib() { var e = CFG ? CFG.e1 : 2; return "Calculez la conductance de la couche de polystyrène habituelle : <b>G = λ × S ÷ e</b>, avec λ = " + fr(P.lambda("pse"), 3) + " W/(m·K), S = 0,06 m² et e = " + metres(e) + " m (" + cm(e) + ")."; }, unite: "W/K",
             attendu: M.G, tolerance: 0.03, fini: garde("G", M.G),
-            methode: "G = λ × S ÷ e, avec λ du document 3, S = 0,06 m² et e en mètres." },
-          { type: "nombre", lib: "Au départ, la caméra thermique lit la surface extérieure de la boîte en polystyrène. Calculez la puissance thermique qui traverse la couche à cet instant.", unite: "W",
+            methode: "λ × S d'abord, puis divisé par l'épaisseur, déjà en mètres dans l'intitulé." },
+          { type: "nombre", lib: "Au départ, la caméra thermique lit la surface extérieure de la boîte en polystyrène. Calculez la puissance thermique qui traverse la couche à cet instant : <b>Φ = G × ΔT</b>, avec votre G et ΔT = " + T0 + " °C − la température de surface lue par la caméra.", unite: "W",
             attendu: M.phi, tolerance: 0.04, fini: garde("phi", M.phi),
-            methode: "Φ = G × ΔT, ΔT entre les deux faces de la couche : l'eau à " + CHAUD + " contre la face intérieure, la surface lue par la caméra dehors. Remettez à zéro et prenez la vue caméra avant de démarrer." }
+            methode: "ΔT est l'écart entre les deux faces de la couche : l'eau à " + CHAUD + " contre la face intérieure, la surface lue par la caméra dehors, pas l'air de la pièce. Remettez à zéro et prenez la vue caméra avant de démarrer." }
         ],
         bravo: "Les quatre isolants sont classés, et la couche habituelle a sa conductance."
       },
@@ -3339,9 +3346,9 @@ var Sim = (function () {
         consigne: "Pour la seconde heure d'essai : l'épaisseur double sur la première carte (le banc se remet à zéro), puis la même mesure. « Tout effacer » sous le tableau rend la lecture plus simple.",
         paillasse: PAILLASSE, large: true,
         questions: [
-          { type: "nombre", lib: "Calculez la conductance de la couche de carton proposée.", unite: "W/K",
+          { type: "nombre", get lib() { var e = CFG ? CFG.e2 : 4; return "Calculez la conductance de la couche de carton proposée : <b>G = λ × S ÷ e</b>, avec λ = " + fr(P.lambda("carton"), 3) + " W/(m·K), S = 0,06 m² et e = " + metres(e) + " m (" + cm(e) + ")."; }, unite: "W/K",
             attendu: M.Gc, tolerance: 0.03, fini: garde("Gc", M.Gc),
-            methode: "G = λ × S ÷ e, avec la conductivité du carton et son épaisseur, en mètres." },
+            methode: "Le même calcul qu'en partie 3, avec la conductivité du carton et son épaisseur, déjà en mètres." },
           { type: "choix", lib: "D'après les conductances, quelle couche laisse passer le moins de chaleur ?",
             options: function (ctx) { var c = cfg(ctx); return ["le carton de " + cm(c.e2), "le polystyrène de " + cm(c.e1), "les deux autant"]; },
             bonne: function (ctx) { var a = val(ctx, "Gc", M.Gc), b = val(ctx, "G", M.G); return Math.abs(a - b) < 0.002 ? 2 : a < b ? 0 : 1; },
@@ -3350,13 +3357,13 @@ var Sim = (function () {
             aide: "Changer l'épaisseur remet le banc à zéro : gardez de nouveau le départ.",
             verifier: function (ctx) { var c = cfg(ctx); return heure(ctx, c.e2, "carton", "a"); },
             methode: "Épaisseur double pour les quatre ; " + EAU + ", " + CHAUD + " ; garder le départ ; démarrer ; garder la mesure à chaque arrêt jusqu'à 60 min." },
-          { type: "nombre", lib: "De combien la boîte en carton épais a-t-elle baissé en une heure ?", unite: "°C",
-            attendu: M.bC2, tolerance: 0, toleranceAbsolue: 0.35, fini: garde("bC2", M.bC2),
-            methode: "Température au départ moins température à 60 min, sur le thermomètre de la boîte en carton." },
+          { type: "nombre", lib: "Relevez la température de l'eau de la boîte en carton épais à 60 min.", unite: "°C",
+            attendu: M.tC2, tolerance: 0, toleranceAbsolue: 0.35, fini: garde("tC2", M.tC2),
+            methode: "La ligne de 60 min de cette seconde heure, colonne de la boîte en carton." },
           { type: "choix", lib: "Le carton deux fois plus épais garde-t-il mieux la chaleur que le polystyrène habituel ?",
-            options: ["oui : sa baisse en une heure est plus petite", "non : le carton reste le plus mauvais isolant", "on ne peut pas comparer deux épaisseurs différentes"],
-            bonne: function (ctx) { return val(ctx, "bC2", M.bC2) < val(ctx, "bP", M.bP) ? 0 : 1; },
-            methode: "Comparez la baisse du carton épais à celle du polystyrène habituel, mesurée à la partie 3 : même eau, même départ, même durée." },
+            options: ["oui : à 60 min, son eau est plus chaude", "non : le carton reste le plus mauvais isolant", "on ne peut pas comparer deux épaisseurs différentes"],
+            bonne: function (ctx) { return bC2(ctx) < bP(ctx) ? 0 : 1; },
+            methode: "Comparez la température à 60 min du carton épais à celle du polystyrène habituel, relevée à la partie 3 : même eau, même départ, même durée." },
           { type: "choix", lib: "Qu'est-ce qui décide de la chaleur que laisse passer une couche d'isolant ?",
             options: ["sa conductance G = λ × S ÷ e : la matière et l'épaisseur ensemble", "la matière seule : le meilleur isolant gagne toujours", "l'épaisseur seule : le plus épais gagne toujours", "la température de la pièce seule"], bonne: 0,
             methode: "Rapprochez vos deux classements : à épaisseur égale, puis à épaisseurs différentes. Une seule grandeur les explique tous les deux." }
@@ -3367,8 +3374,8 @@ var Sim = (function () {
         competence: "COM", titre: "La réponse à la cheffe d'atelier",
         recit: "La cheffe lira trois lignes, pas plus. Elles doivent répondre à sa question, avec un nombre et son unité.",
         questions: function (ctx) {
-          var c = cfg(ctx), bp = fr(val(ctx, "bP", M.bP), 1), bc = fr(val(ctx, "bC2", M.bC2), 1), g = fr(val(ctx, "G", M.G), 3), gc = fr(val(ctx, "Gc", M.Gc), 3);
-          var mieux = val(ctx, "bC2", M.bC2) < val(ctx, "bP", M.bP);
+          var c = cfg(ctx), bp = fr(bP(ctx), 1), bc = fr(bC2(ctx), 1), g = fr(val(ctx, "G", M.G), 3), gc = fr(val(ctx, "Gc", M.Gc), 3);
+          var mieux = bC2(ctx) < bP(ctx);
           var vraie = mieux ? "Le carton de " + cm(c.e2) + " garde mieux la chaleur : le plat perd environ " + bc + " °C en une heure, contre " + bp + " °C avec le polystyrène de " + cm(c.e1) + "."
             : "Le polystyrène de " + cm(c.e1) + " garde mieux la chaleur : le plat perd environ " + bp + " °C en une heure, contre " + bc + " °C avec le carton de " + cm(c.e2) + ".";
           return [

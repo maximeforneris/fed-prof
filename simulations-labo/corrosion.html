@@ -3775,7 +3775,6 @@ var Sim = (function () {
   var MS = {
     dSeul: function () { return perte(L.seul); },
     dInox: function () { return perte(L.inox); },
-    dProt: function () { return perte(L.prot); },
     rapport: function (ctx) { var a = val(ctx, "dInox", MS.dInox), b = val(ctx, "dSeul", MS.dSeul); return b > 0 ? a / b : NaN; }
   };
   function sig(x) { return (x > 0 ? "+" : "−") + fr(Math.abs(x), 2).replace(/^−/, ""); }
@@ -3949,17 +3948,18 @@ var Sim = (function () {
             aide: "La balance garde la dernière pesée de chaque clou. Toucher la balance remet le clou dans son bocal.",
             verifier: verifierPesees,
             methode: "La durée sur " + N + " jours, « Lancer l'essai », attendre la fin ; puis, pour chaque clou : TARE avec le verre seul, toucher le bocal, brosser et sécher, lire." },
-          { type: "nombre", lib: "Perte de masse du <b>clou seul</b> (bocal " + L.seul + "), en milligrammes. Sa masse de départ est sur l'étiquette : <b>m₀ = " + m0De("salee") + " g</b> ; "
-              + "la masse après l'essai est votre pesée. Δm = m₀ − m donne des grammes : × 1 000 pour des mg.", unite: "mg",
+          { type: "nombre", lib: "Perte de masse du <b>clou seul</b> (bocal " + L.seul + "), en milligrammes : <b>Δm = (m₀ − m) × 1 000</b>, avec m₀ = " + m0De("salee") + " g, la masse "
+              + "de départ sur l'étiquette, et m votre pesée en grammes.", unite: "mg",
             attendu: MS.dSeul, tolerance: 0.02, toleranceAbsolue: 1, fini: garde("dSeul", MS.dSeul),
-            methode: "La masse de l'étiquette moins la masse pesée, en grammes, puis × 1 000." },
-          { type: "nombre", lib: "Perte de masse du <b>clou au contact de l'inox</b> (bocal " + L.inox + "), en milligrammes : <b>m₀ = " + m0De("inox") + " g</b> sur l'étiquette, m votre pesée.", unite: "mg",
+            methode: "La masse de l'étiquette moins la masse pesée donne des grammes ; × 1 000 les met en milligrammes." },
+          { type: "nombre", lib: "Perte de masse du <b>clou au contact de l'inox</b> (bocal " + L.inox + "), en milligrammes : <b>Δm = (m₀ − m) × 1 000</b>, avec m₀ = " + m0De("inox") + " g sur l'étiquette et m votre pesée.", unite: "mg",
             attendu: MS.dInox, tolerance: 0.02, toleranceAbsolue: 1, fini: garde("dInox", MS.dInox),
             methode: "Même calcul : m₀ − m, en grammes, puis × 1 000." },
-          { type: "nombre", lib: "Perte de masse du <b>clou au contact du " + PROT + "</b> (bocal " + L.prot + "), en milligrammes : <b>m₀ = " + m0De(SUJET.prot) + " g</b> sur l'étiquette, m votre pesée.", unite: "mg",
-            attendu: MS.dProt, tolerance: 0, toleranceAbsolue: 1.5, sansSigne: true, fini: garde("dProt", MS.dProt),
-            methode: "Même calcul. Une perte de 0 ou 1 mg est une réponse : la balance lit au milligramme." },
-          { type: "nombre", lib: "Combien de fois plus de fer le clou au contact de l'inox a-t-il perdu que le clou seul, dans la même eau et le même temps ? Le rapport de vos deux pertes : Δm<sub>inox</sub> ÷ Δm<sub>seul</sub>.", unite: "fois",
+          { type: "choix", lib: "Le <b>clou au contact du " + PROT + "</b> (bocal " + L.prot + ") pesait m₀ = " + m0De(SUJET.prot) + " g au départ. D'après votre pesée, qu'a-t-il perdu ?",
+            options: ["presque rien, un milligramme au plus : sa masse n'a quasiment pas bougé", "à peu près autant que le clou seul : le " + PROT + " ne change rien",
+              "plus que le clou au contact de l'inox : deux métaux en contact forment toujours une pile qui ronge l'acier", "il pèse plus qu'au départ : du " + PROT + " s'est déposé sur lui"], bonne: 0,
+            methode: "Mettez votre pesée à côté de la masse de départ écrite dans la question, puis comparez l'écart à ceux des deux autres clous. La balance lit au milligramme." },
+          { type: "nombre", lib: "Combien de fois plus de fer le clou au contact de l'inox a-t-il perdu que le clou seul, dans la même eau et le même temps ? Calculez le rapport de vos deux pertes : <b>Δm<sub>inox</sub> ÷ Δm<sub>seul</sub></b>.", unite: "fois",
             attendu: MS.rapport, tolerance: 0.05, fini: garde("rapport", MS.rapport),
             methode: "La perte du clou au contact de l'inox divisée par celle du clou seul : un nombre sans unité." }
         ],

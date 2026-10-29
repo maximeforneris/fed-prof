@@ -3303,7 +3303,10 @@ var Sim = (function () {
    DEUX JEUX DE VALEURS (16 octobre 2026) : le panneau est pose par la simulation (P.PANNEAU). TD : 12 cellules,
    angles 0, 30, 45°, besoins 1,5, 1,3, 1,1 W, 4 % de surface a l'ombre pour 41 % de perte. Evaluation notee :
    10 cellules de 4,0 × 3,0 cm, angles 20, 40, 55°, besoins 1,4, 1,0, 0,8 W ; la demi-cellule fait 5 % de la
-   surface et coute 26 a 35 %. La prevision proportionnelle dit oui (marges 12 a 24 %), la mesure non (12 a 30 %). */
+   surface et coute 26 a 35 %. La prevision proportionnelle dit oui (marges 12 a 24 %), la mesure non (12 a 30 %).
+   ALLEGEMENT du 21 octobre 2026 (« trop dur pour les eleves ») : quatre calculs au lieu de sept, la formule ecrite. La
+   surface des cellules est donnee la ou elle sert ; la part a l'ombre et la perte en pourcentage deviennent des choix
+   d'ordre de grandeur ; la partie 1 gagne une question sur ce que demande la balise : une puissance, pas une energie. */
 (function () {
   var P = window.photovoltaique, fr = Sim.fr, el = Sim.el, PN = P.PANNEAU;
   var CONFIGS = Sim.note
@@ -3324,14 +3327,14 @@ var Sim = (function () {
   function garde(cle, mesure) { return function (ctx, juste, rep, v) { ctx.donnees[cle] = (juste || ctx.note) && isFinite(v) ? v : mesure(ctx); }; }
   function val(ctx, cle, mesure) { var x = ctx.donnees[cle]; return isFinite(x) ? x : mesure(ctx); }
   var M = {
-    S: function () { return P.surface; },
     Pmax: function (ctx) { return P.pmax(cfg(ctx).E, 0); },
     E: function (ctx) { return cfg(ctx).E; },
-    Pr: function (ctx) { return val(ctx, "E", M.E) * val(ctx, "S", M.S); },
+    Pr: function (ctx) { return val(ctx, "E", M.E) * P.surface; },          // S donnee depuis le 21 octobre 2026
     eta: function (ctx) { return 100 * val(ctx, "Pmax", M.Pmax) / val(ctx, "Pr", M.Pr); },
     Pombre: function (ctx) { return P.pmax(cfg(ctx).E, OMBRE); },
     perte: function (ctx) { return 100 * (1 - val(ctx, "Pombre", M.Pombre) / val(ctx, "Pmax", M.Pmax)); }
   };
+  var S_T = fr(P.surface, 4) + " m²";                                  // « 0,0126 m² », donnee a l'eleve
   /* le releve de l'eleve : assez de mesures, prises dans les conditions du document, et le sommet de P trouve.
      Une manipulation refusee nomme ses erreurs (14 octobre 2026) : les mesures a refaire et le reglage qui s'ecarte du
      document, jamais la puissance a trouver. Reglages et mesures justes mais moins de cinq : la page attend, sans essai compte. */
@@ -3402,18 +3405,19 @@ var Sim = (function () {
         competence: "APP", titre: "Le dossier du panneau",
         recit: "Avant de mesurer, on lit. Trois documents et une annexe : tout ce qui sert est dedans.",
         scene: documents,
-        questions: [
+        questions: function (ctx) { var c = cfg(ctx); return [
           { type: "classer", lib: "Sur la fiche du panneau, que donne chaque indication ?",
             items: ["<b>" + PN.crete + "</b> crête", "<b>1 000 W/m²</b>", "<b>" + fr(PN.voc, 1) + " V</b> à vide", "<b>" + fr(PN.isc, 2) + " A</b> en court-circuit"],
             categories: ["une intensité", "une tension", "une puissance", "un éclairement : une puissance par mètre carré"], bonnes: [2, 3, 1, 0],
             methode: "L'unité dit la grandeur : V pour une tension, A pour une intensité, W pour une puissance ; W/m², une puissance reçue par mètre carré." },
-          { type: "nombre", lib: "Quelle est la surface des " + PN.nom + " cellules, en mètres carrés ?", unite: "m²",
-            attendu: M.S, tolerance: 0.02, fini: garde("S", M.S),
-            methode: "Une cellule : " + cm(PN.l) + " × " + cm(PN.h) + " ; puis × " + PN.ns + " ; puis ÷ 10 000 pour passer des cm² aux m²." },
-          { type: "nombre", lib: "L'ombre couvre une demi-cellule : quelle part de la surface des cellules est à l'ombre, en pourcentage ?", unite: "%",
-            attendu: PART, tolerance: 0, toleranceAbsolue: 0.3,
-            methode: "Une demi-cellule sur " + PN.nom + " cellules : 0,5 ÷ " + PN.ns + ", puis × 100." }
-        ],
+          { type: "choix", lib: "Que demande la balise au panneau, d'après le document 1 ?",
+            options: ["une puissance : au moins " + w(c.besoin) + ", en début d'après-midi", "une énergie : " + w(c.besoin) + " pour toute la nuit",
+              "une tension : " + fr(c.besoin, 1) + " V aux bornes du panneau", "une intensité : " + fr(c.besoin, 1) + " A dans le câble"], bonne: 0,
+            methode: "Le watt est l'unité d'une puissance ; une énergie se compte en joules ou en wattheures. Relisez l'unité et le moment du document 1." },
+          { type: "choix", lib: "L'ombre couvre une demi-cellule, sur les " + PN.ns + " cellules du panneau (document 3). Quelle part de la surface des cellules est à l'ombre ?",
+            options: ["environ " + PCT, "la moitié, 50 %", "environ " + fr(Math.round(100 / PN.ns), 0) + " %", "0,5 %"], bonne: 0,
+            methode: "Une demi-cellule est la moitié d'une seule cellule : quelle fraction des " + PN.ns + " cellules cela fait-il ?" }
+        ]; },
         bravo: "Le dossier est lu : un besoin, un panneau, une petite ombre."
       },
       {
@@ -3434,7 +3438,7 @@ var Sim = (function () {
             methode: "P = U × I : en court-circuit, la tension est nulle ; circuit ouvert, l'intensité est nulle. Le maximum est entre les deux." },
           { type: "appel", numero: 1, competence: "COM",
             lib: "Présentez votre protocole au professeur, à l'oral, avant de toucher au banc.",
-            attendus: ["les réglages fixes : pas de nuages, l'angle du document 1, sans ombre d'abord", "le rhéostat balayé, des mesures serrées autour du maximum de P", "les lectures U, I et E, et P = U × I pour chaque mesure", "le rendement : P max ÷ (E × S), S en m²", "la même recherche avec l'ombre, pour comparer"] }
+            attendus: ["les réglages fixes : pas de nuages, l'angle du document 1, sans ombre d'abord", "le rhéostat balayé, des mesures serrées autour du maximum de P", "les lectures U, I et E, et P = U × I pour chaque mesure", "le rendement : P max ÷ (E × S)", "la même recherche avec l'ombre, pour comparer"] }
         ],
         bravo: "Le protocole tient : une charge qui varie, trois lectures, un maximum à chercher."
       },
@@ -3451,18 +3455,18 @@ var Sim = (function () {
             aide: "Le tableau garde E, U et I ; P = U × I se calcule pour chaque ligne.",
             verifier: function (ctx) { return serie(ctx, 0); },
             methode: "Nuages 0 %, l'angle du document 1, aucune ombre ; le rhéostat de 0 à 100 Ω, puis des pas fins là où P est la plus grande." },
-          { type: "nombre", lib: "Quelle est la puissance maximale du panneau, sans ombre ?", unite: "W",
+          { type: "nombre", lib: "Quelle est la puissance maximale du panneau, sans ombre ? Calculez <b>P = U × I</b> pour les mesures du tableau : la plus grande est la puissance maximale.", unite: "W",
             attendu: M.Pmax, tolerance: 0.06, fini: garde("Pmax", M.Pmax),
             methode: "P = U × I pour chaque mesure du tableau ; la plus grande est la puissance maximale." },
-          { type: "nombre", lib: "Quel éclairement le solarimètre mesure-t-il ?", unite: "W/m²",
+          { type: "nombre", lib: "Relevez l'éclairement E que mesure le solarimètre.", unite: "W/m²",
             attendu: M.E, tolerance: 0.015, fini: garde("E", M.E),
             methode: "Le solarimètre, dans le plan du panneau, l'angle du document 1 réglé." },
-          { type: "nombre", lib: "Calculez la puissance lumineuse reçue par le panneau.", unite: "W",
+          { type: "nombre", lib: "Calculez la puissance lumineuse reçue par le panneau : <b>P<sub>reçue</sub> = E × S</b>, avec votre éclairement E et S = <b>" + S_T + "</b>, la surface des " + PN.nom + " cellules.", unite: "W",
             attendu: M.Pr, tolerance: 0.02, fini: garde("Pr", M.Pr),
-            methode: "E × S, avec E en W/m² et S, la surface des cellules, en m²." },
-          { type: "nombre", lib: "Calculez le rendement du panneau.", unite: "%",
+            methode: "Des W/m² multipliés par des m² donnent des watts." },
+          { type: "nombre", lib: "Calculez le rendement du panneau : <b>η = P<sub>max</sub> ÷ P<sub>reçue</sub> × 100</b>, en %, avec vos deux puissances.", unite: "%",
             attendu: M.eta, tolerance: 0, toleranceAbsolue: 0.5, fini: garde("eta", M.eta),
-            methode: "η = P max ÷ P reçue, les deux en watts, puis × 100 pour un pourcentage." }
+            methode: "La puissance électrique divisée par la puissance reçue, les deux en watts : un nombre plus petit que 1 ; × 100 pour un pourcentage." }
         ],
         bravo: "Le panneau est mesuré : sa puissance maximale, et la part de la lumière qu'il en tire."
       },
@@ -3479,12 +3483,14 @@ var Sim = (function () {
             aide: "Avec l'ombre, le sommet de P se déplace vers les grandes résistances.",
             verifier: function (ctx) { return serie(ctx, OMBRE); },
             methode: "« Tout effacer » ; ombre « demi-cellule » ; même soleil ; le rhéostat de 0 à 100 Ω, puis des pas fins autour du nouveau sommet." },
-          { type: "nombre", lib: "Quelle est la puissance maximale du panneau, avec l'ombre ?", unite: "W",
+          { type: "nombre", lib: "Quelle est la puissance maximale du panneau, avec l'ombre ? <b>P = U × I</b> pour les mesures de la nouvelle série : la plus grande.", unite: "W",
             attendu: M.Pombre, tolerance: 0.07, fini: garde("Pombre", M.Pombre),
             methode: "P = U × I pour chaque mesure de la nouvelle série ; la plus grande." },
-          { type: "nombre", lib: "Quelle part de sa puissance maximale le panneau perd-il à l'ombre, en pourcentage ?", unite: "%",
-            attendu: M.perte, tolerance: 0, toleranceAbsolue: 2, fini: garde("perte", M.perte),
-            methode: "La perte, sans ombre moins avec ombre, divisée par la puissance sans ombre, puis × 100." },
+          { type: "choix", lib: "Comparez vos deux puissances maximales, sans ombre et avec. Que perd le panneau à l'ombre ?",
+            options: ["bien plus que les " + PCT + " de surface à l'ombre : entre un quart et la moitié de sa puissance", "à peu près les " + PCT + " de surface à l'ombre",
+              "presque toute sa puissance", "rien : l'ombre ne change pas la puissance maximale"],
+            bonne: function (ctx) { var p = val(ctx, "perte", M.perte); return p < 2 ? 3 : p < 15 ? 1 : p > 75 ? 2 : 0; },
+            methode: "Sans calcul : la puissance à l'ombre est-elle à peine plus petite, ou nettement plus petite ? Un quart, c'est P max ÷ 4 ; la moitié, P max ÷ 2." },
           { type: "choix", lib: "Pourquoi une ombre sur " + PCT + " de la surface coûte-t-elle autant ?",
             options: ["les " + PN.nom + " cellules sont en série : le même courant les traverse toutes, et la cellule à l'ombre le limite", "l'ombre refroidit tout le panneau",
               "le solarimètre reçoit moins de lumière", "la cellule à l'ombre fournit une tension plus grande"], bonne: 0,

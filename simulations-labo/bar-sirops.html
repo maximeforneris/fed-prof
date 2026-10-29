@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Le bar à sirops</title>
-<meta name="description" content="Samedi, la fête de l&#x27;école : votre classe tient le bar à sirops, et la mairie demande d&#x27;afficher le sucre de chaque boisson en grammes par litre. Lire l&#x27;étiquette du sirop, choisir la verrerie, peser à la balance tarée, dissoudre et compléter la fiole au trait, contrôler un verre à l&#x27;échelle de teintes, puis écrire la fiche recette du bar. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.">
+<meta name="description" content="Samedi, la fête de l&#x27;école : votre classe tient le bar à sirops, et la mairie demande d&#x27;afficher le sucre de chaque boisson en grammes par litre. Lire l&#x27;étiquette du sirop, choisir la verrerie, peser à la balance tarée, dissoudre et compléter la fiole au trait, contrôler un verre à l&#x27;échelle de teintes, puis écrire la fiche recette du bar. En TD, la page guide ; en évaluation notée, dans l&#x27;espace d&#x27;évaluation, elle finit par un fichier.">
 <meta name="etiquette" content="Simulation · Parcours PAR-04">
 <style>
 /* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
@@ -2802,9 +2802,213 @@ var Sim = (function () {
     return n;
   }
 
+  /* ═══════════ LA 3D · un petit moteur en canvas 2D (22 octobre 2026) ═══════════
+     Ne pour « tente de realiser une simulation en 3D » : la paillasse du bar a sirops (PAR-04), puis les vecteurs
+     de l'espace dans une remorque. Sans bibliotheque ni WebGL, pour les tablettes du lycee et les essais sans
+     affichage : des faces (polygones 3D), des lignes, une camera qui tourne autour d'une cible ; les faces triees
+     de la plus lointaine a la plus proche (le peintre), une lumiere, un dessin a la demande. Unite libre (le cm
+     de la paillasse, le m de la remorque) ; z vers le haut.
+       Sim.trois.moteur(canvas, construire, camera) : construire() rend { faces, lignes, apres(ctx, proj, objets) } ;
+         une face { p: [[x, y, z]…], c: couleur, a: opacite, id, double, sol } — « sol » se dessine avant tout (un
+         grand plancher trie avec les autres passait devant les objets) ; une ligne { a, b, c, l: epaisseur,
+         devant: biais vers l'avant }. camera : { cible, az, el, dist, fov, ortho } ; ortho vrai, une vue sans
+         perspective (dessus, cote) ou les coordonnees se lisent. Rend { cam, rendre, proj, oeil, objets }.
+       Sim.trois.revolution / boite / cone : des formes toutes faites ; Sim.trois.controles : tourner au doigt,
+       pincer, rouler, toucher un objet ; Sim.trois.aller : un mouvement doux de la camera. */
+  var trois = (function () {
+    function vs(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
+    function va(a, b) { return [a[0] + b[0], a[1] + b[1], a[2] + b[2]]; }
+    function vk(a, k) { return [a[0] * k, a[1] * k, a[2] * k]; }
+    function vd(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+    function vx(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
+    function vn(a) { var l = Math.sqrt(vd(a, a)) || 1; return vk(a, 1 / l); }
+    /* la normale par la methode de Newell : juste meme quand deux sommets se confondent */
+    function newell(p) {
+      var n = [0, 0, 0];
+      for (var i = 0; i < p.length; i++) {
+        var a = p[i], b = p[(i + 1) % p.length];
+        n[0] += (a[1] - b[1]) * (a[2] + b[2]); n[1] += (a[2] - b[2]) * (a[0] + b[0]); n[2] += (a[0] - b[0]) * (a[1] + b[1]);
+      }
+      return vn(n);
+    }
+    /* une surface de revolution : profil [[r, z]…] du bas vers le haut, autour de l'axe vertical (cx, cy) ;
+       o.inc : inclinaison en degres autour de l'axe y ; o.ouvert : on voit l'interieur ; o.fond, o.dessus : les
+       couvercles ; o.contour { az, lignes, c } : le profil le long des deux meridiens que la camera voit de profil */
+    function revolution(liste, id, prof, cx, cy, cz, coul, alpha, o) {
+      o = o || {};
+      var n = o.n || 22, inc = (o.inc || 0) * Math.PI / 180, pied = o.pied || 0;
+      function pt(r, z, t) {
+        var x = r * Math.cos(t), y = r * Math.sin(t), zz = z - pied;
+        var xr = x * Math.cos(inc) + zz * Math.sin(inc), zr = -x * Math.sin(inc) + zz * Math.cos(inc);
+        return [cx + xr, cy + y, cz + zr + pied];
+      }
+      for (var i = 0; i < n; i++) {
+        var t0 = 2 * Math.PI * i / n, t1 = 2 * Math.PI * (i + 1) / n;
+        for (var j = 0; j < prof.length - 1; j++) {
+          var a = prof[j], b = prof[j + 1];
+          if (a[0] < 0.001 && b[0] < 0.001) continue;
+          liste.push({ id: id, p: [pt(a[0], a[1], t0), pt(a[0], a[1], t1), pt(b[0], b[1], t1), pt(b[0], b[1], t0)], c: coul, a: alpha, double: o.ouvert || alpha < 1 });
+        }
+      }
+      if (o.contour) [-1, 1].forEach(function (sg) {
+        var tc = o.contour.az + sg * Math.PI / 2;
+        for (var q = 0; q < prof.length - 1; q++) if (prof[q][0] > 0.001 || prof[q + 1][0] > 0.001) o.contour.lignes.push({ a: pt(prof[q][0], prof[q][1], tc), b: pt(prof[q + 1][0], prof[q + 1][1], tc), c: o.contour.c, l: 1.3, devant: 0.4 });
+      });
+      if (o.fond) { var f = []; for (var k = n; k > 0; k--) f.push(pt(prof[0][0], prof[0][1], 2 * Math.PI * k / n)); liste.push({ id: id, p: f, c: o.fond, a: alpha, double: alpha < 1 }); }
+      if (o.dessus) { var d = [], l = prof[prof.length - 1]; for (var m = 0; m < n; m++) d.push(pt(l[0], l[1], 2 * Math.PI * m / n)); liste.push({ id: id, p: d, c: o.dessus, a: o.alphaDessus || alpha, double: true }); }
+    }
+    function boite(liste, id, x0, y0, z0, dx, dy, dz, coul, alpha) {
+      var P = function (i, j, k) { return [x0 + i * dx, y0 + j * dy, z0 + k * dz]; };
+      [[P(0, 0, 0), P(0, 1, 0), P(1, 1, 0), P(1, 0, 0)], [P(0, 0, 1), P(1, 0, 1), P(1, 1, 1), P(0, 1, 1)],
+       [P(0, 0, 0), P(1, 0, 0), P(1, 0, 1), P(0, 0, 1)], [P(0, 1, 0), P(0, 1, 1), P(1, 1, 1), P(1, 1, 0)],
+       [P(0, 0, 0), P(0, 0, 1), P(0, 1, 1), P(0, 1, 0)], [P(1, 0, 0), P(1, 1, 0), P(1, 1, 1), P(1, 0, 1)]].forEach(function (f) {
+        liste.push({ id: id, p: f, c: coul, a: alpha === undefined ? 1 : alpha, double: alpha !== undefined && alpha < 1 });
+      });
+    }
+    /* un cone de la base vers la pointe, dans n'importe quelle direction : la pointe d'une fleche */
+    function cone(liste, id, base, pointe, rayon, coul, n) {
+      n = n || 14;
+      var w = vn(vs(pointe, base)), ref = Math.abs(w[2]) < 0.9 ? [0, 0, 1] : [1, 0, 0];
+      var u = vn(vx(w, ref)), v = vx(w, u), cercle = [];
+      for (var i = 0; i < n; i++) { var t = 2 * Math.PI * i / n; cercle.push(va(base, va(vk(u, rayon * Math.cos(t)), vk(v, rayon * Math.sin(t))))); }
+      for (var j = 0; j < n; j++) liste.push({ id: id, p: [cercle[j], cercle[(j + 1) % n], pointe], c: coul, a: 1, double: true });
+      liste.push({ id: id, p: cercle.slice().reverse(), c: coul, a: 1, double: true });
+    }
+    function moteur(cv, construire, cam0) {
+      var ctx = cv.getContext("2d"), cam = cam0 || { cible: [0, 0, 0], az: -1.8, el: 0.5, dist: 10, fov: 0.62 };
+      var LUM = vn([-0.35, -0.55, 0.75]), objets = {}, eye = [0, 0, 0], W = 0, H = 0, F = 1, droite, haut, avant, couleurs = {};
+      function rgb(c) {
+        if (couleurs[c]) return couleurs[c];
+        ctx.fillStyle = "#000"; ctx.fillStyle = c; var s = ctx.fillStyle, r;
+        if (s[0] === "#") r = [parseInt(s.substr(1, 2), 16), parseInt(s.substr(3, 2), 16), parseInt(s.substr(5, 2), 16)];
+        else { var m = s.match(/[\d.]+/g) || [0, 0, 0]; r = [+m[0], +m[1], +m[2]]; }
+        couleurs[c] = r; return r;
+      }
+      function proj(p) {
+        var d = vs(p, eye), zc = vd(d, avant);
+        if (cam.ortho) { var k = F / cam.dist; return [W / 2 + k * vd(d, droite), H / 2 - k * vd(d, haut), zc]; }
+        if (zc < cam.dist * 0.01) return null;
+        return [W / 2 + F * vd(d, droite) / zc, H / 2 - F * vd(d, haut) / zc, zc];
+      }
+      function rendre() {
+        var dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
+        if (!w || !h) return;
+        if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0); W = w; H = h; F = (H / 2) / Math.tan(cam.fov / 2) * Math.min(1, W / H * 1.1);
+        eye = va(cam.cible, vk([Math.cos(cam.el) * Math.cos(cam.az), Math.cos(cam.el) * Math.sin(cam.az), Math.sin(cam.el)], cam.ortho ? cam.dist * 4 : cam.dist));
+        avant = vn(vs(cam.cible, eye));
+        droite = Math.abs(avant[2]) > 0.999 ? vn([-Math.sin(cam.az), Math.cos(cam.az), 0]) : vn(vx(avant, [0, 0, 1]));
+        haut = vx(droite, avant);
+        var scene = construire(), prims = [];
+        objets = {};
+        scene.faces.forEach(function (f) {
+          var q = [], z = 0;
+          for (var i = 0; i < f.p.length; i++) { var r = proj(f.p[i]); if (!r) return; q.push(r); z += r[2]; }
+          var nrm = newell(f.p), vers = cam.ortho ? vd(nrm, avant) : vd(nrm, vs(f.p[0], eye));
+          if (vers > 0 && !f.double) return;               // une face opaque tournee vers l'arriere
+          if (vers > 0) nrm = vk(nrm, -1);
+          var ec = 0.5 + 0.5 * Math.max(0, vd(nrm, LUM)), c = rgb(f.c);
+          prims.push({ sol: !!f.sol, z: z / q.length, q: q, coul: "rgba(" + Math.round(c[0] * ec) + "," + Math.round(c[1] * ec) + "," + Math.round(c[2] * ec) + "," + f.a + ")", a: f.a });
+          if (f.id) {
+            var o = objets[f.id] || (objets[f.id] = { x0: 1e9, y0: 1e9, x1: -1e9, y1: -1e9, z: 1e9 });
+            q.forEach(function (s) { o.x0 = Math.min(o.x0, s[0]); o.y0 = Math.min(o.y0, s[1]); o.x1 = Math.max(o.x1, s[0]); o.y1 = Math.max(o.y1, s[1]); o.z = Math.min(o.z, s[2]); });
+          }
+        });
+        (scene.lignes || []).forEach(function (l) {
+          var a = proj(l.a), b = proj(l.b); if (!a || !b) return;
+          prims.push({ sol: !!l.sol, z: (a[2] + b[2]) / 2 - (l.devant || 0.05) * (cam.dist / 100), ligne: [a, b], coul: l.c, l: l.l || 1.5, tirets: l.tirets });
+        });
+        prims.sort(function (p, q) { return p.sol !== q.sol ? (p.sol ? -1 : 1) : q.z - p.z; });
+        ctx.clearRect(0, 0, W, H);
+        prims.forEach(function (p) {
+          ctx.beginPath();
+          if (p.ligne) {
+            ctx.setLineDash(p.tirets || []);
+            ctx.moveTo(p.ligne[0][0], p.ligne[0][1]); ctx.lineTo(p.ligne[1][0], p.ligne[1][1]);
+            ctx.strokeStyle = p.coul; ctx.lineWidth = p.l; ctx.lineCap = "round"; ctx.stroke(); ctx.setLineDash([]); return;
+          }
+          ctx.moveTo(p.q[0][0], p.q[0][1]);
+          for (var i = 1; i < p.q.length; i++) ctx.lineTo(p.q[i][0], p.q[i][1]);
+          ctx.closePath(); ctx.fillStyle = p.coul; ctx.fill();
+          if (p.a >= 1) { ctx.strokeStyle = p.coul; ctx.lineWidth = 0.6; ctx.stroke(); }  // pas de jour entre deux faces
+        });
+        if (scene.apres) scene.apres(ctx, proj, objets);
+      }
+      return { cam: cam, rendre: rendre, proj: function (p) { return proj(p); }, oeil: function () { return eye; }, objets: function () { return objets; } };
+    }
+    /* tourner au doigt (ou a la souris), pincer ou rouler pour approcher, toucher un objet ; les fleches du clavier.
+       o : { rendre, surToucher(id), distMin, distMax, elMin, elMax } */
+    function controles(cv, M, o) {
+      var pts = {}, depart = null, dMin = o.distMin || 1, dMax = o.distMax || 1000, eMin = o.elMin === undefined ? -0.25 : o.elMin, eMax = o.elMax === undefined ? 1.5 : o.elMax;
+      cv.addEventListener("pointerdown", function (e) {
+        cv.setPointerCapture(e.pointerId); pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+        if (Object.keys(pts).length === 1) depart = { x: e.clientX, y: e.clientY, t: Date.now(), bouge: false };
+      });
+      cv.addEventListener("pointermove", function (e) {
+        var p = pts[e.pointerId]; if (!p) return;
+        var ids = Object.keys(pts);
+        if (ids.length === 1) {
+          if (depart && Math.abs(e.clientX - depart.x) + Math.abs(e.clientY - depart.y) > 6) depart.bouge = true;
+          if (depart && depart.bouge) {
+            if (M.cam.ortho && o.surQuitterOrtho) o.surQuitterOrtho();
+            M.cam.az -= (e.clientX - p.x) * 0.008; M.cam.el = borne(M.cam.el + (e.clientY - p.y) * 0.006, eMin, eMax);
+          }
+        } else if (ids.length === 2) {
+          var autre = pts[ids[0] === String(e.pointerId) ? ids[1] : ids[0]];
+          var avantD = Math.hypot(p.x - autre.x, p.y - autre.y), apresD = Math.hypot(e.clientX - autre.x, e.clientY - autre.y);
+          if (avantD > 10) M.cam.dist = borne(M.cam.dist * avantD / apresD, dMin, dMax);
+          if (depart) depart.bouge = true;
+        }
+        p.x = e.clientX; p.y = e.clientY; o.rendre();
+      });
+      cv.addEventListener("pointerup", function (e) {
+        delete pts[e.pointerId];
+        if (depart && !depart.bouge && Date.now() - depart.t < 500 && !Object.keys(pts).length && o.surToucher) {
+          var r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, meilleur = null, ob = M.objets();
+          Object.keys(ob).forEach(function (id) {
+            var b = ob[id];
+            if (x >= b.x0 - 6 && x <= b.x1 + 6 && y >= b.y0 - 6 && y <= b.y1 + 6) {
+              var aire = (b.x1 - b.x0) * (b.y1 - b.y0);
+              if (!meilleur || aire < meilleur.aire) meilleur = { id: id, aire: aire };   // le plus petit gagne
+            }
+          });
+          o.surToucher(meilleur ? meilleur.id : null, x, y);
+        }
+        if (!Object.keys(pts).length) depart = null;
+      });
+      cv.addEventListener("pointercancel", function (e) { delete pts[e.pointerId]; depart = null; });
+      cv.addEventListener("wheel", function (e) { e.preventDefault(); M.cam.dist = borne(M.cam.dist * Math.exp(e.deltaY * 0.0012), dMin, dMax); o.rendre(); }, { passive: false });
+      cv.addEventListener("keydown", function (e) {
+        var k = e.key;
+        if (k === "ArrowLeft") M.cam.az += 0.08; else if (k === "ArrowRight") M.cam.az -= 0.08;
+        else if (k === "ArrowUp") M.cam.el = borne(M.cam.el + 0.05, eMin, eMax); else if (k === "ArrowDown") M.cam.el = borne(M.cam.el - 0.05, eMin, eMax);
+        else if (k === "+") M.cam.dist = Math.max(dMin, M.cam.dist / 1.15); else if (k === "-") M.cam.dist = Math.min(dMax, M.cam.dist * 1.15); else return;
+        e.preventDefault(); o.rendre();
+      });
+    }
+    /* un mouvement doux de la camera vers { cible, dist, el, az } */
+    function aller(M, but, rendre) {
+      var c = M.cam, d0 = { cible: c.cible.slice(), dist: c.dist, el: c.el, az: c.az }, t0 = null;
+      if (M.anim) cancelAnimationFrame(M.anim);
+      function pas(t) {
+        if (t0 === null) t0 = t;
+        var k = Math.min(1, (t - t0) / 450), e = k * k * (3 - 2 * k);
+        if (but.cible) c.cible = va(d0.cible, vk(vs(but.cible, d0.cible), e));
+        if (but.dist !== undefined) c.dist = d0.dist + (but.dist - d0.dist) * e;
+        if (but.el !== undefined) c.el = d0.el + (but.el - d0.el) * e;
+        if (but.az !== undefined) c.az = d0.az + (but.az - d0.az) * e;
+        rendre();
+        M.anim = k < 1 ? requestAnimationFrame(pas) : null;
+      }
+      M.anim = requestAnimationFrame(pas);
+    }
+    return { moteur: moteur, revolution: revolution, boite: boite, cone: cone, controles: controles, aller: aller,
+      v: { s: vs, a: va, k: vk, d: vd, x: vx, n: vn } };
+  })();
+
   return { fr: fr, lire: lire, el: el, $: $, borne: borne, mesure: mesure, gauss: gauss, onglets: onglets, curseur: curseur, choix: choix,
     afficheur: afficheur, graphe: graphe, releve: releve, enregistreur: enregistreur, centrale: centrale, molette: molette,
-    defi: defi, animer: animer, avancer: avancer, svg: svg, parcours: parcours, calculatrice: calculatrice,
+    defi: defi, animer: animer, avancer: avancer, svg: svg, parcours: parcours, calculatrice: calculatrice, trois: trois,
     /* vrai dans la copie notee (l'espace d'evaluation) : chaque page y tire d'autres valeurs */
     note: NOTE_COPIE };
 })();
@@ -2816,7 +3020,7 @@ var Sim = (function () {
 <header class="tete">
 <div class="surtitre">Physique-chimie · parcours CAP et seconde · une heure sur tablette</div>
 <h1>Le bar à sirops</h1>
-<p class="chapeau">Samedi, la fête de l'école : votre classe tient le bar à sirops, et la mairie demande d'afficher le sucre de chaque boisson en grammes par litre. Lire l'étiquette du sirop, choisir la verrerie, peser à la balance tarée, dissoudre et compléter la fiole au trait, contrôler un verre à l'échelle de teintes, puis écrire la fiche recette du bar. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.</p>
+<p class="chapeau">Samedi, la fête de l'école : votre classe tient le bar à sirops, et la mairie demande d'afficher le sucre de chaque boisson en grammes par litre. Lire l'étiquette du sirop, choisir la verrerie, peser à la balance tarée, dissoudre et compléter la fiole au trait, contrôler un verre à l'échelle de teintes, puis écrire la fiche recette du bar. En TD, la page guide ; en évaluation notée, dans l'espace d'évaluation, elle finit par un fichier.</p>
 </header>
 <style>
 :root{--papier:#f8f6f0;--encre-papier:#1d1d1b;--papier-trait:#8a8579;--blanc:#fbfaf7;--liquide:#d9e7f2;--metal:#9aa3ad;
@@ -2864,6 +3068,15 @@ var Sim = (function () {
   border:1.5px dashed var(--papier-trait);background:transparent;color:var(--encre-papier)}
 .fiche-recette .trou button[aria-pressed="true"]{border:1.5px solid var(--encre-papier);background:var(--encre-papier);color:var(--papier)}
 .vos-mesures{margin:8px 0 0;padding-left:1.1em}
+/* la paillasse en 3D (essai du 22 octobre 2026) */
+.b3-cadre{position:relative;border:1px solid var(--trait);border-radius:10px;overflow:hidden;background:var(--carte2)}
+.b3-toile{display:block;width:100%;height:440px;touch-action:none;cursor:grab;outline-offset:-3px}
+@media (max-width:600px){.b3-toile{height:340px}}
+.b3-calque{position:absolute;inset:0;pointer-events:none}
+.b3-lcd{position:absolute;transform:translate(-50%,-50%);font:700 14px/1 ui-monospace,Consolas,monospace;color:#123222;white-space:nowrap}
+.b3-vues,.b3-gestes{margin-top:8px}
+.b3-choisi{margin:10px 0 0;font-weight:600}
+.b3-tenir{touch-action:none;-webkit-user-select:none;user-select:none}
 </style>
 
 <div id="parcours"></div>
@@ -3100,8 +3313,225 @@ var Sim = (function () {
   }
   var yTrait = G.colBas - (V_FIOLE - 92) * G.pxMl;
 
+  /* ══ La paillasse en 3D (essai du 22 octobre 2026) ═══════════════════════════════════════════════
+     « Tente de réaliser une simulation en 3D », puis « fais-le sur le bar à sirop, pour la manip » : une
+     deuxième vue de la phase 3, à côté de la vue à plat. Un petit moteur 3D en canvas 2D, sans bibliothèque
+     ni WebGL (les tablettes du lycée, les essais sans affichage) : surfaces de révolution (fiole, pot,
+     bécher, entonnoir, pissette), boîtes, lignes ; faces triées de la plus lointaine à la plus proche (le
+     peintre), une lumière, dessin à la demande. On tourne la paillasse au doigt, on pince ou on roule pour
+     approcher, on touche un objet pour choisir un geste. Le moteur est la brique commune Sim.trois de commun.js. LA VUE AGIT SUR LE MÊME ÉTAT QUE LA VUE À PLAT, PAR
+     LES MÊMES GESTES (coupelleVers, spatVers, tapoter, eau, agiter…) : les questions, la vérification et les
+     scénarios n'en voient rien. Ce que la 3D apporte : le trait de jauge fait le tour du col, une ellipse vue
+     d'en haut, une seule ligne à hauteur d'œil ; la hauteur de la caméra devient labo.oeil.
+     Unités : le centimètre ; x de gauche à droite, y vers le fond, z vers le haut, le plan de travail à z = 0. */
+  var T3 = S.trois, revolution = T3.revolution, boite = T3.boite;    // le moteur est la brique commune Sim.trois
+  function moteur3D(cv, construire) { return T3.moteur(cv, construire, { cible: [-5, 1, 4], az: -1.82, el: 0.55, dist: 100, fov: 0.62 }); }
+
+  /* la paillasse du sirop de canne : les objets, leurs places, les gestes */
+  function paillasse3D(zone, g) {
+    var boite3 = el("div", { classe: "b3-cadre" }); zone.appendChild(boite3);
+    var cv = el("canvas", { classe: "b3-toile", tabindex: "0", role: "img", "aria-label": "La paillasse en 3D : balance, pot de sucre, coupelle, spatule, bécher des excès, fiole jaugée, entonnoir et pissette. Glissez pour tourner, pincez ou roulez pour approcher, touchez un objet pour choisir un geste." });
+    boite3.appendChild(cv);
+    var calque = el("div", { classe: "b3-calque" }); boite3.appendChild(calque);
+    var lcd = el("div", { classe: "b3-lcd" }); calque.appendChild(lcd);
+    var vues = el("div", { classe: "rangee b3-vues" }); zone.appendChild(vues);
+    var choisi = el("p", { classe: "b3-choisi" }); zone.appendChild(choisi);
+    var gestes = el("div", { classe: "rangee b3-gestes" }); zone.appendChild(gestes);
+    zone.appendChild(el("p", { classe: "legende", texte: "Glissez pour tourner autour de la paillasse, vers le haut ou le bas pour monter ou baisser les yeux ; pincez, roulez ou « Approcher » pour voir de près. Touchez un objet : ses gestes s'affichent dessous." }));
+
+    /* la fiole jaugee de 100 mL : un profil, son volume calcule, le trait la ou le volume fait 100 mL */
+    var FX = 14, FY = 2, EP = 0.08, RCOL = 0.62;
+    var profil = [[2.2, 0], [2.6, 0.2], [2.85, 0.75], [2.98, 1.55], [2.98, 2.4], [2.8, 3.25], [2.4, 4.0], [1.8, 4.6], [1.15, 5.05], [0.75, 5.4], [RCOL, 5.8], [RCOL, 16.6], [0.74, 16.9]];
+    var ZCOL = 5.8;
+    function rInt(z) {                                     // rayon interieur a la hauteur z
+      for (var i = 0; i < profil.length - 1; i++) {
+        var a = profil[i], b = profil[i + 1];
+        if (z >= a[1] && z <= b[1]) return Math.max(0, a[0] + (b[0] - a[0]) * (z - a[1]) / (b[1] - a[1] || 1) - EP);
+      }
+      return RCOL - EP;
+    }
+    function volJusque(z) {                                // en cm3 = mL, par tranches de 0,05 cm
+      var v = 0, dz = 0.05;
+      for (var h = 0; h < z; h += dz) { var r = rInt(Math.min(z, h + dz / 2)); v += Math.PI * r * r * Math.min(dz, z - h); }
+      return v;
+    }
+    /* le bulbe est mis a 92 mL, comme la vue a plat : le col porte les 8 derniers */
+    var s92 = Math.sqrt(92 / volJusque(ZCOL));
+    profil = profil.map(function (p) { return p[1] < ZCOL - 0.01 ? [p[0] * s92, p[1]] : p; });
+    var ACOL = Math.PI * (RCOL - EP) * (RCOL - EP), VCOL = volJusque(ZCOL);
+    var ZT = ZCOL + (V_FIOLE - VCOL) / ACOL;                // le trait de jauge
+    function zDe(V) {
+      if (V <= 0) return 0;
+      if (V >= VCOL) return ZCOL + (V - VCOL) / ACOL;
+      var lo = 0, hi = ZCOL;
+      for (var i = 0; i < 30; i++) { var m = (lo + hi) / 2; if (volJusque(m) < V) lo = m; else hi = m; }
+      return lo;
+    }
+    var PLATEAU = [-30, 1, 7.8], BANC = [-9, -8, 0];
+    var M = moteur3D(cv, construire), sel = null, tps = 0, agite = 0;
+    var C = { verre: "#8fb9d4", liquide: "#5fa6d8", sucre: "#f6f4ee", metal: "#b8c0c7", noir: "#3a3f45", bois: "#e6dfd1", bleu: "#2f7fbf", plastique: "#e4edf3" };
+    function posCoupelle() { return labo.coupelle.ou === "plateau" ? PLATEAU : BANC; }
+    function construire() {
+      var f = [], L = [], co = posCoupelle(), fi = labo.fiole;
+      boite(f, null, -46, -16, -3, 88, 32, 3, C.bois);                                  // le plan de travail
+      f.forEach(function (x) { x.sol = true; });   /* dessine en premier : un grand rectangle trie avec les autres passait devant le bas de la fiole */
+      // la balance de labo, son plateau, sa touche TARE
+      boite(f, "balance", -41, -7, 0, 22, 16, 6, C.noir);
+      boite(f, "balance", -38, -7.6, 1.2, 12, 0.6, 3.6, "#9fb3a3");                    // l'afficheur
+      boite(f, "tare", -23.5, -7.7, 1.6, 3.2, 0.7, 2.6, "#d9dde1");
+      revolution(f, "balance", [[1.2, 6], [1.2, 7.1]], -30, 1, 0, C.metal, 1, { n: 12 });
+      revolution(f, "balance", [[6.5, 7.1], [7, 7.6], [7, 7.8]], -30, 1, 0, C.metal, 1, { n: 26, dessus: C.metal });
+      // le pot de sucre, le becher des exces
+      revolution(f, "pot", [[4.4, 0], [4.6, 0.3], [4.6, 10]], -12, 5, 0, C.plastique, 0.45, { fond: C.plastique });
+      revolution(f, "pot", [[4.3, 0.3], [4.3, 7.5]], -12, 5, 0, C.sucre, 1, { dessus: C.sucre });
+      var CT = function () { return { az: M.cam.az, lignes: L, c: "rgba(40,70,95,0.75)" }; };
+      revolution(f, "exces", [[2.8, 0], [3, 0.2], [3, 6.5]], -2, 7, 0, C.verre, 0.3, { fond: C.verre, contour: CT() });
+      if (labo.exces > 0.05) revolution(f, "exces", [[2.85, 0.2], [2.85, 0.2 + Math.min(5, labo.exces * 0.35)]], -2, 7, 0, C.sucre, 1, { dessus: C.sucre });
+      // la coupelle et son tas de sucre
+      revolution(f, "coupelle", [[2.4, 0], [3.6, 0.9], [3.8, 1.1]], co[0], co[1], co[2], "#a7b0b8", 1, { fond: "#a7b0b8", n: 18, ouvert: true });
+      if (labo.coupelle.sucre > 0.01) { var hT = Math.min(2.6, 0.55 * Math.sqrt(labo.coupelle.sucre)); revolution(f, "coupelle", [[2.6, 0.5], [0.2, 0.5 + hT]], co[0], co[1], co[2], C.sucre, 1, { n: 14 }); }
+      // la spatule
+      var sp = labo.spat, sx, sy, sz, sInc = 0;
+      if (sp.ou === "pot") { sx = -12; sy = 5; sz = 6; sInc = 0; }
+      else if (sp.ou === "coupelle") { sx = co[0]; sy = co[1]; sz = co[2] + 4.5; }
+      else { sx = 2; sy = 2; sz = 0.25; }
+      boite(f, "spatule", sx - 0.6, sy - (sp.ou === "pot" ? 0 : 14), sz + (sp.ou === "pot" ? 0 : 0), 1.2, sp.ou === "pot" ? 0.3 : 14, sp.ou === "pot" ? 14 : 0.3, C.metal);
+      if (sp.charge > 0.02 && sp.ou !== "pot") revolution(f, "spatule", [[0.9, 0], [0.1, 0.6]], sx, sy - 0.9, sz + 0.3, C.sucre, 1, { n: 10 });
+      // la fiole : le verre, le liquide jusqu'au bas du menisque, les cristaux, le trait de jauge
+      var inc = agite ? Math.sin(tps * 26) * 6 : 0, V = volFiole(), zL = zDe(V);
+      revolution(f, "fiole", profil, FX, FY, 0, C.verre, 0.3, { fond: C.verre, n: 24, inc: inc, contour: CT() });
+      if (V > 0.05) {
+        var pl = [[0, 0]];
+        profil.forEach(function (p) { if (p[1] < zL) pl.push([Math.max(0, p[0] - EP), p[1]]); });
+        pl.push([rInt(zL), zL + 0.12]); pl.push([0, zL]);                              // le menisque, creux au milieu
+        revolution(f, "fiole", pl, FX, FY, 0.02, C.liquide, 0.55, { n: 24, inc: inc });
+      }
+      var nonDissous = fi.sucre * (1 - fi.dissous);
+      for (var k = 0; k < Math.min(14, Math.ceil(nonDissous * 0.6)); k++) {
+        var tk = k * 2.4, rk = 0.6 + (k * 0.37) % 1.6;
+        boite(f, "fiole", FX + rk * Math.cos(tk) - 0.15, FY + rk * Math.sin(tk) - 0.15, 0.08 + (k % 3) * 0.12, 0.3, 0.3, 0.3, C.sucre);
+      }
+      for (var a = 0; a < 32; a++) {                                                   // le trait fait le tour du col
+        var t0 = 2 * Math.PI * a / 32, t1 = 2 * Math.PI * (a + 1) / 32, rr = RCOL + 0.01;
+        L.push({ a: [FX + rr * Math.cos(t0), FY + rr * Math.sin(t0), ZT], b: [FX + rr * Math.cos(t1), FY + rr * Math.sin(t1), ZT], c: "#1d1d1b", l: 1.4, devant: 0.02 });
+      }
+      // l'entonnoir, pose sur la fiole ou a cote
+      var eX = fi.entonnoir ? FX : 24, eY = fi.entonnoir ? FY : 9, eZ = fi.entonnoir ? 15.8 : 0;
+      revolution(f, "entonnoir", [[0.35, 0], [0.45, 3], [3.6, 6.2], [3.8, 6.5]], eX, eY, eZ, "#d3dde4", 0.75, { n: 20, contour: CT() });
+      // la pissette, au repos ou penchee au-dessus de la fiole
+      var pIci = labo.pis.ou === "fiole", px = pIci ? FX + 13 : 30, py = pIci ? FY : -3, pz = pIci ? 20 : 0;
+      revolution(f, "pissette", [[2.6, 0], [3, 0.4], [3, 9], [2.2, 10.8], [0.7, 11.5], [0.7, 12.3]], px, py, pz, C.plastique, 0.7, { fond: C.plastique, n: 18, inc: pIci ? -55 : 0, pied: 0 });
+      var bec0 = pIci ? [px - 10.2, py, pz + 6.1] : [px - 0.4, py, pz + 12.3], bec1 = pIci ? [px - 11.6, py, pz + 3.6] : [px - 3.2, py, pz + 14.2];
+      L.push({ a: pIci ? [px - 9.3, py, pz + 6.8] : [px, py, pz + 12.3], b: bec0, c: C.bleu, l: 3 }, { a: bec0, b: bec1, c: C.bleu, l: 3 });
+      if (pIci && filet) L.push({ a: bec1, b: [FX, FY, fi.entonnoir ? 22 : 17], c: "#3d8fd4", l: 2.2, devant: 0.3 });
+      return { faces: f, lignes: L, apres: apres };
+    }
+    var filet = false;
+    function apres(ctx, proj, objets) {
+      // l'afficheur de la balance : sa lecture posee sur la face avant
+      var p = proj([-32, -7.7, 3]);
+      lcd.hidden = !p;
+      if (p) { lcd.style.left = p[0] + "px"; lcd.style.top = p[1] + "px"; lcd.style.fontSize = Math.max(9, Math.min(22, 900 / p[2])) + "px"; }
+      // l'objet choisi, entoure
+      if (sel && objets[sel]) {
+        var o = objets[sel];
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--accent") || "#2c6da6";
+        ctx.lineWidth = 2; ctx.setLineDash([5, 4]); ctx.strokeRect(o.x0 - 5, o.y0 - 5, o.x1 - o.x0 + 10, o.y1 - o.y0 + 10); ctx.setLineDash([]);
+      }
+      // la hauteur de l'oeil, par rapport au trait de jauge : c'est elle que la verification lit
+      var oe = M.oeil(), hz = Math.sqrt((oe[0] - FX) * (oe[0] - FX) + (oe[1] - FY) * (oe[1] - FY)) || 1;
+      var ang = Math.atan2(oe[2] - ZT, hz);
+      labo.oeil = Math.abs(ang) < 0.03 ? 0 : borne(Math.sin(ang) / 0.25, -1, 1);
+    }
+    function lireLCD() { lcd.textContent = fr(labo.bal.montre, 2) + " g"; }
+    var NOMS = { balance: "la balance de labo (lecture 0,01 g)", tare: "la touche TARE de la balance", pot: "le pot de sucre", coupelle: "la coupelle de pesée",
+      spatule: "la spatule", exces: "le bécher « excès »", fiole: "la fiole jaugée de 100 mL", entonnoir: "l'entonnoir", pissette: "la pissette d'eau distillée" };
+    function geste(texte, f) {
+      var b = el("button", { type: "button", classe: "bouton", texte: texte });
+      b.addEventListener("click", function () { f(); g.apres(); rendre(); majGestes(); });
+      gestes.appendChild(b); return b;
+    }
+    /* un geste qu'on tient : le filet de la pissette, l'agitation de la fiole */
+    function tenir(texte, chaqueDt, fin) {
+      var b = el("button", { type: "button", classe: "bouton b3-tenir", texte: texte }), actif = false, avant = 0;
+      function pas(t) {
+        if (!actif) return;
+        var dt = avant ? Math.min(0.1, (t - avant) / 1000) : 0; avant = t; tps += dt;
+        chaqueDt(dt); g.apres(); rendre(); requestAnimationFrame(pas);
+      }
+      function debut(e) { e.preventDefault(); if (actif) return; actif = true; avant = 0; requestAnimationFrame(pas); }
+      function arret() { if (!actif) return; actif = false; if (fin) fin(); g.apres(); rendre(); majGestes(); }
+      b.addEventListener("pointerdown", debut);
+      ["pointerup", "pointerleave", "pointercancel"].forEach(function (n) { b.addEventListener(n, arret); });
+      b.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); chaqueDt(0.15); g.apres(); rendre(); } });
+      gestes.appendChild(b); return b;
+    }
+    function majGestes() {
+      gestes.innerHTML = "";
+      if (!sel) { choisi.textContent = "Touchez un objet de la paillasse pour choisir un geste."; return; }
+      choisi.textContent = "Choisi : " + NOMS[sel] + ".";
+      var co = labo.coupelle, sp = labo.spat, fi = labo.fiole;
+      if (sel === "balance" || sel === "tare") geste("TARE", g.tarer);
+      if (sel === "coupelle") {
+        if (co.ou !== "plateau") geste("Poser sur la balance", function () { g.coupelle("plateau"); });
+        geste("Verser dans l'entonnoir", function () { g.coupelle("fiole"); });
+        if (co.ou === "plateau") geste("Reposer sur la paillasse", function () { g.coupelle("banc"); });
+      }
+      if (sel === "pot" || sel === "spatule") geste("Prendre du sucre à la spatule", function () { g.spatule("pot"); });
+      if (sel === "spatule") {
+        geste("Vider la spatule au-dessus de la coupelle", function () { g.spatule("coupelle"); });
+        if (sp.ou === "coupelle") geste("Tapoter une pincée", g.tapoter);
+        geste("Jeter dans le bécher « excès »", function () { g.spatule("exces"); });
+        if (sp.ou !== "repos") geste("Reposer la spatule", function () { g.spatule("repos"); });
+      }
+      if (sel === "exces") geste("Jeter le sucre de la spatule", function () { g.spatule("exces"); });
+      if (sel === "entonnoir") geste(fi.entonnoir ? "Retirer l'entonnoir" : "Poser l'entonnoir sur la fiole", function () { g.entonnoir(!fi.entonnoir); });
+      if (sel === "pissette") {
+        if (labo.pis.ou !== "fiole") geste("Placer au-dessus de la fiole", function () { g.pissette("fiole"); });
+        else {
+          geste("Une goutte", function () { g.eau(0.05); });
+          tenir("Un filet (maintenir appuyé)", function (dt) { filet = true; g.eau(6 * dt); }, function () { filet = false; });
+          geste("Reposer la pissette", function () { g.pissette("repos"); });
+        }
+      }
+      if (sel === "fiole") {
+        tenir("Agiter (maintenir appuyé)", function (dt) { agite = 1; g.agiter(dt * 420); }, function () { agite = 0; });
+        geste("Regarder le col de près", function () { allerA([FX, FY, ZT], 13, M.cam.el > 0.3 ? M.cam.el : 0.45); });
+      }
+    }
+    /* les vues : un mouvement doux de la camera */
+    var anim = null;
+    function allerA(cible, dist, el2, az) { T3.aller(M, { cible: cible, dist: dist, el: el2, az: az }, rendre); }
+    [["Vue d'ensemble", function () { allerA([-5, 1, 4], 100, 0.55, -1.82); }],
+     ["La balance", function () { allerA([-30, -2, 6], 38, 0.35, -1.75); }],
+     ["La fiole", function () { allerA([FX, FY, 10], 28, 0.3, -1.6); }],
+     ["Approcher", function () { allerA(M.cam.cible, Math.max(8, M.cam.dist / 1.4), M.cam.el); }],
+     ["Reculer", function () { allerA(M.cam.cible, Math.min(160, M.cam.dist * 1.4), M.cam.el); }]].forEach(function (v) {
+      var b = el("button", { type: "button", classe: "bouton", texte: v[0] }); b.addEventListener("click", v[1]); vues.appendChild(b);
+    });
+    /* tourner au doigt, pincer, rouler ; toucher choisit l'objet le plus petit sous le doigt (la touche TARE sur la balance) */
+    T3.controles(cv, M, { rendre: rendre, surToucher: function (id) { sel = id; majGestes(); rendre(); }, distMin: 8, distMax: 160, elMin: -0.25, elMax: 1.45 });
+    var visible = false, prevu = false;
+    function rendre() { if (!visible) return; if (prevu) return; prevu = true; requestAnimationFrame(function () { prevu = false; M.rendre(); lireLCD(); }); }
+    window.addEventListener("resize", rendre);
+    majGestes();
+    return {
+      montrer: function (oui) { visible = oui; if (oui) { M.rendre(); lireLCD(); } },
+      visible: function () { return visible; },
+      rendre: rendre, lcd: function () { if (visible) lireLCD(); },
+      /* la porte des essais : choisir, regarder, lire la camera */
+      choisir: function (id) { sel = id; majGestes(); rendre(); }, camera: M.cam, trait: ZT, volumeA: volJusque, zDe: zDe,
+      dessinNow: function () { M.rendre(); lireLCD(); }
+    };
+  }
+
   function sceneSirop(zone, ctx) {
     var sc = el("div", { classe: "scene" }); zone.appendChild(sc);
+    /* deux vues de la meme paillasse : a plat (par defaut) ou en 3D, a l'essai depuis le 22 octobre 2026 */
+    var bandeau3 = el("div", { classe: "rangee", style: "margin-bottom:10px" }); zone.insertBefore(bandeau3, sc);
+    var z3 = el("div", { classe: "b3-zone", hidden: "hidden" }); zone.appendChild(z3);
+    S.choix(bandeau3, { label: "La paillasse", valeur: "plat", options: [{ val: "plat", texte: "à plat" }, { val: "3d", texte: "en 3D (essai)" }],
+      surChange: function (v) { sc.hidden = v === "3d"; z3.hidden = v !== "3d"; if (v3) v3.montrer(v === "3d"); dessiner(); } });
     var s = svg("svg", { viewBox: "0 0 640 470", role: "img", "aria-label": "La balance, le sucre, la spatule et la fiole jaugée de 100 mL" }, sc);
     var msg = el("p", { classe: "message-scene", "aria-live": "polite", texte: "Posez la coupelle sur la balance, tarez, puis prenez le sucre à la spatule. « Une pincée de plus » et « Une pincée de moins » finissent la pesée." });
     var bVider = el("button", { type: "button", classe: "bouton", texte: "Vider la fiole et tout recommencer" });
@@ -3224,6 +3654,7 @@ var Sim = (function () {
       gExces.setAttribute("height", Math.min(36, labo.exces * 3)); gExces.setAttribute("y", 456 - Math.min(36, labo.exces * 3));
       dessinerLoupe();
       gOeil.setAttribute("transform", "translate(" + G.oeilX + "," + (lp.y - labo.oeil * 60) + ")");
+      if (v3 && v3.visible()) v3.rendre();
     }
     function dessinerLoupe() {
       vue.innerHTML = "";
@@ -3404,7 +3835,7 @@ var Sim = (function () {
       b.aff += (cible - b.aff) * (1 - Math.exp(-dt / 0.25));
       b.stable = Math.abs(cible - b.aff) < 0.006;
       b.t += dt;
-      if (b.t > 0.2) { b.t = 0; b.montre = Math.round((b.aff + S.gauss() * 0.003) * 100) / 100; majLCD(); }
+      if (b.t > 0.2) { b.t = 0; b.montre = Math.round((b.aff + S.gauss() * 0.003) * 100) / 100; majLCD(); if (v3) v3.lcd(); }
       if (appui && Date.now() - appui > 300 && labo.pis.ou === "fiole") {
         eau(6 * dt);
         var pp = posPis();
@@ -3412,13 +3843,18 @@ var Sim = (function () {
         dessiner();
       }
     });
+    var v3 = paillasse3D(z3, {
+      tarer: tarer, coupelle: coupelleVers, spatule: spatVers, tapoter: tapoter, eau: eau, agiter: agiter,
+      entonnoir: function (oui) { labo.fiole.entonnoir = oui; message(msg, oui ? "Entonnoir posé sur la fiole." : "Entonnoir retiré : on complète au trait sans lui, à la pissette."); },
+      pissette: function (c) { labo.pis.ou = c; if (c === "fiole") message(msg, "Pissette au-dessus de la fiole : « Un filet » en maintenant le bouton, puis « Une goutte » pour finir au trait."); },
+      apres: dessiner });
     labo.p3 = {
       tarer: function () { tarer(); dessiner(); }, coupelle: function (c) { var r = coupelleVers(c); dessiner(); return r; },
       spatule: function (c) { var r = spatVers(c); dessiner(); return r; }, tapoter: function () { var r = tapoter(); dessiner(); return r; },
       pissette: function (c) { labo.pis.ou = c; dessiner(); }, eau: function (v) { var r = eau(v); dessiner(); return r; },
       agiter: function (d) { agiter(d); dessiner(); }, entonnoir: function (oui) { labo.fiole.entonnoir = oui; dessiner(); },
       oeil: function (e) { labo.oeil = e; dessiner(); }, vider: function () { vider(); dessiner(); },
-      lcd: function () { return lcd.textContent; }, message: function () { return msg.textContent; }, volume: volFiole
+      lcd: function () { return lcd.textContent; }, message: function () { return msg.textContent; }, volume: volFiole, vue3d: v3
     };
     dessiner(); majLCD();
   }
@@ -3643,9 +4079,11 @@ var Sim = (function () {
             items: [SUJET.sucres + " g", "100 mL", "80 g/L", "75 cL", CIBLE + " g/L"],
             categories: ["Masse", "Volume", "Concentration"], bonnes: [0, 1, 2, 1, 2],
             methode: "Le gramme dit une masse, le litre et ses sous-multiples un volume, le gramme par litre une concentration massique." },
-          { type: "nombre", lib: "Quelle est la concentration massique en sucres du <b>sirop pur</b> ?", unite: "g/L",
-            attendu: C_SIROP, tolerance: 0.01,
-            methode: SUJET.sucres + " g de sucres dans 100 mL, c'est-à-dire dans 0,100 L : Cm = " + SUJET.sucres + " ÷ 0,100." },
+          /* 21 octobre 2026, allegement des calculs : la concentration du sirop pur se reconnait, elle ne se calcule plus.
+             Les deux fausses sont les erreurs vraies : oublier que 100 mL n'est pas un litre, diviser au lieu de multiplier */
+          { type: "choix", lib: "L'étiquette donne " + SUJET.sucres + "\u00a0g de sucres pour 100 mL de sirop. 100 mL, c'est 0,100 L : dix fois moins qu'un litre. Quelle est la concentration massique en sucres du <b>sirop pur</b> ?",
+            options: [C_SIROP + "\u00a0g/L", SUJET.sucres + "\u00a0g/L", fr(SUJET.sucres / 10, 1) + "\u00a0g/L"], bonne: 0,
+            methode: "Une concentration massique se donne pour un litre. Dans un litre, il y a dix fois 100 mL, donc dix fois plus de sucre : Cm = " + SUJET.sucres + " ÷ 0,100." },
           { type: "choix", lib: "Sur la carte, « 80 g/L de sucre » veut dire…",
             options: ["80 g de sucre dissous dans 1 L de boisson", "80 g de sucre pour 1 L d'eau ajoutée", "1 L de boisson pèse 80 g", "80 g de sirop dans 1 L de boisson"], bonne: 0,
             methode: "Une concentration massique : la masse de soluté dissoute dans un litre de solution, la boisson entière." }
@@ -3663,7 +4101,7 @@ var Sim = (function () {
             options: ["Dissoudre le sucre dans la fiole jaugée de 100 mL, puis compléter au trait", "Mesurer 100 mL d'eau à l'éprouvette, puis y ajouter le sucre",
               "Remplir un bécher de 100 mL jusqu'à sa graduation", "Mélanger dans un verre doseur de cuisine"], bonne: 0,
             methode: "Seule la fiole jaugée contient 100 mL à 0,1 mL près ; et c'est la solution, sucre compris, qui doit faire 100 mL." },
-          { type: "nombre", lib: "Quelle masse de sucre faut-il peser pour 100 mL de sirop à " + CIBLE + " g/L ?", unite: "g",
+          { type: "nombre", lib: "Quelle masse de sucre faut-il peser pour 100 mL de sirop à " + CIBLE + "\u00a0g/L ? Calculez <b>m = Cm × V</b>, avec Cm = " + CIBLE + "\u00a0g/L et V = 100 mL = 0,100 L.", unite: "g",
             attendu: CIBLE * V_FIOLE / 1000, tolerance: 0.01,
             methode: "m = Cm × V, avec V en litres : 100 mL = 0,100 L." }
         ],
@@ -3714,7 +4152,7 @@ var Sim = (function () {
               return { ok: ok, corriger: err, reponse: "volume " + fr(V, 1) + " mL, sucre " + (f.dissous >= 0.999 ? "dissous" : "pas tout dissous") + ", " + (f.apres >= 200 ? "agitée après le trait" : "pas agitée après le trait") };
             },
             methode: "De l'eau jusqu'aux trois quarts, agiter jusqu'au dernier cristal ; compléter goutte à goutte, le bas du ménisque sur le trait, le trait vu comme une seule ligne ; agiter encore." },
-          { type: "nombre", lib: "Calculez la concentration massique de <b>votre</b> sirop, à partir de votre pesée.", unite: "g/L",
+          { type: "nombre", lib: "Calculez la concentration massique de <b>votre</b> sirop : <b>Cm = m ÷ V</b>, avec m, votre pesée, en grammes, et V = 0,100 L.", unite: "g/L",
             /* en CAP, 5 % (16 octobre 2026, « pour la question 3 aussi, plus tolerante ») : la pesee est acceptee
                a 1 g pres, et l'eleve qui calcule avec 25 g au lieu de sa pesee exacte n'a pas tort de methode ;
                en seconde, 1 % */
@@ -3756,9 +4194,11 @@ var Sim = (function () {
             options: ["Oui : il est sous 80 g/L", "Non : il dépasse 80 g/L, il faut le rallonger d'eau", "On ne peut pas savoir sans y goûter"],
             bonne: function () { return C_JULES > 80 ? 1 : 0; },
             methode: "Le tube de Jules se place à côté d'un tube de l'échelle : comparez sa concentration aux 80 g/L. Au labo, on ne goûte jamais." },
-          { type: "nombre", niveau: "Seconde", lib: "Pour la fête, Inès veut <b>" + fr(SUJET.fete, SUJET.fete % 1 ? 1 : 0) + " L</b> de grenadine à 80 g/L. Quel volume de sirop pur (" + C_SIROP + " g/L) faut-il ?", unite: "mL",
-            attendu: 1000 * SUJET.fete * 80 / C_SIROP, tolerance: 0.01,
-            methode: "La masse de sucre voulue : 80 × " + fr(SUJET.fete, SUJET.fete % 1 ? 1 : 0) + " = " + (80 * SUJET.fete) + " g. Le sirop en apporte " + C_SIROP + " g par litre : V = " + (80 * SUJET.fete) + " ÷ " + C_SIROP + " L, à convertir en millilitres." }
+          /* 21 octobre 2026, allegement des calculs : la masse de sucre de la fete est donnee (une operation au lieu de trois),
+             et le volume se donne en litres, sans conversion */
+          { type: "nombre", niveau: "Seconde", lib: "Pour la fête, Inès veut <b>" + fr(SUJET.fete, SUJET.fete % 1 ? 1 : 0) + "\u00a0L</b> de grenadine à 80 g/L : il y faut " + (80 * SUJET.fete) + "\u00a0g de sucre. Quel volume de sirop pur les apporte ? Calculez <b>V = m ÷ Cm</b>, avec m = " + (80 * SUJET.fete) + "\u00a0g et Cm = " + C_SIROP + "\u00a0g/L.", unite: "L",
+            attendu: SUJET.fete * 80 / C_SIROP, tolerance: 0.03,
+            methode: "V = m ÷ Cm : la masse de sucre voulue, en grammes, divisée par la concentration du sirop pur, en g/L. Le résultat est en litres." }
         ],
         bravo: "Inès : « Avec l'échelle de teintes, plus besoin de discuter : on regarde, on compare, on rallonge s'il le faut. »" },
       { competence: "COM", titre: "La fiche recette du bar",

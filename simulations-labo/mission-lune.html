@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mission Lune</title>
-<meta name="description" content="Une équipe part monter une base sur la Lune, et votre atelier prépare le matériel. Trier la masse et le poids, choisir le bon dynamomètre, mesurer sur Terre et en gravité lunaire, charger le bras de levage sans dépasser sa limite, puis rendre compte à la base. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.">
+<meta name="description" content="Une équipe part monter une base sur la Lune, et votre atelier prépare le matériel. Trier la masse et le poids, choisir le bon dynamomètre, mesurer sur Terre et en gravité lunaire, charger le bras de levage sans dépasser sa limite, puis rendre compte à la base. En TD, la page guide ; en évaluation notée, dans l&#x27;espace d&#x27;évaluation, elle finit par un fichier.">
 <meta name="etiquette" content="Simulation · Parcours PAR-01">
 <style>
 /* Simulations des TP · feuille commune, inlinee dans chaque page par assembler-simulations.py.
@@ -2816,7 +2816,7 @@ var Sim = (function () {
 <header class="tete">
 <div class="surtitre">Physique-chimie · parcours CAP et seconde · une heure sur tablette</div>
 <h1>Mission Lune</h1>
-<p class="chapeau">Une équipe part monter une base sur la Lune, et votre atelier prépare le matériel. Trier la masse et le poids, choisir le bon dynamomètre, mesurer sur Terre et en gravité lunaire, charger le bras de levage sans dépasser sa limite, puis rendre compte à la base. En TD, la page guide ; en évaluation notée, par le lien du professeur, elle finit par un fichier.</p>
+<p class="chapeau">Une équipe part monter une base sur la Lune, et votre atelier prépare le matériel. Trier la masse et le poids, choisir le bon dynamomètre, mesurer sur Terre et en gravité lunaire, charger le bras de levage sans dépasser sa limite, puis rendre compte à la base. En TD, la page guide ; en évaluation notée, dans l'espace d'évaluation, elle finit par un fichier.</p>
 </header>
 <style>
 :root{--sol:#cfccc6;--ciel:#1f2a3a;--metal:#9aa3ad}
@@ -3200,7 +3200,7 @@ var Sim = (function () {
         consigne: "Estimez le poids de chaque objet sur Terre, puis choisissez l'appareil.",
         scene: sceneCalibres,
         questions: [
-          { type: "classer", lib: "Quel dynamomètre pour peser chaque objet sur Terre ? Le plus petit qui convient.",
+          { type: "classer", lib: "Quel dynamomètre pour peser chaque objet sur Terre ? Le plus petit qui convient. Sur Terre, 1 kg pèse environ 10 N.",
             items: ["la clé, " + fr(SUJET.cle, 2) + " kg", "le marteau, " + fr(SUJET.marteau, 2) + " kg", "la perceuse, " + fr(SUJET.perceuse, 1) + " kg", "la caisse, " + CAISSE + " kg"],
             categories: CALIBRES.map(function (c) { return c + " N"; }), bonnes: OUTILS.map(function (o) { return calibreDe(o.m); }),
             methode: "Sur Terre, 1 kg pèse environ 10 N : estimez le poids, puis prenez le plus petit dynamomètre qui le dépasse." },
@@ -3223,13 +3223,15 @@ var Sim = (function () {
             attendu: function () { return SUJET.marteau * G.Lune; }, tolerance: 0.05, toleranceAbsolue: 0.08,
             methode: "Sur la Lune, le marteau pèse un peu plus de 1 N : le dynamomètre de 1 N part en butée. Prenez celui de 10 N et lisez l'index entre deux traits.",
             apres: function (ctx, ok, rep) { ctx.donnees.pLune = rep; } },
-          { type: "nombre", lib: "Mesurez le poids de la caisse dans la chambre lunaire, puis calculez <b>g sur la Lune</b> : g = P ÷ m.", unite: "N/kg",
+          { type: "nombre", lib: "Mesurez le poids P de la caisse dans la chambre lunaire, puis calculez <b>g sur la Lune</b> : <b>g = P ÷ m</b>, avec m = " + CAISSE + "\u00a0kg.", unite: "N/kg",
             attendu: G.Lune, tolerance: 0.06,
             methode: "P en newtons, lu au dynamomètre ; m = " + CAISSE + " kg ; g = P ÷ m.",
-            apres: function (ctx, ok, rep) { ctx.donnees.gLune = rep; } },
-          { type: "nombre", niveau: "Seconde", lib: "Combien de fois le poids est-il plus faible sur la Lune que sur Terre ? Calculez g<sub>Terre</sub> ÷ g<sub>Lune</sub>.",
-            attendu: G.Terre / G.Lune, tolerance: 0.07,
-            methode: "g sur Terre vaut 9,81 N/kg ; divisez-le par votre g lunaire." }
+            apres: function (ctx, ok, rep, val) { ctx.donnees.gLune = rep; ctx.donnees.gVal = val; } },
+          /* 21 octobre 2026, allegement des calculs : jugee sur le g lunaire de l'eleve s'il est a 25 % du vrai,
+             une mesure un peu fausse ne fait pas tomber ce calcul */
+          { type: "nombre", niveau: "Seconde", lib: "Combien de fois le poids est-il plus faible sur la Lune que sur Terre ? Calculez <b>g<sub>Terre</sub> ÷ g<sub>Lune</sub></b>, avec g<sub>Terre</sub> = 9,81 N/kg et votre g lunaire.",
+            attendu: function (ctx) { var g = ctx.donnees.gVal; return G.Terre / (isFinite(g) && Math.abs(g - G.Lune) <= 0.25 * G.Lune ? g : G.Lune); }, tolerance: 0.04,
+            methode: "g sur Terre vaut 9,81 N/kg ; divisez-le par votre g lunaire." }
         ],
         bravo: "Le labo d'essai : « Mesures enregistrées. Sur la Lune, tout pèse environ six fois moins. »" },
       { competence: "VAL", titre: "Le plan de chargement",
@@ -3251,7 +3253,7 @@ var Sim = (function () {
             },
             methode: "Sur la Lune, P = m × 1,62 : la charge doit dépasser " + MINI + " kg et rester sous " + LIMITE + " N.",
             apres: function (ctx, ok, rep) { ctx.donnees.charge = rep; } },
-          { type: "nombre", lib: "Quelle <b>masse maximale</b> le bras peut-il soulever sur la Lune ?", unite: "kg",
+          { type: "nombre", lib: "Quelle <b>masse maximale</b> le bras peut-il soulever sur la Lune ? Calculez <b>m = P ÷ g</b>, avec P = " + LIMITE + "\u00a0N et g = 1,62 N/kg.", unite: "kg",
             attendu: LIMITE / G.Lune, tolerance: 0.04,
             methode: "Le poids ne doit pas dépasser " + LIMITE + " N : m = P ÷ g, avec g de la Lune." },
           { type: "choix", lib: "Le même bras, sur Terre, soulèverait-il votre chargement ?",

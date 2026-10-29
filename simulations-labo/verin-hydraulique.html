@@ -3686,9 +3686,9 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
               items: ["<b>Ø " + CRIC.D2 + " mm</b>", "<b>" + c.M + " kg</b>", "<b>" + LIMITE + " N</b>", "<b>" + RHO + " kg/m³</b>"],
               categories: ["une force", "une masse", "un diamètre", "une masse volumique"], bonnes: [2, 1, 0, 3],
               methode: "L'unité dit la grandeur : N pour une force, kg pour une masse, mm pour une longueur, kg/m³ pour une masse volumique." },
-            { type: "nombre", lib: "Quel poids le vérin du cric doit-il soulever ?", unite: "N",
+            { type: "nombre", lib: "Calculez le poids P que le vérin du cric doit soulever : P = m × g, avec la masse du document 2 et g = 9,81 N/kg.", unite: "N",
               attendu: M.P, tolerance: 0.01, fini: garde("P", M.P),
-              methode: "P = m × g, avec la masse portée par le cric et g = 9,81 N/kg." },
+              methode: "On multiplie la masse portée par le cric, en kilogrammes, par 9,81 : le poids est en newtons." },
             { type: "choix", lib: "Quelle force faut-il comparer aux " + LIMITE + " N de la règle ?",
               options: ["la force de la main sur le levier", "la force F₁ du petit piston sur l'huile", "le poids de l'avant du véhicule", "la force du vérin sous le véhicule"], bonne: 0,
               methode: "La règle porte sur le geste du mécanicien : ce que son épaule sent, c'est le levier." }
@@ -3760,15 +3760,16 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
           { type: "nombre", lib: "Relevez la pression p de votre mesure.", unite: "bar", dec: 3,
             attendu: M.p, tolerance: 0.02, toleranceAbsolue: 0.002, fini: garde("p", M.p),
             methode: "Le manomètre se lit en bar, avec trois décimales." },
-          { type: "nombre", lib: "Calculez la force pressante F₂ de l'huile sur le grand piston, F₂ = p × S₂.", unite: "N",
+          { type: "nombre", lib: "Calculez la force pressante F₂ de l'huile sur le grand piston : F₂ = p × S₂, avec p en pascals (votre lecture en bar × 100 000) et S₂ = 0,000 " + S2B + " m² (" + S2B + " mm²).", unite: "N",
             attendu: M.F2, tolerance: 0.03, fini: garde("F2", M.F2),
-            methode: "p en pascals : 1 bar = 100 000 Pa. S₂ en m² : 1 mm² = 0,000 001 m². Puis on multiplie." },
-          { type: "nombre", lib: "Le cric suit le même principe. Calculez la force F₁ que son piston de pompe doit exercer sur l'huile pour soulever l'avant du véhicule.", unite: "N",
+            methode: "D'abord la pression en pascals : la lecture en bar multipliée par 100 000. Puis on la multiplie par la surface en m²." },
+          { type: "nombre", lib: "Le cric suit le même principe. Calculez la force F₁ que son piston de pompe exerce sur l'huile : F₁ = P × S₁ ÷ S₂, avec votre poids P de la partie 1, S₁ = " + CRIC.S1 + " mm² et S₂ = " + fr(CRIC.S2, 0) + " mm².", unite: "N",
             attendu: M.F1c, tolerance: 0.03, fini: garde("F1c", M.F1c),
-            methode: "La pression est la même sous les deux pistons : F₁ ÷ S₁ = P ÷ S₂, donc F₁ = P × S₁ ÷ S₂, avec les surfaces du cric et le poids de la partie 1." },
-          { type: "nombre", lib: "Déduisez l'effort de la main sur le levier.", unite: "N",
-            attendu: M.main, tolerance: 0.03, fini: garde("main", M.main),
-            methode: "Le levier multiplie la force de la main par " + CRIC.levier + " : la main fournit " + FOIS + " fois moins que F₁." }
+            methode: "La pression est la même sous les deux pistons : F₁ ÷ S₁ = P ÷ S₂. Les deux surfaces sont en mm², leur rapport n'a pas d'unité : pas de conversion." },
+          { type: "choix", lib: "Le levier du cric multiplie la force de la main par " + CRIC.levier + ". Comment obtenir l'effort de la main à partir de votre F₁ ?",
+            options: ["F₁ ÷ " + CRIC.levier + " : la main fournit " + FOIS + " fois moins que le piston de pompe", "F₁ × " + CRIC.levier + " : le levier multiplie, donc on multiplie",
+              "F₁ : le levier transmet la force telle quelle", "F₁ ÷ " + CRIC.levier + " ÷ 9,81 : l'effort se donne en kilogrammes"], bonne: 0,
+            methode: "Le levier multiplie la force de la main pour donner F₁ : main × " + CRIC.levier + " = F₁. On remonte de F₁ à la main par l'opération inverse. Un effort est une force, en newtons." }
         ],
         bravo: "Le banc est mesuré, le cric calculé. Reste à savoir ce que ce calcul vaut."
       },
@@ -3779,15 +3780,17 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
         scene: notice,
         paillasse: ["#carteScene", "#carteMesure", "#carteReleve"], large: true,
         surOuvrir: cric,
-        questions: [
-          { type: "choix", lib: "Revenez à votre essai au banc. Comparez votre force F₂ au poids de la charge d'essai.",
+        questions: function (ctx) {
+          var c = cfg(ctx);
+          return [
+          { type: "choix", lib: "Revenez à votre essai au banc. Le poids de la charge d'essai vaut " + fr(c.mB * G, 1) + " N (P = m × g, " + kg(c.mB) + " kg). Comparez-lui votre force F₂.",
             options: ["F₂ est égale au poids, à quelques pour cent près : l'huile a transmis la pression jusqu'au grand piston",
               "F₂ est bien plus grande que le poids : l'huile multiplie la pression", "F₂ est égale à F₁ : l'huile transmet la force telle quelle",
               "F₂ est bien plus petite que le poids : la pression se perd dans le tuyau"], bonne: 0,
-            methode: "Le poids de la charge, P = m × g ; l'écart avec F₂, en pourcentage du poids." },
-          { type: "nombre", lib: "Sur le banc, le manomètre est " + SUJET.hcm + " cm sous le grand piston. D'après la relation de Pascal, de combien la pression qu'il lit dépasse-t-elle celle sous le grand piston ?", unite: "Pa",
+            methode: "Mettez côte à côte votre F₂ et le poids écrit dans la question : l'écart, en pourcentage du poids, dit si la pression s'est transmise." },
+          { type: "nombre", lib: "Sur le banc, le manomètre est " + SUJET.hcm + " cm sous le grand piston. La relation de Pascal donne de combien la pression qu'il lit dépasse celle sous le grand piston : calculez Δp = ρ × g × h, avec ρ = " + RHO + " kg/m³, g = 9,81 N/kg et h = " + fr(H, 2) + " m.", unite: "Pa",
             attendu: RHO * G * H, tolerance: 0.02, fini: garde("dp", function () { return RHO * G * H; }),
-            methode: "Δp = ρ × g × h, avec ρ de l'huile en kg/m³, g = 9,81 N/kg et h en mètres." },
+            methode: "On multiplie les trois nombres de l'intitulé : h est déjà en mètres, le résultat est en pascals." },
           { type: "choix", lib: "Cet écart remet-il en cause l'hypothèse « même pression dans toute l'huile » ?",
             options: ["non : il ne fait que quelques pour cent de la pression lue sur le banc, et presque rien dans le cric, où la pression est bien plus forte",
               "oui : il est du même ordre que la pression lue sur le banc", "oui : la pression double entre le tuyau et le grand piston",
@@ -3814,10 +3817,11 @@ body.pc-en-cours #defisSer,body.pc-en-cours #defisCric{display:none!important}
           { type: "nombre", lib: "Relevez l'effort de la main pendant le dernier coup de pompe.", unite: "N",
             attendu: M.mainMes, tolerance: 0.03, toleranceAbsolue: 1, fini: garde("mainMes", M.mainMes),
             methode: "L'afficheur « Force de la main » garde la dernière poussée, écrite sous sa valeur." },
-          { type: "nombre", lib: "La notice du cric (document 5) : calculez l'effort réel sur le levier, à partir de l'effort mesuré.", unite: "N",
+          { type: "nombre", lib: "La notice du cric (document 5) ajoute " + SUJET.frott + " % : calculez l'effort réel sur le levier, effort réel = effort mesuré × " + MULT + ".", unite: "N",
             attendu: M.reel, tolerance: 0.03, fini: garde("reel", M.reel),
-            methode: SUJET.frott + " % de plus : on multiplie l'effort mesuré par " + MULT + "." }
-        ],
+            methode: "On multiplie l'effort que vous venez de relever : ajouter " + SUJET.frott + " %, c'est multiplier par " + MULT + "." }
+          ];
+        },
         bravo: "Le principe tient, Pascal le confirme, et le vrai cric frotte : vous savez quel nombre croire."
       },
       {

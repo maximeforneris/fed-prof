@@ -317,6 +317,8 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
   .pc-paillasse > .carte,.pc-paillasse .plan > .carte{padding:10px}
 }
 .pc-agrandir{float:right;margin:0 0 8px 10px;min-height:38px;padding:6px 12px;font-size:.88rem}
+/* la consigne coule a cote du bouton, la scene passe dessous : a cote, avec son overflow, elle perdait 150 px */
+.pc-scene > :not(.pc-agrandir):not(.consigne){clear:both}
 .pc-agrandir[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 .pc-agrandir-barre{display:flex;justify-content:flex-end;margin:0 0 8px}
 .pc-agrandir-barre .pc-agrandir{float:none;margin:0}
@@ -1823,15 +1825,14 @@ var Sim = (function () {
       if (NOTE) barreModes.hidden = true;
       bLibre.addEventListener("click", function () { mode(false); });
       bParcours.addEventListener("click", function () { mode(true); });
-      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de sa premiere grille a scene,
-         hors des cartes, qui partent dans la paillasse du parcours sans l'emporter */
-      var planLibre = [].filter.call(libre.querySelectorAll(".plan"), function (x) {
-        return x.firstElementChild && x.firstElementChild.querySelector("svg");
-      })[0];
-      if (planLibre) {
-        var bGrandLibre = boutonAgrandir();
-        planLibre.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [bGrandLibre]), planLibre);
-      }
+      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de CHAQUE grille a scene (une
+         par onglet, par experience ou par protocole), hors des cartes, qui partent dans la paillasse du
+         parcours sans l'emporter. Toutes les barres agissent ensemble. */
+      [].filter.call(libre.querySelectorAll(".plan"), function (x) {
+        return x.firstElementChild && x.firstElementChild.querySelector("svg") && !x.parentNode.closest(".plan");
+      }).forEach(function (x) {
+        x.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [boutonAgrandir()]), x);
+      });
     }
     P.appendChild(racine);
     if (!libre) document.body.classList.add("pc-visible");
@@ -3415,8 +3416,8 @@ var Sim = (function () {
     var s1 = svg("svg", { viewBox: "0 0 220 90", role: "img", "aria-label": "Une balance" });
     svg("rect", { x: 40, y: 50, width: 140, height: 26, rx: 4, class: "objet" }, s1);
     svg("rect", { x: 60, y: 40, width: 100, height: 10, rx: 2, class: "objet" }, s1);
-    svg("rect", { x: 92, y: 56, width: 36, height: 14, class: "lcd" }, s1);
-    svg("text", { x: 110, y: 67, "text-anchor": "middle", class: "lcd-txt", style: "font-size:10px", texte: fr(SUJET.marteau, 2) + " kg" }, s1);
+    svg("rect", { x: 76, y: 54, width: 68, height: 18, class: "lcd" }, s1);      // l'afficheur elargi (4 novembre 2026) : 12 px, sans deborder
+    svg("text", { x: 110, y: 67.4, "text-anchor": "middle", class: "lcd-txt", style: "font-size:12px", texte: fr(SUJET.marteau, 2) + " kg" }, s1);
     a.appendChild(s1);
     var s2 = svg("svg", { viewBox: "0 0 220 90", role: "img", "aria-label": "Un dynamomètre" });
     svg("path", { d: "M70 6h80", class: "trait" }, s2);
@@ -3448,10 +3449,10 @@ var Sim = (function () {
       var x = 420 + (i % 2) * 110, y = 70 + Math.floor(i / 2) * 110;
       dessinObjet(s, o.cle, x, y, 1.1);
       svg("text", { x: x, y: y + 52, "text-anchor": "middle", class: "etiq-forte", texte: o.nom.replace(/^la |^le /, "") }, s);
-      svg("text", { x: x, y: y + 68, "text-anchor": "middle", class: "etiq", texte: "m = " + fr(o.m, 2) + " kg" }, s);
+      svg("text", { x: x, y: y + 68, "text-anchor": "middle", class: "etiq", style: "font-size:12.5px", texte: "m = " + fr(o.m, 2) + " kg" }, s);
     });
     svg("text", { x: 20, y: 262, class: "etiq-forte", texte: "Repère de l'atelier : sur Terre, 1 kg pèse environ 10 N." }, s);
-    svg("text", { x: 20, y: 284, class: "etiq", texte: "Un dynamomètre trop petit part en butée ; trop grand, il se lit mal." }, s);
+    svg("text", { x: 20, y: 284, class: "etiq", style: "font-size:12.5px", texte: "Un dynamomètre trop petit part en butée ; trop grand, il se lit mal." }, s);
   }
 
   /* ── Phase 3 · le banc de mesure : Terre ou chambre lunaire ──────────────── */

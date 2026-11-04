@@ -317,6 +317,8 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
   .pc-paillasse > .carte,.pc-paillasse .plan > .carte{padding:10px}
 }
 .pc-agrandir{float:right;margin:0 0 8px 10px;min-height:38px;padding:6px 12px;font-size:.88rem}
+/* la consigne coule a cote du bouton, la scene passe dessous : a cote, avec son overflow, elle perdait 150 px */
+.pc-scene > :not(.pc-agrandir):not(.consigne){clear:both}
 .pc-agrandir[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 .pc-agrandir-barre{display:flex;justify-content:flex-end;margin:0 0 8px}
 .pc-agrandir-barre .pc-agrandir{float:none;margin:0}
@@ -1823,15 +1825,14 @@ var Sim = (function () {
       if (NOTE) barreModes.hidden = true;
       bLibre.addEventListener("click", function () { mode(false); });
       bParcours.addEventListener("click", function () { mode(true); });
-      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de sa premiere grille a scene,
-         hors des cartes, qui partent dans la paillasse du parcours sans l'emporter */
-      var planLibre = [].filter.call(libre.querySelectorAll(".plan"), function (x) {
-        return x.firstElementChild && x.firstElementChild.querySelector("svg");
-      })[0];
-      if (planLibre) {
-        var bGrandLibre = boutonAgrandir();
-        planLibre.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [bGrandLibre]), planLibre);
-      }
+      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de CHAQUE grille a scene (une
+         par onglet, par experience ou par protocole), hors des cartes, qui partent dans la paillasse du
+         parcours sans l'emporter. Toutes les barres agissent ensemble. */
+      [].filter.call(libre.querySelectorAll(".plan"), function (x) {
+        return x.firstElementChild && x.firstElementChild.querySelector("svg") && !x.parentNode.closest(".plan");
+      }).forEach(function (x) {
+        x.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [boutonAgrandir()]), x);
+      });
     }
     P.appendChild(racine);
     if (!libre) document.body.classList.add("pc-visible");
@@ -3311,6 +3312,16 @@ var Sim = (function () {
   .pc-paillasse #carteOscillo .oscillo svg{max-height:40vh}
   .pc-paillasse #carteSchemaB .scene svg{max-height:30vh}
 }
+/* la scene agrandie (tablette couchee, 4 novembre 2026) : l'ecran ou le montage a gauche, ses reglages a droite,
+   sans la borne de 40vh ou 30vh qui le gardait petit. #planA et #planB gardent la marque pc-grand de la
+   simulation libre quand la paillasse les emprunte : d'ou le !important */
+@media (min-width:821px){
+  .pc-grand .pc-paillasse #planA,.pc-grand .pc-paillasse #planB{grid-template-columns:minmax(0,1.6fr) minmax(250px,1fr)!important}
+  .pc-grand .pc-paillasse #carteOscillo .oscillo svg,.pc-grand .pc-paillasse #carteSchemaB .scene svg{max-height:calc(100vh - 210px)}
+  /* sans agrandir, la colonne de la scene defile seule : l'ecran et le montage s'y collent en haut, pas a 96 px */
+  .pc-ecran > .plan:not(.pc-grand) > .pc-scene .pc-paillasse #carteOscillo,
+  .pc-ecran > .plan:not(.pc-grand) > .pc-scene .pc-paillasse #carteSchemaB{top:0}
+}
 /* dans la paillasse de l'entrainement, les releves sans graphe prennent toute la largeur */
 .pc-paillasse .releve-zone{grid-template-columns:1fr}
 .fil{display:inline-block;width:1.4em;height:.62em;border-radius:3px;margin-right:.45em;vertical-align:.06em;border:1px solid var(--trait)}
@@ -3508,7 +3519,7 @@ var Sim = (function () {
           }
         });
         svg("path", { d: "M" + (E.X0 - 2) + " " + Y(0) + " l-9 -6 l0 12 Z", fill: "#cfe3d8" }, gMarq);
-        svg("text", { x: E.X0 - 17, y: Y(0) + 4, "font-size": 11, "text-anchor": "middle", fill: "#0f1915", "font-weight": 700, texte: "0" }, gMarq);
+        svg("text", { x: E.X0 - 18, y: Y(0) + 4.5, "font-size": 13, "text-anchor": "middle", fill: "#cfe3d8", "font-weight": 700, texte: "0" }, gMarq);
       },
       curseurs: function (c) {
         gCur.innerHTML = "";
@@ -3518,7 +3529,7 @@ var Sim = (function () {
           at.stroke = "#f4f4f0"; at["stroke-width"] = 1.3; at["stroke-dasharray"] = "6 4";
           svg("line", at, gCur);
           var lx = c.type === "tension" ? E.X0 + W - 4 : X(v) + 4, ly = c.type === "tension" ? Y(v) - 4 : E.Y0 + 14 + 14 * n;
-          svg("text", { x: lx, y: ly, "font-size": 11, "text-anchor": c.type === "tension" ? "end" : "start", fill: "#f4f4f0", texte: String(n + 1) }, gCur);
+          svg("text", { x: lx, y: ly, "font-size": 13, "text-anchor": c.type === "tension" ? "end" : "start", fill: "#f4f4f0", texte: String(n + 1) }, gCur);
         });
       },
       legende: function (morceaux) {
@@ -3688,7 +3699,7 @@ var Sim = (function () {
   function noeud(g, x, y) { svg("circle", { cx: x, cy: y, r: 3.4, fill: css("--encre") }, g); }
   function texte(g, x, y, t, o) {
     o = o || {};
-    return svg("text", { x: x, y: y, "font-size": o.taille || 12, "text-anchor": o.ancre || "middle", fill: o.coul || css("--encre2"), "font-weight": o.gras ? 650 : 400, texte: t }, g);
+    return svg("text", { x: x, y: y, "font-size": o.taille || 13, "text-anchor": o.ancre || "middle", fill: o.coul || css("--encre2"), "font-weight": o.gras ? 650 : 400, texte: t }, g);
   }
   function conducteur(g, nom) {
     var y = Yc[nom];

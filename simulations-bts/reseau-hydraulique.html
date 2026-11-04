@@ -317,6 +317,8 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
   .pc-paillasse > .carte,.pc-paillasse .plan > .carte{padding:10px}
 }
 .pc-agrandir{float:right;margin:0 0 8px 10px;min-height:38px;padding:6px 12px;font-size:.88rem}
+/* la consigne coule a cote du bouton, la scene passe dessous : a cote, avec son overflow, elle perdait 150 px */
+.pc-scene > :not(.pc-agrandir):not(.consigne){clear:both}
 .pc-agrandir[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 .pc-agrandir-barre{display:flex;justify-content:flex-end;margin:0 0 8px}
 .pc-agrandir-barre .pc-agrandir{float:none;margin:0}
@@ -1829,15 +1831,14 @@ var Sim = (function () {
       if (NOTE) barreModes.hidden = true;
       bLibre.addEventListener("click", function () { mode(false); });
       bParcours.addEventListener("click", function () { mode(true); });
-      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de sa premiere grille a scene,
-         hors des cartes, qui partent dans la paillasse du parcours sans l'emporter */
-      var planLibre = [].filter.call(libre.querySelectorAll(".plan"), function (x) {
-        return x.firstElementChild && x.firstElementChild.querySelector("svg");
-      })[0];
-      if (planLibre) {
-        var bGrandLibre = boutonAgrandir();
-        planLibre.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [bGrandLibre]), planLibre);
-      }
+      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de CHAQUE grille a scene (une
+         par onglet, par experience ou par protocole), hors des cartes, qui partent dans la paillasse du
+         parcours sans l'emporter. Toutes les barres agissent ensemble. */
+      [].filter.call(libre.querySelectorAll(".plan"), function (x) {
+        return x.firstElementChild && x.firstElementChild.querySelector("svg") && !x.parentNode.closest(".plan");
+      }).forEach(function (x) {
+        x.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [boutonAgrandir()]), x);
+      });
     }
     P.appendChild(racine);
     if (!libre) document.body.classList.add("pc-visible");

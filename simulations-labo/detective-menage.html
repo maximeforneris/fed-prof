@@ -317,6 +317,8 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
   .pc-paillasse > .carte,.pc-paillasse .plan > .carte{padding:10px}
 }
 .pc-agrandir{float:right;margin:0 0 8px 10px;min-height:38px;padding:6px 12px;font-size:.88rem}
+/* la consigne coule a cote du bouton, la scene passe dessous : a cote, avec son overflow, elle perdait 150 px */
+.pc-scene > :not(.pc-agrandir):not(.consigne){clear:both}
 .pc-agrandir[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 .pc-agrandir-barre{display:flex;justify-content:flex-end;margin:0 0 8px}
 .pc-agrandir-barre .pc-agrandir{float:none;margin:0}
@@ -1823,15 +1825,14 @@ var Sim = (function () {
       if (NOTE) barreModes.hidden = true;
       bLibre.addEventListener("click", function () { mode(false); });
       bParcours.addEventListener("click", function () { mode(true); });
-      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de sa premiere grille a scene,
-         hors des cartes, qui partent dans la paillasse du parcours sans l'emporter */
-      var planLibre = [].filter.call(libre.querySelectorAll(".plan"), function (x) {
-        return x.firstElementChild && x.firstElementChild.querySelector("svg");
-      })[0];
-      if (planLibre) {
-        var bGrandLibre = boutonAgrandir();
-        planLibre.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [bGrandLibre]), planLibre);
-      }
+      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de CHAQUE grille a scene (une
+         par onglet, par experience ou par protocole), hors des cartes, qui partent dans la paillasse du
+         parcours sans l'emporter. Toutes les barres agissent ensemble. */
+      [].filter.call(libre.querySelectorAll(".plan"), function (x) {
+        return x.firstElementChild && x.firstElementChild.querySelector("svg") && !x.parentNode.closest(".plan");
+      }).forEach(function (x) {
+        x.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [boutonAgrandir()]), x);
+      });
     }
     P.appendChild(racine);
     if (!libre) document.body.classList.add("pc-visible");
@@ -3317,7 +3318,7 @@ var Sim = (function () {
 .feutre-scene{fill:var(--encre)}
 .grad{stroke:var(--encre);stroke-width:1}
 .grad-p{stroke:var(--encre-papier);stroke-width:1}
-.grad-txt{font-size:9px;fill:var(--encre-papier);font-family:ui-monospace,Consolas,monospace}
+.grad-txt{font-size:9.5px;fill:var(--encre-papier);font-family:ui-monospace,Consolas,monospace}
 .lcd{fill:#cfd8cf;stroke:var(--encre2);stroke-width:1}
 .lcd-txt{font-family:ui-monospace,Consolas,monospace;font-size:27px;font-weight:700;fill:#1d2a1d}
 .lcd-petit{font-family:ui-monospace,Consolas,monospace;font-size:10px;font-weight:700;fill:#1d2a1d}
@@ -3524,19 +3525,21 @@ var Sim = (function () {
     svg("path", { d: "M-15 0V-48Q-15 -60 -7 -68V-76H7V-68Q15 -60 15 -48V0Q15 2 13 2H-13Q-15 2 -15 0Z", "class": "liquide" }, t);
     svg("path", { d: "M-15 0V-48Q-15 -60 -7 -68V-76H7V-68Q15 -60 15 -48V0Q15 2 13 2H-13Q-15 2 -15 0Z", "class": "verre" }, t);
     svg("rect", { x: -8, y: -84, width: 16, height: 9, rx: 2, fill: "var(--accent)", stroke: "var(--encre)", "stroke-width": 1.5 }, t);
-    svg("rect", { x: -15, y: -40, width: 30, height: 18, "class": "papier" }, t);
-    svg("text", { x: 0, y: -33, "text-anchor": "middle", "class": "etiq-p", style: "font-size:6.5px;font-weight:700", texte: "EAU DE" }, t);
-    svg("text", { x: 0, y: -25.5, "text-anchor": "middle", "class": "etiq-p", style: "font-size:6.5px;font-weight:700", texte: "SOURCE" }, t);
+    /* l'etiquette lisible sur une tablette couchee (4 novembre 2026) : des lettres plus hautes, serrees a la largeur de la bouteille */
+    svg("rect", { x: -15, y: -42, width: 30, height: 22, "class": "papier" }, t);
+    svg("text", { x: 0, y: -33.5, "text-anchor": "middle", "class": "etiq-p", style: "font-size:8.8px;font-weight:700", textLength: 27, lengthAdjust: "spacingAndGlyphs", texte: "EAU DE" }, t);
+    svg("text", { x: 0, y: -23.5, "text-anchor": "middle", "class": "etiq-p", style: "font-size:8.8px;font-weight:700", textLength: 28, lengthAdjust: "spacingAndGlyphs", texte: "SOURCE" }, t);
     return t;
   }
   function bouteilleVinaigre(g, x, bas, k) {
     k = k || 1;
     var t = svg("g", { transform: "translate(" + x + "," + bas + ") scale(" + k + ")" }, g);
-    svg("path", { d: "M-17 0V-50Q-17 -58 -9 -62V-74H9V-62Q17 -58 17 -50V0Q17 2 15 2H-15Q-17 2 -17 0Z", "class": "flacon" }, t);
+    /* plus large d'un quart (4 novembre 2026) : son etiquette se lit sur une tablette couchee */
+    svg("path", { d: "M-21 0V-50Q-21 -58 -9 -62V-74H9V-62Q21 -58 21 -50V0Q21 2 19 2H-19Q-21 2 -21 0Z", "class": "flacon" }, t);
     svg("rect", { x: -10, y: -82, width: 20, height: 9, rx: 2, "class": "objet" }, t);
-    svg("rect", { x: -16, y: -46, width: 32, height: 34, "class": "papier" }, t);
-    svg("text", { x: 0, y: -38, "text-anchor": "middle", "class": "etiq-p", style: "font-size:6px;font-weight:700", texte: "VINAIGRE" }, t);
-    svg("text", { x: 0, y: -31, "text-anchor": "middle", "class": "etiq-p", style: "font-size:6px;font-weight:700", texte: SUJET.deg + "°" }, t);
+    svg("rect", { x: -20, y: -46, width: 40, height: 34, "class": "papier" }, t);
+    svg("text", { x: 0, y: -37.2, "text-anchor": "middle", "class": "etiq-p", style: "font-size:8.8px;font-weight:700", textLength: 37, lengthAdjust: "spacingAndGlyphs", texte: "VINAIGRE" }, t);
+    svg("text", { x: 0, y: -28.8, "text-anchor": "middle", "class": "etiq-p", style: "font-size:8.8px;font-weight:700", texte: SUJET.deg + "°" }, t);
     picto(t, "SGH07", 0, -20, 15);
     return t;
   }
@@ -3605,7 +3608,7 @@ var Sim = (function () {
     svg("path", { d: "M470 14L508 26V226L470 236", "class": "objet" }, s);
     svg("path", { d: "M150 92H470M150 166H470", "class": "trait" }, s);
     svg("path", { d: "M14 104H626", stroke: "var(--encre2)", "stroke-width": 1.2, "stroke-dasharray": "6 5" }, s);
-    svg("text", { x: 16, y: 98, "class": "etiq", texte: "hauteur des yeux" }, s);
+    svg("text", { x: 16, y: 98, "class": "etiq", style: "font-size:13px", texte: "hauteur des yeux" }, s);
     var msg = el("p", { classe: "message-scene", "aria-live": "polite", texte: "" });
     var objets = [
       { x: 196, bas: 90, f: function (g) { flaconBlanc(g, 196, 90, "B"); }, dit: "Flacon B, sur l'étagère du haut : aucune étiquette, une lettre au feutre. On ne l'ouvre pas pour le sentir." },
@@ -3629,8 +3632,8 @@ var Sim = (function () {
     svg("path", { d: "M566 22V30", "class": "trait" }, cl);
     svg("rect", { x: 544, y: 30, width: 46, height: 82, rx: 3, "class": "objet" }, cl);
     svg("rect", { x: 550, y: 40, width: 34, height: 18, "class": "papier" }, cl);
-    svg("text", { x: 567, y: 53, "text-anchor": "middle", "class": "etiq-p-forte", texte: "FDS" }, cl);
-    svg("text", { x: 567, y: 128, "text-anchor": "middle", "class": "etiq", texte: "le classeur" }, cl);
+    svg("text", { x: 567, y: 53.5, "text-anchor": "middle", "class": "etiq-p-forte", style: "font-size:13px", texte: "FDS" }, cl);
+    svg("text", { x: 567, y: 128, "text-anchor": "middle", "class": "etiq", style: "font-size:13px", texte: "le classeur" }, cl);
     svg("rect", { x: 530, y: 18, width: 74, height: 116, "class": "zone" }, cl);
     surTouche(cl, function () { message(msg, "Le classeur des fiches de données de sécurité : un onglet par produit, juste en dessous."); onglets.scrollIntoView({ block: "nearest", behavior: "smooth" }); });
     zone.appendChild(msg);
@@ -3721,7 +3724,7 @@ var Sim = (function () {
     EPI.forEach(function (it, i) {
       var y = 14 + i * 64;
       var g = svg("g", { "class": "cible", role: "button", tabindex: "0", "aria-label": it.nom }, s);
-      svg("rect", { x: 222, y: y, width: 150, height: 56, rx: 6, "class": "objet" }, g);
+      svg("rect", { x: 222, y: y, width: 162, height: 56, rx: 6, "class": "objet" }, g);     // 162 et non 150 : « à manches longues » en sortait
       iconeEPI(g, it.cle, 252, y + 28);
       var mots = it.nom.split(" ");
       svg("text", { x: 284, y: y + 25, "class": "etiq-forte", style: "font-size:12px", texte: mots[0] }, g);
@@ -4237,7 +4240,7 @@ var Sim = (function () {
       svg("text", { x: -44, y: -8, "class": "etiq-p-forte", style: "font-size:11.5px", texte: l1 }, g);
       if (l2) svg("text", { x: -44, y: 5, "class": "etiq-p-forte", style: "font-size:11.5px", texte: l2 }, g);
       PRODUITS[k].pictos.forEach(function (c, j) { picto(g, c, -36 + j * 19, 13, 17); });
-      svg("text", { x: 46, y: 18, "text-anchor": "end", "class": "etiq-p", style: "font-size:8px;font-weight:700;letter-spacing:.06em", texte: PRODUITS[k].mention.toUpperCase() }, g);
+      svg("text", { x: 46, y: 18, "text-anchor": "end", "class": "etiq-p", style: "font-size:9.5px;font-weight:700;letter-spacing:.03em", texte: PRODUITS[k].mention.toUpperCase() }, g);
       vues[k] = { g: g, pos: null, i: i };
       prise(s, g, {
         bouge: function (q) { vues[k].pos = { x: q.x, y: q.y }; dessiner(); },

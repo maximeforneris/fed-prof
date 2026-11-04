@@ -317,6 +317,8 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
   .pc-paillasse > .carte,.pc-paillasse .plan > .carte{padding:10px}
 }
 .pc-agrandir{float:right;margin:0 0 8px 10px;min-height:38px;padding:6px 12px;font-size:.88rem}
+/* la consigne coule a cote du bouton, la scene passe dessous : a cote, avec son overflow, elle perdait 150 px */
+.pc-scene > :not(.pc-agrandir):not(.consigne){clear:both}
 .pc-agrandir[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 .pc-agrandir-barre{display:flex;justify-content:flex-end;margin:0 0 8px}
 .pc-agrandir-barre .pc-agrandir{float:none;margin:0}

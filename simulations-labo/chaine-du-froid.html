@@ -317,6 +317,8 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
   .pc-paillasse > .carte,.pc-paillasse .plan > .carte{padding:10px}
 }
 .pc-agrandir{float:right;margin:0 0 8px 10px;min-height:38px;padding:6px 12px;font-size:.88rem}
+/* la consigne coule a cote du bouton, la scene passe dessous : a cote, avec son overflow, elle perdait 150 px */
+.pc-scene > :not(.pc-agrandir):not(.consigne){clear:both}
 .pc-agrandir[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 .pc-agrandir-barre{display:flex;justify-content:flex-end;margin:0 0 8px}
 .pc-agrandir-barre .pc-agrandir{float:none;margin:0}
@@ -1823,15 +1825,14 @@ var Sim = (function () {
       if (NOTE) barreModes.hidden = true;
       bLibre.addEventListener("click", function () { mode(false); });
       bParcours.addEventListener("click", function () { mode(true); });
-      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de sa premiere grille a scene,
-         hors des cartes, qui partent dans la paillasse du parcours sans l'emporter */
-      var planLibre = [].filter.call(libre.querySelectorAll(".plan"), function (x) {
-        return x.firstElementChild && x.firstElementChild.querySelector("svg");
-      })[0];
-      if (planLibre) {
-        var bGrandLibre = boutonAgrandir();
-        planLibre.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [bGrandLibre]), planLibre);
-      }
+      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de CHAQUE grille a scene (une
+         par onglet, par experience ou par protocole), hors des cartes, qui partent dans la paillasse du
+         parcours sans l'emporter. Toutes les barres agissent ensemble. */
+      [].filter.call(libre.querySelectorAll(".plan"), function (x) {
+        return x.firstElementChild && x.firstElementChild.querySelector("svg") && !x.parentNode.closest(".plan");
+      }).forEach(function (x) {
+        x.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [boutonAgrandir()]), x);
+      });
     }
     P.appendChild(racine);
     if (!libre) document.body.classList.add("pc-visible");
@@ -3599,7 +3600,7 @@ var Sim = (function () {
     if (cle === "ctn") {
       svg("rect", { x: -34, y: -150, width: 68, height: 50, rx: 6, "class": "objet" }, t);
       svg("rect", { x: -26, y: -142, width: 52, height: 22, "class": "lcd" }, t);
-      svg("text", { x: 0, y: -126, "text-anchor": "middle", "class": "lcd-petit", texte: "REC ●" }, t);
+      svg("text", { x: 0, y: -126.5, "text-anchor": "middle", "class": "lcd-petit", style: "font-size:12.2px", texte: "REC ●" }, t);
       svg("path", { d: "M0 -100C0 -70 -20 -60 -10 -30S10 -14 0 -8", "class": "trait", "stroke-width": 1.6 }, t);
       svg("ellipse", { cx: 0, cy: -4, rx: 5, ry: 6, fill: "var(--encre)" }, t);
     } else if (cle === "pt100") {
@@ -3617,11 +3618,12 @@ var Sim = (function () {
       svg("circle", { cx: -40, cy: -111, r: 4, fill: "var(--faux)" }, t);
       svg("path", { d: "M-46 -111H-60", stroke: "var(--faux)", "stroke-width": 1.5, "stroke-dasharray": "2 3" }, t);
     } else {
-      svg("rect", { x: -16, y: -150, width: 32, height: 146, rx: 3, "class": "papier" }, t);
+      /* la bande elargie (4 novembre 2026) : ses nombres se lisent sur une tablette couchee */
+      svg("rect", { x: -24, y: -150, width: 48, height: 146, rx: 3, "class": "papier" }, t);
       for (var k = 0; k < 8; k++) {
         var T = 10 - 4 * k;
-        svg("rect", { x: -11, y: -144 + k * 17.5, width: 12, height: 13, fill: k === 4 ? "var(--accent)" : "var(--carte2)", stroke: "var(--papier-trait)", "stroke-width": 0.8 }, t);
-        svg("text", { x: 4, y: -134 + k * 17.5, "class": "etiq-p", style: "font-size:8px", texte: fr(T, 0) }, t);
+        svg("rect", { x: -19, y: -144 + k * 17.5, width: 12, height: 13, fill: k === 4 ? "var(--accent)" : "var(--carte2)", stroke: "var(--papier-trait)", "stroke-width": 0.8 }, t);
+        svg("text", { x: -3, y: -133.2 + k * 17.5, "class": "etiq-p", style: "font-size:12.2px", texte: fr(T, 0) }, t);
       }
     }
     return t;
@@ -3817,7 +3819,7 @@ var Sim = (function () {
       svg("rect", { x: -48, y: -17, width: 96, height: 34, rx: 3, fill: "var(--carte2)", stroke: "var(--encre)", "stroke-width": 2 }, g);
       svg("rect", { x: -38, y: -11, width: 76, height: 22, "class": "papier" }, g);
       svg("text", { x: 0, y: -1, "text-anchor": "middle", "class": "etiq-p-forte", texte: "FILETS DE COLIN" }, g);
-      svg("text", { x: 0, y: 8, "text-anchor": "middle", "class": "etiq-p", style: "font-size:8px", texte: "1 kg" }, g);
+      svg("text", { x: 0, y: 8.6, "text-anchor": "middle", "class": "etiq-p", style: "font-size:9.5px", texte: "1 kg" }, g);
     }
   }
   var mesuresVal = null;
@@ -3833,7 +3835,7 @@ var Sim = (function () {
     svg("text", { x: 152, y: 27, "text-anchor": "middle", "class": "etiq-forte", texte: "L'armoire congélateur, arrêtée" }, s);
     [146, 262].forEach(function (y) { svg("path", { d: "M22 " + y + "H282", stroke: "var(--encre2)", "stroke-width": 3 }, s); });
     svg("circle", { cx: 268, cy: 48, r: 4, fill: "var(--encre)" }, s);
-    svg("text", { x: 262, y: 52, "text-anchor": "end", "class": "etiq", style: "font-size:9px", texte: "capteur de l'enregistreur" }, s);
+    svg("text", { x: 262, y: 52, "text-anchor": "end", "class": "etiq", style: "font-size:9.5px", texte: "capteur de l'enregistreur" }, s);
     var zArm = svg("rect", { x: 10, y: 10, width: 284, height: 384, "class": "zone" }, s);
     // les trois bacs
     var zBacs = {};

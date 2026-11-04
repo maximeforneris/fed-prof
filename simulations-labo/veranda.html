@@ -317,6 +317,8 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
   .pc-paillasse > .carte,.pc-paillasse .plan > .carte{padding:10px}
 }
 .pc-agrandir{float:right;margin:0 0 8px 10px;min-height:38px;padding:6px 12px;font-size:.88rem}
+/* la consigne coule a cote du bouton, la scene passe dessous : a cote, avec son overflow, elle perdait 150 px */
+.pc-scene > :not(.pc-agrandir):not(.consigne){clear:both}
 .pc-agrandir[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 .pc-agrandir-barre{display:flex;justify-content:flex-end;margin:0 0 8px}
 .pc-agrandir-barre .pc-agrandir{float:none;margin:0}
@@ -1823,15 +1825,14 @@ var Sim = (function () {
       if (NOTE) barreModes.hidden = true;
       bLibre.addEventListener("click", function () { mode(false); });
       bParcours.addEventListener("click", function () { mode(true); });
-      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de sa premiere grille a scene,
-         hors des cartes, qui partent dans la paillasse du parcours sans l'emporter */
-      var planLibre = [].filter.call(libre.querySelectorAll(".plan"), function (x) {
-        return x.firstElementChild && x.firstElementChild.querySelector("svg");
-      })[0];
-      if (planLibre) {
-        var bGrandLibre = boutonAgrandir();
-        planLibre.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [bGrandLibre]), planLibre);
-      }
+      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de CHAQUE grille a scene (une
+         par onglet, par experience ou par protocole), hors des cartes, qui partent dans la paillasse du
+         parcours sans l'emporter. Toutes les barres agissent ensemble. */
+      [].filter.call(libre.querySelectorAll(".plan"), function (x) {
+        return x.firstElementChild && x.firstElementChild.querySelector("svg") && !x.parentNode.closest(".plan");
+      }).forEach(function (x) {
+        x.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [boutonAgrandir()]), x);
+      });
     }
     P.appendChild(racine);
     if (!libre) document.body.classList.add("pc-visible");
@@ -3304,18 +3305,18 @@ var Sim = (function () {
 :root[data-theme="dark"]{--ciel-jour:#3a5068;--ciel-nuit:#141b28;--mur:#5d5448;--maison:#3d3a35;--herbe:#4f6e3a;--terre:#6b5a45;--dalle-claire:#9d978c}
 .trait{fill:none;stroke:var(--encre);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
 .objet{fill:var(--carte);stroke:var(--encre);stroke-width:2;stroke-linejoin:round}
-.etiq{font-size:11px;fill:var(--encre2)}
+.etiq{font-size:12px;fill:var(--encre2)}
 .etiq-titre{font-size:12px;font-weight:700;fill:var(--encre)}
 .lcd{fill:#cfd8cf;stroke:var(--encre2);stroke-width:1}
 .lcd-txt{font-family:ui-monospace,Consolas,monospace;font-size:15px;font-weight:700;fill:#1d2a1d}
-.lcd-unite{font-family:ui-monospace,Consolas,monospace;font-size:9px;font-weight:700;fill:#1d2a1d}
+.lcd-unite{font-family:ui-monospace,Consolas,monospace;font-size:10px;font-weight:700;fill:#1d2a1d}
 .prise{cursor:grab;touch-action:none;outline:none}
 .prise:active{cursor:grabbing}
 .prise:focus-visible .contour{stroke:var(--accent);stroke-width:3}
 .contour{fill:none;stroke:none}
 .zone{fill:rgba(0,0,0,0)}
 .sans-doigt{pointer-events:none}
-.ir-txt{font-size:11px;font-weight:700;fill:#fff;paint-order:stroke;stroke:#000;stroke-width:3px}
+.ir-txt{font-size:12px;font-weight:700;fill:#fff;paint-order:stroke;stroke:#000;stroke-width:3px}
 .carte [hidden]{display:none!important}
 .releve-zone > div{overflow-x:auto}
 .case{display:flex;gap:8px;align-items:center;font-size:.92rem;font-weight:600;min-height:44px}
@@ -3325,6 +3326,9 @@ var Sim = (function () {
 .gaz button{min-height:44px}
 .images-ir{display:flex;flex-wrap:wrap;gap:8px}
 .images-ir svg{flex:1 1 260px;min-width:0;max-width:100%;height:auto;display:block;background:#111;border-radius:4px}
+/* tablette couchee, scene agrandie (4 novembre 2026) : les deux images de camera prennent toute la largeur du
+   dossier, au lieu d'une colonne de 240 px ou leurs graduations tombaient a 8 px */
+.pc-docs section.doc-ir{grid-column:1/-1}
 </style>
 
 <div id="ccf"></div>
@@ -3893,7 +3897,7 @@ var Sim = (function () {
     texte(vFond, 212, 230, "air intérieur", { ancre: "middle" });
     svg("rect", { x: 26, y: 300, width: 4, height: 30, fill: "var(--encre2)" }, vFond);
     svg("rect", { x: 6, y: 270, width: 46, height: 32, rx: 3, fill: "#f4f4f0", stroke: "var(--encre)", "stroke-width": 1.5 }, vFond);
-    texte(vFond, 29, 264, "abri, ombre", { ancre: "middle" });
+    texte(vFond, 3, 264, "abri, ombre", {});                // cale a gauche : centre, il sortait du cadre
     Z.lcdIn = svg("text", { x: 212, y: 256, "text-anchor": "middle", "class": "lcd-txt", style: "font-size:13px" }, vFond);
     Z.lcdOut = svg("text", { x: 29, y: 291, "text-anchor": "middle", "class": "lcd-txt", style: "font-size:12px" }, vFond);
     Z.heure = svg("text", { x: 12, y: 22, "class": "etiq-titre", style: "font-size:15px" }, vFond);
@@ -4076,7 +4080,7 @@ var Sim = (function () {
     if (TR.n2o) mol.push(["N₂O", "#a3ffb0"]);
     var graine = 7;
     function hasard() { graine = (graine * 9301 + 49297) % 233280; return graine / 233280; }
-    mol.forEach(function (m) { var x = 180 + hasard() * 440, y = 150 + hasard() * 70; svg("text", { x: x, y: y, "text-anchor": "middle", style: "font-size:11px;font-weight:700", fill: m[1], texte: m[0] }, STE); });
+    mol.forEach(function (m) { var x = 180 + hasard() * 440, y = 150 + hasard() * 70; svg("text", { x: x, y: y, "text-anchor": "middle", style: "font-size:12px;font-weight:700", fill: m[1], texte: m[0] }, STE); });
     svg("path", { d: "M0 290 Q 320 262 640 290 L640 340 L0 340 Z", fill: "#4f7d3e" }, STE);
     texte(STE, 320, 322, "surface de la Terre", { ancre: "middle", classe: "ir-txt" });
     function largeur(W) { return 1 + 14 * W / 400; }
@@ -4300,7 +4304,7 @@ var Sim = (function () {
       P.regler({ source: "plaque", consigne: 20, Tp: 20, U: 0, d: 40, ech: "rien", vitesse: 5, rayons: false, vider: true, lec: 0 });
     }
     zone.appendChild(el("div", { classe: "pc-docs" }, [
-      el("section", null, [el("h3", { texte: "Document 1 · Deux images de la caméra thermique, à 15 h" }), imagesIR(),
+      el("section", { classe: "doc-ir" }, [el("h3", { texte: "Document 1 · Deux images de la caméra thermique, à 15 h" }), imagesIR(),
         el("p", { html: "Même échelle de couleurs pour les deux, par bandes de 5 °C. Sp1 : la température au centre du viseur. L'image B vise la façade juste devant la dalle." })]),
       el("section", null, [el("h3", { texte: "Document 2 · La fiche du vitrage" }),
         el("table", null, [

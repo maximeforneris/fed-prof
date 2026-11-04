@@ -317,6 +317,8 @@ details.modele ul{margin:8px 0 0;padding-left:1.2em;color:var(--encre2);font-siz
   .pc-paillasse > .carte,.pc-paillasse .plan > .carte{padding:10px}
 }
 .pc-agrandir{float:right;margin:0 0 8px 10px;min-height:38px;padding:6px 12px;font-size:.88rem}
+/* la consigne coule a cote du bouton, la scene passe dessous : a cote, avec son overflow, elle perdait 150 px */
+.pc-scene > :not(.pc-agrandir):not(.consigne){clear:both}
 .pc-agrandir[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 .pc-agrandir-barre{display:flex;justify-content:flex-end;margin:0 0 8px}
 .pc-agrandir-barre .pc-agrandir{float:none;margin:0}
@@ -1823,15 +1825,14 @@ var Sim = (function () {
       if (NOTE) barreModes.hidden = true;
       bLibre.addEventListener("click", function () { mode(false); });
       bParcours.addEventListener("click", function () { mode(true); });
-      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de sa premiere grille a scene,
-         hors des cartes, qui partent dans la paillasse du parcours sans l'emporter */
-      var planLibre = [].filter.call(libre.querySelectorAll(".plan"), function (x) {
-        return x.firstElementChild && x.firstElementChild.querySelector("svg");
-      })[0];
-      if (planLibre) {
-        var bGrandLibre = boutonAgrandir();
-        planLibre.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [bGrandLibre]), planLibre);
-      }
+      /* le mode libre a aussi son « Agrandir la scene » : une barre au-dessus de CHAQUE grille a scene (une
+         par onglet, par experience ou par protocole), hors des cartes, qui partent dans la paillasse du
+         parcours sans l'emporter. Toutes les barres agissent ensemble. */
+      [].filter.call(libre.querySelectorAll(".plan"), function (x) {
+        return x.firstElementChild && x.firstElementChild.querySelector("svg") && !x.parentNode.closest(".plan");
+      }).forEach(function (x) {
+        x.parentNode.insertBefore(el("div", { classe: "pc-agrandir-barre" }, [boutonAgrandir()]), x);
+      });
     }
     P.appendChild(racine);
     if (!libre) document.body.classList.add("pc-visible");
@@ -3312,7 +3313,17 @@ table.lecture td{font-family:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono"
 /* l'entrainement au CCF : l'ecran reste en vue pendant qu'on regle les curseurs, plus bas */
 @media (min-width:621px){
   .pc-paillasse #carteEcran{position:sticky;top:96px;z-index:2}
-  .pc-paillasse #carteEcran .scene svg{max-height:36vh}
+  .pc-paillasse #carteEcran .scene svg{max-height:42vh}
+}
+/* la scene agrandie (tablette couchee, 4 novembre 2026) : l'ecran a gauche, ses reglages a droite ; plus
+   borne a 42vh, l'ecran prend la largeur de sa colonne et ses textes passent au-dessus de 11 px. #planA
+   garde la marque pc-grand de la simulation libre quand la paillasse l'emprunte : d'ou le !important */
+@media (min-width:821px){
+  .pc-grand .pc-paillasse #planA{grid-template-columns:minmax(0,1.5fr) minmax(250px,1fr)!important}
+  .pc-grand .pc-paillasse #carteEcran .scene svg{max-height:calc(100vh - 210px)}
+  /* sans agrandir, la colonne de la scene defile seule : l'ecran s'y colle en haut, pas a 96 px du haut,
+     et la place gagnee reste aux curseurs */
+  .pc-ecran > .plan:not(.pc-grand) > .pc-scene .pc-paillasse #carteEcran{top:0}
 }
 /* dans la paillasse de l'entrainement, les releves sans graphe prennent toute la largeur */
 .pc-paillasse .releve-zone{grid-template-columns:1fr}
@@ -3537,7 +3548,7 @@ table.lecture td{font-family:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono"
     for (k = 0; k <= 40; k++) { var yy = Y0 + k * DY / 5; S("line", { x1: X0 + LX / 2 - 4, y1: yy, x2: X0 + LX / 2 + 4, y2: yy, stroke: axe, "stroke-width": 1 }, E); }
     // repere du zero commun aux trois voies
     S("path", { d: "M" + (X0 - 12) + " " + (YC - 7) + " L" + (X0 - 2) + " " + YC + " L" + (X0 - 12) + " " + (YC + 7) + " Z", fill: encre2 }, E);
-    S("text", { x: X0 - 16, y: YC + 5, "text-anchor": "end", "font-size": 14, fill: encre2, texte: "0" }, E);
+    S("text", { x: X0 - 16, y: YC + 5, "text-anchor": "end", "font-size": 15, fill: encre2, texte: "0" }, E);
     // les courbes, coupees au bord de l'ecran
     var clip = S("clipPath", { id: "clip-ecran" }, E);
     S("rect", { x: X0, y: Y0, width: LX, height: LY }, clip);
@@ -3566,19 +3577,19 @@ table.lecture td{font-family:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono"
       if (c[0] > 10 * etat.base + 1e-9) return;
       var x = X0 + c[0] / (10 * etat.base) * LX;
       S("line", { x1: x, y1: Y0, x2: x, y2: Y0 + LY, stroke: encre, "stroke-width": 1.4, "stroke-dasharray": "6 5" }, E);
-      S("rect", { x: x - 9, y: Y0 + 3, width: 18, height: 18, rx: 3, fill: encre }, E);
-      S("text", { x: x, y: Y0 + 17, "text-anchor": "middle", "font-size": 13, "font-weight": 700, fill: fond, texte: c[1] }, E);
+      S("rect", { x: x - 10, y: Y0 + 3, width: 20, height: 20, rx: 3, fill: encre }, E);
+      S("text", { x: x, y: Y0 + 18.5, "text-anchor": "middle", "font-size": 15, "font-weight": 700, fill: fond, texte: c[1] }, E);
     });
     // etiquettes des voies et de la base de temps
     var lab = [["1", "u", Sim.fr(etat.cu, 0) + " V/div", cU], ["2", "i", cCiTexte() + " A/div", cI], ["M", "p = u × i", Sim.fr(etat.cp, 0) + " W/div", cP]];
     lab.forEach(function (l, j) {
       var x = X0 + j * 178;
       S("rect", { x: x, y: 12, width: 22, height: 22, rx: 4, fill: l[3] }, E);
-      S("text", { x: x + 11, y: 28, "text-anchor": "middle", "font-size": 14, "font-weight": 700, fill: "#fff", texte: l[0] }, E);
+      S("text", { x: x + 11, y: 28.5, "text-anchor": "middle", "font-size": 15, "font-weight": 700, fill: "#fff", texte: l[0] }, E);
       S("text", { x: x + 30, y: 28, "font-size": 15, "font-weight": 600, fill: encre, texte: l[1] + " : " + l[2] }, E);
     });
     S("text", { x: X0, y: Y0 + LY + 30, "font-size": 15, "font-weight": 600, fill: encre, texte: "Base de temps : " + Sim.fr(etat.base, 0) + " ms/div" }, E);
-    S("text", { x: X0 + LX, y: Y0 + LY + 30, "text-anchor": "end", "font-size": 14, fill: encre2, texte: "déclenchement : voie 1, front montant" }, E);
+    S("text", { x: X0 + LX, y: Y0 + LY + 30, "text-anchor": "end", "font-size": 15, fill: encre2, texte: "déclenchement : voie 1, front montant" }, E);
   }
   function cCiTexte() { var v = etat.ci; return Sim.fr(v, v < 0.1 ? 2 : v < 1 ? 1 : 0); }
 

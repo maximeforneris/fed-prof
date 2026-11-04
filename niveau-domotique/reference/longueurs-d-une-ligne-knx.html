@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="stockage" content="coffre.fed-prof : la clé d’accès de cet espace, le temps de l’onglet, ou sur l’appareil si l’on demande de s’en souvenir">
+<title>Accès réservé</title>
+<style>
+:root{--fond:#f4f3ef;--carte:#fff;--encre:#1c1c1e;--doux:#5d5c58;--accent:#1f5fd0;--trait:#d9d6cf;--faux:#b3261e}
+@media (prefers-color-scheme:dark){:root{--fond:#131315;--carte:#1d1d20;--encre:#eceae6;--doux:#a6a49f;--accent:#7aa7ff;--trait:#34343a;--faux:#ff8a80}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+ background:var(--fond);color:var(--encre);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px}
+main{background:var(--carte);border:1px solid var(--trait);border-radius:14px;padding:28px 24px;max-width:420px;width:100%}
+h1{font-size:22px;margin:0 0 6px}
+p{margin:0 0 16px;color:var(--doux)}
+label.cle{display:block;font-weight:600;margin-bottom:6px}
+input[type=password],input[type=text]{width:100%;font:inherit;padding:11px 12px;border:1px solid var(--trait);
+ border-radius:9px;background:var(--fond);color:var(--encre)}
+input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.garder{display:flex;gap:9px;align-items:center;margin:12px 0 18px;color:var(--doux);font-size:15.5px}
+.garder input{width:20px;height:20px}
+button{font:inherit;font-weight:600;border:0;border-radius:9px;padding:11px 18px;background:var(--accent);color:#fff;cursor:pointer;min-height:44px}
+button[disabled]{opacity:.6}
+.erreur{color:var(--faux);font-weight:600;margin:14px 0 0;min-height:1.5em}
+.pied{font-size:14px;margin:18px 0 0}
+</style></head>
+<body><main>
+<h1>Accès réservé</h1>
+<p>Ce site est réservé. Entrez sa clé d’accès.</p>
+<form id="f" autocomplete="off">
+<label class="cle" for="k">La clé</label>
+<input id="k" type="password" autocapitalize="off" autocorrect="off" spellcheck="false" required>
+<label class="garder"><input id="g" type="checkbox"> Se souvenir de la clé sur cet appareil</label>
+<button id="b" type="submit">Ouvrir</button>
+<p class="erreur" id="e" role="alert"></p>
+</form>
+<p class="pied">La page est chiffrée : sans la clé, elle ne se lit pas. La clé reste sur cet appareil ; rien n’est envoyé. <a href="../../mentions-legales.html">Mentions légales</a></p>
+</main>
+<script type="text/plain" id="c">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</script>
+<script>
+(function(){
+var ID="fed-prof",SEL="ku1Z+A6E0/SWkEF1TKUTng==",IV="VPbfuqcBZRmVJqsg",TOURS=600000,STO="coffre."+ID;
+var e=document.getElementById("e"),b=document.getElementById("b");
+function oct(s){var x=atob(s),u=new Uint8Array(x.length);for(var i=0;i<x.length;i++)u[i]=x.charCodeAt(i);return u;}
+function enB64(u){var s="";for(var i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s);}
+function lue(){var l=[];try{l.push(sessionStorage.getItem(STO));}catch(x){}try{l.push(localStorage.getItem(STO));}catch(x){}
+ for(var i=0;i<l.length;i++){try{var v=JSON.parse(l[i]);if(v&&v.sel===SEL&&v.k)return v.k;}catch(x){}}return null;}
+function garder(k,long){var v=JSON.stringify({sel:SEL,k:k});try{sessionStorage.setItem(STO,v);}catch(x){}
+ if(long){try{localStorage.setItem(STO,v);}catch(x){}}}
+function oublier(){try{sessionStorage.removeItem(STO);}catch(x){}try{localStorage.removeItem(STO);}catch(x){}}
+function dechiffrer(brute){
+ return crypto.subtle.importKey("raw",brute,"AES-GCM",false,["decrypt"]).then(function(k){
+  return crypto.subtle.decrypt({name:"AES-GCM",iv:oct(IV)},k,oct(document.getElementById("c").textContent.trim()));
+ }).then(function(t){return new TextDecoder().decode(t);});}
+function montrer(h){document.open();document.write(h);document.close();}
+function deriver(mot){
+ mot=mot.normalize("NFC").toLowerCase().replace(/\s+/g,"");
+ return crypto.subtle.importKey("raw",new TextEncoder().encode(mot),"PBKDF2",false,["deriveBits"]).then(function(base){
+  return crypto.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt:oct(SEL),iterations:TOURS},base,256);
+ }).then(function(bits){return new Uint8Array(bits);});}
+if(!window.crypto||!crypto.subtle){e.textContent="Ce navigateur ne sait pas ouvrir la page. Ouvrez-la à son adresse en https, dans un navigateur à jour.";b.disabled=true;return;}
+var k=lue();
+/* La cle gardee ouvre la page seule — mais APRES le chargement de la coquille :
+   un document.open() lance pendant sa lecture laissait l'ancien titre. */
+function charge(f){if(document.readyState==="complete")f();else window.addEventListener("load",f);}
+if(k){dechiffrer(oct(k)).then(function(h){charge(function(){montrer(h);});},function(){oublier();});}
+document.getElementById("f").addEventListener("submit",function(ev){
+ ev.preventDefault();e.textContent="";b.disabled=true;b.textContent="Ouverture…";
+ var brute;
+ deriver(document.getElementById("k").value).then(function(x){brute=x;return dechiffrer(x);}).then(function(h){
+  garder(enB64(brute),document.getElementById("g").checked);montrer(h);
+ },function(){b.disabled=false;b.textContent="Ouvrir";e.textContent="Cette clé n’ouvre pas la page.";});
+});
+})();
+</script>
+</body></html>

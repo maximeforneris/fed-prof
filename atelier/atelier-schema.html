@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atelier schéma électrique</title>
+<meta name="description" content="Dessiner un montage avec les symboles normalisés, fermer l’interrupteur, mesurer au multimètre et à l’oscilloscope, tracer la caractéristique de chaque dipôle : 22 composants, 31 montages d’exemple, du CAP au BTS électrotechnique, sans matériel.">
+<meta name="etiquette" content="Outil · Électricité">
+<meta name="porte-compte" content="22 composants, 31 montages">
+<meta name="stockage" content="atelier-schema-elec-v1 : le schéma en cours et les réglages d’affichage de l’atelier">
+<!-- Atelier schéma électrique : un artifact claude.ai, repris le 9 novembre 2026 pour le labo,
+     développé depuis dans _commun/tp/simulations/atelier/ (sources dans src/, assembler.py).
+     Fichier autonome, aucune requête. Ne pas retoucher ce fichier : il est assemblé. -->
+<style>
+/* Layout : bibliothèque à gauche · feuille quadrillée au centre · colonne de droite (panneau du composant, fenêtres rangées) ;
+   les fenêtres détachées flottent au-dessus. « Bibliothèque » et « Panneau » cachent leur colonne. */
+:root{
+  --ui:'Red Hat Text', 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+  --mono:'Share Tech Mono', ui-monospace, Consolas, monospace;
+  --bg:#ECEAE4; --surface:#FFFFFF; --line:#D2D6CF; --fg:#16201B; --muted:#5B6660;
+  --accent:#1F6B4A; --accent-soft:#DBE9E1; --on-accent:#FFFFFF;
+  --warn:#9A4A12; --warn-soft:#F6E7D8; --danger:#A8432C;
+  --paper:#FBFCFA; /* la feuille reste claire dans les deux thèmes, comme un tableau blanc */
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111614; --surface:#182020; --line:#35403C; --fg:#E9EFE9; --muted:#9AA8A1;
+  --accent:#53B98A; --accent-soft:#1D3A2D; --on-accent:#0B1D14;
+  --warn:#E3A062; --warn-soft:#3A2A18; --danger:#E07F66; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#111614; --surface:#182020; --line:#35403C; --fg:#E9EFE9; --muted:#9AA8A1;
+  --accent:#53B98A; --accent-soft:#1D3A2D; --on-accent:#0B1D14;
+  --warn:#E3A062; --warn-soft:#3A2A18; --danger:#E07F66; color-scheme:dark }
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:15px}
+.app{display:flex;flex-direction:column;gap:12px;padding-block:14px 24px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1500px;margin:0 auto}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 18px}
+.brand h1{margin:0;font-size:1.35rem;letter-spacing:-.01em;text-wrap:balance}
+.retour{display:inline-block;font-size:.84rem;font-weight:700;color:var(--accent);text-decoration:none;margin-bottom:4px}
+.retour:hover{text-decoration:underline}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:.88rem}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{box-sizing:border-box;display:inline-flex;align-items:center;gap:6px;font:700 .88rem var(--ui);color:var(--fg);background:var(--surface);
+  border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;min-height:38px}
+.btn:hover{border-color:var(--accent)}
+.btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn.danger{color:var(--danger)}
+.btn.confirm{background:var(--danger);color:#fff;border-color:var(--danger)}
+select.btn{padding-right:28px;max-width:100%}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.work{display:grid;grid-template-columns:200px minmax(0,1fr) 300px;gap:12px;align-items:start}
+.lib,.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.lib{padding:8px;display:flex;flex-direction:column;gap:8px}
+.libsec{display:flex;flex-direction:column;gap:4px}
+.libgrid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.lab{font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:2px 4px 0}
+.item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 3px;border-radius:8px;border:1px solid transparent;background:none;
+  color:inherit;font:inherit;cursor:grab;text-align:center;touch-action:none;user-select:none;-webkit-user-select:none}
+.item:hover{background:var(--accent-soft)}
+.item.on{border-color:var(--accent);background:var(--accent-soft)}
+.item svg{width:64px;height:38px;flex:none;background:var(--paper);border:1px solid var(--line);border-radius:6px}
+.item b{display:block;font-size:.76rem;line-height:1.15}
+.libnote{font-size:.74rem;color:var(--muted);margin:0 4px;line-height:1.35}
+
+.stage{min-width:0;display:flex;flex-direction:column;gap:8px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{font:700 .86rem var(--ui);color:var(--fg);background:none;border:0;padding:8px 13px;cursor:pointer;min-height:38px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.seg.full{display:flex}.seg.full button{flex:1;padding:8px 6px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;background:var(--surface);border:1px solid var(--line);
+  border-radius:999px;padding:6px 11px;cursor:pointer;user-select:none}
+.chip input{accent-color:var(--accent);margin:0}
+.sheet{background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+#cv{display:block;width:100%;height:auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.status{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.86rem;color:var(--muted);min-height:1.4em}
+.pill{font-weight:700;font-size:.8rem;border-radius:999px;padding:3px 10px}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.info{background:var(--accent-soft);color:var(--accent)}
+
+.panel{padding:14px;display:flex;flex-direction:column;gap:14px}
+#propsBox,#readBox{display:flex;flex-direction:column;gap:14px}
+.panel h2{margin:0;font-size:1.1rem}
+.panel .sub{color:var(--muted);font-size:.84rem;margin-top:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field>label,.flab{font-size:.82rem;color:var(--muted);font-weight:700}
+.field .in{display:flex;align-items:center;gap:6px}
+.field input[type=number],.field input[type=text]{width:100%;font:1rem var(--mono);padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--fg)}
+.field input[type=text]{font-family:var(--ui)}
+.field input[type=range]{width:100%;accent-color:var(--accent)}
+.field .u{font-family:var(--mono);color:var(--muted);min-width:1.8em}
+.note{font-size:.78rem;color:var(--muted);line-height:1.35}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.presets button{font:700 .8rem var(--ui);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:5px 10px;cursor:pointer}
+.presets button:hover{border-color:var(--accent)}
+.presets button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.big{font:2rem var(--mono);letter-spacing:.02em;background:#C9D4B5;color:#1B2416;border:1px solid #5B6650;border-radius:8px;padding:6px 12px;text-align:right}
+.big small{font-size:.9rem;margin-left:6px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.9rem;margin:0}
+.kv dt{color:var(--muted)} .kv dd{margin:0;font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.hint{font-size:.85rem;line-height:1.4;border-radius:8px;padding:9px 11px;background:var(--warn-soft);color:var(--warn)}
+.err{font-size:.8rem;color:var(--danger)}
+.help{font-size:.86rem;line-height:1.45;color:var(--muted);margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.help b{color:var(--fg)}
+.toggle-big{width:100%;justify-content:center;font-size:1rem;min-height:46px}
+
+.ghostdrag{position:fixed;left:0;top:0;pointer-events:none;z-index:50;opacity:.85}
+.ghostdrag svg{width:88px;height:52px;background:var(--paper);border:1px solid var(--accent);border-radius:8px}
+.modal{position:fixed;inset:0;z-index:60;background:rgba(10,15,18,.55);display:flex;align-items:center;justify-content:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.modal .card{background:var(--surface);border-radius:12px;padding:16px;max-width:900px;width:100%;max-height:100%;overflow:auto;display:flex;flex-direction:column;gap:12px}
+.modal img{max-width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;align-self:center}
+.modal p{margin:0;color:var(--muted);font-size:.88rem}
+
+
+/* la colonne de droite : le panneau, puis les fenêtres qu'on y range */
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.dock{display:flex;flex-direction:column;gap:12px;min-width:0}
+.dock:empty{display:none}
+.app.no-lib .lib{display:none}
+.app.no-side .side{display:none}
+.app.no-lib .work{grid-template-columns:minmax(0,1fr) 300px}
+.app.no-side .work{grid-template-columns:200px minmax(0,1fr)}
+.app.no-lib.no-side .work{grid-template-columns:minmax(0,1fr)}
+
+/* les fenêtres */
+.win{background:var(--surface);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;min-width:0}
+.win.float{position:fixed;z-index:40;max-height:calc(100% - 24px);overflow:auto;box-shadow:0 12px 32px rgba(0,0,0,.28)}
+.win.docked{position:relative}
+.win-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px 6px 12px;border-bottom:1px solid var(--line);user-select:none;-webkit-user-select:none}
+.win.float .win-head{cursor:move;touch-action:none;position:sticky;top:0;background:var(--surface);z-index:1;border-radius:12px 12px 0 0}
+.win-title{font-size:.95rem}
+.win-btns{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.wbtn{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--fg);cursor:pointer;padding:0}
+.wbtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.wbtn:hover{border-color:var(--accent)}
+.win.docked [data-w="dock"]{background:var(--accent-soft);border-color:var(--accent)}
+.btn.sm{min-height:34px;padding:5px 10px;font-size:.8rem}
+.win-body{display:flex;flex-direction:column;min-width:0}
+.win-body>.row{padding:8px 10px}
+.win.min .win-body,.win.min .win-grip{display:none}
+.win.min .win-head{border-bottom:0}
+.win-grip{position:absolute;right:2px;bottom:2px;width:22px;height:22px;cursor:nwse-resize;touch-action:none;
+  background:linear-gradient(135deg,transparent 52%,var(--muted) 52%,var(--muted) 58%,transparent 58%,transparent 70%,var(--muted) 70%,var(--muted) 76%,transparent 76%);opacity:.6}
+.win.docked .win-grip{display:none}
+
+/* l'oscilloscope */
+#scCv{width:100%;aspect-ratio:5/4;display:block;background:#0D1914}
+.sc-read{font:13px var(--mono);padding:7px 10px;color:var(--fg);display:flex;flex-wrap:wrap;gap:3px 14px;border-bottom:1px solid var(--line)}
+.sc-read .y1{color:#B8960F}.sc-read .y2{color:#1F8FA6}
+.sc-ctrl{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px 10px;padding:9px 10px 12px}
+.sc-ctrl label{display:flex;flex-direction:column;gap:3px;font-size:.76rem;color:var(--muted);font-weight:700}
+.sc-ctrl select{font:.86rem var(--ui);padding:6px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--fg)}
+.sc-ctrl input[type=range]{accent-color:var(--accent)}
+.sc-ctrl .ck{flex-direction:row;align-items:center;gap:6px}
+
+/* la caractéristique et le tableau de mesures */
+.ch-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:8px 10px}
+.ch-dip{display:flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted);font-weight:700}
+.ch-dip select{font:.88rem var(--ui);padding:6px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--fg);max-width:210px}
+.ch-top .seg button{padding:6px 10px;min-height:34px;font-size:.82rem}
+#chCv{width:100%;aspect-ratio:8/5;display:block;background:#FBFCFA;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ch-leg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.76rem;color:var(--muted);padding:6px 10px 0}
+.lg{display:inline-block;width:14px;height:0;border-top:2px solid;vertical-align:middle;margin-right:5px}
+.lg.pt{width:10px;height:10px;border:2.4px solid #E0601F;border-radius:50%}
+.lg.tr{border-color:rgba(43,92,138,.75)}
+.lg.rel{width:8px;height:8px;border:0;background:var(--fg);border-radius:50%}
+.lg.mod{border-top:2px dashed var(--accent)}
+.ch-live{font-size:.86rem;padding:6px 10px 0}
+.ch-live .pt{display:inline-block;width:9px;height:9px;border:2px solid #E0601F;border-radius:50%;vertical-align:-1px}
+.ch-live i{color:var(--muted)}
+#chTab,#chAna,#tbLive,#tbTab{padding:0 10px}
+#chAna{padding-bottom:12px;font-size:.88rem;line-height:1.45}
+#chAna p{margin:6px 0}
+#chAna sub{font-size:.7em}
+.ch-mod{border-top:1px solid var(--line);margin-top:8px;padding-top:8px}
+.ch-mod summary{cursor:pointer;font-size:.84rem;color:var(--muted)}
+.ch-tab{border-collapse:collapse;font:13px var(--mono);margin:6px 0;width:100%}
+.ch-tab th{font:700 .76rem var(--ui);color:var(--muted);text-align:right;padding:3px 6px;border-bottom:1px solid var(--line)}
+.ch-tab td{text-align:right;padding:2px 6px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.ch-tab th:first-child,.ch-tab td:first-child{text-align:left}
+.xbtn{border:0;background:none;color:var(--muted);font-size:1.05rem;cursor:pointer;padding:0 4px;min-width:30px;min-height:30px}
+.xbtn:hover{color:var(--danger)}
+.tb-wrap{overflow-x:auto;padding-bottom:10px}
+#tbLive{padding-top:8px}
+
+/* les menus « Affichage » et « Fenêtres », et les interrupteurs de disposition */
+.pop{position:relative}
+.pop>summary{list-style:none;display:flex}
+.pop>summary::-webkit-details-marker{display:none}
+.pop[open]>summary{border-color:var(--accent);background:var(--accent-soft)}
+.pop-body{position:absolute;left:0;top:calc(100% + 6px);z-index:45;width:max-content;min-width:250px;max-width:calc(100vw - 32px);background:var(--surface);border:1px solid var(--line);
+  border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.2);padding:12px;display:flex;flex-direction:column;gap:12px}
+.pop-sec{display:flex;flex-direction:column;gap:4px}
+.pop .ck{display:flex;align-items:center;gap:8px;font-size:.88rem;cursor:pointer;min-height:30px}
+.pop .ck input{accent-color:var(--accent);width:17px;height:17px;margin:0}
+.qrow{display:flex;flex-wrap:wrap;gap:0 16px}
+#popWin .pop-body .btn{justify-content:flex-start}
+#popWin .note{margin:0;max-width:260px}
+.bar-sp{flex:1}
+.btn.tog[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.btn.tog[aria-pressed="false"]{color:var(--muted)}
+.btn[disabled]{opacity:.5;cursor:default}
+
+@media (max-width:1150px){
+  .work,.app.no-lib.no-side .work{grid-template-columns:200px minmax(0,1fr)}
+  .app.no-lib .work{grid-template-columns:minmax(0,1fr)}
+  .side{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start}
+  .dock{display:contents}
+}
+@media (max-width:760px){
+  .work,.app.no-lib .work,.app.no-side .work,.app.no-lib.no-side .work{grid-template-columns:minmax(0,1fr)}
+  .lib{flex-direction:row;overflow-x:auto;gap:6px}
+  .libsec,.libgrid{display:contents}
+  .lib .lab,.libnote{display:none}
+  .item{flex:none;touch-action:pan-x;padding:5px}
+  .win.float{left:8px!important;right:8px!important;top:auto!important;bottom:8px!important;width:auto!important;max-height:70vh}
+  .win-grip{display:none}
+  .bar-sp{display:none}
+}
+
+/* la consigne d'un exemple, sous la feuille */
+.exnote{display:flex;gap:8px;align-items:flex-start;font-size:.9rem;line-height:1.4;background:var(--accent-soft);color:var(--fg);border-radius:8px;padding:8px 6px 8px 12px}
+.exnote span{flex:1}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <a class="retour" href="../simulations-labo/index.html">← Les simulations du labo</a>
+      <h1>Atelier schéma électrique</h1>
+      <p>Dessinez un montage avec les symboles normalisés, fermez les interrupteurs, mesurez et observez les oscillogrammes.</p>
+    </div>
+    <div class="actions">
+      <button class="btn" id="undo" title="Annuler (Ctrl+Z)"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg>Annuler</button>
+      <select class="btn" id="examples" aria-label="Charger un exemple"><option value="">Exemples…</option></select>
+      <button class="btn" id="exportBtn"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/></svg>Image du schéma</button>
+      <button class="btn danger" id="clear"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Tout effacer</button>
+    </div>
+  </header>
+
+  <div class="work">
+    <aside class="lib" id="lib" aria-label="Bibliothèque de composants"></aside>
+
+    <section class="stage">
+      <div class="bar">
+        <div class="seg" role="group" aria-label="Outil">
+          <button id="t-select" aria-pressed="true">Sélection</button>
+          <button id="t-wire" aria-pressed="false">Fil</button>
+          <button id="t-erase" aria-pressed="false">Gomme</button>
+        </div>
+        <label class="chip"><input type="checkbox" id="o-flow" checked> Sens du courant</label>
+        <label class="chip"><input type="checkbox" id="o-vals"> Valeurs</label>
+        <details class="pop" id="popAff">
+          <summary class="btn"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Affichage</summary>
+          <div class="pop-body">
+            <div class="pop-sec"><span class="flab">Sur la feuille</span>
+              <label class="ck"><input type="checkbox" id="o-arrows"> Flèches de tension</label>
+              <label class="ck"><input type="checkbox" id="o-names" checked> Noms des composants</label>
+              <label class="ck"><input type="checkbox" id="o-lcd" checked> Afficheurs des appareils</label>
+              <label class="ck"><input type="checkbox" id="o-grid" checked> Quadrillage</label></div>
+            <div class="pop-sec"><span class="flab">« Valeurs » écrit sous chaque dipôle</span>
+              <div class="qrow"><label class="ck"><input type="checkbox" id="q-u" checked> U</label><label class="ck"><input type="checkbox" id="q-i" checked> I</label>
+              <label class="ck"><input type="checkbox" id="q-p"> P</label><label class="ck"><input type="checkbox" id="q-r"> U ÷ I</label></div></div>
+            <div class="pop-sec"><span class="flab">Le temps</span>
+              <label class="ck" title="Le temps défile 50 fois moins vite : 50 Hz devient visible"><input type="checkbox" id="o-slowmo"> Ralenti ×50</label></div>
+            <div class="pop-sec"><span class="flab">La feuille</span>
+              <div class="seg full" role="group" aria-label="Taille de la feuille"><button data-size="std">Standard 24 × 16</button><button data-size="big">Grande 36 × 24</button></div></div>
+          </div>
+        </details>
+        <details class="pop" id="popWin">
+          <summary class="btn"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>Fenêtres</summary>
+          <div class="pop-body">
+            <button class="btn" data-open="char"><svg viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M7 16c3-1 5-4 6-8 1 4 3 7 6 8"/></svg>Caractéristique d’un dipôle</button>
+            <button class="btn" data-open="scope"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M5 12c2-5 4-5 6 0s4 5 6 0"/></svg>Oscilloscope</button>
+            <button class="btn" data-open="table"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>Tableau de mesures</button>
+            <p class="note" id="popWinNote">Une fenêtre se déplace par son titre et s’élargit par son coin ; le bouton à côté du titre la range dans la colonne de droite.</p>
+          </div>
+        </details>
+        <span class="bar-sp"></span>
+        <button class="btn tog" id="b-lib" aria-pressed="true" title="Montrer ou cacher la bibliothèque"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>Bibliothèque</button>
+        <button class="btn tog" id="b-panel" aria-pressed="true" title="Montrer ou cacher le panneau du composant"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg>Panneau</button>
+      </div>
+      <div class="sheet"><svg id="cv" viewBox="0 0 1000 680" xmlns="http://www.w3.org/2000/svg" aria-label="Feuille de schéma"></svg></div>
+      <div class="exnote" id="exnote" hidden><span id="exnoteT"></span><button class="xbtn" id="exnoteX" aria-label="Fermer la consigne">×</button></div>
+      <div class="status" id="status"></div>
+    </section>
+
+    <div class="side" id="side">
+      <aside class="panel" id="panel">
+        <div id="propsBox"></div>
+        <div id="readBox"></div>
+      </aside>
+      <div class="dock" id="dock" aria-label="Fenêtres rangées"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="card">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h2 style="margin:0;font-size:1.1rem">Image du schéma</h2>
+      <button class="btn" id="mClose">Fermer</button>
+    </div>
+    <p>Schéma propre (sans quadrillage ni animation), prêt à coller dans un document. Clic droit ou appui long sur l'image pour l'enregistrer, ou utilisez le bouton.</p>
+    <img id="mImg" alt="Schéma électrique exporté">
+    <div class="row"><button class="btn primary" id="mCopy">Copier l'image</button><span id="mMsg" style="align-self:center;color:var(--muted);font-size:.86rem"></span></div>
+  </div>
+</div>
+
+<script>
+(()=>{
+/* ================= constantes ================= */
+/* W et H, la taille de la feuille en carreaux, changent avec « Feuille standard / grande » (setSize). */
+let W=24,H=16;
+const S=40,O=20;
+const SIZES={std:[24,16],big:[36,24]};
+const P=v=>O+S*v;
+const DIRS=[[1,0],[0,1],[-1,0],[0,-1]];
+const G_WIRE=1e4,G_AMM=1e3,G_FUSE=1e3,G_VOLT=1e-7,G_OSC=1e-6,G_SW=1e4,G_GBF=1,G_AC=200,GMIN=1e-9;
+const LED_VF=2,LED_RS=15,D_VF=0.7,D_RS=0.1,SLOW_F=12,SLOWMO=50,RHO=1.7e-8,BUF=65536,MAXSTEPS=2500;
+/* La lampe à incandescence : sa résistance croît avec la température du filament.
+   À froid, elle vaut le dixième de sa valeur nominale Un ÷ In ; le filament suit la
+   tension avec un temps de réponse thermique TAU_LAMP. Courbe statique : I = In·s(U/Un). */
+const LAMP_K0=10,LAMP_N=0.55,TAU_LAMP=0.06,LQ=Math.log(1.015);
+const LAMP_U0=(()=>{const n=LAMP_N,f=u=>n*Math.pow(u,n-1)/(Math.pow(1+u,n)-Math.pow(u,n))-LAMP_K0;
+  let a=1e-7,b=1;for(let i=0;i<80;i++){const m=Math.sqrt(a*b);if(f(m)>0)a=m;else b=m;}return Math.sqrt(a*b);})();
+const LAMP_D=Math.pow(1+LAMP_U0,LAMP_N)-Math.pow(LAMP_U0,LAMP_N);
+function lampI(p,U){const Un=+p.Un||1,In=+p.In||0.1,x=Math.abs(U)/Un;
+  return Math.sign(U)*In*(Math.pow(x+LAMP_U0,LAMP_N)-Math.pow(LAMP_U0,LAMP_N))/LAMP_D;}
+function lampG(p,Ueff){const Un=+p.Un||1,In=+p.In||0.1;if(Ueff<1e-6*Un)return LAMP_K0*In/Un;return lampI(p,Ueff)/Ueff;}
+/* Le moteur à courant continu à excitation indépendante : E = k·Ω, U = E + R·I + L·di/dt,
+   J·dΩ/dt = k·I − C_r. k se déduit de la plaque : k = (Un − R·In) ÷ Ωn. */
+function mccK(p){const Wn=Math.max(+p.n||1500,1)*Math.PI/30;return Math.max(((+p.Un||220)-(+p.R||0)*(+p.In||10))/Wn,1e-3);}
+const TYPES={
+  gen:{label:'Générateur continu',prefix:'G',ckey:'G',props:{E:6,r:0,Ilim:0}},
+  acgen:{label:'Générateur alternatif',prefix:'G',ckey:'G',props:{U:6,f:50,ph:0}},
+  gbf:{label:'GBF',prefix:'GBF',props:{wave:'sin',f:1,Um:6,off:0}},
+  switch:{label:'Interrupteur',prefix:'K',props:{closed:false}},
+  hach:{label:'Interrupteur commandé',prefix:'T',ckey:'T',props:{f:1000,a:0.5}},
+  fuse:{label:'Fusible',prefix:'F',props:{Imax:0.5}},
+  lamp:{label:'Lampe',prefix:'L',props:{mark:'6 V – 0,1 A',Un:6,In:0.1}},
+  motor:{label:'Moteur',prefix:'M',ckey:'motor',props:{Un:6,In:0.3}},
+  mcc:{label:'Moteur à courant continu',prefix:'M',ckey:'motor',props:{Un:220,In:10,n:1500,R:1,L:20,J:0.2,ch:50}},
+  res:{label:'Résistance',prefix:'R',props:{R:100}},
+  led:{label:'DEL',prefix:'D',ckey:'D',props:{}},
+  diode:{label:'Diode',prefix:'D',ckey:'D',props:{}},
+  cap:{label:'Condensateur',prefix:'C',props:{C:1000}},
+  ind:{label:'Bobine',prefix:'B',props:{L:100,r:10}},
+  cable:{label:'Câble long',prefix:'Câble',props:{L:150,S:0.5}},
+  transfo:{label:'Transformateur',prefix:'T',ckey:'T',props:{tmode:'U',U1:12,U2:120,N1:100,N2:1000}},
+  amm:{label:'Ampèremètre',prefix:'A',props:{mode:'DC',cal:10}},
+  volt:{label:'Voltmètre',prefix:'V',props:{mode:'DC'}},
+  joule:{label:'Joulemètre',prefix:'J',props:{}},
+  wattm:{label:'Wattmètre',prefix:'W',props:{}},
+  osc:{label:'Oscilloscope',prefix:'O',props:{tb:0.005,s1:2,pos1:0,ch2:0,s2:2,pos2:0,mode:'trig',meas:false,init:false}},
+  pince:{label:'Sonde de courant',prefix:'S',props:{}},
+};
+const SUB={gen:'tension réglable',acgen:'alternatif sinusoïdal, déphasage réglable',gbf:'générateur basse fréquence',switch:'ouvert / fermé',fuse:'protection',
+  hach:'transistor : fréquence et rapport cyclique',
+  lamp:'inscription du culot',motor:'récepteur',mcc:'excitation indépendante : E = k·Ω',res:'valeur réglable',led:'diode électroluminescente',diode:'redressement',cap:'stocke des charges',
+  ind:'inductance et résistance',cable:'pertes en ligne',transfo:'élève ou abaisse une tension alternative',amm:'en série',volt:'en dérivation',
+  joule:'énergie consommée',wattm:'puissance active P',osc:'oscillogrammes',pince:'le courant, sur l’oscilloscope'};
+const SECTIONS=[['Sources',['gen','acgen','gbf']],['Commande',['switch','fuse','hach']],['Récepteurs',['lamp','motor','res','led','mcc']],
+  ['Composants',['diode','cap','ind']],['Transport',['cable','transfo']],['Mesure',['amm','volt','joule','wattm','osc','pince']]];
+/* smax : borne du curseur quand la saisie va plus loin (230 V au clavier, 0 à 24 V au doigt). */
+const FIELDS={
+  gen:[{k:'E',label:'Tension à vide E',unit:'V',min:0,max:1000,smax:24,step:0.5,slider:true},
+       {k:'r',label:'Résistance interne r',unit:'Ω',min:0,max:50,step:0.1,note:'0 Ω = générateur idéal.'},
+       {k:'Ilim',label:'Limitation de courant',unit:'A',min:0,max:10,step:0.1,note:'0 = sans limitation. Au-delà, le générateur limite le courant et sa tension chute.'}],
+  acgen:[{k:'U',label:'Tension efficace U',unit:'V',min:0,max:1000,smax:24,step:0.5,slider:true},
+       {k:'f',label:'Fréquence f',unit:'Hz',min:1,max:1000,step:1,note:'50 Hz : fréquence du réseau électrique.'},
+       {k:'ph',label:'Déphasage φ',unit:'°',min:-360,max:360,step:1,note:'Trois générateurs de même tension, déphasés de 0°, −120° et −240° et reliés par un point commun, le neutre : c’est le réseau triphasé.'}],
+  gbf:[{k:'f',label:'Fréquence f',unit:'Hz',min:0.1,max:10000,step:0.1},
+       {k:'Um',label:'Tension maximale Umax',unit:'V',min:0,max:12,step:0.1,slider:true},
+       {k:'off',label:'Décalage (offset)',unit:'V',min:-6,max:6,step:0.1,slider:true}],
+  hach:[{k:'a',label:'Rapport cyclique α',unit:'',min:0,max:1,step:0.01,slider:true,note:'Fraction de chaque période pendant laquelle l’interrupteur est fermé.'},
+       {k:'f',label:'Fréquence de découpage f',unit:'Hz',min:10,max:20000,step:10}],
+  res:[{k:'R',label:'Résistance',unit:'Ω',min:0.1,max:100000,step:0.1}],
+  fuse:[{k:'Imax',label:'Calibre',unit:'A',min:0.05,max:100,step:0.05}],
+  cap:[{k:'C',label:'Capacité C',unit:'µF',min:1,max:10000,step:1}],
+  ind:[{k:'L',label:'Inductance L',unit:'mH',min:1,max:10000,step:1},{k:'r',label:'Résistance de la bobine r',unit:'Ω',min:0,max:1000,step:0.5}],
+  cable:[{k:'L',label:'Longueur du câble',unit:'m',min:0.5,max:5000,step:0.5},{k:'S',label:'Section du fil',unit:'mm²',min:0.1,max:10,step:0.05}],
+  transfo:[{k:'U1',label:'Tension d’entrée U1 (primaire)',unit:'V',min:0.5,max:1000,step:0.5},{k:'U2',label:'Tension de sortie U2 (secondaire)',unit:'V',min:0.5,max:1000,step:0.5},
+       {k:'N1',label:'Spires au primaire N1',unit:'',min:1,max:10000,step:1},{k:'N2',label:'Spires au secondaire N2',unit:'',min:1,max:10000,step:1}],
+  mcc:[{k:'ch',label:'Charge mécanique (couple résistant)',unit:'%',min:0,max:150,step:5,slider:true,note:'En pourcentage du couple nominal Cn = k × In. 0 % : le moteur tourne à vide.'},
+       {k:'Un',label:'Tension nominale Un',unit:'V',min:1,max:1000,step:1},{k:'In',label:'Intensité nominale In',unit:'A',min:0.1,max:1000,step:0.1},
+       {k:'n',label:'Vitesse nominale n',unit:'tr/min',min:100,max:6000,step:10},{k:'R',label:'Résistance de l’induit R',unit:'Ω',min:0.01,max:100,step:0.01},
+       {k:'L',label:'Inductance de l’induit L',unit:'mH',min:0.1,max:1000,step:0.1},{k:'J',label:'Moment d’inertie J',unit:'kg·m²',min:0.001,max:10,step:0.001}],
+};
+const PRESETS={
+  gen:[{k:'E',label:'Tensions usuelles',vals:[1.5,4.5,6,9,12,24,48,220],fmt:v=>fr(v,v%1?1:0)+' V'}],
+  acgen:[{k:'U',label:'Tensions usuelles (efficaces)',vals:[6,12,24,230,400],fmt:v=>v+' V ~'},
+         {k:'ph',label:'Phases du réseau triphasé',vals:[0,-120,-240],fmt:v=>(v?'−'+(-v):'0')+'°'}],
+  gbf:[{k:'f',label:'Fréquences rapides',vals:[0.5,1,2,5,50,1000],fmt:v=>v>=1000?fr(v/1000,0)+' kHz':frs(v)+' Hz'}],
+  hach:[{k:'a',label:'Rapports cycliques',vals:[0.25,0.5,0.75,0.9],fmt:v=>fr(v,2)},{k:'f',label:'Fréquences',vals:[100,500,1000,5000],fmt:v=>v>=1000?fr(v/1000,0)+' kHz':v+' Hz'}],
+  res:[{k:'R',label:'Valeurs courantes',vals:[10,22,47,100,220,470,1000,10000],fmt:v=>v>=1000?fr(v/1000,v%1000?1:0)+' kΩ':v+' Ω'}],
+  cap:[{k:'C',label:'Valeurs courantes',vals:[10,47,100,470,1000,2200],fmt:v=>v+' µF'}],
+  ind:[{k:'L',label:'Valeurs courantes',vals:[10,100,1000],fmt:v=>v>=1000?fr(v/1000,0)+' H':v+' mH'}],
+  cable:[{k:'L',label:'Longueurs',vals:[2,10,50,150,500],fmt:v=>v+' m'},{k:'S',label:'Sections',vals:[0.5,1.5,2.5],fmt:v=>fr(v,1)+' mm²'}],
+  amm:[{k:'cal',label:'Calibre',vals:[10,20,100,1000],fmt:v=>v+' A'+(v>=100?' (pince)':'')}],
+  mcc:[{k:'ch',label:'Charge',vals:[0,50,100,150],fmt:v=>v?v+' %':'à vide'}],
+};
+const MARKS=['3,5 V – 0,2 A','6 V – 0,05 A','6 V – 0,1 A','6 V – 0,3 A','12 V – 0,1 A','12 V – 3 W','12 V – 21 W','230 V – 25 W','230 V – 60 W','230 V – 100 W'];
+const METERS=new Set(['amm','volt']);
+const SOURCES=new Set(['gen','gbf','acgen']);
+const FOUR=new Set(['transfo','joule','wattm']);
+/* les instruments : ni flèche de tension, ni caractéristique */
+const INSTR=new Set(['amm','volt','osc','pince','joule','wattm','transfo']);
+const isDiode=c=>c.type==='led'||c.type==='diode';
+const isGen=c=>c.type==='gen'||c.type==='acgen';
+const vfOf=c=>c.type==='led'?LED_VF:D_VF;
+function trN(p){
+  if(p.tmode==='U'){const U1=Math.max(+p.U1||1,0.1),U2=Math.max(+p.U2||1,0.1),N1=Math.max(1,100*U1/12);return{N1,N2:N1*U2/U1};}
+  return{N1:Math.max(+p.N1||1,1),N2:Math.max(+p.N2||1,1)};
+}
+const cableR=p=>RHO*(+p.L||0)/(Math.max(+p.S||0.1,0.01)*1e-6);
+const TB=[1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,0.01,0.02,0.05,0.1,0.2,0.5,1];
+const SENS=[0.05,0.1,0.2,0.5,1,2,5,10,20,50,100,200,500];
+
+const SHEET_CSS=`
+.w line{stroke:#15191C;stroke-width:2.6;stroke-linecap:round}
+.sym line,.sym circle,.sym rect,.sym path,.sym polygon,.sym polyline,.sym ellipse{stroke:#15191C;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sym .pf{fill:#FBFCFA}
+.sym .dot{fill:#15191C}
+.wave{stroke:#15191C;stroke-width:2.2;fill:none;stroke-linecap:round}
+.gnd{stroke:#15191C;stroke-width:1.8;fill:none;stroke-linecap:round}
+.t{font:700 16px 'Red Hat Text','Segoe UI',Arial,sans-serif;fill:#15191C;text-anchor:middle;dominant-baseline:central}
+.pm{font:700 17px 'Red Hat Text','Segoe UI',Arial,sans-serif;fill:#15191C;text-anchor:middle;dominant-baseline:central}
+.com{font:700 9.5px 'Red Hat Text','Segoe UI',Arial,sans-serif;fill:#15191C;text-anchor:middle;dominant-baseline:central}
+.nm{font:700 13px 'Red Hat Text','Segoe UI',Arial,sans-serif;fill:#3B4950;text-anchor:middle;dominant-baseline:central}
+.ph{font:11px 'Share Tech Mono',ui-monospace,Consolas,monospace;fill:#3B4950;text-anchor:middle;dominant-baseline:central}
+.val{font:12.5px 'Share Tech Mono',ui-monospace,Consolas,monospace;fill:#1F6B4A;text-anchor:middle;dominant-baseline:central}
+.e{text-anchor:end}.st{text-anchor:start}
+.jn{fill:#15191C}
+.ft{fill:#FFFFFF;stroke:#7C8A93;stroke-width:1.5}
+.flowjs,.flowst{stroke:#E0601F;stroke-width:2.6;stroke-dasharray:3 7;fill:none;stroke-linecap:round}
+.flowst{stroke-dasharray:2 4;opacity:.75}
+.ua line,.ua path{stroke:#2B5C8A;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ua text{font:12px 'Share Tech Mono',ui-monospace,Consolas,monospace;fill:#2B5C8A;dominant-baseline:central}
+.halo{fill:#FFC93C}
+.halo.r{fill:#FF5A3C}
+.spinjs{fill:none;stroke:#E0601F;stroke-width:2.2;stroke-dasharray:9 7}
+.danger .sym circle{stroke:#C2410C}
+.sel{fill:none!important;stroke:#1F6B4A!important;stroke-width:1.6!important;stroke-dasharray:5 4}
+.hdl circle{fill:#1F6B4A}.hdl.del circle{fill:#B3261E}
+.hdl path{stroke:#FFFFFF;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.lcd rect{fill:#C9D4B5;stroke:#5B6650;stroke-width:1.2}
+.lcd text{font:15px 'Share Tech Mono',ui-monospace,Consolas,monospace;fill:#1B2416;text-anchor:middle;dominant-baseline:central}
+.lcd .md{font-size:9px}
+.rep rect{fill:#FFFFFF;stroke:#B3261E;stroke-width:1.5}
+.rep text{font:700 11.5px 'Red Hat Text','Segoe UI',Arial,sans-serif;fill:#B3261E;text-anchor:middle;dominant-baseline:central}
+.prev line{stroke:#1F6B4A;stroke-width:2.6;stroke-dasharray:6 5;stroke-linecap:round}
+.ghost{opacity:.45}`;
+const st=document.createElement('style');st.textContent=SHEET_CSS;document.head.appendChild(st);
+
+/* ================= état ================= */
+let state={comps:[],segs:new Set(),nextId:1,counters:{},jn:new Set()};
+/* Ce que montre la feuille, et la disposition de l'écran : tout se règle par « Affichage »
+   et se garde avec le schéma. q : les grandeurs écrites sous chaque dipôle. wins : la place
+   des fenêtres (oscilloscope, caractéristique, tableau de mesures), flottantes ou rangées. */
+let opts={flow:true,vals:false,grid:true,slowmo:false,arrows:false,names:true,lcd:true,
+  q:{u:true,i:true,p:false,r:false},lib:true,panel:true,wins:{}};
+let tool='select', armed=null, hover=null, sel=null, drag=null;
+let hist=[], net=null, simT=0;
+const $=id=>document.getElementById(id);
+const svg=$('cv');
+const KEY='atelier-schema-elec-v1';
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const fr=(n,d)=>{const t=Math.pow(10,d);let v=Math.round(n*t)/t;if(Object.is(v,-0)||Math.abs(v)<0.5/t)v=0;return v.toFixed(d).replace('.',',');};
+const frs=n=>{const a=Math.abs(n);return a>=100?fr(n,0):a>=10?fr(n,1):a>=1?fr(n,2):fr(n,3);};
+const rotL=(x,y,r)=>r===0?[x,y]:r===1?[-y,x]:r===2?[-x,-y]:[y,-x];
+const horiz=c=>c.rot%2===0;
+function termsOf(c){
+  if(FOUR.has(c.type))return[[-1,-1],[-1,1],[1,-1],[1,1]].map(([x,y])=>{const[a,b]=rotL(x,y,c.rot);return[c.x+a,c.y+b];});
+  const[dx,dy]=DIRS[c.rot];return[[c.x-dx,c.y-dy],[c.x+dx,c.y+dy]];
+}
+const pk=p=>p[0]+','+p[1];
+function segKey(p,q){if(p[0]>q[0]||(p[0]===q[0]&&p[1]>q[1]))[p,q]=[q,p];return p[0]+','+p[1]+','+q[0]+','+q[1];}
+const segPts=k=>{const a=k.split(',').map(Number);return[[a[0],a[1]],[a[2],a[3]]];};
+const M0={u:0,u2:0,i:0,i2:0,p:0,u2b:0,i2b:0};
+const MK=Object.keys(M0);
+const mOf=c=>c.m||M0;
+const rms=x=>Math.sqrt(Math.max(x,0));
+/* une source en court-circuit : un courant fort sous une tension presque nulle
+   (6 A sous 230 V alimentent une charge, 6 A sous 0,1 V ne vont nulle part) */
+function srcShort(c){const m=mOf(c),I=rms(m.i2),U=rms(m.u2);return!c.lim&&I>5&&U/I<0.5;}
+function setSize(w,h){W=w;H=h;svg.setAttribute('viewBox',`0 0 ${2*O+S*W} ${2*O+S*H}`);}
+/* le courant d'un dipôle dans le sens où on le lit : un générateur le débite (convention générateur) */
+const iConv=(c,i)=>SOURCES.has(c.type)?-i:i;
+
+/* ================= inscription du culot ================= */
+function parseMark(s){
+  const t=String(s||'').toLowerCase().replace(/,/g,'.').replace(/\s+/g,' ');
+  const u=t.match(/(\d+(?:\.\d+)?)\s*v/);if(!u)return null;const Un=parseFloat(u[1]);
+  let In=null;const a=t.match(/(\d+(?:\.\d+)?)\s*(ma|a)(?![a-z])/);
+  if(a)In=parseFloat(a[1])/(a[2]==='ma'?1000:1);
+  else{const w=t.match(/(\d+(?:\.\d+)?)\s*(mw|w)/);if(w)In=parseFloat(w[1])/(w[2]==='mw'?1000:1)/Un;}
+  if(!(Un>=0.5&&Un<=400)||!(In>=0.001&&In<=10))return null;
+  return{Un,In};
+}
+
+/* ================= historique & sauvegarde ================= */
+function snapshot(){return JSON.stringify({comps:state.comps.map(c=>({id:c.id,type:c.type,x:c.x,y:c.y,rot:c.rot,props:c.props,burnt:!!c.burnt,name:c.name,cpts:c.cpts&&c.cpts.length?c.cpts:undefined,cmod:c.cmod||undefined})),segs:[...state.segs],jn:[...(state.jn||[])],nextId:state.nextId,counters:state.counters,size:[W,H]});}
+function restore(s){const d=JSON.parse(s);
+  for(const c of d.comps)if(c.type==='transfo'&&c.props&&!('tmode'in c.props))c.props.tmode='N';
+  const z=Array.isArray(d.size)&&d.size[0]>=SIZES.std[0]?d.size:SIZES.std;setSize(z[0],z[1]);
+  state={comps:d.comps.filter(c=>TYPES[c.type]).map(c=>Object.assign(c,{props:Object.assign({},TYPES[c.type].props,c.props)})),segs:new Set(d.segs),jn:new Set(d.jn||[]),nextId:d.nextId,counters:d.counters||{}};}
+function pushHist(s){hist.push(s||snapshot());if(hist.length>80)hist.shift();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({s:snapshot(),o:opts,t:tabData}));}catch(e){}}
+function commit(){build();save();render();renderProps();refreshWins();}
+/* après une modification : la caractéristique suit son dipôle (ou en prend un autre s'il a disparu) */
+function refreshWins(){
+  if(winState('char').open){if(!state.comps.some(k=>k.id===charId&&!INSTR.has(k.type)&&!FOUR.has(k.type))){const d=dipoles()[0];if(d)charId=d.id;else{closeWin('char');return;}}fillCharSel();renderChar();}
+  if(winState('scope').open&&scopeComp())buildScopeCtrl();
+  if(winState('table').open)renderTabLive();
+}
+
+/* ================= édition ================= */
+function addLine(p,q){
+  let[x,y]=p;const[tx,ty]=q;
+  while(x!==tx||y!==ty){const nx=x!==tx?x+Math.sign(tx-x):x,ny=x!==tx?y:y+Math.sign(ty-y);state.segs.add(segKey([x,y],[nx,ny]));x=nx;y=ny;}
+}
+function addWirePath(a,b,hFirst){const c=hFirst?[b[0],a[1]]:[a[0],b[1]];addLine(a,c);addLine(c,b);}
+function makeComp(type,x,y,rot=0,props){
+  const ck=TYPES[type].ckey||type;state.counters[ck]=(state.counters[ck]||0)+1;
+  return{id:state.nextId++,type,x:clamp(x,1,W-1),y:clamp(y,1,H-1),rot,props:Object.assign({},TYPES[type].props,props||{}),burnt:false,name:TYPES[type].prefix+state.counters[ck]};
+}
+function placeComp(type,gp){pushHist();const c=makeComp(type,gp[0],gp[1]);state.comps.push(c);sel=c.id;commit();}
+const getSel=()=>state.comps.find(c=>c.id===sel);
+function rotateSel(){const c=getSel();if(!c)return;pushHist();c.rot=(c.rot+1)%4;commit();}
+function deleteSel(){const c=getSel();if(!c)return;pushHist();state.comps=state.comps.filter(k=>k!==c);sel=null;commit();}
+function compAt(gx,gy){
+  for(let i=state.comps.length-1;i>=0;i--){const c=state.comps[i];
+    if(FOUR.has(c.type)){const[lx,ly]=rotL(gx-c.x,gy-c.y,(4-c.rot)%4);if(Math.abs(lx)<=0.72&&Math.abs(ly)<=0.8)return c;continue;}
+    const[dx,dy]=DIRS[c.rot];const t=(gx-c.x)*dx+(gy-c.y)*dy, s=-(gx-c.x)*dy+(gy-c.y)*dx;
+    if(Math.abs(t)<=0.72&&Math.abs(s)<=0.48)return c;}
+  return null;
+}
+function segAt(gx,gy){
+  for(const k of state.segs){const[p,q]=segPts(k);
+    if(p[1]===q[1]){if(Math.abs(gy-p[1])<0.22&&gx>=Math.min(p[0],q[0])-0.05&&gx<=Math.max(p[0],q[0])+0.05)return k;}
+    else if(Math.abs(gx-p[0])<0.22&&gy>=Math.min(p[1],q[1])-0.05&&gy<=Math.max(p[1],q[1])+0.05)return k;}
+  return null;
+}
+function handlePos(c){
+  if(FOUR.has(c.type))return{rot:[c.x-0.45,c.y-1.85],del:[c.x+0.45,c.y-1.85]};
+  return horiz(c)?{rot:[c.x-0.45,c.y-1.2],del:[c.x+0.45,c.y-1.2]}:{rot:[c.x+1.2,c.y-0.45],del:[c.x+1.2,c.y+0.45]};
+}
+function handleAt(c,gx,gy){const h=handlePos(c);for(const k of['rot','del'])if(Math.hypot(gx-h[k][0],gy-h[k][1])<0.38)return k;return null;}
+function eraseAt(gx,gy){
+  const c=compAt(gx,gy);if(c){state.comps=state.comps.filter(k=>k!==c);if(sel===c.id)sel=null;return true;}
+  const k=segAt(gx,gy);if(k){state.segs.delete(k);return true;}
+  return false;
+}
+
+/* Deux fils qui se croisent sans point ne sont pas reliés (la convention des schémas) :
+   un croisement, ce sont quatre segments, deux horizontaux et deux verticaux, sans borne
+   de composant. Le point posé (state.jn) les relie. Rend tous les croisements. */
+function crossInfo(){
+  const cnt=new Map();
+  for(const k of state.segs){const[p,q]=segPts(k);const hz=p[1]===q[1];for(const x of[pk(p),pk(q)]){const o=cnt.get(x)||{h:0,v:0};if(hz)o.h++;else o.v++;cnt.set(x,o);}}
+  const terms=new Set();for(const c of state.comps)for(const p of termsOf(c))terms.add(pk(p));
+  const cross=new Set();for(const[x,o]of cnt)if(o.h===2&&o.v===2&&!terms.has(x))cross.add(x);
+  return cross;
+}
+const isCrossing=k=>crossInfo().has(k);
+/* les croisements laissés sans point : là, les fils passent l'un sur l'autre */
+function openCrossings(){if(!state.jn)state.jn=new Set();const c=crossInfo();for(const k of state.jn)c.delete(k);return c;}
+/* ================= moteur de simulation temporelle =================
+   Analyse nodale modifiée, pas de temps fixe. Condensateurs et bobines par leurs modèles
+   compagnons, intégrés par la méthode des trapèzes : en régime sinusoïdal elle ne perd rien,
+   là où Euler implicite ajoutait une résistance fictive (1 Ω pour 100 mH à 50 Hz, 5 % sur P).
+   À chaque commutation (diode, interrupteur, limitation), deux pas d'Euler implicite
+   amortissent l'oscillation que les trapèzes feraient naître. Les deux jeux de matrices
+   se gardent en cache, la méthode fait partie de la clé.
+   diodes, interrupteurs commandés et limitation de courant traités par états,
+   transformateur idéal avec résistance d'enroulement et inductance magnétisante.
+   La lampe a une conductance qui suit la température du filament, rangée par
+   paliers de 1,5 % pour que la matrice ne se refactorise qu'au changement de palier.
+   Le moteur à courant continu : R et L de l'induit, puis une source E = k·Ω,
+   la vitesse Ω intégrée pas à pas par J·dΩ/dt = k·I − C_r. */
+function srcAt(c,t){
+  const p=c.props;if(c.type==='gen')return +p.E||0;
+  if(c.type==='acgen')return(+p.U||0)*Math.SQRT2*Math.sin(2*Math.PI*(+p.f||50)*t+(+p.ph||0)*Math.PI/180);
+  const ph=(((t*(+p.f||1))%1)+1)%1;let w;
+  if(p.wave==='sq')w=ph<0.5?1:-1;else if(p.wave==='tri')w=ph<0.25?4*ph:ph<0.75?2-4*ph:4*ph-4;else w=Math.sin(2*Math.PI*ph);
+  return(+p.off||0)+(+p.Um||0)*w;
+}
+function lampLevel(c,hyst){
+  const p=c.props,Rn=(+p.Un||1)/(+p.In||0.1),x=Math.log(lampG(p,Math.sqrt(Math.max(c.th2||0,0)))*Rn)/LQ;
+  if(hyst&&Math.abs(x-c.lv)<=0.75)return false;
+  c.lv=Math.round(x);c.gq=Math.exp(c.lv*LQ)/Rn;return true;
+}
+function build(){
+  const comps=state.comps;
+  // fmax, fmin : les sources alternatives (le circuit est « en alternatif ») ;
+  // fhi, fper : toutes les fréquences, découpage compris (le pas de calcul, la période des moyennes)
+  const acF=comps.filter(c=>c.type==='gbf'||c.type==='acgen').map(c=>Math.max(+c.props.f||1,0.1));
+  const swF=comps.filter(c=>c.type==='hach'&&!c.burnt).map(c=>Math.max(+c.props.f||1000,1));
+  const fmax=acF.length?Math.max(...acF):0, fmin=acF.length?Math.min(...acF):0;
+  const allF=acF.concat(swF), fhi=allF.length?Math.max(...allF):0, fper=allF.length?Math.min(...allF):0;
+  const dt=fhi?Math.min(1/(fhi*100),2e-4):2e-4;
+  const termKeys=new Set();for(const c of comps)for(const p of termsOf(c))termKeys.add(pk(p));
+  // un croisement sans point : le fil horizontal et le fil vertical passent sans se toucher,
+  // chacun par son propre point (clé suivie de |h ou |v)
+  const cross=openCrossings();
+  const ek=(k,p)=>{const x=pk(p);if(!cross.has(x))return x;const[a,b]=segPts(k);return x+(a[1]===b[1]?'|h':'|v');};
+  const adj=new Map();
+  for(const k of state.segs){const[p,q]=segPts(k);for(const x of[ek(k,p),ek(k,q)]){if(!adj.has(x))adj.set(x,[]);adj.get(x).push(k);}}
+  const isNode=k=>termKeys.has(k)||(adj.get(k)||[]).length!==2;
+  const idx=new Map();const nid=k=>{if(!idx.has(k))idx.set(k,idx.size);return idx.get(k);};
+  // fils : chaînes de segments entre deux nœuds réels
+  const chains=[];const seen=new Set();
+  for(const[k,list]of adj){if(!isNode(k))continue;
+    for(const s0 of list){if(seen.has(s0))continue;let cur=k,seg=s0;const segs=[];
+      for(let guard=0;guard<4000;guard++){seen.add(seg);const[p,q]=segPts(seg);const a=ek(seg,p),b=ek(seg,q);const fwd=a===cur;segs.push([seg,fwd?1:-1]);cur=fwd?b:a;
+        if(isNode(cur))break;const nl=adj.get(cur);const ns=nl[0]===seg?nl[1]:nl[0];if(seen.has(ns)){cur=null;break;}seg=ns;}
+      if(cur!==null&&cur!==k)chains.push({n1:nid(k),n2:nid(cur),g:G_WIRE/segs.length,segs,i:0,fa:0,frms:0,ph:0});
+    }}
+  const els=[],X=[];
+  // une bobine : son courant (key) et sa tension (key+'v') au pas précédent
+  const Lel=(a,b,L,c,key)=>{if(!isFinite(c[key]))c[key]=0;if(!isFinite(c[key+'v']))c[key+'v']=0;return{k:'L',n1:a,n2:b,gB:dt/L,gT:dt/(2*L),g:dt/L,c,key,J:0};};
+  for(const ch of chains)els.push({k:'G',n1:ch.n1,n2:ch.n2,g:ch.g,ch});
+  for(const c of comps){const T=termsOf(c).map(p=>nid(pk(p)));c._T=T;const p=c.props;
+    if(c.burnt)continue;
+    const G=g=>els.push({k:'G',n1:T[0],n2:T[1],g,c});
+    switch(c.type){
+      case'motor':G(p.Un>0?p.In/p.Un:0);break;
+      case'lamp':if(!isFinite(c.th2))c.th2=0;lampLevel(c,false);els.push({k:'LAMP',n1:T[0],n2:T[1],c});break;
+      case'res':G(1/Math.max(+p.R||1,1e-3));break;
+      case'cable':G(1/Math.max(cableR(p),1e-4));break;
+      case'switch':if(p.closed)G(G_SW);break;
+      case'hach':if(c.on===undefined)c.on=false;els.push({k:'K',n1:T[0],n2:T[1],c});break;
+      case'fuse':G(G_FUSE);break;
+      case'amm':case'pince':G(G_AMM);break;
+      case'volt':G(G_VOLT);break;
+      case'osc':G(G_OSC);break;
+      case'gen':els.push({k:'GEN',n1:T[0],n2:T[1],c,J:0});break;
+      case'acgen':els.push({k:'SRC',n1:T[0],n2:T[1],g:G_AC,c,J:0});break;
+      case'gbf':els.push({k:'SRC',n1:T[0],n2:T[1],g:G_GBF,c,J:0});break;
+      case'led':case'diode':els.push({k:'D',n1:T[0],n2:T[1],c,vf:vfOf(c),gs:1/(c.type==='led'?LED_RS:D_RS),J:0});if(c.on===undefined)c.on=false;break;
+      case'cap':{const C=(+p.C||1)*1e-6;els.push({k:'C',n1:T[0],n2:T[1],gB:C/dt,gT:2*C/dt,g:C/dt,c,J:0});if(!isFinite(c.vC))c.vC=0;if(!isFinite(c.iC))c.iC=0;break;}
+      case'ind':{const m=nid('#b'+c.id);els.push({k:'G',n1:T[0],n2:m,g:1/Math.max(+p.r||0,1e-3)});
+        els.push(Lel(m,T[1],(+p.L||1)*1e-3,c,'iL'));break;}
+      case'mcc':{const a=nid('#ma'+c.id),b=nid('#mb'+c.id);
+        els.push({k:'G',n1:T[0],n2:a,g:1/Math.max(+p.R||0,1e-3)});
+        els.push(Lel(a,b,Math.max(+p.L||0,0.01)*1e-3,c,'iA'));
+        els.push({k:'EMF',n1:b,n2:T[1],g:200,kk:mccK(p),c,J:0});if(!isFinite(c.w))c.w=0;break;}
+      case'transfo':{const{N1,N2}=trN(p),m=nid('#t'+c.id);
+        els.push({k:'G',n1:T[0],n2:m,g:1/(0.2*Math.pow(N1/100,2))});
+        els.push(Object.assign(Lel(m,T[1],2e-4*N1*N1,c,'iLm'),{lm:true}));
+        const e={k:'X',p1:m,p2:T[1],s1:T[2],s2:T[3],m:N2/N1,c};els.push(e);X.push(e);break;}
+      case'joule':case'wattm':els.push({k:'G',n1:T[0],n2:T[2],g:G_AMM,c});els.push({k:'G',n1:T[1],n2:T[3],g:G_AMM});break;
+    }
+  }
+  const n=idx.size;X.forEach((e,j)=>e.x=n+j);const N=n+X.length;
+  const oldDt=net?net.dt:null;
+  net={dt,fmax,fmin,fhi,fper,fsw:swF.length?Math.max(...swF):0,n,N,els,chains,dEls:els.filter(e=>e.k==='D'),gEls:els.filter(e=>e.k==='GEN'),
+    kEls:els.filter(e=>e.k==='K'),lEls:els.filter(e=>e.k==='LAMP'),mEls:els.filter(e=>e.k==='EMF'),kth:1-Math.exp(-dt/TAU_LAMP),
+    cache:new Map(),b:new Float64Array(N),lagging:false,fastAC:false,short:false,limited:false,be:2,useBE:true,prevSw:'',
+    pN:fper?Math.max(1,Math.round(1/(fper*dt))):0,pc:0};
+  for(const c of comps)c._pa={u:0,u2:0,i:0,i2:0,p:0,u2b:0,i2b:0};
+  if(oldDt!==dt)for(const c of comps){if(c.ob){c.ob.i=0;c.ob.n=0;}if(c.xy){c.xy.i=0;c.xy.n=0;}}
+}
+function factor(){
+  const{N,n,els}=net;const A=Array.from({length:N},()=>new Float64Array(N));
+  for(let i=0;i<n;i++)A[i][i]=GMIN;
+  const sg=(a,b,g)=>{A[a][a]+=g;A[b][b]+=g;A[a][b]-=g;A[b][a]-=g;};
+  for(const e of els){switch(e.k){
+    case'C':case'L':sg(e.n1,e.n2,net.useBE?e.gB:e.gT);break;
+    case'G':case'SRC':case'EMF':sg(e.n1,e.n2,e.g);break;
+    case'GEN':sg(e.n1,e.n2,e.c.lim?GMIN:1/Math.max(+e.c.props.r||0,0.005));break;
+    case'D':sg(e.n1,e.n2,e.c.on?e.gs:GMIN);break;
+    case'K':sg(e.n1,e.n2,e.c.on?G_SW:GMIN);break;
+    case'LAMP':sg(e.n1,e.n2,e.c.gq);break;
+    case'X':{const j=e.x,m=e.m;A[e.s1][j]+=1;A[e.s2][j]-=1;A[e.p1][j]-=m;A[e.p2][j]+=m;A[j][e.s1]+=1;A[j][e.s2]-=1;A[j][e.p1]-=m;A[j][e.p2]+=m;break;}
+  }}
+  const piv=new Int32Array(N);
+  for(let k=0;k<N;k++){let m=k,mv=Math.abs(A[k][k]);for(let i=k+1;i<N;i++){const v=Math.abs(A[i][k]);if(v>mv){mv=v;m=i;}}
+    piv[k]=m;if(m!==k){const t=A[k];A[k]=A[m];A[m]=t;}
+    if(Math.abs(A[k][k])<1e-300)A[k][k]=1e-300;
+    const d=A[k][k],Ak=A[k];
+    for(let i=k+1;i<N;i++){const Ai=A[i];const f=Ai[k]/d;Ai[k]=f;if(f===0)continue;for(let j=k+1;j<N;j++)Ai[j]-=f*Ak[j];}}
+  return{A,piv};
+}
+function luSolve(lu,b){
+  const{A,piv}=lu,N=b.length;
+  for(let k=0;k<N;k++){const m=piv[k];if(m!==k){const t=b[k];b[k]=b[m];b[m]=t;}}
+  for(let i=1;i<N;i++){const Ai=A[i];let s=b[i];for(let j=0;j<i;j++)s-=Ai[j]*b[j];b[i]=s;}
+  for(let i=N-1;i>=0;i--){const Ai=A[i];let s=b[i];for(let j=i+1;j<N;j++)s-=Ai[j]*b[j];b[i]=s/Ai[i];}
+  return b;
+}
+function rhs(t){
+  const b=net.b;b.fill(0);
+  for(const e of net.els){let J;
+    switch(e.k){
+      case'SRC':J=e.g*srcAt(e.c,t);break;
+      case'GEN':{const c=e.c,p=c.props;J=c.lim?p.Ilim*c.limSign:(+p.E||0)/Math.max(+p.r||0,0.005);break;}
+      case'D':J=e.c.on?e.gs*e.vf:0;break;
+      case'C':J=net.useBE?e.gB*e.c.vC:e.gT*e.c.vC+e.c.iC;break;
+      case'L':J=net.useBE?-e.c[e.key]:-(e.c[e.key]+e.gT*e.c[e.key+'v']);break;
+      case'EMF':J=e.g*e.kk*e.c.w;break;
+      default:continue;}
+    e.J=J;if(J){b[e.n1]+=J;b[e.n2]-=J;}}
+  return b;
+}
+function swKey(){let s='';for(const e of net.dEls)s+=e.c.on?'1':'0';for(const e of net.gEls)s+=e.c.lim?(e.c.limSign>0?'+':'-'):'0';
+  for(const e of net.kEls)s+=e.c.on?'k':'o';return s;}
+function stateKey(){let s=swKey()+(net.useBE?'B':'T');for(const e of net.lEls)s+='|'+e.c.lv;return s;}
+function step(t){
+  let V;
+  // l'interrupteur commandé : fermé pendant la fraction α de chaque période
+  for(const e of net.kEls){const p=e.c.props,f=Math.max(+p.f||1000,1),a=clamp(+p.a||0,0,1);e.c.on=(((t*f)%1)+1)%1<a;}
+  if(swKey()!==net.prevSw)net.be=2;
+  net.useBE=net.be>0;
+  for(let it=0;it<10;it++){
+    const key=stateKey();let lu=net.cache.get(key);
+    if(!lu){if(net.cache.size>64)net.cache.clear();lu=factor();net.cache.set(key,lu);}
+    V=luSolve(lu,rhs(t));
+    let ch=false;
+    for(const e of net.dEls){const c=e.c,U=V[e.n1]-V[e.n2];
+      if(!c.on&&U>e.vf+1e-9){c.on=true;ch=true;}else if(c.on&&U<e.vf-1e-9){c.on=false;ch=true;}}
+    for(const e of net.gEls){const c=e.c,p=c.props;
+      if(!(p.Ilim>0)){if(c.lim){c.lim=false;ch=true;}continue;}
+      const want=((+p.E||0)-(V[e.n1]-V[e.n2]))/Math.max(+p.r||0,0.005);
+      if(!c.lim){if(Math.abs(want)>p.Ilim+1e-9){c.lim=true;c.limSign=Math.sign(want)||1;ch=true;}}
+      else if(Math.sign(want)!==c.limSign||Math.abs(want)<p.Ilim-1e-9){c.lim=false;ch=true;}}
+    if(!ch)break;
+    if(!net.useBE){net.useBE=true;net.be=2;}
+  }
+  net.prevSw=swKey();if(net.be>0)net.be--;
+  for(const c of state.comps)c._I=0;
+  for(const e of net.els){
+    switch(e.k){
+      case'G':{const I=e.g*(V[e.n1]-V[e.n2]);if(e.ch)e.ch.i=I;else if(e.c)e.c._I=I;break;}
+      case'SRC':e.c._I=e.g*(V[e.n1]-V[e.n2])-e.J;break;
+      case'GEN':{const c=e.c,g=c.lim?GMIN:1/Math.max(+c.props.r||0,0.005);c._I=g*(V[e.n1]-V[e.n2])-e.J;break;}
+      case'D':e.c._I=(e.c.on?e.gs:GMIN)*(V[e.n1]-V[e.n2])-e.J;break;
+      case'K':e.c._I=(e.c.on?G_SW:GMIN)*(V[e.n1]-V[e.n2]);break;
+      case'LAMP':e.c._I=e.c.gq*(V[e.n1]-V[e.n2]);break;
+      case'EMF':e.c._E=e.kk*e.c.w;break;
+      case'C':{const U=V[e.n1]-V[e.n2],I=(net.useBE?e.gB:e.gT)*U-e.J;e.c._I=I;e.c.vC=U;e.c.iC=I;break;}
+      case'L':{const U=V[e.n1]-V[e.n2],I=(net.useBE?e.gB:e.gT)*U-e.J;e.c[e.key]=I;e.c[e.key+'v']=U;if(e.lm)e.c._Im=I;else e.c._I=I;break;}
+      case'X':{e.c._I2=V[e.x];e.c._I1=-e.m*V[e.x];break;}
+    }
+  }
+  for(const c of state.comps){const T=c._T;if(!T)continue;
+    if(c.type==='transfo'){c._U=V[T[0]]-V[T[1]];c._U2=V[T[2]]-V[T[3]];c._I=(c._I1||0)+(c._Im||0);}
+    else if(c.type==='joule'||c.type==='wattm')c._U=V[T[2]]-V[T[3]];
+    else c._U=V[T[0]]-V[T[1]];}
+  // le filament suit la tension ; un changement de palier change la matrice au pas suivant
+  for(const e of net.lEls){const c=e.c,U=c._U;c.th2+=(U*U-c.th2)*net.kth;lampLevel(c,true);}
+  // la mécanique du moteur : le couple k·I contre le couple résistant (frottement sec)
+  const dt=net.dt;
+  for(const e of net.mEls){const c=e.c,p=c.props,k=e.kk,Cn=k*(+p.In||10),Cr=clamp(+p.ch||0,0,300)/100*Cn,C=k*c._I,J=Math.max(+p.J||0.1,1e-4);
+    c._C=C;
+    if(c.w===0&&Math.abs(C)<=Cr)continue;
+    const w2=c.w+dt*(C-Cr*Math.sign(c.w||C))/J;
+    c.w=(c.w!==0&&Math.sign(w2)!==Math.sign(c.w)&&Math.abs(C)<=Cr)?0:w2;}
+}
+function recordScope(c,v){let o=c.ob;if(!o)o=c.ob={buf:new Float32Array(BUF),i:0,n:0};o.buf[o.i]=v;o.i=(o.i+1)%BUF;if(o.n<BUF)o.n++;}
+/* le tracé u(i) d'un dipôle, pour la fenêtre de sa caractéristique */
+const XYN=8192;
+function recordXY(c){let o=c.xy;if(!o)o=c.xy={u:new Float32Array(XYN),i:new Float32Array(XYN),k:0,n:0};
+  o.u[o.k]=c._U||0;o.i[o.k]=iConv(c,c._I||0);o.k=(o.k+1)%XYN;if(o.n<XYN)o.n++;}
+
+/* avance la simulation pour un intervalle de temps réel rdt */
+const flowSpeed=I=>{const a=Math.abs(I);if(a<1e-4)return 0;return Math.sign(I)*10/clamp(0.9-0.25*Math.log10(a/0.1),0.25,2.2);};
+function advance(rdt){
+  if(!net||!net.N)return;
+  const slow=opts.slowmo?SLOWMO:1;
+  let steps=Math.round(rdt/slow/net.dt);net.lagging=steps>MAXSTEPS;steps=clamp(steps,1,MAXSTEPS);
+  const comps=state.comps,probes=comps.filter(c=>c.type==='osc'||c.type==='pince');
+  const xyc=charComp();
+  for(const c of comps)c._a={u:0,u2:0,i:0,i2:0,p:0,u2b:0,i2b:0,pk:0};
+  for(const ch of net.chains){ch._s=0;ch._s2=0;}
+  const dt=net.dt;
+  for(let s=0;s<steps;s++){
+    simT+=dt;step(simT);
+    for(const c of comps){const a=c._a,U=c._U||0,I=c._I||0;a.u+=U;a.u2+=U*U;a.i+=I;a.i2+=I*I;a.p+=U*I;const ai=Math.abs(I);if(ai>a.pk)a.pk=ai;
+      if(c.type==='transfo'){a.u2b+=c._U2*c._U2;a.i2b+=c._I2*c._I2;}
+      else if(c.type==='joule'){c.E=(c.E||0)+U*I*dt;c.tE=(c.tE||0)+dt;}}
+    for(const ch of net.chains){ch._s+=ch.i;ch._s2+=ch.i*ch.i;}
+    for(const c of probes)recordScope(c,c.type==='pince'?(c._I||0):(c._U||0));
+    if(xyc)recordXY(xyc);
+    if(net.pN){
+      for(const c of comps){const q=c._pa||(c._pa={u:0,u2:0,i:0,i2:0,p:0,u2b:0,i2b:0}),U=c._U||0,I=c._I||0;q.u+=U;q.u2+=U*U;q.i+=I;q.i2+=I*I;q.p+=U*I;
+        if(c.type==='transfo'){q.u2b+=c._U2*c._U2;q.i2b+=c._I2*c._I2;}}
+      if(++net.pc>=net.pN){const k=1/net.pN,alp=1-Math.exp(-net.pN*dt/0.3);
+        for(const c of comps){const q=c._pa;if(!c.m)c.m=Object.assign({},M0);
+          for(const key of MK){c.m[key]+=alp*(q[key]*k-c.m[key]);q[key]=0;}}
+        net.pc=0;}
+    }
+  }
+  const inv=1/steps,simdt=steps*dt;
+  const al=1-Math.exp(-simdt/0.1), be=1-Math.exp(-rdt/0.06);
+  for(const c of comps){const a=c._a;
+    for(const k of MK)a[k]*=inv;
+    if(!c.m)c.m=Object.assign({},M0);
+    if(!net.pN)for(const k of MK)c.m[k]+=al*(a[k]-c.m[k]);
+    if(!c.v)c.v={p:0,i:0};c.v.p+=be*(a.p-c.v.p);c.v.i+=be*(a.i-c.v.i);
+  }
+  for(const ch of net.chains){ch.fa=ch._s*inv;ch.frms=Math.sqrt(ch._s2*inv);}
+  // composants qui grillent ; l'ampèremètre tient une pointe brève (appel de courant d'une lampe froide)
+  let burned=false;
+  for(const c of comps){if(c.burnt)continue;const p=c.props,m=c.m,a=c._a,cal=+p.cal||10;
+    if((c.type==='lamp'&&(rms(m.u2)>1.6*p.Un||rms(a.u2)>3*p.Un))||(c.type==='led'&&a.pk>0.05)||(c.type==='fuse'&&rms(m.i2)>p.Imax)||(c.type==='amm'&&(rms(m.i2)>cal||a.pk>2*cal))){
+      c.burnt=true;burned=true;if(isDiode(c))c.on=false;}}
+  net.fastAC=net.fmax/slow>SLOW_F;
+  if(!net.fastAC&&!reduceMotion)for(const ch of net.chains)ch.ph=(ch.ph-flowSpeed(ch.fa)*rdt)%1000;
+  for(const c of comps){
+    if(c.type==='motor'){const I=c.v.i,In=c.props.In;let w=0;
+      if(Math.abs(I)>0.15*In&&!reduceMotion)w=Math.sign(I)*360*Math.min(Math.abs(I)/In,2)*0.9;c.ang=((c.ang||0)+w*rdt)%360;}
+    else if(c.type==='mcc'){const Wn=Math.max(+c.props.n||1500,1)*Math.PI/30;
+      const w=reduceMotion?0:360*0.9*clamp((c.w||0)/Wn,-1.5,1.5);c.ang=((c.ang||0)+w*rdt)%360;}}
+  net.short=comps.some(c=>SOURCES.has(c.type)&&srcShort(c));
+  net.limited=comps.some(c=>c.type==='gen'&&c.lim);
+  if(burned){build();save();renderProps();}
+}
+let last=performance.now(),lastUI=0,raf=null;
+function frame(now){
+  raf=requestAnimationFrame(frame);
+  const rdt=(now-last)/1000;if(rdt<1/34)return;last=now;
+  advance(Math.min(rdt,0.1));
+  drawSheet();
+  if(now-lastUI>250){lastUI=now;renderStatus();renderRead();drawWindowsSlow();}
+  drawWindowsFast();
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(raf)cancelAnimationFrame(raf);raf=null;}else if(!raf){last=performance.now();raf=requestAnimationFrame(frame);}});
+
+/* ================= dessin ================= */
+function fmtA(I){const a=Math.abs(I);return fr(I,a>=100?1:a>=1?2:3)+' A';}
+function fmtV(U){const a=Math.abs(U);return fr(U,a>=100?1:2)+' V';}
+function fmtW(P){const a=Math.abs(P);return a>=10000?fr(P/1000,2)+' kW':a>=100?fr(P,0)+' W':fr(P,2)+' W';}
+function fmtR(R){const a=Math.abs(R);return!isFinite(R)?'∞ Ω':a>=10000?fr(R/1000,1)+' kΩ':a>=1000?fr(R/1000,2)+' kΩ':frs(R)+' Ω';}
+function fmtE(E){return Math.abs(E)>=10000?fr(E/1000,2)+' kJ':Math.abs(E)>=100?fr(E,0)+' J':fr(E,1)+' J';}
+function meterVal(c){const m=mOf(c),ac=c.props.mode==='AC';
+  return c.type==='amm'?(ac?rms(m.i2-m.i*m.i):m.i):(ac?rms(m.u2-m.u*m.u):m.u);}
+function meterText(c){if(c.type==='amm'&&c.burnt)return'FUSE';const v=meterVal(c);return c.type==='amm'?fmtA(v):fmtV(v);}
+/* le wattmètre : P = moyenne de u·i ; S = U·I efficaces ; Q et cos φ en découlent */
+function wattVals(c){const m=mOf(c),U=rms(m.u2),I=rms(m.i2),P=m.p,S=U*I,Q=Math.sqrt(Math.max(S*S-P*P,0));return{U,I,P,S,Q,k:S>1e-9?P/S:0};}
+/* le circuit est-il alimenté en alternatif ? (le découpage d'un hacheur ne compte pas : on y lit des moyennes) */
+const isAC=()=>!!(net&&net.fmax);
+/* les grandeurs écrites sous un dipôle, celles cochées dans « Affichage » */
+function qText(c){
+  const m=mOf(c),ac=isAC(),sg=SOURCES.has(c.type)?-1:1,q=opts.q,out=[];
+  const U=ac?rms(m.u2):m.u,I=ac?rms(m.i2):sg*m.i;
+  if(q.u)out.push(fmtV(U));
+  if(q.i)out.push(fmtA(I));
+  if(q.p)out.push(fmtW(sg*m.p));
+  if(q.r&&!SOURCES.has(c.type)&&Math.abs(I)>1e-6)out.push(fmtR(U/I));
+  return out.length?out.join(' · ')+(ac&&(q.u||q.i)?' eff.':''):'';
+}
+function burntWord(c){return c.type==='fuse'?'fondu':c.type==='amm'?'fusible fondu':c.type==='lamp'?'grillée':'grillé';}
+function pillRect(c){
+  const t=burntWord(c)+' · remplacer',w=Math.round(t.length*6.4+20),h=22,cx=P(c.x),cy=P(c.y);
+  if(horiz(c)){const y=c.type==='amm'?cy-43:cy+23;return{t,w,h,x:cx-w/2,y};}
+  if(c.type==='amm')return{t,w,h,x:cx+22,y:cy-h/2};
+  return{t,w,h,x:cx-22-w,y:cy+10-h/2};
+}
+function pillAt(gx,gy){const px=O+S*gx,py=O+S*gy;
+  for(const c of state.comps)if(c.burnt){const q=pillRect(c);if(px>=q.x-4&&px<=q.x+q.w+4&&py>=q.y-4&&py<=q.y+q.h+4)return c;}return null;}
+/* la flèche de tension : parallèle au dipôle, sa pointe vers la borne au plus haut potentiel
+   (en alternatif, vers la première borne, et la valeur efficace) */
+function arrowSVG(c){
+  const cx=P(c.x),cy=P(c.y),r=c.rot,m=mOf(c),ac=isAC();
+  const U=ac?rms(m.u2):m.u,toT0=ac||U>=0,yo=(r===0||r===3)?24:-24,x=toT0?-18:18,d=toT0?6:-6;
+  const head=`M${x+d} ${yo-4} L${x} ${yo} L${x+d} ${yo+4}`;
+  const v=fmtV(Math.abs(U))+(ac?' eff.':'');
+  const lbl=horiz(c)?`<text class="" x="${cx}" y="${cy+37}" text-anchor="middle">U<tspan dy="4" style="font-size:9px">${c.name}</tspan><tspan dy="-4"> = ${v}</tspan></text>`
+    :`<text class="st" x="${cx+31}" y="${cy}">U<tspan dy="4" style="font-size:9px">${c.name}</tspan><tspan dy="-4"> = ${v}</tspan></text>`;
+  return`<g class="ua"><g transform="translate(${cx} ${cy}) rotate(${r*90})"><line x1="-18" y1="${yo}" x2="18" y2="${yo}"/><path d="${head}"/></g>${lbl}</g>`;
+}
+
+function compSVG(c,o={}){
+  const cx=P(c.x),cy=P(c.y),r=c.rot,R=16,live=!o.exp&&!o.ghost,h=horiz(c),four=FOUR.has(c.type);
+  const m=mOf(c),v=c.v||{p:0,i:0};
+  const g=(x,y)=>{const[a,b]=rotL(x,y,r);return[+(cx+a).toFixed(1),+(cy+b).toFixed(1)];};
+  const T=(x,y,t,cls)=>{const[a,b]=g(x,y);return`<text class="${cls}" x="${a}" y="${b}">${t}</text>`;};
+  const lead=l=>`<line x1="-40" y1="0" x2="${-l}" y2="0"/><line x1="${l}" y1="0" x2="40" y2="0"/>`;
+  const center=t=>`<text class="t" x="${cx}" y="${cy}">${t}</text>`;
+  const gnd=(x,y)=>{const[a,b]=g(x,y);return`<path class="gnd" d="M${a-6} ${b} H${a+6} M${a-3.8} ${b+3.5} H${a+3.8} M${a-1.6} ${b+7} H${a+1.6} M${a} ${b} V${b-5}"/>`;};
+  let under='',body='',up='',over='',cls='';
+  switch(c.type){
+    case'gen':body=lead(R)+`<circle class="pf" r="${R}"/>`;up=center('G')+T(-28,-15,'+','pm')+T(28,-15,'−','pm');
+      if(live&&srcShort(c))cls='danger';break;
+    case'acgen':body=lead(R)+`<circle class="pf" r="${R}"/>`;
+      up=`<text class="t" style="font-size:13px" x="${cx}" y="${cy-5}">G</text><path class="wave" style="stroke-width:1.8" d="M${cx-7} ${cy+7} C${cx-5} ${cy+2} ${cx-2} ${cy+2} ${cx} ${cy+7} S${cx+5} ${cy+12} ${cx+7} ${cy+7}"/>`;
+      if(live&&srcShort(c))cls='danger';break;
+    case'gbf':body=lead(R)+`<circle class="pf" r="${R}"/>`;
+      up=`<path class="wave" d="M${cx-10} ${cy} C${cx-6.5} ${cy-12} ${cx-3.5} ${cy-12} ${cx} ${cy} S${cx+6.5} ${cy+12} ${cx+10} ${cy}"/>`+gnd(28,-17);
+      if(live&&srcShort(c))cls='danger';break;
+    case'lamp':{let f='';
+      if(live&&c.burnt)f=' style="fill:#B9C0C4"';
+      else if(live){const Pn=c.props.Un*c.props.In,k=Pn>0?Math.abs(v.p)/Pn:0;
+        if(k>0.03){const a=Math.min(k,1);f=` style="fill:rgba(255,201,60,${(0.3+0.7*a).toFixed(2)})"`;
+          under=`<circle class="halo" cx="${cx}" cy="${cy}" r="${(R+5+12*a).toFixed(1)}" style="opacity:${(0.18+0.32*a).toFixed(2)}"/>`;}}
+      body=lead(R)+`<circle class="pf" r="${R}"${f}/><line x1="-11.3" y1="-11.3" x2="11.3" y2="11.3"/><line x1="-11.3" y1="11.3" x2="11.3" y2="-11.3"/>`;break;}
+    case'motor':body=lead(R)+`<circle class="pf" r="${R}"/>`;up=center('M');
+      if(live&&Math.abs(v.i)>0.15*c.props.In)over=`<circle class="spinjs" cx="${cx}" cy="${cy}" r="23" transform="rotate(${(c.ang||0).toFixed(1)} ${cx} ${cy})"/>`;break;
+    case'mcc':{body=lead(R)+`<circle class="pf" r="${R}"/>`;
+      up=`<text class="t" style="font-size:14px" x="${cx}" y="${cy-3}">M</text><path class="wave" style="stroke-width:1.6" d="M${cx-7} ${cy+8} H${cx+7} M${cx-7} ${cy+11.5} h3 M${cx-1.5} ${cy+11.5} h3 M${cx+4} ${cy+11.5} h3"/>`;
+      const Wn=Math.max(+c.props.n||1500,1)*Math.PI/30;
+      if(live&&Math.abs(c.w||0)>0.02*Wn)over=`<circle class="spinjs" cx="${cx}" cy="${cy}" r="23" transform="rotate(${(c.ang||0).toFixed(1)} ${cx} ${cy})"/>`;break;}
+    case'res':body=lead(18)+`<rect class="pf" x="-18" y="-8" width="36" height="16"/>`;break;
+    case'cable':body=lead(18)+`<path d="M-18 0 c3 -10 9 -10 12 0 s9 10 12 0 s9 -10 12 0"/>`;break;
+    case'cap':body=`<line x1="-40" y1="0" x2="-5" y2="0"/><line x1="5" y1="0" x2="40" y2="0"/><line x1="-5" y1="-14" x2="-5" y2="14"/><line x1="5" y1="-14" x2="5" y2="14"/>`;break;
+    case'ind':body=lead(20)+`<path d="M-20 0 a5 5 0 0 1 10 0 a5 5 0 0 1 10 0 a5 5 0 0 1 10 0 a5 5 0 0 1 10 0"/>`;break;
+    case'switch':body=`<line x1="-40" y1="0" x2="-14" y2="0"/><line x1="14" y1="0" x2="40" y2="0"/>`+
+      (c.props.closed?`<line x1="-14" y1="0" x2="14" y2="0"/>`:`<line x1="-14" y1="0" x2="11" y2="-16"/>`)+
+      `<circle class="dot" cx="-14" cy="0" r="2.8"/><circle class="dot" cx="14" cy="0" r="2.8"/>`;break;
+    case'hach':body=`<line x1="-40" y1="0" x2="-14" y2="0"/><line x1="14" y1="0" x2="40" y2="0"/><line x1="-14" y1="0" x2="12" y2="-10"/>`+
+      `<circle class="dot" cx="-14" cy="0" r="2.8"/><circle class="dot" cx="14" cy="0" r="2.8"/><path style="stroke-width:1.8" d="M-10 -16 H-6 V-23 H0 V-16 H5 V-23 H10"/>`;break;
+    case'led':{let f='';
+      if(live&&c.burnt)f=' style="fill:#B9C0C4"';
+      else if(live&&v.i>0.0005){const a=Math.min(v.i/0.02,1);f=` style="fill:rgba(255,90,60,${(0.35+0.65*a).toFixed(2)})"`;
+        under=`<circle class="halo r" cx="${cx}" cy="${cy}" r="${(18+10*a).toFixed(1)}" style="opacity:${(0.15+0.3*a).toFixed(2)}"/>`;}
+      body=lead(10)+`<polygon class="pf" points="-10,-11 -10,11 10,0"${f}/><line x1="10" y1="-11" x2="10" y2="11"/>`+
+        `<path d="M1 -14 L9 -22 M5 -22 H9 V-18"/><path d="M8 -11 L16 -19 M12 -19 H16 V-15"/>`;break;}
+    case'diode':body=lead(10)+`<polygon class="pf" points="-10,-11 -10,11 10,0"/><line x1="10" y1="-11" x2="10" y2="11"/>`;break;
+    case'fuse':body=`<line x1="-40" y1="0" x2="-18" y2="0"/><line x1="18" y1="0" x2="40" y2="0"/><rect class="pf" x="-18" y="-7" width="36" height="14"/>`+
+      (live&&c.burnt?`<line x1="-18" y1="0" x2="-6" y2="0"/><line x1="6" y1="0" x2="18" y2="0"/>`:`<line x1="-18" y1="0" x2="18" y2="0"/>`);break;
+    case'amm':case'volt':body=lead(R)+`<circle class="pf" r="${R}"/>`;up=center(c.type==='amm'?'A':'V')+T(27,-14,'COM','com');break;
+    case'osc':body=lead(17)+`<rect class="pf" x="-17" y="-13" width="34" height="26" rx="3"/>`;
+      up=`<path class="wave" style="stroke-width:1.8" d="M${cx-10} ${cy} C${cx-6.5} ${cy-10} ${cx-3.5} ${cy-10} ${cx} ${cy} S${cx+6.5} ${cy+10} ${cx+10} ${cy}"/>`+gnd(28,-17);break;
+    case'pince':body=`<line x1="-40" y1="0" x2="40" y2="0"/><ellipse cx="0" cy="0" rx="8" ry="14"/><path style="stroke-width:1.8" d="M-6 -21 H6 M2 -25 L6 -21 L2 -17"/>`;break;
+    case'transfo':body=`<circle r="20" cx="-12" cy="0"/><circle r="20" cx="12" cy="0"/>`+
+      `<polyline points="-40,-40 -26,-40 -26,-14.3"/><polyline points="-40,40 -26,40 -26,14.3"/><polyline points="40,-40 26,-40 26,-14.3"/><polyline points="40,40 26,40 26,14.3"/>`;break;
+    case'joule':case'wattm':body=`<rect class="pf" x="-26" y="-24" width="52" height="48" rx="3"/>`+
+      `<polyline points="-40,-40 -14,-40 -14,-24"/><polyline points="-40,40 -14,40 -14,24"/><polyline points="40,-40 14,-40 14,-24"/><polyline points="40,40 14,40 14,24"/>`;
+      up=center(c.type==='joule'?'J':'W')+T(-30,-30,'+','pm')+T(-30,30,'−','pm')+T(30,-30,'+','pm')+T(30,30,'−','pm');break;
+  }
+  const selR=(live&&sel===c.id)?(four?`<rect class="sel" x="-50" y="-50" width="100" height="100" rx="8"/>`:`<rect class="sel" x="-47" y="-26" width="94" height="52" rx="8"/>`):'';
+  let lab='';
+  if(!o.ghost){
+    let nm=null;
+    if(c.type==='gbf')nm=state.comps.filter(k=>k.type==='gbf').length>1?c.name:'GBF';
+    else if(isGen(c)){const ph=c.type==='acgen'?+c.props.ph||0:0;
+      nm=state.comps.filter(isGen).length>1?c.name:null;
+      if(ph)nm=(nm?nm+' · ':'')+(ph<0?'−'+(-ph):ph)+'°';}
+    else if(c.type==='cable')nm=fr(+c.props.L,+c.props.L%1?1:0)+' m';
+    else if(c.type==='hach')nm=`${c.name} · α = ${fr(+c.props.a||0,2)}`;
+    else if(!METERS.has(c.type))nm=c.name;
+    if(nm&&(opts.names||o.exp||c.type==='cable'||c.type==='hach'||isGen(c))){
+      if(four)lab+=`<text class="nm" x="${cx}" y="${cy-54}">${nm}</text>`;
+      else lab+=h?`<text class="nm" x="${cx+(c.type==='led'?-14:0)}" y="${cy-28}">${nm}</text>`:`<text class="nm e" x="${cx-24}" y="${cy-9}">${nm}</text>`;}
+    if(c.type==='transfo')lab+=`<text class="nm" style="font-weight:400" x="${cx}" y="${cy+54}">${c.props.tmode==='U'?`${fr(+c.props.U1,+c.props.U1%1?1:0)} V → ${fr(+c.props.U2,+c.props.U2%1?1:0)} V`:`N1 = ${c.props.N1} · N2 = ${c.props.N2}`}</text>`;
+  }
+  if(live){
+    const arrows=opts.arrows&&!INSTR.has(c.type)&&!four&&!c.burnt;
+    const sx=h?cx:cx-24, sy=h?cy+(arrows?51:33):cy+10, ec=h?'':' e';
+    if(c.burnt){const q=pillRect(c);lab+=`<g class="rep"><rect x="${q.x}" y="${q.y}" width="${q.w}" height="${q.h}" rx="11"/><text x="${q.x+q.w/2}" y="${q.y+q.h/2+0.5}">${q.t}</text></g>`;}
+    else if(opts.vals&&!INSTR.has(c.type)&&!four){const t=qText(c);if(t)lab+=`<text class="val${ec}" x="${sx}" y="${sy}">${t}</text>`;}
+    if(arrows)lab+=arrowSVG(c);
+    if(METERS.has(c.type)&&opts.lcd){const lx=h?cx:cx-60,ly=h?cy+42:cy;
+      lab+=`<g class="lcd"><rect x="${lx-41}" y="${ly-12}" width="82" height="24" rx="4"/><text x="${lx}" y="${ly+1}">${meterText(c)} <tspan class="md">${c.props.mode}</tspan></text></g>`;}
+    if(c.type==='joule'&&opts.lcd){const ly=cy+70;
+      lab+=`<g class="lcd"><rect x="${cx-46}" y="${ly-20}" width="92" height="40" rx="4"/><text x="${cx}" y="${ly-8}">${fmtE(c.E||0)}</text><text x="${cx}" y="${ly+10}" style="font-size:12px">${fr(m.p,2)} W</text></g>`;}
+    if(c.type==='wattm'&&opts.lcd){const[lx,ly]=g(0,66);
+      lab+=`<g class="lcd"><rect x="${lx-35}" y="${ly-11}" width="70" height="22" rx="4"/><text x="${lx}" y="${ly+1}" style="font-size:13px">${fmtW(wattVals(c).P)}</text></g>`;}
+  }
+  return`<g class="${cls}${o.ghost?' ghost':''}">${under}<g class="sym" transform="translate(${cx} ${cy}) rotate(${r*90})">${body}${selR}</g>${up}${over}${lab}</g>`;
+}
+function degreeMap(){
+  const d=new Map();const inc=p=>{const k=pk(p);d.set(k,(d.get(k)||0)+1);};
+  for(const k of state.segs){const[p,q]=segPts(k);inc(p);inc(q);}
+  for(const c of state.comps)for(const p of termsOf(c))inc(p);
+  return d;
+}
+function scene(o={}){
+  let s='';
+  if(!o.exp&&opts.grid)s+=`<defs><pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1.8" fill="#B5C3CC"/></pattern></defs><rect width="${2*O+S*W}" height="${2*O+S*H}" fill="url(#dots)"/>`;
+  s+='<g class="w">';
+  for(const k of state.segs){const[p,q]=segPts(k);s+=`<line x1="${P(p[0])}" y1="${P(p[1])}" x2="${P(q[0])}" y2="${P(q[1])}"/>`;}
+  s+='</g>';
+  if(!o.exp&&opts.flow&&net){
+    for(const ch of net.chains){
+      const fast=net.fastAC;if(fast?ch.frms<1e-4:Math.abs(ch.fa)<1e-4)continue;
+      for(const[k,dir]of ch.segs){const[p,q]=segPts(k);const L=`x1="${P(p[0])}" y1="${P(p[1])}" x2="${P(q[0])}" y2="${P(q[1])}"`;
+        s+=fast?`<line class="flowst" ${L}/>`:`<line class="flowjs" ${L} style="stroke-dashoffset:${(dir*ch.ph).toFixed(1)}"/>`;}}
+  }
+  const deg=degreeMap(),cross=openCrossings();
+  for(const[k,v]of deg)if(v>=3&&!cross.has(k)){const[x,y]=k.split(',').map(Number);s+=`<circle class="jn" cx="${P(x)}" cy="${P(y)}" r="4.5"/>`;}
+  for(const c of state.comps)s+=compSVG(c,o);
+  if(!o.exp)for(const c of state.comps)for(const p of termsOf(c))if(deg.get(pk(p))===1)s+=`<circle class="ft" cx="${P(p[0])}" cy="${P(p[1])}" r="4"/>`;
+  return s;
+}
+function drawSheet(){
+  let s=scene();
+  if(armed&&hover)s+=compSVG({type:armed,x:clamp(hover[0],1,W-1),y:clamp(hover[1],1,H-1),rot:0,props:TYPES[armed].props,name:''},{ghost:true});
+  if(drag&&drag.kind==='wire'&&(drag.cur[0]!==drag.a[0]||drag.cur[1]!==drag.a[1])){
+    const a=drag.a,b=drag.cur,c=drag.hFirst?[b[0],a[1]]:[a[0],b[1]];
+    s+=`<g class="prev"><line x1="${P(a[0])}" y1="${P(a[1])}" x2="${P(c[0])}" y2="${P(c[1])}"/><line x1="${P(c[0])}" y1="${P(c[1])}" x2="${P(b[0])}" y2="${P(b[1])}"/></g>`;
+  }
+  const c=getSel();
+  if(c&&tool==='select'){const hp=handlePos(c);const[rx,ry]=hp.rot.map(P),[dx,dy]=hp.del.map(P);
+    s+=`<g class="hdl"><circle cx="${rx}" cy="${ry}" r="13"/><path transform="translate(${rx} ${ry})" d="M5.5 -2.5 A6 6 0 1 0 6 2.5 M6.5 -7 V-2 H1.5"/></g>`;
+    s+=`<g class="hdl del"><circle cx="${dx}" cy="${dy}" r="13"/><path transform="translate(${dx} ${dy})" d="M-5 -5 L5 5 M5 -5 L-5 5"/></g>`;}
+  svg.innerHTML=s;
+}
+function render(){drawSheet();renderStatus();renderRead();}
+
+/* ================= panneau ================= */
+function renderStatus(){
+  const msgs={select:'Touchez un composant pour le sélectionner, glissez-le pour le déplacer. Glissez depuis un point de la grille pour tirer un fil. Touchez un interrupteur pour l’ouvrir ou le fermer, un oscilloscope pour voir ses courbes.',
+    wire:'Glissez d’un point à un autre : le fil se trace avec un coude automatique. Touchez un croisement pour relier ou séparer les deux fils.',erase:'Touchez ou glissez sur un fil ou un composant pour l’effacer.'};
+  let h=armed?`Touchez la feuille pour placer : <b>${TYPES[armed].label}</b> (Échap pour annuler).`:msgs[tool];
+  if(net&&net.fmax)h=`<span class="pill info">Alternatif · ${frs(net.fmin)} Hz${opts.slowmo?' · ralenti ×'+SLOWMO:''}${net.fastAC?' (trop rapide pour l’œil)':''}</span> `+h;
+  else if(opts.slowmo)h=`<span class="pill info">Ralenti ×${SLOWMO}</span> `+h;
+  if(net&&net.fsw)h=`<span class="pill info">Découpage · ${net.fsw>=1000?fr(net.fsw/1000,net.fsw%1000?1:0)+' kHz':frs(net.fsw)+' Hz'}</span> `+h;
+  if(net&&net.lagging)h=`<span class="pill info">Calcul ralenti (fréquence élevée)</span> `+h;
+  if(net&&net.limited)h=`<span class="pill warn">Limitation de courant</span> `+h;
+  if(net&&net.short)h=`<span class="pill warn">Court-circuit</span> `+h;
+  const nb=state.comps.filter(c=>c.burnt).length;if(nb)h=`<span class="pill warn">${nb} composant${nb>1?'s':''} hors service</span> `+h;
+  $('status').innerHTML=h;
+}
+function hintsFor(c){
+  const out=[];const m=mOf(c);
+  if(METERS.has(c.type)&&!c.burnt){
+    const dcv=c.type==='amm'?m.i:m.u,acv=c.type==='amm'?rms(m.i2-m.i*m.i):rms(m.u2-m.u*m.u),eps=c.type==='amm'?0.0005:0.005;
+    if(c.props.mode==='DC'&&acv>10*eps&&Math.abs(dcv)<acv*0.2)out.push('La grandeur varie : réglez l’appareil sur AC (~) pour lire la valeur efficace.');
+    if(c.props.mode==='DC'&&dcv<-eps)out.push('Valeur négative : la borne COM doit être placée du côté de la borne − du générateur (pivotez l’appareil).');
+  }
+  if(c.type==='amm'&&c.burnt)out.push(`Le fusible interne de l’ampèremètre a fondu (calibre ${c.props.cal||10} A) : un ampèremètre se branche toujours en série, jamais directement aux bornes du générateur. Pour un courant fort, prenez un calibre de pince.`);
+  if(c.type==='diode'&&!isAC()&&m.u<-0.1)out.push('La diode est branchée en sens bloquant : le courant ne passe pas.');
+  if(c.type==='led'){if(c.burnt)out.push('Courant trop intense : une DEL se protège avec une résistance en série (par exemple 220 Ω).');
+    else if(!isAC()&&m.u<-0.1)out.push('La DEL est branchée en sens bloquant : le courant ne passe pas. Pivotez-la.');}
+  if(c.type==='lamp'&&!c.burnt){const U=rms(m.u2),Un=+c.props.Un||1;if(U>1.15*Un)out.push(`Surtension : la lampe reçoit ${fmtV(U)} pour ${fmtV(Un)} nominaux. Elle brille trop et s’usera vite ; au-delà de ${fmtV(1.6*Un)}, elle grille.`);}
+  if(c.type==='lamp'&&c.burnt)out.push(`Tension trop élevée pour cette lampe (inscription du culot : ${c.props.mark}). Baissez la tension ou ouvrez l’interrupteur avant de la remplacer, sinon la nouvelle lampe grillera aussi.`);
+  if(c.type==='fuse'&&c.burnt)out.push(`Le courant a dépassé le calibre du fusible (${fr(c.props.Imax,2)} A) : le circuit est coupé.`);
+  if(SOURCES.has(c.type)&&srcShort(c))out.push('Court-circuit : les bornes du générateur sont reliées par un fil sans récepteur.');
+  if(c.type==='gen'&&c.lim)out.push(`Le générateur limite le courant à ${fr(c.props.Ilim,2)} A : la tension à ses bornes chute.`);
+  if(c.type==='transfo'&&!isAC())out.push('Un transformateur ne fonctionne qu’en alternatif : en continu, le secondaire ne délivre plus de tension et le primaire se comporte comme un court-circuit.');
+  if(c.type==='mcc'){const In=+c.props.In||10,I=Math.abs(c.v?c.v.i:0);
+    if(I>2*In)out.push(`Le courant vaut plus de deux fois l’intensité nominale : au démarrage, le moteur ne tourne pas encore, E = k × Ω est nulle et seule la résistance de l’induit R limite le courant (I = U ÷ R). Un rhéostat de démarrage, ou une tension qui monte progressivement, l’évite.`);}
+  return out;
+}
+function fieldHTML(d,v){
+  const smax=d.smax||d.max;
+  return`<div class="field"><label for="p-${d.k}">${d.label}</label><div class="in"><input type="number" id="p-${d.k}" data-k="${d.k}" min="${d.min}" max="${d.max}" step="${d.step}" value="${v}"><span class="u">${d.unit}</span></div>
+    ${d.slider?`<input type="range" id="s-${d.k}" data-k="${d.k}" min="${d.min}" max="${smax}" step="${d.step}" value="${Math.min(v,smax)}" aria-label="${d.label}">`:''}${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+function presetsHTML(c,only){
+  return(PRESETS[c.type]||[]).filter(g=>!only||g.k===only).map(g=>`<div class="field"><span class="flab">${g.label}</span><div class="presets">${g.vals.map(v=>`<button data-act="set" data-k="${g.k}" data-v="${v}" aria-pressed="${+c.props[g.k]===v}">${g.fmt(v)}</button>`).join('')}</div></div>`).join('');
+}
+const fdef=(c,k)=>(FIELDS[c.type]||[]).find(d=>d.k===k);
+const CHAR_BTN=`<button class="btn" data-act="char"><svg viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M7 16c3-1 5-4 6-8 1 4 3 7 6 8"/></svg>Caractéristique</button>`;
+function renderProps(){
+  const c=getSel();const box=$('propsBox');
+  if(!c){box.innerHTML=`<div><h2>Mode d’emploi</h2></div>
+    <ol class="help">
+      <li><b>Placer</b> : glissez un composant de la bibliothèque sur la feuille, ou touchez-le puis touchez la feuille.</li>
+      <li><b>Pivoter</b> : sélectionnez le composant puis la flèche verte (ou touche R).</li>
+      <li><b>Câbler</b> : glissez d’un point à un autre. Un nœud apparaît quand trois fils se rejoignent.</li>
+      <li><b>Croiser</b> : deux fils qui se croisent sans point ne se touchent pas. Touchez le croisement pour poser le point qui les relie, ou pour l’enlever.</li>
+      <li><b>Régler</b> : sélectionnez un composant pour changer ses caractéristiques.</li>
+      <li><b>Mesurer</b> : ampèremètre en série, voltmètre en dérivation (COM côté −). Touchez un oscilloscope pour afficher ses courbes.</li>
+      <li><b>Caractéristique</b> : sélectionnez un dipôle, puis « Caractéristique » : relevez des points, ou faites-la calculer.</li>
+      <li><b>Affichage</b> : choisissez ce que montre la feuille et ce qui reste à l’écran ; les fenêtres se déplacent, se rangent à droite ou se ferment.</li>
+    </ol>`+(state.comps.some(k=>k.burnt)?`<button class="btn" data-act="repairAll">Remplacer les composants hors service</button>`:'');return;}
+  const t=TYPES[c.type],p=c.props;
+  const title=METERS.has(c.type)||SOURCES.has(c.type)||c.type==='cable'?t.label:`${t.label} ${c.name}`;
+  const dip=!INSTR.has(c.type)&&!FOUR.has(c.type);
+  let h=`<div><h2>${title}</h2><div class="sub">${SUB[c.type]}</div></div>
+    <div class="row"><button class="btn" data-act="rot"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg>Pivoter</button>
+    <button class="btn danger" data-act="del"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Supprimer</button>${dip?CHAR_BTN:''}</div>`;
+  switch(c.type){
+    case'switch':h+=`<button class="btn primary toggle-big" data-act="toggle">${p.closed?'Ouvrir l’interrupteur':'Fermer l’interrupteur'}</button>`;break;
+    case'gbf':{
+      const waves=[['sin','Sinus'],['sq','Carré'],['tri','Triangle']];
+      h+=`<div class="field"><span class="flab">Forme du signal</span><div class="seg full">${waves.map(([v,l])=>`<button data-act="wave" data-v="${v}" aria-pressed="${p.wave===v}">${l}</button>`).join('')}</div></div>`;
+      h+=fieldHTML(FIELDS.gbf[0],p.f)+presetsHTML(c)+fieldHTML(FIELDS.gbf[1],p.Um)+fieldHTML(FIELDS.gbf[2],p.off);
+      const k=p.wave==='sin'?Math.SQRT2:p.wave==='tri'?Math.sqrt(3):1;const Tp=1/Math.max(+p.f||1,0.1);
+      h+=`<dl class="kv"><dt>Période T</dt><dd>${Tp>=1?frs(Tp)+' s':frs(Tp*1000)+' ms'}</dd><dt>Tension crête à crête</dt><dd>${fmtV(2*p.Um)}</dd><dt>Valeur efficace${+p.off?' (sans décalage)':''}</dt><dd>${fmtV(p.Um/k)}</dd></dl>`;
+      h+=`<div class="note">Le symbole ⏚ marque la borne de masse du GBF.</div>`;break;}
+    case'acgen':
+      h+=presetsHTML(c,'U')+fieldHTML(FIELDS.acgen[0],p.U)+fieldHTML(FIELDS.acgen[1],p.f)+presetsHTML(c,'ph')+fieldHTML(FIELDS.acgen[2],p.ph);
+      h+=`<dl class="kv"><dt>Tension maximale</dt><dd>${fmtV(p.U*Math.SQRT2)}</dd><dt>Période T</dt><dd>${frs(1000/Math.max(+p.f||50,1))} ms</dd></dl>`;
+      h+=`<div class="note">À 50 Hz l’œil ne voit pas l’alternance : cochez « Ralenti ×50 » dans « Affichage » pour l’observer.</div>`;break;
+    case'hach':{const f=Math.max(+p.f||1000,1),a=clamp(+p.a||0,0,1),T=1/f;
+      h+=fieldHTML(FIELDS.hach[0],p.a)+presetsHTML(c)+fieldHTML(FIELDS.hach[1],p.f);
+      h+=`<dl class="kv"><dt>Période T</dt><dd>${T>=1e-3?frs(T*1000)+' ms':frs(T*1e6)+' µs'}</dd><dt>Fermé pendant α × T</dt><dd>${a*T>=1e-3?frs(a*T*1000)+' ms':frs(a*T*1e6)+' µs'}</dd></dl>
+        <div class="note">Dans un hacheur série, la charge reçoit la tension E pendant α × T, puis rien : sa valeur moyenne vaut ⟨u⟩ = α × E. La diode de roue libre laisse le courant de la bobine continuer quand l’interrupteur s’ouvre.</div>`;break;}
+    case'lamp':
+      h+=`<div class="field"><label for="p-mark">Inscription du culot</label><input type="text" id="p-mark" data-k="mark" value="${p.mark.replace(/"/g,'&quot;')}" placeholder="ex. 6 V – 0,1 A ou 12 V – 3 W" autocomplete="off">
+        <div class="note">Écrivez la tension et l’intensité (ou la puissance), comme sur le culot.</div><div class="err" id="markErr" hidden>Inscription non reconnue : indiquez une tension en V et une intensité en A (ou mA) ou une puissance en W.</div></div>`;
+      h+=`<div class="presets">${MARKS.map(mk=>`<button data-act="mark" data-v="${mk}" aria-pressed="${p.mark===mk}">${mk}</button>`).join('')}</div>`;
+      h+=`<dl class="kv"><dt>Tension nominale</dt><dd>${fr(p.Un,1)} V</dd><dt>Intensité nominale</dt><dd>${fmtA(p.In)}</dd><dt>Puissance nominale</dt><dd>${frs(p.Un*p.In)} W</dd><dt>Résistance à chaud</dt><dd>${fmtR(p.Un/p.In)}</dd><dt>Résistance à froid</dt><dd>${fmtR(p.Un/p.In/LAMP_K0)}</dd></dl>
+        <div class="note">Le filament chauffe avec la tension, et sa résistance augmente : la caractéristique d’une lampe n’est pas une droite.</div>`;break;
+    case'motor':h+=`<div class="note">Le moteur tourne d’autant plus vite que le courant est intense ; inverser ses bornes inverse son sens de rotation.</div>`;break;
+    case'mcc':{const k=mccK(p),Cn=k*(+p.In||10);
+      h+=presetsHTML(c)+FIELDS.mcc.map(d=>fieldHTML(d,p[d.k])).join('');
+      h+=`<dl class="kv"><dt>Constante k = (Un − R·In) ÷ Ωn</dt><dd>${frs(k)} V·s/rad</dd><dt>Couple nominal Cn = k × In</dt><dd>${frs(Cn)} N·m</dd><dt>Courant au démarrage direct Un ÷ R</dt><dd>${fmtA((+p.Un||0)/Math.max(+p.R||0,1e-3))}</dd></dl>`;break;}
+    case'amm':case'volt':
+      h+=`<div class="field"><span class="flab">Mode du multimètre</span><div class="seg full"><button data-act="mode" data-v="DC" aria-pressed="${p.mode==='DC'}">DC ⎓ continu</button><button data-act="mode" data-v="AC" aria-pressed="${p.mode==='AC'}">AC ~ alternatif</button></div>
+        <div class="note">DC : valeur moyenne (avec son signe). AC : valeur efficace de la partie alternative.</div></div>`;
+      if(c.type==='amm')h+=presetsHTML(c);break;
+    case'cap':h+=presetsHTML(c)+fieldHTML(FIELDS.cap[0],p.C)+`<button class="btn" data-act="discharge">Décharger le condensateur</button>`;break;
+    case'ind':h+=presetsHTML(c)+FIELDS.ind.map(d=>fieldHTML(d,p[d.k])).join('');break;
+    case'cable':h+=presetsHTML(c)+FIELDS.cable.map(d=>fieldHTML(d,p[d.k])).join('')+
+      `<dl class="kv"><dt>Résistance du fil</dt><dd>${frs(cableR(p))} Ω</dd></dl><div class="note">R = ρ × L / S avec ρ(cuivre) = 1,7 × 10⁻⁸ Ω·m. Un câble ne représente qu’un seul fil : placez-en un à l’aller et un au retour.</div>`;break;
+    case'transfo':{const U=p.tmode==='U',{N1,N2}=trN(p),mm=N2/N1;
+      h+=`<div class="field"><span class="flab">Caractéristiques données par</span><div class="seg full"><button data-act="tmode" data-v="U" aria-pressed="${U}">Tensions U1 → U2</button><button data-act="tmode" data-v="N" aria-pressed="${!U}">Spires N1, N2</button></div></div>`;
+      const pres=U?[[12,6,'12 V → 6 V'],[12,24,'12 V → 24 V'],[12,120,'12 V → 120 V'],[120,12,'120 V → 12 V'],[230,12,'230 V → 12 V'],[230,24,'230 V → 24 V']]
+                  :[[100,1000,'Élévateur ×10'],[1000,100,'Abaisseur ÷10'],[100,200,'×2'],[200,100,'÷2']];
+      const k1=U?'U1':'N1',k2=U?'U2':'N2';
+      h+=`<div class="field"><span class="flab">Montages types</span><div class="presets">${pres.map(([a,b,l])=>`<button data-act="tr" data-v="${k1},${a},${k2},${b}" aria-pressed="${+p[k1]===a&&+p[k2]===b}">${l}</button>`).join('')}</div></div>`;
+      h+=FIELDS.transfo.filter(d=>d.k===k1||d.k===k2).map(d=>fieldHTML(d,p[d.k])).join('');
+      h+=`<dl class="kv"><dt>Rapport m = ${U?'U2 / U1':'N2 / N1'}</dt><dd>${frs(mm)}</dd><dt>Type</dt><dd>${mm>1?'élévateur':mm<1?'abaisseur':'isolement'}</dd></dl>
+        <div class="note">Primaire (entrée) à gauche, secondaire (sortie) à droite. m = U2 / U1 = N2 / N1.${U?' Les tensions indiquées sont les tensions nominales : la sortie vaut U2 quand l’entrée reçoit U1.':''}</div>`;break;}
+    case'joule':h+=`<button class="btn primary" data-act="jreset">Remettre à zéro</button><div class="note">Le joulemètre se place entre le générateur (entrée, à gauche) et le circuit (sortie, à droite). Il compte l’énergie qui le traverse : E = P × t.</div>`;break;
+    case'wattm':h+=`<div class="note">Le circuit courant va de la borne + d’entrée à la borne + de sortie : il se place en série. Le circuit tension se lit entre la borne + de sortie et la borne − de sortie. Le wattmètre affiche P, la moyenne de u × i : la puissance active.</div>
+      <div class="note">Méthode des deux wattmètres, en triphasé : chaque wattmètre a son circuit courant dans une phase, et sa borne − de sortie sur la troisième phase ; sa borne − d’entrée reste libre. P = P₁ + P₂.</div>`;break;
+    case'osc':h+=`<button class="btn primary toggle-big" data-act="scope">Afficher l’écran</button><div class="note">Mesure la tension entre sa borne d’entrée et sa masse ⏚, comme une voie d’oscilloscope.</div>`;break;
+    case'pince':h+=`<div class="note">La sonde de courant se place en série, comme un ampèremètre. Elle n’affiche rien elle-même : choisissez-la en voie 2 d’un oscilloscope pour voir la forme du courant, à côté de celle de la tension.</div>`;
+      if(state.comps.some(k=>k.type==='osc'))h+=`<button class="btn primary toggle-big" data-act="pscope">Voir le courant à l’oscilloscope</button>`;break;
+    default:h+=presetsHTML(c)+(FIELDS[c.type]||[]).map(d=>fieldHTML(d,p[d.k])).join('');
+  }
+  if(c.burnt)h+=`<button class="btn primary toggle-big" data-act="repair">Remplacer ${c.type==='lamp'?'la lampe':c.type==='led'?'la DEL':c.type==='fuse'?'le fusible':c.type==='amm'?'le fusible de l’ampèremètre':'le composant'}</button>`;
+  box.innerHTML=h;
+}
+function renderRead(){
+  const c=getSel();const box=$('readBox');let h='';const ac=isAC();
+  if(c){
+    const m=mOf(c);
+    if(METERS.has(c.type))h+=`<div class="field"><span class="flab">Affichage</span><div class="big">${meterText(c)}<small>${c.props.mode}</small></div></div>`;
+    else if(c.type==='joule'){const tE=c.tE||0,E=c.E||0;
+      h+=`<div class="field"><span class="flab">Énergie</span><div class="big">${fmtE(E)}</div></div><dl class="kv"><dt>Puissance P</dt><dd>${fr(m.p,2)} W</dd><dt>Durée t</dt><dd>${fr(tE,1)} s</dd><dt>Énergie en Wh</dt><dd>${fr(E/3600,4)} Wh</dd></dl>`;}
+    else if(c.type==='wattm'){const w=wattVals(c);
+      h+=`<div class="field"><span class="flab">Puissance active</span><div class="big">${fmtW(w.P)}</div></div><dl class="kv"><dt>U efficace</dt><dd>${fmtV(w.U)}</dd><dt>I efficace</dt><dd>${fmtA(w.I)}</dd>
+        <dt>Puissance apparente S = U × I</dt><dd>${fr(w.S,w.S>=100?0:2)} VA</dd><dt>Puissance réactive Q</dt><dd>${fr(w.Q,w.Q>=100?0:2)} var</dd><dt>Facteur de puissance P ÷ S</dt><dd>${fr(w.k,3)}</dd></dl>
+        <div class="note">Q = √(S² − P²) : sans signe, l’appareil ne dit pas si la charge est inductive ou capacitive.</div>`;}
+    else if(c.type==='mcc'){const k=mccK(c.props),n=(c.w||0)*30/Math.PI,I=c.v?c.v.i:0,E=k*(c.w||0),C=k*I;
+      h+=`<div class="field"><span class="flab">Vitesse</span><div class="big">${fr(n,0)}<small>tr/min</small></div></div><dl class="kv"><dt>Tension U</dt><dd>${fmtV(m.u)}</dd><dt>Courant I</dt><dd>${fmtA(I)}</dd>
+        <dt>Force électromotrice E = k·Ω</dt><dd>${fmtV(E)}</dd><dt>Couple électromagnétique C = k·I</dt><dd>${fr(C,1)} N·m</dd><dt>Puissance absorbée U × I</dt><dd>${fmtW(m.p)}</dd><dt>Puissance électromagnétique E × I</dt><dd>${fmtW(E*I)}</dd></dl>`;}
+    else if(c.type==='transfo')h+=`<dl class="kv"><dt>U1 (primaire)</dt><dd>${fmtV(rms(m.u2))}</dd><dt>U2 (secondaire)</dt><dd>${fmtV(rms(m.u2b))}</dd><dt>I1 (primaire)</dt><dd>${fmtA(rms(m.i2))}</dd><dt>I2 (secondaire)</dt><dd>${fmtA(rms(m.i2b))}</dd></dl><div class="note">Valeurs efficaces.</div>`;
+    else if(c.type==='cable'){const R=cableR(c.props);
+      h+=`<dl class="kv"><dt>Intensité${ac?' efficace':''}</dt><dd>${fmtA(ac?rms(m.i2):Math.abs(m.i))}</dd><dt>Chute de tension</dt><dd>${fmtV(ac?rms(m.u2):Math.abs(m.u))}</dd><dt>Pertes par effet Joule</dt><dd>${frs(R*m.i2)} W</dd></dl>`;}
+    else if(c.type==='cap')h+=`<dl class="kv"><dt>Tension aux bornes</dt><dd>${fmtV(isFinite(c.vC)?c.vC:0)}</dd><dt>Charge Q = C × U</dt><dd>${frs((+c.props.C)*1e-6*(c.vC||0)*1000)} mC</dd></dl>`;
+    else if(opts.vals&&c.type!=='osc'&&c.type!=='pince'){const sg=SOURCES.has(c.type)?-1:1;
+      const U=ac?rms(m.u2):m.u,I=ac?rms(m.i2):sg*m.i;
+      h+=ac?`<dl class="kv"><dt>Tension efficace</dt><dd>${fmtV(U)}</dd><dt>Intensité efficace</dt><dd>${fmtA(I)}</dd><dt>Puissance moyenne</dt><dd>${fmtW(Math.abs(m.p))}</dd>`
+        :`<dl class="kv"><dt>Tension U</dt><dd>${fmtV(U)}</dd><dt>Intensité I</dt><dd>${fmtA(I)}</dd><dt>Puissance P</dt><dd>${fmtW(Math.abs(m.p))}</dd>`;
+      if(!SOURCES.has(c.type)&&Math.abs(I)>1e-6)h+=`<dt>U ÷ I</dt><dd>${fmtR(U/I)}</dd>`;
+      h+=`</dl>`;}
+    for(const t of hintsFor(c))h+=`<div class="hint">${t}</div>`;
+  }else{
+    const ms=state.comps.filter(k=>METERS.has(k.type)||k.type==='joule'||k.type==='wattm'||k.type==='mcc');
+    if(ms.length){h+=`<div class="lab" style="margin:0">Appareils de mesure</div><dl class="kv">`;
+      for(const k of ms)h+=`<dt>${readLabel(k)}</dt><dd>${readValue(k)}</dd>`;h+='</dl>';}
+    for(const k of state.comps)if(k.burnt||(SOURCES.has(k.type)&&srcShort(k))||(k.type==='gen'&&k.lim)||(k.type==='lamp'&&rms(mOf(k).u2)>1.15*(+k.props.Un||1)))for(const t of hintsFor(k))h+=`<div class="hint"><b>${k.name}</b> · ${t}</div>`;
+  }
+  box.innerHTML=h;box.hidden=!h;
+}
+/* la lecture d'un appareil, sur une ligne : le panneau et le tableau de mesures s'en servent */
+function readLabel(k){return({amm:'Ampèremètre',volt:'Voltmètre',joule:'Joulemètre',wattm:'Wattmètre',mcc:'Moteur'}[k.type]||TYPES[k.type].label)+' '+k.name;}
+function readValue(k){
+  if(k.type==='joule')return fmtE(k.E||0);
+  if(k.type==='wattm')return fmtW(wattVals(k).P);
+  if(k.type==='mcc')return fr((k.w||0)*30/Math.PI,0)+' tr/min';
+  return meterText(k)+' '+k.props.mode;
+}
+$('panel').addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,c=getSel(),v=b.dataset.v;
+  if(a==='rot'){rotateSel();return;}if(a==='del'){deleteSel();return;}
+  if(a==='repairAll'){pushHist();state.comps.forEach(k=>k.burnt=false);commit();return;}
+  if(!c)return;
+  if(a==='scope'){openScope(c);return;}
+  if(a==='pscope'){const o=state.comps.find(k=>k.type==='osc');if(o){o.props.ch2=c.id;openScope(o);save();}return;}
+  if(a==='char'){openChar(c);return;}
+  if(a==='jreset'){c.E=0;c.tE=0;renderRead();return;}
+  if(a==='discharge'){c.vC=0;renderRead();return;}
+  pushHist();
+  if(a==='toggle')c.props.closed=!c.props.closed;
+  else if(a==='repair')c.burnt=false;
+  else if(a==='set')c.props[b.dataset.k]=+v;
+  else if(a==='wave'||a==='mode'||a==='tmode')c.props[a]=v;
+  else if(a==='tr'){const q=v.split(',');c.props[q[0]]=+q[1];c.props[q[2]]=+q[3];}
+  else if(a==='mark'){const mk=parseMark(v);if(mk)Object.assign(c.props,{mark:v},mk);}
+  else{hist.pop();return;}
+  commit();
+});
+let sliderSnap=null;
+$('panel').addEventListener('input',e=>{
+  const el=e.target;if(el.type!=='range'||!el.dataset.k)return;const c=getSel();if(!c)return;
+  if(!sliderSnap)sliderSnap=snapshot();c.props[el.dataset.k]=+el.value;
+  const num=$('p-'+el.dataset.k);if(num)num.value=el.value;build();
+});
+$('panel').addEventListener('change',e=>{
+  const el=e.target,c=getSel();if(!c||!el.dataset.k)return;
+  if(el.type==='range'){pushHist(sliderSnap);sliderSnap=null;commit();return;}
+  if(el.dataset.k==='mark'){const mk=parseMark(el.value);
+    if(!mk){$('markErr').hidden=false;return;}
+    pushHist();Object.assign(c.props,{mark:el.value.trim()},mk);commit();return;}
+  const d=fdef(c,el.dataset.k);if(!d)return;let v=parseFloat(String(el.value).replace(',','.'));
+  if(!isFinite(v)){renderProps();return;}v=clamp(v,d.min,d.max);
+  pushHist();c.props[d.k]=v;commit();
+});
+$('panel').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('input[type=text],input[type=number]'))e.target.blur();});
+
+/* ================= fenêtres =================
+   Oscilloscope, caractéristique, tableau de mesures : chacun dans une fenêtre qui flotte
+   au-dessus de la feuille (on la déplace par son titre, on l'élargit par son coin) ou se
+   range dans la colonne de droite, sous le panneau du composant. Réduire ne garde que le
+   titre. La place de chaque fenêtre se garde avec le schéma (opts.wins). */
+const WINS={};
+let winZ=40;
+/* la première fois, la caractéristique et le tableau se rangent à droite s'il y a la place ; l'oscilloscope flotte */
+function winState(id){return opts.wins[id]||(opts.wins[id]={open:false,dock:id!=='scope'&&innerWidth>=1150,min:false});}
+function makeWin(id,title,o={}){
+  const el=document.createElement('section');el.className='win';el.id='w-'+id;el.hidden=true;
+  el.setAttribute('aria-label',title);
+  el.innerHTML=`<header class="win-head"><b class="win-title">${title}</b><div class="win-btns">${o.extra||''}
+    <button class="wbtn" data-w="dock" title="Ranger dans la colonne de droite"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg></button>
+    <button class="wbtn" data-w="min" title="Réduire"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+    <button class="wbtn" data-w="close" title="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></header>
+    <div class="win-body">${o.body||''}</div><div class="win-grip" title="Élargir"></div>`;
+  document.body.appendChild(el);
+  const w={id,el,head:el.querySelector('.win-head'),body:el.querySelector('.win-body'),titleEl:el.querySelector('.win-title'),
+    onOpen:o.onOpen||null,onClose:o.onClose||null,onResize:o.onResize||null,fast:o.fast||null,slow:o.slow||null,minW:o.minW||300,defW:o.defW||520};
+  WINS[id]=w;
+  w.head.addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(!b)return;const a=b.dataset.w,s=winState(id);
+    if(a==='close'){closeWin(id);return;}
+    if(a==='min'){s.min=!s.min;layoutWin(id);save();return;}
+    if(a==='dock'){s.dock=!s.dock;s.min=false;layoutWin(id);save();if(w.onOpen)w.onOpen();return;}});
+  // déplacer par le titre, au doigt comme à la souris (fenêtre flottante seulement)
+  let d=null;
+  w.head.addEventListener('pointerdown',e=>{toFront(w);if(e.target.closest('button,select,input')||winState(id).dock)return;
+    const r=el.getBoundingClientRect();d={dx:e.clientX-r.left,dy:e.clientY-r.top};w.head.setPointerCapture(e.pointerId);});
+  w.head.addEventListener('pointermove',e=>{if(!d)return;const r=el.getBoundingClientRect();
+    const x=clamp(e.clientX-d.dx,0,Math.max(0,innerWidth-r.width)),y=clamp(e.clientY-d.dy,0,Math.max(0,innerHeight-48));
+    Object.assign(el.style,{left:x+'px',top:y+'px',right:'auto',bottom:'auto'});});
+  const endD=()=>{if(!d)return;d=null;const r=el.getBoundingClientRect(),s=winState(id);s.x=Math.round(r.left);s.y=Math.round(r.top);save();};
+  w.head.addEventListener('pointerup',endD);w.head.addEventListener('pointercancel',endD);
+  // élargir par le coin
+  const grip=el.querySelector('.win-grip');let g=null;
+  grip.addEventListener('pointerdown',e=>{if(winState(id).dock)return;e.preventDefault();toFront(w);g={x:e.clientX,w0:el.getBoundingClientRect().width};grip.setPointerCapture(e.pointerId);});
+  grip.addEventListener('pointermove',e=>{if(!g)return;const nw=clamp(g.w0+e.clientX-g.x,w.minW,innerWidth-16);el.style.width=nw+'px';if(w.onResize)w.onResize();});
+  const endG=()=>{if(!g)return;g=null;winState(id).w=Math.round(el.getBoundingClientRect().width);save();if(w.onOpen)w.onOpen();};
+  grip.addEventListener('pointerup',endG);grip.addEventListener('pointercancel',endG);
+  el.addEventListener('pointerdown',()=>toFront(w));
+  return w;
+}
+function toFront(w){if(!winState(w.id).dock)w.el.style.zIndex=String(++winZ);}
+function layoutWin(id){
+  const w=WINS[id],s=winState(id),el=w.el,dock=$('dock');
+  el.hidden=!s.open;
+  el.classList.toggle('docked',!!s.dock);el.classList.toggle('float',!s.dock);el.classList.toggle('min',!!s.min);
+  w.head.querySelector('[data-w="dock"]').title=s.dock?'Détacher la fenêtre':'Ranger dans la colonne de droite';
+  w.head.querySelector('[data-w="min"]').title=s.min?'Déplier':'Réduire';
+  if(s.dock){if(el.parentNode!==dock)dock.appendChild(el);Object.assign(el.style,{left:'',top:'',right:'',bottom:'',width:'',zIndex:''});}
+  else{if(el.parentNode!==document.body)document.body.appendChild(el);
+    const width=Math.min(s.w||w.defW,innerWidth-16);el.style.width=width+'px';
+    if(s.x!=null&&s.y!=null){Object.assign(el.style,{left:clamp(s.x,0,Math.max(0,innerWidth-width))+'px',top:clamp(s.y,0,Math.max(0,innerHeight-48))+'px',right:'auto',bottom:'auto'});}
+    else{const n=Object.keys(WINS).indexOf(id);Object.assign(el.style,{left:'',top:'',right:(16+24*n)+'px',bottom:(16+24*n)+'px'});}
+    toFront(w);}
+  applyLayout();
+}
+function openWin(id){const s=winState(id);s.open=true;layoutWin(id);save();const w=WINS[id];if(w.onOpen)w.onOpen();}
+function closeWin(id){const s=winState(id),w=WINS[id];s.open=false;layoutWin(id);save();if(w.onClose)w.onClose();}
+const winOn=id=>{const s=opts.wins[id];return!!(s&&s.open&&!s.min);};
+/* appelées par la boucle d'animation : à chaque image, et quatre fois par seconde */
+function drawWindowsFast(){for(const id in WINS){const w=WINS[id];if(w.fast&&winOn(id))w.fast();}}
+function drawWindowsSlow(){for(const id in WINS){const w=WINS[id];if(w.slow&&winOn(id))w.slow();}}
+addEventListener('resize',()=>{for(const id in WINS)if(winState(id).open&&!winState(id).dock)layoutWin(id);});
+
+/* la disposition de l'écran : bibliothèque et panneau se montrent ou se cachent ; la colonne
+   de droite reste tant qu'une fenêtre y est rangée */
+function applyLayout(){
+  const app=document.querySelector('.app'),docked=$('dock').querySelector('.win:not([hidden])');
+  app.classList.toggle('no-lib',!opts.lib);
+  $('panel').hidden=!opts.panel;
+  app.classList.toggle('no-side',!opts.panel&&!docked);
+  const bl=$('b-lib'),bp=$('b-panel');
+  if(bl)bl.setAttribute('aria-pressed',String(!!opts.lib));
+  if(bp)bp.setAttribute('aria-pressed',String(!!opts.panel));
+}
+
+/* ================= oscilloscope =================
+   Une fenêtre. La voie 1 est l'oscilloscope touché ; la voie 2, un autre oscilloscope
+   (une autre tension) ou une sonde de courant (le courant, en A/div). */
+let scopeId=null,scopeFrozen=false;
+const scopeComp=()=>state.comps.find(k=>k.id===scopeId&&k.type==='osc');
+const fmtT=t=>t<1e-3?fr(t*1e6,0)+' µs':t<1?frs(t*1000)+' ms':frs(t)+' s';
+const fmtS=(s,u='V')=>(s<1?fr(s,s<0.1?2:1):fr(s,0))+' '+u;
+const unitOf=c=>c&&c.type==='pince'?'A':'V';
+const ch2Of=c=>{const p=c.props;return+p.ch2&&state.comps.find(k=>k.id===+p.ch2&&(k.type==='osc'||k.type==='pince'))||null;};
+const scopeWin=makeWin('scope','Oscilloscope',{
+  extra:`<button class="btn sm" id="scFreeze">Figer</button><button class="btn sm" id="scAuto">Réglage auto</button>`,
+  body:`<canvas id="scCv" aria-label="Écran de l’oscilloscope"></canvas><div class="sc-read" id="scRead"></div><div class="sc-ctrl" id="scCtrl"></div>`,
+  defW:460,
+  onOpen(){if(!scopeComp()){const o=state.comps.find(k=>k.type==='osc');if(!o){closeWin('scope');return;}scopeId=o.id;}buildScopeCtrl();drawScope();},
+  onClose(){scopeId=null;},
+  fast(){if(!scopeFrozen)drawScope();},
+});
+function openScope(c){
+  scopeId=c.id;scopeFrozen=false;$('scFreeze').textContent='Figer';
+  if(!c.props.init){c.props.init=true;scopeAuto(c);save();}
+  openWin('scope');
+}
+function closeScope(){if(winState('scope').open)closeWin('scope');scopeId=null;}
+function scopeAuto(c){
+  const p=c.props,o=c.ob,dt=net?net.dt:2e-4,fmin=net?net.fper:0;
+  p.tb=fmin?TB.find(t=>t>=0.25/fmin)||1:0.5;p.mode=fmin?'trig':'roll';
+  const fit=(ob,key,posKey)=>{
+    if(!ob||ob.n<10){p[key]=2;p[posKey]=0;return;}
+    const span=Math.min(ob.n,Math.round((fmin?3/fmin:2)/dt));let mx=-Infinity,mn=Infinity;
+    for(let a=0;a<span;a++){const v=ob.buf[(ob.i-1-a+2*BUF)%BUF];if(v>mx)mx=v;if(v<mn)mn=v;}
+    const pkv=Math.max(Math.abs(mx),Math.abs(mn));
+    if(pkv<1e-3){p[key]=1;p[posKey]=0;return;}
+    if(mn>=-0.02*pkv){p[posKey]=-3;p[key]=SENS.find(s=>s>=pkv/6)||500;}
+    else{p[posKey]=0;p[key]=SENS.find(s=>s>=pkv/3.5)||500;}
+  };
+  fit(o,'s1','pos1');
+  const c2=ch2Of(c);if(c2)fit(c2.ob,'s2','pos2');
+}
+function buildScopeCtrl(){
+  const c=scopeComp();if(!c){closeScope();return;}const p=c.props;
+  scopeWin.titleEl.textContent='Oscilloscope '+c.name;
+  const others=state.comps.filter(k=>(k.type==='osc'||k.type==='pince')&&k.id!==c.id);
+  const c2=ch2Of(c),u2=unitOf(c2);
+  const opt=(list,val,fmt)=>list.map(v=>`<option value="${v}"${+val===v?' selected':''}>${fmt(v)}</option>`).join('');
+  $('scCtrl').innerHTML=`
+    <label>Base de temps<select data-sk="tb">${opt(TB,p.tb,t=>fmtT(t)+'/div')}</select></label>
+    <label>Voie 1 (${c.name}) : sensibilité<select data-sk="s1">${opt(SENS,p.s1,s=>fmtS(s)+'/div')}</select></label>
+    <label>Voie 1 : position<input type="range" data-sk="pos1" min="-4" max="4" step="0.5" value="${p.pos1}"></label>
+    <label>Mode<select data-sk="mode"><option value="trig"${p.mode==='trig'?' selected':''}>Déclenché (image stable)</option><option value="roll"${p.mode==='roll'?' selected':''}>Défilement</option></select></label>
+    <label>Voie 2<select data-sk="ch2"><option value="0">Aucune</option>${others.map(k=>`<option value="${k.id}"${+p.ch2===k.id?' selected':''}>${k.name}${k.type==='pince'?' (courant)':''}</option>`).join('')}</select></label>
+    <label>Voie 2 : sensibilité<select data-sk="s2"${c2?'':' disabled'}>${opt(SENS,p.s2,s=>fmtS(s,u2)+'/div')}</select></label>
+    <label>Voie 2 : position<input type="range" data-sk="pos2" min="-4" max="4" step="0.5" value="${p.pos2}"${c2?'':' disabled'}></label>
+    <label class="ck"><input type="checkbox" data-sk="meas"${p.meas?' checked':''}> Mesures automatiques</label>`+
+    (others.length?'':`<div class="note" style="grid-column:1/-1">Placez un second oscilloscope, ou une sonde de courant en série, pour l’afficher en voie 2.</div>`);
+}
+$('scCtrl').addEventListener('input',e=>{const el=e.target,c=scopeComp();if(!c||!el.dataset.sk)return;const k=el.dataset.sk;
+  c.props[k]=el.type==='checkbox'?el.checked:(k==='mode'?el.value:+el.value);save();if(k==='ch2')buildScopeCtrl();drawScope();});
+$('scFreeze').onclick=()=>{scopeFrozen=!scopeFrozen;$('scFreeze').textContent=scopeFrozen?'Reprendre':'Figer';if(!scopeFrozen)drawScope();};
+$('scAuto').onclick=()=>{const c=scopeComp();if(!c)return;scopeAuto(c);save();buildScopeCtrl();drawScope();};
+function scopeStats(arr,dt){
+  if(arr.length<2)return null;let mx=-Infinity,mn=Infinity,s=0,s2=0;
+  for(const v of arr){if(v>mx)mx=v;if(v<mn)mn=v;s+=v;s2+=v*v;}
+  const mean=s/arr.length,eff=Math.sqrt(s2/arr.length);let Tp=null;
+  if(mx-mn>1e-3){const lev=(mx+mn)/2,hys=(mx-mn)*0.05;let armed2=false,first=-1,lastI=-1,cnt=0;
+    for(let i=0;i<arr.length;i++){const v=arr[i];if(v<lev-hys)armed2=true;else if(armed2&&v>=lev){armed2=false;if(first<0)first=i;lastI=i;cnt++;}}
+    if(cnt>=2)Tp=(lastI-first)/(cnt-1)*dt;}
+  return{mx,mn,mean,eff,Tp};
+}
+function drawScope(){
+  const c=scopeComp();if(!c){closeScope();return;}
+  const cv=$('scCv'),dpr=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;if(!w)return;
+  if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);}
+  const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.fillStyle='#0D1914';ctx.fillRect(0,0,w,h);
+  const dx=w/10,dy=h/8;
+  ctx.strokeStyle='rgba(150,210,175,.16)';ctx.lineWidth=1;ctx.beginPath();
+  for(let i=1;i<10;i++){ctx.moveTo(Math.round(i*dx)+.5,0);ctx.lineTo(Math.round(i*dx)+.5,h);}
+  for(let j=1;j<8;j++){ctx.moveTo(0,Math.round(j*dy)+.5);ctx.lineTo(w,Math.round(j*dy)+.5);}ctx.stroke();
+  ctx.strokeStyle='rgba(150,210,175,.38)';ctx.beginPath();ctx.moveTo(0,Math.round(h/2)+.5);ctx.lineTo(w,Math.round(h/2)+.5);ctx.moveTo(Math.round(w/2)+.5,0);ctx.lineTo(Math.round(w/2)+.5,h);
+  for(let i=0;i<50;i++){const x=Math.round(i*dx/5)+.5;ctx.moveTo(x,h/2-3);ctx.lineTo(x,h/2+3);}
+  for(let j=0;j<40;j++){const y=Math.round(j*dy/5)+.5;ctx.moveTo(w/2-3,y);ctx.lineTo(w/2+3,y);}ctx.stroke();
+  const p=c.props,o=c.ob,read=$('scRead');
+  if(!net||!o||o.n<2){ctx.fillStyle='rgba(200,230,210,.7)';ctx.font='14px sans-serif';ctx.fillText('En attente du signal…',14,24);read.innerHTML='';return;}
+  const get=(ob,a)=>ob.buf[(ob.i-1-a+2*BUF)%BUF];
+  const Wn=clamp(Math.round(10*p.tb/net.dt),2,BUF-2);
+  let L=Math.min(Wn-1,o.n-1);
+  if(p.mode==='trig'){const span=Math.min(o.n,Wn*3);let mx=-Infinity,mn=Infinity;const stp=Math.max(1,Math.floor(span/3000));
+    for(let a=0;a<span;a+=stp){const v=get(o,a);if(v>mx)mx=v;if(v<mn)mn=v;}
+    if(mx-mn>1e-3){const lev=(mx+mn)/2;const lim=Math.min(o.n-2,Wn-1+Wn*2);
+      for(let a=Wn-1;a<=lim;a++)if(get(o,a+1)<lev&&get(o,a)>=lev){L=a;break;}}}
+  const chs=[{ob:o,s:p.s1,pos:p.pos1,col:'#F5D547',name:c.name,cls:'y1',u:'V'}];
+  const c2=ch2Of(c);
+  if(c2&&c2.ob)chs.push({ob:c2.ob,s:p.s2,pos:p.pos2,col:'#5BD3EA',name:c2.name,cls:'y2',u:unitOf(c2)});
+  let txt=`<span>Base de temps : ${fmtT(p.tb)}/div</span>`;
+  chs.forEach((t,ix)=>{
+    const y0=h/2-t.pos*dy,yv=v=>y0-v/t.s*dy;
+    ctx.fillStyle=t.col;ctx.beginPath();ctx.moveTo(0,y0-6);ctx.lineTo(9,y0);ctx.lineTo(0,y0+6);ctx.fill();
+    ctx.font='bold 11px sans-serif';ctx.fillText(String(ix+1),11,y0-6);
+    ctx.save();ctx.beginPath();ctx.rect(0,0,w,h);ctx.clip();
+    ctx.strokeStyle=t.col;ctx.lineWidth=2;ctx.lineJoin='round';ctx.beginPath();
+    const n=t.ob.n;let started=false;
+    if(Wn<=w*2){for(let a=L;a>=Math.max(0,L-Wn+1);a--){if(a>=n)continue;const x=(L-a)/Wn*w,y=yv(get(t.ob,a));if(!started){ctx.moveTo(x,y);started=true;}else ctx.lineTo(x,y);}}
+    else{const cols=Math.floor(w);for(let col=0;col<cols;col++){const a0=L-Math.floor(col*Wn/cols),a1=L-Math.floor((col+1)*Wn/cols)+1;let mn=Infinity,mx=-Infinity;
+      for(let a=a0;a>=a1;a--){if(a<0||a>=n)continue;const v=get(t.ob,a);if(v<mn)mn=v;if(v>mx)mx=v;}
+      if(mn===Infinity)continue;if(!started){ctx.moveTo(col,yv(mx));started=true;}else ctx.lineTo(col,yv(mx));ctx.lineTo(col,yv(mn));}}
+    ctx.stroke();ctx.restore();
+    txt+=`<span class="${t.cls}">Voie ${ix+1} (${t.name}${t.u==='A'?', courant':''}) : ${fmtS(t.s,t.u)}/div</span>`;
+    if(p.meas){const arr=[];for(let a=L;a>=Math.max(0,L-Wn+1);a--)if(a<n)arr.push(get(t.ob,a));const s=scopeStats(arr,net.dt);
+      const q=t.u==='A'?'I':'U',f=t.u==='A'?fmtA:fmtV;
+      if(s)txt+=`<span class="${t.cls}">${q}max ${f(s.mx)} · ${q}min ${f(s.mn)} · ${q}moy ${f(s.mean)} · ${q}eff ${f(s.eff)}${s.Tp?` · T ${fmtT(s.Tp)} · f ${frs(1/s.Tp)} Hz`:''}</span>`;}
+  });
+  if(10*p.tb/net.dt>BUF-2)txt+=`<span>Base de temps trop lente pour ce signal : réduisez-la.</span>`;
+  read.innerHTML=txt;
+}
+
+/* ================= caractéristique =================
+   La caractéristique U = ƒ(I) d'un dipôle, comme au TP : on fait varier la tension, on
+   relève les points (I, U), on les place, on calcule U ÷ I. La fenêtre ajoute :
+   · le point de fonctionnement, en direct ;
+   · le tracé u(i) des derniers instants, quand le circuit varie (alternatif, découpage) :
+     c'est la caractéristique « dynamique », celle de l'oscilloscope en mode XY ;
+   · la droite des points relevés, et ce qu'elle dit (ohmique ? générateur ? seuil ?) ;
+   · la caractéristique calculée sur le modèle du dipôle, avec son équation.
+   Les points relevés vivent dans le composant (c.cpts) et se gardent avec le schéma. */
+let charId=null;
+const charComp=()=>winOn('char')?state.comps.find(k=>k.id===charId)||null:null;
+const charWin=makeWin('char','Caractéristique',{
+  body:`<div class="ch-top"><label class="ch-dip">Dipôle <select id="chSel"></select></label>
+      <div class="seg" role="group" aria-label="Axes"><button data-c="axUI">U = ƒ(I)</button><button data-c="axIU">I = ƒ(U)</button></div></div>
+    <canvas id="chCv" aria-label="Graphique de la caractéristique"></canvas>
+    <div class="ch-leg" id="chLeg"></div>
+    <div class="ch-live" id="chLive"></div>
+    <div class="row ch-act"><button class="btn primary" data-c="pick">Relever le point</button><button class="btn" data-c="model">Calculer la caractéristique</button>
+      <button class="btn" data-c="clear">Effacer les points</button><button class="btn" data-c="copy">Copier le tableau</button></div>
+    <div id="chTab"></div><div id="chAna"></div>`,
+  defW:480,minW:320,
+  onOpen(){if(!charComp()){const w=winState('char'),k=w.cid&&state.comps.find(x=>x.id===w.cid&&!INSTR.has(x.type)&&!FOUR.has(x.type)),c=k||dipoles()[0];if(!c){closeWin('char');return;}charId=c.id;}winState('char').cid=charId;fillCharSel();renderChar();drawChar();},
+  onClose(){charId=null;},
+  onResize(){drawChar();},
+  fast(){drawChar();},
+  slow(){renderCharLive();},
+});
+function openChar(c){charId=c.id;winState('char').cid=c.id;if(c.xy){c.xy.k=0;c.xy.n=0;}openWin('char');}
+const dipoles=()=>state.comps.filter(k=>!INSTR.has(k.type)&&!FOUR.has(k.type));
+function fillCharSel(){
+  const s=$('chSel');s.innerHTML=dipoles().map(k=>`<option value="${k.id}"${k.id===charId?' selected':''}>${TYPES[k.type].label} ${k.name}</option>`).join('');
+}
+$('chSel').addEventListener('change',e=>{charId=+e.target.value;winState('char').cid=charId;save();const c=charComp();if(c&&c.xy){c.xy.k=0;c.xy.n=0;}renderChar();drawChar();});
+const isSrcChar=c=>c.type==='gen';
+
+/* ---------- le modèle de chaque dipôle : des couples (I, U), et son équation ---------- */
+function charModel(c){
+  const p=c.props,m=mOf(c),Ulive=Math.abs(m.u),Ilive=Math.abs(iConv(c,m.i));
+  const lin=(R,eq)=>{const Umax=Math.max(Ulive*1.3,R>=1000?12:6),pts=[];for(let k=0;k<=20;k++){const U=Umax*k/20;pts.push([U/R,U]);}return{pts,eq,R};};
+  switch(c.type){
+    case'res':return lin(Math.max(+p.R||1,1e-3),`<b>U = R × I</b> avec R = ${fmtR(+p.R)} : une droite qui passe par l’origine, de coefficient directeur R. Le dipôle est ohmique.`);
+    case'cable':{const R=cableR(p);return lin(Math.max(R,1e-4),`<b>U = R × I</b> avec R = ρ × L ÷ S = ${fmtR(R)} : le câble est ohmique ; sa résistance croît avec la longueur et baisse avec la section.`);}
+    case'ind':{const r=+p.r||0;if(r<=0)return{pts:[],eq:'En continu, une bobine sans résistance est un simple fil : U = 0 quel que soit I.'};
+      return lin(r,`En continu, la bobine n’oppose que la résistance de son fil : <b>U = r × I</b>, r = ${fmtR(r)}. En alternatif s’ajoute son inductance L : le tracé u(i) devient une ellipse.`);}
+    case'motor':{const R=(+p.Un||6)/(+p.In||0.3);return lin(R,`Le moteur de l’atelier est modélisé par une résistance R = Un ÷ In = ${fmtR(R)}. Un vrai moteur ajoute une tension E qui dépend de sa vitesse : voir le moteur à courant continu.`);}
+    case'lamp':{const Un=+p.Un||6,In=+p.In||0.1,pts=[];for(let k=0;k<=40;k++){const U=1.2*Un*k/40;pts.push([lampI(p,U),U]);}
+      return{pts,eq:`Une courbe, pas une droite : le filament chauffe et sa résistance augmente. À froid R ≈ ${fmtR(Un/In/LAMP_K0)} ; au point nominal (${fmtV(Un)} ; ${fmtA(In)}) R = Un ÷ In = ${fmtR(Un/In)}. La lampe n’est pas un dipôle ohmique.`,curve:true};}
+    case'led':case'diode':{const vf=vfOf(c),rs=c.type==='led'?LED_RS:D_RS,Imax=c.type==='led'?0.03:0.5,Umin=c.type==='led'?-3:-1,pts=[];
+      for(let k=0;k<=12;k++){const U=Umin+(vf-Umin)*k/12;pts.push([0,U]);}
+      for(let k=1;k<=12;k++){const I=Imax*k/12;pts.push([I,vf+rs*I]);}
+      return{pts,eq:`Modèle de la diode à seuil : <b>I = 0</b> tant que U < U<sub>s</sub> = ${fr(vf,1)} V (diode bloquée, et toute tension inverse) ; au-delà, <b>U = U<sub>s</sub> + r<sub>d</sub> × I</b> avec r<sub>d</sub> = ${fr(rs,1)} Ω. ${c.type==='led'?'Une DEL supporte une vingtaine de milliampères : elle se protège par une résistance en série.':'Le courant ne passe que dans un sens : c’est ce qui redresse.'}`,curve:true};}
+    case'gen':{const E=+p.E||0,r=+p.r||0,Il=+p.Ilim||0,pts=[];
+      const Isc=r>0?E/r:Infinity,Imax=Il>0?Math.min(Il,Isc):isFinite(Isc)?Isc:Math.max(Ilive*2,1);
+      for(let k=0;k<=20;k++){const I=Imax*k/20;pts.push([I,Math.max(E-r*I,0)]);}
+      if(Il>0&&Il<Isc)pts.push([Il,0]);
+      return{pts,gen:true,eq:`Caractéristique d’un générateur : <b>U = E − r × I</b>, avec E = ${fmtV(E)}, la tension à vide (I = 0), et r = ${fmtR(r)}, sa résistance interne : la pente de la droite.${r===0?' Avec r = 0, le générateur est idéal : U reste égale à E.':''}${Il>0?` Au-delà de ${fmtA(Il)}, la limitation de courant fait chuter la tension : la droite devient verticale.`:''}`};}
+    case'mcc':{const k=mccK(p),E=k*(c.w||0),R=+p.R||1,In=+p.In||10,pts=[];for(let j=0;j<=20;j++){const I=1.5*In*j/20;pts.push([I,E+R*I]);}
+      return{pts,eq:`À la vitesse du moment, <b>U = E + R × I</b> avec E = k × Ω = ${fmtV(E)} et R = ${fmtR(R)}. La droite monte ou descend avec la vitesse : le moteur n’a pas une caractéristique fixe, c’est E qui change.`};}
+    case'cap':return{pts:[],eq:'En continu, un condensateur chargé ne laisse plus passer de courant : il n’a pas de caractéristique U = ƒ(I). Sa loi est i = C × du/dt ; en alternatif, le tracé u(i) est une ellipse, décalée d’un quart de période.'};
+    case'acgen':case'gbf':return{pts:[],eq:'Une source alternative : sa tension dépend du temps, pas du courant qu’on lui demande. Le tracé montre u(i) sur les dernières périodes.'};
+    case'switch':return{pts:[],eq:'Interrupteur fermé : U = 0 quel que soit I (un fil). Ouvert : I = 0 quelle que soit U.'};
+    case'hach':return{pts:[],eq:'Un interrupteur commandé : fermé, U ≈ 0 ; ouvert, I = 0. Le tracé u(i) saute d’un axe à l’autre à chaque commutation.'};
+    case'fuse':return{pts:[],eq:'Un fusible intact est un fil : U ≈ 0. Il fond quand le courant dépasse son calibre.'};
+  }
+  return{pts:[],eq:''};
+}
+
+/* ---------- la droite des points relevés ---------- */
+function fitLine(pts){
+  const n=pts.length;if(n<2)return null;let sx=0,sy=0,sxx=0,sxy=0;
+  for(const q of pts){sx+=q.i;sy+=q.u;sxx+=q.i*q.i;sxy+=q.i*q.u;}
+  const d=n*sxx-sx*sx;if(Math.abs(d)<1e-18)return null;
+  const a=(n*sxy-sx*sy)/d,b=(sy-a*sx)/n;
+  const Um=Math.max(...pts.map(q=>Math.abs(q.u)),1e-9),Ur=Math.max(...pts.map(q=>q.u))-Math.min(...pts.map(q=>q.u));
+  const res=Math.max(...pts.map(q=>Math.abs(q.u-(a*q.i+b))));
+  return{a,b,aligned:n>=3?res<=0.03*Math.max(Ur,0.2*Um):true,origin:Math.abs(b)<=0.03*Um,n};
+}
+function analyse(c,pts){
+  if(pts.length<2)return`<p class="note">Relevez au moins trois points : changez la tension du générateur (ou la charge) entre deux relevés.</p>`;
+  const L=fitLine(pts);if(!L)return`<p class="note">Les points relevés ont tous la même intensité : changez la tension entre deux relevés.</p>`;
+  const r=pts.filter(q=>Math.abs(q.i)>1e-6).map(q=>q.u/q.i),gen=isSrcChar(c);
+  let h='';
+  if(pts.length<3)h+=`<p class="note">Avec deux points, on trace toujours une droite : un troisième dira s’ils sont alignés.</p>`;
+  if(L.aligned&&L.origin&&!gen)h+=`<p><b>Les points sont alignés sur une droite qui passe par l’origine</b> : U et I sont proportionnels, le dipôle est <b>ohmique</b>. Coefficient directeur : R = U ÷ I ≈ <b>${fmtR(L.a)}</b>, la loi d’Ohm U = R × I.</p>`;
+  else if(L.aligned&&gen)h+=`<p><b>Les points sont alignés sur une droite décroissante</b> qui ne passe pas par l’origine : U = E − r × I, avec E ≈ <b>${fmtV(L.b)}</b> (à I = 0) et r ≈ <b>${fmtR(-L.a)}</b>.</p>`;
+  else if(L.aligned)h+=`<p><b>Les points sont alignés, mais la droite ne passe pas par l’origine</b> : U = a × I + b avec a ≈ ${fmtR(L.a)} et b ≈ ${fmtV(L.b)}. U et I ne sont pas proportionnels : le dipôle n’est pas ohmique.</p>`;
+  else{h+=`<p><b>Les points ne sont pas alignés</b> : le dipôle n’est pas ohmique.${r.length>=2?` Le rapport U ÷ I va de ${fmtR(Math.min(...r))} à ${fmtR(Math.max(...r))}.`:''}</p>`;
+    const z=pts.filter(q=>Math.abs(q.i)<1e-4&&q.u>0);if(isDiode(c)&&z.length)h+=`<p>Le courant reste nul jusqu’à ${fmtV(Math.max(...z.map(q=>q.u)))} : ${c.type==='led'?'la DEL':'la diode'} ne conduit qu’au-delà d’une tension de seuil.</p>`;}
+  return h;
+}
+
+/* ---------- le panneau : point de fonctionnement, tableau, analyse ---------- */
+function livePoint(c){const m=mOf(c),ac=isAC();return ac?{u:rms(m.u2),i:rms(m.i2),ac}:{u:m.u,i:iConv(c,m.i),ac};}
+function iUnit(c){const pts=(c.cpts||[]).map(q=>Math.abs(q.i)).concat([Math.abs(livePoint(c).i)]);return Math.max(...pts)<1?'mA':'A';}
+const iFmt=(i,u)=>u==='mA'?fr(i*1000,Math.abs(i*1000)>=100?1:2):fr(i,Math.abs(i)>=100?1:3);
+function renderCharLive(){
+  const c=charComp(),box=$('chLive');if(!c){box.innerHTML='';return;}const q=livePoint(c);
+  box.innerHTML=`<span class="pt"></span> Point de fonctionnement : U = <b>${fmtV(q.u)}</b> · I = <b>${fmtA(q.i)}</b>${!isSrcChar(c)&&Math.abs(q.i)>1e-6?` · U ÷ I = <b>${fmtR(q.u/q.i)}</b>`:''}${q.ac?' <i>(valeurs efficaces)</i>':''}`;
+}
+function renderChar(){
+  const c=charComp();if(!c)return;
+  charWin.titleEl.textContent='Caractéristique de '+c.name;
+  const ax=opts.charAxis||'UI';for(const b of charWin.body.querySelectorAll('[data-c^="ax"]'))b.setAttribute('aria-pressed',String(b.dataset.c==='ax'+ax));
+  const pts=c.cpts||[],u=iUnit(c),gen=isSrcChar(c);
+  let h='';
+  if(pts.length){h+=`<table class="ch-tab"><thead><tr><th>n°</th><th>I (${u})</th><th>U (V)</th>${gen?'':'<th>U ÷ I (Ω)</th>'}<th></th></tr></thead><tbody>`;
+    pts.forEach((q,k)=>{h+=`<tr><td>${k+1}</td><td>${iFmt(q.i,u)}</td><td>${fr(q.u,2)}</td>${gen?'':`<td>${Math.abs(q.i)>1e-6?frs(q.u/q.i):'—'}</td>`}<td><button class="xbtn" data-c="del" data-k="${k}" aria-label="Retirer le point ${k+1}">×</button></td></tr>`;});
+    h+=`</tbody></table>`+(u==='mA'?`<p class="note">U ÷ I se calcule avec I en ampères : ${pts.length&&Math.abs(pts[pts.length-1].i)>1e-6?`${fr(pts[pts.length-1].u,2)} ÷ ${fr(pts[pts.length-1].i,4)} = ${frs(pts[pts.length-1].u/pts[pts.length-1].i)} Ω`:'1 mA = 0,001 A'}.</p>`:'');}
+  $('chTab').innerHTML=h;
+  let a=analyse(c,pts);
+  if(c.cmod){const M=charModel(c);if(M.eq){a+=`<div class="ch-mod"><span class="flab">Le modèle de l’atelier</span><p>${M.eq}</p>`;
+    if(M.pts.length){const tab=M.pts.filter((_,k)=>k%(M.pts.length>21?8:4)===0);a+=`<details><summary>Quelques valeurs calculées</summary><table class="ch-tab"><thead><tr><th>I (${u})</th><th>U (V)</th></tr></thead><tbody>${tab.map(q=>`<tr><td>${iFmt(q[0],u)}</td><td>${fr(q[1],2)}</td></tr>`).join('')}</tbody></table></details>`;}
+    a+=`</div>`;}}
+  $('chAna').innerHTML=a;
+  renderCharLive();
+  const leg=[`<span><i class="lg pt"></i>point de fonctionnement</span>`];if(net&&net.fper)leg.push(`<span><i class="lg tr"></i>tracé u(i) des deux dernières périodes</span>`);
+  if(pts.length)leg.push(`<span><i class="lg rel"></i>points relevés</span>`);if(c.cmod)leg.push(`<span><i class="lg mod"></i>modèle calculé</span>`);
+  $('chLeg').innerHTML=leg.join('');
+  const pick=charWin.body.querySelector('[data-c="pick"]');pick.textContent=isAC()?'Relever le point (valeurs efficaces)':'Relever le point';
+  const mb=charWin.body.querySelector('[data-c="model"]');mb.setAttribute('aria-pressed',String(!!c.cmod));mb.textContent=c.cmod?'Masquer le modèle':'Calculer la caractéristique';
+}
+charWin.body.addEventListener('click',e=>{
+  const b=e.target.closest('[data-c]');if(!b)return;const a=b.dataset.c,c=charComp();if(!c)return;
+  if(a==='axUI'||a==='axIU'){opts.charAxis=a.slice(2);save();renderChar();drawChar();return;}
+  if(a==='pick'){const q=livePoint(c);(c.cpts||(c.cpts=[])).push({i:+q.i.toPrecision(4),u:+q.u.toPrecision(4)});c.cpts.sort((x,y)=>x.i-y.i||x.u-y.u);save();renderChar();return;}
+  if(a==='del'){c.cpts.splice(+b.dataset.k,1);save();renderChar();return;}
+  if(a==='clear'){c.cpts=[];save();renderChar();return;}
+  if(a==='model'){c.cmod=!c.cmod;save();renderChar();return;}
+  if(a==='copy'){const t=['I (A)\tU (V)'+(isSrcChar(c)?'':'\tU/I (Ω)')].concat((c.cpts||[]).map(q=>`${String(q.i).replace('.',',')}\t${String(q.u).replace('.',',')}${isSrcChar(c)?'':'\t'+(Math.abs(q.i)>1e-9?String(+(q.u/q.i).toPrecision(4)).replace('.',','):'')}`)).join('\n');
+    try{navigator.clipboard.writeText(t).then(()=>{b.textContent='Tableau copié';setTimeout(()=>{b.textContent='Copier le tableau';},1600);},()=>{b.textContent='Copie refusée ici';});}catch(_){b.textContent='Copie indisponible';}}
+});
+
+/* ---------- le graphique ---------- */
+function niceStep(span){const r=Math.pow(10,Math.floor(Math.log10(span/5)));for(const k of[1,2,2.5,5,10])if(span/(k*r)<=6)return k*r;return 10*r;}
+function drawChar(){
+  const c=charComp(),cv=$('chCv');if(!c||!cv)return;
+  const dpr=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;if(!w)return;
+  if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);}
+  const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.fillStyle='#FBFCFA';ctx.fillRect(0,0,w,h);
+  const ax=opts.charAxis||'UI',u=iUnit(c),ik=u==='mA'?1000:1;
+  // les séries : relevé, modèle, tracé récent, point de fonctionnement — en (I, U)
+  const rel=(c.cpts||[]).map(q=>[q.i,q.u]),mod=c.cmod?charModel(c).pts:[];
+  const tr=[];const o=c.xy;
+  // le tracé u(i) n'a de sens que si le circuit varie (alternatif, découpage) ; en continu, il ne garderait que les transitoires
+  if(o&&o.n>1&&net&&net.fper){const per=2/net.fper,N=Math.min(o.n,Math.max(2,Math.round(per/(net?net.dt:2e-4)))),stp=Math.max(1,Math.floor(N/1500));
+    for(let a=N-1;a>=0;a-=stp){const k=(o.k-1-a+2*XYN)%XYN;tr.push([o.i[k],o.u[k]]);}}
+  const lp=livePoint(c),live=[lp.i,lp.u];
+  const all=rel.concat(mod,tr,[live]);
+  let xmin=0,xmax=0,ymin=0,ymax=0;
+  for(const[i,U]of all){const X=ax==='UI'?i*ik:U,Y=ax==='UI'?U:i*ik;if(X<xmin)xmin=X;if(X>xmax)xmax=X;if(Y<ymin)ymin=Y;if(Y>ymax)ymax=Y;}
+  if(xmax-xmin<1e-9)xmax=xmin+1;if(ymax-ymin<1e-9)ymax=ymin+1;
+  {const dx=(xmax-xmin)*0.04,dy=(ymax-ymin)*0.04;if(xmax>0)xmax+=dx;if(xmin<0)xmin-=dx;if(ymax>0)ymax+=dy;if(ymin<0)ymin-=dy;}
+  const sx=niceStep(xmax-xmin),sy=niceStep(ymax-ymin);
+  xmin=Math.floor(xmin/sx+1e-9)*sx;xmax=Math.ceil(xmax/sx-1e-9)*sx;ymin=Math.floor(ymin/sy+1e-9)*sy;ymax=Math.ceil(ymax/sy-1e-9)*sy;
+  if(xmax-xmin<sx)xmax=xmin+sx;if(ymax-ymin<sy)ymax=ymin+sy;
+  if(xmax===0)xmax=sx;if(ymax===0)ymax=sy;
+  const L=46,R=12,T=14,B=34,pw=w-L-R,ph=h-T-B;
+  const X=v=>L+(v-xmin)/(xmax-xmin)*pw,Y=v=>T+(ymax-v)/(ymax-ymin)*ph;
+  const toXY=([i,U])=>ax==='UI'?[X(i*ik),Y(U)]:[X(U),Y(i*ik)];
+  ctx.font='11px "Share Tech Mono",ui-monospace,Consolas,monospace';ctx.textBaseline='middle';
+  ctx.strokeStyle='#DDE3DC';ctx.lineWidth=1;ctx.beginPath();
+  const dec=s=>s>=1?0:s>=0.1?1:s>=0.01?2:3;
+  ctx.fillStyle='#5B6660';ctx.textAlign='center';
+  for(let v=xmin;v<=xmax+sx/2;v+=sx){const x=Math.round(X(v))+.5;ctx.moveTo(x,T);ctx.lineTo(x,T+ph);ctx.fillText(fr(v,dec(sx)),x,T+ph+11);}
+  ctx.textAlign='right';
+  for(let v=ymin;v<=ymax+sy/2;v+=sy){const y=Math.round(Y(v))+.5;ctx.moveTo(L,y);ctx.lineTo(L+pw,y);ctx.fillText(fr(v,dec(sy)),L-5,y);}
+  ctx.stroke();
+  ctx.strokeStyle='#16201B';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(X(Math.max(xmin,Math.min(0,xmax))),T);ctx.lineTo(X(Math.max(xmin,Math.min(0,xmax))),T+ph);
+  ctx.moveTo(L,Y(Math.max(ymin,Math.min(0,ymax))));ctx.lineTo(L+pw,Y(Math.max(ymin,Math.min(0,ymax))));ctx.stroke();
+  ctx.fillStyle='#16201B';ctx.font='bold 12px "Red Hat Text","Segoe UI",Arial,sans-serif';
+  const xl=ax==='UI'?`I (${u})`:'U (V)',yl=ax==='UI'?'U (V)':`I (${u})`;
+  ctx.textAlign='right';ctx.fillText(xl,L+pw,T+ph+25);ctx.textAlign='left';ctx.fillText(yl,4,8);
+  ctx.save();ctx.beginPath();ctx.rect(L,T,pw,ph);ctx.clip();
+  const line=(arr,st,lw,dash)=>{if(arr.length<2)return;ctx.strokeStyle=st;ctx.lineWidth=lw;ctx.setLineDash(dash||[]);ctx.beginPath();arr.forEach((q,k)=>{const[x,y]=toXY(q);if(k)ctx.lineTo(x,y);else ctx.moveTo(x,y);});ctx.stroke();ctx.setLineDash([]);};
+  line(mod,'#1F6B4A',2,[7,5]);
+  line(tr,'rgba(43,92,138,.75)',1.6);
+  const fit=fitLine(c.cpts||[]);
+  if(fit&&fit.aligned&&rel.length>=2){const i0=Math.min(0,...rel.map(q=>q[0])),i1=Math.max(...rel.map(q=>q[0]))*1.08;line([[i0,fit.a*i0+fit.b],[i1,fit.a*i1+fit.b]],'#16201B',1,[2,3]);}
+  ctx.fillStyle='#16201B';for(const q of rel){const[x,y]=toXY(q);ctx.beginPath();ctx.arc(x,y,4.2,0,2*Math.PI);ctx.fill();}
+  {const[x,y]=toXY(live);ctx.strokeStyle='#E0601F';ctx.lineWidth=2.4;ctx.beginPath();ctx.arc(x,y,7,0,2*Math.PI);ctx.stroke();ctx.fillStyle='#E0601F';ctx.beginPath();ctx.arc(x,y,2.2,0,2*Math.PI);ctx.fill();}
+  ctx.restore();
+}
+
+/* ================= tableau de mesures =================
+   Tous les appareils du schéma en direct, et un bouton qui relève leurs lectures d'un coup :
+   une ligne par relevé, une colonne par appareil, à copier dans un tableur. */
+let tabData={cols:[],rows:[]};
+function readNum(k){
+  if(k.type==='amm'||k.type==='volt')return{v:k.burnt?NaN:meterVal(k),u:k.type==='amm'?'A':'V'};
+  if(k.type==='wattm')return{v:wattVals(k).P,u:'W'};
+  if(k.type==='joule')return{v:k.E||0,u:'J'};
+  if(k.type==='mcc')return{v:(k.w||0)*30/Math.PI,u:'tr/min'};
+  return null;
+}
+const tabMeters=()=>state.comps.filter(k=>readNum(k));
+const tabWin=makeWin('table','Tableau de mesures',{
+  body:`<div id="tbLive"></div>
+    <div class="row"><button class="btn primary" data-t="add">Relever les mesures</button><button class="btn" data-t="copy">Copier le tableau</button><button class="btn" data-t="clear">Effacer</button></div>
+    <div id="tbTab" class="tb-wrap"></div>`,
+  defW:460,minW:300,
+  onOpen(){renderTabLive();renderTab();},
+  slow(){renderTabLive();},
+});
+function renderTabLive(){
+  const ms=tabMeters();
+  $('tbLive').innerHTML=ms.length?`<dl class="kv">${ms.map(k=>`<dt>${readLabel(k)}</dt><dd>${readValue(k)}</dd>`).join('')}</dl>`
+    :`<p class="note">Aucun appareil sur le schéma : placez un ampèremètre, un voltmètre ou un wattmètre.</p>`;
+}
+function renderTab(){
+  const d=tabData;if(!d.rows.length){$('tbTab').innerHTML='';return;}
+  $('tbTab').innerHTML=`<table class="ch-tab"><thead><tr><th>n°</th>${d.cols.map(c=>`<th>${c}</th>`).join('')}<th></th></tr></thead><tbody>${
+    d.rows.map((r,k)=>`<tr><td>${k+1}</td>${d.cols.map(c=>`<td>${r[c]==null||!isFinite(r[c])?'—':frs(r[c])}</td>`).join('')}<td><button class="xbtn" data-t="del" data-k="${k}" aria-label="Retirer la ligne ${k+1}">×</button></td></tr>`).join('')}</tbody></table>`;
+}
+tabWin.body.addEventListener('click',e=>{
+  const b=e.target.closest('[data-t]');if(!b)return;const a=b.dataset.t,d=tabData;
+  if(a==='add'){const row={};for(const k of tabMeters()){const r=readNum(k),col=`${k.name} (${r.u})`;if(!d.cols.includes(col))d.cols.push(col);row[col]=+r.v.toPrecision(4);}
+    d.rows.push(row);save();renderTab();return;}
+  if(a==='del'){d.rows.splice(+b.dataset.k,1);save();renderTab();return;}
+  if(a==='clear'){tabData={cols:[],rows:[]};save();renderTab();return;}
+  if(a==='copy'){const t=[d.cols.join('\t')].concat(d.rows.map(r=>d.cols.map(c=>r[c]==null||!isFinite(r[c])?'':String(r[c]).replace('.',',')).join('\t'))).join('\n');
+    try{navigator.clipboard.writeText(t).then(()=>{b.textContent='Tableau copié';setTimeout(()=>{b.textContent='Copier le tableau';},1600);},()=>{b.textContent='Copie refusée ici';});}catch(_){b.textContent='Copie indisponible';}}
+});
+
+/* ================= bibliothèque ================= */
+function miniSVG(type){
+  const c={type,x:0,y:0,rot:0,props:TYPES[type].props,name:''};
+  const inner=compSVG(c,{exp:true,ghost:true}).replace(' ghost','');
+  return FOUR.has(type)?`<svg viewBox="${P(0)-52} ${P(0)-48} 104 96" aria-hidden="true">${inner}</svg>`:`<svg viewBox="${P(0)-46} ${P(0)-26} 92 52" aria-hidden="true">${inner}</svg>`;
+}
+const lib=$('lib');
+for(const[title,list]of SECTIONS){
+  const sec=document.createElement('div');sec.className='libsec';sec.innerHTML=`<div class="lab">${title}</div><div class="libgrid"></div>`;
+  const grid=sec.lastChild;
+  for(const t of list){const b=document.createElement('button');b.className='item';b.dataset.type=t;b.title=TYPES[t].label+' : '+SUB[t];
+    b.innerHTML=miniSVG(t)+`<b>${TYPES[t].label}</b>`;grid.appendChild(b);}
+  lib.appendChild(sec);
+}
+lib.insertAdjacentHTML('beforeend','<p class="libnote">Glissez un composant sur la feuille, ou touchez-le puis touchez la feuille.</p>');
+function updateLib(){lib.querySelectorAll('.item').forEach(b=>b.classList.toggle('on',b.dataset.type===armed));}
+let ldrag=null;
+lib.addEventListener('pointerdown',e=>{
+  const b=e.target.closest('.item');if(!b||e.button>0)return;
+  const canDrag=e.pointerType!=='touch'||matchMedia('(min-width: 761px)').matches;
+  ldrag={type:b.dataset.type,x:e.clientX,y:e.clientY,moving:false,canDrag,id:e.pointerId,ghost:null};
+});
+const overSheet=e=>{const r=svg.getBoundingClientRect();return e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom;};
+document.addEventListener('pointermove',e=>{
+  if(!ldrag||e.pointerId!==ldrag.id)return;
+  if(!ldrag.moving&&ldrag.canDrag&&Math.hypot(e.clientX-ldrag.x,e.clientY-ldrag.y)>7){
+    ldrag.moving=true;const gd=document.createElement('div');gd.className='ghostdrag';gd.innerHTML=miniSVG(ldrag.type);document.body.appendChild(gd);ldrag.ghost=gd;armed=null;updateLib();}
+  if(ldrag.moving){ldrag.ghost.style.transform=`translate(${e.clientX-44}px,${e.clientY-26}px)`;
+    if(overSheet(e)){const g=toGrid(e);hover=[Math.round(g.gx),Math.round(g.gy)];armed=ldrag.type;ldrag.ghost.style.opacity='0';}
+    else{hover=null;armed=null;ldrag.ghost.style.opacity='';}}
+});
+function endLib(e){
+  if(!ldrag||e.pointerId!==ldrag.id)return;const d=ldrag;ldrag=null;
+  if(d.ghost)d.ghost.remove();
+  if(d.moving){armed=null;hover=null;
+    if(e.type==='pointerup'&&overSheet(e)){const g=toGrid(e);setTool('select');placeComp(d.type,[Math.round(g.gx),Math.round(g.gy)]);}
+    updateLib();return;}
+  if(e.type==='pointerup'){armed=armed===d.type?null:d.type;hover=null;if(armed)setTool('select',true);updateLib();renderStatus();}
+}
+document.addEventListener('pointerup',endLib);document.addEventListener('pointercancel',endLib);
+
+/* ================= interactions sur la feuille ================= */
+function toGrid(e){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const p=pt.matrixTransform(svg.getScreenCTM().inverse());return{gx:(p.x-O)/S,gy:(p.y-O)/S};}
+const snap=(gx,gy)=>[clamp(Math.round(gx),0,W),clamp(Math.round(gy),0,H)];
+svg.addEventListener('pointerdown',e=>{
+  if(e.button>0)return;try{svg.setPointerCapture(e.pointerId);}catch(_){}
+  const{gx,gy}=toGrid(e);const gp=snap(gx,gy);
+  if(armed){const t=armed;armed=null;hover=null;updateLib();placeComp(t,gp);return;}
+  const bc=pillAt(gx,gy);if(bc){pushHist();bc.burnt=false;commit();return;}
+  if(tool==='erase'){const s=snapshot();const any=eraseAt(gx,gy);drag={kind:'erase',snap:s,any};if(any)build();return;}
+  if(tool==='select'){
+    const sc=getSel();if(sc){const h=handleAt(sc,gx,gy);if(h==='rot'){rotateSel();return;}if(h==='del'){deleteSel();return;}}
+    const c=compAt(gx,gy);
+    if(c){drag={kind:'move',comp:c,sx:gx,sy:gy,ox:c.x,oy:c.y,moved:false,snap:snapshot()};if(sel!==c.id){sel=c.id;renderProps();renderRead();}return;}
+  }
+  const near=Math.hypot(gx-gp[0],gy-gp[1])<0.42;
+  if(tool==='wire'||near){drag={kind:'wire',a:gp,cur:gp,hFirst:null};return;}
+  if(sel!==null){sel=null;renderProps();renderRead();}
+});
+svg.addEventListener('pointermove',e=>{
+  const{gx,gy}=toGrid(e);
+  if(!drag){if(armed&&!ldrag){const h=snap(gx,gy);if(!hover||h[0]!==hover[0]||h[1]!==hover[1])hover=h;}return;}
+  if(drag.kind==='move'){const c=drag.comp;const nx=clamp(drag.ox+Math.round(gx-drag.sx),1,W-1),ny=clamp(drag.oy+Math.round(gy-drag.sy),1,H-1);
+    if(nx!==c.x||ny!==c.y){c.x=nx;c.y=ny;drag.moved=true;build();}}
+  else if(drag.kind==='wire'){const p=snap(gx,gy);
+    if(drag.hFirst===null&&(p[0]!==drag.a[0]||p[1]!==drag.a[1]))drag.hFirst=Math.abs(gx-drag.a[0])>=Math.abs(gy-drag.a[1]);
+    drag.cur=p;}
+  else if(drag.kind==='erase'){if(eraseAt(gx,gy)){drag.any=true;build();}}
+});
+svg.addEventListener('pointerleave',()=>{if(armed&&!drag&&!ldrag)hover=null;});
+function endSheet(e){
+  if(!drag)return;const d=drag;drag=null;const cancel=e.type==='pointercancel';
+  if(d.kind==='move'){
+    if(d.moved){pushHist(d.snap);commit();}
+    else if(!cancel&&d.comp.type==='switch'){pushHist(d.snap);d.comp.props.closed=!d.comp.props.closed;commit();}
+    else if(!cancel&&d.comp.type==='osc')openScope(d.comp);
+    else if(!cancel&&winOn('char')&&!INSTR.has(d.comp.type)&&!FOUR.has(d.comp.type)&&charId!==d.comp.id){charId=d.comp.id;winState('char').cid=charId;save();fillCharSel();renderChar();}
+  }else if(d.kind==='wire'){
+    if(!cancel&&(d.cur[0]!==d.a[0]||d.cur[1]!==d.a[1])){pushHist();addWirePath(d.a,d.cur,d.hFirst!==false);commit();}
+    // toucher le croisement de deux fils pose le point qui les relie, ou l'enlève
+    else if(!cancel&&isCrossing(pk(d.a))){pushHist();const k=pk(d.a);if(state.jn.has(k))state.jn.delete(k);else state.jn.add(k);commit();
+      $('status').innerHTML=state.jn.has(k)?'<span class="pill info">Fils reliés</span> Le point relie les deux fils. Touchez-le encore pour les séparer.':'<span class="pill info">Fils séparés</span> Sans point, deux fils qui se croisent ne sont pas reliés.';}
+    else if(sel!==null){sel=null;renderProps();renderRead();}
+  }else if(d.kind==='erase'){if(d.any){pushHist(d.snap);commit();}}
+}
+svg.addEventListener('pointerup',endSheet);svg.addEventListener('pointercancel',endSheet);
+
+/* ================= barre d'outils ================= */
+function setTool(t,keepArmed){tool=t;if(!keepArmed){armed=null;updateLib();}
+  for(const k of['select','wire','erase'])$('t-'+k).setAttribute('aria-pressed',String(k===t));renderStatus();}
+$('t-select').onclick=()=>setTool('select');$('t-wire').onclick=()=>setTool('wire');$('t-erase').onclick=()=>setTool('erase');
+/* « Affichage » : ce que montre la feuille */
+const OPT_KEYS=['flow','vals','grid','slowmo','arrows','names','lcd'];
+for(const k of OPT_KEYS)$('o-'+k).addEventListener('change',e=>{opts[k]=e.target.checked;save();drawSheet();renderStatus();renderRead();});
+for(const k of['u','i','p','r'])$('q-'+k).addEventListener('change',e=>{opts.q[k]=e.target.checked;if(e.target.checked&&!opts.vals){opts.vals=true;$('o-vals').checked=true;}save();drawSheet();});
+function syncOpts(){
+  for(const k of OPT_KEYS)$('o-'+k).checked=!!opts[k];
+  for(const k of['u','i','p','r'])$('q-'+k).checked=!!opts.q[k];
+  const big=W>SIZES.std[0];for(const b of document.querySelectorAll('[data-size]'))b.setAttribute('aria-pressed',String((b.dataset.size==='big')===big));
+  applyLayout();
+}
+/* la taille de la feuille : on ne la réduit pas sous un composant ou un fil */
+for(const b of document.querySelectorAll('[data-size]'))b.addEventListener('click',()=>{
+  const[w,h]=SIZES[b.dataset.size];if(w===W&&h===H)return;
+  const out=state.comps.some(c=>termsOf(c).some(([x,y])=>x>w||y>h))||[...state.segs].some(k=>segPts(k).some(([x,y])=>x>w||y>h));
+  if(out){$('status').innerHTML='<span class="pill warn">Feuille trop petite</span> Rapprochez les composants du coin haut gauche avant de réduire la feuille.';return;}
+  pushHist();setSize(w,h);syncOpts();commit();
+});
+/* « Fenêtres » */
+for(const b of document.querySelectorAll('[data-open]'))b.addEventListener('click',()=>{
+  const id=b.dataset.open,s=getSel(),note=$('popWinNote');
+  if(id==='char'){const c=s&&!INSTR.has(s.type)&&!FOUR.has(s.type)?s:dipoles()[0];
+    if(!c){note.textContent='Placez d’abord un dipôle : une résistance, une lampe, une diode…';return;}openChar(c);}
+  else if(id==='scope'){const c=s&&s.type==='osc'?s:state.comps.find(k=>k.type==='osc');
+    if(!c){note.textContent='Placez d’abord un oscilloscope sur le schéma.';return;}openScope(c);}
+  else openWin(id);
+  $('popWin').open=false;
+});
+/* bibliothèque et panneau : montrer ou cacher leur colonne */
+$('b-lib').onclick=()=>{opts.lib=!opts.lib;applyLayout();save();};
+$('b-panel').onclick=()=>{opts.panel=!opts.panel;applyLayout();save();};
+/* un menu se referme quand on touche ailleurs, ou à Échap */
+document.addEventListener('pointerdown',e=>{for(const d of document.querySelectorAll('details.pop[open]'))if(!d.contains(e.target))d.open=false;});
+function undo(){if(!hist.length)return;restore(hist.pop());sel=null;syncOpts();commit();}
+$('undo').onclick=undo;
+const clr=$('clear');let clrT=null;
+clr.onclick=()=>{
+  if(!clr.classList.contains('confirm')){clr.classList.add('confirm');clr.lastChild.textContent='Confirmer l’effacement';clrT=setTimeout(resetClr,3500);return;}
+  resetClr();pushHist();state={comps:[],segs:new Set(),nextId:1,counters:{},jn:new Set()};sel=null;closeScope();if(winState('char').open)closeWin('char');commit();
+};
+function resetClr(){clearTimeout(clrT);clr.classList.remove('confirm');clr.lastChild.textContent='Tout effacer';}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')for(const d of document.querySelectorAll('details.pop[open]'))d.open=false;
+  if(e.target.closest('input,select,textarea'))return;
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();undo();return;}
+  if(e.key==='r'||e.key==='R')rotateSel();
+  else if(e.key==='Delete'||e.key==='Backspace'){if(getSel()){e.preventDefault();deleteSel();}}
+  else if(e.key==='Escape'){armed=null;hover=null;updateLib();if(sel!==null){sel=null;renderProps();renderRead();}}
+});
+
+/* ================= exemples =================
+   Un exemple : c, les composants [type, x, y, rotation, réglages], dans l'ordre où ils
+   prennent leur nom (G1, G2…) ; w, les fils, des lignes brisées ; et au besoin size (la
+   grande feuille), slowmo, sel (le composant sélectionné), ch2 ([oscilloscope, voie 2]),
+   scope, char (les fenêtres ouvertes), cmod (le modèle calculé), note (la consigne). */
+const L21={mark:'12 V – 21 W',Un:12,In:1.75};
+const lampW=w=>({mark:`230 V – ${w} W`,Un:230,In:w/230});
+const BRIDGE=d=>[[d,10,6,3],[d,10,10,3],[d,14,6,3],[d,14,10,3]];
+const BRIDGE_W=[[[10,7],[10,9]],[[14,7],[14,9]],[[10,8],[11,8]],[[13,8],[14,8]],[[14,5],[14,4]],[[14,11],[14,12]]];
+function lineRow(r,L,withT){
+  const c=[['acgen',2,r+1,1,{U:12,f:50}],['cable',12,r,0,{L,S:0.5}],['cable',12,r+2,0,{L,S:0.5}],['lamp',22,r+1,1,L21]];
+  let w=[[[2,r],[11,r]],[[13,r],[22,r]],[[2,r+2],[11,r+2]],[[13,r+2],[22,r+2]]];
+  if(withT){c.push(['transfo',5,r+1,0,{tmode:'U',U1:12,U2:120}],['transfo',19,r+1,0,{tmode:'U',U1:120,U2:12}]);
+    w=[[[2,r],[4,r]],[[2,r+2],[4,r+2]],[[6,r],[11,r]],[[6,r+2],[11,r+2]],[[13,r],[18,r]],[[13,r+2],[18,r+2]],[[20,r],[22,r]],[[20,r+2],[22,r+2]]];}
+  return{c,w};
+}
+/* le relevé d'une caractéristique : générateur, ampèremètre, dipôle, voltmètre à ses bornes */
+const RELEVE=(dip,props,E)=>({c:[['gen',5,8,1,{E}],['amm',11,4,0],[dip,17,8,1,props],['volt',21,8,1]],
+  w:[[[5,7],[5,4],[10,4]],[[12,4],[17,4],[17,7]],[[17,5],[21,5],[21,7]],[[17,9],[17,12],[5,12],[5,9]],[[21,9],[21,11],[17,11]]]});
+/* le réseau triphasé sur la grande feuille : trois générateurs étoilés, trois barres de phase
+   en escalier (L1 en haut, jusqu'à x = 33 ; L2 jusqu'à 30 ; L3 jusqu'à 27), le neutre en bas */
+const TRI_SRC=[['acgen',3,14,1,{U:230,ph:0}],['acgen',6,14,1,{U:230,ph:-120}],['acgen',9,14,1,{U:230,ph:-240}]];
+const TRI_W=[[[3,15],[3,18]],[[6,15],[6,18]],[[9,15],[9,18]],[[3,18],[9,18]]];
+const EX={
+  mesures:{c:[['gen',5,8,1],['switch',8,4,0],['amm',12,4,0],['lamp',17,8,1],['volt',21,8,1]],
+    w:[[[5,7],[5,4],[7,4]],[[9,4],[11,4]],[[13,4],[17,4],[17,7]],[[17,5],[21,5],[21,7]],[[17,9],[17,12],[5,12],[5,9]],[[21,9],[21,11],[17,11]]]},
+  serie:{c:[['gen',6,7,1],['switch',9,4,0],['lamp',13,4,0],['lamp',16,7,1]],
+    w:[[[6,6],[6,4],[8,4]],[[10,4],[12,4]],[[14,4],[16,4],[16,6]],[[16,8],[16,10],[6,10],[6,8]]]},
+  derivation:{c:[['gen',5,8,1],['switch',8,4,0],['lamp',12,8,1],['lamp',17,8,1]],
+    w:[[[5,7],[5,4],[7,4]],[[9,4],[17,4],[17,7]],[[12,4],[12,7]],[[5,9],[5,12],[17,12],[17,9]],[[12,12],[12,9]]]},
+  del:{c:[['gen',5,8,1],['switch',8,4,0],['res',13,4,0,{R:220}],['led',17,8,1]],
+    w:[[[5,7],[5,4],[7,4]],[[9,4],[12,4]],[[14,4],[17,4],[17,7]],[[17,9],[17,12],[5,12],[5,9]]]},
+  moteur:{c:[['gen',5,8,1],['fuse',9,4,0],['switch',13,4,0],['motor',18,8,1],['amm',12,12,2]],
+    w:[[[5,7],[5,4],[8,4]],[[10,4],[12,4]],[[14,4],[18,4],[18,7]],[[18,9],[18,12],[13,12]],[[11,12],[5,12],[5,9]]]},
+  /* les caractéristiques */
+  carres:Object.assign(RELEVE('res',{R:220},2.2),{sel:'G1',char:'R1',
+    note:'Faites varier la tension de G1 (curseur ou valeurs usuelles) et touchez « Relever le point » à chaque réglage : la caractéristique U = ƒ(I) de R1 se trace point par point.'}),
+  carlampe:Object.assign(RELEVE('lamp',{},1),{sel:'G1',char:'L1',
+    note:'Le même relevé avec une lampe 6 V – 0,1 A, de 0 à 6 V : les points ne sont plus alignés, et U ÷ I grandit avec la tension.'}),
+  cardel:{c:[['gen',4,8,1,{E:3}],['amm',8,4,0],['res',13,4,0,{R:220}],['led',18,8,1],['volt',21,8,1]],
+    w:[[[4,7],[4,4],[7,4]],[[9,4],[12,4]],[[14,4],[18,4],[18,7]],[[18,9],[18,12],[4,12],[4,9]],[[18,5],[21,5],[21,7]],[[21,9],[21,11],[18,11]]],
+    sel:'G1',char:'D1',note:'Réglez G1 de 0 à 12 V et relevez U et I aux bornes de la DEL : rien ne passe sous 2 V, puis le courant monte vite. R1 la protège.'},
+  carpile:{c:[['gen',7,8,1,{E:4.5,r:1.5}],['volt',4,8,1],['switch',10,4,0],['amm',14,4,0],['res',19,8,1,{R:10}]],
+    w:[[[7,7],[7,4],[9,4]],[[11,4],[13,4]],[[15,4],[19,4],[19,7]],[[19,9],[19,12],[7,12],[7,9]],[[4,7],[4,5],[7,5]],[[4,9],[4,11],[7,11]]],
+    sel:'R1',char:'G1',note:'Changez la charge R1 et relevez la tension et le courant de la pile G1 : la droite descend ; E se lit à vide (ouvrez K1), r dans la pente.'},
+  cardiode:{c:[['gbf',5,8,1,{wave:'tri',f:2,Um:3}],['res',11,4,0,{R:22}],['diode',16,8,1]],
+    w:[[[5,7],[5,4],[10,4]],[[12,4],[16,4],[16,7]],[[16,9],[16,12],[5,12],[5,9]]],
+    char:'D1',cmod:'D1',note:'Le GBF balaie la tension en triangle : le tracé u(i) de la diode dessine sa caractéristique, comme un oscilloscope en mode XY. Comparez-le au modèle en pointillé.'},
+  gbflampe:{c:[['gbf',5,8,1,{f:1,Um:6}],['switch',8,4,0],['lamp',15,8,1],['volt',20,8,1,{mode:'AC'}],['osc',23,8,1,{tb:0.2,s1:2,init:true}]],
+    w:[[[5,7],[5,4],[7,4]],[[9,4],[15,4],[15,7]],[[15,5],[20,5],[20,7]],[[20,5],[23,5],[23,7]],[[15,9],[15,12],[5,12],[5,9]],[[20,9],[20,11],[15,11]],[[23,9],[23,11],[20,11]]]},
+  gbfdel:{c:[['gbf',5,8,1,{wave:'sq',f:1,Um:5}],['switch',8,4,0],['res',13,4,0,{R:220}],['led',17,8,1]],
+    w:[[[5,7],[5,4],[7,4]],[[9,4],[12,4]],[[14,4],[17,4],[17,7]],[[17,9],[17,12],[5,12],[5,9]]]},
+  pontdiodes:{slowmo:true,c:[...BRIDGE('diode'),['acgen',12,8,0,{U:6,f:50}],['amm',17,4,0],['lamp',19,8,1],['volt',23,8,1]],
+    w:[...BRIDGE_W,[[10,5],[10,4],[16,4]],[[10,11],[10,12],[19,12]],[[18,4],[19,4],[19,7]],[[19,5],[23,5],[23,7]],[[19,9],[19,12]],[[23,9],[23,11],[19,11]]]},
+  pontcond:{slowmo:false,c:[...BRIDGE('diode'),['acgen',12,8,0,{U:6,f:50}],['switch',17,6,1,{closed:false}],['cap',17,9,1,{C:1000}],['lamp',20,8,1],['osc',23,8,1,{tb:0.005,s1:2,pos1:-3,init:true}]],
+    w:[...BRIDGE_W,[[10,5],[10,4],[23,4],[23,7]],[[10,11],[10,12],[23,12],[23,9]],[[17,4],[17,5]],[[17,7],[17,8]],[[17,10],[17,12]],[[20,4],[20,7]],[[20,9],[20,12]]]},
+  pontdel:{slowmo:false,c:[...BRIDGE('led'),['gbf',12,8,0,{wave:'sin',f:0.5,Um:8}],['res',19,8,1,{R:220}]],
+    w:[...BRIDGE_W,[[10,5],[10,4],[19,4],[19,7]],[[10,11],[10,12],[19,12],[19,9]]]},
+  charge:{slowmo:false,c:[['gen',4,8,1,{E:6}],['switch',7,4,0,{closed:false}],['res',11,4,0,{R:1000}],['cap',15,8,1,{C:1000}],['osc',19,8,1,{tb:0.5,s1:1,pos1:-3,mode:'roll',init:true}]],
+    w:[[[4,7],[4,4],[6,4]],[[8,4],[10,4]],[[12,4],[15,4],[15,7]],[[15,9],[15,12],[4,12],[4,9]],[[15,5],[19,5],[19,7]],[[19,9],[19,11],[15,11]]]},
+  joule:{slowmo:false,c:[['gen',4,8,1,{E:12}],['joule',9,8,0],['switch',12,7,0],['lamp',16,8,1,L21]],
+    w:[[[4,7],[8,7]],[[4,9],[8,9]],[[10,7],[11,7]],[[13,7],[16,7]],[[10,9],[16,9]]]},
+  ligne:(()=>{const a=lineRow(2,2,false),b=lineRow(7,150,false),c=lineRow(12,150,true);return{slowmo:false,c:[...a.c,...b.c,...c.c],w:[...a.w,...b.w,...c.w]};})(),
+  /* BTS électrotechnique */
+  rl:{slowmo:false,c:[['acgen',3,8,1,{U:230}],['wattm',7,5,0],['pince',11,4,0],['amm',15,4,0,{mode:'AC',cal:20}],['res',19,6,1,{R:20}],['ind',19,10,1,{L:100,r:0}],['volt',22,8,1,{mode:'AC'}],
+      ['osc',13,9,1,{init:true,tb:0.005,s1:100,pos1:0,s2:5,pos2:0,mode:'trig'}]],
+    w:[[[3,7],[3,4],[6,4]],[[8,4],[10,4]],[[12,4],[14,4]],[[16,4],[19,4],[19,5]],[[19,7],[19,9]],[[19,11],[19,13],[3,13],[3,9]],[[6,6],[6,13]],[[8,6],[8,13]],
+      [[19,4],[22,4],[22,7]],[[22,9],[22,13],[19,13]],[[13,4],[13,8]],[[13,10],[13,13]]],
+    sel:'W1',ch2:['O1','S1'],note:'Une charge R-L sur 230 V : le wattmètre W1 donne P, et son panneau S = U × I, Q et cos φ. Ouvrez l’oscilloscope O1 : u (voie 1) et i (voie 2, la sonde S1) sont décalés.'},
+  cosphi:{slowmo:false,c:[['acgen',3,8,1,{U:230}],['wattm',7,5,0],['pince',11,4,0],['amm',15,4,0,{mode:'AC',cal:100}],['res',19,6,1,{R:20}],['ind',19,10,1,{L:100,r:0}],['switch',22,6,1,{closed:false}],['cap',22,10,1,{C:50}],
+      ['osc',13,9,1,{init:true,tb:0.005,s1:100,pos1:0,s2:5,pos2:0,mode:'trig'}]],
+    w:[[[3,7],[3,4],[6,4]],[[8,4],[10,4]],[[12,4],[14,4]],[[16,4],[19,4],[19,5]],[[19,7],[19,9]],[[19,11],[19,13],[3,13],[3,9]],[[6,6],[6,13]],[[8,6],[8,13]],
+      [[19,4],[22,4],[22,5]],[[22,7],[22,9]],[[22,11],[22,13],[19,13]],[[13,4],[13,8]],[[13,10],[13,13]]],
+    sel:'W1',ch2:['O1','S1'],note:'Fermez K1 : le condensateur fournit une partie de la puissance réactive. P ne bouge pas, le courant en ligne (A1) baisse et le facteur de puissance remonte.'},
+  'tri-etoile':{size:'big',slowmo:false,c:[...TRI_SRC,['amm',24,18,0,{mode:'AC'}],['lamp',33,14,1,lampW(100)],['lamp',30,14,1,lampW(100)],['lamp',27,14,1,lampW(100)],
+      ['volt',15,5,1,{mode:'AC'}],['volt',15,14,1,{mode:'AC'}]],
+    w:[...TRI_W,[[9,18],[23,18]],[[25,18],[33,18]],[[3,13],[3,4],[33,4],[33,13]],[[6,13],[6,7],[30,7],[30,13]],[[9,13],[9,10],[27,10],[27,13]],
+      [[27,15],[27,18]],[[30,15],[30,18]],[[33,15],[33,18]],[[15,6],[15,7]],[[15,13],[15,10]],[[15,15],[15,18]]],
+    note:'Trois générateurs de 230 V déphasés de 120° : V2 lit une tension simple, V1 une tension composée, 400 V = 230 V × √3. Récepteur équilibré : le neutre (A1) ne transporte presque rien.'},
+  'tri-neutre':{size:'big',slowmo:false,c:[...TRI_SRC,['amm',24,18,0,{mode:'AC'}],['lamp',33,14,1,lampW(100)],['lamp',30,14,1,lampW(60)],['lamp',27,14,1,lampW(25)],
+      ['switch',20,18,0,{closed:true}],['volt',20,20,0,{mode:'AC'}],['volt',25,14,1,{mode:'AC'}]],
+    w:[...TRI_W,[[9,18],[19,18]],[[21,18],[23,18]],[[25,18],[33,18]],[[3,13],[3,4],[33,4],[33,13]],[[6,13],[6,7],[30,7],[30,13]],[[9,13],[9,10],[27,10],[27,13]],
+      [[27,15],[27,18]],[[30,15],[30,18]],[[33,15],[33,18]],[[19,18],[19,20]],[[21,18],[21,20]],[[25,13],[25,10]],[[25,15],[25,18]]],
+    sel:'K1',note:'Trois lampes différentes. Ouvrez K1, le neutre : le point commun des lampes se déplace (V1). La lampe de 25 W reçoit bien plus de 230 V (V2), celle de 100 W bien moins.'},
+  'tri-p':{size:'big',slowmo:false,c:[...TRI_SRC,['amm',24,18,0,{mode:'AC'}],['wattm',32,9,1],
+      ['res',33,13,1,{R:40}],['ind',33,16,1,{L:100,r:0}],['res',30,13,1,{R:40}],['ind',30,16,1,{L:100,r:0}],['res',27,13,1,{R:40}],['ind',27,16,1,{L:100,r:0}]],
+    w:[...TRI_W,[[9,18],[23,18]],[[25,18],[33,18]],[[3,13],[3,4],[33,4],[33,8]],[[33,10],[33,12]],[[6,13],[6,7],[30,7],[30,12]],[[9,13],[9,10],[27,10],[27,12]],
+      [[33,14],[33,15]],[[30,14],[30,15]],[[27,14],[27,15]],[[33,17],[33,18]],[[30,17],[30,18]],[[27,17],[27,18]],[[31,10],[31,18]]],
+    sel:'W1',note:'Récepteur R-L équilibré avec neutre : W1 mesure la puissance de la phase 1 (son circuit tension va au neutre). La puissance totale vaut P = 3 × P1.'},
+  transfo:{slowmo:false,c:[['acgen',3,8,1,{U:230}],['amm',6,4,0,{mode:'AC'}],['volt',8,8,1,{mode:'AC'}],['transfo',11,8,0,{tmode:'U',U1:230,U2:24}],['amm',16,4,0,{mode:'AC'}],
+      ['switch',19,6,1,{closed:false}],['res',19,10,1,{R:12}],['volt',22,8,1,{mode:'AC'}]],
+    w:[[[3,7],[3,4],[5,4]],[[7,4],[10,4],[10,7]],[[8,4],[8,7]],[[8,9],[8,12]],[[10,9],[10,12],[3,12],[3,9]],[[12,7],[12,4],[15,4]],[[17,4],[19,4],[19,5]],[[19,7],[19,9]],
+      [[19,11],[19,12],[12,12],[12,9]],[[19,4],[22,4],[22,7]],[[22,9],[22,12],[19,12]]],
+    sel:'K1',note:'Fermez K1 pour charger le secondaire : le rapport des courants I1 ÷ I2 (A1, A2) est proche de U2 ÷ U1, et U2 (V2) baisse un peu en charge.'},
+  pd2:{slowmo:false,c:[...BRIDGE('diode'),['acgen',12,8,0,{U:24,f:50}],['switch',17,6,1,{closed:false}],['cap',17,9,1,{C:2200}],['res',20,8,1,{R:47}],
+      ['osc',23,8,1,{tb:0.005,s1:10,pos1:-3,init:true,meas:true}]],
+    w:[...BRIDGE_W,[[10,5],[10,4],[23,4],[23,7]],[[10,11],[10,12],[23,12],[23,9]],[[17,4],[17,5]],[[17,7],[17,8]],[[17,10],[17,12]],[[20,4],[20,7]],[[20,9],[20,12]]],
+    scope:'O1',note:'Pont de Graëtz sur une charge de 47 Ω, alimenté en 24 V : Umoy ≈ 2√2 × 24 ÷ π moins deux seuils de diode. Fermez K1 : le condensateur lisse la tension.'},
+  pd3:{size:'big',slowmo:false,c:[['diode',16,7,3],['diode',20,7,3],['diode',24,7,3],['diode',16,15,3],['diode',20,15,3],['diode',24,15,3],
+      ['acgen',4,18,1,{U:230,ph:0}],['acgen',7,18,1,{U:230,ph:-120}],['acgen',10,18,1,{U:230,ph:-240}],['res',30,11,1,{R:100}],
+      ['osc',33,11,1,{tb:0.002,s1:100,pos1:-3,init:true,meas:true}]],
+    w:[[[16,8],[16,14]],[[20,8],[20,14]],[[24,8],[24,14]],[[16,6],[30,6],[30,10]],[[16,16],[30,16],[30,12]],[[30,6],[33,6],[33,10]],[[33,12],[33,16],[30,16]],
+      [[4,19],[4,20],[10,20]],[[7,19],[7,20]],[[10,19],[10,20]],[[4,17],[4,9],[16,9]],[[7,17],[7,11],[20,11]],[[10,17],[10,13],[24,13]]],
+    scope:'O1',note:'Six diodes sur le réseau triphasé : la tension redressée a six bosses par période, Umoy ≈ 2,34 × 230 V. Les fils des phases 2 et 3 passent sur les branches sans les toucher : pas de point, pas de contact.'},
+  hacheur:{slowmo:false,c:[['gen',3,8,1,{E:48}],['hach',6,4,0,{f:1000,a:0.5}],['diode',8,8,3],['pince',12,4,0],['amm',16,4,0,{cal:20}],['ind',20,6,1,{L:20,r:0.5}],['res',20,10,1,{R:4}],
+      ['volt',23,8,1],['osc',5,8,1,{init:true,tb:0.0005,s1:20,pos1:-3,s2:2,pos2:-3,mode:'trig',meas:true}]],
+    w:[[[3,7],[3,4],[5,4]],[[7,4],[11,4]],[[8,4],[8,7]],[[8,9],[8,12]],[[13,4],[15,4]],[[17,4],[20,4],[20,5]],[[20,7],[20,9]],[[20,11],[20,12],[3,12],[3,9]],
+      [[20,4],[23,4],[23,7]],[[23,9],[23,12],[20,12]],[[5,7],[5,6],[8,6]],[[5,9],[5,12]]],
+    sel:'T1',ch2:['O1','S1'],note:'Changez le rapport cyclique α de T1 : la charge reçoit en moyenne α × 48 V (V1, en DC). L’oscilloscope O1 montre la tension découpée et le courant ondulé (sonde S1) ; D1 est la diode de roue libre.'},
+  'mcc-dem':{slowmo:false,c:[['gen',3,8,1,{E:220}],['switch',5,4,0,{closed:false}],['res',10,4,0,{R:10}],['switch',10,2,0,{closed:false}],['pince',15,4,0],['amm',19,4,0,{cal:1000}],
+      ['mcc',21,8,1,{ch:50}],['osc',17,9,1,{init:true,mode:'roll',tb:0.2,s1:50,pos1:-3,s2:5,pos2:-3}]],
+    w:[[[3,7],[3,4],[4,4]],[[6,4],[9,4]],[[8,4],[8,2],[9,2]],[[11,2],[12,2],[12,4]],[[11,4],[14,4]],[[16,4],[18,4]],[[20,4],[21,4],[21,7]],[[21,9],[21,12],[3,12],[3,9]],
+      [[17,8],[17,6],[21,6]],[[17,10],[17,12]]],
+    sel:'M1',ch2:['O1','S1'],scope:'O1',note:'Fermez K1 : le moteur M1 démarre à travers le rhéostat R1 (11 Ω en tout). Une fois lancé, fermez K2. Recommencez en fermant K2 d’abord : la pointe de courant du démarrage direct.'},
+  'mcc-hach':{slowmo:false,c:[['gen',3,8,1,{E:220}],['hach',6,4,0,{f:1000,a:0.3}],['diode',8,8,3],['pince',12,4,0],['amm',16,4,0,{cal:1000}],['mcc',20,8,1,{ch:50}],['volt',23,8,1],
+      ['osc',5,8,1,{init:true,tb:0.0005,s1:50,pos1:-3,s2:5,pos2:-3,mode:'trig',meas:true}]],
+    w:[[[3,7],[3,4],[5,4]],[[7,4],[11,4]],[[8,4],[8,7]],[[8,9],[8,12]],[[13,4],[15,4]],[[17,4],[20,4],[20,7]],[[20,9],[20,12],[3,12],[3,9]],[[20,4],[23,4],[23,7]],
+      [[23,9],[23,12],[20,12]],[[5,7],[5,6],[8,6]],[[5,9],[5,12]]],
+    sel:'T1',ch2:['O1','S1'],note:'Le rapport cyclique α de T1 règle la tension moyenne du moteur, donc sa vitesse : n ≈ (α × E − R × I) ÷ k. Changez aussi la charge de M1.'},
+  rlt:{slowmo:false,c:[['gen',4,8,1,{E:12}],['switch',7,4,0,{closed:false}],['res',11,4,0,{R:10}],['ind',16,8,1,{L:1000,r:0}],['diode',19,8,3],
+      ['osc',11,7,0,{init:true,mode:'roll',tb:0.05,s1:2,pos1:-3}]],
+    w:[[[4,7],[4,4],[6,4]],[[8,4],[10,4]],[[12,4],[16,4],[16,7]],[[16,9],[16,12],[4,12],[4,9]],[[16,4],[19,4],[19,7]],[[19,9],[19,12],[16,12]],[[10,4],[10,7]],[[12,4],[12,7]]],
+    sel:'K1',scope:'O1',note:'Fermez K1 : le courant s’établit en cinq τ environ, τ = L ÷ R = 0,1 s (l’oscilloscope lit u_R = R × i). Ouvrez K1 : la diode D1 laisse le courant de la bobine s’éteindre sans surtension.'},
+  rlc:{slowmo:false,c:[['gbf',4,8,1,{wave:'sin',f:100,Um:5}],['amm',8,4,0,{mode:'AC'}],['res',12,4,0,{R:10}],['ind',16,4,0,{L:100,r:0}],['cap',20,8,1,{C:10}],
+      ['osc',23,8,1,{init:true,tb:0.002,s1:20,pos1:0,mode:'trig',meas:true}]],
+    w:[[[4,7],[4,4],[7,4]],[[9,4],[11,4]],[[13,4],[15,4]],[[17,4],[20,4],[20,7]],[[20,9],[20,12],[4,12],[4,9]],[[20,4],[23,4],[23,7]],[[23,9],[23,12],[20,12]]],
+    sel:'GBF1',note:'Faites varier la fréquence du GBF autour de f₀ = 1 ÷ (2π√(LC)) ≈ 159 Hz : le courant (A1) passe par un maximum, et la tension du condensateur (O1) dépasse de loin celle du GBF.'},
+};
+/* le menu : l'ordre et les titres */
+const EXGROUPS=[
+  ['Bases',[['mesures','Mesure de U et I'],['serie','Circuit en série'],['derivation','Circuit en dérivation'],['del','DEL protégée'],['moteur','Moteur et fusible']]],
+  ['Caractéristiques',[['carres','Caractéristique d’une résistance'],['carlampe','Caractéristique d’une lampe'],['cardel','Caractéristique d’une DEL'],['carpile','Caractéristique d’une pile'],['cardiode','Caractéristique d’une diode au GBF']]],
+  ['Alternatif et oscilloscope',[['gbflampe','GBF, lampe et oscilloscope'],['gbfdel','GBF et DEL clignotante'],['pontdel','Pont de DEL (GBF)']]],
+  ['Redressement',[['pontdiodes','Pont de diodes (alternatif 6 V)'],['pontcond','Pont de diodes et condensateur']]],
+  ['Condensateur',[['charge','Charge d’un condensateur']]],
+  ['Énergie et transport',[['joule','Énergie et joulemètre'],['ligne','Ligne longue et transformateurs']]],
+  ['BTS électrotechnique',[['rl','Charge R-L : P, Q, S et cos φ'],['cosphi','Relever le facteur de puissance'],['tri-etoile','Triphasé : récepteur équilibré en étoile'],
+    ['tri-neutre','Triphasé : la coupure du neutre'],['tri-p','Triphasé : puissance d’un récepteur R-L'],['transfo','Transformateur monophasé en charge'],
+    ['pd2','Redressement PD2 et filtrage'],['pd3','Redressement triphasé PD3'],['hacheur','Hacheur série sur charge R-L'],['mcc-dem','Démarrage d’un moteur à courant continu'],
+    ['mcc-hach','Hacheur et moteur : variation de vitesse'],['rlt','Établissement du courant dans une bobine'],['rlc','Circuit R-L-C série : résonance']]],
+];
+$('examples').insertAdjacentHTML('beforeend',EXGROUPS.map(([g,l])=>`<optgroup label="${g}">${l.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</optgroup>`).join(''));
+const byName=n=>state.comps.find(c=>c.name===n)||null;
+function showExNote(t){const n=$('exnote');n.hidden=!t;$('exnoteT').textContent=t||'';}
+$('exnoteX').onclick=()=>showExNote('');
+function loadExample(name){
+  const ex=EX[name];const z=SIZES[ex.size||'std'];setSize(z[0],z[1]);
+  state={comps:[],segs:new Set(),nextId:1,counters:{},jn:new Set()};
+  if(ex.slowmo!==undefined)opts.slowmo=ex.slowmo;
+  for(const[t,x,y,r,p]of ex.c){const c=makeComp(t,x,y,r,p);if(t==='switch'&&!(p&&'closed'in p))c.props.closed=true;state.comps.push(c);}
+  for(const pts of ex.w)for(let i=0;i<pts.length-1;i++)addLine(pts[i],pts[i+1]);
+  if(ex.ch2){const o=byName(ex.ch2[0]),s=byName(ex.ch2[1]);if(o&&s)o.props.ch2=s.id;}
+  if(ex.cmod){const c=byName(ex.cmod);if(c)c.cmod=true;}
+  const s=ex.sel&&byName(ex.sel);sel=s?s.id:null;
+  closeScope();if(winState('char').open)closeWin('char');
+  syncOpts();showExNote(ex.note||'');
+}
+/* après la construction du circuit : les fenêtres que l'exemple ouvre */
+function openExampleWins(name){
+  const ex=EX[name];
+  if(ex.char){const c=byName(ex.char);if(c)openChar(c);}
+  if(ex.scope){const c=byName(ex.scope);if(c)openScope(c);}
+}
+$('examples').addEventListener('change',e=>{const v=e.target.value;if(!v)return;pushHist();loadExample(v);e.target.value='';commit();openExampleWins(v);});
+
+/* ================= export image ================= */
+let pngBlob=null;
+function bbox(){
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;const add=(x,y)=>{x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);};
+  for(const c of state.comps){const e=FOUR.has(c.type)?62:34;for(const t of termsOf(c))add(P(t[0]),P(t[1]));add(P(c.x)-e,P(c.y)-e);add(P(c.x)+e,P(c.y)+e);}
+  for(const k of state.segs){const[p,q]=segPts(k);add(P(p[0]),P(p[1]));add(P(q[0]),P(q[1]));}
+  if(x0>x1)return null;const m=18;return{x:x0-m,y:y0-m,w:x1-x0+2*m,h:y1-y0+2*m};
+}
+$('exportBtn').onclick=()=>{
+  const b=bbox();if(!b){$('status').innerHTML='<span class="pill warn">Feuille vide</span> Placez au moins un composant avant de créer l’image.';return;}
+  const saved=sel;sel=null;const inner=scene({exp:true});sel=saved;
+  const sc=3;
+  const src=`<svg xmlns="http://www.w3.org/2000/svg" width="${b.w*sc}" height="${b.h*sc}" viewBox="${b.x} ${b.y} ${b.w} ${b.h}"><style>${SHEET_CSS}</style><rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="#FFFFFF"/>${inner}</svg>`;
+  const img=new Image();
+  img.onload=()=>{const cv=document.createElement('canvas');cv.width=b.w*sc;cv.height=b.h*sc;const ctx=cv.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,cv.width,cv.height);ctx.drawImage(img,0,0);
+    $('mImg').src=cv.toDataURL('image/png');$('mImg').style.width=Math.min(b.w*1.2,860)+'px';
+    pngBlob=null;cv.toBlob(bl=>{pngBlob=bl;});$('mMsg').textContent='';$('modal').hidden=false;};
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(src);
+};
+$('mClose').onclick=()=>{$('modal').hidden=true;};
+$('modal').addEventListener('click',e=>{if(e.target.id==='modal')$('modal').hidden=true;});
+$('mCopy').onclick=()=>{
+  try{if(!pngBlob||!window.ClipboardItem)throw 0;
+    navigator.clipboard.write([new ClipboardItem({'image/png':pngBlob})]).then(()=>{$('mMsg').textContent='Image copiée : collez-la dans votre document.';},()=>{$('mMsg').textContent='Copie refusée ici : faites un clic droit ou un appui long sur l’image.';});
+  }catch(_){$('mMsg').textContent='Copie indisponible ici : faites un clic droit ou un appui long sur l’image.';}
+};
+
+/* ================= démarrage ================= */
+let loaded=false;
+try{const d=JSON.parse(localStorage.getItem(KEY)||'null');
+  if(d&&d.s){restore(d.s);Object.assign(opts,d.o||{});
+    opts.q=Object.assign({u:true,i:true,p:false,r:false},opts.q||{});opts.wins=opts.wins&&typeof opts.wins==='object'?opts.wins:{};
+    if(d.t&&Array.isArray(d.t.rows)&&Array.isArray(d.t.cols))tabData=d.t;loaded=true;}}catch(e){}
+if(!loaded)loadExample('mesures');
+syncOpts();
+build();render();renderProps();
+// les fenêtres ouvertes à la visite précédente reviennent à leur place
+for(const id in WINS)if(winState(id).open){layoutWin(id);if(WINS[id].onOpen)WINS[id].onOpen();}
+raf=requestAnimationFrame(frame);
+/* porte d'essai : les scénarios de vérification passent par là */
+window.__sim={get state(){return state},build,advance,loadExample,openExampleWins,get net(){return net},mOf,openScope,openChar,charModel,fitLine,
+  get opts(){return opts},get tab(){return tabData},wattVals,mccK,lampI,byName,openWin,closeWin,crossInfo,openCrossings,setSize,commit,
+  pick(){charWin.body.querySelector('[data-c="pick"]').click();}};
+})();
+</script>
+
+</body></html>
